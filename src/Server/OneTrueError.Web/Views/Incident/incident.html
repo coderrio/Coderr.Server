@@ -1,0 +1,128 @@
+﻿<div id="IncidentView">
+    <div>
+        <div class="pull-right">
+
+        </div>
+    </div>
+    <div>
+        <h1 data-name="Description" style="display: inline"></h1>
+        &nbsp;&nbsp;&nbsp;
+        <div class="btn-group" id="actionButtons" data-unless="IsIgnored">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                Action <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="#/application/:applicationId/incident/:incidentId/close" title="This incident have been corrected and should not generate any more reports">Close incident</a></li>
+                <li><a href="#/application/:applicationId/incident/:incidentId/ignore" title="Do not trigger notifications or show this incident as active, no matter how many reports it receive.">Ignore incident</a></li>
+            </ul>
+        </div>
+    </div>
+    <div>
+        <p></p>
+    </div>
+    <div>
+        <p>
+            This incident has occurred <span data-name="ReportCount"></span> time(s). Last update was <span data-name="UpdatedAtUtc">UTC</span>.
+        </p>
+        <div data-if="vm.IsIgnored">
+            <em>
+                Incident is ignored, i.e. no notifcations will be sent for this incident. New reports are thrown away (but the counter will increase to
+                indicate that it's still active).
+            </em>
+        </div>
+    </div>
+    <div>
+
+    </div>
+    <div class="">&nbsp;</div>
+    <div data-collection="Tags">
+        <a class="tag" href="" data-name="Info" target="so"></a>
+    </div>
+    <div class="">&nbsp;</div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="CanvasSurface"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-8" style="background-color: rgb(29, 137, 207) !important;">
+            <div style="margin-bottom: 20px;">
+                <div class="pull-right">
+                    <form id="refresh-chart" style="background: rgba(220, 230, 250, 0.5); padding: 5px">
+                        <input type="radio" name="range" value="30" /> month
+                        <input type="radio" name="range" value="7" /> week
+                        <input type="radio" name="range" value="1" /> day
+                    </form>
+                </div>
+                <div class="clearfix" style="clear: both"></div>
+            </div>
+            <div class="clearfix" style="clear: both"></div>
+            <div>
+                <canvas id="myChart" height="90"></canvas>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="tile-nephritis tile tile-medium">
+                <a href="#Reports">
+                    <h4>Report count</h4>
+                    <h1 data-name="ReportCount"></h1>
+                </a>
+            </div>
+            <div class="tile-nephritis tile tile-medium">
+                <a href="/incident/:incidentId/users">
+                    <h4 title="Number of users waiting for a fix">Users waiting</h4>
+                    <h1 data-name="WaitingUserCount"></h1>
+                </a>
+            </div>
+            <div class="tile-nephritis tile tile-medium">
+                <a href="/incident/:incidentId/feedback">
+                    <h4 title="Number of users waiting for a fix">Feedback count</h4>
+                    <h1 data-name="FeedbackCount"></h1>
+                </a>
+            </div>
+            <div class="clearfix">
+                <p>&nbsp;</p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <h2 id="Reports">Reports</h2>
+            <table id="reportsTable" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Message</th>
+                        <th>Reported at (UTC)</th>
+                        <th>Ip address</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody data-collection="Items">
+                    <tr>
+                        <td><a href="" data-name="Message"></a></td>
+                        <td data-name="CreatedAtUtc"></td>
+                        <td data-name="RemoteAddress"></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4" class="text-right" id="pager"></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<ul data-navigation="main-navigation">
+    <li data-if="ctx.routeData['applicationId']"><a href="#/application/:applicationId/">Back..</a></li>
+    <li data-if="!ctx.routeData['applicationId']"><a href="#/">Back..</a></li>
+    <li><a href="#/application/:applicationId/incident/:incidentId/context">Context data</a></li>
+    <li><a href="#/application/:applicationId/incident/:incidentId/origins">Report origins</a></li>
+    <li><a href="#/application/:applicationId/incident/:incidentId/feedback">Feedback</a></li>
+</ul>
+<style>
+    .tag {
+        margin-right: 5px;
+    }
+</style>

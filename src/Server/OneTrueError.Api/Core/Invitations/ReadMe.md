@@ -1,0 +1,1 @@
+﻿Invitations are sent on application basis. 

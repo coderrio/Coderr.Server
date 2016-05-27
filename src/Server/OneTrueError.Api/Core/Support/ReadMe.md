@@ -1,0 +1,1 @@
+﻿Used to get support from Gauffin Interactive AB

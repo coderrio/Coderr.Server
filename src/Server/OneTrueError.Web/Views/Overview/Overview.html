@@ -1,0 +1,114 @@
+﻿<div id="OverviewView">
+    <h1 id="name">Overview</h1>
+    <div class="row">
+        <div class="col-lg-8" style="background-color: rgb(29, 137, 207) !important;">
+            <div style="margin-bottom: 20px;">
+                <div class="pull-right">
+                    <form id="refresh-chart" style="background: rgba(220, 230, 250, 0.5); padding: 5px">
+                        <input type="radio" name="range" value="30" /> month
+                        <input type="radio" name="range" value="7" /> week
+                        <input type="radio" name="range" value="1" /> day
+                    </form>
+                </div>
+                <div class="clearfix" style="clear: both"></div>
+            </div>
+            <div class="clearfix" style="clear: both"></div>
+            <div>
+                <canvas id="myChart" height="90"></canvas>
+            </div>
+
+            <div class="text-center">
+                <div id="chart-legend">
+                    <div style="display: inline">
+                        <span style="" class="glyphicon glyphicon-stop glyphicon-th-large" data-name="color"></span>
+                        <span data-name="label" style="font-weight: bold;"></span>&nbsp;&nbsp;
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4" data-name="StatSummary">
+            <div class="tile-nephritis tile tile-medium">
+                <a href="#/incidents">
+                    <h4>Active incidents</h4>
+                    <h1 data-name="Incidents"></h1>
+                </a>
+            </div>
+            <div class="tile-nephritis tile tile-medium">
+                <a href="#incidentTable">
+                    <h4>Report count</h4>
+                    <h1 data-name="Reports"></h1>
+                </a>
+            </div>
+            <div class="tile-nephritis tile tile-medium">
+                <a href="#/feedback">
+                    <h4 title="Number of users waiting for a fix">Users waiting</h4>
+                    <h1 data-name="Followers"></h1>
+                </a>
+            </div>
+            <div class="tile-nephritis tile tile-medium">
+                <a href="#/feedback">
+                    <h4 title="Number of users waiting for a fix">Feedback count</h4>
+                    <h1 data-name="UserFeedback"></h1>
+                </a>
+            </div>
+            <div class="tile tile-large tile-sun-flower" data-name="getting-started" style="display: none; font-size: 2em; padding:15px">
+                <p>
+                    Need help getting started? Click on the Help-icon top right.
+                </p>
+                <hr/>
+                <p>
+                    <a style="text-decoration: underline; color:#fff" hreF="#/welcome">getting started</a>
+                </p>
+
+            </div>
+            <div class="clearfix">
+                <p>&nbsp;</p>
+            </div>
+        </div>
+    </div>
+    <div class="vertical-spacer"></div>
+    <div class="row">
+        <div class="col-lg-12">
+            <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+                <li class="active">
+                    <a href="#active" id="btnActive" data-toggle="tab">Active</a>
+                </li>
+                <li>
+                    <a href="#closed" id="btnClosed" data-toggle="tab">Closed</a>
+                </li>
+                <li>
+                    <a href="#ignored" id="btnIgnored" data-toggle="tab">Ignored</a>
+                </li>
+            </ul>
+            <table id="incidentTable" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th style="min-width: 100px">Application</th>
+                        <th style="cursor: pointer;min-width: 100px" id="LastReportCol">Last report <span id="lastReport-sort" class="glyphicon glyphicon-chevron-down"></span></th>
+                        <th style="cursor: pointer;min-width: 100px" id="CountCol">Report count <span id="count-sort" class="glyphicon glyphicon-chevron-up" style="visibility: hidden"></span></th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody data-collection="Items">
+                    <tr>
+                        <td><a href="" data-name="Name"></a></td>
+                        <td><a data-name="ApplicationName" href="" data-url="#/application/:applicationId/"></a></td>
+                        <td data-name="LastUpdateAtUtc"></td>
+                        <td data-name="ReportCount"></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4" class="text-right" id="pager"></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<ul data-navigation="main-navigation">
+    <li><a href="#/incidents">Incidents</a></li>
+    <li><a href="#/feedback">Feedback</a></li>
+</ul>

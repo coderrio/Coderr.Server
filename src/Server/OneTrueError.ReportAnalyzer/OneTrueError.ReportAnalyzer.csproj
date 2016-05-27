@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{29FBF805-CAFD-426A-A576-9756D375BF18}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OneTrueError.ReportAnalyzer</RootNamespace>
+    <AssemblyName>OneTrueError.ReportAnalyzer</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\OneTrueError.ReportAnalyzer.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DotNetCqs, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetCqs.1.0.0\lib\net45\DotNetCqs.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Griffin.Container, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Griffin.Container.1.1.2\lib\net40\Griffin.Container.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Griffin.Core, Version=1.0.37.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Griffin.Framework.1.0.37\lib\net45\Griffin.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Griffin.Core.Json, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Griffin.Framework.Json.1.0.2\lib\net45\Griffin.Core.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Jobs\DeleteAbandonedSimilarities.cs" />
+    <Compile Include="Jobs\DeleteEmptyIncidents.cs" />
+    <Compile Include="Jobs\DeleteReportsBelowReportLimit.cs" />
+    <Compile Include="Domain\FailedReports\CustomerApplication.cs" />
+    <Compile Include="Domain\FailedReports\SaveHandler.cs" />
+    <Compile Include="Domain\Feedback\FeedbackEntity.cs" />
+    <Compile Include="Domain\Incidents\IncidentBeingAnalyzed.cs" />
+    <Compile Include="Domain\Incidents\IncidentHashMapEntry.cs" />
+    <Compile Include="Domain\Reports\ErrorReportContext.cs" />
+    <Compile Include="Domain\Reports\ErrorReportEntity.cs" />
+    <Compile Include="Domain\Reports\ErrorReportException.cs" />
+    <Compile Include="Domain\Reports\HashCodeGenerator.cs" />
+    <Compile Include="Domain\Reports\HashcodeGenerators\FileNotFoundHttpErrorGenerator.cs" />
+    <Compile Include="Domain\Reports\HashcodeGenerators\HashCodeUtility.cs" />
+    <Compile Include="Domain\Reports\IHashCodeSubGenerator.cs" />
+    <Compile Include="Domain\Reports\ReportDecompressor.cs" />
+    <Compile Include="IAnalyticsRepository.cs" />
+    <Compile Include="IncludeNonPublicMembersContractResolver.cs" />
+    <Compile Include="LibContracts\NamespaceDoc.cs" />
+    <Compile Include="LibContracts\ReceivedFeedbackDTO.cs" />
+    <Compile Include="LibContracts\ReceivedReportContextInfo.cs" />
+    <Compile Include="LibContracts\ReceivedReportDTO.cs" />
+    <Compile Include="LibContracts\ReceivedReportException.cs" />
+    <Compile Include="LibContracts\InvalidReport.cs" />
+    <Compile Include="OneTruePrincipal.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scanners\ApplicationDTO.cs" />
+    <Compile Include="Scanners\LoadReportsFromDiskQueueFolder.cs" />
+    <Compile Include="Scanners\ReportDtoConverter.cs" />
+    <Compile Include="Scanners\ScanForNewErrorReports.cs" />
+    <Compile Include="Scanners\ScanForNewErrorReportsBatcher.cs" />
+    <Compile Include="Scanners\TryToAnalyzeInvalidReports.cs" />
+    <Compile Include="Services\ReportAnalyzer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OneTrueError.Api\OneTrueError.Api.csproj">
+      <Project>{FC331A95-FCA4-4764-8004-0884665DD01F}</Project>
+      <Name>OneTrueError.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OneTrueError.Data.Common\OneTrueError.Infrastructure.csproj">
+      <Project>{A78A50DA-C9D7-47F2-8528-D7EE39D91924}</Project>
+      <Name>OneTrueError.Infrastructure</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

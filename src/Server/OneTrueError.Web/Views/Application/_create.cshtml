@@ -1,0 +1,66 @@
+﻿<div class="modal fade" id="create-application">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Create application</h4>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="@Url.Content("~/api/application/create")" id="CreateAppForm">
+                    <div class="form-group">
+                        <label for="appName">Name</label>
+                        <input type="appName" class="form-control" id="appName" placeholder="Enter application name">
+                    </div>
+                    <div class="form-group">
+                        <label for="hostType">Host type</label>
+                        <select class="form-control" name="hostType">
+                            <option value=""></option>
+                            <option value="Mobile">Mobile device</option>
+                            <option value="DesktopApplication" selected="selected">Desktop PC</option>
+                            <option value="Server">Server</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<script type="text/javascript">
+    function createAppliction() {
+        var name = $('#appName').val();
+        var hostType = $('[name="hostType"]').val();
+
+        var client = new Griffin.Net.HttpClient();
+        client.get(window.API_URL + '/guid').done(function (response) {
+            var appKey = response.body;
+            var cmd = new OneTrueError.Core.Applications.Commands.CreateApplication(name, hostType);
+            cmd.ApplicationKey = appKey;
+            Griffin.Cqs.CqsClient.command(cmd)
+                .done(function () {
+                    var query = new OneTrueError.Core.Applications.Queries.GetApplicationIdByKey(appKey);
+                    Griffin.Cqs.CqsClient.query(query)
+                        .done(function (result) {
+                            $('#appName').val('');
+                            $('#applicationsMenu').append('<li><a href="#/application/' + result.Id + '">' + name + '</a></li>');
+                            window.location.hash = '#/application/' + result.Id;
+                        });
+                })
+                .fail(function (rejection) {
+                    console.log(rejection.message);
+                });
+        });
+    }
+    $('#create-application .btn-primary').click(function (e) {
+        e.preventDefault();
+        $('#CreateAppForm').submit();
+    });
+    $('#CreateAppForm').submit(function (e) {
+        e.preventDefault();
+        createAppliction();
+        $('#create-application').modal('hide');
+    });
+</script>

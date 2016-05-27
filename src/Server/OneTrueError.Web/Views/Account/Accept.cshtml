@@ -1,0 +1,134 @@
+﻿@model OneTrueError.Web.Models.Account.AcceptViewModel
+
+@{
+    ViewBag.Title = "Register";
+}
+
+
+<div class="row-fluid">
+    <div class="box full accent-border">
+        <h2>Welcome to OneTrueError</h2>
+        <p>
+            To accept the invitation you have to fill out the following form. 
+        </p>
+        <div>
+            <form class="form-horizontal" method="POST" action="@Url.Content("~/account/accept")">
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(x => x.InvitationKey)
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="UserName">Username</label>
+                    <div class="col-sm-10">
+                        @Html.TextBoxFor(model => model.UserName, new { @placeholder = "User name" })
+                        @Html.ValidationMessageFor(model => model.UserName)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="Password">Password</label>
+                    <div class="col-sm-10">
+                        @Html.PasswordFor(model => model.Password, new { @placeholder = "Password" })
+                        @Html.ValidationMessageFor(model => model.Password)
+                        <span id="password-awesomeness"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="Password2">Type password again</label>
+                    <div class="col-sm-10">
+                        @Html.PasswordFor(model => model.Password2, new { @placeholder = "Password verification", equalTo="#Password" })
+                        @Html.ValidationMessageFor(model => model.Password2)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="inputEmail">Email</label>
+                    <div class="col-sm-10">
+                        @Html.TextBoxFor(model => model.Email, new { @placeholder = "Email" })
+                        @Html.ValidationMessageFor(model => model.Email)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <div class="checkbox">
+                            <label title="Terms" data-name="Terms">
+                                <input type="checkbox" name="Terms" id="Terms" value="true" data-val-required="You must accept the terms to be able to register." 
+                                    data-validation-error-msg="You must accept the terms to be able to register"   
+                                    required="required" />
+                                I agree with the <a href="@Url.Action("Terms", "Account")">terms</a>.
+                            </label>
+                            <span class="field-validation-valid" data-valmsg-for="Terms" data-valmsg-replace="true"></span>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-primary">Accept invitation</button>
+                        @Html.ActionLink("Back to first page", "Index", "Home", null, new { @class = "btn btn-default" })
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function scorePassword(pass) {
+        var score = 0;
+        if (!pass)
+            return score;
+
+        // award every unique letter until 5 repetitions
+        var letters = new Object();
+        for (var i = 0; i < pass.length; i++) {
+            letters[pass[i]] = (letters[pass[i]] || 0) + 1;
+            score += 5.0 / letters[pass[i]];
+        }
+
+        // bonus points for mixing it up
+        var variations = {
+            digits: /\d/.test(pass),
+            lower: /[a-z]/.test(pass),
+            upper: /[A-Z]/.test(pass),
+            nonWords: /\W/.test(pass),
+        };
+
+        var variationCount = 0;
+        for (var check in variations) {
+            variationCount += (variations[check] == true) ? 1 : 0;
+        }
+        score += (variationCount - 1) * 10;
+
+        return parseInt(score);
+    }
+
+    function checkPassStrength(pass) {
+        var score = scorePassword(pass);
+        if (score > 80)
+            return "You got a new highscore!";
+        if (score > 50)
+            return "Good enough, but you can do better..";
+        if (score >= 20)
+            return "My mother could guess that password.";
+        if (score < 20)
+            return "'1234' is not a real password...";
+        return "";
+    }
+</script>
+@section ViewModelScripts
+{
+    <script type="text/javascript">
+     $(function () {
+        $('#Password').keypress(function () {
+            $('#password-awesomeness').html(checkPassStrength(this.value));
+        });
+        $('#Password').keyup(function () {
+            $('#password-awesomeness').html(checkPassStrength(this.value));
+        });
+        /*$('#Passssword2').focusout(function () {
+            if ($('#Password2').val() != $('#Password').val()) {
+                $('#Password2').next().text('Passwords should match.');
+            } else {
+                $('#Password2').next().text('');
+            }
+        });*/
+     });
+     </script>
+}

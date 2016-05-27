@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewBag.Title = "Installation - Completed";
+}
+<div class="container">
+    <div class="col-lg-6">
+
+        <h2>Congratulations!</h2>
+
+        <p>The setup is now completed. You need to deactive this configuration part of OneTrueError for security reasons..</p>
+        <p>
+            Change the <code>Configured</code> appKey to <code>"true"</code> in your web.config. Then click "Complete" to start OneTrueError
+        </p>
+        @if (ViewBag.DisplayError)
+        {
+            <h3>Error!</h3>
+            <div style="color: #990000; font-weight: bolder">
+                Change the key in your web.config to this: <code>&lt;add key="Configured" value="true" /&gt;</code>. OneTrueError won't start otherwise.
+            </div>
+        }
+        <form action="@Url.Action("Activate")" method="post">
+            <button>Complete</button>
+        </form>
+        @Html.Raw(ViewBag.PrevStep)
+    </div>
+</div>

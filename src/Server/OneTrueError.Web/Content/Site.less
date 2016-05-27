@@ -1,0 +1,130 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+/* Custom container */
+.full-width {
+    .container {
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    .body-content {
+        margin-top: 50px;
+    }
+
+    .navbar-brand, .navbar-nav > li > a {
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    .navbar-brand, .navbar-nav.settings > li > a {
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    .navbar-nav > .active > a {
+        opacity: .6;
+    }
+}
+
+.tile h3, .tile h4, .tile h2 {
+    margin-top: 5px !important;
+}
+
+@submenu-bg-color: #337ab7;
+@submenu-color: #fff;
+
+.sub-menu.navbar {
+    msargin-top: 10px;
+    padding-top: 10px;
+    padding-left: 20px;
+    color: @submenu-color;
+    background-color: @submenu-bg-color;
+
+    .navbar-nav {
+        .navbar-brand {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+        }
+
+        > li > a {
+            color: @submenu-color;
+
+            &:hover,
+            &:focus {
+                color: darken(@submenu-color, 5%);
+                background-color: darken(@submenu-bg-color, 5%);
+            }
+        }
+
+        > .active > a {
+            &,
+            &:hover,
+            &:focus {
+                color: @submenu-color;
+                background-color: darken(@submenu-bg-color, 10%);
+            }
+        }
+
+        > .disabled > a {
+            &,
+            &:hover,
+            &:focus {
+                color: darken(@submenu-color, 40%);
+                background-color: darken(@submenu-bg-color, 60%);
+            }
+        }
+    }
+}
+
+.vertical-spacer {
+    margin-top: 30px;
+}
+
+.tile.tile-wide, .tile.tile-double {
+    height: auto;
+    min-height: 150;
+}
+
+.tag{
+    padding: 0 4px; 
+    color: white;
+    opacity: 0.75;
+}
+.tag:hover{
+    color: #eee;
+    opacity: 1;
+    text-decoration: none;
+}
+.tag.nephritis{
+    background: #27ae60;
+}
+#chart-legend span {
+    font-family: sans-serif;
+}

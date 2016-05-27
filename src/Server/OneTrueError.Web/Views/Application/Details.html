@@ -1,0 +1,112 @@
+﻿<div id="ApplicationView">
+    <h1 data-name="Name">(loading)</h1>
+    <div class="row">
+        <div class="col-lg-8" style="background-color: rgb(29, 137, 207) !important;">
+            <div style="margin-bottom: 20px;">
+                <div class="pull-right">
+                    <form id="refresh-chart" style="background: rgba(220, 230, 250, 0.5); padding: 5px">
+                        <input type="radio" name="range" value="30" /> month
+                        <input type="radio" name="range" value="7" /> week
+                        <input type="radio" name="range" value="1" /> day
+                    </form>
+                </div>
+                <div class="clearfix" style="clear: both"></div>
+            </div>
+            <div class="clearfix" style="clear: both"></div>
+            <div>
+                <canvas id="myChart" height="90"></canvas>
+            </div>
+
+            <div class="text-center">
+                <div id="chart-legend">
+                    <div style="display: inline">
+                        <span style="" class="glyphicon glyphicon-stop glyphicon-th-large" data-name="color"></span>
+                        <span data-name="label" style="font-weight: bold;"></span>&nbsp;&nbsp;
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4" data-name="StatSummary">
+            <div class="tile-nephritis tile tile-medium">
+                <h4>Active incidents</h4>
+                <h1 data-name="Incidents"></h1>
+            </div>
+            <div class="tile-nephritis tile tile-medium">
+                <h4>Report count</h4>
+                <h1 data-name="Reports"></h1>
+            </div>
+            <div class="tile-nephritis tile tile-medium">
+                <h4 title="Number of users waiting for a fix">Users waiting</h4>
+                <h1 data-name="Followers"></h1>
+            </div>
+            <div class="tile-nephritis tile tile-medium">
+                <a href="#/application/:applicationId/feedback">
+                    <h4 title="Number of users waiting for a fix">Feedback count</h4>
+                    <h1 data-name="UserFeedback"></h1>
+                </a>
+            </div>
+            <div class="clearfix">
+                <p>&nbsp;</p>
+            </div>
+            <h3>Configuration
+                <small><a class="glyphicon glyphicon-question-sign" href="#/application/:applicationId/installation"></a></small>
+            </h3>
+            <table class="table table-condensed">
+                <tbody>
+                    <tr>
+                        <th>AppKey</th>
+                        <td data-name="AppKey"></td>
+                    </tr>
+                    <tr>
+                        <th>SharedSecret</th>
+                        <td data-name="SharedSecret"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="vertical-spacer"></div>
+    <div class="row">
+        <div class="col-lg-12">
+            <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+                <li class="active">
+                    <a href="#active" id="btnActive" data-toggle="tab">Active</a>
+                </li>
+                <li>
+                    <a href="#closed" id="btnClosed" data-toggle="tab">Closed</a>
+                </li>
+                <li>
+                    <a href="#ignored" id="btnIgnored" data-toggle="tab">Ignored</a>
+                </li>
+            </ul>
+            <table id="incidentTable" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th style="cursor: pointer;min-width: 150px" id="LastReportCol">Last report <span id="lastReport-sort" class="glyphicon glyphicon-chevron-down"></span></th>
+                        <th style="cursor: pointer;min-width: 120px" id="CountCol">Report count <span id="count-sort" class="glyphicon glyphicon-chevron-up" style="visibility: hidden"></span></th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody data-collection="Items">
+                    <tr>
+                        <td><a href="#/application/:applicationId/incident/:incidentId" data-name="IncidentName"></a></td>
+                        <td data-name="LastUpdateAtUtc"></td>
+                        <td data-name="ReportCount"></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4" class="text-right" id="pager"></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<ul data-navigation="main-navigation">
+    <li><a href="#/application/:applicationId/incidents">Incidents</a></li>
+    <li><a href="#/application/:applicationId/feedback">Feedback</a></li>
+    <li><a href="#/application/:applicationId/team">Team members</a></li>
+</ul>

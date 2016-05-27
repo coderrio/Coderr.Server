@@ -1,0 +1,33 @@
+﻿@model OneTrueError.Web.Areas.Installation.Models.BasicsViewModel
+@{
+    ViewBag.Title = "Installation - Basics";
+}
+<div class="container">
+    <div class="col-lg-6">
+
+        <h2>Base configuration</h2>
+        <p>Let's start with the easy stuff.</p>
+        <form method="post" action="@Url.Action("Basics")" style="width: 100%" class="form">
+            @Html.ValidationSummary(false)
+            <div class="form-group">
+                <label class="control-label">
+                    Base URL
+                </label>
+                <input type="text"
+                       name="BaseUrl" class="form-control" value="@Model.BaseUrl" placeholder="http://yourhostName"/>
+                <small>Address used when visting this site.</small>
+            </div>
+            <div class="form-group">
+                <label for="SupportEmail">
+                    Email address
+                </label>
+                <input type="email" id="SupportEmail" name="SupportEmail" class="form-control" value="@Model.SupportEmail"/>
+                <small>Used by your users when they need support using OneTrueError, for instance for account troubles.</small>
+            </div>
+            <br/>
+            @Html.Raw(ViewBag.PrevLink)
+            <input type="submit" class="btn btn-primary" value="Save"/>
+            @Html.Raw(ViewBag.NextLink)
+        </form>
+    </div>
+</div>

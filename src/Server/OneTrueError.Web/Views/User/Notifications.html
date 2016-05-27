@@ -1,0 +1,74 @@
+﻿<style type="text/css">
+    #NotificationsView label {
+        display: block;
+    }
+    #NotificationsView select {
+        margin-bottom: 20px;
+    }
+</style>
+<div id="NotificationsView">
+    <h1>Notifications</h1>
+    <div style="margin-bottom: 40px;">
+        <p>Use notifications to get aware of errors seconds after they have happened.</p>
+        <p></p>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <label>
+                New unique errors (incidents)
+            </label>
+            <div>
+                <select name="NotifyOnNewIncidents">
+                    <option value="Disabled">Disable</option>
+                    <option value="Email">Notify by email</option>
+                    <option value="Cellphone">Notify by Cellphone</option>
+                </select>
+            </div>
+            <label>
+                New error report (no matter if it's new or not)
+            </label>
+            <div>
+                <select name="NotifyOnNewReport">
+                    <option value="Disabled">Disable</option>
+                    <option value="Email">Notify by email</option>
+                    <option value="Cellphone">Notify by Cellphone</option>
+                </select>
+            </div>
+            <label>
+                New report on a closed incident (you have marked it as closed and a new report was received after that)
+            </label>
+            <div>
+                <select name="NotifyOnReOpenedIncident">
+                    <option value="Disabled">Disable</option>
+                    <option value="Email">Notify by email</option>
+                    <option value="Cellphone">Notify by Cellphone</option>
+                </select>
+            </div>
+            <label>
+                Peak detected (received much more exceptions for an application than on an average day)
+            </label>
+            <div>
+                <select name="NotifyOnPeaks">
+                    <option value="Disabled">Disable</option>
+                    <option value="Email">Notify by email</option>
+                    <option value="Cellphone">Notify by Cellphone</option>
+                </select>
+            </div>
+            <label>
+                An user have written a description for an error.
+            </label>
+            <div>
+                <select name="NotifyOnUserFeedback">
+                    <option value="Disabled">Disable</option>
+                    <option value="Email">Notify by email</option>
+                    <option value="Cellphone">Notify by Cellphone</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary" id="saveSettings">Update notifications</button>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+            </div>
+        </div>
+    </div>
+</div>

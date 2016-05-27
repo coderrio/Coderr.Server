@@ -1,0 +1,74 @@
+﻿<h1>Account settings</h1>
+<p>
+    <em>Your name is used to create a more personal communication with your customers (only used when you reply on user feedback).</em>
+</p>
+<p>
+    <em>Your cellphone number is only required if you activate notifications.</em>
+</p>
+<hr />
+<div class="row">
+    <div class="col-lg-6 col-md-12">
+        <div class="form-horizontal" id="PersonalSettings">
+            <h3>User information</h3>
+            <div class="form-group">
+                <label for="FirstName" class="col-sm-2 control-label">First name</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="FirstName" placeholder="First name" data-name="FirstName">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="LastName" class="col-sm-2 control-label">Last name</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="LastName" placeholder="Last name" data-name="LastName">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="CellNumber" class="col-sm-2 control-label">Cellphone Number</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="CellNumber" placeholder="Cellphone number" data-name="CellNumber">
+                    <p class="help-block">Use E.164 format (+&lt;countryCode&gt;&lt;number&gt;). Example: +4670123456</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label"></label>
+                <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary" name="saveSettings">Save</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-lg-6 col-md-12">
+        <div class="form-horizontal" id="PasswordView">
+            <h3>Password reset</h3>
+            <div class="form-group">
+                <label for="CurrentPassword" class="col-sm-2 control-label">Enter current password</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" name="CurrentPassword" placeholder="Current password">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="NewPassword" class="col-sm-2 control-label">New password</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" name="NewPassword" placeholder="New password">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="NewPassword2" class="col-sm-2 control-label">Repeat new password</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" name="NewPassword2" placeholder="Re-type your new password">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label"></label>
+                <div class="col-sm-10">
+                    <button type="button" class="btn btn-primary" name="changePassword">Change password</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+    </div>
+</div>

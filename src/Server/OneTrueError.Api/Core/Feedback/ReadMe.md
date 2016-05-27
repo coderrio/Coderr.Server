@@ -1,0 +1,1 @@
+﻿Feedback / error description written by the user when the exception was caught.

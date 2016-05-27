@@ -1,0 +1,1 @@
+﻿All instances of the same exception are grouped together into an incident (i.e. even if the same exception is thrown 100 000 it's still the same incident).

@@ -1,0 +1,130 @@
+﻿@model OneTrueError.Web.Models.Account.RegisterViewModel
+@{
+    ViewBag.Title = "Register account";
+}
+
+<script>
+    var IEMinor = false;
+</script>
+<!--[if lte IE 8]>
+<script>var IEMinor = true</script>
+<!--<![endif]-->
+<div class="container">
+    <div class="row" id="obsoleteLine" style="display: none">
+        <div class="col-lg-12" style="background: #f0e68c; padding: 5px; font-weight: bold;">
+            <em>IE8 and below is not supported and will not work.</em>
+        </div>
+    </div>
+    <script type="text/javascript">
+        if (IEMinor) {
+            document.getElementById('obsoleteLine').style.display = '';
+        }
+    </script>
+    <div class="row">
+        <div class="col-lg-6">
+            <h2>Register your account</h2>
+            <div>
+                <form class="form-horizontal" method="POST" action="@Url.Action("Register", "Account")">
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="UserName">Username</label>
+                        <div class="col-sm-10">
+                            @Html.TextBoxFor(model => model.UserName, new { @placeholder = "User name" })
+                            @Html.ValidationMessageFor(model => model.UserName)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="Password">Password</label>
+                        <div class="col-sm-10">
+                            @Html.PasswordFor(model => model.Password, new { @placeholder = "Password" })
+                            @Html.ValidationMessageFor(model => model.Password)
+                            <span id="password-awesomeness"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="Password2">Retype password</label>
+                        <div class="col-sm-10">
+                            @Html.PasswordFor(model => model.Password2, new { @placeholder = "Password verification" })
+                            @Html.ValidationMessageFor(model => model.Password2)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="Email">Email</label>
+                        <div class="col-sm-10">
+                            @Html.TextBoxFor(model => model.Email, new { @placeholder = "Email" })
+                            @Html.ValidationMessageFor(model => model.Email)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" class="btn btn-primary">Sign up</button>
+                            @Html.ActionLink("Back to first page", "Index", "Home", null, new { @class = "btn btn-default" })
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        function scorePassword(pass) {
+            var score = 0;
+            if (!pass)
+                return score;
+
+            // award every unique letter until 5 repetitions
+            var letters = new Object();
+            for (var i = 0; i < pass.length; i++) {
+                letters[pass[i]] = (letters[pass[i]] || 0) + 1;
+                score += 5.0 / letters[pass[i]];
+            }
+
+            // bonus points for mixing it up
+            var variations = {
+                digits: /\d/.test(pass),
+                lower: /[a-z]/.test(pass),
+                upper: /[A-Z]/.test(pass),
+                nonWords: /\W/.test(pass),
+            };
+
+            var variationCount = 0;
+            for (var check in variations) {
+                variationCount += (variations[check] == true) ? 1 : 0;
+            }
+            score += (variationCount - 1) * 10;
+
+            return parseInt(score);
+        }
+
+        function checkPassStrength(pass) {
+            var score = scorePassword(pass);
+            if (score > 80)
+                return "You got a new highscore!";
+            if (score > 50)
+                return "Good enough, but you can do better..";
+            if (score >= 20)
+                return "Weak password";
+            if (score < 20)
+                return "'1234' is not a real password...";
+            return "";
+        }
+
+        $(function() {
+            $('#Password').keypress(function() {
+                $('#password-awesomeness').html(checkPassStrength(this.value));
+            });
+            $('#Password').keyup(function() {
+                $('#password-awesomeness').html(checkPassStrength(this.value));
+            });
+            $('#Passssword2').focusout(function() {
+                if ($('#Password2').val() != $('#Password').val()) {
+                    $('#Password2').next().html('Passwords should match.');
+                } else {
+                    $('#Password2').next().html('');
+                }
+            });
+        });
+    </script>
+}

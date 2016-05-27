@@ -1,0 +1,14 @@
+﻿[
+  {
+    "outputFile": "Content/ote_bootstrap.css",
+    "inputFile": "Content/ote_bootstrap.less"
+  },
+  {
+    "outputFile": "Content/Site.css",
+    "inputFile": "Content/Site.less"
+  },
+  {
+    "outputFile": "Content/ote_bootstrap_variables.css",
+    "inputFile": "Content/ote_bootstrap_variables.less"
+  }
+]
