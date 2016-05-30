@@ -45,7 +45,7 @@ namespace OneTrueError.ReportAnalyzer.Services
         /// <exception cref="ArgumentNullException">report</exception>
         public void Analyze(ErrorReportEntity report)
         {
-            if (report == null) throw new ArgumentNullException(nameof(report));
+            if (report == null) throw new ArgumentNullException("report");
 
             var exists = _repository.ExistsByClientId(report.ClientReportId);
             if (exists)

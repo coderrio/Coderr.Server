@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace OneTrueError.App.Modules.Messaging.Templating
+namespace OneTrueError.Infrastructure.Net
 {
     /// <summary>
     /// Mappings between file extensions and mime types

@@ -33,13 +33,12 @@ namespace OneTrueError.App.Core.Reports.Queries
         public async Task<GetReportResult> ExecuteAsync(GetReport query)
         {
             var report = await _repository.GetAsync(query.ReportId);
-            var collections =
-                report.ContextCollections.Where(x => x.Properties.Count > 0)
-                    .Select(
-                        x =>
-                            new GetReportResultContextCollection(x.Name,
-                                x.Properties.Select(y => new KeyValuePair(y.Key, y.Value)).ToArray()))
-                    .ToList();
+            var collections = (
+                from x in report.ContextCollections
+                where x.Properties.Count > 0
+                let properties = x.Properties.Select(y => new KeyValuePair(y.Key, y.Value))
+                select new GetReportResultContextCollection(x.Name, properties.ToArray())
+                ).ToList();
 
             //TODO: Fix feedback
             //var feedbackQuery = new GetReportFeedback(query.ReportId, query.);//TODO: Fix customerId
@@ -66,7 +65,7 @@ namespace OneTrueError.App.Core.Reports.Queries
                 StackTrace = report.Exception.StackTrace
                 //UserFeedback = feedback != null ? feedback.Description : "",
                 //EmailAddress = feedback != null ? feedback.EmailAddress : ""
-//                ReportHashCode = report.
+                //                ReportHashCode = report.
             };
         }
 

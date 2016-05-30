@@ -9,16 +9,16 @@ using OneTrueError.Api.Core.Incidents.Events;
 namespace OneTrueError.App.Modules.Tagging.Handlers
 {
     /// <summary>
-    /// Scan through the error report to identify which libraries were used when the exception was thrown.
+    ///     Scan through the error report to identify which libraries were used when the exception was thrown.
     /// </summary>
     [Component(RegisterAsSelf = true)]
     public class IdentifyTagsFromIncident : IApplicationEventSubscriber<ReportAddedToIncident>
     {
-        private readonly ITagsRepository _repository;
         private readonly ILog _logger = LogManager.GetLogger(typeof (IdentifyTagsFromIncident));
+        private readonly ITagsRepository _repository;
 
         /// <summary>
-        /// Creates a new instance of <see cref="IdentifyTagsFromIncident"/>.
+        ///     Creates a new instance of <see cref="IdentifyTagsFromIncident" />.
         /// </summary>
         /// <param name="repository">repos</param>
         /// <exception cref="ArgumentNullException">repository</exception>
@@ -29,11 +29,11 @@ namespace OneTrueError.App.Modules.Tagging.Handlers
         }
 
         /// <summary>
-        /// Process an event asynchronously.
+        ///     Process an event asynchronously.
         /// </summary>
         /// <param name="e">event to process</param>
         /// <returns>
-        /// Task to wait on.
+        ///     Task to wait on.
         /// </returns>
         public async Task HandleAsync(ReportAddedToIncident e)
         {
@@ -52,9 +52,37 @@ namespace OneTrueError.App.Modules.Tagging.Handlers
             {
                 identifier.Identify(ctx);
             }
+
+            ExtractTagsFromCollections(e, ctx);
+
             _logger.Debug("done..");
 
             await _repository.AddAsync(e.Incident.Id, ctx.Tags.ToArray());
+        }
+
+        private void ExtractTagsFromCollections(ReportAddedToIncident e, TagIdentifierContext ctx)
+        {
+            foreach (var collection in e.Report.ContextCollections)
+            {
+                string tagsStr;
+                if (!collection.Properties.TryGetValue("OneTrueTags", out tagsStr))
+                    continue;
+
+                try
+                {
+                    var tags = tagsStr.Split(',');
+                    foreach (var tag in tags)
+                    {
+                        ctx.AddTag(tag, 1);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.Error(
+                        "Failed to parse tags from '" + collection.Name + "', invalid tag string: '" + tagsStr + "'.",
+                        ex);
+                }
+            }
         }
     }
 }

@@ -86,7 +86,7 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Modules\Geolocation\ErrorOrginResult.cs" />
     <Compile Include="Modules\Geolocation\QueryHandlers\GetOriginsForIncidentHandler.cs" />
-    <Compile Include="Modules\Messaging\Commands\SmtpSettings.cs" />
+    <Compile Include="Modules\Messaging\Commands\DotNetSmtpSettings.cs" />
     <Compile Include="Core\Accounts\Account.cs" />
     <Compile Include="Core\Accounts\AccountState.cs" />
     <Compile Include="Core\Accounts\CommandHandlers\Entities\NamespaceDoc.cs" />
@@ -138,7 +138,6 @@
     <Compile Include="Modules\Messaging\Templating\Formatting\Token.cs" />
     <Compile Include="Modules\Messaging\Templating\Formatting\Tokenizer.cs" />
     <Compile Include="Modules\Messaging\Templating\ImageHelper.cs" />
-    <Compile Include="Modules\Messaging\Templating\MimeMapping.cs" />
     <Compile Include="Modules\Messaging\Commands\SendTemplateEmailHandler.cs" />
     <Compile Include="Modules\Messaging\Templating\Size.cs" />
     <Compile Include="Modules\Messaging\Templating\TemplateLoader.cs" />
@@ -147,6 +146,7 @@
     <Compile Include="Modules\Messaging\Commands\SendEmailHandler.cs" />
     <Compile Include="Modules\ReportSpikes\CheckForReportPeak.cs" />
     <Compile Include="Modules\ReportSpikes\NewSpike.cs" />
+    <Compile Include="Modules\Tagging\Handlers\IncidentReopenedHandler.cs" />
     <Compile Include="OneTruePrincipal.cs" />
     <Compile Include="Core\Notifications\EventHandlers\SendConfiguredNotifications.cs" />
     <Compile Include="Modules\ReportSpikes\IReportSpikeRepository.cs" />

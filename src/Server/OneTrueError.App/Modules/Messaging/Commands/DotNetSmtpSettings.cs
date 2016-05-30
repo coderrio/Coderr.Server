@@ -1,17 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
-using OneTrueError.App.Configuration;
 using OneTrueError.Infrastructure.Configuration;
 
 namespace OneTrueError.App.Modules.Messaging.Commands
 {
     /// <summary>
-    ///     Used to configure the SmtpClient which is part of .NET
+    ///     Used to configure the <c>SmtpClient</c> which is part of .NET
     /// </summary>
     public sealed class DotNetSmtpSettings : IConfigurationSection
     {
         /// <summary>
-        ///     Acount name used to authenticate against the mail server
+        ///     Account name used to authenticate against the mail server
         /// </summary>
         public string AccountName { get; set; }
 

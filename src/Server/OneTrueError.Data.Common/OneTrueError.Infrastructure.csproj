@@ -69,6 +69,7 @@
     <Compile Include="Configuration\IConfigurationSection.cs" />
     <Compile Include="ConnectionFactory.cs" />
     <Compile Include="IDatabaseUtilities.cs" />
+    <Compile Include="Net\MimeMapping.cs" />
     <Compile Include="OneTrueSerializer.cs" />
     <Compile Include="Queueing\Ado\AdoNetMessageQueue.cs" />
     <Compile Include="Queueing\Ado\AdoNetQueueEntry.cs" />

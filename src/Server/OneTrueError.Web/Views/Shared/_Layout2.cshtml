@@ -118,7 +118,8 @@
         </footer>
     </div>
     <script type="text/javascript">
-        var API_URL = '@(ConfigurationStore.Instance.Load<BaseConfiguration>().BaseUrl)';
+        //var API_URL = '@(ConfigurationStore.Instance.Load<BaseConfiguration>().BaseUrl)';
+        var API_URL = 'http://localhost:50473/';
     </script>
     @Scripts.Render("~/bundles/jquery")
     <script src="@Url.Content("~/Scripts/raphael-min.js")"></script>
@@ -141,7 +142,7 @@
 
 
             function doMe() {
-                Griffin.Yo.Views.ViewRenderer.DEBUG = true;
+                Griffin.Yo.Views.ViewRenderer.DEBUG = false;
                 Griffin.Yo.GlobalConfig.resourceLocator = {
                     getHtml: function(section) {
                         return '/Page?path=/Views/' + section + ".cshtml";

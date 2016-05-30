@@ -11,12 +11,11 @@ namespace OneTrueError.Api.Core.Reports.Queries
         /// Creates a new instance of <see cref="KeyValuePair"/>.
         /// </summary>
         /// <param name="key">key</param>
-        /// <param name="value">value</param>
+        /// <param name="value">value (null is allowed)</param>
         /// <exception cref="ArgumentNullException">key; value</exception>
         public KeyValuePair(string key, string value)
         {
             if (key == null) throw new ArgumentNullException("key");
-            if (value == null) throw new ArgumentNullException("value");
 
             Key = key;
             Value = value;

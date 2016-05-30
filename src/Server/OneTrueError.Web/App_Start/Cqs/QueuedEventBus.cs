@@ -78,6 +78,7 @@ namespace OneTrueError.Web.Cqs
                     try
                     {
                         ExecuteMessage(msg);
+                        break;
                     }
                     catch (Exception ex)
                     {
