@@ -48,9 +48,9 @@ There are not that many unit tests yet, however our ultimate goal is to have com
 
 ## Submitting Changes
 
-* Sign the [Contributor License Agreement](http://www.particular.net/contributors-license-agreement-consent).
 * Push your changes to a feature branch in your fork of the repository.
-* Submit a pull request to the NServiceBus repository
+* Submit a pull request to this repository
+* Accept the CLA in your PR.
 
 # Additional Resources
 
