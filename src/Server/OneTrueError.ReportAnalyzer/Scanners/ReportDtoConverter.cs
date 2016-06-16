@@ -48,7 +48,7 @@ namespace OneTrueError.ReportAnalyzer.Scanners
             }
 
             //var id = _idGeneratorClient.GetNextId(ErrorReportEntity.SEQUENCE);
-            var contexts = report.ContextCollections.Select(x => new ErrorReportContext(x.Name, x.Items)).ToArray();
+            var contexts = report.ContextCollections.Select(x => new ErrorReportContext(x.Name, x.Properties)).ToArray();
             var dto = new ErrorReportEntity(applicationId, report.ReportId, report.CreatedAtUtc, ex, contexts);
             return dto;
         }

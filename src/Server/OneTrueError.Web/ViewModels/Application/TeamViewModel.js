@@ -45,4 +45,3 @@ var OneTrueError;
         Application.TeamViewModel = TeamViewModel;
     })(Application = OneTrueError.Application || (OneTrueError.Application = {}));
 })(OneTrueError || (OneTrueError = {}));
-//# sourceMappingURL=TeamViewModel.js.map

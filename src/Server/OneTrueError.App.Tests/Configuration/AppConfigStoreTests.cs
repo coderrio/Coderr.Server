@@ -39,7 +39,7 @@ namespace OneTrueError.App.Tests.Configuration
         {
             var expected = "World" + Guid.NewGuid().ToString("N");
             var category = new WriteTestSection();
-            category.Items["Hello"] = expected;
+            category.Properties["Hello"] = expected;
 
             var sut = new ConfigFileStore();
             sut.Store(category);

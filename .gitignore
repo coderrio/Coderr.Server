@@ -32,3 +32,4 @@ src/*/.vs/*
 src/*/packages/*/
 src/Tools/MarkdownToNamespaceDoc/packages/*/
 src/Tools/TsGenerator/.vs/*
+src/Help/*

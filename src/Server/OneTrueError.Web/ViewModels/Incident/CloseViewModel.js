@@ -66,4 +66,3 @@ var OneTrueError;
         Incident.CloseViewModel = CloseViewModel;
     })(Incident = OneTrueError.Incident || (OneTrueError.Incident = {}));
 })(OneTrueError || (OneTrueError = {}));
-//# sourceMappingURL=CloseViewModel.js.map

@@ -9,21 +9,21 @@ namespace OneTrueError.Web.Areas.Receiver.ReportingApi
         {
         }
 
-        public NewReportContextInfo(string name, Dictionary<string, string> items)
+        public NewReportContextInfo(string name, Dictionary<string, string> properties)
         {
             Name = name;
-            Items = items;
+            Properties = properties;
         }
 
 
         public string Name { get; set; }
 
-        public Dictionary<string, string> Items { get; set; }
+        public Dictionary<string, string> Properties { get; set; }
 
         public override string ToString()
         {
             return Name + " [" + string.Join(", ",
-                Items.Select(x => x.Key + "=" + x.Value)) + "]";
+                Properties.Select(x => x.Key + "=" + x.Value)) + "]";
         }
     }
 }

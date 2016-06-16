@@ -104,13 +104,13 @@ namespace OneTrueError.Web.Areas.Receiver.Helpers
                 StackTrace = exception.StackTrace
             };
             if (exception.InnerException != null)
-                ex.InnerException = ConvertException(exception);
+                ex.InnerException = ConvertException(exception.InnerException);
             return ex;
         }
 
         private static ReceivedReportContextInfo ConvertCollection(NewReportContextInfo arg)
         {
-            return new ReceivedReportContextInfo(arg.Name, arg.Items);
+            return new ReceivedReportContextInfo(arg.Name, arg.Properties);
         }
 
         private NewReportDTO DeserializeBody(byte[] body)

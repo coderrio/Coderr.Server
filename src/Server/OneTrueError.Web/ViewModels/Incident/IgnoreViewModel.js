@@ -46,4 +46,3 @@ var OneTrueError;
         Incident.IgnoreViewModel = IgnoreViewModel;
     })(Incident = OneTrueError.Incident || (OneTrueError.Incident = {}));
 })(OneTrueError || (OneTrueError = {}));
-//# sourceMappingURL=IgnoreViewModel.js.map

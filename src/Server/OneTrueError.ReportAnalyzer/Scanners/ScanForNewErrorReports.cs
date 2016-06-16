@@ -70,7 +70,7 @@ namespace OneTrueError.ReportAnalyzer.Scanners
 
         private ErrorReportContext ConvertContext(ReceivedReportContextInfo arg)
         {
-            return new ErrorReportContext(arg.Name, arg.Items);
+            return new ErrorReportContext(arg.Name, arg.Properties);
         }
 
         private ErrorReportException ConvertException(ReceivedReportException dto)

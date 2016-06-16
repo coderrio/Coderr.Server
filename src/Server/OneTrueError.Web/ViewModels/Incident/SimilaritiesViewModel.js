@@ -102,4 +102,3 @@ var OneTrueError;
         Incident.SimilaritiesViewModel = SimilaritiesViewModel;
     })(Incident = OneTrueError.Incident || (OneTrueError.Incident = {}));
 })(OneTrueError || (OneTrueError = {}));
-//# sourceMappingURL=SimilaritiesViewModel.js.map

@@ -128,7 +128,6 @@
     <Compile Include="Core\Invitations\Invitation.cs" />
     <Compile Include="Core\Notifications\Tasks\SendIncidentEmail.cs" />
     <Compile Include="Core\Notifications\Tasks\SendIncidentSms.cs" />
-    <Compile Include="Modules\Messaging\Commands\PostMarkSendEmailHandler.cs" />
     <Compile Include="Modules\Messaging\ITemplateParser.cs" />
     <Compile Include="Modules\Messaging\Template.cs" />
     <Compile Include="Modules\Messaging\Templating\DateFormatter.cs" />

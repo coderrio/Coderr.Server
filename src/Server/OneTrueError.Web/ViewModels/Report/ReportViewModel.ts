@@ -56,8 +56,12 @@ module OneTrueError.Report {
                 var target = <HTMLElement>evt.target;
                 if (target.tagName === 'LI') {
                     this.selectCollection(target.firstElementChild.textContent);
+                    $('li', target.parentElement).removeClass('active');
+                    $(target).addClass('active');
                 } else if (target.tagName === 'A') {
                     this.selectCollection(target.textContent);
+                    $('li', target.parentElement.parentElement).removeClass('active');
+                    $(target.parentElement).addClass('active');
                 }
             }, true);
             

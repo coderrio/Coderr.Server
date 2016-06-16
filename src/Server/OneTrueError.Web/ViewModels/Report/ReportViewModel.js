@@ -49,9 +49,13 @@ var OneTrueError;
                     var target = evt.target;
                     if (target.tagName === 'LI') {
                         _this.selectCollection(target.firstElementChild.textContent);
+                        $('li', target.parentElement).removeClass('active');
+                        $(target).addClass('active');
                     }
                     else if (target.tagName === 'A') {
                         _this.selectCollection(target.textContent);
+                        $('li', target.parentElement.parentElement).removeClass('active');
+                        $(target.parentElement).addClass('active');
                     }
                 }, true);
             };
@@ -77,4 +81,3 @@ var OneTrueError;
         Report.ReportViewModel = ReportViewModel;
     })(Report = OneTrueError.Report || (OneTrueError.Report = {}));
 })(OneTrueError || (OneTrueError = {}));
-//# sourceMappingURL=ReportViewModel.js.map

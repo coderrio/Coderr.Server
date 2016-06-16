@@ -21,21 +21,21 @@ namespace OneTrueError.ReportAnalyzer.LibContracts
         ///     Creates a new instance of <see cref="ReceivedReportContextInfo" />.
         /// </summary>
         /// <param name="name">context collection name</param>
-        /// <param name="items">properties</param>
+        /// <param name="properties">properties</param>
         /// <exception cref="ArgumentNullException">name; items</exception>
-        public ReceivedReportContextInfo(string name, Dictionary<string, string> items)
+        public ReceivedReportContextInfo(string name, Dictionary<string, string> properties)
         {
-            if (name == null) throw new ArgumentNullException(nameof(name));
-            if (items == null) throw new ArgumentNullException(nameof(items));
+            if (name == null) throw new ArgumentNullException("name");
+            if (properties == null) throw new ArgumentNullException("properties");
 
             Name = name;
-            Items = items;
+            Properties = properties;
         }
 
         /// <summary>
         ///     Properties
         /// </summary>
-        public Dictionary<string, string> Items { get; set; }
+        public Dictionary<string, string> Properties { get; set; }
 
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace OneTrueError.ReportAnalyzer.LibContracts
         public override string ToString()
         {
             return Name + " [" + string.Join(", ",
-                Items.Select(x => x.Key + "=" + x.Value)) + "]";
+                Properties.Select(x => x.Key + "=" + x.Value)) + "]";
         }
     }
 }

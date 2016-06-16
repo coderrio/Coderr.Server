@@ -72,4 +72,3 @@ var OneTrueError;
         Feedback.ApplicationViewModel = ApplicationViewModel;
     })(Feedback = OneTrueError.Feedback || (OneTrueError.Feedback = {}));
 })(OneTrueError || (OneTrueError = {}));
-//# sourceMappingURL=ApplicationViewModel.js.map

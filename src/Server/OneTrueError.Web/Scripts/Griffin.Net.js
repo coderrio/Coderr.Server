@@ -224,4 +224,3 @@ var Griffin;
         Net.HttpClient = HttpClient;
     })(Net = Griffin.Net || (Griffin.Net = {}));
 })(Griffin || (Griffin = {})); // ReSharper restore InconsistentNaming
-//# sourceMappingURL=Griffin.Net.js.map

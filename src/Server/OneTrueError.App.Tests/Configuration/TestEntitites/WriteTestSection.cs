@@ -8,10 +8,10 @@ namespace OneTrueError.App.Tests.Configuration.TestEntitites
     {
         public WriteTestSection()
         {
-            Items = new Dictionary<string, string>();
+            Properties = new Dictionary<string, string>();
         }
 
-        public IDictionary<string, string> Items { get; private set; }
+        public IDictionary<string, string> Properties { get; private set; }
 
         public string SectionName
         {
@@ -20,12 +20,12 @@ namespace OneTrueError.App.Tests.Configuration.TestEntitites
 
         public IDictionary<string, string> ToDictionary()
         {
-            return Items;
+            return Properties;
         }
 
         public void Load(IDictionary<string, string> settings)
         {
-            Items = settings;
+            Properties = settings;
         }
     }
 }
