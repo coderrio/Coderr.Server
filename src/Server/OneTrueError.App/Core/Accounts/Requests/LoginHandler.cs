@@ -12,7 +12,7 @@ namespace OneTrueError.App.Core.Accounts.Requests
     /// <summary>
     ///     Handler for <see cref="Login" />.
     /// </summary>
-    [Component]
+    [Component(Lifetime = Lifetime.Scoped)]
     public class LoginHandler : IRequestHandler<Login, LoginReply>
     {
         private readonly IEventBus _eventBus;

@@ -110,7 +110,7 @@ namespace OneTrueError.Web.Areas.Receiver.Helpers
 
         private static ReceivedReportContextInfo ConvertCollection(NewReportContextInfo arg)
         {
-            return new ReceivedReportContextInfo(arg.Name, arg.Properties);
+             return new ReceivedReportContextInfo(arg.Name, arg.Properties);
         }
 
         private NewReportDTO DeserializeBody(byte[] body)

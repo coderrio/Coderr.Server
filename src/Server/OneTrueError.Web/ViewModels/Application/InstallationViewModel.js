@@ -23,3 +23,4 @@ var OneTrueError;
         Application.InstallationViewModel = InstallationViewModel;
     })(Application = OneTrueError.Application || (OneTrueError.Application = {}));
 })(OneTrueError || (OneTrueError = {}));
+//# sourceMappingURL=InstallationViewModel.js.map

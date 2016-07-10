@@ -10,5 +10,9 @@
   {
     "outputFile": "Content/ote_bootstrap_variables.css",
     "inputFile": "Content/ote_bootstrap_variables.less"
+  },
+  {
+    "outputFile": "Scripts/Griffin.Yo.es5.js",
+    "inputFile": "Scripts/Griffin.Yo.js"
   }
 ]

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,6 +12,8 @@ namespace OneTrueError.Web.Areas.Receiver.ReportingApi
 
         public NewReportContextInfo(string name, Dictionary<string, string> properties)
         {
+            if (name == null) throw new ArgumentNullException(nameof(name));
+            if (properties == null) throw new ArgumentNullException(nameof(properties));
             Name = name;
             Properties = properties;
         }

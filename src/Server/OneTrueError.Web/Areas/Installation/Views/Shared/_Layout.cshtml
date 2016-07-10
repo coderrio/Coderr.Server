@@ -9,7 +9,6 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @RenderSection("Styles", false)
-    <link rel="stylesheet" href="@Url.Content("~/Content/morris.css")">
     <meta name="description" content="The description of my page" />
 </head>
 <body class="full-width">
@@ -50,13 +49,8 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript">
-        var API_URL = '@ConfigurationManager.AppSettings["ApiUrl"]';
-        var APP_URL = '@ConfigurationManager.AppSettings["AppUrl"]';
-    </script>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
-    @Html.Partial("~/Views/Shared/_support.cshtml")
 </body>
 </html>

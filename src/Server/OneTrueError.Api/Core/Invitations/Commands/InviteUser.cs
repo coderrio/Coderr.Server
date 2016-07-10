@@ -22,6 +22,7 @@ namespace OneTrueError.Api.Core.Invitations.Commands
         public InviteUser(int applicationId, string emailAddress)
         {
             if (emailAddress == null) throw new ArgumentNullException("emailAddress");
+            if (applicationId <= 0) throw new ArgumentOutOfRangeException("applicationId");
             ApplicationId = applicationId;
             EmailAddress = emailAddress;
         }

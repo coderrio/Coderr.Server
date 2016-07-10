@@ -5,6 +5,8 @@ using Griffin.Container;
 using log4net;
 using OneTrueError.Api.Core.Accounts.Commands;
 using OneTrueError.Api.Core.Messaging.Commands;
+using OneTrueError.App.Configuration;
+using OneTrueError.Infrastructure.Configuration;
 
 namespace OneTrueError.App.Core.Accounts.CommandHandlers
 {
@@ -36,6 +38,7 @@ namespace OneTrueError.App.Core.Accounts.CommandHandlers
             account.RequestPasswordReset();
             await _accountRepository.UpdateAsync(account);
 
+            var config = ConfigurationStore.Instance.Load<BaseConfiguration>();
             var cmd = new SendTemplateEmail("Password reset", "ResetPassword")
             {
                 To = account.Email,
@@ -44,7 +47,7 @@ namespace OneTrueError.App.Core.Accounts.CommandHandlers
                     {
                         AccountName = account.UserName,
                         ResetLink = //TODO: Remove app settings dependency
-                            ConfigurationManager.AppSettings["AppUrl"] + "/password/reset/" +
+                            config.BaseUrl + "/password/reset/" +
                             account.ActivationKey
                     },
                 Subject = "Reset password"

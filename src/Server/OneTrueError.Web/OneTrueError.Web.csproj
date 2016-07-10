@@ -268,7 +268,7 @@
     <Compile Include="Areas\Receiver\Controllers\ReportController.cs" />
     <Compile Include="Areas\Receiver\Models\ReportValidator.cs" />
     <Compile Include="Areas\Receiver\Helpers\ReportDecompressor.cs" />
-    <Compile Include="Areas\Receiver\Helpers\SaveHandler.cs" />
+    <Compile Include="Areas\Receiver\Helpers\SaveReportHandler.cs" />
     <Compile Include="Areas\Receiver\Helpers\HttpRequestMessageExtensions.cs" />
     <Compile Include="Areas\Receiver\Helpers\IncludeNonPublicMembersContractResolver.cs" />
     <Compile Include="Areas\Receiver\Models\FeedbackModel.cs" />
@@ -279,19 +279,13 @@
     <Compile Include="Areas\Receiver\ReportingApi\NewReportDTO.cs" />
     <Compile Include="Areas\Receiver\ReportingApi\NewReportException.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\ApplicationController.cs" />
     <Compile Include="Controllers\CqsController.cs" />
     <Compile Include="Infrastructure\AuthenticationFailureResult.cs" />
     <Compile Include="Infrastructure\Cqs\CqsObjectMapper.cs" />
-    <Compile Include="Controllers\FeedbackController.cs" />
     <Compile Include="Controllers\GuidController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\IncidentController.cs" />
     <Compile Include="Infrastructure\Cqs\CqsJsonNetSerializer.cs" />
-    <Compile Include="Controllers\OverviewController.cs" />
     <Compile Include="Controllers\PageController.cs" />
-    <Compile Include="Controllers\ReportController.cs" />
-    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -506,7 +500,14 @@
     <Content Include="log4net.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\Griffin.Yo.es5.js">
+      <DependentUpon>Griffin.Yo.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Griffin.Yo.es5.min.js">
+      <DependentUpon>Griffin.Yo.es5.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\Griffin.Yo.js.map" />
+    <None Include="Properties\PublishProfiles\deoply.pubxml" />
     <None Include="Properties\PublishProfiles\LocalPublish.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\Chart.min.js" />
@@ -545,8 +546,6 @@
     <Content Include="Views\Account\Welcome.html" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Application\Details.html" />
     <Content Include="Views\Application\Installation.html" />
     <Content Include="Views\Application\Team.html" />
@@ -579,7 +578,7 @@
     <Content Include="Views\Account\ResetPassword.cshtml" />
     <Content Include="Views\Account\Simple.cshtml" />
     <Content Include="Views\Overview\Overview.html" />
-    <Content Include="Views\Shared\_Layout2.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_support.cshtml" />
     <Content Include="Views\Home\NoInstallation.cshtml" />
   </ItemGroup>

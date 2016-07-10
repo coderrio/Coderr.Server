@@ -71,13 +71,25 @@ module OneTrueError.Report {
             this.dto.ContextCollections.forEach(item => {
                 if (item.Name === collectionName) {
                     var directives = {
-                        SimilarityName: {
-                            html(value, dto) {
-                                return dto.Name;
+                    Properties: {
+                            Key: {
+                                html(value) {
+                                    return value;
+                                }
+                            },
+                            Value: {
+                                html(value, dto) {
+                                    console.log('here')
+                                    if (collectionName === 'Screenshots') {
+                                        return '<img alt="Embedded Image" src="data:image/png;base64,' + value + '" />';
+                                    } else {
+                                        return value.replace(/;;/g, "<br>");
+                                    }
+                                }
                             }
                         }
                     };
-
+                    console.log('item', item);
                     this.context.renderPartial('propertyTable', item, directives);
                     return;
                 }

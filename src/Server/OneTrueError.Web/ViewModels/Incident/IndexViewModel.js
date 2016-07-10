@@ -162,3 +162,4 @@ var OneTrueError;
         Incident.IndexViewModel = IndexViewModel;
     })(Incident = OneTrueError.Incident || (OneTrueError.Incident = {}));
 })(OneTrueError || (OneTrueError = {}));
+//# sourceMappingURL=IndexViewModel.js.map

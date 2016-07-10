@@ -1,4 +1,5 @@
-﻿using DotNetCqs;
+﻿using System;
+using DotNetCqs;
 
 namespace OneTrueError.Api.Core.Incidents.Commands
 {
@@ -14,6 +15,8 @@ namespace OneTrueError.Api.Core.Incidents.Commands
         /// <param name="incidentId">Incident that was solved.</param>
         public CloseIncident(string solution, int incidentId)
         {
+            if (solution == null) throw new ArgumentNullException("solution");
+            if (incidentId <= 0) throw new ArgumentOutOfRangeException("incidentId");
             IncidentId = incidentId;
             Solution = solution;
         }

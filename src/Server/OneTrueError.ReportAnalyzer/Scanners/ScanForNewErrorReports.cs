@@ -12,8 +12,7 @@ namespace OneTrueError.ReportAnalyzer.Scanners
     ///     Loads a set of reports that should be analyzed and then cast some wizardry on them.
     /// </summary>
     [Component]
-    public class 
-        ScanForNewErrorReports
+    public class ScanForNewErrorReports
     {
         private readonly Services.ReportAnalyzer _analyzer;
         private readonly ILog _logger = LogManager.GetLogger(typeof (ScanForNewErrorReports));

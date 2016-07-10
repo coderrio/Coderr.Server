@@ -7,6 +7,8 @@ using OneTrueError.Api.Core.Accounts.Commands;
 using OneTrueError.Api.Core.Accounts.Events;
 using OneTrueError.Api.Core.Messaging;
 using OneTrueError.Api.Core.Messaging.Commands;
+using OneTrueError.App.Configuration;
+using OneTrueError.Infrastructure.Configuration;
 
 namespace OneTrueError.App.Core.Accounts.CommandHandlers
 {
@@ -68,6 +70,7 @@ namespace OneTrueError.App.Core.Accounts.CommandHandlers
 
         private Task SendVerificationEmail(Account account)
         {
+            var config = ConfigurationStore.Instance.Load<BaseConfiguration>();
             //TODO: HTML email
             var msg = new EmailMessage
             {
@@ -79,7 +82,7 @@ Your activation code is: {0}
 You can activate your account by clicking on: {1}/account/activate/{0}
 
 Good luck,
-  OneTrueError Team", account.ActivationKey, ConfigurationManager.AppSettings["AppUrl"]),
+  OneTrueError Team", account.ActivationKey, config.BaseUrl),
                 Subject = "OneTrueError activation"
             };
             msg.Recipients = new[] {new EmailAddress(account.Email)};

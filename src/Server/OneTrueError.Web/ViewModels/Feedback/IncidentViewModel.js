@@ -16,7 +16,7 @@ var OneTrueError;
                 this.ctx = ctx;
                 var query = new GetIncidentFeedback(ctx.routeData["incidentId"]);
                 CqsClient.query(query).done(function (result) {
-                    _this.ctx.render(result, IncidentViewModel.Directives);
+                    _this.ctx.render(result, IncidentViewModel.directives);
                     ctx.resolve();
                 });
             };
@@ -25,7 +25,7 @@ var OneTrueError;
             IncidentViewModel.prototype.getTitle = function () {
                 return "Incident";
             };
-            IncidentViewModel.Directives = {
+            IncidentViewModel.directives = {
                 Items: {
                     Message: {
                         html: function (value) {
@@ -61,3 +61,4 @@ var OneTrueError;
         Feedback.IncidentViewModel = IncidentViewModel;
     })(Feedback = OneTrueError.Feedback || (OneTrueError.Feedback = {}));
 })(OneTrueError || (OneTrueError = {}));
+//# sourceMappingURL=IncidentViewModel.js.map

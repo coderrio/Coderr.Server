@@ -3,18 +3,16 @@
 /// <reference path="../../Scripts/Griffin.Yo.d.ts" />
 /// <reference path="../ChartViewModel.ts" />
 declare function htmlentities(text: string): string;
-
 declare function nl2br(text: string): string;
 
 module OneTrueError.Feedback {
     import CqsClient = Griffin.Cqs.CqsClient;
     import GetIncidentFeedback = Web.Feedback.Queries.GetIncidentFeedback;
     import GetIncidentFeedbackResult = Web.Feedback.Queries.GetIncidentFeedbackResult;
-    import Yo = Griffin.Yo;
 
     export class IncidentViewModel implements Griffin.Yo.Spa.ViewModels.IViewModel {
         private ctx: Griffin.Yo.Spa.ViewModels.IActivationContext;
-        private static Directives = {
+        private static directives = {
             Items: {
                 Message: {
                     html(value) {
@@ -50,7 +48,7 @@ module OneTrueError.Feedback {
             this.ctx = ctx;
             var query = new GetIncidentFeedback(ctx.routeData["incidentId"]);
             CqsClient.query<GetIncidentFeedbackResult>(query).done(result => {
-                this.ctx.render(result, IncidentViewModel.Directives);
+                this.ctx.render(result, IncidentViewModel.directives);
                 ctx.resolve();
             });
 
@@ -58,7 +56,6 @@ module OneTrueError.Feedback {
         }
 
         deactivate() {
-
         }
 
         getTitle(): string {

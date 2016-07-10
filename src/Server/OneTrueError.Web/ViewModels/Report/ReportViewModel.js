@@ -64,12 +64,26 @@ var OneTrueError;
                 this.dto.ContextCollections.forEach(function (item) {
                     if (item.Name === collectionName) {
                         var directives = {
-                            SimilarityName: {
-                                html: function (value, dto) {
-                                    return dto.Name;
+                            Properties: {
+                                Key: {
+                                    html: function (value) {
+                                        return value;
+                                    }
+                                },
+                                Value: {
+                                    html: function (value, dto) {
+                                        console.log('here');
+                                        if (collectionName === 'Screenshots') {
+                                            return '<img alt="Embedded Image" src="data:image/png;base64,' + value + '" />';
+                                        }
+                                        else {
+                                            return value.replace(/;;/g, "<br>");
+                                        }
+                                    }
                                 }
                             }
                         };
+                        console.log('item', item);
                         _this.context.renderPartial('propertyTable', item, directives);
                         return;
                     }
@@ -81,3 +95,4 @@ var OneTrueError;
         Report.ReportViewModel = ReportViewModel;
     })(Report = OneTrueError.Report || (OneTrueError.Report = {}));
 })(OneTrueError || (OneTrueError = {}));
+//# sourceMappingURL=ReportViewModel.js.map

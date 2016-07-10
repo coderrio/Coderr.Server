@@ -8,6 +8,8 @@ using Griffin.Data;
 using log4net;
 using Newtonsoft.Json;
 using OneTrueError.Infrastructure;
+using OneTrueError.Infrastructure.Queueing;
+using OneTrueError.ReportAnalyzer.LibContracts;
 using OneTrueError.Web.Areas.Receiver.Helpers;
 using OneTrueError.Web.Areas.Receiver.Models;
 
@@ -17,9 +19,11 @@ namespace OneTrueError.Web.Areas.Receiver.Controllers
     public class FeedbackController : ApiController
     {
         private ILog _logger = LogManager.GetLogger(typeof(FeedbackController));
+        private IMessageQueue _queue;
 
-        public FeedbackController()
+        public FeedbackController(OneTrueError.Infrastructure.Queueing.IMessageQueueProvider queueProvider)
         {
+            _queue = queueProvider.Open("FeedbackQueue");
         }
 
         [HttpPost, Route("receiver/report/{appKey}/feedback")]
@@ -27,27 +31,39 @@ namespace OneTrueError.Web.Areas.Receiver.Controllers
         {
             try
             {
+                int appId;
                 using (var connection = ConnectionFactory.Create())
                 {
-                    using (var cmd = (DbCommand)connection.CreateCommand())
+                    using (var cmd = (DbCommand) connection.CreateCommand())
                     {
-                        cmd.CommandText =
-                            @"INSERT INTO QueueFeedback (appkey, signature, createdatutc, reportid, ipaddress, description, email)
-                                            VALUES (@appkey, @signature, @createdatutc, @reportid, @ipaddress, @description, @email);";
-                        cmd.AddParameter("createdatutc", DateTime.UtcNow);
-                        cmd.AddParameter("appKey", appKey);
-                        cmd.AddParameter("signature", sig);
-                        cmd.AddParameter("reportid", model.ReportId);
-                        cmd.AddParameter("ipaddress", Request.GetClientIpAddress());
-                        cmd.AddParameter("description", model.Description);
-                        cmd.AddParameter("email", model.EmailAddress);
-                        await cmd.ExecuteNonQueryAsync();
+                        cmd.CommandText = "SELECT Id FROM Applications WHERE AppKey = @key";
+                        cmd.AddParameter("key", appKey);
+                        appId = (int) cmd.ExecuteScalar();
                     }
+
+                }
+                using (var transaction = _queue.BeginTransaction())
+                {
+                    var dto = new ReceivedFeedbackDTO
+                    {
+                        ApplicationId = appId,
+                        Description = model.Description,
+                        EmailAddress = model.EmailAddress,
+                        ReceivedAtUtc = DateTime.UtcNow,
+                        RemoteAddress = Request.GetClientIpAddress(),
+                        ReportId = model.ReportId,
+                        ReportVersion = "1"
+                    };
+                    _queue.Write(appId, dto);
+
+                    transaction.Commit();
                 }
             }
             catch (Exception ex)
             {
-                _logger.Warn("Failed to submit feedback: " + JsonConvert.SerializeObject(new { appKey = appKey, model = model }), ex);
+                _logger.Warn(
+                    "Failed to submit feedback: " + JsonConvert.SerializeObject(new {appKey = appKey, model = model}),
+                    ex);
             }
 
             return new HttpResponseMessage(HttpStatusCode.NoContent);

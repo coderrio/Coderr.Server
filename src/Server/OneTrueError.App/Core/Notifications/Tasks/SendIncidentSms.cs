@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using OneTrueError.Api.Core.Incidents;
 using OneTrueError.Api.Core.Reports;
+using OneTrueError.App.Configuration;
 using OneTrueError.App.Core.Users;
+using OneTrueError.Infrastructure.Configuration;
 
 namespace OneTrueError.App.Core.Notifications.Tasks
 {
@@ -46,7 +48,8 @@ namespace OneTrueError.App.Core.Notifications.Tasks
             if (string.IsNullOrEmpty(settings.MobileNumber))
                 return; //TODO: LOG
 
-            var url = ConfigurationManager.AppSettings["AppUrl"];
+            var config = ConfigurationStore.Instance.Load<BaseConfiguration>();
+            var url = config.BaseUrl;
             var shortName = incident.Name.Length > 20
                 ? incident.Name.Substring(0, 20) + "..."
                 : incident.Name;

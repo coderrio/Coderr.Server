@@ -16,7 +16,7 @@ namespace OneTrueError.Api.Modules.ContextData.Queries
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public GetSimilaritiesValue(string value, int percentage, int count)
         {
-            if (percentage <= 0 || percentage > 100)
+            if (percentage < 0 || percentage > 100)
                 throw new ArgumentOutOfRangeException("percentage", percentage,
                     "Percentage should be between 0 and 100.");
             if (count <= 0) throw new ArgumentOutOfRangeException("count");

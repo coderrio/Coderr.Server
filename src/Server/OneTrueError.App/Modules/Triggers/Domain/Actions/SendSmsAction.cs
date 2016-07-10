@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using log4net;
 using Newtonsoft.Json;
+using OneTrueError.App.Configuration;
+using OneTrueError.Infrastructure.Configuration;
 
 namespace OneTrueError.App.Modules.Triggers.Domain.Actions
 {
@@ -25,7 +27,8 @@ namespace OneTrueError.App.Modules.Triggers.Domain.Actions
             if (context == null) throw new ArgumentNullException("context");
             try
             {
-                var baseUrl = ConfigurationManager.AppSettings["AppUrl"];
+                var config = ConfigurationStore.Instance.Load<BaseConfiguration>();
+                var baseUrl = config.BaseUrl;
                 //TODO: Add title
                 var msg = "";
                 if (context.Incident.ReportCount == 1)

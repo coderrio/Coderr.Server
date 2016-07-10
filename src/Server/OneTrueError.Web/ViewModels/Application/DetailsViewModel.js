@@ -279,3 +279,4 @@ var OneTrueError;
         Application.DetailsViewModel = DetailsViewModel;
     })(Application = OneTrueError.Application || (OneTrueError.Application = {}));
 })(OneTrueError || (OneTrueError = {}));
+//# sourceMappingURL=DetailsViewModel.js.map

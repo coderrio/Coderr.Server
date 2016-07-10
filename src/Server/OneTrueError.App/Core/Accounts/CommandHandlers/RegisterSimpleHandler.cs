@@ -9,6 +9,8 @@ using OneTrueError.Api.Core.Accounts.Commands;
 using OneTrueError.Api.Core.Accounts.Events;
 using OneTrueError.Api.Core.Messaging;
 using OneTrueError.Api.Core.Messaging.Commands;
+using OneTrueError.App.Configuration;
+using OneTrueError.Infrastructure.Configuration;
 
 namespace OneTrueError.App.Core.Accounts.CommandHandlers
 {
@@ -68,6 +70,7 @@ namespace OneTrueError.App.Core.Accounts.CommandHandlers
 
         private Task SendAccountEmail(Account account, string password)
         {
+            var config = ConfigurationStore.Instance.Load<BaseConfiguration>();
             //TODO: HTML email
             var msg = new EmailMessage
             {
@@ -84,7 +87,7 @@ You can login using {0}/account/activate/{3}.
 We recommend that you change your password before doing something useful.
 
 Thanks,
-  The OneTrueError Team", ConfigurationManager.AppSettings["AppUrl"], account.UserName, password, account.ActivationKey),
+  The OneTrueError Team", config.BaseUrl, account.UserName, password, account.ActivationKey),
                 Subject = "OneTrueError activation"
             };
             msg.Recipients = new[] {new EmailAddress(account.Email)};
