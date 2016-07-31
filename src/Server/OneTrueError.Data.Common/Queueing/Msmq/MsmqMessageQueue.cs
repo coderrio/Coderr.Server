@@ -18,6 +18,8 @@ namespace OneTrueError.Infrastructure.Queueing.Msmq
 
         public MsmqMessageQueue(string queueName, bool useAuthentication, bool useTransactions)
         {
+            if (queueName == null) throw new ArgumentNullException(nameof(queueName));
+
             _useAuthentication = useAuthentication;
             _useTransactions = useTransactions;
             _queue = new MessageQueue(queueName);

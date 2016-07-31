@@ -61,7 +61,7 @@ namespace OneTrueError.Web.Controllers
                 cqsObject = _cqsObjectMapper.Deserialize(dotNetType, json);
                 if (cqsObject == null)
                 {
-                    var response = Request.CreateResponse();
+                    var response = Request.CreateResponse(HttpStatusCode.OK);
                     response.StatusCode = HttpStatusCode.BadRequest;
                     response.ReasonPhrase = "Unknown type: " + dotNetType;
                     return response;
@@ -72,7 +72,7 @@ namespace OneTrueError.Web.Controllers
                 cqsObject = _cqsObjectMapper.Deserialize(cqsName, json);
                 if (cqsObject == null)
                 {
-                    var response = Request.CreateResponse();
+                    var response = Request.CreateResponse(HttpStatusCode.OK);
                     response.StatusCode = HttpStatusCode.BadRequest;
                     response.ReasonPhrase = "Unknown type: " + cqsName;
                     return response;
@@ -80,7 +80,7 @@ namespace OneTrueError.Web.Controllers
             }
             else
             {
-                var response = Request.CreateResponse();
+                var response = Request.CreateResponse(HttpStatusCode.OK);
                 response.StatusCode = HttpStatusCode.BadRequest;
                 response.ReasonPhrase =
                     "Expected a class name in the header 'X-Cqs-Name' or a .NET type name in the header 'X-Cqs-Object-Type'.";
@@ -108,7 +108,7 @@ namespace OneTrueError.Web.Controllers
 
             if (ex is HttpException)
             {
-                var response = Request.CreateResponse();
+                var response = Request.CreateResponse(HttpStatusCode.OK);
                 response.StatusCode = (HttpStatusCode) ((HttpException) ex).GetHttpCode();
                 response.ReasonPhrase = FirstLine(ex.Message);
                 return response;
@@ -116,20 +116,20 @@ namespace OneTrueError.Web.Controllers
             if (ex is AuthorizationException)
             {
                 var authEx = (AuthorizationException) ex;
-                var response = Request.CreateResponse();
+                var response = Request.CreateResponse(HttpStatusCode.OK);
                 response.StatusCode = HttpStatusCode.Unauthorized;
                 response.ReasonPhrase = FirstLine(ex.Message);
                 return response;
             }
             if (ex != null)
             {
-                var response = Request.CreateResponse();
+                var response = Request.CreateResponse(HttpStatusCode.OK);
                 response.StatusCode = HttpStatusCode.InternalServerError;
                 response.ReasonPhrase = FirstLine(ex.Message);
                 return response;
             }
 
-            var reply = Request.CreateResponse();
+            var reply = Request.CreateResponse(HttpStatusCode.OK);
 
             // for instance commands do not have a return value.
             if (cqsReplyObject.Body != null)

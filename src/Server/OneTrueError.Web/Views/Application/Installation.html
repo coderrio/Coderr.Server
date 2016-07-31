@@ -12,7 +12,7 @@
                 <li role="presentation"><a href="#install-aspnet" data-toggle="pill">ASP.NET (WebForms/MVC/WebApi)</a></li>
                 <li><a href="#install-wpf" data-toggle="pill">WPF/WinForms</a></li>
                 <li><a href="#install-wcf" data-toggle="pill">WCF</a></li>
-                <li><a href="#install-asmx" data-toggle="pill">ASMX</a></li>
+                <!--<li><a href="#install-asmx" data-toggle="pill">ASMX</a></li>-->
             </ul>
         </div>
         <div class="col-lg-10 col-md-8">
@@ -23,7 +23,7 @@
                     <p>Manual error handling means that you are yourself responsible of deciding which errors should be reported.</p>
                     <h3>Package install</h3>
                     <p>
-                        Install the following nuget package <a href="http://www.nuget.org/packages/OneTrueError/">onetrueerror</a>
+                        Install the following nuget package <a href="http://www.nuget.org/packages/OneTrueError.client/">onetrueerror.client</a>
                     </p>
                     <pre><code>install-package onetrueerror</code></pre>
                     <h3>Configuration</h3>
@@ -33,7 +33,7 @@
                         <div style="background: #ffffff; overflow: auto; width: auto; padding: .2em .6em;">
                             <pre style="margin: 0; line-height: 125%"><span style="color: #008800; font-style: italic">// To send to our service</span>
 OneTrue.Configuration.Credentials(<span style="color: #0000FF">&quot;<span data-name="AppKey"></span>&quot;</span>, 
-                            <span style="color: #0000FF">&quot;<span data-name="SharedSecret"></span>&quot;</span>);
+                                  <span style="color: #0000FF">&quot;<span data-name="SharedSecret"></span>&quot;</span>);
 </pre>
                         </div>
                         <em>(add "using OneTrueError;" in your code file)</em>
@@ -45,18 +45,18 @@ OneTrue.Configuration.Credentials(<span style="color: #0000FF">&quot;<span data-
                     <p>To report errors you need to invoke the report method:</p>
                     <!-- HTML generated using hilite.me -->
                     <div style="background: #ffffff; overflow: auto; width: auto; padding: .2em .6em;">
-                        <pre style="margin: 0; line-height: 125%"><span style="color: #000080; font-weight: bold">public</span> ActionResult Activate(UserViewModel model)
+<pre style="margin: 0; line-height: 125%"><span style="color: #000080; font-weight: bold">public</span> ActionResult Activate(UserViewModel model)
 {
-                        <span style="color: #000080; font-weight: bold">if</span> (!ModelState.IsValid)
-                        <span style="color: #000080; font-weight: bold">return</span> View(model);
-                        <span style="color: #000080; font-weight: bold">try</span>
+    <span style="color: #000080; font-weight: bold">if</span> (!ModelState.IsValid)
+        <span style="color: #000080; font-weight: bold">return</span> View(model);
+    <span style="color: #000080; font-weight: bold">try</span>
     {
-                        <span style="color: #000080; font-weight: bold">var</span> user = _repos.GetUser(model.Id);
+        <span style="color: #000080; font-weight: bold">var</span> user = _repos.GetUser(model.Id);
         user.Activate(model.ActicationCode);
         _repos.Save(user);
-                        <span style="color: #000080; font-weight: bold">return</span> RedirectToAction(<span style="color: #0000FF">&quot;Welcome&quot;</span>);
+        <span style="color: #000080; font-weight: bold">return</span> RedirectToAction(<span style="color: #0000FF">&quot;Welcome&quot;</span>);
     }
-                        <span style="color: #000080; font-weight: bold">catch</span> (Exception exception)
+    <span style="color: #000080; font-weight: bold">catch</span> (Exception exception)
     {
         OneTrue.Report(exception);
     }
@@ -68,7 +68,7 @@ OneTrue.Configuration.Credentials(<span style="color: #0000FF">&quot;<span data-
                         the application crashes before the report has been uploaded. The library will continue it's upload attempts next time the application is started.
                     </p>
                     <p>
-                        You can read more about the different report alternatives in the <a target="_blank" href="http://onetrueerror.com/doc/client/?topic=html/Methods_T_OneTrueError_Reporting_OneTrue.htm">documentation</a>
+                        You can read more about the different report alternatives in the <a target="_blank" href="http://onetrueerror.com/documentation/client/libraries/">documentation</a>
                     </p>
 
                 </div>
@@ -84,34 +84,125 @@ OneTrue.Configuration.Credentials(<span style="color: #0000FF">&quot;<span data-
 <span style="color: #008800; font-weight: bold">using</span> <span style="color: #0e84b5; font-weight: bold">OneTrueError.Reporting</span>;
 <span style="color: #008800; font-weight: bold">namespace</span> <span style="color: #0e84b5; font-weight: bold">SampleApplication</span>
 {
-                    <span style="color: #008800; font-weight: bold">class</span> <span style="color: #BB0066; font-weight: bold">Program</span>
-	{
-                    <span style="color: #008800; font-weight: bold">static</span> <span style="color: #008800; font-weight: bold">void</span> <span style="color: #0066BB; font-weight: bold">Main</span>(<span style="color: #333399; font-weight: bold">string</span>[] args)
-		{
-			OneTrue.Configuration.Credentials(<span style="background-color: #fff0f0">&quot;b959b8b3-4ead-4db4-b18a-b26d13530e5d&quot;</span>, <span style="background-color: #fff0f0">&quot;aadaf669-8e0f-42f4-b9dc-97c6d0d43174&quot;</span>);
-			OneTrue.Configuration.Advanced.UploadReportFailed += OnReportfailed;
-                    <span style="color: #888888">//[.. Your code here ..]</span>
-                    <span style="color: #888888">//always pause execution in console apps so that</span>
-                    <span style="color: #888888">// our background thread have a chance to upload reports</span>
-			Console.ReadLine();
-		}
-                    <span style="color: #008800; font-weight: bold">private</span> <span style="color: #008800; font-weight: bold">static</span> <span style="color: #008800; font-weight: bold">void</span> <span style="color: #0066BB; font-weight: bold">OnReportfailed</span>(<span style="color: #333399; font-weight: bold">object</span> sender, UploadReportFailedEventArgs e)
-		{
-                    <span style="color: #888888">// error that OneTrueError got</span>
-			Console.WriteLine(e.Exception);
-		}
-	}
+    <span style="color: #008800; font-weight: bold">class</span> <span style="color: #BB0066; font-weight: bold">Program</span>
+    {
+        <span style="color: #008800; font-weight: bold">static</span> <span style="color: #008800; font-weight: bold">void</span> <span style="color: #0066BB; font-weight: bold">Main</span>(<span style="color: #333399; font-weight: bold">string</span>[] args)
+        {
+            OneTrue.Configuration.Credentials(<span style="background-color: #fff0f0">&quot;b959b8b3-4ead-4db4-b18a-b26d13530e5d&quot;</span>, <span style="background-color: #fff0f0">&quot;aadaf669-8e0f-42f4-b9dc-97c6d0d43174&quot;</span>);
+            OneTrue.Configuration.Advanced.UploadReportFailed += OnReportfailed;
+
+            <span style="color: #888888">//[.. Your code here ..]</span>
+
+            <span style="color: #888888">// always pause execution in console apps so that</span>
+            <span style="color: #888888">// our background thread have a chance to upload reports</span>
+            Console.ReadLine();
+        }
+        <span style="color: #008800; font-weight: bold">private</span> <span style="color: #008800; font-weight: bold">static</span> <span style="color: #008800; font-weight: bold">void</span> <span style="color: #0066BB; font-weight: bold">OnReportfailed</span>(<span style="color: #333399; font-weight: bold">object</span> sender, UploadReportFailedEventArgs e)
+        {
+            <span style="color: #888888">// error that OneTrueError got</span>
+            Console.WriteLine(e.Exception);
+        }
+    }
 }
 </pre>
                 </div>
 
                 <h2>Documentation</h2>
                 <p>
-                    The complete documentation for the client libraries is <a target="_blank" href="http://onetrueerror.com/doc/client/">available here.</a>
+                    The complete documentation for the client libraries is <a target="_blank" href="http://onetrueerror.com/documentation/client/libraries">available here.</a>
                 </p>
             </div>
             <div class="tab-pane panel" id="install-aspnet">
-                @Html.Partial("~/Views/application/_aspnet.cshtml")
+                <div>
+                    <h1>ASP.NET</h1>
+                    <p>
+                        This package will automatically catch all unhandled exceptions in ASP.NET applications. It will also adopt the HTTP response according to the HTTP accept header in the request. That means that OneTrueError
+                        will work well even with REST applications based on JSON or XML.
+                    </p>
+                    <p>
+                        The package also automatically includes information about the HTTP request, session etc.
+                    </p>
+                    <h3>Package install</h3>
+                    Install the following nuget package <a target="_blank" href="http://www.nuget.org/packages/OneTrueError.client.aspnet/">onetrueerror.aspnet</a>
+                    <pre><code>install-package onetrueerror.aspnet</code></pre>
+                    <h3>Configuration</h3>
+                    <div>
+                        <p>Copy/paste the code below to your application. The correct appkey/sharedSecret have been specified.</p>
+                        <!-- HTML generated using hilite.me -->
+                        <div style="background: #ffffff; overflow: auto; width: auto; padding: .2em .6em;">
+                            <pre style="margin: 0; line-height: 125%"><span style="color: #000080; font-weight: bold">public</span> <span style="color: #000080; font-weight: bold">class</span> MvcApplication : System.Web.HttpApplication
+{
+    <span style="color: #000080; font-weight: bold">protected</span> <span style="color: #000080; font-weight: bold">void</span> Application_Start()
+    {
+        <span style="color: #008800; font-style: italic">// The appkey and shared key can be found in onetrueeror.com</span>
+        OneTrue.Configuration.Credentials(<span style="color: #0000FF">&quot;<span data-name="AppKey"></span>&quot;</span>, 
+                                          <span style="color: #0000FF">&quot;<span data-name="SharedSecret"></span>&quot;</span>);
+        OneTrue.Configuration.CatchAspNetExceptions();
+    }
+}
+</pre>
+                        </div>
+                        <p>That will automatically catch all uncaught exceptions and display an error page for the user.</p>
+                        <p>
+                            The exception(s) will be enqueued and uploaded to our service as soon as an internet connection is available. That also means that no error reports are lost even if
+                            the application crashes before the report has been uploaded. The library will continue it's upload attempts next time the application is started.
+                        </p>
+                    </div>
+                    <h3>Reporting errors manually</h3>
+                    <div>
+                        <p>You can also report errors you need to invoke the report method:</p>
+                        <!-- HTML generated using hilite.me -->
+                        <div style="background: #ffffff; overflow: auto; width: auto; padding: .2em .6em;">
+                            <pre style="margin: 0; line-height: 125%"><span style="color: #000080; font-weight: bold">public</span> ActionResult Activate(UserViewModel model)
+{
+    <span style="color: #000080; font-weight: bold">if</span> (!ModelState.IsValid)
+        <span style="color: #000080; font-weight: bold">return</span> View(model);
+
+    <span style="color: #000080; font-weight: bold">try</span>
+    {
+        <span style="color: #000080; font-weight: bold">var</span> user = _repos.GetUser(model.Id);
+        user.Activate(model.ActicationCode);
+        _repos.Save(user);
+        <span style="color: #000080; font-weight: bold">return</span> RedirectToAction(<span style="color: #0000FF">&quot;Welcome&quot;</span>);
+    }
+    <span style="color: #000080; font-weight: bold">catch</span> (Exception exception)
+    {
+        OneTrue.Report(exception);
+    }
+}
+</pre>
+                        </div>
+
+
+                        <p>
+                            All report methods are documented <a target="_blank" href="http://onetrueerror.com/doc/client/?topic=html/Methods_T_OneTrueError_Reporting_OneTrue.htm">here</a>. Do note the support
+                            for two-step-reporting which work well with stateless protocols like HTTP.
+                        </p>
+
+                    </div>
+                    <h3>Error pages</h3>
+                    <div>
+                        <p>
+                            Unlike <code>&lt;customErrors&gt;</code> in ASP.NET we do not use redirection or similar. You do instead point on a ASPX page which will be used to show an error page (and collect additional information). A default page
+                            will be used if none is configured.
+                        </p>
+                        <p>
+                            Sample configuration:
+                            <!-- HTML generated using hilite.me -->
+                            <div style="background: #ffffff; overflow: auto; width: auto; padding: .2em .6em;">
+                                <pre style="margin: 0; line-height: 125%">OneTrue.Configuration.SetErrorPage(<span style="color: #0000FF">&quot;~/views/error.aspx&quot;</span>);
+</pre>
+                            </div>
+
+                        </p>
+                        <p>As an alternative you can configure a factory to produce different error pages for different errors. Refer to the documentation which is listed below for further information.</p>
+                    </div>
+                    <h3>Documentation</h3>
+                    <p>
+                        The complete documentation for the ASP.NET library is <a target="_blank" href="http://onetrueerror.com/documentation/client/libraries/aspnet/">available here.</a>
+                    </p>
+                </div>
+
             </div>
             <div class="tab-pane panel" id="install-wpf">
                 <div class="panel-body">
@@ -122,7 +213,7 @@ OneTrue.Configuration.Credentials(<span style="color: #0000FF">&quot;<span data-
                     </p>
                     <h3>Package install</h3>
                     <p>
-                        Install the following nuget package <a target="_blank" href="http://www.nuget.org/packages/OneTrueError.winforms/">onetrueerror.winforms</a>
+                        Install the following nuget package <a target="_blank" href="http://www.nuget.org/packages/OneTrueError.client.winforms/">onetrueerror.winforms</a>
                     </p>
                     <pre><code>install-package onetrueerror.winforms
 </code></pre>
@@ -133,11 +224,11 @@ OneTrue.Configuration.Credentials(<span style="color: #0000FF">&quot;<span data-
                         <div style="background: #ffffff; overflow: auto; width: auto; padding: .2em .6em;">
                             <pre style="margin: 0; line-height: 125%"><span style="color: #000080; font-weight: bold">public</span> <span style="color: #000080; font-weight: bold">class</span> WebApiApplication : System.Web.HttpApplication
 {
-                            <span style="color: #000080; font-weight: bold">protected</span> <span style="color: #000080; font-weight: bold">void</span> Application_Start()
+    <span style="color: #000080; font-weight: bold">protected</span> <span style="color: #000080; font-weight: bold">void</span> Application_Start()
     {
-                            <span style="color: #008800; font-style: italic">// The appkey and shared key can be found in onetrueeror.com</span>
+        <span style="color: #008800; font-style: italic">// The appkey and shared key can be found in onetrueeror.com</span>
         OneTrue.Configuration.Credentials(<span style="color: #0000FF">&quot;<span data-name="AppKey"></span>&quot;</span>, 
-                            <span style="color: #0000FF">&quot;<span data-name="SharedSecret"></span>&quot;</span>);
+                                          <span style="color: #0000FF">&quot;<span data-name="SharedSecret"></span>&quot;</span>);
         OneTrue.Configuration.CatchWinFormsExceptions();
     }
 }
@@ -157,13 +248,13 @@ OneTrue.Configuration.Credentials(<span style="color: #0000FF">&quot;<span data-
                     <div style="background: #ffffff; overflow: auto; width: auto; padding: .2em .6em;">
                         <pre style="margin: 0; line-height: 125%"><span style="color: #000080; font-weight: bold">public</span> void OnButtonClicked(object source, EventArgs e)
 {
-                        <span style="color: #000080; font-weight: bold">try</span>
+    <span style="color: #000080; font-weight: bold">try</span>
     {
-                        <span style="color: #000080; font-weight: bold">var</span> user = _repos.GetUser(Id.Text);
+        <span style="color: #000080; font-weight: bold">var</span> user = _repos.GetUser(Id.Text);
         user.Activate(ActicationCode.Text);
         _repos.Save(user);
     }
-                        <span style="color: #000080; font-weight: bold">catch</span> (Exception exception)
+    <span style="color: #000080; font-weight: bold">catch</span> (Exception exception)
     {
         OneTrue.Report(exception);
     }
@@ -191,7 +282,7 @@ OneTrue.Configuration.Credentials(<span style="color: #0000FF">&quot;<span data-
                 </div>
                 <h2>Documentation</h2>
                 <p>
-                    The complete documentation for the WPF/WinForms library is <a target="_blank" href="http://onetrueerror.com/doc/client/?topic=html/N_OneTrueError_Reporting_WinForms.htm">available here.</a>
+                    The complete documentation for the WPF/WinForms library is <a target="_blank" href="http://onetrueerror.com/documentation/client/libraries/winforms/">available here.</a>
                 </p>
             </div>
             <div class="tab-pane panel" id="install-wcf">
@@ -206,7 +297,7 @@ OneTrue.Configuration.Credentials(<span style="color: #0000FF">&quot;<span data-
                     </p>
                     <h3>Package install</h3>
                     <div>
-                        Install the following nuget package <a target="_blank" href="http://www.nuget.org/packages/OneTrueError.wcf/">onetrueerror.wcf</a>
+                        Install the following nuget package <a target="_blank" href="http://www.nuget.org/packages/OneTrueError.client.wcf/">onetrueerror.client.wcf</a>
                         <pre><code>install-package onetrueerror.wcf
 </code></pre>
                     </div>
@@ -216,13 +307,13 @@ OneTrue.Configuration.Credentials(<span style="color: #0000FF">&quot;<span data-
                         </p>
                         <!-- HTML generated using hilite.me -->
                         <div style="background: #ffffff; overflow: auto; width: auto; padding: .2em .6em;">
-                            <pre style="margin: 0; line-height: 125%"><span style="color: #000080; font-weight: bold">public</span> <span style="color: #000080; font-weight: bold">class</span> InitializeService
+<pre style="margin: 0; line-height: 125%"><span style="color: #000080; font-weight: bold">public</span> <span style="color: #000080; font-weight: bold">class</span> InitializeService
 {
-                            <span style="color: #000080; font-weight: bold">public</span> <span style="color: #000080; font-weight: bold">static</span> <span style="color: #000080; font-weight: bold">void</span> AppInitialize()
+    <span style="color: #000080; font-weight: bold">public</span> <span style="color: #000080; font-weight: bold">static</span> <span style="color: #000080; font-weight: bold">void</span> AppInitialize()
     {
         OneTrue.Configuration.Credentials(<span style="color: #0000FF">&quot;<span data-name="AppKey"></span>&quot;</span>, 
-                            <span style="color: #0000FF">&quot;<span data-name="SharedSecret"></span>&quot;</span>);
-                            <span style="color: #008800; font-style: italic">//add the WCF context providers.</span>
+                                          <span style="color: #0000FF">&quot;<span data-name="SharedSecret"></span>&quot;</span>);
+        <span style="color: #008800; font-style: italic">//add the WCF context providers.</span>
         OneTrue.Configuration.CatchWcfExceptions();
      }
  }
@@ -242,13 +333,13 @@ OneTrue.Configuration.Credentials(<span style="color: #0000FF">&quot;<span data-
                         <div style="background: #ffffff; overflow: auto; width: auto; padding: .2em .6em;">
                             <pre style="margin: 0; line-height: 125%"><span style="color: #000080; font-weight: bold">public</span> void Activate(UserViewModel model)
 {
-                            <span style="color: #000080; font-weight: bold">try</span>
+     <span style="color: #000080; font-weight: bold">try</span>
     {
-                            <span style="color: #000080; font-weight: bold">var</span> user = _repos.GetUser(model.Id);
+        <span style="color: #000080; font-weight: bold">var</span> user = _repos.GetUser(model.Id);
         user.Activate(model.ActicationCode);
         _repos.Save(user);
     }
-                            <span style="color: #000080; font-weight: bold">catch</span> (Exception exception)
+    <span style="color: #000080; font-weight: bold">catch</span> (Exception exception)
     {
         OneTrue.Report(exception);
     }
@@ -276,7 +367,7 @@ OneTrue.Configuration.Credentials(<span style="color: #0000FF">&quot;<span data-
                         <p>As an alternative you can configure a factory to produce different error pages for different errors. Refer to the documentation which is listed below for further information.</p>
                     </div>
                     <h2>Documentation</h2>
-                    <p>The complete documentation for the WCF library is <a target="_blank" href="http://onetrueerror.com/doc/client/?topic=html/N_OneTrueError_Reporting_Wcf.htm">available here.</a>
+                    <p>The complete documentation for the WCF library is <a target="_blank" href="http://onetrueerror.com/documentation/client/libraries/wcf/">available here.</a>
                     </p>
 
                 </div>
@@ -305,12 +396,12 @@ OneTrue.Configuration.Credentials(<span style="color: #0000FF">&quot;<span data-
                         </p>
                         <!-- HTML generated using hilite.me -->
                         <div style="background: #ffffff; overflow: auto; width: auto; padding: .2em .6em;">
-                            <pre style="margin: 0; line-height: 125%"><span style="color: #000080; font-weight: bold">public</span> <span style="color: #000080; font-weight: bold">class</span> Global : System.Web.HttpApplication
+<pre style="margin: 0; line-height: 125%"><span style="color: #000080; font-weight: bold">public</span> <span style="color: #000080; font-weight: bold">class</span> Global : System.Web.HttpApplication
 {
-                            <span style="color: #000080; font-weight: bold">protected</span> <span style="color: #000080; font-weight: bold">void</span> Application_Start(<span style="color: #000080; font-weight: bold">object</span> sender, EventArgs e)
+    <span style="color: #000080; font-weight: bold">protected</span> <span style="color: #000080; font-weight: bold">void</span> Application_Start(<span style="color: #000080; font-weight: bold">object</span> sender, EventArgs e)
     {
         OneTrue.Configuration.Credentials(<span style="color: #0000FF">&quot;<span data-name="AppKey"></span>&quot;</span>, 
-                            <span style="color: #0000FF">&quot;<span data-name="SharedSecret"></span>&quot;</span>);
+                                          <span style="color: #0000FF">&quot;<span data-name="SharedSecret"></span>&quot;</span>);
         OneTrue.Configuration.CatchAsmxExceptions();
     }
 }
@@ -329,13 +420,13 @@ OneTrue.Configuration.Credentials(<span style="color: #0000FF">&quot;<span data-
                         <div style="background: #ffffff; overflow: auto; width: auto; padding: .2em .6em;">
                             <pre style="margin: 0; line-height: 125%"><span style="color: #000080; font-weight: bold">public</span> void Activate(string authenticationCode, string id)
 {
-                            <span style="color: #000080; font-weight: bold">try</span>
+    <span style="color: #000080; font-weight: bold">try</span>
     {
-                            <span style="color: #000080; font-weight: bold">var</span> user = _repos.GetUser(id);
+        <span style="color: #000080; font-weight: bold">var</span> user = _repos.GetUser(id);
         user.Activate(authenticationCode);
         _repos.Save(user);
     }
-                            <span style="color: #000080; font-weight: bold">catch</span> (Exception exception)
+    <span style="color: #000080; font-weight: bold">catch</span> (Exception exception)
     {
         OneTrue.Report(exception);
     }
@@ -355,18 +446,18 @@ OneTrue.Configuration.Credentials(<span style="color: #0000FF">&quot;<span data-
                         </p>
                         <!-- HTML generated using hilite.me -->
                         <div style="background: #ffffff; overflow: auto; width: auto; padding: .2em .6em;">
-                            <pre style="margin: 0; line-height: 125%"><span style="color: #000080; font-weight: bold">public</span> <span style="color: #000080; font-weight: bold">class</span> SampleErrorMessageFactory : IErrorMessageFactory
+<pre style="margin: 0; line-height: 125%"><span style="color: #000080; font-weight: bold">public</span> <span style="color: #000080; font-weight: bold">class</span> SampleErrorMessageFactory : IErrorMessageFactory
 {
-                            <span style="color: #000080; font-weight: bold">public</span> <span style="color: #000080; font-weight: bold">string</span> Create(AsmxErrorReporterContext context, <span style="color: #000080; font-weight: bold">string</span> incidentId)
-	{
-                            <span style="color: #000080; font-weight: bold">if</span> (context == <span style="color: #000080; font-weight: bold">null</span>) <span style="color: #000080; font-weight: bold">throw</span> <span style="color: #000080; font-weight: bold">new</span> ArgumentNullException(<span style="color: #0000FF">&quot;context&quot;</span>);
-                            <span style="color: #000080; font-weight: bold">if</span> (incidentId == <span style="color: #000080; font-weight: bold">null</span>) <span style="color: #000080; font-weight: bold">throw</span> <span style="color: #000080; font-weight: bold">new</span> ArgumentNullException(<span style="color: #0000FF">&quot;incidentId&quot;</span>);
-                            <span style="color: #000080; font-weight: bold">var</span> messsage =
-                            <span style="color: #000080; font-weight: bold">string</span>.Format(<span style="color: #0000FF">@@&quot;We failed to process your request.{0}</span>
+    <span style="color: #000080; font-weight: bold">public</span> <span style="color: #000080; font-weight: bold">string</span> Create(AsmxErrorReporterContext context, <span style="color: #000080; font-weight: bold">string</span> incidentId)
+    {
+        <span style="color: #000080; font-weight: bold">if</span> (context == <span style="color: #000080; font-weight: bold">null</span>) <span style="color: #000080; font-weight: bold">throw</span> <span style="color: #000080; font-weight: bold">new</span> ArgumentNullException(<span style="color: #0000FF">&quot;context&quot;</span>);
+        <span style="color: #000080; font-weight: bold">if</span> (incidentId == <span style="color: #000080; font-weight: bold">null</span>) <span style="color: #000080; font-weight: bold">throw</span> <span style="color: #000080; font-weight: bold">new</span> ArgumentNullException(<span style="color: #0000FF">&quot;incidentId&quot;</span>);
+        <span style="color: #000080; font-weight: bold">var</span> messsage =
+        <span style="color: #000080; font-weight: bold">string</span>.Format(<span style="color: #0000FF">@@&quot;We failed to process your request.{0}</span>
 <span style="color: #0000FF">You can use http://onetrueerror.com/feedback/{1}/ to provide details about what you did.{0}</span>
 <span style="color: #0000FF">Use incident id &#39;{1}&#39; in any further contact with us.&quot;</span>, Environment.NewLine, incidentId);
                             <span style="color: #000080; font-weight: bold">return</span> messsage;
-	}
+    }
 }
 </pre>
                         </div>

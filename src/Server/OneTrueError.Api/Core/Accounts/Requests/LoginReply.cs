@@ -19,5 +19,6 @@
         /// User name
         /// </summary>
         public string UserName { get; set; }
+
     }
 }

@@ -87,6 +87,9 @@ namespace OneTrueError.Web.Areas.Installation.Controllers
                     }
                 }
             }
+
+            if (!ViewBag.AlreadyCreated)
+                ViewBag.NextLink = null;
         }
     }
 }

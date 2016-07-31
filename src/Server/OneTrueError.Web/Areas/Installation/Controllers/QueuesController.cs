@@ -1,12 +1,8 @@
-﻿using System.Globalization;
-using System.Web.Mvc;
-using OneTrueError.App;
-using OneTrueError.App.Configuration;
+﻿using System.Web.Mvc;
 using OneTrueError.Infrastructure;
 using OneTrueError.Infrastructure.Configuration;
 using OneTrueError.Infrastructure.Queueing;
 using OneTrueError.Web.Areas.Installation.Models;
-using OneTrueError.Web.Infrastructure;
 
 namespace OneTrueError.Web.Areas.Installation.Controllers
 {
@@ -19,10 +15,12 @@ namespace OneTrueError.Web.Areas.Installation.Controllers
             var settings = ConfigurationStore.Instance.Load<MessageQueueSettings>();
             if (settings == null)
             {
+                ViewBag.NextLink = null;
                 model.UseSql = true;
                 return View(model);
             }
 
+            model.UseSql = true;
             model.EventQueue = settings.EventQueue;
             model.EventAuthentication = settings.EventAuthentication;
             model.EventTransactions = settings.EventTransactions;

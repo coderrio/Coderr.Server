@@ -85,11 +85,10 @@
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="#/settings/notifications">Notification settings</a></li>
                                 <li><a href="#/settings/personal">Personal settings</a></li>
-                                @*<li class="divider"></li>
-                                    <li class="dropdown-header">Nav header</li>
-                                    <li><a href="#">Separated link</a></li>
-                                    <li><a href="#">One more separated link</a></li>
-                                *@
+                                @if (SessionUser.Current.AccountId == 1)
+                                {
+                                    <li><a href="@Url.Content("~/Admin")">Admin area</a></li>
+                                }
                             </ul>
                         </li>
                         <li><a href="#support-form-view" data-toggle="modal" data-target="#support-form-view" title="Contact support" id="SupportLink"><span class="glyphicon glyphicon-question-sign"></span></a></li>
@@ -121,12 +120,12 @@
             </p>
         </footer>
     </div>
-<script type="text/javascript">
+    <script type="text/javascript">
     @{
-        
+
     }
-    var API_URL = '@ViewBag.AppUrl';
-</script>
+        var API_URL = '@ViewBag.AppUrl';
+    </script>
     @Scripts.Render("~/bundles/jquery")
     <script src="@Url.Content("~/Scripts/raphael-min.js")"></script>
     <script src="@Url.Content("~/Scripts/morris.min.js")"></script>
@@ -150,10 +149,10 @@
             function doMe() {
                 Griffin.Yo.Views.ViewRenderer.DEBUG = false;
                 Griffin.Yo.GlobalConfig.resourceLocator = {
-                    getHtml: function(section) {
+                    getHtml: function (section) {
                         return '/Page?path=/Views/' + section + ".cshtml";
                     },
-                    getScript: function(section) {
+                    getScript: function (section) {
                         return '/ViewModels/' + section + "ViewModel.js";
                     }
                 };

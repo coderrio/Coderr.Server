@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.IO;
 using System.Security.Principal;
 using System.Web;
@@ -32,7 +33,7 @@ namespace OneTrueError.Web
         {
             var path2 = AppDomain.CurrentDomain.BaseDirectory;
             XmlConfigurator.ConfigureAndWatch(new FileInfo(Path.Combine(path2, "log4net.config")));
-            _logger = LogManager.GetLogger(typeof (WebApiApplication));
+            _logger = LogManager.GetLogger(typeof(WebApiApplication));
             _logger.Info("Loaded");
             Griffin.Logging.LogManager.Provider = new LogManagerAdapter();
         }
@@ -53,14 +54,13 @@ namespace OneTrueError.Web
             SetupTools.DbTools = new SqlServerTools();
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AreaRegistration.RegisterAllAreas();
-            if (InstallationHelper.IsInstallationRequired())
+            if (ConfigurationManager.AppSettings["Configured"] == "false")
+                RouteConfig.RegisterInstallationRoutes(RouteTable.Routes);
+            else
             {
-                RouteConfig.RegisterAdminRoutes(RouteTable.Routes);
-                return;
+                ConfigureErrorTracking();
+                ConfigureStandardSetup();
             }
-
-            ConfigureErrorTracking();
-            ConfigureStandardSetup();
         }
 
         private void Application_Error(object sender, EventArgs e)
@@ -93,14 +93,14 @@ namespace OneTrueError.Web
             }
             else
             {
-                GlobalConfiguration.Configuration.Services.Add(typeof (IExceptionLogger), new WebApiLogger());
+                GlobalConfiguration.Configuration.Services.Add(typeof(IExceptionLogger), new WebApiLogger());
             }
         }
 
         private void ConfigureStandardSetup()
         {
             var provider = new AssemblyScanningMappingProvider();
-            provider.Scan(typeof (UserMapper).Assembly);
+            provider.Scan(typeof(UserMapper).Assembly);
             EntityMappingProvider.Provider = provider;
 
             OneTrueErrorPrincipal.Assigned += OnAssignedPrincipal;
@@ -119,7 +119,7 @@ namespace OneTrueError.Web
 
         private void OnAssignedPrincipal(object sender, EventArgs e)
         {
-            HttpContext.Current.User = (IPrincipal) sender;
+            HttpContext.Current.User = (IPrincipal)sender;
         }
     }
 }

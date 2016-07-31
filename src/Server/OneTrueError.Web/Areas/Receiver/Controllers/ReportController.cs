@@ -58,7 +58,7 @@ namespace OneTrueError.Web.Areas.Receiver.Controllers
                 HttpContext.Current.Request.InputStream.Read(buffer, 0, buffer.Length);
                 var handler = new SaveReportHandler(_queueProvider);
                 await handler.BuildReportAsync(appKey, sig, Request.GetClientIpAddress(), buffer);
-                return Request.CreateResponse();
+                return Request.CreateResponse(HttpStatusCode.OK);
             }
             catch (Exception exception)
             {
@@ -74,7 +74,7 @@ namespace OneTrueError.Web.Areas.Receiver.Controllers
             _logger.Error(appKey + "Too large report: " + HttpContext.Current.Request.InputStream.Length + " from " +
                           Request.GetClientIpAddress());
             //TODO: notify
-            return Request.CreateResponse();
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -13,9 +14,9 @@ namespace OneTrueError.Web
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             //routes.RouteExistingFiles = true;
-            routes.MapRoute("InstallationOff",
-                "installation/{*catchAll}",
-                new { controller = "Home", action = "NoInstallation" });
+            //routes.MapRoute("InstallationOff",
+            //    "installation/{*catchAll}",
+            //    new { controller = "Home", action = "NoInstallation" });
             routes.MapMvcAttributeRoutes();
             routes.MapRoute(
                 name: "Default",
@@ -25,7 +26,7 @@ namespace OneTrueError.Web
             );
         }
 
-        public static void RegisterAdminRoutes(RouteCollection routes)
+        public static void RegisterInstallationRoutes(RouteCollection routes)
         {
             routes.MapRoute(
                 name: "Default",

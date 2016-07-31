@@ -1,0 +1,64 @@
+﻿
+@{
+    ViewBag.Title = "Installation - Database configuration";
+}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6">
+            <h2>Database configuration</h2>
+
+            <p>
+                It's time to to configure the database. To do that you need
+                to start by specifying which database to use. We expect that you have created
+                a database and configured an account for it.
+            </p>
+            <p>
+                Modify the connectionString named <code>'Db'</code> in <code>web.config.</code> Click on 'Test Connection' to make sure that it works.
+            </p>
+            <form method="post" action="@Url.Action("Connection", "Sql")" style="width: 100%" class="form-inline" id="dbForm">
+                <div>
+                    <br /><br />
+                    @Html.Raw(ViewBag.PrevLink)
+                    <button id="saveButton" class="btn">Test Connection</button>
+                    @Html.Raw(ViewBag.NextLink)
+                </div>
+            </form>
+            <br />
+            <div class="alert alert-warning" id="error" style="display: none">
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <h2>Limitation</h2>
+            <p>
+                <em>
+                    Currently only Microsoft SQL Server 2012 and above is supported. Need any other DB? Feel free to Contribute
+                    by taking the SqlServer class library and convert it to a library for your favorite DB engine.
+                </em>
+            </p>
+            <h3>Example</h3>
+            <pre><code>Data Source=(localdb)\ProjectsV12;Initial Catalog=OneTrueError;Integrated Security=True;Connect Timeout=30;</code></pre>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+
+    <script type="text/javascript">
+        $('#saveButton').click(function (e) {
+            e.preventDefault();
+            var conStr = encodeURIComponent($('[name="connectionString"]').val());
+            $.getJSON('@Url.RouteUrl(new {Area = "Installation", Controller = "Sql", Action = "Validate"})/?connectionString=' + conStr)
+                .done(function (data) {
+                    if (data.result == "fail") {
+                        $('#error').text(data.reason).show();
+                    } else {
+                        $('#error').hide();
+                        $("#testConnection").removeClass("btn-primary");
+                        $('#saveButton').removeAttr("disabled").addClass("btn-primary");
+                        humane.log("Connection was successful. Click on the Next button to continue.");
+                    }
+                });
+        });
+    </script>
+}

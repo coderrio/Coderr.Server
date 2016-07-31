@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Configuration;
-using System.Data;
-using System.Web.Configuration;
 using System.Web.Mvc;
 using OneTrueError.App.Configuration;
 using OneTrueError.Infrastructure;

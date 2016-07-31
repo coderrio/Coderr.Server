@@ -30,7 +30,7 @@
         <form method="post" action="@Url.Action("Index")" class="form">
             @Html.ValidationSummary(false)
             <label>
-                <input type="checkbox" id="UseSql" name="UseSql" value="true" @(Model.UseSql ? " checked=\"checked\"" : "") /> Use SQL tables.
+                <input type="checkbox" id="UseSql" name="UseSql" value="true" @Html.Raw(Model.UseSql ? " checked=\"checked\"" : "") /> Use SQL tables.
             </label>
             <hr />
             <div id="msmq" style="display:none">
@@ -91,8 +91,8 @@
         $('#UseSql').click(function (e) {
             $('#msmq').toggle();
         });
-        if ($('#UseSql').not(':checked')) {
-            $('#msmq').toggle();
+        if ($('#UseSql').is(':checked')) {
+            $('#msmq').hide();
         }
     </script>
 }

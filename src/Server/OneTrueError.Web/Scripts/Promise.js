@@ -1,7 +1,7 @@
 /**
-   Module P: Generic Promises for TypeScript
+    Module P: Generic Promises for TypeScript
 
-   Project, documentation, and license: https://github.com/pragmatrix/Promise
+    Project, documentation, and license: https://github.com/pragmatrix/Promise
 */
 var P;
 (function (P) {

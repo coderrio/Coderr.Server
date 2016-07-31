@@ -2,7 +2,6 @@
 using System.Configuration;
 using System.Web.Mvc;
 using OneTrueError.Infrastructure;
-using OneTrueError.Web.Infrastructure;
 
 namespace OneTrueError.Web.Areas.Installation.Controllers
 {

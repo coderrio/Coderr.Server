@@ -63,7 +63,10 @@ namespace OneTrueError.Web.Infrastructure
             var result = base.AuthorizeCore(httpContext);
             if (result)
             {
-
+                var isAdminPath = httpContext.Request.Url.AbsolutePath.StartsWith("/admin",
+                    StringComparison.OrdinalIgnoreCase);
+                if (SessionUser.Current.AccountId != 1 && isAdminPath)
+                    return false;
             }
             return result;
         }

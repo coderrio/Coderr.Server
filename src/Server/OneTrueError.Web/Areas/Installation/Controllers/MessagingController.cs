@@ -1,6 +1,4 @@
 ﻿using System.Web.Mvc;
-using OneTrueError.App.Configuration;
-using OneTrueError.App.Core.Notifications;
 using OneTrueError.App.Modules.Messaging.Commands;
 using OneTrueError.Infrastructure.Configuration;
 using OneTrueError.Web.Areas.Installation.Models;
@@ -20,7 +18,7 @@ namespace OneTrueError.Web.Areas.Installation.Controllers
         {
             var model = new EmailViewModel();
             var settings = ConfigurationStore.Instance.Load<DotNetSmtpSettings>();
-            if (settings != null && string.IsNullOrEmpty(settings.SmtpHost))
+            if (!string.IsNullOrEmpty(settings?.SmtpHost))
             {
                 model.AccountName = settings.AccountName;
                 model.PortNumber = settings.PortNumber;

@@ -38,5 +38,6 @@ namespace OneTrueError.Api.Core.Applications
         ///     Application name as entered by the user.
         /// </summary>
         public string Name { get; set; }
+
     }
 }
