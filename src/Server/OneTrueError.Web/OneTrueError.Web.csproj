@@ -227,7 +227,6 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Installation\Controllers\AccountController.cs" />
     <Compile Include="Areas\Installation\Controllers\MessagingController.cs" />
-    <Compile Include="Areas\Installation\Controllers\QueuesController.cs" />
     <Compile Include="Areas\Installation\Controllers\SetupController.cs" />
     <Compile Include="Areas\Installation\Controllers\SqlController.cs" />
     <Compile Include="Areas\Installation\InstallationAreaRegistration.cs" />
@@ -385,7 +384,6 @@
     <Content Include="Areas\Installation\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Installation\Views\Account\Admin.cshtml" />
     <Content Include="Areas\Installation\Views\Messaging\Email.cshtml" />
-    <Content Include="Areas\Installation\Views\Queues\Index.cshtml" />
     <Content Include="Areas\Installation\Views\Setup\Basics.cshtml" />
     <Content Include="Areas\Installation\Views\Setup\Completed.cshtml" />
     <Content Include="Areas\Installation\Views\Setup\ErrorTracking.cshtml" />

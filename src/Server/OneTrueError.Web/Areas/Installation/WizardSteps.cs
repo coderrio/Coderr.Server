@@ -13,7 +13,6 @@ namespace OneTrueError.Web.Areas.Installation
             new WizardStepInfo("Error tracking", "~/installation/setup/errors/"),
             new WizardStepInfo("Create admin account", "~/installation/account/admin/"),
             new WizardStepInfo("Mail settings", "~/installation/messaging/email/"),
-            new WizardStepInfo("Create queues", "~/installation/queues/"),
             new WizardStepInfo("Completed", "~/installation/setup/completed/")
         };
         
