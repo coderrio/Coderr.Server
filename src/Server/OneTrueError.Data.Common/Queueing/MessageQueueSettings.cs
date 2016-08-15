@@ -5,6 +5,11 @@ namespace OneTrueError.Infrastructure.Queueing
 {
     public sealed class MessageQueueSettings : IConfigurationSection
     {
+        public MessageQueueSettings()
+        {
+            UseSql = true;
+        }
+
         public string ReportQueue { get; set; }
 
         public bool ReportAuthentication { get; set; }

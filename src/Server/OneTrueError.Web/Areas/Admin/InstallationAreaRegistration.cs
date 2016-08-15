@@ -17,7 +17,8 @@ namespace OneTrueError.Web.Areas.Admin
             context.MapRoute(
                 "admin_default",
                 "admin/{controller}/{action}/{id}",
-                new { action = "Index", controller = "Home", id = UrlParameter.Optional }
+                new { action = "Index", controller = "Home", id = UrlParameter.Optional },
+                namespaces: new []{GetType().Namespace + ".Controllers"}
             );
         }
     }

@@ -60,7 +60,7 @@ namespace OneTrueError.App.Core.Accounts.Requests
             catch (AuthenticationException ex)
             {
                 _logger.Debug("Logging failed for " + request.UserName, ex);
-                _eventBus.PublishAsync(new LoginFailed(request.UserName) {IsLocked = true}).Start();
+                _eventBus.PublishAsync(new LoginFailed(request.UserName) {IsLocked = true}).Wait();
                 return new LoginReply {Result = LoginResult.Locked};
             }
 

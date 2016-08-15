@@ -19,7 +19,8 @@ namespace OneTrueError.Infrastructure.Queueing
 
         public IMessageQueue Open(string queueName)
         {
-            var config = ConfigurationStore.Instance.Load<MessageQueueSettings>();
+            var config = ConfigurationStore.Instance.Load<MessageQueueSettings>()
+                ?? new MessageQueueSettings(); //isn't added by the installation guide.
             var conString = ConfigurationManager.ConnectionStrings["Db"].ConnectionString;
             var provider = ConfigurationManager.ConnectionStrings["Db"].ProviderName;
             switch (queueName)

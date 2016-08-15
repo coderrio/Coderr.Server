@@ -31,7 +31,9 @@ namespace OneTrueError.Web
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "ToInstall", id = UrlParameter.Optional });
+                defaults: new { controller = "Home", action = "ToInstall", id = UrlParameter.Optional },
+                namespaces: new[] { "OneTrueError.Web.Controllers" }
+                );
         }
     }
 }
