@@ -55,7 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="IncludeNonPublicMembersContractResolver.cs" />
     <Compile Include="Configuration\ConfigFile\ConfigFileStore.cs" />
     <Compile Include="Configuration\ConfigFile\KeyValueCollection.cs" />
     <Compile Include="Configuration\ConfigFile\KeyValueElement.cs" />

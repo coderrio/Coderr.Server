@@ -1129,7 +1129,6 @@ var Griffin;
                     }
                     var target2 = target;
                     target2.name = name;
-                    console.log('adding view target');
                     this.viewTargets.push(target2);
                 };
                 SpaEngine.prototype.navigate = function (url, targetElement) {
@@ -1262,9 +1261,6 @@ var Griffin;
                 ViewRenderer.prototype.renderElement = function (element, data, directives) {
                     if (directives === void 0) { directives = {}; }
                     var elementName = this.getName(element);
-                    if (elementName) {
-                        console.log('renderElement', this.getName(element), data, element);
-                    }
                     if ((element.childElementCount === 0 || element.tagName === "SELECT") && elementName && !element.hasAttribute("data-unless") && !element.hasAttribute("data-data-if") ) {
                         if (data && data.hasOwnProperty(elementName)) {
                             data = data[elementName];
@@ -1334,9 +1330,7 @@ var Griffin;
                                     || childDirective.hasOwnProperty("html");
                             }
                             if (!gotValueProvider) {
-                                console.log('moog', element, data);
                                 if (item.getAttribute("data-unless") === name) {
-                                    console.log('ch', childData)
                                     if (childData && childData.length > 0) {
                                         item.style.display = "none";
                                     }

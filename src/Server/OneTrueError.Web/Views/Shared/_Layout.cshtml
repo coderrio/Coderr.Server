@@ -2,15 +2,21 @@
 @using OneTrueError.Infrastructure.Configuration
 @using OneTrueError.Web.Models
 @{
-    //ViewBag.AppUrl = ConfigurationStore.Instance.Load<BaseConfiguration>()?.BaseUrl.ToString().TrimEnd('/');
-    ViewBag.AppUrl = "http://localhost:50473/";
+    if (Request.Url.Host == "http://localhost:50473")
+    {
+        ViewBag.AppUrl = "http://localhost:50473/";
+    }
+    else
+    {
+        ViewBag.AppUrl = ConfigurationStore.Instance.Load<BaseConfiguration>()?.BaseUrl.ToString().TrimEnd('/');
+    }
 }
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - OneTrueError</title>
+    <title>@Request.Url.Host  @ViewBag.Title - OneTrueError</title>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")

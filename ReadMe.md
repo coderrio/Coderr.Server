@@ -1,5 +1,16 @@
-OneTrueError - Automated exception handling.
+OneTrueError
 ================================
 
-OneTrueError is a exception handling library which takes care of everything from detecting and reporting exceptions to help you analyse them to be able to correct the root cause.
+Open source exception handling for .NET.
 
+![](screenshot.png)
+
+
+[Getting started guide](http://onetrueerror.com/documentation/client/gettingstarted.md)
+
+
+
+## Licensing
+
+* Server: AGPL
+* Client libraries: Apache 2.0

@@ -4,6 +4,9 @@ using Newtonsoft.Json.Serialization;
 
 namespace OneTrueError.Infrastructure
 {
+    /// <summary>
+    /// Used by JSON.NET to be able to deserialize properties with private setters.
+    /// </summary>
     public class IncludeNonPublicMembersContractResolver : DefaultContractResolver
     {
         //protected override List<MemberInfo> GetSerializableMembers(Type objectType)

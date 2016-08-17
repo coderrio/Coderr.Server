@@ -12,5 +12,10 @@ namespace OneTrueError.App.Tests
         {
             instance.GetType().GetProperty("Id").SetValue(instance, id);
         }
+
+        public static void SetProperty(this object instance, string name, object value)
+        {
+            instance.GetType().GetProperty(name).SetValue(instance, value);
+        }
     }
 }

@@ -33,7 +33,7 @@ namespace OneTrueError.SqlServer.Analysis
             _unitOfWork = unitOfWork;
 
             var settings = ConfigurationStore.Instance.Load<MessageQueueSettings>();
-            if (settings.UseSql)
+            if (settings != null && !settings.UseSql)
             {
                 _queue = new MsmqMessageQueue(settings.ReportQueue, settings.ReportAuthentication,
                     settings.ReportTransactions);
