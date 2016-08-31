@@ -95,4 +95,3 @@ var OneTrueError;
         Report.ReportViewModel = ReportViewModel;
     })(Report = OneTrueError.Report || (OneTrueError.Report = {}));
 })(OneTrueError || (OneTrueError = {}));
-//# sourceMappingURL=ReportViewModel.js.map

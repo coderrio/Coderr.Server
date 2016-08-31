@@ -105,8 +105,6 @@
     <Compile Include="Core\Applications\ApplicationMember.cs" />
     <Compile Include="Core\Applications\CommandHandlers\CreateApplicationHandler.cs" />
     <Compile Include="Core\Invitations\CommandHandlers\InviteUserHandler.cs" />
-    <Compile Include="Core\Applications\EventHandlers\CreateDefaultAppOnAccountActivated.cs" />
-    <Compile Include="Core\Invitations\EventHandlers\InvitationAcceptedHandler.cs" />
     <Compile Include="Core\Applications\IApplicationRepository.cs" />
     <Compile Include="Core\Applications\QueryHandlers\GetApplicationInfoHandler.cs" />
     <Compile Include="Core\Applications\QueryHandlers\GetApplicationTeamHandler.cs" />

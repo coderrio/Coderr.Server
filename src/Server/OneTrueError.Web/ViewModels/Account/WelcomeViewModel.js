@@ -15,4 +15,3 @@ var OneTrueError;
         Account.WelcomeViewModel = WelcomeViewModel;
     })(Account = OneTrueError.Account || (OneTrueError.Account = {}));
 })(OneTrueError || (OneTrueError = {}));
-//# sourceMappingURL=WelcomeViewModel.js.map

@@ -6,7 +6,7 @@ using OneTrueError.Api.Core.Accounts.Events;
 
 namespace OneTrueError.App.Core.Applications.EventHandlers
 {
-    [Component]
+    [Component(RegisterAsSelf = true)]
     internal class UpdateTeamOnInvitationAccepted : IApplicationEventSubscriber<InvitationAccepted>
     {
         private readonly IApplicationRepository _applicationRepository;

@@ -245,6 +245,7 @@ module OneTrueError.Application {
             query.SortAscending = this._sortAscending;
             query.PageNumber = pageNumber;
             query.ItemsPerPage = 10;
+            query.ApplicationId = this.applicationId;
             if (this._incidentType === "closed") {
                 query.Closed = true;
                 query.Open = false;

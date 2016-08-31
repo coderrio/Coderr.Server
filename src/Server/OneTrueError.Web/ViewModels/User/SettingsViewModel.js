@@ -62,4 +62,3 @@ var OneTrueError;
         User.SettingsViewModel = SettingsViewModel;
     })(User = OneTrueError.User || (OneTrueError.User = {}));
 })(OneTrueError || (OneTrueError = {}));
-//# sourceMappingURL=SettingsViewModel.js.map

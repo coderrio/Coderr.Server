@@ -215,6 +215,7 @@ var OneTrueError;
                 query.SortAscending = this._sortAscending;
                 query.PageNumber = pageNumber;
                 query.ItemsPerPage = 10;
+                query.ApplicationId = this.applicationId;
                 if (this._incidentType === "closed") {
                     query.Closed = true;
                     query.Open = false;
@@ -279,4 +280,3 @@ var OneTrueError;
         Application.DetailsViewModel = DetailsViewModel;
     })(Application = OneTrueError.Application || (OneTrueError.Application = {}));
 })(OneTrueError || (OneTrueError = {}));
-//# sourceMappingURL=DetailsViewModel.js.map

@@ -40,4 +40,3 @@ var OneTrueError;
         User.NotificationsViewModel = NotificationsViewModel;
     })(User = OneTrueError.User || (OneTrueError.User = {}));
 })(OneTrueError || (OneTrueError = {}));
-//# sourceMappingURL=NotificationsViewModel.js.map
