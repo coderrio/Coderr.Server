@@ -242,3 +242,4 @@ var OneTrueError;
         Overview.OverviewViewModel = OverviewViewModel;
     })(Overview = OneTrueError.Overview || (OneTrueError.Overview = {}));
 })(OneTrueError || (OneTrueError = {}));
+//# sourceMappingURL=OverviewViewModel.js.map

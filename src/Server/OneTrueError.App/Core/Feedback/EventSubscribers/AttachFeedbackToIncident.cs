@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
+using OneTrueError.Api.Core.Feedback.Events;
 using OneTrueError.Api.Core.Incidents.Events;
 
 namespace OneTrueError.App.Core.Feedback.EventSubscribers
@@ -12,10 +14,13 @@ namespace OneTrueError.App.Core.Feedback.EventSubscribers
     internal class AttachFeedbackToIncident : IApplicationEventSubscriber<ReportAddedToIncident>
     {
         private readonly IFeedbackRepository _repository;
+        private readonly IEventBus _eventBus;
 
-        public AttachFeedbackToIncident(IFeedbackRepository repository)
+        public AttachFeedbackToIncident(IFeedbackRepository repository, IEventBus eventBus)
         {
+            if (eventBus == null) throw new ArgumentNullException("eventBus");
             _repository = repository;
+            _eventBus = eventBus;
         }
 
         public async Task HandleAsync(ReportAddedToIncident e)
@@ -25,6 +30,9 @@ namespace OneTrueError.App.Core.Feedback.EventSubscribers
                 return;
 
             feedback.AssignToReport(e.Report.Id, e.Incident.Id, e.Incident.ApplicationId);
+
+            var evt = new FeedbackAttachedToIncident {IncidentId = e.Incident.Id, Message = feedback.Description, UserEmailAddress = feedback.EmailAddress};
+            await _eventBus.PublishAsync(evt);
             await _repository.UpdateAsync(feedback);
         }
     }

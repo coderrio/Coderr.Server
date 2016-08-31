@@ -9,10 +9,10 @@ using OneTrueError.App.Core.Users;
 namespace OneTrueError.App.Core.Notifications.EventHandlers
 {
     /// <summary>
-    ///     Responsible of sending notifcations when a new report have been analyzed.
+    ///     Responsible of sending notifications when a new report have been analyzed.
     /// </summary>
     [Component(RegisterAsSelf = true)]
-    public class SendConfiguredNotifications :
+    public class CheckForNotificationsToSend :
         IApplicationEventSubscriber<ReportAddedToIncident>
     {
         private readonly ICommandBus _commandBus;
@@ -20,12 +20,12 @@ namespace OneTrueError.App.Core.Notifications.EventHandlers
         private readonly IUserRepository _userRepository;
 
         /// <summary>
-        ///     Creates a new instance of <see cref="SendConfiguredNotifications" />.
+        ///     Creates a new instance of <see cref="CheckForNotificationsToSend" />.
         /// </summary>
         /// <param name="notificationsRepository">To load notification configuration</param>
         /// <param name="commandBus">To send emails</param>
         /// <param name="userRepository">To load user info</param>
-        public SendConfiguredNotifications(INotificationsRepository notificationsRepository, ICommandBus commandBus,
+        public CheckForNotificationsToSend(INotificationsRepository notificationsRepository, ICommandBus commandBus,
             IUserRepository userRepository)
         {
             _notificationsRepository = notificationsRepository;

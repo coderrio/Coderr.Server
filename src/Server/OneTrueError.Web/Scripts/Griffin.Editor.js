@@ -645,3 +645,4 @@ var Griffin;
     }());
     Griffin.TextSelector = TextSelector;
 })(Griffin || (Griffin = {}));
+//# sourceMappingURL=Griffin.Editor.js.map

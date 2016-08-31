@@ -61,3 +61,4 @@ var OneTrueError;
         Feedback.IncidentViewModel = IncidentViewModel;
     })(Feedback = OneTrueError.Feedback || (OneTrueError.Feedback = {}));
 })(OneTrueError || (OneTrueError = {}));
+//# sourceMappingURL=IncidentViewModel.js.map

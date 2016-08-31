@@ -11,7 +11,7 @@ using OneTrueError.Infrastructure.Configuration;
 namespace OneTrueError.App.Core.Notifications.Tasks
 {
     /// <summary>
-    ///     Send incident emal
+    ///     Send incident email
     /// </summary>
     public class SendIncidentEmail
     {
@@ -44,43 +44,50 @@ namespace OneTrueError.App.Core.Notifications.Tasks
 
             var config = ConfigurationStore.Instance.Load<BaseConfiguration>();
 
-            var shortName = incident.Name.Length > 20
-                ? incident.Name.Substring(0, 20) + "..."
+            var shortName = incident.Name.Length > 40
+                ? incident.Name.Substring(0, 40) + "..."
                 : incident.Name;
+
+            var baseUrl = string.Format("{0}/#/application/{1}/incident/{2}", 
+                config.BaseUrl.ToString().TrimEnd('/'),
+                report.ApplicationId,
+                report.IncidentId);
 
             //TODO: Add more information
             var msg = new EmailMessage(idOrEmailAddress);
             if (incident.IsReOpened)
             {
                 msg.Subject = "ReOpened: " + shortName;
-                msg.TextBody = string.Format(@"Incident url: {0}/incident/{1}
-Report url: {0}/incident/{1}/report/{2}
-Exception: {3}
+                msg.TextBody = string.Format(@"Incident: {0}
+Report url: {0}/report/{1}
+Exception: {2}
 
-{4}
-", config.BaseUrl, incident.Id, report.ReportId, report.Exception.FullName, report.Exception.StackTrace);
+{3}
+", baseUrl, report.Id, report.Exception.FullName, report.Exception.StackTrace);
             }
             else if (incident.ReportCount == 1)
             {
                 msg.Subject = "New: " + shortName;
-                msg.TextBody = string.Format(@"Incident url: {0}/incident/{1}
-Exception: {2}
+                msg.TextBody = string.Format(@"Incident: {0}
+Exception: {1}
 
-{3}", config.BaseUrl, incident.Id, report.Exception.FullName, report.Exception.StackTrace);
+{2}", baseUrl, report.Exception.FullName, report.Exception.StackTrace);
             }
             else
             {
                 msg.Subject = "Updated: " + shortName;
-                msg.TextBody = string.Format(@"Incident url: {0}/incident/{1}
-Report url: {0}/incident/{1}/report/{2}
-Exception: {3}
+                msg.TextBody = string.Format(@"Incident: {0}
+Report url: {0}/report/{1}
+Exception: {2}
 
-{4}
-", config.BaseUrl, incident.Id, report.ReportId, report.Exception.FullName, report.Exception.StackTrace);
+{3}
+", baseUrl, report.Id, report.Exception.FullName, report.Exception.StackTrace);
             }
 
             var emailCmd = new SendEmail(msg);
             await _commandBus.ExecuteAsync(emailCmd);
         }
+
+
     }
 }

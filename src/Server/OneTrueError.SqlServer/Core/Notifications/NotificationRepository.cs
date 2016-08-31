@@ -66,7 +66,7 @@ namespace OneTrueError.SqlServer.Core.Notifications
                 @"SELECT * 
                     FROM UserNotificationSettings 
                     WHERE ApplicationId = @1 
-                        OR ApplicationId = 0 
+                        OR ApplicationId = -1 
                     ORDER By AccountId, ApplicationId DESC";
             var settings = await _unitOfWork.ToListAsync<UserNotificationSettings>(sql, applicationId);
             var dict = new Dictionary<int, UserNotificationSettings>();

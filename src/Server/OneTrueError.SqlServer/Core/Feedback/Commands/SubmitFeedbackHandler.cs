@@ -6,6 +6,7 @@ using Griffin.Container;
 using Griffin.Data;
 using log4net;
 using OneTrueError.Api.Core.Feedback.Commands;
+using OneTrueError.Api.Core.Feedback.Events;
 using OneTrueError.Api.Core.Reports;
 using OneTrueError.App.Core.Reports;
 using OneTrueError.SqlServer.Tools;
@@ -18,11 +19,13 @@ namespace OneTrueError.SqlServer.Core.Feedback.Commands
         private readonly ILog _logger = LogManager.GetLogger(typeof(SubmitFeedbackHandler));
         private readonly IReportsRepository _reportsRepository;
         private readonly IAdoNetUnitOfWork _unitOfWork;
+        private IEventBus _eventBus;
 
-        public SubmitFeedbackHandler(IAdoNetUnitOfWork unitOfWork, IReportsRepository reportsRepository)
+        public SubmitFeedbackHandler(IAdoNetUnitOfWork unitOfWork, IReportsRepository reportsRepository, IEventBus eventBus)
         {
             _unitOfWork = unitOfWork;
             _reportsRepository = reportsRepository;
+            _eventBus = eventBus;
         }
 
         public async Task ExecuteAsync(SubmitFeedback command)
@@ -80,6 +83,15 @@ namespace OneTrueError.SqlServer.Core.Feedback.Commands
                 cmd.AddParameter("EmailAddress", command.Email);
                 cmd.AddParameter("Conversation", "");
                 cmd.AddParameter("CreatedAtUtc", DateTime.UtcNow);
+
+                var evt = new FeedbackAttachedToIncident
+                {
+                    Message = command.Feedback,
+                    UserEmailAddress = command.Email,
+                    IncidentId = report.IncidentId
+                };
+                await _eventBus.PublishAsync(evt);
+
                 await cmd.ExecuteNonQueryAsync();
             }
         }

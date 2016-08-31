@@ -161,3 +161,4 @@ var OneTrueError;
         Incident.IncidentViewModel = IncidentViewModel;
     })(Incident = OneTrueError.Incident || (OneTrueError.Incident = {}));
 })(OneTrueError || (OneTrueError = {}));
+//# sourceMappingURL=IncidentViewModel.js.map

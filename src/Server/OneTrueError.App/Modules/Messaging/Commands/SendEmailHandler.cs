@@ -1,10 +1,12 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Net;
 using System.Net.Mail;
 using System.Net.Mime;
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
+using OneTrueError.Api.Core.Accounts.Queries;
 using OneTrueError.Api.Core.Messaging.Commands;
 using OneTrueError.App.Configuration;
 using OneTrueError.Infrastructure.Configuration;
@@ -15,6 +17,14 @@ namespace OneTrueError.App.Modules.Messaging.Commands
     [Component]
     internal class SendEmailHandler : ICommandHandler<SendEmail>
     {
+        private IQueryBus _queryBus;
+
+        public SendEmailHandler(IQueryBus queryBus)
+        {
+            if (queryBus == null) throw new ArgumentNullException("queryBus");
+            _queryBus = queryBus;
+        }
+
 #pragma warning disable 1998
         public async Task ExecuteAsync(SendEmail command)
 #pragma warning restore 1998
@@ -32,7 +42,15 @@ namespace OneTrueError.App.Modules.Messaging.Commands
             };
             foreach (var recipient in command.EmailMessage.Recipients)
             {
-                email.To.Add(new MailAddress(recipient.Address, recipient.Name));
+                int accountId;
+                if (int.TryParse(recipient.Address, out accountId))
+                {
+                    var query = new GetAccountEmailById(accountId);
+                    var emailAddress = await _queryBus.QueryAsync(query);
+                    email.To.Add(new MailAddress(emailAddress, recipient.Name));
+                }
+                else
+                    email.To.Add(new MailAddress(recipient.Address, recipient.Name));
             }
             if (string.IsNullOrEmpty(command.EmailMessage.HtmlBody))
             {

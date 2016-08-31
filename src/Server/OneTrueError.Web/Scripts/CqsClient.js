@@ -56,3 +56,4 @@ var Griffin;
         Cqs.CqsClient = CqsClient;
     })(Cqs = Griffin.Cqs || (Griffin.Cqs = {}));
 })(Griffin || (Griffin = {}));
+//# sourceMappingURL=CqsClient.js.map

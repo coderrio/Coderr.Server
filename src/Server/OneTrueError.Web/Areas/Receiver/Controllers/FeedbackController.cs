@@ -38,7 +38,7 @@ namespace OneTrueError.Web.Areas.Receiver.Controllers
                     {
                         cmd.CommandText = "SELECT Id FROM Applications WHERE AppKey = @key";
                         cmd.AddParameter("key", appKey);
-                        appId = (int) cmd.ExecuteScalar();
+                        appId = (int) await cmd.ExecuteScalarAsync();
                     }
 
                 }

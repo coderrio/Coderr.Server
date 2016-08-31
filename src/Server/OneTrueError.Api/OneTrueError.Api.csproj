@@ -89,6 +89,7 @@
     <Compile Include="Core\Applications\NamespaceDoc.cs" />
     <Compile Include="Core\Applications\Queries\GetApplicationTeamResult.cs" />
     <Compile Include="Core\Applications\Queries\OverviewStatSummary.cs" />
+    <Compile Include="Core\Feedback\Events\FeedbackAttachedToIncident.cs" />
     <Compile Include="Core\Feedback\NamespaceDoc.cs" />
     <Compile Include="Core\Incidents\NamespaceDoc.cs" />
     <Compile Include="Core\Invitations\Commands\InviteUser.cs" />
