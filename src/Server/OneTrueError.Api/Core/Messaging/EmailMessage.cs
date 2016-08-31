@@ -28,7 +28,7 @@ namespace OneTrueError.Api.Core.Messaging
         /// <param name="recipient">Destination</param>
         public EmailMessage(string recipient)
         {
-            if (recipient == null) throw new ArgumentNullException(nameof(recipient));
+            if (recipient == null) throw new ArgumentNullException("recipient");
             Recipients = new[] {new EmailAddress(recipient)};
             Resources = new List<EmailResource>();
         }
@@ -39,7 +39,7 @@ namespace OneTrueError.Api.Core.Messaging
         /// <param name="recipients">List of recipients</param>
         public EmailMessage(IReadOnlyList<string> recipients)
         {
-            if (recipients == null) throw new ArgumentNullException(nameof(recipients));
+            if (recipients == null) throw new ArgumentNullException("recipients");
             if (recipients.Count == 0) throw new ArgumentException("Tried to send to an empty list.", "recipients");
 
             Recipients = recipients.Select(x => new EmailAddress(x)).ToArray();

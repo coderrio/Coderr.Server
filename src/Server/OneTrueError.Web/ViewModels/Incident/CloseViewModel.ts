@@ -60,7 +60,8 @@ module OneTrueError.Incident {
 
             var closeCmd = new CloseIncident(solution.value, this.incidentId);
 
-            var sendMessage = <HTMLInputElement>this.context.select.one('[name="sendCustomerMessage"]');
+            var sendMessage = <HTMLInputElement>this.context.select.one('sendCustomerMessage');
+            console.log(sendMessage);
             if (sendMessage.checked) {
                 var subject = (<HTMLInputElement>this.context.select.one('[name="UserSubject"]'));
                 var text = (<HTMLInputElement>this.context.select.one('[name="UserText"]'));
@@ -68,6 +69,9 @@ module OneTrueError.Incident {
                     alert("You specified that you wanted to send a notification to your users, but you have not specified subject or body of the message.");
                     return;
                 }
+                closeCmd.NotificationText = text.value;
+                closeCmd.CanSendNotification = true;
+                closeCmd.NotificationTitle = subject.value;
             }
 
             CqsClient.command(closeCmd);

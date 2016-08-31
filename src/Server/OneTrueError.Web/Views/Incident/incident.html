@@ -26,7 +26,7 @@
         </p>
         <div data-if="vm.IsIgnored">
             <em>
-                Incident is ignored, i.e. no notifcations will be sent for this incident. New reports are thrown away (but the counter will increase to
+                Incident is ignored, i.e. no notifications will be sent for this incident. New reports are thrown away (but the counter will increase to
                 indicate that it's still active).
             </em>
         </div>
@@ -69,13 +69,13 @@
                 </a>
             </div>
             <div class="tile-nephritis tile tile-medium">
-                <a href="/incident/:incidentId/users">
+                <a href="#/application/:applicationId/incident/:incidentId/users">
                     <h4 title="Number of users waiting for a fix">Users waiting</h4>
                     <h1 data-name="WaitingUserCount"></h1>
                 </a>
             </div>
             <div class="tile-nephritis tile tile-medium">
-                <a href="/incident/:incidentId/feedback">
+                <a href="#/application/:applicationId/incident/:incidentId/feedback">
                     <h4 title="Number of users waiting for a fix">Feedback count</h4>
                     <h1 data-name="FeedbackCount"></h1>
                 </a>

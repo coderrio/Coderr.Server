@@ -48,7 +48,8 @@ var OneTrueError;
             CloseViewModel.prototype.onCloseIncident = function () {
                 var solution = this.context.select.one('[name="solution"]');
                 var closeCmd = new CloseIncident(solution.value, this.incidentId);
-                var sendMessage = this.context.select.one('[name="sendCustomerMessage"]');
+                var sendMessage = this.context.select.one('sendCustomerMessage');
+                console.log(sendMessage);
                 if (sendMessage.checked) {
                     var subject = this.context.select.one('[name="UserSubject"]');
                     var text = this.context.select.one('[name="UserText"]');
@@ -56,6 +57,9 @@ var OneTrueError;
                         alert("You specified that you wanted to send a notification to your users, but you have not specified subject or body of the message.");
                         return;
                     }
+                    closeCmd.NotificationText = text.value;
+                    closeCmd.CanSendNotification = true;
+                    closeCmd.NotificationTitle = subject.value;
                 }
                 CqsClient.command(closeCmd);
                 window.location.hash = "#/application/" + this.context.routeData["applicationId"];

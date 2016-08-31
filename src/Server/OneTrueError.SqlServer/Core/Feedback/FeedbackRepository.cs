@@ -4,7 +4,6 @@ using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 using OneTrueError.App.Core.Feedback;
-using OneTrueError.SqlServer.Tools;
 
 namespace OneTrueError.SqlServer.Core.Feedback
 {
@@ -31,8 +30,21 @@ namespace OneTrueError.SqlServer.Core.Feedback
         public async Task<IReadOnlyList<string>> GetEmailAddressesAsync(int incidentId)
         {
             var emailAddresses = new List<string>();
-            var items = await _unitOfWork.ToListAsync<string>("FROM Incidents WHERE Id = ?", incidentId);
-            return items;
+            using (var cmd = _unitOfWork.CreateDbCommand())
+            {
+                cmd.CommandText =
+                    "SELECT distinct EmailAddress FROM IncidentFeedback WHERE IncidentId = @id AND EmailAddress IS NOT NULL";
+                cmd.AddParameter("id", incidentId);
+                using (var reader = await cmd.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        emailAddresses.Add(reader.GetString(0));
+                    }
+                }
+            }
+
+            return emailAddresses;
         }
     }
 }
