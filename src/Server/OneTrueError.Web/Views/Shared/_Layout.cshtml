@@ -2,7 +2,7 @@
 @using OneTrueError.Infrastructure.Configuration
 @using OneTrueError.Web.Models
 @{
-    if (Request.Url.Host == "http://localhost:50473")
+    if (Request.Url?.Port == 50473)
     {
         ViewBag.AppUrl = "http://localhost:50473/";
     }
@@ -145,7 +145,7 @@
     @if (SessionUser.IsAuthenticated)
     {
         <script type="text/javascript">
-            @if (Url.Content("~/") == Request.Url.AbsolutePath)
+            @if (Url.Content("~/").Equals(Request.Url.AbsolutePath, StringComparison.OrdinalIgnoreCase))
             {
                 <text>doMe();</text>
             }

@@ -83,7 +83,7 @@ namespace OneTrueError.App.Core.Invitations.CommandHandlers
         protected virtual async Task SendInvitationEmailAsync(Invitation invitation, string reason)
         {
             var config = ConfigurationStore.Instance.Load<BaseConfiguration>();
-            var url = config.BaseUrl;
+            var url = config.BaseUrl.ToString().TrimEnd('/');
             if (string.IsNullOrEmpty(reason))
                 reason = "";
             else

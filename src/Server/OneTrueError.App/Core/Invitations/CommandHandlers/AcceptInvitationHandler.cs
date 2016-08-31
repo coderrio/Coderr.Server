@@ -41,17 +41,18 @@ namespace OneTrueError.App.Core.Invitations.CommandHandlers
 
             await _accountRepository.CreateAsync(account);
 
-
+            
             Thread.CurrentPrincipal = new OneTruePrincipal(account.UserName);
             await _eventBus.PublishAsync(new AccountActivated(account.Id, account.UserName)
             {
                 EmailAddress = account.Email
             });
-            await _eventBus.PublishAsync(new InvitationAccepted(account.Id, invitation.InvitedBy, account.UserName)
+            var e = new InvitationAccepted(account.Id, invitation.InvitedBy, account.UserName)
             {
                 EmailAddress = account.Email,
                 ApplicationIds = invitation.Invitations.Select(x => x.ApplicationId).ToArray()
-            });
+            };
+            await _eventBus.PublishAsync(e);
 
             return new AcceptInvitationReply(account.Id, account.UserName);
         }
