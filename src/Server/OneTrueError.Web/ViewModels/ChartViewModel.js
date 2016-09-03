@@ -142,4 +142,3 @@ var OneTrueError;
     }());
     OneTrueError.LineChart = LineChart;
 })(OneTrueError || (OneTrueError = {}));
-//# sourceMappingURL=ChartViewModel.js.map

@@ -54,4 +54,3 @@ var OneTrueError;
         Account.SettingsViewModel = SettingsViewModel;
     })(Account = OneTrueError.Account || (OneTrueError.Account = {}));
 })(OneTrueError || (OneTrueError = {}));
-//# sourceMappingURL=SettingsViewModel.js.map

@@ -79,7 +79,6 @@ module OneTrueError.Report {
                             },
                             Value: {
                                 html(value, dto) {
-                                    console.log('here')
                                     if (collectionName === 'Screenshots') {
                                         return '<img alt="Embedded Image" src="data:image/png;base64,' + value + '" />';
                                     } else {
@@ -89,7 +88,6 @@ module OneTrueError.Report {
                             }
                         }
                     };
-                    console.log('item', item);
                     this.context.renderPartial('propertyTable', item, directives);
                     return;
                 }

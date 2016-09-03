@@ -364,4 +364,3 @@ var Griffin;
         WebApp.Pager = Pager;
     })(WebApp = Griffin.WebApp || (Griffin.WebApp = {}));
 })(Griffin || (Griffin = {}));
-//# sourceMappingURL=Griffin.WebApp.js.map

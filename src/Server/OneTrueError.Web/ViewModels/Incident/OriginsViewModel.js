@@ -62,4 +62,3 @@ var OneTrueError;
         Incident.OriginsViewModel = OriginsViewModel;
     })(Incident = OneTrueError.Incident || (OneTrueError.Incident = {}));
 })(OneTrueError || (OneTrueError = {}));
-//# sourceMappingURL=OriginsViewModel.js.map

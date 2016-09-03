@@ -211,7 +211,7 @@ namespace OneTrueError.Web.Controllers
                         ModelState.AddModelError("", "Incorrect username or password.");
                     else
                         ModelState.AddModelError("",
-                            "Your account is locked or have not been activated (check your email account). Contact support@onetrueerror.com if you need assistance.");
+                            "Your account is locked or have not been activated (check your mailbox). Contact support@onetrueerror.com if you need assistance.");
 
                     model.Password = "";
                     return View(model);

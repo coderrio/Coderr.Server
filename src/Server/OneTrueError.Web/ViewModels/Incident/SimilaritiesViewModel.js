@@ -28,18 +28,26 @@ var OneTrueError;
                     var target = evt.target;
                     if (target.tagName === 'LI') {
                         _this.selectCollection(target.firstElementChild.textContent);
+                        $('li', target.parentElement).removeClass('active');
+                        $(target).addClass('active');
                     }
                     else if (target.tagName === 'A') {
                         _this.selectCollection(target.textContent);
+                        $('li', target.parentElement.parentElement).removeClass('active');
+                        $(target.parentElement).addClass('active');
                     }
                 }, true);
                 context.handle.click('#ContextProperty', function (evt) {
                     var target = evt.target;
                     if (target.tagName === 'LI') {
                         _this.selectProperty(target.firstElementChild.textContent);
+                        $('li', target.parentElement).removeClass('active');
+                        $(target).addClass('active');
                     }
                     else if (target.tagName === 'A') {
                         _this.selectProperty(target.textContent);
+                        $('li', target.parentElement.parentElement).removeClass('active');
+                        $(target.parentElement).addClass('active');
                     }
                 });
                 //    var service = new ApplicationService();
@@ -102,4 +110,3 @@ var OneTrueError;
         Incident.SimilaritiesViewModel = SimilaritiesViewModel;
     })(Incident = OneTrueError.Incident || (OneTrueError.Incident = {}));
 })(OneTrueError || (OneTrueError = {}));
-//# sourceMappingURL=SimilaritiesViewModel.js.map

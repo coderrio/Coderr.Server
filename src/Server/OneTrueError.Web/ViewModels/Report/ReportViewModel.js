@@ -72,7 +72,6 @@ var OneTrueError;
                                 },
                                 Value: {
                                     html: function (value, dto) {
-                                        console.log('here');
                                         if (collectionName === 'Screenshots') {
                                             return '<img alt="Embedded Image" src="data:image/png;base64,' + value + '" />';
                                         }
@@ -83,7 +82,6 @@ var OneTrueError;
                                 }
                             }
                         };
-                        console.log('item', item);
                         _this.context.renderPartial('propertyTable', item, directives);
                         return;
                     }
@@ -95,4 +93,3 @@ var OneTrueError;
         Report.ReportViewModel = ReportViewModel;
     })(Report = OneTrueError.Report || (OneTrueError.Report = {}));
 })(OneTrueError || (OneTrueError = {}));
-//# sourceMappingURL=ReportViewModel.js.map

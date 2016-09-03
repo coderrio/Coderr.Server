@@ -30,16 +30,24 @@ module OneTrueError.Incident {
                 var target = <HTMLElement>evt.target;
                 if (target.tagName === 'LI') {
                     this.selectCollection(target.firstElementChild.textContent);
+                    $('li', target.parentElement).removeClass('active');
+                    $(target).addClass('active');
                 } else if (target.tagName === 'A') {
                     this.selectCollection(target.textContent);
+                    $('li', target.parentElement.parentElement).removeClass('active');
+                    $(target.parentElement).addClass('active');
                 }
             }, true);
             context.handle.click('#ContextProperty', evt => {
                 var target = <HTMLElement>evt.target;
                 if (target.tagName === 'LI') {
                     this.selectProperty(target.firstElementChild.textContent);
+                    $('li', target.parentElement).removeClass('active');
+                    $(target).addClass('active');
                 } else if (target.tagName === 'A') {
                     this.selectProperty(target.textContent);
+                    $('li', target.parentElement.parentElement).removeClass('active');
+                    $(target.parentElement).addClass('active');
                 }
             });
 
