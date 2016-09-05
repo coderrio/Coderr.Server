@@ -11,6 +11,7 @@ module OneTrueError.Application {
             var service = new Applications.ApplicationService();
             service.get(context.routeData['applicationId'])
                 .done(app => {
+                    (<any>app).AppUrl = window["API_URL"];
                 context.render(app);
                     $('#appTitle').text(app.Name);
                     context.resolve();

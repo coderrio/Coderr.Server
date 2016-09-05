@@ -89,7 +89,7 @@ namespace OneTrueError.Web
                         errorTrackingConfig.ContactEmail,
                         errorTrackingConfig.InstallationId));
                 }
-                OneTrue.Configure(uri, "appKey", "sharedSecret");
+                OneTrue.Configuration.Credentials(uri, "appKey", "sharedSecret");
             }
             else
             {

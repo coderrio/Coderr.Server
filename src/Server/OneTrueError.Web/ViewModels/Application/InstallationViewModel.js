@@ -12,6 +12,7 @@ var OneTrueError;
                 var service = new OneTrueError.Applications.ApplicationService();
                 service.get(context.routeData['applicationId'])
                     .done(function (app) {
+                    app.AppUrl = window["API_URL"];
                     context.render(app);
                     $('#appTitle').text(app.Name);
                     context.resolve();
