@@ -84,12 +84,12 @@
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="OneTrueError.Client, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OneTrueError.Client.1.0.0-rc04\lib\net40\OneTrueError.Client.dll</HintPath>
+    <Reference Include="OneTrueError.Client, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OneTrueError.Client.1.0.0\lib\net40\OneTrueError.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="OneTrueError.Client.AspNet.Mvc5, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OneTrueError.Client.AspNet.Mvc5.1.0.0-rc01\lib\net45\OneTrueError.Client.AspNet.Mvc5.dll</HintPath>
+      <HintPath>..\packages\OneTrueError.Client.AspNet.Mvc5.1.0.0\lib\net45\OneTrueError.Client.AspNet.Mvc5.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -349,6 +349,7 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Nuget\ReadMe.txt" />
     <Content Include="Scripts\alertify.js" />
     <Content Include="Scripts\alertify.min.js" />
     <Content Include="Scripts\Application.js" />

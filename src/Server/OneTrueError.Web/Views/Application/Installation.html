@@ -32,7 +32,9 @@
                         <!-- HTML generated using hilite.me -->
                         <div style="background: #ffffff; overflow: auto; width: auto; padding: .2em .6em;">
                             <pre style="margin: 0; line-height: 125%"><span style="color: #008800; font-style: italic">// To send to our service</span>
-OneTrue.Configuration.Credentials(<span style="color: #0000FF">&quot;<span data-name="AppKey"></span>&quot;</span>, 
+var uri = new Uri(<span style="color: #0000FF">&quot;<span data-name="AppUrl"></span>&quot;</span>);
+OneTrue.Configuration.Credentials(uri,
+                                  <span style="color: #0000FF">&quot;<span data-name="AppKey"></span>&quot;</span>, 
                                   <span style="color: #0000FF">&quot;<span data-name="SharedSecret"></span>&quot;</span>);
 </pre>
                         </div>
@@ -88,7 +90,10 @@ OneTrue.Configuration.Credentials(<span style="color: #0000FF">&quot;<span data-
     {
         <span style="color: #008800; font-weight: bold">static</span> <span style="color: #008800; font-weight: bold">void</span> <span style="color: #0066BB; font-weight: bold">Main</span>(<span style="color: #333399; font-weight: bold">string</span>[] args)
         {
-            OneTrue.Configuration.Credentials(<span style="background-color: #fff0f0">&quot;b959b8b3-4ead-4db4-b18a-b26d13530e5d&quot;</span>, <span style="background-color: #fff0f0">&quot;aadaf669-8e0f-42f4-b9dc-97c6d0d43174&quot;</span>);
+            var uri = new Uri(<span style="color: #0000FF">&quot;<span data-name="AppUrl"></span>&quot;</span>);
+            OneTrue.Configuration.Credentials(uri,
+                                              <span style="color: #0000FF">&quot;<span data-name="AppKey"></span>&quot;</span>, 
+                                              <span style="color: #0000FF">&quot;<span data-name="SharedSecret"></span>&quot;</span>);
             OneTrue.Configuration.Advanced.UploadReportFailed += OnReportfailed;
 
             <span style="color: #888888">//[.. Your code here ..]</span>
@@ -135,7 +140,9 @@ OneTrue.Configuration.Credentials(<span style="color: #0000FF">&quot;<span data-
     <span style="color: #000080; font-weight: bold">protected</span> <span style="color: #000080; font-weight: bold">void</span> Application_Start()
     {
         <span style="color: #008800; font-style: italic">// The appkey and shared key can be found in onetrueeror.com</span>
-        OneTrue.Configuration.Credentials(<span style="color: #0000FF">&quot;<span data-name="AppKey"></span>&quot;</span>, 
+        var uri = new Uri(<span style="color: #0000FF">&quot;<span data-name="AppUrl"></span>&quot;</span>);
+        OneTrue.Configuration.Credentials(uri,
+                                          <span style="color: #0000FF">&quot;<span data-name="AppKey"></span>&quot;</span>, 
                                           <span style="color: #0000FF">&quot;<span data-name="SharedSecret"></span>&quot;</span>);
         OneTrue.Configuration.CatchAspNetExceptions();
     }
@@ -227,7 +234,9 @@ OneTrue.Configuration.Credentials(<span style="color: #0000FF">&quot;<span data-
     <span style="color: #000080; font-weight: bold">protected</span> <span style="color: #000080; font-weight: bold">void</span> Application_Start()
     {
         <span style="color: #008800; font-style: italic">// The appkey and shared key can be found in onetrueeror.com</span>
-        OneTrue.Configuration.Credentials(<span style="color: #0000FF">&quot;<span data-name="AppKey"></span>&quot;</span>, 
+        var uri = new Uri(<span style="color: #0000FF">&quot;<span data-name="AppUrl"></span>&quot;</span>);
+        OneTrue.Configuration.Credentials(uri,
+                                          <span style="color: #0000FF">&quot;<span data-name="AppKey"></span>&quot;</span>, 
                                           <span style="color: #0000FF">&quot;<span data-name="SharedSecret"></span>&quot;</span>);
         OneTrue.Configuration.CatchWinFormsExceptions();
     }
@@ -311,7 +320,9 @@ OneTrue.Configuration.Credentials(<span style="color: #0000FF">&quot;<span data-
 {
     <span style="color: #000080; font-weight: bold">public</span> <span style="color: #000080; font-weight: bold">static</span> <span style="color: #000080; font-weight: bold">void</span> AppInitialize()
     {
-        OneTrue.Configuration.Credentials(<span style="color: #0000FF">&quot;<span data-name="AppKey"></span>&quot;</span>, 
+        var uri = new Uri(<span style="color: #0000FF">&quot;<span data-name="AppUrl"></span>&quot;</span>);
+        OneTrue.Configuration.Credentials(uri,
+                                          <span style="color: #0000FF">&quot;<span data-name="AppKey"></span>&quot;</span>, 
                                           <span style="color: #0000FF">&quot;<span data-name="SharedSecret"></span>&quot;</span>);
         <span style="color: #008800; font-style: italic">//add the WCF context providers.</span>
         OneTrue.Configuration.CatchWcfExceptions();
@@ -400,7 +411,9 @@ OneTrue.Configuration.Credentials(<span style="color: #0000FF">&quot;<span data-
 {
     <span style="color: #000080; font-weight: bold">protected</span> <span style="color: #000080; font-weight: bold">void</span> Application_Start(<span style="color: #000080; font-weight: bold">object</span> sender, EventArgs e)
     {
-        OneTrue.Configuration.Credentials(<span style="color: #0000FF">&quot;<span data-name="AppKey"></span>&quot;</span>, 
+        var uri = new Uri(<span style="color: #0000FF">&quot;<span data-name="AppUrl"></span>&quot;</span>);
+        OneTrue.Configuration.Credentials(uri,
+                                          <span style="color: #0000FF">&quot;<span data-name="AppKey"></span>&quot;</span>, 
                                           <span style="color: #0000FF">&quot;<span data-name="SharedSecret"></span>&quot;</span>);
         OneTrue.Configuration.CatchAsmxExceptions();
     }
