@@ -13,10 +13,8 @@ namespace OneTrueError.Web.Cqs
     public class QueuedEventBus : ApplicationServiceThread, IEventBus, IDisposable
     {
         private readonly IEventBus _writeBus;
-        private readonly ILog _logger = LogManager.GetLogger(typeof (QueuedEventBus));
+        private readonly ILog _logger = LogManager.GetLogger(typeof(QueuedEventBus));
         private readonly IMessageQueue _queue;
-
-        private int _retryCounter;
 
         public QueuedEventBus(IEventBus writeBus, IMessageQueueProvider queueProvider)
         {
@@ -73,30 +71,23 @@ namespace OneTrueError.Web.Cqs
                     continue;
                 }
 
-                while (_retryCounter < 3)
+                try
                 {
-                    try
-                    {
-                        ExecuteMessage(msg);
-                        break;
-                    }
-                    catch (Exception ex)
-                    {
-                        _retryCounter++;
-                        if (_retryCounter < 3)
-                            _logger.Warn("Processing '" + JsonConvert.SerializeObject(msg) + "' failed, retrying..");
-                        else
-                            _logger.Error("Processing '" + JsonConvert.SerializeObject(msg) + "' failed.", ex);
-                    }
+                    ExecuteMessage(msg);
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    _logger.Error("Processing '" + JsonConvert.SerializeObject(msg) + "' failed.", ex);
                 }
             }
         }
 
         private void ExecuteMessage(object message)
         {
-            var method = typeof (IEventBus).GetMethod("PublishAsync");
+            var method = typeof(IEventBus).GetMethod("PublishAsync");
             var mi = method.MakeGenericMethod(message.GetType());
-            var task = (Task) mi.Invoke(_writeBus, new[] {message});
+            var task = (Task)mi.Invoke(_writeBus, new[] { message });
             task.Wait();
         }
     }
