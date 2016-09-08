@@ -90,7 +90,7 @@ namespace OneTrueError.Web.Areas.Installation.Controllers
             return Redirect(Url.GetNextWizardStep());
         }
 
-        [HttpPost]
+        [HttpPost, AllowAnonymous]
         public ActionResult Activate()
         {
             ConfigurationManager.RefreshSection("appSettings");

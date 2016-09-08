@@ -6,6 +6,7 @@ using OneTrueError.App.Core.Accounts;
 using OneTrueError.App.Core.Users;
 using OneTrueError.Infrastructure;
 using OneTrueError.SqlServer.Core.Accounts;
+using OneTrueError.SqlServer.Core.Applications;
 using OneTrueError.SqlServer.Core.Users;
 using OneTrueError.Web.Areas.Installation.Models;
 using OneTrueError.Web.Models;
@@ -49,6 +50,18 @@ namespace OneTrueError.Web.Areas.Installation.Controllers
                 };
                 var userRepos = new UserRepository(uow);
                 await userRepos.CreateAsync(user);
+
+                var repos2 = new ApplicationRepository(uow);
+                /*insert into ApplicationMembers (AccountId, ApplicationId, EmailAddress, AddedAtUtc, AddedByName, Roles) SELECT 1, 1, (SELECT TOP 1 email FROM accounts), GetUtcDate(), 'admin', 'Admin,Member';
+*/
+                var tm = new ApplicationTeamMember(1, account.Email)
+                {
+                    AccountId = account.Id,
+                    AddedByName = "system",
+                    Roles = new[] {"Admin, Member"},
+                    UserName = account.UserName
+                };
+                await repos2.CreateAsync(tm);
 
                 uow.SaveChanges();
                 SessionUser.Current = new SessionUser(account.Id, model.UserName);

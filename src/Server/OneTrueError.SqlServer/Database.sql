@@ -327,4 +327,3 @@ BEGIN
 END
 
 insert into Applications (Name, AppKey, CreatedById, CreatedAtUtc, ApplicationType, SharedSecret) VALUES('test', '13d82df603a845c7a27164c4fec19dd6', 1, GetUtcDate(), 'DesktopApplication', '6f0a0a7fac6d42caa7cc47bb34a6520b');
-insert into ApplicationMembers (AccountId, ApplicationId, EmailAddress, AddedAtUtc, AddedByName, Roles) SELECT 1, 1, (SELECT TOP 1 email FROM accounts), GetUtcDate(), 'admin', 'Admin,Member';
