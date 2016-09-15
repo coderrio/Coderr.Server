@@ -52,6 +52,7 @@
                 .fail(function (rejection) {
                     console.log(rejection.message);
                 });
+            $.post(window.API_URL + '/account/UpdateSession');
         });
     }
     $('#create-application .btn-primary').click(function (e) {

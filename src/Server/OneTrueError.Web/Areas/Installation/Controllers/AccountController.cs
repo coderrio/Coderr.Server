@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using Griffin.Data;
+using OneTrueError.Api.Core.Applications.Queries;
 using OneTrueError.App.Core.Accounts;
 using OneTrueError.App.Core.Users;
 using OneTrueError.Infrastructure;
