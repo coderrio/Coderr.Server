@@ -1,6 +1,7 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 using OneTrueError.Web.Infrastructure;
+using OneTrueError.Web.Infrastructure.Auth;
 
 namespace OneTrueError.Web
 {

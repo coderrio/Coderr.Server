@@ -12,9 +12,9 @@ namespace OneTrueError.Api.Client
     /// <summary>
     ///     Client for the OneTrueError server API
     /// </summary>
-    public class OneTrueClient : IQueryBus, ICommandBus, IEventBus
+    public class OneTrueApiClient : IQueryBus, ICommandBus, IEventBus
     {
-        private readonly string _apiKey;
+        private string _apiKey;
 
         private readonly JsonSerializerSettings _jsonSerializerSettings = new JsonSerializerSettings
         {
@@ -22,22 +22,15 @@ namespace OneTrueError.Api.Client
             Formatting = Formatting.Indented
         };
 
-        private readonly string _sharedSecret;
+        private string _sharedSecret;
         private Uri _uri;
 
 
         /// <summary>
-        ///     Creates a new instance of <see cref="OneTrueClient" />.
+        ///     Creates a new instance of <see cref="OneTrueApiClient" />.
         /// </summary>
-        /// <param name="apiKey">Api key from the admin area in OneTrueError web</param>
-        /// <param name="sharedSecret">Shared secret from the admin area in OneTrueError web</param>
-        public OneTrueClient(string apiKey, string sharedSecret)
-        {
-            if (apiKey == null) throw new ArgumentNullException(nameof(apiKey));
-            if (sharedSecret == null) throw new ArgumentNullException(nameof(sharedSecret));
+        public OneTrueApiClient() { 
 
-            _apiKey = apiKey;
-            _sharedSecret = sharedSecret;
             _jsonSerializerSettings.ContractResolver = new IncludeNonPublicMembersContractResolver();
         }
 
@@ -84,17 +77,23 @@ namespace OneTrueError.Api.Client
         ///     Open a channel
         /// </summary>
         /// <param name="uri">Root URL to the OneTrueError web</param>
-        public void Open(Uri uri)
+        /// <param name="apiKey">Api key from the admin area in OneTrueError web</param>
+        /// <param name="sharedSecret">Shared secret from the admin area in OneTrueError web</param>
+        public void Open(Uri uri, string apiKey, string sharedSecret)
         {
+            if (apiKey == null) throw new ArgumentNullException(nameof(apiKey));
+            if (sharedSecret == null) throw new ArgumentNullException(nameof(sharedSecret));
             if (uri == null) throw new ArgumentNullException(nameof(uri));
 
+            _apiKey = apiKey;
+            _sharedSecret = sharedSecret;
             _uri = uri;
         }
 
         private async Task<TResult> DeserializeResponse<TResult>(HttpWebResponse response)
         {
             var responseStream = response.GetResponseStream();
-            var jsonBuf = new byte[responseStream.Length];
+            var jsonBuf = new byte[response.ContentLength];
             await responseStream.ReadAsync(jsonBuf, 0, jsonBuf.Length);
             var jsonStr = Encoding.UTF8.GetString(jsonBuf);
             var responseObj = JsonConvert.DeserializeObject(jsonStr, typeof(TResult), _jsonSerializerSettings);

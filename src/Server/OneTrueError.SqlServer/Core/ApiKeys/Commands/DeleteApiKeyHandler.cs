@@ -20,12 +20,21 @@ namespace OneTrueError.SqlServer.Core.ApiKeys.Commands
             _unitOfWork = unitOfWork;
         }
 
-        public async Task ExecuteAsync(DeleteApiKey command)
+        public Task ExecuteAsync(DeleteApiKey command)
         {
-            if (string.IsNullOrEmpty(command.ApiKey))
-                await _unitOfWork.DeleteAsync<ApiKey>(command.Id);
+            int id;
+            if (!string.IsNullOrEmpty(command.ApiKey))
+            {
+                id = (int) _unitOfWork.ExecuteScalar("SELECT Id FROM ApiKeys WHERE GeneratedKey = @key", new { key=command.ApiKey});
+            }
             else
-                await _unitOfWork.DeleteAsync<ApiKey>(new {GeneratedKey = command.ApiKey});
+            {
+                id = command.Id;
+            }
+
+            _unitOfWork.ExecuteNonQuery("DELETE FROM [ApiKeyApplications] WHERE ApiKeyId = @id", new {id});
+            _unitOfWork.ExecuteNonQuery("DELETE FROM [ApiKeys] WHERE Id = @id", new { id });
+            return Task.FromResult<object>(null);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Web.Http;
 using OneTrueError.Web.Infrastructure;
+using OneTrueError.Web.Infrastructure.Auth;
 
 namespace OneTrueError.Web
 {
@@ -18,6 +19,7 @@ namespace OneTrueError.Web
         public static void Register(HttpConfiguration config)
         {
             config.SuppressDefaultHostAuthentication();
+            config.Filters.Add(new ApiKeyAuthenticator());
             config.Filters.Add(new WebApiAuthenticationFilter());
             config.MapHttpAttributeRoutes();
 

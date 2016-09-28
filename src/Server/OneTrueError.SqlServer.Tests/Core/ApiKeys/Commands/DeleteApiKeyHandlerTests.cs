@@ -47,10 +47,10 @@ namespace OneTrueError.SqlServer.Tests.Core.ApiKeys.Commands
             if (id is DBNull)
             {
                 repos.CreateAsync(new Application(10, "AppTen")).Wait();
-                _applicationId = (int) _uow.ExecuteScalar("SELECT TOP 1 Id FROM Applications");
+                _applicationId = (int)_uow.ExecuteScalar("SELECT TOP 1 Id FROM Applications");
             }
             else
-                _applicationId = (int) id;
+                _applicationId = (int)id;
 
 
         }
@@ -58,12 +58,12 @@ namespace OneTrueError.SqlServer.Tests.Core.ApiKeys.Commands
         [Fact]
         public async Task should_be_able_to_delete_key_by_id()
         {
-            var cmd  =new DeleteApiKey(_existingEntity.Id);
+            var cmd = new DeleteApiKey(_existingEntity.Id);
 
             var sut = new DeleteApiKeyHandler(_uow);
             await sut.ExecuteAsync(cmd);
 
-            var count = _uow.ExecuteScalar("SELECT cast(count(*) as int) FROM ApiKeys WHERE Id = @1", _existingEntity.Id);
+            var count = _uow.ExecuteScalar("SELECT cast(count(*) as int) FROM ApiKeys WHERE Id = @id", new { id = _existingEntity.Id });
             count.Should().Be(0);
         }
 
@@ -75,7 +75,7 @@ namespace OneTrueError.SqlServer.Tests.Core.ApiKeys.Commands
             var sut = new DeleteApiKeyHandler(_uow);
             await sut.ExecuteAsync(cmd);
 
-            var count = _uow.ExecuteScalar("SELECT cast(count(*) as int) FROM ApiKeys WHERE Id = @1", _existingEntity.Id);
+            var count = _uow.ExecuteScalar("SELECT cast(count(*) as int) FROM ApiKeys WHERE Id = @id", new { id = _existingEntity.Id });
             count.Should().Be(0);
         }
 

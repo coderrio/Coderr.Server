@@ -11,19 +11,19 @@ namespace OneTrueError.App
         /// <summary>
         ///     Creates a new instance of <see cref="OneTrueIdentity" />.
         /// </summary>
-        /// <param name="accountId">Account id</param>
+        /// <param name="accountId">0 = system or api key; otherwise an user account id</param>
         /// <param name="userName">User name</param>
         public OneTrueIdentity(int accountId, string userName)
         {
             if (userName == null) throw new ArgumentNullException("userName");
-            if (accountId <= 0) throw new ArgumentOutOfRangeException("accountId");
+            if (accountId < 0) throw new ArgumentOutOfRangeException("accountId");
 
             AccountId = accountId;
             Name = userName;
         }
 
         /// <summary>
-        ///     Account id
+        ///     0 = system or api key; otherwise an user account id
         /// </summary>
         public int AccountId { get; private set; }
 

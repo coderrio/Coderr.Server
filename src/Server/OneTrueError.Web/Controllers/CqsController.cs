@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -12,6 +13,7 @@ using Griffin.Cqs;
 using Griffin.Cqs.Authorization;
 using Griffin.Cqs.Net;
 using OneTrueError.Api.Core.Applications.Commands;
+using OneTrueError.App;
 using OneTrueError.Web.Infrastructure.Cqs;
 using OneTrueError.Web.Models;
 
@@ -89,17 +91,22 @@ namespace OneTrueError.Web.Controllers
 
             var prop = cqsObject.GetType().GetProperty("UserId");
             if (prop != null && prop.CanWrite)
-                prop.SetValue(cqsObject, SessionUser.Current.AccountId);
+                prop.SetValue(cqsObject, OneTruePrincipal.Current.Identity.AccountId);
 
             prop = cqsObject.GetType().GetProperty("AccountId");
             if (prop != null && prop.CanWrite)
-                prop.SetValue(cqsObject, SessionUser.Current.AccountId);
+                prop.SetValue(cqsObject, OneTruePrincipal.Current.Identity.AccountId);
+
+
+
+            RestrictOnApplicationId(cqsObject);
 
             ClientResponse cqsReplyObject = null;
             Exception ex = null;
             try
             {
                 cqsReplyObject = await _cqsProcessor.ProcessAsync(cqsObject);
+                RestrictOnApplicationId(cqsReplyObject);
             }
             catch (AggregateException e1)
             {
@@ -147,6 +154,22 @@ namespace OneTrueError.Web.Controllers
                 reply.StatusCode = HttpStatusCode.NoContent;
 
             return reply;
+        }
+
+        private static void RestrictOnApplicationId(object cqsObject)
+        {
+            PropertyInfo prop;
+            if (OneTruePrincipal.Current.Identity.AuthenticationType == "ApiKey")
+            {
+                prop = cqsObject.GetType().GetProperty("ApplicationId");
+                if (prop != null && prop.CanRead)
+                {
+                    var value = (int) prop.GetValue(cqsObject);
+                    if (!OneTruePrincipal.Current.IsInRole("Application_" + value) &&
+                        !OneTruePrincipal.Current.IsInRole("AllApplications"))
+                        throw new HttpException(403, "The given application key is not allowed for application " + value);
+                }
+            }
         }
 
         private string FirstLine(string msg)

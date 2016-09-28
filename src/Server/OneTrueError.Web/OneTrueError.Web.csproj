@@ -271,7 +271,7 @@
     </Compile>
     <Compile Include="Infrastructure\Cqs\CqsClientFactory.cs" />
     <Compile Include="Infrastructure\CustomerInfoProvider.cs" />
-    <Compile Include="Infrastructure\CustomMvcAuthorizeFilter.cs" />
+    <Compile Include="Infrastructure\Auth\CustomMvcAuthorizeFilter.cs" />
     <Compile Include="App_Start\Cqs\QueuedEventBus.cs" />
     <Compile Include="Infrastructure\InstallationHelper.cs" />
     <Compile Include="Infrastructure\Logging\LogAdapter.cs" />
@@ -389,6 +389,7 @@
     <Content Include="Areas\Admin\Views\ApiKeys\Create.cshtml" />
     <Content Include="Areas\Admin\Views\ApiKeys\Created.cshtml" />
     <Content Include="Areas\Admin\Views\ApiKeys\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\ApiKeys\Deleted.cshtml" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
@@ -609,6 +610,10 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\OneTrueError.Api.Client\OneTrueError.Api.Client.csproj">
+      <Project>{017F8863-3DE0-4AD2-9ED3-5ACB87BBBCD0}</Project>
+      <Name>OneTrueError.Api.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OneTrueError.Api\OneTrueError.Api.csproj">
       <Project>{FC331A95-FCA4-4764-8004-0884665DD01F}</Project>
       <Name>OneTrueError.Api</Name>

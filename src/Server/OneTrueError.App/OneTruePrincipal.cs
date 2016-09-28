@@ -15,7 +15,7 @@ namespace OneTrueError.App
         /// <summary>
         ///     Creates a new instance of <see cref="OneTruePrincipal" />.
         /// </summary>
-        /// <param name="accountId"></param>
+        /// <param name="accountId">0 = system or api key; otherwise an user account id</param>
         /// <param name="userName">Logged in user or <c>"system"</c></param>
         /// <param name="roles"></param>
         /// <exception cref="ArgumentNullException">userName</exception>
@@ -23,7 +23,7 @@ namespace OneTrueError.App
         {
             if (userName == null) throw new ArgumentNullException("userName");
             if (roles == null) throw new ArgumentNullException("roles");
-            if (accountId <= 0) throw new ArgumentOutOfRangeException("accountId");
+            if (accountId < 0) throw new ArgumentOutOfRangeException("accountId");
 
             Identity = new OneTrueIdentity(accountId, userName);
             _roles = roles;

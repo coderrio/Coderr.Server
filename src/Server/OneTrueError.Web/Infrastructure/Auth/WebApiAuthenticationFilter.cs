@@ -1,14 +1,13 @@
-﻿using System.Security.Principal;
+﻿using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Filters;
-using System.Reflection;
-using System.Linq;
 using OneTrueError.App;
 using OneTrueError.Web.Models;
 
-namespace OneTrueError.Web.Infrastructure
+namespace OneTrueError.Web.Infrastructure.Auth
 {
     public class WebApiAuthenticationFilter : IAuthenticationFilter
     {
@@ -18,6 +17,10 @@ namespace OneTrueError.Web.Infrastructure
         public async Task AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken)
 #pragma warning restore 1998
         {
+            //loaded by api key or any other mechanism (but cookies)
+            if (context.Principal is OneTruePrincipal)
+                return;
+
             if (!SessionUser.IsAuthenticated)
             {
                 var attr = context.ActionContext.ControllerContext.Controller.GetType().GetCustomAttribute<AllowAnonymousAttribute>()

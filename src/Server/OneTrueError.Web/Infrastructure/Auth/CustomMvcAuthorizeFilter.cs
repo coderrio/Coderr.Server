@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Security.Cryptography;
-using System.Security.Principal;
 using System.Threading;
 using System.Web;
 using System.Web.Mvc;
@@ -8,7 +7,7 @@ using System.Web.Security;
 using OneTrueError.App;
 using OneTrueError.Web.Models;
 
-namespace OneTrueError.Web.Infrastructure
+namespace OneTrueError.Web.Infrastructure.Auth
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class CustomMvcAuthorizeFilter : AuthorizeAttribute

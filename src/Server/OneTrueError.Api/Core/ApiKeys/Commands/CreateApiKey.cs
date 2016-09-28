@@ -6,7 +6,7 @@ namespace OneTrueError.Api.Core.ApiKeys.Commands
     /// <summary>
     /// Create a new api key
     /// </summary>
-    [Authorize("SysAdmin")]
+    [AuthorizeRoles("SysAdmin")]
     public class CreateApiKey : Command
     {
         /// <summary>
