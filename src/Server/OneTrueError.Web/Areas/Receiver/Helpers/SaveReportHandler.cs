@@ -17,17 +17,25 @@ using OneTrueError.Web.Areas.Receiver.ReportingApi;
 
 namespace OneTrueError.Web.Areas.Receiver.Helpers
 {
+    /// <summary>
+    /// Validates inbound report and store it in our internal queue for analysis.
+    /// </summary>
     public class SaveReportHandler
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof (SaveReportHandler));
         private IMessageQueue _queue;
 
+        /// <summary>
+        /// Creates a new instance of <see cref="SaveReportHandler"/>.
+        /// </summary>
+        /// <param name="queueProvider">provider</param>
         public SaveReportHandler(IMessageQueueProvider queueProvider)
         {
+            if (queueProvider == null) throw new ArgumentNullException("queueProvider");
             _queue = queueProvider.Open("ReportQueue");
         }
 
-        public async Task BuildReportAsync(string appKey, string sig, string remoteAddress, byte[] reportBody)
+        public async Task BuildReportAsync(string appKey, string signatureProvidedByTheClient, string remoteAddress, byte[] reportBody)
         {
             Guid tempKey;
             if (!Guid.TryParse(appKey, out tempKey))
@@ -43,9 +51,9 @@ namespace OneTrueError.Web.Areas.Receiver.Helpers
                 throw new HttpException(400, "AppKey was not found in the database. Key '" + appKey + "'.");
             }
 
-            if (!ReportValidator.ValidateBody(application.SharedSecret, sig, reportBody))
+            if (!ReportValidator.ValidateBody(application.SharedSecret, signatureProvidedByTheClient, reportBody))
             {
-                await StoreInvalidReportAsync(appKey, sig, remoteAddress, reportBody);
+                await StoreInvalidReportAsync(appKey, signatureProvidedByTheClient, remoteAddress, reportBody);
                 throw new HttpException(403,
                     "You either specified the wrong SharedSecret, or someone tampered with the data.");
             }

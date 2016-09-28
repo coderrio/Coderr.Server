@@ -63,8 +63,8 @@
       <HintPath>..\packages\Griffin.Container.Mvc5.1.0.2\lib\net40\Griffin.Container.Mvc5.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Griffin.Core, Version=1.0.37.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Griffin.Framework.1.0.37\lib\net45\Griffin.Core.dll</HintPath>
+    <Reference Include="Griffin.Core, Version=1.0.39.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Griffin.Framework.1.0.39\lib\net45\Griffin.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Griffin.Cqs, Version=1.0.11.0, Culture=neutral, processorArchitecture=MSIL">
@@ -216,6 +216,10 @@
     <Compile Include="App_Start\Services\ServiceRunner.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\Admin\Controllers\ApiKeysController.cs" />
+    <Compile Include="Areas\Admin\Models\ApiKeys\CreateViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\ApiKeys\ListViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\ApiKeys\ListViewModelItem.cs" />
     <Compile Include="Areas\Installation\Controllers\AccountController.cs" />
     <Compile Include="Areas\Installation\Controllers\MessagingController.cs" />
     <Compile Include="Areas\Installation\Controllers\SetupController.cs" />
@@ -255,7 +259,8 @@
     <Compile Include="Areas\Receiver\ReportingApi\NewReportException.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CqsController.cs" />
-    <Compile Include="Infrastructure\AuthenticationFailureResult.cs" />
+    <Compile Include="Infrastructure\Auth\AuthenticationFailureResult.cs" />
+    <Compile Include="Infrastructure\Auth\ApiKeyAuthenticator.cs" />
     <Compile Include="Infrastructure\Cqs\CqsObjectMapper.cs" />
     <Compile Include="Controllers\GuidController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -266,15 +271,14 @@
     </Compile>
     <Compile Include="Infrastructure\Cqs\CqsClientFactory.cs" />
     <Compile Include="Infrastructure\CustomerInfoProvider.cs" />
-    <Compile Include="Infrastructure\CustomMvcAuthorizeFilter.cs" />
+    <Compile Include="Infrastructure\Auth\CustomMvcAuthorizeFilter.cs" />
     <Compile Include="App_Start\Cqs\QueuedEventBus.cs" />
     <Compile Include="Infrastructure\InstallationHelper.cs" />
     <Compile Include="Infrastructure\Logging\LogAdapter.cs" />
     <Compile Include="Infrastructure\Logging\LogManagerAdapter.cs" />
     <Compile Include="Infrastructure\Logging\WebApiLogger.cs" />
-    <Compile Include="Infrastructure\OneTrueErrorPrincipal.cs" />
-    <Compile Include="Infrastructure\SignalRAuthenticateAttribute.cs" />
-    <Compile Include="Infrastructure\WebApiAuthenticationFilter.cs" />
+    <Compile Include="Infrastructure\Auth\SignalRAuthenticateAttribute.cs" />
+    <Compile Include="Infrastructure\Auth\WebApiAuthenticationFilter.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Account\AcceptViewModel.cs" />
@@ -381,6 +385,11 @@
     <Content Include="Areas\Installation\Views\Sql\Index.cshtml" />
     <Content Include="Areas\Installation\Views\Sql\Tables.cshtml" />
     <Content Include="Areas\Installation\Views\web.config" />
+    <Content Include="Areas\Admin\Views\ApiKeys\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\ApiKeys\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\ApiKeys\Created.cshtml" />
+    <Content Include="Areas\Admin\Views\ApiKeys\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\ApiKeys\Deleted.cshtml" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
@@ -601,6 +610,10 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\OneTrueError.Api.Client\OneTrueError.Api.Client.csproj">
+      <Project>{017F8863-3DE0-4AD2-9ED3-5ACB87BBBCD0}</Project>
+      <Name>OneTrueError.Api.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OneTrueError.Api\OneTrueError.Api.csproj">
       <Project>{FC331A95-FCA4-4764-8004-0884665DD01F}</Project>
       <Name>OneTrueError.Api</Name>

@@ -40,8 +40,8 @@
       <HintPath>..\packages\Griffin.Container.1.1.2\lib\net40\Griffin.Container.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Griffin.Core, Version=1.0.37.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Griffin.Framework.1.0.37\lib\net45\Griffin.Core.dll</HintPath>
+    <Reference Include="Griffin.Core, Version=1.0.39.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Griffin.Framework.1.0.39\lib\net45\Griffin.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthorizeAttribute.cs" />
     <Compile Include="Core\Accounts\Commands\DeclineInvitation.cs" />
     <Compile Include="Core\Accounts\Commands\RegisterAccount.cs" />
     <Compile Include="Core\Accounts\Commands\RequestPasswordReset.cs" />
@@ -84,6 +85,14 @@
     <Compile Include="Core\Accounts\Requests\ResetPasswordReply.cs" />
     <Compile Include="Core\Accounts\Requests\ValidateNewLogin.cs" />
     <Compile Include="Core\Accounts\Requests\ValidateNewLoginReply.cs" />
+    <Compile Include="Core\ApiKeys\Commands\CreateApiKey.cs" />
+    <Compile Include="Core\ApiKeys\Commands\DeleteApiKey.cs" />
+    <Compile Include="Core\ApiKeys\Queries\GetApiKey.cs" />
+    <Compile Include="Core\ApiKeys\Queries\GetApiKeyResult.cs" />
+    <Compile Include="Core\ApiKeys\Queries\GetApiKeyResultApplication.cs" />
+    <Compile Include="Core\ApiKeys\Queries\ListApiKeys.cs" />
+    <Compile Include="Core\ApiKeys\Queries\ListApiKeysResult.cs" />
+    <Compile Include="Core\ApiKeys\Queries\ListApiKeysResultItem.cs" />
     <Compile Include="Core\Applications\ApplicationListItem.cs" />
     <Compile Include="Core\Applications\Commands\CreateApplication.cs" />
     <Compile Include="Core\Applications\NamespaceDoc.cs" />
@@ -204,6 +213,7 @@
   <ItemGroup />
   <ItemGroup>
     <None Include="Core\Accounts\ReadMe.md" />
+    <None Include="Core\ApiKeys\ReadMe.md" />
     <None Include="Core\Applications\ReadMe.md" />
     <None Include="Core\Feedback\ReadMe.md" />
     <None Include="Core\Incidents\ReadMe.md" />

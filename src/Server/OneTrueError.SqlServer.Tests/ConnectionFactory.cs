@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +13,10 @@ namespace OneTrueError.SqlServer.Tests
     {
         public static IAdoNetUnitOfWork Create()
         {
-            throw new NotImplementedException();
+            var connection = new SqlConnection();
+            connection.ConnectionString = ConfigurationManager.ConnectionStrings["Db"].ConnectionString;
+            connection.Open();
+            return new AdoNetUnitOfWork(connection, true);
         }
     }
 }

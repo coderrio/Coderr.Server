@@ -1,0 +1,22 @@
+﻿@model OneTrueError.Web.Areas.Admin.Models.ApiKeys.ListViewModel
+@{
+    ViewBag.Title = "Admin - Api keys";
+}
+<div class="container">
+    <div class="col-lg-6">
+        <h2>Api keys</h2>
+        <p>
+            Api keys are used when communicating with OneTrueError through the API.
+        </p>
+        <a href="@Url.Action("Create")">Create a new key</a>
+        <h3>Existing keys</h3>
+        <ul>
+            @foreach (var item in Model.Keys)
+            {
+                <li>
+                    <a href="@Url.Action("Details", new {id = item.Id})">@item.Name</a>
+                </li>
+            }
+        </ul>
+    </div>
+</div>

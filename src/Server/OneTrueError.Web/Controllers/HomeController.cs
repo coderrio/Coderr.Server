@@ -1,4 +1,8 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Threading.Tasks;
+using System.Web.Mvc;
+using OneTrueError.Api.Client;
+using OneTrueError.Api.Core.Applications.Queries;
 
 namespace OneTrueError.Web.Controllers
 {

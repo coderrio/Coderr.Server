@@ -39,10 +39,11 @@ namespace OneTrueError.App.Core.Invitations.CommandHandlers
             account.Activate();
             account.Login(request.Password);
 
+            var roles=  invitation.Invitations.Select(x => "Member_" + x.ApplicationId).ToArray();
             await _accountRepository.CreateAsync(account);
 
             
-            Thread.CurrentPrincipal = new OneTruePrincipal(account.UserName);
+            Thread.CurrentPrincipal = new OneTruePrincipal(account.Id, account.UserName, roles);
             await _eventBus.PublishAsync(new AccountActivated(account.Id, account.UserName)
             {
                 EmailAddress = account.Email

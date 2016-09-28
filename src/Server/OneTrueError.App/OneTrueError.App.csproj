@@ -44,8 +44,8 @@
       <HintPath>..\packages\Griffin.Container.1.1.2\lib\net40\Griffin.Container.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Griffin.Core, Version=1.0.37.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Griffin.Framework.1.0.37\lib\net45\Griffin.Core.dll</HintPath>
+    <Reference Include="Griffin.Core, Version=1.0.39.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Griffin.Framework.1.0.39\lib\net45\Griffin.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
@@ -80,6 +80,8 @@
   <ItemGroup>
     <Compile Include="Configuration\BaseConfiguration.cs" />
     <Compile Include="Configuration\OneTrueErrorConfigSection.cs" />
+    <Compile Include="Core\ApiKeys\ApiKey.cs" />
+    <Compile Include="Core\ApiKeys\IApiKeyRepository.cs" />
     <Compile Include="Core\Applications\ApplicationRole.cs" />
     <Compile Include="Core\Applications\EventHandlers\UpdateTeamOnInvitationAccepted.cs" />
     <Compile Include="Core\Notifications\EventHandlers\CheckForFeedbackNotificationsToSend.cs" />
@@ -145,6 +147,7 @@
     <Compile Include="Modules\ReportSpikes\CheckForReportPeak.cs" />
     <Compile Include="Modules\ReportSpikes\NewSpike.cs" />
     <Compile Include="Modules\Tagging\Handlers\IncidentReopenedHandler.cs" />
+    <Compile Include="OneTrueIdentity.cs" />
     <Compile Include="OneTruePrincipal.cs" />
     <Compile Include="Core\Notifications\EventHandlers\CheckForNotificationsToSend.cs" />
     <Compile Include="Modules\ReportSpikes\IReportSpikeRepository.cs" />
@@ -247,6 +250,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Core\Accounts\CommandHandlers\Templates\ResetPassword\Template.md" />
     <None Include="Core\Accounts\ReadMe.md" />
+    <None Include="Core\ApiKeys\ReadMe.md" />
     <None Include="OneTrueError.App.csproj.vsspell" />
     <None Include="packages.config" />
   </ItemGroup>

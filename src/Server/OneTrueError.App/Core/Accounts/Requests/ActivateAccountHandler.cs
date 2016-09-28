@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
 using OneTrueError.Api.Core.Accounts.Events;
 using OneTrueError.Api.Core.Accounts.Requests;
+using OneTrueError.Api.Core.Applications.Queries;
 
 namespace OneTrueError.App.Core.Accounts.Requests
 {
@@ -16,16 +18,17 @@ namespace OneTrueError.App.Core.Accounts.Requests
     {
         private readonly IEventBus _eventBus;
         private readonly IAccountRepository _repository;
-
+        private IQueryBus _queryBus;
         /// <summary>
         ///     Creates a new instance of <see cref="ActivateAccountHandler" />.
         /// </summary>
         /// <param name="repository">repos</param>
         /// <param name="eventBus">used to publish <see cref="AccountActivated" />.</param>
-        public ActivateAccountHandler(IAccountRepository repository, IEventBus eventBus)
+        public ActivateAccountHandler(IAccountRepository repository, IEventBus eventBus, IQueryBus queryBus)
         {
             _repository = repository;
             _eventBus = eventBus;
+            _queryBus = queryBus;
         }
 
         /// <summary>
@@ -45,7 +48,11 @@ namespace OneTrueError.App.Core.Accounts.Requests
             account.Activate();
             await _repository.UpdateAsync(account);
 
-            Thread.CurrentPrincipal = new OneTruePrincipal(account.UserName);
+            var query = new GetApplicationList();
+            var apps = await _queryBus.QueryAsync(query);
+            var roles = apps.Select(x => "Member_" + x.Id).ToArray();
+            
+            Thread.CurrentPrincipal = new OneTruePrincipal(account.Id, account.UserName, roles);
             var evt = new AccountActivated(account.Id, account.UserName)
             {
                 EmailAddress = account.Email

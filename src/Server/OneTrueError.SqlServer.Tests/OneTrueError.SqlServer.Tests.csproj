@@ -35,12 +35,20 @@
       <HintPath>..\packages\DotNetCqs.1.0.0\lib\net45\DotNetCqs.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="FluentAssertions, Version=4.14.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentAssertions.4.14.0\lib\net45\FluentAssertions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentAssertions.Core, Version=4.14.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentAssertions.4.14.0\lib\net45\FluentAssertions.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Griffin.Container, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Griffin.Container.1.1.2\lib\net40\Griffin.Container.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Griffin.Core, Version=1.0.37.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Griffin.Framework.1.0.37\lib\net45\Griffin.Core.dll</HintPath>
+    <Reference Include="Griffin.Core, Version=1.0.39.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Griffin.Framework.1.0.39\lib\net45\Griffin.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
@@ -48,6 +56,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -74,6 +83,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConnectionFactory.cs" />
+    <Compile Include="Core\ApiKeys\Commands\DeleteApiKeyHandlerTests.cs" />
+    <Compile Include="Core\ApiKeys\Commands\CreateApiKeyHandlerTests.cs" />
+    <Compile Include="Core\ApiKeys\Queries\GetApiKeyHandlerTests.cs" />
+    <Compile Include="Core\ApiKeys\Queries\ListApiKeysHandlerTests.cs" />
     <Compile Include="Modules\Geolocation\ErrorOriginRepositoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -82,6 +95,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\OneTrueError.Api\OneTrueError.Api.csproj">
+      <Project>{FC331A95-FCA4-4764-8004-0884665DD01F}</Project>
+      <Name>OneTrueError.Api</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OneTrueError.App\OneTrueError.App.csproj">
       <Project>{5EF42A74-9323-49FA-A1F6-974D6DE77202}</Project>
       <Name>OneTrueError.App</Name>
