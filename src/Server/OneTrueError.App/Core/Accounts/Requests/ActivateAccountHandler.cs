@@ -18,12 +18,14 @@ namespace OneTrueError.App.Core.Accounts.Requests
     {
         private readonly IEventBus _eventBus;
         private readonly IAccountRepository _repository;
-        private IQueryBus _queryBus;
+        private readonly IQueryBus _queryBus;
+
         /// <summary>
         ///     Creates a new instance of <see cref="ActivateAccountHandler" />.
         /// </summary>
         /// <param name="repository">repos</param>
         /// <param name="eventBus">used to publish <see cref="AccountActivated" />.</param>
+        /// <param name="queryBus"> </param>
         public ActivateAccountHandler(IAccountRepository repository, IEventBus eventBus, IQueryBus queryBus)
         {
             _repository = repository;
@@ -51,7 +53,7 @@ namespace OneTrueError.App.Core.Accounts.Requests
             var query = new GetApplicationList();
             var apps = await _queryBus.QueryAsync(query);
             var roles = apps.Select(x => "Member_" + x.Id).ToArray();
-            
+
             Thread.CurrentPrincipal = new OneTruePrincipal(account.Id, account.UserName, roles);
             var evt = new AccountActivated(account.Id, account.UserName)
             {

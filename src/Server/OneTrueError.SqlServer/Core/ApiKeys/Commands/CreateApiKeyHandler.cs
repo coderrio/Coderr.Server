@@ -33,6 +33,7 @@ namespace OneTrueError.SqlServer.Core.ApiKeys.Commands
                 id = (int) await cmd.ExecuteScalarAsync();
             }
 
+
             foreach (var applicationId in command.ApplicationIds)
             {
                 using (var cmd = _unitOfWork.CreateDbCommand())

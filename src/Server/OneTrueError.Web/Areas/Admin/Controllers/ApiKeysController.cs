@@ -26,10 +26,10 @@ namespace OneTrueError.Web.Areas.Admin.Controllers
 
         public async Task<ActionResult> Index()
         {
-            var query= new ListApiKeys();
+            var query = new ListApiKeys();
             var result = await _queryBus.QueryAsync(query);
-            var vms = result.Keys.Select(x => new ListViewModelItem {Id = x.Id, Name = x.ApplicationName}).ToArray();
-            var model = new ListViewModel {Keys = vms};
+            var vms = result.Keys.Select(x => new ListViewModelItem { Id = x.Id, Name = x.ApplicationName }).ToArray();
+            var model = new ListViewModel { Keys = vms };
             return View(model);
         }
 
@@ -81,11 +81,13 @@ namespace OneTrueError.Web.Areas.Admin.Controllers
 
             var apiKey = Guid.NewGuid().ToString("N");
             var sharedSecret = Guid.NewGuid().ToString("N");
-            var apps = model.SelectedApplications.Select(int.Parse).ToArray();
+            var apps = model.SelectedApplications == null
+                ? new int[0]
+                : model.SelectedApplications.Select(int.Parse).ToArray();
             var cmd = new CreateApiKey(model.ApplicationName, apiKey, sharedSecret, apps);
             await _commandBus.ExecuteAsync(cmd);
 
-            return RedirectToAction("Created", new {apiKey, sharedSecret});
+            return RedirectToAction("Created", new { apiKey, sharedSecret });
         }
 
         public ActionResult Created(string apiKey, string sharedSecret)
