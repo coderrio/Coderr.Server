@@ -279,7 +279,7 @@ CREATE TABLE dbo.Users
 
 IF OBJECT_ID(N'dbo.[ApplicationMembers]', N'U') IS NULL
 BEGIN
-		CREATE TABLE [dbo].[ApplicationMembers] (
+	CREATE TABLE [dbo].[ApplicationMembers] (
         [AccountId]     INT           NULL foreign key references Accounts (Id),
         [ApplicationId] INT           NOT NULL foreign key references Applications (Id),
 		[EmailAddress]  nvarchar(255) not null,
@@ -292,7 +292,7 @@ END
 
 IF OBJECT_ID(N'dbo.[QueueEvents]', N'U') IS NULL
 BEGIN
-		CREATE TABLE [dbo].[QueueEvents] (
+	CREATE TABLE [dbo].[QueueEvents] (
         [Id]     INT identity      not    NULL primary key,
 		[ApplicationId] INT NOT NULL, 
         [CreatedAtUtc]    DATETIME      NOT NULL,
@@ -303,7 +303,7 @@ END
 
 IF OBJECT_ID(N'dbo.[QueueReports]', N'U') IS NULL
 BEGIN
-		CREATE TABLE [dbo].[QueueReports] (
+	CREATE TABLE [dbo].[QueueReports] (
         [Id]     INT identity      not    NULL primary key,
 		[ApplicationId] INT NOT NULL, 
         [CreatedAtUtc]    DATETIME      NOT NULL,
@@ -316,7 +316,7 @@ END
 
 IF OBJECT_ID(N'dbo.[QueueFeedback]', N'U') IS NULL
 BEGIN
-		CREATE TABLE [dbo].[QueueFeedback] (
+	CREATE TABLE [dbo].[QueueFeedback] (
         [Id]     INT identity      not    NULL primary key,
 		[ApplicationId] INT NOT NULL, 
         [CreatedAtUtc]    DATETIME      NOT NULL,
@@ -327,3 +327,31 @@ BEGIN
 END
 
 insert into Applications (Name, AppKey, CreatedById, CreatedAtUtc, ApplicationType, SharedSecret) VALUES('test', '13d82df603a845c7a27164c4fec19dd6', 1, GetUtcDate(), 'DesktopApplication', '6f0a0a7fac6d42caa7cc47bb34a6520b');
+
+IF OBJECT_ID(N'dbo.[DatabaseSchema]', N'U') IS NULL
+BEGIN
+	CREATE TABLE [dbo].[DatabaseSchema] (
+        [Version] int not null default 1
+	);
+
+END
+
+IF OBJECT_ID(N'dbo.[ApiKeys]', N'U') IS NULL
+BEGIN
+	CREATE TABLE [dbo].[ApiKeys] (
+        [Id]     INT identity      not    NULL primary key,
+		[ApplicationName] varchar(40) NOT NULL, 
+        [CreatedAtUtc]    DATETIME      NOT NULL,
+        [CreatedById]   int NOT NULL,
+        [GeneratedKey]   varchar(36) NOT NULL,
+        [SharedSecret]   varchar(36) NOT NULL
+	);
+	CREATE TABLE [dbo].[ApiKeyApplications] (
+        [ApiKeyId]     INT not    NULL,
+		[ApplicationId] INT NOT NULL,
+		Primary key (ApiKeyId, ApplicationId),
+		FOREIGN KEY (ApiKeyId) REFERENCES ApiKeys(Id),
+		FOREIGN KEY (ApplicationId) REFERENCES Applications(Id)
+	);
+	update DatabaseSchema SET Version = 2;
+END

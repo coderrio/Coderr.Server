@@ -1,22 +1,20 @@
 ﻿using System;
-using System.Collections.Specialized;
 using System.Net;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using DotNetCqs;
 using Newtonsoft.Json;
 using OneTrueError.Api.Client.Json;
-using OneTrueError.Api.Client.Tests;
 
 namespace OneTrueError.Api.Client
 {
     /// <summary>
-    /// Client for the OneTrueError server API
+    ///     Client for the OneTrueError server API
     /// </summary>
     public class OneTrueClient : IQueryBus, ICommandBus, IEventBus
     {
-        private CookieContainer _cookies;
-        private Encoding _basicAuthEncoding = Encoding.GetEncoding("ISO-8859-1");
+        private readonly string _apiKey;
 
         private readonly JsonSerializerSettings _jsonSerializerSettings = new JsonSerializerSettings
         {
@@ -24,22 +22,43 @@ namespace OneTrueError.Api.Client
             Formatting = Formatting.Indented
         };
 
+        private readonly string _sharedSecret;
         private Uri _uri;
 
 
-        public OneTrueClient()
+        /// <summary>
+        ///     Creates a new instance of <see cref="OneTrueClient" />.
+        /// </summary>
+        /// <param name="apiKey">Api key from the admin area in OneTrueError web</param>
+        /// <param name="sharedSecret">Shared secret from the admin area in OneTrueError web</param>
+        public OneTrueClient(string apiKey, string sharedSecret)
         {
+            if (apiKey == null) throw new ArgumentNullException(nameof(apiKey));
+            if (sharedSecret == null) throw new ArgumentNullException(nameof(sharedSecret));
+
+            _apiKey = apiKey;
+            _sharedSecret = sharedSecret;
             _jsonSerializerSettings.ContractResolver = new IncludeNonPublicMembersContractResolver();
         }
 
-        public NetworkCredential Credentials { get; set; }
-
+        /// <summary>
+        ///     Execute a command
+        /// </summary>
+        /// <typeparam name="T">type of query (from the <c>OneTrueError.Api</c> class library)</typeparam>
+        /// <param name="command">command to execute</param>
+        /// <returns>task</returns>
         public async Task ExecuteAsync<T>(T command) where T : Command
         {
             var response = await RequestAsync("POST", "command", command);
             response.Close();
         }
 
+        /// <summary>
+        ///     Publish an event
+        /// </summary>
+        /// <typeparam name="TApplicationEvent">type of event (from the <c>OneTrueError.Api</c> class library)</typeparam>
+        /// <param name="e">event to publish</param>
+        /// <returns>task</returns>
         public async Task PublishAsync<TApplicationEvent>(TApplicationEvent e)
             where TApplicationEvent : ApplicationEvent
         {
@@ -47,6 +66,12 @@ namespace OneTrueError.Api.Client
             response.Close();
         }
 
+        /// <summary>
+        ///     Make a query
+        /// </summary>
+        /// <typeparam name="TResult">Result from a query (a class from the <c>OneTrueError.Api</c> library)</typeparam>
+        /// <param name="query"></param>
+        /// <returns></returns>
         public async Task<TResult> QueryAsync<TResult>(Query<TResult> query)
         {
             //TODO: Unwrap the cqs object to query parameters instead
@@ -55,12 +80,15 @@ namespace OneTrueError.Api.Client
             return await DeserializeResponse<TResult>(response);
         }
 
+        /// <summary>
+        ///     Open a channel
+        /// </summary>
+        /// <param name="uri">Root URL to the OneTrueError web</param>
         public void Open(Uri uri)
         {
             if (uri == null) throw new ArgumentNullException(nameof(uri));
 
             _uri = uri;
-            _cookies = new CookieContainer();
         }
 
         private async Task<TResult> DeserializeResponse<TResult>(HttpWebResponse response)
@@ -70,44 +98,29 @@ namespace OneTrueError.Api.Client
             await responseStream.ReadAsync(jsonBuf, 0, jsonBuf.Length);
             var jsonStr = Encoding.UTF8.GetString(jsonBuf);
             var responseObj = JsonConvert.DeserializeObject(jsonStr, typeof(TResult), _jsonSerializerSettings);
-            return (TResult)responseObj;
+            return (TResult) responseObj;
         }
 
         private async Task<HttpWebResponse> RequestAsync(string httpMethod, string cqsType, object cqsObject)
         {
-            if (_cookies.Count == 0)
-            {
-                var sb = new StringBuilder();
-                sb.AppendUrlEncoded("username", Credentials.UserName);
-                sb.AppendUrlEncoded("password", Credentials.Password);
-                var data = Encoding.UTF8.GetBytes(sb.ToString());
-
-                var authRequest = WebRequest.CreateHttp(_uri + "/account/login");
-                authRequest.Method = "POST";
-                authRequest.CookieContainer = _cookies;
-                authRequest.ContentType = "application/x-www-form-urlencoded";
-                authRequest.ContentLength = data.Length;
-                var authReqStream = await authRequest.GetRequestStreamAsync();
-                await authReqStream.WriteAsync(data, 0, data.Length);
-                var resp = authRequest.GetResponse();
-
-            }
-            string authInfo = Credentials.UserName + ":" + Credentials.Password;
-            authInfo = Convert.ToBase64String(_basicAuthEncoding.GetBytes(authInfo));
-
             var request = WebRequest.CreateHttp(_uri + "api/cqs");
             request.Method = httpMethod;
-            request.Headers.Add("Authorization", "Basic " + authInfo);
+            request.Headers.Add("X-Api-Key", _apiKey);
             request.Headers.Add("X-Cqs-Name", cqsObject.GetType().Name);
-            //request.PreAuthenticate = true;
-            request.CookieContainer = _cookies;
 
             var stream = await request.GetRequestStreamAsync();
             var json = JsonConvert.SerializeObject(cqsObject, _jsonSerializerSettings);
             var buffer = Encoding.UTF8.GetBytes(json);
+
+var hamc = new HMACSHA256(Encoding.UTF8.GetBytes(_sharedSecret.ToLower()));
+var hash = hamc.ComputeHash(buffer);
+var signature = Convert.ToBase64String(hash);
+
             await stream.WriteAsync(buffer, 0, buffer.Length);
 
-            return (HttpWebResponse)await request.GetResponseAsync();
+            request.Headers.Add("X-Api-Signature", signature);
+
+            return (HttpWebResponse) await request.GetResponseAsync();
         }
     }
 }

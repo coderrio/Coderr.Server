@@ -39,8 +39,8 @@
       <HintPath>..\packages\Griffin.Container.1.1.2\lib\net40\Griffin.Container.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Griffin.Core, Version=1.0.37.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Griffin.Framework.1.0.37\lib\net45\Griffin.Core.dll</HintPath>
+    <Reference Include="Griffin.Core, Version=1.0.39.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Griffin.Framework.1.0.39\lib\net45\Griffin.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Griffin.Core.Json, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">

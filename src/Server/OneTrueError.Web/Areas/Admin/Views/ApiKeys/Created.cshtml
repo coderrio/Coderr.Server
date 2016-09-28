@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewBag.Title = "Created";
+}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h2>Api key</h2>
+            <div class="panel panel-body panel-success">The API key have been created.</div>
+            <p>To invoke the server API pass the API key in a HttpHeader called <code>X-Api-Key</code>. Use the shared secret to calculate a HMAC signature on the HTTP Request body and include it in the http header <code>X-Api-Signature</code>.</p>
+            <dl>
+                <dt>Api key</dt>
+                <dd>@ViewBag.ApiKey</dd>
+                <dt>Shared secret</dt>
+                <dd>@ViewBag.SharedSecret</dd>
+            </dl>
+
+            <h3>Example</h3>
+            <pre><code>var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(_sharedSecret));
+var hash = hmac.ComputeHash(httpBodyAsByteArray);
+var signature = Convert.ToBase64String(hash);
+</code></pre>
+        </div>
+    </div>
+</div>

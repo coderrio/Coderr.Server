@@ -5,6 +5,7 @@ using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using OneTrueError.App;
 using OneTrueError.Web.Models;
 
 namespace OneTrueError.Web.Infrastructure
@@ -50,12 +51,8 @@ namespace OneTrueError.Web.Infrastructure
 
             if (SessionUser.IsAuthenticated)
             {
-                Thread.CurrentPrincipal = new OneTrueErrorPrincipal
-                {
-                    AccountId = SessionUser.Current.AccountId,
-                    ApplicationId = SessionUser.Current.ApplicationId,
-                    Identity = new GenericIdentity(SessionUser.Current.UserName),
-                };
+                Thread.CurrentPrincipal = new OneTruePrincipal(SessionUser.Current.AccountId,
+                    SessionUser.Current.UserName, SessionUser.Current.GetRoles());
                 httpContext.User = Thread.CurrentPrincipal;
             }
 

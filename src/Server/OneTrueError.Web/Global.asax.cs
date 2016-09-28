@@ -103,7 +103,6 @@ namespace OneTrueError.Web
             provider.Scan(typeof(UserMapper).Assembly);
             EntityMappingProvider.Provider = provider;
 
-            OneTrueErrorPrincipal.Assigned += OnAssignedPrincipal;
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
@@ -117,9 +116,5 @@ namespace OneTrueError.Web
                     WebApiConfig.UrlPrefixRelative);
         }
 
-        private void OnAssignedPrincipal(object sender, EventArgs e)
-        {
-            HttpContext.Current.User = (IPrincipal)sender;
-        }
     }
 }

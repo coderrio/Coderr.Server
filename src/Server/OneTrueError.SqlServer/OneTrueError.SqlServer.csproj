@@ -40,8 +40,8 @@
       <HintPath>..\packages\Griffin.Container.1.1.2\lib\net40\Griffin.Container.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Griffin.Core, Version=1.0.37.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Griffin.Framework.1.0.37\lib\net45\Griffin.Core.dll</HintPath>
+    <Reference Include="Griffin.Core, Version=1.0.39.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Griffin.Framework.1.0.39\lib\net45\Griffin.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
@@ -71,6 +71,14 @@
     <Compile Include="Analysis\Incident2Mapper.cs" />
     <Compile Include="Analysis\ScanForNewFeedback.cs" />
     <Compile Include="Core\Accounts\QueryHandlers\GetAccountEmailByIdHandler.cs" />
+    <Compile Include="Core\ApiKeys\Commands\DeleteApiKeyHandler.cs" />
+    <Compile Include="Core\ApiKeys\Mappings\ApiKeyMapper.cs" />
+    <Compile Include="Core\ApiKeys\ApiKeyRepository.cs" />
+    <Compile Include="Core\ApiKeys\Commands\CreateApiKeyHandler.cs" />
+    <Compile Include="Core\ApiKeys\Mappings\IntMapper.cs" />
+    <Compile Include="Core\ApiKeys\Queries\GetApiKeyHandler.cs" />
+    <Compile Include="Core\ApiKeys\Queries\ListApiKeysHandler.cs" />
+    <Compile Include="Core\ApiKeys\Mappings\MirrorMapper.cs" />
     <Compile Include="DbConverters.cs" />
     <Compile Include="Web\Feedback\Queries\GetOverviewFeedbackHandler.cs" />
     <Compile Include="Web\Feedback\Queries\GetOverviewFeedbackResultItemMapper.cs" />

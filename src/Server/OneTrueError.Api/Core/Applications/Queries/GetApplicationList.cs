@@ -16,5 +16,10 @@ namespace OneTrueError.Api.Core.Applications.Queries
         ///     </para>
         /// </remarks>
         public int AccountId { get; set; }
+
+        /// <summary>
+        ///     Only list applications that the given account is administrator for.
+        /// </summary>
+        public bool FilterAsAdmin { get; set; }
     }
 }
