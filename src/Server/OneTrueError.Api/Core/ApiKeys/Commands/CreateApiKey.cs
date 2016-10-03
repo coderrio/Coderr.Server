@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.Design;
 using DotNetCqs;
 
 namespace OneTrueError.Api.Core.ApiKeys.Commands
@@ -27,6 +28,32 @@ namespace OneTrueError.Api.Core.ApiKeys.Commands
             ApiKey = apiKey;
             SharedSecret = sharedSecret;
             ApplicationIds = applicationIds;
+        }
+
+        /// <summary>
+        /// Creates a new instance of <see cref="CreateApiKey"/>.
+        /// </summary>
+        /// <param name="applicationName"><see cref="ApplicationName"/></param>
+        /// <param name="apiKey"><see cref="ApiKey"/></param>
+        /// <param name="sharedSecret"><see cref="SharedSecret"/></param>
+        public CreateApiKey(string applicationName, string apiKey, string sharedSecret)
+        {
+            if (applicationName == null) throw new ArgumentNullException("applicationName");
+            if (apiKey == null) throw new ArgumentNullException("apiKey");
+            if (sharedSecret == null) throw new ArgumentNullException("sharedSecret");
+
+            ApplicationName = applicationName;
+            ApiKey = apiKey;
+            SharedSecret = sharedSecret;
+            ApplicationIds = new int[0];
+        }
+
+        /// <summary>
+        /// Serialization constructor
+        /// </summary>
+        protected CreateApiKey()
+        {
+            
         }
 
 

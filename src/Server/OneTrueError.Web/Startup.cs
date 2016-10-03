@@ -19,7 +19,7 @@ namespace OneTrueError.Web
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                LoginPath = new PathString("/Account/Login"),
+                LoginPath = new PathString(VirtualPathUtility.ToAbsolute("~/Account/Login")),
                 CookieSecure = CookieSecureOption.SameAsRequest,
                 Provider = new CookieAuthenticationProvider()
                 {

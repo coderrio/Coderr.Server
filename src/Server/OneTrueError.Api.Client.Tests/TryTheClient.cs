@@ -17,13 +17,13 @@ namespace OneTrueError.Api.Client.Tests
         public async Task Test()
         {
             OneTrueApiClient client = new OneTrueApiClient();
-            client.Open(new Uri("http://localhost/onetrueerror/"), "o333", "kjsdklsdsdjkl");
+            client.Open(new Uri("http://localhost/onetrueerror/"), "", "");
             FindAccountByUserNameResult result = null;
             try
             {
                 result = await client.QueryAsync(new FindAccountByUserName("admin"));
             }
-            catch (WebException ex)
+            catch (WebException ex) 
             {
                 
             }

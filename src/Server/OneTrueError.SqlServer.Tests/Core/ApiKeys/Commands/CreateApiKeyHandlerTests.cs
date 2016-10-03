@@ -52,6 +52,20 @@ namespace OneTrueError.SqlServer.Tests.Core.ApiKeys.Commands
             generated.AllowedApplications.Should().BeEquivalentTo(new[] {_applicationId});
         }
 
+        [Fact]
+        public async Task should_be_able_to_Create_a_key_without_applications_mapped()
+        {
+            var cmd = new CreateApiKey("Mofo", Guid.NewGuid().ToString("N"), Guid.NewGuid().ToString("N"));
+
+            var sut = new CreateApiKeyHandler(_uow);
+            await sut.ExecuteAsync(cmd);
+
+            var repos = new ApiKeyRepository(_uow);
+            var generated = await repos.GetByKeyAsync(cmd.ApiKey);
+            generated.Should().NotBeNull();
+            generated.AllowedApplications.Should().BeEmpty();
+        }
+
         public void Dispose()
         {
             _uow.Dispose();

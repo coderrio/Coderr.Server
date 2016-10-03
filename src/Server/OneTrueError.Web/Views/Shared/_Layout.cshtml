@@ -2,6 +2,7 @@
 @using OneTrueError.Infrastructure.Configuration
 @using OneTrueError.Web.Models
 @{
+    //TODO: Move all this to an global action filter which is run before the view is rendered.
     if (Request.Url?.Port == 50473)
     {
         ViewBag.AppUrl = "http://localhost:50473/";
@@ -10,6 +11,14 @@
     {
         ViewBag.AppUrl = ConfigurationStore.Instance.Load<BaseConfiguration>()?.BaseUrl.ToString().TrimEnd('/');
     }
+    var currentUrl = Request.Url.AbsolutePath;
+    if (!currentUrl.EndsWith("/"))
+    {
+        currentUrl += "/";
+    }
+    var baseUrl = Url.Content("~/");
+    ViewBag.CanStartSpa = currentUrl.Equals(baseUrl, StringComparison.OrdinalIgnoreCase);
+    ViewBag.BaseUrl = baseUrl;
 }
 <!DOCTYPE html>
 <html>
@@ -131,6 +140,9 @@
 
     }
         var API_URL = '@ViewBag.AppUrl';
+        var ROOT_URL = '@Url.Content("~/")';
+        HttpClient.REDIRECT_401_TO = ROOT_URL + 'account/login';
+
     </script>
     @Scripts.Render("~/bundles/jquery")
     <script src="@Url.Content("~/Scripts/raphael-min.js")"></script>
@@ -145,13 +157,13 @@
     @if (SessionUser.IsAuthenticated)
     {
         <script type="text/javascript">
-            @if (Url.Content("~/").Equals(Request.Url.AbsolutePath, StringComparison.OrdinalIgnoreCase))
+            @if (ViewBag.CanStartSpa)
             {
-                <text>doMe();</text>
+                <text>startSpaApplication();</text>
             }
 
 
-            function doMe() {
+            function startSpaApplication() {
                 Griffin.Yo.Views.ViewRenderer.DEBUG = false;
                 Griffin.Yo.GlobalConfig.resourceLocator = {
                     getHtml: function (section) {

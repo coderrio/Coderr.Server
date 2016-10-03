@@ -119,7 +119,7 @@ BEGIN
         [CreatedAtUtc]       DATETIME       NOT NULL,
         [SolvedAtUtc]        DATETIME       NULL,
         [Title]						     NVARCHAR(100)  NULL,
-        [RemoteAddress]      VARCHAR (20)   NULL,
+        [RemoteAddress]      VARCHAR (45)   NULL, --SEE http://stackoverflow.com/questions/166132/maximum-length-of-the-textual-representation-of-an-ipv6-address
         [Exception]          NTEXT          NOT NULL,
         [ContextInfo]        NTEXT          NOT NULL
 	);
