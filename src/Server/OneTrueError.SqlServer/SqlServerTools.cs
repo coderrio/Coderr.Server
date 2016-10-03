@@ -1,42 +1,37 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics.CodeAnalysis;
 using OneTrueError.Infrastructure;
 
 namespace OneTrueError.SqlServer
 {
+    /// <summary>
+    /// MS Sql Server specific implementation of the database tools.
+    /// </summary>
     public class SqlServerTools : ISetupDatabaseTools
     {
-        public static IDbConnection OpenConnection(string connectionString)
+        private readonly SchemaManager _schemaManager;
+
+        public SqlServerTools()
         {
-            var con = new SqlConnection(connectionString);
-            con.Open();
-            return con;
+            _schemaManager = new SchemaManager(OpenConnection);
         }
 
         private bool IsConnectionConfigured
         {
-            get { return ConfigurationManager.ConnectionStrings["Db"] != null && !string.IsNullOrEmpty(ConfigurationManager.ConnectionStrings["Db"].ConnectionString); }
+            get
+            {
+                return ConfigurationManager.ConnectionStrings["Db"] != null &&
+                       !string.IsNullOrEmpty(ConfigurationManager.ConnectionStrings["Db"].ConnectionString);
+            }
         }
 
-        public static IDbConnection OpenConnection()
-        {
-            var conStr = ConfigurationManager.ConnectionStrings["Db"];
-            var provider = DbProviderFactories.GetFactory(conStr.ProviderName);
-            var connection = provider.CreateConnection();
-            connection.ConnectionString = conStr.ConnectionString;
-            connection.Open();
-            return connection;
-        }
-
+        /// <summary>
+        /// Checks if the tables exists and are for the current DB schema.
+        /// </summary>
         public bool GotUpToDateTables()
         {
             if (!IsConnectionConfigured)
@@ -53,6 +48,22 @@ namespace OneTrueError.SqlServer
                     return result != null && !(result is DBNull);
                 }
             }
+        }
+
+        /// <summary>
+        /// Check if the current DB schema is out of date compared to the embedded schema resources.
+        /// </summary>
+        public bool CanSchemaBeUpgraded()
+        {
+            return _schemaManager.CanSchemaBeUpgraded();
+        }
+
+        /// <summary>
+        ///     Update DB schema to latest version.
+        /// </summary>
+        public void UpgradeDatabaseSchema()
+        {
+            _schemaManager.UpgradeDatabaseSchema();
         }
 
         public void CheckConnectionString(string connectionString)
@@ -72,28 +83,37 @@ namespace OneTrueError.SqlServer
             con.Open();
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities", Justification = "Installation import = control over SQL")]
+        [SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities",
+            Justification = "Installation import = control over SQL")]
         public void CreateTables()
         {
-            using (var con = OpenConnection())
-            {
-                var resourceName = GetType().Namespace + ".Database.sql";
-                var res = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
-                var sql = new StreamReader(res).ReadToEnd();
-                using (var transaction = con.BeginTransaction())
-                using (var cmd = con.CreateCommand())
-                {
-                    cmd.Transaction = transaction;
-                    cmd.CommandText = sql;
-                    cmd.ExecuteNonQuery();
-                    transaction.Commit();
-                }
-            }
+            _schemaManager.CreateInitialStructure();
         }
 
         IDbConnection ISetupDatabaseTools.OpenConnection()
         {
             return OpenConnection();
+        }
+
+        static internal string DbName { get; set; }
+        public static IDbConnection OpenConnection(string connectionString)
+        {
+            var con = new SqlConnection(connectionString);
+            con.Open();
+            if (DbName != null)
+                con.ChangeDatabase(DbName);
+
+            return con;
+        }
+
+        public static IDbConnection OpenConnection()
+        {
+            var conStr = ConfigurationManager.ConnectionStrings["Db"];
+            var provider = DbProviderFactories.GetFactory(conStr.ProviderName);
+            var connection = provider.CreateConnection();
+            connection.ConnectionString = conStr.ConnectionString;
+            connection.Open();
+            return connection;
         }
     }
 }

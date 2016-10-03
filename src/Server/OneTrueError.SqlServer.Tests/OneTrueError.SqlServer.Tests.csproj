@@ -89,6 +89,8 @@
     <Compile Include="Core\ApiKeys\Queries\ListApiKeysHandlerTests.cs" />
     <Compile Include="Modules\Geolocation\ErrorOriginRepositoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SchemaManagerTests.cs" />
+    <Compile Include="TestTools.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -102,6 +104,10 @@
     <ProjectReference Include="..\OneTrueError.App\OneTrueError.App.csproj">
       <Project>{5EF42A74-9323-49FA-A1F6-974D6DE77202}</Project>
       <Name>OneTrueError.App</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OneTrueError.Data.Common\OneTrueError.Infrastructure.csproj">
+      <Project>{A78A50DA-C9D7-47F2-8528-D7EE39D91924}</Project>
+      <Name>OneTrueError.Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\OneTrueError.SqlServer\OneTrueError.SqlServer.csproj">
       <Project>{B967BEEA-CDDD-4A83-A4F2-1C946099ED51}</Project>

@@ -37,7 +37,7 @@ namespace OneTrueError.Web.Cqs
 
             var inner = new SeparateScopesIocEventBus(container, registry);
             var bus = new QueuedEventBus(inner, _queueProvider);
-            inner.ScopeClosing += (sender, args) => args.Scope.Resolve<IAdoNetUnitOfWork>().SaveChanges();
+            inner.ScopeClosing += (sender, args) => CloseUnitOfWorks(args.Scope);
             inner.HandlerFailed += (sender, args) =>
             {
                 foreach (var failure in args.Failures)

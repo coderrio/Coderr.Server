@@ -74,7 +74,6 @@ namespace OneTrueError.Web.Cqs
                 try
                 {
                     ExecuteMessage(msg);
-                    break;
                 }
                 catch (Exception ex)
                 {
@@ -85,10 +84,12 @@ namespace OneTrueError.Web.Cqs
 
         private void ExecuteMessage(object message)
         {
+            _logger.Debug("Publishing " + JsonConvert.SerializeObject(message));
             var method = typeof(IEventBus).GetMethod("PublishAsync");
             var mi = method.MakeGenericMethod(message.GetType());
             var task = (Task)mi.Invoke(_writeBus, new[] { message });
-            task.Wait();
+            task.Wait(TimeSpan.FromSeconds(10));
+            _logger.Debug("Done publishing " + JsonConvert.SerializeObject(message));
         }
     }
 }

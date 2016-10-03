@@ -10,7 +10,7 @@ using OneTrueError.Web.Models;
 namespace OneTrueError.Web.Infrastructure.Auth
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-    public class CustomMvcAuthorizeFilter : AuthorizeAttribute
+    public class MvcAuthorizeFilter : AuthorizeAttribute
     {
         public string RedirectUrl = "~/Account/Login";
 

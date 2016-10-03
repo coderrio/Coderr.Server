@@ -81,9 +81,12 @@
     <Compile Include="Configuration\BaseConfiguration.cs" />
     <Compile Include="Configuration\OneTrueErrorConfigSection.cs" />
     <Compile Include="Core\ApiKeys\ApiKey.cs" />
+    <Compile Include="Core\ApiKeys\Events\ApplicationDeletedHandler.cs" />
     <Compile Include="Core\ApiKeys\IApiKeyRepository.cs" />
     <Compile Include="Core\Applications\ApplicationRole.cs" />
+    <Compile Include="Core\Applications\CommandHandlers\DeleteApplicationHandler.cs" />
     <Compile Include="Core\Applications\EventHandlers\UpdateTeamOnInvitationAccepted.cs" />
+    <Compile Include="Core\Notifications\EventHandlers\ApplicationDeletedHandler.cs" />
     <Compile Include="Core\Notifications\EventHandlers\CheckForFeedbackNotificationsToSend.cs" />
     <Compile Include="Core\Reports\PagedReports.cs" />
     <Compile Include="GlobalSuppressions.cs" />
@@ -269,6 +272,8 @@
     <EmbeddedResource Include="Modules\Messaging\Templating\Layout\Template.html" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Core\Accounts\Events\" />
+    <Folder Include="Core\ErrorReports\Events\" />
     <Folder Include="Modules\ReportSpikes\EventHandlers\" />
   </ItemGroup>
   <ItemGroup>

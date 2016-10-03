@@ -5,6 +5,16 @@ namespace OneTrueError.Infrastructure
     public interface ISetupDatabaseTools
     {
         /// <summary>
+        /// Check if the current DB schema is out of date compared to the embedded schema resources.
+        /// </summary>
+        bool CanSchemaBeUpgraded();
+        
+        /// <summary>
+        /// Update DB schema to latest version.
+        /// </summary>
+        void UpgradeDatabaseSchema();
+
+        /// <summary>
         /// Used to check if the given connection string actually works
         /// </summary>
         /// <param name="connectionString"></param>
