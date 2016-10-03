@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using OneTrueError.Api.Client;
+using OneTrueError.Api.Core.Applications;
+using OneTrueError.Api.Core.Applications.Commands;
 using OneTrueError.Api.Core.Applications.Queries;
 
 namespace OneTrueError.Web.Controllers
@@ -24,5 +26,6 @@ namespace OneTrueError.Web.Controllers
         {
             return View();
         }
+        
     }
 }

@@ -95,6 +95,8 @@
     <Compile Include="Core\ApiKeys\Queries\ListApiKeysResultItem.cs" />
     <Compile Include="Core\Applications\ApplicationListItem.cs" />
     <Compile Include="Core\Applications\Commands\CreateApplication.cs" />
+    <Compile Include="Core\Applications\Commands\DeleteApplication.cs" />
+    <Compile Include="Core\Applications\Events\ApplicationDeleted.cs" />
     <Compile Include="Core\Applications\NamespaceDoc.cs" />
     <Compile Include="Core\Applications\Queries\GetApplicationTeamResult.cs" />
     <Compile Include="Core\Applications\Queries\OverviewStatSummary.cs" />

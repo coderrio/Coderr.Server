@@ -81,7 +81,7 @@ END
 
 IF OBJECT_ID(N'dbo.[ErrorOrigins]', N'U') IS NULL
 BEGIN
-		CREATE TABLE [dbo].[ErrorOrigins] (
+	CREATE TABLE [dbo].[ErrorOrigins] (
         [Id]             INT            IDENTITY (1, 1) NOT NULL primary key,
         [IpAddress]      VARCHAR (20)   NOT NULL,
         [CountryCode]    VARCHAR (5)    NULL,
@@ -98,7 +98,7 @@ END
 
 IF OBJECT_ID(N'dbo.[ErrorReportOrigins]', N'U') IS NULL
 BEGIN
-		CREATE TABLE [dbo].[ErrorReportOrigins] (
+	CREATE TABLE [dbo].[ErrorReportOrigins] (
         [ErrorOriginId]             INT NOT NULL,
         [IncidentId]             INT NOT NULL,
         [ReportId]    INT  NOT NULL,
@@ -110,7 +110,7 @@ END
 
 IF OBJECT_ID(N'dbo.[ErrorReports]', N'U') IS NULL
 BEGIN
-		CREATE TABLE [dbo].[ErrorReports] (
+	CREATE TABLE [dbo].[ErrorReports] (
         [Id]                 INT            IDENTITY (1, 1) NOT NULL primary key,
         [IncidentId]         INT            NOT NULL,
         [ErrorId]            VARCHAR (36)   NOT NULL,
@@ -140,7 +140,7 @@ END
 
 IF OBJECT_ID(N'dbo.[IncidentFeedback]', N'U') IS NULL
 BEGIN
-		CREATE TABLE [dbo].[IncidentFeedback] (
+	CREATE TABLE [dbo].[IncidentFeedback] (
         [Id]                 INT            IDENTITY (1, 1) NOT NULL primary key,
         [ApplicationId]      INT            NULL,
         [IncidentId]         INT            NULL,
@@ -186,7 +186,7 @@ END
 
 IF OBJECT_ID(N'dbo.[IncidentTags]', N'U') IS NULL
 BEGIN
-		CREATE TABLE [dbo].[IncidentTags] (
+    CREATE TABLE [dbo].[IncidentTags] (
         [id]          INT          IDENTITY (1, 1) NOT NULL primary key,
         [IncidentId]  INT          NOT NULL,
         [TagName]     VARCHAR (40) NOT NULL,
@@ -224,7 +224,6 @@ BEGIN
         [Properties]              text NOT NULL
 	);
 END
-
 
 IF OBJECT_ID(N'dbo.[IncidentContextCollections_IncidentId]', N'U') IS NULL
 BEGIN
@@ -285,8 +284,7 @@ BEGIN
 		[EmailAddress]  nvarchar(255) not null,
         [AddedAtUtc]    DATETIME      NOT NULL,
         [AddedByName]   VARCHAR (50)  NOT NULL,
-        [Roles]         VARCHAR (255) NOT NULL,
-		
+        [Roles]         VARCHAR (255) NOT NULL
 	);
 END
 
@@ -326,15 +324,15 @@ BEGIN
 	);
 END
 
-insert into Applications (Name, AppKey, CreatedById, CreatedAtUtc, ApplicationType, SharedSecret) VALUES('test', '13d82df603a845c7a27164c4fec19dd6', 1, GetUtcDate(), 'DesktopApplication', '6f0a0a7fac6d42caa7cc47bb34a6520b');
-
 IF OBJECT_ID(N'dbo.[DatabaseSchema]', N'U') IS NULL
 BEGIN
 	CREATE TABLE [dbo].[DatabaseSchema] (
         [Version] int not null default 1
 	);
-
 END
+
+DECLARE @schemaVersion int;
+SELECT @schemaVersion = Version FROM DatabaseSchema;
 
 IF OBJECT_ID(N'dbo.[ApiKeys]', N'U') IS NULL
 BEGIN
@@ -350,8 +348,55 @@ BEGIN
         [ApiKeyId]     INT not    NULL,
 		[ApplicationId] INT NOT NULL,
 		Primary key (ApiKeyId, ApplicationId),
-		FOREIGN KEY (ApiKeyId) REFERENCES ApiKeys(Id),
-		FOREIGN KEY (ApplicationId) REFERENCES Applications(Id)
+		FOREIGN KEY (ApiKeyId) REFERENCES ApiKeys(Id) ON DELETE CASCADE,
+		FOREIGN KEY (ApplicationId) REFERENCES Applications(Id) ON DELETE NO ACTION
 	);
 	update DatabaseSchema SET Version = 2;
+END
+
+IF @schemaVersion < 3
+BEGIN
+	ALTER TABLE Incidents ADD PRIMARY KEY (Id);
+	ALTER TABLE ErrorReportOrigins WITH CHECK ADD CONSTRAINT FK_ErrorReportOrigins_Reports FOREIGN KEY (ReportId) REFERENCES ErrorReports (Id) ON DELETE CASCADE;
+	ALTER TABLE ErrorReports WITH CHECK ADD CONSTRAINT FK_ErrorReports_Incidents FOREIGN KEY (IncidentId) REFERENCES Incidents (Id) ON DELETE CASCADE;
+	ALTER TABLE CollectionMetadata WITH CHECK ADD CONSTRAINT FK_COLME_applicationId FOREIGN KEY (ApplicationId) REFERENCES Applications (Id) ON DELETE CASCADE;
+	ALTER TABLE IncidentFeedback WITH CHECK ADD CONSTRAINT FK_IncidentFeedback_incidents FOREIGN KEY (IncidentId) REFERENCES Incidents (Id) ON DELETE CASCADE;
+	ALTER TABLE Incidents WITH CHECK ADD CONSTRAINT FK_Incidents_applicationId FOREIGN KEY (ApplicationId) REFERENCES Applications (Id) ON DELETE CASCADE;
+	ALTER TABLE IncidentTags WITH CHECK ADD CONSTRAINT FK_IncidentTags_incidentId FOREIGN KEY (IncidentId) REFERENCES Incidents (Id) ON DELETE CASCADE;
+	ALTER TABLE ReportContextInfo WITH CHECK ADD CONSTRAINT FK_ReportContextInfo_incidentId FOREIGN KEY (IncidentId) REFERENCES Incidents (Id) ON DELETE CASCADE;
+	ALTER TABLE IncidentContextCollections WITH CHECK ADD CONSTRAINT FK_ICC_incidentId FOREIGN KEY (IncidentId) REFERENCES Incidents (Id) ON DELETE CASCADE;
+	ALTER TABLE [UserNotificationSettings] WITH CHECK ADD CONSTRAINT FK_UNS_accounts FOREIGN KEY (AccountId) REFERENCES Accounts (Id) ON DELETE CASCADE;
+	ALTER TABLE [Triggers] WITH CHECK ADD CONSTRAINT FK_Triggers_applicationId FOREIGN KEY (ApplicationId) REFERENCES Applications (Id) ON DELETE CASCADE;
+
+	DECLARE @ConstraintName nvarchar(200)
+	SELECT @ConstraintName = KCU.CONSTRAINT_NAME
+	FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS AS RC 
+	INNER JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE AS KCU
+		ON KCU.CONSTRAINT_CATALOG = RC.CONSTRAINT_CATALOG  
+		AND KCU.CONSTRAINT_SCHEMA = RC.CONSTRAINT_SCHEMA 
+		AND KCU.CONSTRAINT_NAME = RC.CONSTRAINT_NAME
+	WHERE
+		KCU.TABLE_NAME = 'ApplicationMembers' AND
+		KCU.COLUMN_NAME = 'AccountId'
+	IF @ConstraintName IS NOT NULL
+	BEGIN
+		EXEC('ALTER TABLE ApplicationMembers DROP CONSTRAINT ' + @ConstraintName)
+	END;
+	SELECT @ConstraintName = KCU.CONSTRAINT_NAME
+	FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS AS RC 
+	INNER JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE AS KCU
+		ON KCU.CONSTRAINT_CATALOG = RC.CONSTRAINT_CATALOG  
+		AND KCU.CONSTRAINT_SCHEMA = RC.CONSTRAINT_SCHEMA 
+		AND KCU.CONSTRAINT_NAME = RC.CONSTRAINT_NAME
+	WHERE
+		KCU.TABLE_NAME = 'ApplicationMembers' AND
+		KCU.COLUMN_NAME = 'ApplicationId'
+	IF @ConstraintName IS NOT NULL
+	BEGIN
+		EXEC('ALTER TABLE ApplicationMembers DROP CONSTRAINT ' + @ConstraintName)
+	END
+	ALTER TABLE ApplicationMembers WITH CHECK ADD CONSTRAINT FK_AppMemb_Accounts FOREIGN KEY (AccountId) REFERENCES Accounts (Id) ON DELETE CASCADE;
+	ALTER TABLE ApplicationMembers WITH CHECK ADD CONSTRAINT FK_AppMemb_Applications FOREIGN KEY (ApplicationId) REFERENCES Applications (Id) ON DELETE CASCADE;
+
+	UPDATE DatabaseSchema SET Version = 3;
 END

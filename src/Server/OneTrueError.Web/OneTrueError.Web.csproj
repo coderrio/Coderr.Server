@@ -217,9 +217,11 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Admin\Controllers\ApiKeysController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ApplicationController.cs" />
     <Compile Include="Areas\Admin\Models\ApiKeys\CreateViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ApiKeys\ListViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ApiKeys\ListViewModelItem.cs" />
+    <Compile Include="Areas\Admin\Models\Applications\ApplicationViewModel.cs" />
     <Compile Include="Areas\Installation\Controllers\AccountController.cs" />
     <Compile Include="Areas\Installation\Controllers\MessagingController.cs" />
     <Compile Include="Areas\Installation\Controllers\SetupController.cs" />
@@ -390,6 +392,8 @@
     <Content Include="Areas\Admin\Views\ApiKeys\Created.cshtml" />
     <Content Include="Areas\Admin\Views\ApiKeys\Details.cshtml" />
     <Content Include="Areas\Admin\Views\ApiKeys\Deleted.cshtml" />
+    <Content Include="Areas\Admin\Views\Application\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Application\Deleted.cshtml" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>

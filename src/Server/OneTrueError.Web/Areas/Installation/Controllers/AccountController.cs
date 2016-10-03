@@ -2,7 +2,9 @@
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using Griffin.Data;
+using OneTrueError.Api.Core.Applications;
 using OneTrueError.App.Core.Accounts;
+using OneTrueError.App.Core.Applications;
 using OneTrueError.App.Core.Users;
 using OneTrueError.Infrastructure;
 using OneTrueError.SqlServer.Core.Accounts;
@@ -52,9 +54,16 @@ namespace OneTrueError.Web.Areas.Installation.Controllers
                 await userRepos.CreateAsync(user);
 
                 var repos2 = new ApplicationRepository(uow);
+
+                var app = new Application(user.AccountId, "DemoApp")
+                {
+                    ApplicationType = TypeOfApplication.DesktopApplication
+                };
+                await repos2.CreateAsync(app);
+
                 /*insert into ApplicationMembers (AccountId, ApplicationId, EmailAddress, AddedAtUtc, AddedByName, Roles) SELECT 1, 1, (SELECT TOP 1 email FROM accounts), GetUtcDate(), 'admin', 'Admin,Member';
 */
-                var tm = new ApplicationTeamMember(1, account.Email)
+                var tm = new ApplicationTeamMember(app.Id, account.Email)
                 {
                     AccountId = account.Id,
                     AddedByName = "system",
