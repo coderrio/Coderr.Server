@@ -13,12 +13,11 @@ namespace OneTrueError.Api.Client.Tests
 #if DEBUG
     public class TryTheClient
     {
-        [Fact]
+        //[Fact]
         public async Task Test()
         {
-            OneTrueClient client = new OneTrueClient();
-            client.Credentials = new NetworkCredential("jonas", "123456");
-            client.Open(new Uri("http://localhost/onetrueerror/"));
+            OneTrueApiClient client = new OneTrueApiClient();
+            client.Open(new Uri("http://localhost/onetrueerror/"), "o333", "kjsdklsdsdjkl");
             FindAccountByUserNameResult result = null;
             try
             {

@@ -75,7 +75,7 @@ namespace OneTrueError.Web.Areas.Installation.Controllers
             try
             {
                 SetupTools.DbTools.CreateTables();
-                
+                SetupTools.DbTools.UpgradeDatabaseSchema();
                 return Redirect(Url.GetNextWizardStep());
             }
             catch (Exception ex)

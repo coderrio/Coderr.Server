@@ -273,7 +273,7 @@
     </Compile>
     <Compile Include="Infrastructure\Cqs\CqsClientFactory.cs" />
     <Compile Include="Infrastructure\CustomerInfoProvider.cs" />
-    <Compile Include="Infrastructure\Auth\CustomMvcAuthorizeFilter.cs" />
+    <Compile Include="Infrastructure\Auth\MvcAuthorizeFilter.cs" />
     <Compile Include="App_Start\Cqs\QueuedEventBus.cs" />
     <Compile Include="Infrastructure\InstallationHelper.cs" />
     <Compile Include="Infrastructure\Logging\LogAdapter.cs" />
@@ -281,6 +281,7 @@
     <Compile Include="Infrastructure\Logging\WebApiLogger.cs" />
     <Compile Include="Infrastructure\Auth\SignalRAuthenticateAttribute.cs" />
     <Compile Include="Infrastructure\Auth\WebApiAuthenticationFilter.cs" />
+    <Compile Include="Infrastructure\SchemaUpdateModule.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Account\AcceptViewModel.cs" />

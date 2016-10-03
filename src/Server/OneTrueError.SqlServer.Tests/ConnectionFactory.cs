@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,14 @@ namespace OneTrueError.SqlServer.Tests
             connection.ConnectionString = ConfigurationManager.ConnectionStrings["Db"].ConnectionString;
             connection.Open();
             return new AdoNetUnitOfWork(connection, true);
+        }
+
+        public static IDbConnection CreateConnection()
+        {
+            var connection = new SqlConnection();
+            connection.ConnectionString = ConfigurationManager.ConnectionStrings["Db"].ConnectionString;
+            connection.Open();
+            return connection;
         }
     }
 }
