@@ -135,15 +135,6 @@
             </p>
         </footer>
     </div>
-    <script type="text/javascript">
-    @{
-
-    }
-        var API_URL = '@ViewBag.AppUrl';
-        var ROOT_URL = '@Url.Content("~/")';
-        HttpClient.REDIRECT_401_TO = ROOT_URL + 'account/login';
-
-    </script>
     @Scripts.Render("~/bundles/jquery")
     <script src="@Url.Content("~/Scripts/raphael-min.js")"></script>
     <script src="@Url.Content("~/Scripts/morris.min.js")"></script>
@@ -152,6 +143,11 @@
     <script src="@Url.Content("~/Scripts/Promise.js")"></script>
     <script src="@Url.Content("~/Scripts/CqsClient.js")"></script>
     @Scripts.Render("~/bundles/app")
+    <script type="text/javascript">
+        var API_URL = '@ViewBag.AppUrl';
+        var ROOT_URL = '@Url.Content("~/")';
+        Griffin.Net.HttpClient.REDIRECT_401_TO = ROOT_URL + 'account/login';
+    </script>
     @RenderSection("scripts", required: false)
     @RenderSection("ViewModelScripts", required: false)
     @if (SessionUser.IsAuthenticated)
