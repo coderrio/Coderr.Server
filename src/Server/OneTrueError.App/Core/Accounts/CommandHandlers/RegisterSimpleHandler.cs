@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
@@ -22,7 +21,7 @@ namespace OneTrueError.App.Core.Accounts.CommandHandlers
     {
         private readonly ICommandBus _commandBus;
         private readonly IEventBus _eventBus;
-        private readonly ILog _logger = LogManager.GetLogger(typeof (RegisterSimpleHandler));
+        private readonly ILog _logger = LogManager.GetLogger(typeof(RegisterSimpleHandler));
         private readonly IAccountRepository _repository;
 
         public RegisterSimpleHandler(IAccountRepository repository, ICommandBus commandBus, IEventBus eventBus)

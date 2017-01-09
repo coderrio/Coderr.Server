@@ -1,21 +1,24 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Linq;
+using System.Collections.Generic;
 using System.Security.Authentication;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using System.Web.Security;
 using DotNetCqs;
 using log4net;
+using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security;
 using OneTrueError.Api.Core.Accounts;
 using OneTrueError.Api.Core.Accounts.Commands;
 using OneTrueError.Api.Core.Accounts.Requests;
+using OneTrueError.Api.Core.Applications;
 using OneTrueError.Api.Core.Applications.Queries;
 using OneTrueError.Api.Core.Invitations.Queries;
 using OneTrueError.App.Configuration;
 using OneTrueError.Infrastructure.Configuration;
-using OneTrueError.Web.Models;
+using OneTrueError.Infrastructure.Security;
 using OneTrueError.Web.Models.Account;
 
 namespace OneTrueError.Web.Controllers
@@ -77,10 +80,16 @@ namespace OneTrueError.Web.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
+            var query = new GetInvitationByKey(model.InvitationKey);
+            var invitation = await _queryBus.QueryAsync(query);
+            if (invitation == null)
+            {
+                return View("InvitationNotFound");
+            }
 
             var cmd = new AcceptInvitation(model.UserName, model.Password, model.InvitationKey)
             {
-                Email = model.Email,
+                AcceptedEmail = model.Email,
                 FirstName = model.FirstName,
                 LastName = model.LastName
             };
@@ -94,15 +103,12 @@ namespace OneTrueError.Web.Controllers
                 return View(new AcceptViewModel());
             }
 
-            FormsAuthentication.SetAuthCookie(reply.UserName, false);
-            var user = new SessionUser(reply.AccountId, reply.UserName);
-            SessionUser.Current = user;
-
             var getApps = new GetApplicationList();
             var apps = await _queryBus.QueryAsync(getApps);
-            SessionUser.Current.Applications = apps.ToDictionary(x => x.Id, x => x.Name);
-            SessionUser.Current.Applications[0] = "Dashboard";
 
+
+            var identity = CreateIdentity(reply.AccountId, reply.UserName, apps);
+            SignIn(identity);
             return Redirect("~/#/account/accepted");
         }
 
@@ -111,13 +117,11 @@ namespace OneTrueError.Web.Controllers
             try
             {
                 var reply = await _requestReplyBus.ExecuteAsync(new ActivateAccount(id));
-                FormsAuthentication.SetAuthCookie(reply.UserName, false);
-                var user = new SessionUser(reply.AccountId, reply.UserName);
-                SessionUser.Current = user;
                 var getApps = new GetApplicationList();
                 var apps = await _queryBus.QueryAsync(getApps);
-                SessionUser.Current.Applications = apps.ToDictionary(x => x.Id, x => x.Name);
-                SessionUser.Current.Applications[0] = "Dashboard";
+
+                var identity = CreateIdentity(reply.AccountId, reply.UserName, apps);
+                SignIn(identity);
 
 
                 return Redirect("~/#/welcome");
@@ -140,81 +144,6 @@ namespace OneTrueError.Web.Controllers
         {
             return View();
         }
-
-
-        [HttpGet]
-        public async Task<ActionResult> CookieLogin(string returnTo)
-        {
-            if (string.IsNullOrEmpty(returnTo) && !string.IsNullOrEmpty(Request.QueryString["ReturnTo"]))
-            {
-                Debugger.Break();
-                returnTo = Request.QueryString["ReturnTo"];
-            }
-
-            try
-            {
-                var authCookie = Request.Cookies[FormsAuthentication.FormsCookieName];
-                if (authCookie == null)
-                    return RedirectToAction("Login", new {ReturnTo = returnTo});
-
-
-                var ticket = FormsAuthentication.Decrypt(authCookie.Value);
-                if (ticket == null || (ticket.Expired && ticket.IsPersistent))
-                {
-                    return RedirectToAction("Login", new {ReturnTo = returnTo});
-                }
-
-
-                var login = new Login(ticket.Name, null);
-                var reply = await _requestReplyBus.ExecuteAsync(login);
-                if (reply == null)
-                {
-                    _logger.Error("Result is NULL :(");
-                    ModelState.AddModelError("",
-                        "Internal error.");
-
-                    return RedirectToAction("Login", new {ReturnTo = returnTo});
-                }
-
-                if (reply.Result != LoginResult.Successful)
-                {
-                    var config = ConfigurationStore.Instance.Load<BaseConfiguration>();
-
-                    var errorMessage = reply.Result == LoginResult.IncorrectLogin
-                        ? "Incorrect username or password."
-                        : string.Format(
-                            "Your account have not been activated (check your email account). Contact {0} if you need assistance.",
-                            config.SupportEmail);
-
-                    ModelState.AddModelError("", errorMessage);
-                    return RedirectToAction("Login", new {ReturnTo = returnTo});
-                }
-
-                var user = new SessionUser(reply.AccountId, reply.UserName);
-                SessionUser.Current = user;
-
-                var getApps = new GetApplicationList();
-                var apps = await _queryBus.QueryAsync(getApps);
-                SessionUser.Current.Applications = apps.ToDictionary(x => x.Id, x => x.Name);
-                SessionUser.Current.Applications[0] = "Dashboard";
-                if (string.IsNullOrEmpty(returnTo))
-                    return Redirect("~/#/");
-                return Redirect(returnTo);
-            }
-            catch (AuthenticationException err)
-            {
-                _logger.Error("Failed to authenticate", err);
-                ModelState.AddModelError("", err.Message);
-                return View("Login");
-            }
-            catch (Exception exception)
-            {
-                _logger.Error("Failed to authenticate", exception);
-                ModelState.AddModelError("", "Failed to authenticate");
-                return View("Login");
-            }
-        }
-
 
         public ActionResult Index()
         {
@@ -258,11 +187,10 @@ namespace OneTrueError.Web.Controllers
                     return View(model);
                 }
 
-                FormsAuthentication.SetAuthCookie(reply.UserName, model.RememberMe);
-                var user = new SessionUser(reply.AccountId, reply.UserName);
-                SessionUser.Current = user;
-
-                await BuildApplicationList(user);
+                var getApps = new GetApplicationList {AccountId = reply.AccountId};
+                var apps = await _queryBus.QueryAsync(getApps);
+                var identity = CreateIdentity(reply.AccountId, reply.UserName, apps);
+                SignIn(identity);
 
                 return Redirect("~/#/");
             }
@@ -282,7 +210,7 @@ namespace OneTrueError.Web.Controllers
 
         public ActionResult Logout()
         {
-            FormsAuthentication.SignOut();
+            HttpContext.GetOwinContext().Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             Session.Abandon();
 
             return Redirect("~/");
@@ -389,16 +317,49 @@ namespace OneTrueError.Web.Controllers
 
         public async Task<ActionResult> UpdateSession()
         {
-            await BuildApplicationList(SessionUser.Current);
+            var getApps = new GetApplicationList();
+            var apps = await _queryBus.QueryAsync(getApps);
+            var ctx = Request.GetOwinContext();
+            ctx.Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+
+            var identity = CreateIdentity(User.GetAccountId(), User.Identity.Name, apps);
+            SignIn(identity);
+
             return new EmptyResult();
         }
 
-        private async Task BuildApplicationList(SessionUser user)
+        private static ClaimsIdentity CreateIdentity(int accountId, string userName, ApplicationListItem[] apps)
         {
-            var getApps = new GetApplicationList {AccountId = user.AccountId};
-            var apps = await _queryBus.QueryAsync(getApps);
-            user.Applications = apps.ToDictionary(x => x.Id, x => x.Name);
-            user.Applications[0] = "Dashboard";
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, accountId.ToString(), ClaimValueTypes.Integer32),
+                new Claim(ClaimTypes.Name, userName, ClaimValueTypes.String)
+            };
+            foreach (var app in apps)
+            {
+                claims.Add(new Claim(OneTrueClaims.Application, app.Id.ToString(), ClaimValueTypes.Integer32));
+                claims.Add(new Claim(OneTrueClaims.ApplicationName, app.Name, ClaimValueTypes.String));
+                if (app.IsAdmin)
+                    claims.Add(new Claim(OneTrueClaims.ApplicationAdmin, app.Id.ToString(), ClaimValueTypes.Integer32));
+            }
+
+            var roles = accountId == 1 ? new[] {OneTrueClaims.RoleSysAdmin} : new string[0];
+            var context = new PrincipalFactoryContext(accountId, userName, roles)
+            {
+                AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
+                Claims = claims.ToArray()
+            };
+            return (ClaimsIdentity) PrincipalFactory.CreateAsync(context).Result.Identity;
+        }
+
+        private void SignIn(ClaimsIdentity identity)
+        {
+            var props = new AuthenticationProperties
+            {
+                IsPersistent = true
+            };
+            var ctx = Request.GetOwinContext();
+            ctx.Authentication.SignIn(props, identity);
         }
     }
 }

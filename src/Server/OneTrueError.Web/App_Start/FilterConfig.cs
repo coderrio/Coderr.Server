@@ -1,7 +1,4 @@
-﻿using System.Web;
-using System.Web.Mvc;
-using OneTrueError.Web.Infrastructure;
-using OneTrueError.Web.Infrastructure.Auth;
+﻿using System.Web.Mvc;
 
 namespace OneTrueError.Web
 {
@@ -10,7 +7,6 @@ namespace OneTrueError.Web
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
-            filters.Add(new CustomMvcAuthorizeFilter());
         }
     }
 }

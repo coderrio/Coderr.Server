@@ -13,6 +13,11 @@ namespace OneTrueError.App.Core.Users
         /// </summary>
         /// <param name="applicationId">Application that the user is a member of.</param>
         /// <param name="emailAddress">Email address to the member</param>
+        /// <remarks>
+        ///     <para>
+        ///         this constructor is used when the user have no account (invite user)
+        ///     </para>
+        /// </remarks>
         public ApplicationTeamMember(int applicationId, string emailAddress)
         {
             if (applicationId <= 0) throw new ArgumentNullException("applicationId");
@@ -20,6 +25,27 @@ namespace OneTrueError.App.Core.Users
             ApplicationId = applicationId;
             EmailAddress = emailAddress;
             AddedAtUtc = DateTime.UtcNow;
+        }
+
+        /// <summary>
+        ///     Creates a new instance of <see cref="ApplicationTeamMember" />.
+        /// </summary>
+        /// <param name="applicationId">Application that the user is a member of.</param>
+        /// <param name="accountId">User exist in the system</param>
+        /// <remarks>
+        ///     <para>
+        ///         this constructor is used when the user have an account.
+        ///     </para>
+        /// </remarks>
+        public ApplicationTeamMember(int applicationId, int accountId)
+        {
+            if (applicationId <= 0) throw new ArgumentNullException("applicationId");
+            if (accountId <= 0) throw new ArgumentOutOfRangeException("accountId");
+
+            ApplicationId = applicationId;
+            AccountId = accountId;
+            AddedAtUtc = DateTime.UtcNow;
+            EmailAddress = "";
         }
 
         /// <summary>
@@ -32,7 +58,7 @@ namespace OneTrueError.App.Core.Users
         /// <summary>
         ///     0 for invited users that do not have an existing account (and have not accepted the invitation yet).
         /// </summary>
-        public int AccountId { get; set; }
+        public int AccountId { get; private set; }
 
         /// <summary>
         ///     When the member was added, or when the invitation was sent.
@@ -50,9 +76,14 @@ namespace OneTrueError.App.Core.Users
         public int ApplicationId { get; private set; }
 
         /// <summary>
-        ///     Email address (if this is an invite for a non-existing user).
+        ///     Email address (should only be used if this is an invite for a non-existing user).
         /// </summary>
         public string EmailAddress { get; private set; }
+
+        /// <summary>
+        ///     PK for the mapping
+        /// </summary>
+        public int Id { get; set; }
 
         /// <summary>
         ///     Currently assigned roles
@@ -65,5 +96,16 @@ namespace OneTrueError.App.Core.Users
         ///     Only used when fetching a member
         /// </summary>
         public string UserName { get; set; }
+
+        /// <summary>
+        ///     Invitation have been accepted.
+        /// </summary>
+        /// <param name="accountId"></param>
+        public void AcceptInvitation(int accountId)
+        {
+            if (accountId <= 0) throw new ArgumentOutOfRangeException("accountId");
+            AccountId = accountId;
+            EmailAddress = null;
+        }
     }
 }

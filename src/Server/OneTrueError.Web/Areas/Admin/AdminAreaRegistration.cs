@@ -6,10 +6,7 @@ namespace OneTrueError.Web.Areas.Admin
     {
         public override string AreaName
         {
-            get
-            {
-                return "Admin";
-            }
+            get { return "Admin"; }
         }
 
         public override void RegisterArea(AreaRegistrationContext context)
@@ -17,9 +14,9 @@ namespace OneTrueError.Web.Areas.Admin
             context.MapRoute(
                 "admin_default",
                 "admin/{controller}/{action}/{id}",
-                new { action = "Index", controller = "Home", id = UrlParameter.Optional },
-                namespaces: new []{GetType().Namespace + ".Controllers"}
-            );
+                new {action = "Index", controller = "Home", id = UrlParameter.Optional},
+                new[] {GetType().Namespace + ".Controllers"}
+                );
         }
     }
 }

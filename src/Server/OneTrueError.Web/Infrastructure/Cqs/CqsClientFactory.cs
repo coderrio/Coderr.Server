@@ -1,8 +1,9 @@
 ﻿using System.Configuration;
 using System.Diagnostics;
+using System.Security.Claims;
 using System.Web;
 using Griffin.Cqs.Http;
-using OneTrueError.Web.Models;
+using OneTrueError.Infrastructure.Security;
 
 namespace OneTrueError.Web.Infrastructure.Cqs
 {
@@ -19,10 +20,10 @@ namespace OneTrueError.Web.Infrastructure.Cqs
                     if (HttpContext.Current.Request.Url.AbsolutePath.StartsWith("/Account/Activate"))
                         Debugger.Break();
 
-                    if (SessionUser.IsAuthenticated)
+                    if (ClaimsPrincipal.Current.Identity.IsAuthenticated)
                     {
-                        request.Headers.Add("X-UserName", SessionUser.Current.UserName);
-                        request.Headers.Add("X-AccountId", SessionUser.Current.AccountId.ToString());
+                        request.Headers.Add("X-UserName", ClaimsPrincipal.Current.Identity.Name);
+                        request.Headers.Add("X-AccountId", ClaimsPrincipal.Current.GetAccountId().ToString());
                     }
                 }
             };

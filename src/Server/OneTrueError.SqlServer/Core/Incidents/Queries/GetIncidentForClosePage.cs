@@ -4,14 +4,14 @@ using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 using OneTrueError.Api.Core.Incidents.Queries;
-using OneTrueError.SqlServer.Tools;
 
 namespace OneTrueError.SqlServer.Core.Incidents.Queries
 {
     [Component]
-    class GetIncidentForClosePageHandler : IQueryHandler<GetIncidentForClosePage, GetIncidentForClosePageResult>
+    internal class GetIncidentForClosePageHandler :
+        IQueryHandler<GetIncidentForClosePage, GetIncidentForClosePageResult>
     {
-        private IAdoNetUnitOfWork _uow;
+        private readonly IAdoNetUnitOfWork _uow;
 
         public GetIncidentForClosePageHandler(IAdoNetUnitOfWork uow)
         {

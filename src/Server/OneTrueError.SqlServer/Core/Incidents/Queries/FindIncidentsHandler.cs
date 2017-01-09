@@ -8,14 +8,13 @@ using Griffin.Data;
 using Griffin.Data.Mapper;
 using OneTrueError.Api.Core.Incidents;
 using OneTrueError.Api.Core.Incidents.Queries;
-using OneTrueError.SqlServer.Tools;
 
 namespace OneTrueError.SqlServer.Core.Incidents.Queries
 {
     [Component]
     public class FindIncidentsHandler : IQueryHandler<FindIncidents, FindIncidentResult>
     {
-        private IAdoNetUnitOfWork _uow;
+        private readonly IAdoNetUnitOfWork _uow;
 
         public FindIncidentsHandler(IAdoNetUnitOfWork uow)
         {
@@ -24,7 +23,7 @@ namespace OneTrueError.SqlServer.Core.Incidents.Queries
 
         public async Task<FindIncidentResult> ExecuteAsync(FindIncidents query)
         {
-            using (var cmd = (DbCommand)_uow.CreateCommand())
+            using (var cmd = (DbCommand) _uow.CreateCommand())
             {
                 var sqlQuery = @"SELECT {0}
                                     FROM Incidents 
@@ -76,7 +75,6 @@ namespace OneTrueError.SqlServer.Core.Incidents.Queries
                         sqlQuery += " ORDER BY UpdatedAtUtc";
                     else
                         sqlQuery += " ORDER BY UpdatedAtUtc DESC";
-
                 }
                 else if (query.SortType == IncidentOrder.MostReports)
                 {
@@ -85,20 +83,22 @@ namespace OneTrueError.SqlServer.Core.Incidents.Queries
                     else
                         sqlQuery += " ORDER BY ReportCount DESC";
                 }
-                cmd.CommandText = string.Format(sqlQuery, "Incidents.*, Applications.Id as ApplicationId, Applications.Name as ApplicationName");
+                cmd.CommandText = string.Format(sqlQuery,
+                    "Incidents.*, Applications.Id as ApplicationId, Applications.Name as ApplicationName");
                 if (query.PageNumber > 0)
                 {
-                    var offset = (query.PageNumber - 1) * query.ItemsPerPage;
-                    cmd.CommandText += string.Format(@" OFFSET {0} ROWS FETCH NEXT {1} ROWS ONLY", offset, query.ItemsPerPage);
+                    var offset = (query.PageNumber - 1)*query.ItemsPerPage;
+                    cmd.CommandText += string.Format(@" OFFSET {0} ROWS FETCH NEXT {1} ROWS ONLY", offset,
+                        query.ItemsPerPage);
                 }
                 var items = await cmd.ToListAsync<FindIncidentResultItem>();
 
-                return new FindIncidentResult()
+                return new FindIncidentResult
                 {
                     Items = items.ToArray(),
                     PageNumber = query.PageNumber,
                     PageSize = query.ItemsPerPage,
-                    TotalCount = (int)count
+                    TotalCount = (int) count
                 };
             }
         }

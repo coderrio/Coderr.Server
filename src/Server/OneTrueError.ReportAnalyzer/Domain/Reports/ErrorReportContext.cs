@@ -4,14 +4,14 @@ using System.Collections.Generic;
 namespace OneTrueError.ReportAnalyzer.Domain.Reports
 {
     /// <summary>
-    /// Context used when analysing the report
+    ///     Context used when analysing the report
     /// </summary>
     public class ErrorReportContext
     {
         private IDictionary<string, string> _properties;
 
         /// <summary>
-        /// Creates a new instance of <see cref="ErrorReportContext"/>.
+        ///     Creates a new instance of <see cref="ErrorReportContext" />.
         /// </summary>
         /// <param name="name">context collection name</param>
         /// <param name="properties">properties for the collection</param>
@@ -26,19 +26,19 @@ namespace OneTrueError.ReportAnalyzer.Domain.Reports
         }
 
         /// <summary>
-        /// Creates a new instance of <see cref="ErrorReportContext"/>.
+        ///     Creates a new instance of <see cref="ErrorReportContext" />.
         /// </summary>
         protected ErrorReportContext()
         {
         }
 
         /// <summary>
-        /// Context collection name
+        ///     Context collection name
         /// </summary>
         public string Name { get; private set; }
 
         /// <summary>
-        /// Context collection properties
+        ///     Context collection properties
         /// </summary>
         public IDictionary<string, string> Properties
         {

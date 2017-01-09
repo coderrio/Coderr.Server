@@ -30,23 +30,6 @@ namespace OneTrueError.App.Tests.Core.Accounts.CommandHandlers
         }
 
         [Fact]
-        public async Task should_send_activation_email()
-        {
-            var repos = Substitute.For<IAccountRepository>();
-            var cmdBus = Substitute.For<ICommandBus>();
-            var eventBus = Substitute.For<IEventBus>();
-            var cmd = new RegisterAccount("rne", "yo", "someEmal");
-            repos.When(x => x.CreateAsync(Arg.Any<Account>()))
-                .Do(x => x.Arg<Account>().SetId(3));
-
-
-            var sut = new RegisterAccountHandler(repos, cmdBus, eventBus);
-            await sut.ExecuteAsync(cmd);
-
-            await cmdBus.Received().ExecuteAsync(Arg.Any<SendEmail>());
-        }
-
-        [Fact]
         public async Task should_inform_the_rest_of_the_system_about_the_new_account()
         {
             var repos = Substitute.For<IAccountRepository>();
@@ -64,5 +47,21 @@ namespace OneTrueError.App.Tests.Core.Accounts.CommandHandlers
             eventBus.Method("PublishAsync").Arg<AccountRegistered>().AccountId.Should().Be(3);
         }
 
+        [Fact]
+        public async Task should_send_activation_email()
+        {
+            var repos = Substitute.For<IAccountRepository>();
+            var cmdBus = Substitute.For<ICommandBus>();
+            var eventBus = Substitute.For<IEventBus>();
+            var cmd = new RegisterAccount("rne", "yo", "someEmal");
+            repos.When(x => x.CreateAsync(Arg.Any<Account>()))
+                .Do(x => x.Arg<Account>().SetId(3));
+
+
+            var sut = new RegisterAccountHandler(repos, cmdBus, eventBus);
+            await sut.ExecuteAsync(cmd);
+
+            await cmdBus.Received().ExecuteAsync(Arg.Any<SendEmail>());
+        }
     }
 }

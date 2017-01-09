@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using OneTrueError.App.Modules.Similarities.Domain.Adapters.Normalizers;
@@ -9,7 +9,7 @@ using OneTrueError.App.Modules.Similarities.Domain.Adapters.Runner;
 namespace OneTrueError.App.Modules.Similarities.Domain.Adapters
 {
     /// <summary>
-    /// Converts the Operating system WMI collection into more useful information.
+    ///     Converts the Operating system WMI collection into more useful information.
     /// </summary>
     /// TODO: Document which collections this one generates.
     //http://www.powertheshell.com/reference/wmireference/root/cimv2/win32_operatingsystem/
@@ -44,7 +44,8 @@ namespace OneTrueError.App.Modules.Similarities.Domain.Adapters
         /// <param name="context">Context information</param>
         /// <param name="currentValue">Value which might have been adapted</param>
         /// <returns>The new value (or same as the current value if no modification has been made)</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1820:TestForEmptyStringsUsingStringLength", Justification = "Value cannot be null.")]
+        [SuppressMessage("Microsoft.Performance", "CA1820:TestForEmptyStringsUsingStringLength",
+            Justification = "Value cannot be null.")]
         public object Adapt(ValueAdapterContext context, object currentValue)
         {
             if (context == null) throw new ArgumentNullException("context");

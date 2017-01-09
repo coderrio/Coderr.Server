@@ -7,7 +7,6 @@ namespace OneTrueError.Web.Areas.Admin.Controllers
 {
     public class MessagingController : Controller
     {
-   
         public ActionResult Email()
         {
             var model = new EmailViewModel();
@@ -21,7 +20,6 @@ namespace OneTrueError.Web.Areas.Admin.Controllers
             model.UseSSL = settings.UseSsl;
             model.AccountPassword = settings.AccountPassword;
             return View(model);
-
         }
 
         [HttpPost]

@@ -3,7 +3,7 @@
 namespace OneTrueError.App.Modules.Similarities.Domain.Adapters.OperatingSystems
 {
     /// <summary>
-    /// Translates the WMI collection named "OperatingSystemSKU"
+    ///     Translates the WMI collection named "OperatingSystemSKU"
     /// </summary>
     public static class OperatingSystemSku
     {
@@ -93,7 +93,7 @@ namespace OneTrueError.App.Modules.Similarities.Domain.Adapters.OperatingSystems
         };
 
         /// <summary>
-        /// Get edition from a suite index
+        ///     Get edition from a suite index
         /// </summary>
         /// <param name="id">index</param>
         /// <returns>corresponding suite if found; otherwise <c>"Unknown"</c></returns>

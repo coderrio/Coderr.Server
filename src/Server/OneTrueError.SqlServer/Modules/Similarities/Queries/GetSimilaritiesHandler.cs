@@ -6,7 +6,6 @@ using Griffin.Container;
 using Griffin.Data;
 using log4net;
 using OneTrueError.Api.Modules.ContextData.Queries;
-using OneTrueError.App;
 using OneTrueError.Infrastructure;
 using OneTrueError.SqlServer.Modules.Similarities.Entities;
 
@@ -15,7 +14,7 @@ namespace OneTrueError.SqlServer.Modules.Similarities.Queries
     [Component]
     public class GetSimilaritiesHandler : IQueryHandler<GetSimilarities, GetSimilaritiesResult>
     {
-        private readonly ILog _logger = LogManager.GetLogger(typeof (GetSimilaritiesHandler));
+        private readonly ILog _logger = LogManager.GetLogger(typeof(GetSimilaritiesHandler));
         private readonly IAdoNetUnitOfWork _unitOfWork;
 
         public GetSimilaritiesHandler(IAdoNetUnitOfWork unitOfWork)

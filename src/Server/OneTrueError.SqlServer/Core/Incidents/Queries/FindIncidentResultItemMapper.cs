@@ -9,22 +9,22 @@ namespace OneTrueError.SqlServer.Core.Incidents.Queries
     {
         public object Create(IDataRecord record)
         {
-            return new FindIncidentResultItem((int)record["Id"], (string)record["Description"]);
+            return new FindIncidentResultItem((int) record["Id"], (string) record["Description"]);
         }
 
         public void Map(IDataRecord source, object destination)
         {
-            Map(source, (FindIncidentResultItem)destination);
+            Map(source, (FindIncidentResultItem) destination);
         }
 
         public void Map(IDataRecord source, FindIncidentResultItem destination)
         {
-            destination.ApplicationName = (string)source["ApplicationName"];
+            destination.ApplicationName = (string) source["ApplicationName"];
             destination.ApplicationId = source["ApplicationId"].ToString();
             destination.IsReOpened = source["IsReopened"].Equals(1);
-            destination.ReportCount = (int)source["ReportCount"];
-            destination.LastUpdateAtUtc = (DateTime)source["UpdatedAtUtc"];
-            destination.CreatedAtUtc = (DateTime)source["CreatedAtUtc"];
+            destination.ReportCount = (int) source["ReportCount"];
+            destination.LastUpdateAtUtc = (DateTime) source["UpdatedAtUtc"];
+            destination.CreatedAtUtc = (DateTime) source["CreatedAtUtc"];
         }
     }
 }

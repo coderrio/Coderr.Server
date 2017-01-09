@@ -6,10 +6,7 @@ namespace OneTrueError.Web.Areas.Installation
     {
         public override string AreaName
         {
-            get
-            {
-                return "Installation";
-            }
+            get { return "Installation"; }
         }
 
         public override void RegisterArea(AreaRegistrationContext context)
@@ -17,8 +14,8 @@ namespace OneTrueError.Web.Areas.Installation
             context.MapRoute(
                 "Installation_default",
                 "Installation/{controller}/{action}/{id}",
-                new { action = "Index", controller = "Setup", id = UrlParameter.Optional }
-            );
+                new {action = "Index", controller = "Setup", id = UrlParameter.Optional}
+                );
         }
     }
 }

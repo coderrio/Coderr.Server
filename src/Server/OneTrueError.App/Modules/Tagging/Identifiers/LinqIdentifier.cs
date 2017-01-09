@@ -4,7 +4,7 @@ using Griffin.Container;
 namespace OneTrueError.App.Modules.Tagging.Identifiers
 {
     /// <summary>
-    /// Identifies if the exception had LINQ in the stack trace.
+    ///     Identifies if the exception had LINQ in the stack trace.
     /// </summary>
     [Component]
     public class LinqIdentifier : ITagIdentifier

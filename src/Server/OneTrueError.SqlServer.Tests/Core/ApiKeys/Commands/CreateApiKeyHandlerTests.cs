@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using DotNetCqs;
 using FluentAssertions;
 using Griffin.Data;
+using NSubstitute;
 using OneTrueError.Api.Core.ApiKeys.Commands;
 using OneTrueError.App.Core.Applications;
 using OneTrueError.SqlServer.Core.ApiKeys;
@@ -16,13 +16,49 @@ namespace OneTrueError.SqlServer.Tests.Core.ApiKeys.Commands
 {
     public class CreateApiKeyHandlerTests : IDisposable
     {
-        private IAdoNetUnitOfWork _uow;
         private int _applicationId;
+        private readonly IAdoNetUnitOfWork _uow;
 
         public CreateApiKeyHandlerTests()
         {
             _uow = ConnectionFactory.Create();
             GetApplicationId();
+        }
+
+        public void Dispose()
+        {
+            _uow.Dispose();
+        }
+
+        [Fact]
+        public async Task should_be_able_to_Create_a_key_without_applications_mapped()
+        {
+            var cmd = new CreateApiKey("Mofo", Guid.NewGuid().ToString("N"), Guid.NewGuid().ToString("N"));
+            var bus = Substitute.For<IEventBus>();
+
+            var sut = new CreateApiKeyHandler(_uow, bus);
+            await sut.ExecuteAsync(cmd);
+
+            var repos = new ApiKeyRepository(_uow);
+            var generated = await repos.GetByKeyAsync(cmd.ApiKey);
+            generated.Should().NotBeNull();
+            generated.Claims.Should().BeEmpty();
+        }
+
+        [Fact]
+        public async Task should_be_able_to_Create_key()
+        {
+            var cmd = new CreateApiKey("Mofo", Guid.NewGuid().ToString("N"), Guid.NewGuid().ToString("N"),
+                new[] {_applicationId});
+            var bus = Substitute.For<IEventBus>();
+
+            var sut = new CreateApiKeyHandler(_uow, bus);
+            await sut.ExecuteAsync(cmd);
+
+            var repos = new ApiKeyRepository(_uow);
+            var generated = await repos.GetByKeyAsync(cmd.ApiKey);
+            generated.Should().NotBeNull();
+            generated.Claims.First().Value.Should().BeEquivalentTo(_applicationId.ToString());
         }
 
         private void GetApplicationId()
@@ -36,39 +72,6 @@ namespace OneTrueError.SqlServer.Tests.Core.ApiKeys.Commands
             }
             else
                 _applicationId = (int) id;
-        }
-
-        [Fact]
-        public async Task should_be_able_to_Create_key()
-        {
-            var cmd = new CreateApiKey("Mofo", Guid.NewGuid().ToString("N"), Guid.NewGuid().ToString("N"), new[] { _applicationId});
-
-            var sut = new CreateApiKeyHandler(_uow);
-            await sut.ExecuteAsync(cmd);
-
-            var repos = new ApiKeyRepository(_uow);
-            var generated = await repos.GetByKeyAsync(cmd.ApiKey);
-            generated.Should().NotBeNull();
-            generated.AllowedApplications.Should().BeEquivalentTo(new[] {_applicationId});
-        }
-
-        [Fact]
-        public async Task should_be_able_to_Create_a_key_without_applications_mapped()
-        {
-            var cmd = new CreateApiKey("Mofo", Guid.NewGuid().ToString("N"), Guid.NewGuid().ToString("N"));
-
-            var sut = new CreateApiKeyHandler(_uow);
-            await sut.ExecuteAsync(cmd);
-
-            var repos = new ApiKeyRepository(_uow);
-            var generated = await repos.GetByKeyAsync(cmd.ApiKey);
-            generated.Should().NotBeNull();
-            generated.AllowedApplications.Should().BeEmpty();
-        }
-
-        public void Dispose()
-        {
-            _uow.Dispose();
         }
     }
 }

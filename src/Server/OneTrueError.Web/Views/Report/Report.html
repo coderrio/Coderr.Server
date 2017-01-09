@@ -1,14 +1,12 @@
 ﻿<style type="text/css">
     table.properties th {
+        padding: 5px;
         text-align: right;
         vertical-align: top;
-        padding: 5px;
     }
 
 
-    table.properties td {
-        padding: 5px;
-    }
+    table.properties td { padding: 5px; }
 
     .propertyList {
         list-style-type: none;
@@ -16,29 +14,25 @@
         padding: 0;
     }
 
-        .propertyList li {
-            display: block;
-            padding: 10px;
-        }
+    .propertyList li {
+        display: block;
+        padding: 10px;
+    }
 
-            .propertyList li.active {
-                background-color: #00A2EE;
-                color: white !important;
-            }
+    .propertyList li.active {
+        background-color: #00A2EE;
+        color: white !important;
+    }
 
-                .propertyList li.active a {
-                    color: white !important;
-                }
+    .propertyList li.active a { color: white !important; }
 
 
-            .propertyList li:hover {
-                background-color: #60D2FE;
-                color: white;
-            }
+    .propertyList li:hover {
+        background-color: #60D2FE;
+        color: white;
+    }
 
-                .propertyList li:hover a {
-                    color: black;
-                }
+    .propertyList li:hover a { color: black; }
 </style>
 
 <div id="ReportView">
@@ -60,7 +54,9 @@
     <div class="row">
         <div class="col-md-2">
             <ul data-collection="ContextCollections" class="propertyList">
-                <li class="context-name"><a data-name="ContextCollectionName"></a></li>
+                <li class="context-name">
+                    <a data-name="ContextCollectionName"></a>
+                </li>
             </ul>
 
         </div>
@@ -69,10 +65,10 @@
                 <thead>
                 </thead>
                 <tbody data-collection="Properties">
-                    <tr>
-                        <th data-name="Key" style="text-align: right"></th>
-                        <td data-name="Value"></td>
-                    </tr>
+                <tr>
+                    <th data-name="Key" style="text-align: right"></th>
+                    <td data-name="Value"></td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -82,7 +78,13 @@
 </div>
 
 <ul data-navigation="main-navigation">
-    <li><a href="#/application/:applicationId/incident/:incidentId">Back..</a></li>
-    <li><a href="#/application/:applicationId/incident/:incidentId/context">Context data</a></li>
-    <li><a href="#/application/:applicationId/incident/:incidentId/feedback">Feedback</a></li>
+    <li>
+        <a href="#/application/:applicationId/incident/:incidentId">Back..</a>
+    </li>
+    <li>
+        <a href="#/application/:applicationId/incident/:incidentId/context">Context data</a>
+    </li>
+    <li>
+        <a href="#/application/:applicationId/incident/:incidentId/feedback">Feedback</a>
+    </li>
 </ul>

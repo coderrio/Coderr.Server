@@ -7,6 +7,12 @@ namespace OneTrueError.Web.Areas.Installation.Controllers
 {
     public class SqlController : Controller
     {
+        [HttpPost]
+        public ActionResult Connection()
+        {
+            return RedirectToAction("Tables");
+        }
+
         public ActionResult Index()
         {
             var constr = ConfigurationManager.ConnectionStrings["Db"];
@@ -17,39 +23,9 @@ namespace OneTrueError.Web.Areas.Installation.Controllers
                 ViewBag.ConnectionString = "";
                 ViewBag.NextLink = "";
             }
-                
+
 
             return View();
-        }
-        protected override void OnActionExecuting(ActionExecutingContext filterContext)
-        {
-            ViewBag.PrevLink = Url.GetPreviousWizardStepLink();
-            ViewBag.NextLink = Url.GetNextWizardStepLink();
-            base.OnActionExecuting(filterContext);
-        }
-
-        [HttpPost]
-        public ActionResult Connection()
-        {
-            return RedirectToAction("Tables");
-        }
-
-        public ActionResult Validate()
-        {
-            try
-            {
-                var constr = ConfigurationManager.ConnectionStrings["Db"];
-                SetupTools.DbTools.CheckConnectionString(constr?.ConnectionString);
-                return Content(@"{ ""result"": ""ok"" }", "application/json");
-            }
-            catch (Exception ex)
-            {
-                var errMsg = ex.Message.Replace("\\", "\\\\")
-                    .Replace("\"", "\\\"")
-                    .Replace("\r", "")
-                    .Replace("\n", "\\n");
-                return Content(@"{ ""result"": ""fail"", ""reason"": """ + errMsg + @"""}", "application/json");
-            }
         }
 
         [HttpGet]
@@ -83,6 +59,31 @@ namespace OneTrueError.Web.Areas.Installation.Controllers
                 return View();
             }
             //return RedirectToRoute(new {Area = "Installation", Controller = "Setup", Action = "Done"});
+        }
+
+        public ActionResult Validate()
+        {
+            try
+            {
+                var constr = ConfigurationManager.ConnectionStrings["Db"];
+                SetupTools.DbTools.CheckConnectionString(constr?.ConnectionString);
+                return Content(@"{ ""result"": ""ok"" }", "application/json");
+            }
+            catch (Exception ex)
+            {
+                var errMsg = ex.Message.Replace("\\", "\\\\")
+                    .Replace("\"", "\\\"")
+                    .Replace("\r", "")
+                    .Replace("\n", "\\n");
+                return Content(@"{ ""result"": ""fail"", ""reason"": """ + errMsg + @"""}", "application/json");
+            }
+        }
+
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            ViewBag.PrevLink = Url.GetPreviousWizardStepLink();
+            ViewBag.NextLink = Url.GetNextWizardStepLink();
+            base.OnActionExecuting(filterContext);
         }
     }
 }

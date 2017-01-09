@@ -7,42 +7,18 @@ using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 using OneTrueError.App.Core.Accounts;
-using OneTrueError.SqlServer.Tools;
 
 namespace OneTrueError.SqlServer.Core.Accounts
 {
     [Component]
     public class AccountRepository : IAccountRepository
     {
-        private IAdoNetUnitOfWork _uow;
+        private readonly IAdoNetUnitOfWork _uow;
 
         public AccountRepository(IAdoNetUnitOfWork uow)
         {
             if (uow == null) throw new ArgumentNullException("uow");
             _uow = uow;
-        }
-
-        public void Create(Account account)
-        {
-
-            using (var cmd = _uow.CreateCommand())
-            {
-                cmd.CommandText =
-                    "INSERT INTO Accounts (Id, Username, HashedPassword, Salt, CreatedAtUtc, AccountState, Email, UpdatedAtUtc, ActivationKey, LoginAttempts, LastLoginAtUtc) " +
-                    " VALUES(@Id, @Username, @HashedPassword, @Salt, @CreatedAtUtc, @AccountState, @Email, @UpdatedAtUtc, @ActivationKey, @LoginAttempts, @LastLoginAtUtc)";
-                cmd.AddParameter("@Id", account.Id);
-                cmd.AddParameter("@Username", account.UserName);
-                cmd.AddParameter("@HashedPassword", account.HashedPassword);
-                cmd.AddParameter("@Salt", account.Salt);
-                cmd.AddParameter("@CreatedAtUtc", account.CreatedAtUtc);
-                cmd.AddParameter("@AccountState", account.AccountState.ToString());
-                cmd.AddParameter("@Email", account.Email);
-                cmd.AddParameter("@UpdatedAtUtc", account.UpdatedAtUtc == DateTime.MinValue ? (object)null : account.UpdatedAtUtc);
-                cmd.AddParameter("@ActivationKey", account.ActivationKey);
-                cmd.AddParameter("@LoginAttempts", account.LoginAttempts);
-                cmd.AddParameter("@LastLoginAtUtc", account.LastLoginAtUtc == DateTime.MinValue ? (object)null : account.LastLoginAtUtc);
-                cmd.ExecuteNonQuery();
-            }
         }
 
         /*
@@ -79,7 +55,7 @@ namespace OneTrueError.SqlServer.Core.Accounts
 
         public async Task UpdateAsync(Account account)
         {
-            using (var cmd = (DbCommand)_uow.CreateCommand())
+            using (var cmd = (DbCommand) _uow.CreateCommand())
             {
                 cmd.CommandText =
                     "UPDATE Accounts SET " +
@@ -101,23 +77,20 @@ namespace OneTrueError.SqlServer.Core.Accounts
                 cmd.AddParameter("@CreatedAtUtc", account.CreatedAtUtc);
                 cmd.AddParameter("@AccountState", account.AccountState.ToString());
                 cmd.AddParameter("@Email", account.Email);
-                cmd.AddParameter("@UpdatedAtUtc", account.UpdatedAtUtc == DateTime.MinValue ? (object)null : account.UpdatedAtUtc);
+                cmd.AddParameter("@UpdatedAtUtc",
+                    account.UpdatedAtUtc == DateTime.MinValue ? (object) null : account.UpdatedAtUtc);
                 cmd.AddParameter("@ActivationKey", account.ActivationKey);
                 cmd.AddParameter("@LoginAttempts", account.LoginAttempts);
-                cmd.AddParameter("@LastLoginAtUtc", account.LastLoginAtUtc == DateTime.MinValue ? (object)null : account.LastLoginAtUtc);
+                cmd.AddParameter("@LastLoginAtUtc",
+                    account.LastLoginAtUtc == DateTime.MinValue ? (object) null : account.LastLoginAtUtc);
                 await cmd.ExecuteNonQueryAsync();
             }
-        }
-
-        public Account GetByUserName(string userName)
-        {
-            return _uow.First<Account>(new {UserName = userName});
         }
 
         public async Task<Account> FindByUserNameAsync(string userName)
         {
             if (userName == null) throw new ArgumentNullException("userName");
-            using (var cmd = (DbCommand)_uow.CreateCommand())
+            using (var cmd = (DbCommand) _uow.CreateCommand())
             {
                 cmd.CommandText = "SELECT TOP 1 * FROM Accounts WHERE UserName=@uname";
                 cmd.AddParameter("uname", userName);
@@ -149,15 +122,14 @@ namespace OneTrueError.SqlServer.Core.Accounts
 
         public async Task<IEnumerable<Account>> GetByIdAsync(int[] ids)
         {
-            using (var cmd = (DbCommand)_uow.CreateCommand())
+            using (var cmd = (DbCommand) _uow.CreateCommand())
             {
                 cmd.CommandText = "SELECT * FROM Accounts WHERE Id IN (@ids)";
-                cmd.AddParameter("ids", string.Join(",", ids.Select(x=>"'" + x + "'")));
+                cmd.AddParameter("ids", string.Join(",", ids.Select(x => "'" + x + "'")));
                 return await cmd.ToListAsync<Account>();
             }
         }
 
-       
 
         public async Task<bool> IsEmailAddressTakenAsync(string email)
         {
@@ -183,6 +155,34 @@ namespace OneTrueError.SqlServer.Core.Accounts
                 return result != null && result != DBNull.Value;
             }
         }
-        
+
+        public void Create(Account account)
+        {
+            using (var cmd = _uow.CreateCommand())
+            {
+                cmd.CommandText =
+                    "INSERT INTO Accounts (Id, Username, HashedPassword, Salt, CreatedAtUtc, AccountState, Email, UpdatedAtUtc, ActivationKey, LoginAttempts, LastLoginAtUtc) " +
+                    " VALUES(@Id, @Username, @HashedPassword, @Salt, @CreatedAtUtc, @AccountState, @Email, @UpdatedAtUtc, @ActivationKey, @LoginAttempts, @LastLoginAtUtc)";
+                cmd.AddParameter("@Id", account.Id);
+                cmd.AddParameter("@Username", account.UserName);
+                cmd.AddParameter("@HashedPassword", account.HashedPassword);
+                cmd.AddParameter("@Salt", account.Salt);
+                cmd.AddParameter("@CreatedAtUtc", account.CreatedAtUtc);
+                cmd.AddParameter("@AccountState", account.AccountState.ToString());
+                cmd.AddParameter("@Email", account.Email);
+                cmd.AddParameter("@UpdatedAtUtc",
+                    account.UpdatedAtUtc == DateTime.MinValue ? (object) null : account.UpdatedAtUtc);
+                cmd.AddParameter("@ActivationKey", account.ActivationKey);
+                cmd.AddParameter("@LoginAttempts", account.LoginAttempts);
+                cmd.AddParameter("@LastLoginAtUtc",
+                    account.LastLoginAtUtc == DateTime.MinValue ? (object) null : account.LastLoginAtUtc);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public Account GetByUserName(string userName)
+        {
+            return _uow.First<Account>(new {UserName = userName});
+        }
     }
 }

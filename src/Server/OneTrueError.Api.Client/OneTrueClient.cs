@@ -14,13 +14,13 @@ namespace OneTrueError.Api.Client
     /// </summary>
     public class OneTrueApiClient : IQueryBus, ICommandBus, IEventBus
     {
-        private string _apiKey;
-
         private readonly JsonSerializerSettings _jsonSerializerSettings = new JsonSerializerSettings
         {
             ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
             Formatting = Formatting.Indented
         };
+
+        private string _apiKey;
 
         private string _sharedSecret;
         private Uri _uri;
@@ -29,8 +29,8 @@ namespace OneTrueError.Api.Client
         /// <summary>
         ///     Creates a new instance of <see cref="OneTrueApiClient" />.
         /// </summary>
-        public OneTrueApiClient() { 
-
+        public OneTrueApiClient()
+        {
             _jsonSerializerSettings.ContractResolver = new IncludeNonPublicMembersContractResolver();
         }
 
@@ -111,9 +111,9 @@ namespace OneTrueError.Api.Client
             var json = JsonConvert.SerializeObject(cqsObject, _jsonSerializerSettings);
             var buffer = Encoding.UTF8.GetBytes(json);
 
-var hamc = new HMACSHA256(Encoding.UTF8.GetBytes(_sharedSecret.ToLower()));
-var hash = hamc.ComputeHash(buffer);
-var signature = Convert.ToBase64String(hash);
+            var hamc = new HMACSHA256(Encoding.UTF8.GetBytes(_sharedSecret.ToLower()));
+            var hash = hamc.ComputeHash(buffer);
+            var signature = Convert.ToBase64String(hash);
 
             await stream.WriteAsync(buffer, 0, buffer.Length);
 

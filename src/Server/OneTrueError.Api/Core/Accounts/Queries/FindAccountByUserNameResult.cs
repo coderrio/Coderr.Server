@@ -2,14 +2,13 @@ using System;
 
 namespace OneTrueError.Api.Core.Accounts.Queries
 {
-
     /// <summary>
-    /// Result for <see cref="FindAccountByUserName"/>.
+    ///     Result for <see cref="FindAccountByUserName" />.
     /// </summary>
     public class FindAccountByUserNameResult
     {
         /// <summary>
-        /// Creates a new instance of <see cref="FindAccountByUserNameResult"/>.
+        ///     Creates a new instance of <see cref="FindAccountByUserNameResult" />.
         /// </summary>
         /// <param name="accountId">account id</param>
         /// <param name="displayName">Either username or FirstName LastName depending on what's available.</param>
@@ -24,12 +23,12 @@ namespace OneTrueError.Api.Core.Accounts.Queries
         }
 
         /// <summary>
-        /// Account id
+        ///     Account id
         /// </summary>
         public int AccountId { get; private set; }
 
         /// <summary>
-        /// Either username or FirstName LastName depending on what's available.
+        ///     Either username or FirstName LastName depending on what's available.
         /// </summary>
         public string DisplayName { get; private set; }
     }

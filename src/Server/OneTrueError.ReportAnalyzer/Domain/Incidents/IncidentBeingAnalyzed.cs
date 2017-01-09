@@ -11,14 +11,14 @@ namespace OneTrueError.ReportAnalyzer.Domain.Incidents
         private string _description;
 
         /// <summary>
-        /// Creates a new instance of <see cref="IncidentBeingAnalyzed"/>.
+        ///     Creates a new instance of <see cref="IncidentBeingAnalyzed" />.
         /// </summary>
         protected IncidentBeingAnalyzed()
         {
         }
 
         /// <summary>
-        /// Creates a new instance of <see cref="IncidentBeingAnalyzed"/>.
+        ///     Creates a new instance of <see cref="IncidentBeingAnalyzed" />.
         /// </summary>
         /// <param name="entity"></param>
         /// <exception cref="ArgumentNullException">entity</exception>
@@ -41,7 +41,7 @@ namespace OneTrueError.ReportAnalyzer.Domain.Incidents
         }
 
         /// <summary>
-        /// Creates a new instance of <see cref="IncidentBeingAnalyzed"/>.
+        ///     Creates a new instance of <see cref="IncidentBeingAnalyzed" />.
         /// </summary>
         /// <param name="entity">entity</param>
         /// <param name="exception">exception to analyze</param>
@@ -67,17 +67,17 @@ namespace OneTrueError.ReportAnalyzer.Domain.Incidents
         }
 
         /// <summary>
-        /// Application that the report belongs in
+        ///     Application that the report belongs in
         /// </summary>
         public int ApplicationId { get; private set; }
 
         /// <summary>
-        /// When report was created
+        ///     When report was created
         /// </summary>
         public DateTime CreatedAtUtc { get; private set; }
 
         /// <summary>
-        /// Incident description
+        ///     Incident description
         /// </summary>
         public string Description
         {
@@ -108,71 +108,60 @@ namespace OneTrueError.ReportAnalyzer.Domain.Incidents
         public int Id { get; private set; }
 
         /// <summary>
-        /// Open a closed incident.
-        /// </summary>
-        /// <seealso cref="IsReOpened"/>
-        public void ReOpen()
-        {
-            PreviousSolutionAtUtc = SolvedAtUtc;
-            IsSolved = false;
-            ReOpenedAtUtc = DateTime.UtcNow;
-            IsReOpened = true;
-        }
-
-        /// <summary>
-        /// Incident is ignored, i.e. do not track any more reports or send any notifications.
+        ///     Incident is ignored, i.e. do not track any more reports or send any notifications.
         /// </summary>
         public bool IsIgnored { get; set; }
 
         /// <summary>
-        /// Incident is opened again after being closed.
+        ///     Incident is opened again after being closed.
         /// </summary>
         public bool IsReOpened { get; set; }
 
         /// <summary>
-        /// When the report was opened again
-        /// </summary>
-        /// <seealso cref="IsReOpened"/>-
-        public DateTime ReOpenedAtUtc { get; set; }
-
-        /// <summary>
-        /// Incident have been solved (bug as been identified and corrected)
+        ///     Incident have been solved (bug as been identified and corrected)
         /// </summary>
         public bool IsSolved { get; set; }
 
         /// <summary>
-        /// Set if incident was closed and a solution was written
+        ///     Set if incident was closed and a solution was written
         /// </summary>
         public DateTime PreviousSolutionAtUtc { get; set; }
 
         /// <summary>
-        /// When the solution was written
+        ///     When the report was opened again
         /// </summary>
-        public DateTime SolvedAtUtc { get; set; }
+        /// <seealso cref="IsReOpened" />
+        /// -
+        public DateTime ReOpenedAtUtc { get; set; }
 
         /// <summary>
-        /// Hashcode identifying this incident
+        ///     Total number of reports for this incident (including those who was ignored)
+        /// </summary>
+        public int ReportCount { get; set; }
+
+        /// <summary>
+        ///     Hashcode identifying this incident
         /// </summary>
         public string ReportHashCode { get; private set; }
 
         /// <summary>
-        /// Stack trace from the exception
+        ///     When the solution was written
+        /// </summary>
+        public DateTime SolvedAtUtc { get; set; }
+
+        /// <summary>
+        ///     Stack trace from the exception
         /// </summary>
         public string StackTrace { get; set; }
 
 
         /// <summary>
-        /// Incident has been updated (received a new report or by an action by a user)
+        ///     Incident has been updated (received a new report or by an action by a user)
         /// </summary>
         public DateTime UpdatedAtUtc { get; private set; }
 
         /// <summary>
-        /// Total number of reports for this incident (including those who was ignored)
-        /// </summary>
-        public int ReportCount { get; set; }
-
-        /// <summary>
-        /// Add another report.
+        ///     Add another report.
         /// </summary>
         /// <param name="entity">entity</param>
         /// <exception cref="ArgumentNullException">entity</exception>
@@ -193,7 +182,19 @@ namespace OneTrueError.ReportAnalyzer.Domain.Incidents
         }
 
         /// <summary>
-        /// Just ignored a new report
+        ///     Open a closed incident.
+        /// </summary>
+        /// <seealso cref="IsReOpened" />
+        public void ReOpen()
+        {
+            PreviousSolutionAtUtc = SolvedAtUtc;
+            IsSolved = false;
+            ReOpenedAtUtc = DateTime.UtcNow;
+            IsReOpened = true;
+        }
+
+        /// <summary>
+        ///     Just ignored a new report
         /// </summary>
         public void WasJustIgnored()
         {

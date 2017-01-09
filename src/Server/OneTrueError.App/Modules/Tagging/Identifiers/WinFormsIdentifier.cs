@@ -4,7 +4,7 @@ using Griffin.Container;
 namespace OneTrueError.App.Modules.Tagging.Identifiers
 {
     /// <summary>
-    /// Checks if WinForms is loaded.
+    ///     Checks if WinForms is loaded.
     /// </summary>
     [Component]
     public class WinFormsIdentifier : ITagIdentifier

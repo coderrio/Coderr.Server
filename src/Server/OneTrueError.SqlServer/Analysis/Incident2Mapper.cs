@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Griffin.Data.Mapper;
 using OneTrueError.ReportAnalyzer.Domain.Incidents;
 

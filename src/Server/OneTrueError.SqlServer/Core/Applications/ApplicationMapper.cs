@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Griffin.Data.Mapper;
 using OneTrueError.Api.Core.Applications;
 using OneTrueError.App.Core.Applications;

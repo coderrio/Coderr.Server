@@ -33,6 +33,13 @@ namespace OneTrueError.App.Core.Invitations
         Task<Invitation> FindByEmailAsync(string email);
 
         /// <summary>
+        ///     Get invitation by key.
+        /// </summary>
+        /// <param name="invitationKey">Key sent out in the invitation email.</param>
+        /// <returns>Invitation</returns>
+        Task<Invitation> GetByInvitationKeyAsync(string invitationKey);
+
+        /// <summary>
         ///     Update existing invitation
         /// </summary>
         /// <param name="invitation">invitation</param>

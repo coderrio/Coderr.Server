@@ -4,12 +4,12 @@ using DotNetCqs;
 namespace OneTrueError.Api.Core.Applications.Queries
 {
     /// <summary>
-    /// Get stats etc that can be presented as an overview for an application.
+    ///     Get stats etc that can be presented as an overview for an application.
     /// </summary>
     public class GetApplicationOverview : Query<GetApplicationOverviewResult>
     {
         /// <summary>
-        /// Creates a new instance of <see cref="GetApplicationOverview"/>.
+        ///     Creates a new instance of <see cref="GetApplicationOverview" />.
         /// </summary>
         /// <param name="applicationId"></param>
         /// <exception cref="ArgumentOutOfRangeException">applicationId</exception>
@@ -20,14 +20,14 @@ namespace OneTrueError.Api.Core.Applications.Queries
         }
 
         /// <summary>
-        /// Serialization constructor
+        ///     Serialization constructor
         /// </summary>
         protected GetApplicationOverview()
         {
         }
 
         /// <summary>
-        /// Application id to get an overview for.
+        ///     Application id to get an overview for.
         /// </summary>
         public int ApplicationId { get; private set; }
 

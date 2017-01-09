@@ -25,7 +25,8 @@ module OneTrueError.Feedback {
                         return "color:#ccc";
                     },
                     html(value, dto) {
-                        return `Reported for <a style="color: #ee99ee" href="/application/${dto.ApplicationId}">${dto.ApplicationName}</a> at ${new Date(dto.WrittenAtUtc).toLocaleString()}`;
+                        return `Reported for <a style="color: #ee99ee" href="/application/${dto.ApplicationId}">${
+                            dto.ApplicationName}</a> at ${new Date(dto.WrittenAtUtc).toLocaleString()}`;
                     }
                 },
                 EmailAddressVisible: {
@@ -52,7 +53,8 @@ module OneTrueError.Feedback {
         };
 
         getTitle(): string {
-            var app = <Core.Applications.Queries.GetApplicationInfoResult>Yo.GlobalConfig.applicationScope["application"];
+            const app = Yo.GlobalConfig
+                .applicationScope["application"] as Core.Applications.Queries.GetApplicationInfoResult;
             if (app) {
                 return app.Name;
             }
@@ -61,7 +63,7 @@ module OneTrueError.Feedback {
 
         activate(context: Griffin.Yo.Spa.ViewModels.IActivationContext): void {
             this.context = context;
-            var query = new Web.Feedback.Queries.GetFeedbackForApplicationPage(context.routeData["applicationId"]);
+            const query = new Web.Feedback.Queries.GetFeedbackForApplicationPage(context.routeData["applicationId"]);
             CqsClient.query<Web.Feedback.Queries.GetFeedbackForApplicationPageResult>(query)
                 .done(result => {
                     this.dto = result;

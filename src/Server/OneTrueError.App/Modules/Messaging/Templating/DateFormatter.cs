@@ -3,12 +3,12 @@ using System;
 namespace OneTrueError.App.Modules.Messaging.Templating
 {
     /// <summary>
-    /// Used to format dates into different representations like duration from now.
+    ///     Used to format dates into different representations like duration from now.
     /// </summary>
     public static class DateFormatter
     {
         /// <summary>
-        /// Display elapsed time from the given date
+        ///     Display elapsed time from the given date
         /// </summary>
         /// <param name="specifiedTime">Time to diff from (local time)</param>
         /// <returns>English string</returns>
@@ -44,7 +44,7 @@ namespace OneTrueError.App.Modules.Messaging.Templating
         }
 
         /// <summary>
-        /// Generates a text representing the period of time from now to the given future date
+        ///     Generates a text representing the period of time from now to the given future date
         /// </summary>
         /// <param name="specifiedTime">Date in the future (local time)</param>
         /// <returns>For instance "in two days"</returns>
@@ -78,6 +78,5 @@ namespace OneTrueError.App.Modules.Messaging.Templating
 
             return "in a moment";
         }
-        
     }
 }

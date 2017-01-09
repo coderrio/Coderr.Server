@@ -4,10 +4,10 @@ using Griffin.Container;
 namespace OneTrueError.App.Modules.Tagging.Identifiers
 {
     /// <summary>
-    /// Identify Razor View Engine.
+    ///     Identify Razor View Engine.
     /// </summary>
     [Component]
-    class RazorIdentifier : ITagIdentifier
+    internal class RazorIdentifier : ITagIdentifier
     {
         /// <summary>
         ///     Check if the wanted tag is supported.

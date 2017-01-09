@@ -47,7 +47,7 @@ namespace OneTrueError.App.Core.Accounts.Queries
                 LastLoginAtUtc = account.LastLoginAtUtc,
                 State =
                     (Api.Core.Accounts.Queries.AccountState)
-                        Enum.Parse(typeof (Api.Core.Accounts.Queries.AccountState), account.AccountState.ToString()),
+                        Enum.Parse(typeof(Api.Core.Accounts.Queries.AccountState), account.AccountState.ToString()),
                 UpdatedAtUtc = account.UpdatedAtUtc,
                 UserName = account.UserName
             };

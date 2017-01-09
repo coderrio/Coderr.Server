@@ -67,9 +67,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Jobs\DeleteAbandonedSimilarities.cs" />
-    <Compile Include="Jobs\DeleteEmptyIncidents.cs" />
-    <Compile Include="Jobs\DeleteReportsBelowReportLimit.cs" />
     <Compile Include="Domain\FailedReports\CustomerApplication.cs" />
     <Compile Include="Domain\FailedReports\SaveHandler.cs" />
     <Compile Include="Domain\Feedback\FeedbackEntity.cs" />

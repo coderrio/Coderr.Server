@@ -9,9 +9,10 @@ using OneTrueError.Api.Web.Feedback.Queries;
 namespace OneTrueError.SqlServer.Web.Feedback.Queries
 {
     [Component]
-    public class GetApplicationFeedbackHandler : IQueryHandler<GetFeedbackForApplicationPage, GetFeedbackForApplicationPageResult>
+    public class GetApplicationFeedbackHandler :
+        IQueryHandler<GetFeedbackForApplicationPage, GetFeedbackForApplicationPageResult>
     {
-        private IAdoNetUnitOfWork _unitOfWork;
+        private readonly IAdoNetUnitOfWork _unitOfWork;
 
         public GetApplicationFeedbackHandler(IAdoNetUnitOfWork unitOfWork)
         {

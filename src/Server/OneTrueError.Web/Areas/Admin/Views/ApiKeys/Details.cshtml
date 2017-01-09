@@ -12,7 +12,7 @@
                 <p>
                     To invoke the server API pass the API key in a HttpHeader called <code>X-Api-Key</code>. Use the shared secret to calculate a HMAC signature on the HTTP Request body and include it in the http header <code>X-Api-Signature</code>.
                 </p>
-                <hr />
+                <hr/>
                 <dl class="dl-horizontal">
                     <dt>Api key</dt>
                     <dd>@Model.GeneratedKey</dd>
@@ -23,7 +23,7 @@
 
                 </dl>
             </div>
-            <hr />
+            <hr/>
             <div>
                 <h3>Authorized applications</h3>
                 <p>The key is authorized to modify the following applications:</p>
@@ -41,11 +41,11 @@ var hash = hmac.ComputeHash(httpBodyAsByteArray);
 var signature = Convert.ToBase64String(hash);
 </code></pre>
             <div>
-                <hr />
+                <hr/>
                 <form action="@Url.Action("Delete", new {id = Model.Id})" id="delete-form">
                     <button class="btn btn-danger">DELETE</button>
                     <label>
-                        <input type="checkbox" value="1" name="verification" /> Yes I'm sure<br />
+                        <input type="checkbox" value="1" name="verification"/> Yes I'm sure<br/>
                     </label>
                 </form>
             </div>
@@ -55,13 +55,14 @@ var signature = Convert.ToBase64String(hash);
 @section scripts
 {
     <script>
-        $('#delete-form').submit(function (e) {
-            var chkbox = $('input[type="checkbox"]', this);
-            var isChecked = $(chkbox).is(':checked');
-            if (!isChecked) {
-                alert("Be sure, or don't do it.");
-                e.preventDefault();
-            }
-        });
+        $('#delete-form')
+            .submit(function(e) {
+                var chkbox = $('input[type="checkbox"]', this);
+                var isChecked = $(chkbox).is(':checked');
+                if (!isChecked) {
+                    alert("Be sure, or don't do it.");
+                    e.preventDefault();
+                }
+            });
     </script>
 }

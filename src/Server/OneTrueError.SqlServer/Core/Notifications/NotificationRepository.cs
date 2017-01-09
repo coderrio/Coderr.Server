@@ -6,7 +6,6 @@ using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 using OneTrueError.App.Core.Notifications;
-using OneTrueError.SqlServer.Tools;
 
 namespace OneTrueError.SqlServer.Core.Notifications
 {
@@ -30,7 +29,6 @@ namespace OneTrueError.SqlServer.Core.Notifications
                     AccountId = accountId,
                     ApplicationId = applicationId
                 });
-
         }
 
         public async Task UpdateAsync(UserNotificationSettings notificationSettings)
@@ -51,9 +49,10 @@ namespace OneTrueError.SqlServer.Core.Notifications
         {
             if (applicationId == 0)
                 applicationId = -1;
-            using (var cmd = (DbCommand)_unitOfWork.CreateCommand())
+            using (var cmd = (DbCommand) _unitOfWork.CreateCommand())
             {
-                cmd.CommandText = "SELECT TOP 1 AccountId FROM UserNotificationSettings WHERE AccountId = @id AND ApplicationId = @appId";
+                cmd.CommandText =
+                    "SELECT TOP 1 AccountId FROM UserNotificationSettings WHERE AccountId = @id AND ApplicationId = @appId";
                 cmd.AddParameter("id", accountId);
                 cmd.AddParameter("appId", applicationId);
                 return await cmd.ExecuteScalarAsync() != null;

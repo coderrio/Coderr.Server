@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using Griffin.Container;
+using log4net;
 
 namespace OneTrueError.Web.IoC
 {
     public class GriffinContainerAdapter : IContainer
     {
         private readonly IParentContainer _container;
+        private ILog _logger = LogManager.GetLogger(typeof(GriffinContainerAdapter));
 
         public GriffinContainerAdapter(IParentContainer container)
         {
@@ -16,7 +18,7 @@ namespace OneTrueError.Web.IoC
 
         public TService Resolve<TService>()
         {
-            return (TService)_container.Resolve(typeof(TService));
+            return (TService) _container.Resolve(typeof(TService));
         }
 
         public object Resolve(Type service)

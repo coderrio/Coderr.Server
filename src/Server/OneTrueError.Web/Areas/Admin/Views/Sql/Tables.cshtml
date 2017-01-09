@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Tables";
 }
 
@@ -21,13 +20,11 @@
         {
             <form method="post" action="@Url.Action("Tables")">
                 @Html.ValidationSummary(true)
-                <input type="hidden" name="go" value="yo" />
+                <input type="hidden" name="go" value="yo"/>
                 @Html.Raw(ViewBag.PrevLink)
-                <input type="submit" class="btn-primary btn" value="Create Tables" />
+                <input type="submit" class="btn-primary btn" value="Create Tables"/>
                 @Html.Raw(ViewBag.NextLink)
             </form>
-
-
         }
         @if (ViewBag.GotException)
         {

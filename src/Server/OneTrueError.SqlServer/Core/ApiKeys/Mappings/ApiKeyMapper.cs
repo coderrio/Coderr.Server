@@ -9,7 +9,7 @@ namespace OneTrueError.SqlServer.Core.ApiKeys.Mappings
         {
             Property(x => x.Id)
                 .PrimaryKey(true);
-            Property(x => x.AllowedApplications)
+            Property(x => x.Claims)
                 .Ignore();
         }
     }

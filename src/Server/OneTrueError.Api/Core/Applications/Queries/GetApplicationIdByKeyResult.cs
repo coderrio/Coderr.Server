@@ -1,12 +1,12 @@
 namespace OneTrueError.Api.Core.Applications.Queries
 {
     /// <summary>
-    /// Result for <see cref="GetApplicationIdByKey"/>.
+    ///     Result for <see cref="GetApplicationIdByKey" />.
     /// </summary>
     public class GetApplicationIdByKeyResult
     {
         /// <summary>
-        /// Application id
+        ///     Application id
         /// </summary>
         public int Id { get; set; }
     }

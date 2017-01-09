@@ -9,7 +9,6 @@ using OneTrueError.Api.Core.Feedback.Commands;
 using OneTrueError.Api.Core.Feedback.Events;
 using OneTrueError.Api.Core.Reports;
 using OneTrueError.App.Core.Reports;
-using OneTrueError.SqlServer.Tools;
 
 namespace OneTrueError.SqlServer.Core.Feedback.Commands
 {
@@ -19,9 +18,10 @@ namespace OneTrueError.SqlServer.Core.Feedback.Commands
         private readonly ILog _logger = LogManager.GetLogger(typeof(SubmitFeedbackHandler));
         private readonly IReportsRepository _reportsRepository;
         private readonly IAdoNetUnitOfWork _unitOfWork;
-        private IEventBus _eventBus;
+        private readonly IEventBus _eventBus;
 
-        public SubmitFeedbackHandler(IAdoNetUnitOfWork unitOfWork, IReportsRepository reportsRepository, IEventBus eventBus)
+        public SubmitFeedbackHandler(IAdoNetUnitOfWork unitOfWork, IReportsRepository reportsRepository,
+            IEventBus eventBus)
         {
             _unitOfWork = unitOfWork;
             _reportsRepository = reportsRepository;
@@ -69,7 +69,7 @@ namespace OneTrueError.SqlServer.Core.Feedback.Commands
                 return;
             }
 
-            using (var cmd = (DbCommand)_unitOfWork.CreateCommand())
+            using (var cmd = (DbCommand) _unitOfWork.CreateCommand())
             {
                 cmd.CommandText = "INSERT INTO IncidentFeedback (ErrorReportId, ApplicationId, ReportId, IncidentId, RemoteAddress, Description, EmailAddress, CreatedAtUtc, Conversation, ConversationLength) "
                                   +

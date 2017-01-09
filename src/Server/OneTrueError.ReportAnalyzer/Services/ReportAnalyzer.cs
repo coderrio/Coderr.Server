@@ -22,7 +22,7 @@ namespace OneTrueError.ReportAnalyzer.Services
     {
         private readonly IEventBus _eventBus;
         private readonly HashCodeGenerator _hashCodeGenerator;
-        private readonly ILog _logger = LogManager.GetLogger(typeof (ReportAnalyzer));
+        private readonly ILog _logger = LogManager.GetLogger(typeof(ReportAnalyzer));
         private readonly IAnalyticsRepository _repository;
 
         /// <summary>

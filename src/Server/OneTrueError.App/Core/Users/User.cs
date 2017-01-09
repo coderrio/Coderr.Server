@@ -24,11 +24,10 @@ namespace OneTrueError.App.Core.Users
         }
 
         /// <summary>
-        /// Serialization constructor
+        ///     Serialization constructor
         /// </summary>
         protected User()
         {
-            
         }
 
         /// <summary>

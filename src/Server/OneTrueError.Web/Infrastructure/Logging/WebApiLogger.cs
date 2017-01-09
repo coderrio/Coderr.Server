@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Http.ExceptionHandling;
+﻿using System.Web.Http.ExceptionHandling;
 using log4net;
 
 namespace OneTrueError.Web.Infrastructure.Logging
 {
-    class WebApiLogger : ExceptionLogger
+    internal class WebApiLogger : ExceptionLogger
     {
-        private ILog _logger = LogManager.GetLogger(typeof (WebApiLogger));
+        private readonly ILog _logger = LogManager.GetLogger(typeof(WebApiLogger));
 
         public override void Log(ExceptionLoggerContext context)
         {
@@ -23,6 +19,5 @@ namespace OneTrueError.Web.Infrastructure.Logging
             _logger.Error(context.Exception);
             base.Log(context);
         }
-
     }
 }

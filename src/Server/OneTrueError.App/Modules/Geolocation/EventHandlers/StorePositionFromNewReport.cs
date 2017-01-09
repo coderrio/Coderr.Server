@@ -16,11 +16,11 @@ namespace OneTrueError.App.Modules.Geolocation.EventHandlers
     [Component(RegisterAsSelf = true)]
     public class StorePositionFromNewReport : IApplicationEventSubscriber<ReportAddedToIncident>
     {
+        private readonly ILog _logger = LogManager.GetLogger(typeof(StorePositionFromNewReport));
         private readonly IErrorOriginRepository _repository;
-        private readonly ILog _logger = LogManager.GetLogger(typeof (StorePositionFromNewReport));
 
         /// <summary>
-        /// Creates a new instance of <see cref="StorePositionFromNewReport"/>.
+        ///     Creates a new instance of <see cref="StorePositionFromNewReport" />.
         /// </summary>
         /// <param name="repository">repos</param>
         /// <exception cref="ArgumentNullException">repository</exception>
@@ -31,11 +31,11 @@ namespace OneTrueError.App.Modules.Geolocation.EventHandlers
         }
 
         /// <summary>
-        /// Process an event asynchronously.
+        ///     Process an event asynchronously.
         /// </summary>
         /// <param name="e">event to process</param>
         /// <returns>
-        /// Task to wait on.
+        ///     Task to wait on.
         /// </returns>
         public async Task HandleAsync(ReportAddedToIncident e)
         {

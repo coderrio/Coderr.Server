@@ -49,4 +49,3 @@ namespace OneTrueError.Api.Core.ApiKeys.Commands
         public int Id { get; private set; }
     }
 }
-

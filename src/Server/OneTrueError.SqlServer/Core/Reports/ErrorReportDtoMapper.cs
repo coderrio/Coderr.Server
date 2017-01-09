@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Griffin.Data.Mapper;
+﻿using Griffin.Data.Mapper;
 using OneTrueError.Api.Core.Reports;
 using OneTrueError.SqlServer.Tools;
 
@@ -24,6 +23,5 @@ namespace OneTrueError.SqlServer.Core.Reports
             Property(x => x.ReportId)
                 .ColumnName("ErrorId");
         }
-        
     }
 }

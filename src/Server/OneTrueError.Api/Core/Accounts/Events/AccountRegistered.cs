@@ -9,7 +9,7 @@ namespace OneTrueError.Api.Core.Accounts.Events
     public class AccountRegistered : ApplicationEvent
     {
         /// <summary>
-        /// Create a new instance of <see cref="AccountRegistered"/>-
+        ///     Create a new instance of <see cref="AccountRegistered" />-
         /// </summary>
         /// <param name="accountId">Account id (primary key).</param>
         /// <param name="userName">User name as entered by the user.</param>
@@ -22,20 +22,19 @@ namespace OneTrueError.Api.Core.Accounts.Events
         }
 
         /// <summary>
-        /// Serialization constructor
+        ///     Serialization constructor
         /// </summary>
         protected AccountRegistered()
         {
-            
         }
 
         /// <summary>
-        /// Account id (primary key).
+        ///     Account id (primary key).
         /// </summary>
         public int AccountId { get; private set; }
 
         /// <summary>
-        /// User name as entered by the user.
+        ///     User name as entered by the user.
         /// </summary>
         public string UserName { get; private set; }
     }

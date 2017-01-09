@@ -3,13 +3,13 @@
 namespace OneTrueError.App.Modules.Triggers.Domain
 {
     /// <summary>
-    /// Used to be able to create instances of trigger actions (from when we load configuration data from the data source)
+    ///     Used to be able to create instances of trigger actions (from when we load configuration data from the data source)
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public sealed class TriggerActionNameAttribute : Attribute
     {
         /// <summary>
-        /// Creates a new instance of <see cref="TriggerActionNameAttribute"/>.
+        ///     Creates a new instance of <see cref="TriggerActionNameAttribute" />.
         /// </summary>
         /// <param name="name">action name</param>
         /// <exception cref="ArgumentNullException">name</exception>
@@ -20,7 +20,7 @@ namespace OneTrueError.App.Modules.Triggers.Domain
         }
 
         /// <summary>
-        /// Action name
+        ///     Action name
         /// </summary>
         public string Name { get; private set; }
     }

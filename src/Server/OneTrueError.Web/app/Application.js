@@ -1,7 +1,6 @@
-/// <reference path="../Scripts/Models/AllModels.ts"/>
-/// <reference path="../Scripts/Griffin.Yo.d.ts"/>
-/// <reference path="../Scripts/CqsClient.ts"/>
-/// <reference path="../Scripts/Promise.ts"/>
+/// <reference path="../Scripts/Models/AllModels.ts" />
+/// <reference path="../Scripts/Griffin.Yo.d.ts" />
+/// <reference path="../Scripts/CqsClient.ts" />
 var OneTrueError;
 (function (OneTrueError) {
     var Applications;
@@ -13,7 +12,8 @@ var OneTrueError;
             }
             ApplicationService.prototype.get = function (applicationId) {
                 var def = P.defer();
-                var cacheItem = Yo.GlobalConfig.applicationScope["application"];
+                var cacheItem = Yo.GlobalConfig
+                    .applicationScope["application"];
                 if (cacheItem && cacheItem.Id === applicationId) {
                     def.resolve(cacheItem);
                     return def.promise();

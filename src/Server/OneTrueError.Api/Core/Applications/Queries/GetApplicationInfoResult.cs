@@ -11,7 +11,7 @@
         public string AppKey { get; set; }
 
         /// <summary>
-        /// Type of application
+        ///     Type of application
         /// </summary>
         public TypeOfApplication ApplicationType { get; set; }
 

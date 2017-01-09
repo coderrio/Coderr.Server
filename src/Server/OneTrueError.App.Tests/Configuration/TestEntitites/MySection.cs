@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using FluentAssertions.Execution;
-using OneTrueError.App.Configuration;
 using OneTrueError.Infrastructure.Configuration;
 
 namespace OneTrueError.App.Tests.Configuration.TestEntitites

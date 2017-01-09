@@ -11,8 +11,8 @@ namespace OneTrueError.SqlServer.Core.ApiKeys.Queries
     [Component(RegisterAsSelf = true)]
     public class ListApiKeysHandler : IQueryHandler<ListApiKeys, ListApiKeysResult>
     {
-        private IAdoNetUnitOfWork _unitOfWork;
-        private MirrorMapper<ListApiKeysResultItem> _mapper = new MirrorMapper<ListApiKeysResultItem>();
+        private readonly MirrorMapper<ListApiKeysResultItem> _mapper = new MirrorMapper<ListApiKeysResultItem>();
+        private readonly IAdoNetUnitOfWork _unitOfWork;
 
         public ListApiKeysHandler(IAdoNetUnitOfWork unitOfWork)
         {

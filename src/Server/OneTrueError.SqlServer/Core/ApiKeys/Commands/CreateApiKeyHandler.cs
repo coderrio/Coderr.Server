@@ -4,7 +4,7 @@ using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
 using OneTrueError.Api.Core.ApiKeys.Commands;
-using OneTrueError.App;
+using OneTrueError.Api.Core.ApiKeys.Events;
 
 namespace OneTrueError.SqlServer.Core.ApiKeys.Commands
 {
@@ -12,10 +12,12 @@ namespace OneTrueError.SqlServer.Core.ApiKeys.Commands
     public class CreateApiKeyHandler : ICommandHandler<CreateApiKey>
     {
         private readonly IAdoNetUnitOfWork _unitOfWork;
+        private readonly IEventBus _eventBus;
 
-        public CreateApiKeyHandler(IAdoNetUnitOfWork unitOfWork)
+        public CreateApiKeyHandler(IAdoNetUnitOfWork unitOfWork, IEventBus eventBus)
         {
             _unitOfWork = unitOfWork;
+            _eventBus = eventBus;
         }
 
         public async Task ExecuteAsync(CreateApiKey command)
@@ -45,6 +47,10 @@ namespace OneTrueError.SqlServer.Core.ApiKeys.Commands
                     await cmd.ExecuteNonQueryAsync();
                 }
             }
+
+            var evt = new ApiKeyCreated(command.ApplicationName, command.ApiKey, command.SharedSecret,
+                command.ApplicationIds, command.AccountId);
+            await _eventBus.PublishAsync(evt);
         }
     }
 }

@@ -81,7 +81,7 @@ module OneTrueError {
         constructor(targetElementOrId: any) {
             this.initChartGlobals();
             if (typeof targetElementOrId === "string") {
-                var elem = <HTMLCanvasElement>document.getElementById(targetElementOrId);
+                const elem = document.getElementById(targetElementOrId) as HTMLCanvasElement;
                 if (!elem)
                     throw new Error(`Failed to find ${targetElementOrId}`);
 
@@ -89,7 +89,7 @@ module OneTrueError {
             } else {
                 if (!targetElementOrId)
                     throw new Error(`Is not a HTMLElement: ${targetElementOrId}`);
-                this.ctx = (<HTMLCanvasElement>targetElementOrId).getContext("2d");
+                this.ctx = (targetElementOrId as HTMLCanvasElement).getContext("2d");
             }
 
             this.chart = new Chart(this.ctx);
@@ -98,7 +98,7 @@ module OneTrueError {
 
         private mergeOptions(obj1, obj2) {
 
-            for (var p in obj2) {
+            for (let p in obj2) {
                 try {
                     // Property in destination object set; update its value.
                     if (obj2[p].constructor == Object) {
@@ -130,7 +130,7 @@ module OneTrueError {
                 //ds.data = new 
                 //data.datasets.push()
             }
-            for (var j = 0; j < data.datasets.length; j++) {
+            for (let j = 0; j < data.datasets.length; j++) {
                 data.datasets[j] = this.mergeOptions(data.datasets[j], LineChart.LineThemes[j]);
             }
 
@@ -205,7 +205,8 @@ module OneTrueError {
                 datasetFill: false,
 
                 //String - A legend template
-                legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span class=\"glyphicon glyphicon-stop\" style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+                legendTemplate:
+                    "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span class=\"glyphicon glyphicon-stop\" style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
 
             };
         }

@@ -16,7 +16,7 @@ namespace OneTrueError.Api.Core.Applications.Commands
         public CreateApplication(string name, TypeOfApplication typeOfApplication)
         {
             if (name == null) throw new ArgumentNullException("name");
-            if (!Enum.IsDefined(typeof (TypeOfApplication), typeOfApplication))
+            if (!Enum.IsDefined(typeof(TypeOfApplication), typeOfApplication))
 
                 throw new ArgumentOutOfRangeException("typeOfApplication");
             Name = name;

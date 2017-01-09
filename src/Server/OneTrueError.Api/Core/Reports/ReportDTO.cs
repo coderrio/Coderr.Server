@@ -3,12 +3,12 @@
 namespace OneTrueError.Api.Core.Reports
 {
     /// <summary>
-    /// Report representation.
+    ///     Report representation.
     /// </summary>
     public class ReportDTO
     {
         /// <summary>
-        /// Application that the incident and report belongs in.
+        ///     Application that the incident and report belongs in.
         /// </summary>
         public int ApplicationId { get; set; }
 
@@ -33,12 +33,12 @@ namespace OneTrueError.Api.Core.Reports
         public int Id { get; set; }
 
         /// <summary>
-        /// DB primary key
+        ///     DB primary key
         /// </summary>
         public int IncidentId { get; set; }
 
         /// <summary>
-        /// Ip of the report uploader.
+        ///     Ip of the report uploader.
         /// </summary>
         public string RemoteAddress { get; set; }
 

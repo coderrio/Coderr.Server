@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FluentAssertions;
 using Griffin.Data;
-using Griffin.Data.Mapper;
 using OneTrueError.Api.Core.ApiKeys.Queries;
 using OneTrueError.App.Core.ApiKeys;
 using OneTrueError.App.Core.Applications;
@@ -18,9 +13,9 @@ namespace OneTrueError.SqlServer.Tests.Core.ApiKeys.Queries
 {
     public class GetApiKeyHandlerTests
     {
-        private IAdoNetUnitOfWork _uow;
-        private ApiKey _existingEntity;
         private Application _application;
+        private readonly ApiKey _existingEntity;
+        private readonly IAdoNetUnitOfWork _uow;
 
         public GetApiKeyHandlerTests()
         {
@@ -33,7 +28,7 @@ namespace OneTrueError.SqlServer.Tests.Core.ApiKeys.Queries
                 GeneratedKey = Guid.NewGuid().ToString("N"),
                 SharedSecret = Guid.NewGuid().ToString("N"),
                 CreatedById = 20,
-                CreatedAtUtc = DateTime.UtcNow,
+                CreatedAtUtc = DateTime.UtcNow
             };
 
             _existingEntity.Add(_application.Id);
@@ -41,19 +36,9 @@ namespace OneTrueError.SqlServer.Tests.Core.ApiKeys.Queries
             repos.CreateAsync(_existingEntity).Wait();
         }
 
-        private void GetApplication()
+        public void Dispose()
         {
-            var repos = new ApplicationRepository(_uow);
-            var id = _uow.ExecuteScalar("SELECT TOP 1 Id FROM Applications");
-            if (id is DBNull)
-            {
-                _application = new Application(10, "AppTen");
-                repos.CreateAsync(_application).Wait();
-            }
-            else
-            {
-                _application = repos.GetByIdAsync((int) id).Result;
-            }
+            _uow.Dispose();
         }
 
 
@@ -72,9 +57,19 @@ namespace OneTrueError.SqlServer.Tests.Core.ApiKeys.Queries
             result.AllowedApplications[0].ApplicationName.Should().Be(_application.Name);
         }
 
-        public void Dispose()
+        private void GetApplication()
         {
-            _uow.Dispose();
+            var repos = new ApplicationRepository(_uow);
+            var id = _uow.ExecuteScalar("SELECT TOP 1 Id FROM Applications");
+            if (id is DBNull)
+            {
+                _application = new Application(10, "AppTen");
+                repos.CreateAsync(_application).Wait();
+            }
+            else
+            {
+                _application = repos.GetByIdAsync((int) id).Result;
+            }
         }
     }
 }

@@ -67,7 +67,7 @@ namespace OneTrueError.App.Core.Applications
         /// <param name="accountId">accountId</param>
         /// <returns>applications</returns>
         /// <exception cref="ArgumentOutOfRangeException">applicationId</exception>
-        Task<Application[]> GetForUserAsync(int accountId);
+        Task<UserApplication[]> GetForUserAsync(int accountId);
 
         /// <summary>
         ///     Get all members of an application

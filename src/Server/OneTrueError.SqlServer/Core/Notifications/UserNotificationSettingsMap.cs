@@ -31,6 +31,11 @@ namespace OneTrueError.SqlServer.Core.Notifications
                 .ToPropertyValue(EnumToString<NotificationState>);
         }
 
+        public static object StringToEnum<TEnum>(TEnum notificationState)
+        {
+            return notificationState.ToString();
+        }
+
         private TEnum EnumToString<TEnum>(object arg) where TEnum : struct
         {
             if (arg is DBNull)
@@ -44,11 +49,6 @@ namespace OneTrueError.SqlServer.Core.Notifications
             }
 
             return en;
-        }
-
-        public static object StringToEnum<TEnum>(TEnum notificationState)
-        {
-            return notificationState.ToString();
         }
     }
 }

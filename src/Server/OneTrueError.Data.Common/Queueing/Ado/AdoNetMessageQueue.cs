@@ -23,7 +23,7 @@ namespace OneTrueError.Infrastructure.Queueing.Ado
             TypeNameHandling = TypeNameHandling.Auto,
             TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple,
             ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
-            ContractResolver = new IncludeNonPublicMembersContractResolver(),
+            ContractResolver = new IncludeNonPublicMembersContractResolver()
         };
 
         public AdoNetMessageQueue(string queueName, string providerName, string connectionString)
@@ -53,7 +53,8 @@ namespace OneTrueError.Infrastructure.Queueing.Ado
                                         VALUES(@CreatedAtUtc, @ApplicationId, @AssemblyQualifiedTypeName, @Body)";
                     cmd.AddParameter("CreatedAtUtc", DateTime.UtcNow);
                     cmd.AddParameter("ApplicationId", applicationId);
-                    cmd.AddParameter("AssemblyQualifiedTypeName", message.GetType().FullName + ", " + message.GetType().Assembly.GetName().Name);
+                    cmd.AddParameter("AssemblyQualifiedTypeName",
+                        message.GetType().FullName + ", " + message.GetType().Assembly.GetName().Name);
                     cmd.AddParameter("body", json);
                     cmd.ExecuteNonQuery();
                 }
@@ -129,7 +130,7 @@ namespace OneTrueError.Infrastructure.Queueing.Ado
 
         public T Receive<T>(IQueueTransaction transaction)
         {
-            var trans = ((AdoNetTransaction)transaction).Transaction;
+            var trans = ((AdoNetTransaction) transaction).Transaction;
             AdoNetQueueEntry row;
             using (var cmd = trans.Connection.CreateCommand())
             {

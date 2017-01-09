@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Data.Common;
+﻿using System.Data.Common;
 using System.Threading.Tasks;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 using OneTrueError.App.Core.Users;
-using OneTrueError.SqlServer.Tools;
 
 namespace OneTrueError.SqlServer.Core.Users
 {

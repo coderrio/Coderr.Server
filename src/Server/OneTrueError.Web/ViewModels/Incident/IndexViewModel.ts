@@ -25,13 +25,13 @@ module OneTrueError.Incident {
         }
 
         activate(ctx: Griffin.Yo.Spa.ViewModels.IActivationContext) {
-            var query = new Core.Incidents.Queries.FindIncidents();
+            const query = new Core.Incidents.Queries.FindIncidents();
             query.PageNumber = 1;
             query.ItemsPerPage = 20;
             CqsClient.query<Core.Incidents.Queries.FindIncidentResult>(query)
                 .done(response => {
 
-                    var itemsElem = <HTMLElement>ctx.viewContainer.querySelector("#incidentTable");
+                    var itemsElem = ctx.viewContainer.querySelector("#incidentTable") as HTMLElement;
                     this.renderTable(itemsElem, response);
                     ctx.resolve();
 
@@ -117,7 +117,7 @@ module OneTrueError.Incident {
 
         private updateSorting(parentElement: any) {
             this.sortAscending = !this.sortAscending;
-            var icon = IndexViewModel.UP;
+            let icon = IndexViewModel.UP;
             if (!this.sortAscending) {
                 icon = IndexViewModel.DOWN;
             }
@@ -131,7 +131,7 @@ module OneTrueError.Incident {
         }
 
         private renderTable(target: HTMLElement, data: any) {
-            var directives = {
+            const directives = {
                 Name: {
                     href(params, dto) {
                         return `#/application/${dto.ApplicationId}/incident/${dto.Id}`;
@@ -160,7 +160,7 @@ module OneTrueError.Incident {
         }
 
         private loadItems(pageNumber: number = 0): void {
-            var query = new Core.Incidents.Queries.FindIncidents();
+            const query = new Core.Incidents.Queries.FindIncidents();
             query.SortType = this.sortType;
             query.SortAscending = this.sortAscending;
             query.Closed = this.closed;

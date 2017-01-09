@@ -1,40 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using OneTrueError.Infrastructure;
 
 namespace OneTrueError.SqlServer
 {
     public class SqlServerTools : ISetupDatabaseTools
     {
-        public static IDbConnection OpenConnection(string connectionString)
-        {
-            var con = new SqlConnection(connectionString);
-            con.Open();
-            return con;
-        }
-
         private bool IsConnectionConfigured
         {
-            get { return ConfigurationManager.ConnectionStrings["Db"] != null && !string.IsNullOrEmpty(ConfigurationManager.ConnectionStrings["Db"].ConnectionString); }
-        }
-
-        public static IDbConnection OpenConnection()
-        {
-            var conStr = ConfigurationManager.ConnectionStrings["Db"];
-            var provider = DbProviderFactories.GetFactory(conStr.ProviderName);
-            var connection = provider.CreateConnection();
-            connection.ConnectionString = conStr.ConnectionString;
-            connection.Open();
-            return connection;
+            get
+            {
+                return ConfigurationManager.ConnectionStrings["Db"] != null &&
+                       !string.IsNullOrEmpty(ConfigurationManager.ConnectionStrings["Db"].ConnectionString);
+            }
         }
 
         public bool GotUpToDateTables()
@@ -72,7 +56,8 @@ namespace OneTrueError.SqlServer
             con.Open();
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities", Justification = "Installation import = control over SQL")]
+        [SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities",
+            Justification = "Installation import = control over SQL")]
         public void CreateTables()
         {
             using (var con = OpenConnection())
@@ -94,6 +79,23 @@ namespace OneTrueError.SqlServer
         IDbConnection ISetupDatabaseTools.OpenConnection()
         {
             return OpenConnection();
+        }
+
+        public static IDbConnection OpenConnection(string connectionString)
+        {
+            var con = new SqlConnection(connectionString);
+            con.Open();
+            return con;
+        }
+
+        public static IDbConnection OpenConnection()
+        {
+            var conStr = ConfigurationManager.ConnectionStrings["Db"];
+            var provider = DbProviderFactories.GetFactory(conStr.ProviderName);
+            var connection = provider.CreateConnection();
+            connection.ConnectionString = conStr.ConnectionString;
+            connection.Open();
+            return connection;
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Web.Mvc;
 namespace OneTrueError.Web.Controllers
 {
     /// <summary>
-    /// Used to be able to load views by using ajax requests.
+    ///     Used to be able to load views by using ajax requests.
     /// </summary>
     public class PageController : Controller
     {

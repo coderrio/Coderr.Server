@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
+using OneTrueError.Api.Core.Incidents.Events;
 using OneTrueError.Api.Core.Messaging;
 using OneTrueError.Api.Core.Messaging.Commands;
 using OneTrueError.App.Configuration;
@@ -13,18 +14,17 @@ using OneTrueError.Infrastructure.Configuration;
 namespace OneTrueError.App.Modules.ReportSpikes
 {
     /// <summary>
-    /// 
     /// </summary>
     [Component(RegisterAsSelf = true)]
     public class CheckForReportPeak :
-        IApplicationEventSubscriber<Api.Core.Incidents.Events.ReportAddedToIncident>
+        IApplicationEventSubscriber<ReportAddedToIncident>
     {
         private readonly ICommandBus _commandBus;
         private readonly INotificationsRepository _repository;
         private readonly IReportSpikeRepository _spikeRepository;
 
         /// <summary>
-        /// Creates a new instance of <see cref="CheckForReportPeak"/>.
+        ///     Creates a new instance of <see cref="CheckForReportPeak" />.
         /// </summary>
         /// <param name="repository">To check if spikes should be analysed</param>
         /// <param name="spikeRepository">store/fetch information of current spikes.</param>
@@ -38,13 +38,13 @@ namespace OneTrueError.App.Modules.ReportSpikes
         }
 
         /// <summary>
-        /// Process an event asynchronously.
+        ///     Process an event asynchronously.
         /// </summary>
         /// <param name="e">event to process</param>
         /// <returns>
-        /// Task to wait on.
+        ///     Task to wait on.
         /// </returns>
-        public async Task HandleAsync(Api.Core.Incidents.Events.ReportAddedToIncident e)
+        public async Task HandleAsync(ReportAddedToIncident e)
         {
             if (e == null) throw new ArgumentNullException("e");
 
@@ -109,11 +109,11 @@ namespace OneTrueError.App.Modules.ReportSpikes
         }
 
         /// <summary>
-        /// Compare received amount of report with a calculated threshold.
+        ///     Compare received amount of report with a calculated threshold.
         /// </summary>
         /// <param name="applicationEvent">e</param>
         /// <returns>-1 if no spike is detected; otherwise the spike count</returns>
-        protected async Task<NewSpike> CalculateSpike(Api.Core.Incidents.Events.ReportAddedToIncident applicationEvent)
+        protected async Task<NewSpike> CalculateSpike(ReportAddedToIncident applicationEvent)
         {
             if (applicationEvent == null) throw new ArgumentNullException("applicationEvent");
 
@@ -122,7 +122,7 @@ namespace OneTrueError.App.Modules.ReportSpikes
                 return null;
 
             var todaysCount = await _spikeRepository.GetTodaysCountAsync(applicationEvent.Incident.ApplicationId);
-            var threshold = average > 20 ? average : average * 2;
+            var threshold = average > 20 ? average : average*2;
             if (todaysCount < threshold)
                 return null;
 
@@ -132,6 +132,5 @@ namespace OneTrueError.App.Modules.ReportSpikes
                 DayAverage = average
             };
         }
-
     }
 }

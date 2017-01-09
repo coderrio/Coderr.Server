@@ -21,7 +21,7 @@ namespace OneTrueError.SqlServer.Web.Feedback.Queries
 
         public async Task<GetIncidentFeedbackResult> ExecuteAsync(GetIncidentFeedback query)
         {
-            using (var cmd = (DbCommand)_unitOfWork.CreateCommand())
+            using (var cmd = (DbCommand) _unitOfWork.CreateCommand())
             {
                 cmd.CommandText =
                     "SELECT IncidentId, IncidentFeedback.CreatedAtUtc, EmailAddress, IncidentFeedback.Description" +
@@ -33,7 +33,7 @@ namespace OneTrueError.SqlServer.Web.Feedback.Queries
 
                 using (var reader = await cmd.ExecuteReaderAsync())
                 {
-                    List<string> emails = new List<string>();
+                    var emails = new List<string>();
                     var items = new List<GetIncidentFeedbackResultItem>();
                     while (reader.Read())
                     {
@@ -44,7 +44,7 @@ namespace OneTrueError.SqlServer.Web.Feedback.Queries
                             var item = new GetIncidentFeedbackResultItem();
                             item.EmailAddress = email;
                             item.Message = description;
-                            item.WrittenAtUtc = (DateTime)reader["CreatedAtUtc"];
+                            item.WrittenAtUtc = (DateTime) reader["CreatedAtUtc"];
                             items.Add(item);
                         }
                         if (!string.IsNullOrEmpty(email) && !emails.Contains(email))

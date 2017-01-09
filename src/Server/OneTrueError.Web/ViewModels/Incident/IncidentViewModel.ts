@@ -5,7 +5,6 @@ module OneTrueError.Incident {
     import CqsClient = Griffin.Cqs.CqsClient;
     import PagerSubscriber = Griffin.WebApp.IPagerSubscriber;
     import Pager = Griffin.WebApp.Pager;
-    import Yo = Griffin.Yo;
     import ReportDay = Core.Incidents.Queries.ReportDay;
 
     export class IncidentViewModel implements PagerSubscriber, Griffin.Yo.Spa.ViewModels.IViewModel {
@@ -26,10 +25,10 @@ module OneTrueError.Incident {
             return `Incident ${this.name}`;
         }
 
-        public isIgnored: boolean = false;
+        isIgnored = false;
 
         activate(ctx: Griffin.Yo.Spa.ViewModels.IActivationContext) {
-            var query = new Core.Incidents.Queries.GetIncident(ctx.routeData["incidentId"]);
+            const query = new Core.Incidents.Queries.GetIncident(ctx.routeData["incidentId"]);
             this.ctx = ctx;
             CqsClient.query<Core.Incidents.Queries.GetIncidentResult>(query)
                 .done(response => {
@@ -44,11 +43,12 @@ module OneTrueError.Incident {
                     var query = new Core.Reports.Queries.GetReportList(this.id);
                     query.PageNumber = 1;
                     query.PageSize = 20;
-                    CqsClient.query<Core.Reports.Queries.GetReportListResult>(query).done(result => {
-                        this.pager.update(result.PageNumber, result.PageSize, result.TotalCount);
-                        this.renderTable(1, result);
-                    });
-                    var elem = <HTMLCanvasElement>ctx.select.one("#myChart");
+                    CqsClient.query<Core.Reports.Queries.GetReportListResult>(query)
+                        .done(result => {
+                            this.pager.update(result.PageNumber, result.PageSize, result.TotalCount);
+                            this.renderTable(1, result);
+                        });
+                    var elem = ctx.select.one("#myChart") as HTMLCanvasElement;
                     ctx.resolve();
                     this.renderInitialChart(elem, response.DayStatistics);
 
@@ -64,17 +64,18 @@ module OneTrueError.Incident {
 
 
         onPager(pager: Pager): void {
-            var query = new Core.Reports.Queries.GetReportList(this.id);
+            const query = new Core.Reports.Queries.GetReportList(this.id);
             query.PageNumber = pager.currentPage;
             query.PageSize = 20;
-            CqsClient.query<Core.Reports.Queries.GetReportListResult>(query).done(result => {
-                this.renderTable(1, result);
-            });
+            CqsClient.query<Core.Reports.Queries.GetReportListResult>(query)
+                .done(result => {
+                    this.renderTable(1, result);
+                });
         }
 
         onRange(e: Event) {
-            var elem = <HTMLInputElement>e.target;
-            var days = parseInt(elem.value, 10);
+            const elem = e.target as HTMLInputElement;
+            const days = parseInt(elem.value, 10);
             this.loadChartInfo(days);
         }
 
@@ -87,7 +88,7 @@ module OneTrueError.Incident {
                 labels.push(new Date(item.Date).toLocaleDateString());
                 dataset.data.push(item.Count);
             });
-            var data = new LineData();
+            const data = new LineData();
             data.datasets = [dataset];
             data.labels = labels;
             this.lineChart = new LineChart(chartElement);
@@ -97,7 +98,7 @@ module OneTrueError.Incident {
 
         private renderTable(pageNumber: number, data: any) {
             var self = this;
-            var directives = {
+            const directives = {
                 Items: {
                     CreatedAtUtc: {
                         text(value, dto) {
@@ -121,11 +122,11 @@ module OneTrueError.Incident {
         }
 
         private renderInfo(dto: Core.Incidents.Queries.GetIncidentResult) {
-            var self = this;
+            const self = this;
             if (dto.IsSolved) {
                 dto.Tags.push("solved");
             }
-            var directives = {
+            const directives = {
                 CreatedAtUtc: {
                     text(value) {
                         return new Date(value).toLocaleString();
@@ -164,7 +165,7 @@ module OneTrueError.Incident {
         }
 
         private loadChartInfo(days: number) {
-            var query = new Core.Incidents.Queries.GetIncidentStatistics();
+            const query = new Core.Incidents.Queries.GetIncidentStatistics();
             query.IncidentId = this.id;
             query.NumberOfDays = days;
             CqsClient.query<Core.Incidents.Queries.GetIncidentStatisticsResult>(query)

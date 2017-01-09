@@ -12,7 +12,7 @@ namespace OneTrueError.ReportAnalyzer.Scanners
     public class ScanForNewErrorReportsBatcher : ApplicationServiceTimer
     {
         private readonly IScopedTaskInvoker _invoker;
-        private ILog _logger = LogManager.GetLogger(typeof (ScanForNewErrorReportsBatcher));
+        private ILog _logger = LogManager.GetLogger(typeof(ScanForNewErrorReportsBatcher));
 
         /// <summary>
         ///     Creates a new instance of <see cref="ScanForNewErrorReportsBatcher" />.

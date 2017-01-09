@@ -2,10 +2,13 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Support request</h4>
+                
             </div>
             <div class="modal-body">
+                <p><em>Email support is free for the 30 first days if you <a href="http://onetrueerror.com/opensource/signup">signup</a> at the homepage.</em></p>
                 <form method="POST" action="@Url.Content("~/api/cqs")" id="support-form">
                     <div class="form-group">
                         <label for="Subject">Subject</label>
@@ -13,7 +16,7 @@
                     </div>
                     <div class="form-group">
                         <label for="Message">Message</label>
-                        <textarea class="form-control" name="Message" id="Message" style="min-width: 100%; width: 550px; height: 400px;" placeholder="What do you have trouble with?"></textarea>
+                        <textarea class="form-control" name="Message" id="Message" style="height: 400px; min-width: 100%; width: 550px;" placeholder="What do you have trouble with?"></textarea>
                     </div>
                 </form>
             </div>
@@ -26,33 +29,35 @@
 </div><!-- /.modal -->
 <script type="text/javascript">
     function submitSupportRequest() {
-        var reader = new Griffin.Yo.FormReader("support-form");
+        var reader = new Griffin.Yo.Dom.FormReader("support-form");
         var dto = reader.read();
-
         var cmd = new OneTrueError.Core.Support.SendSupportRequest();
         cmd.Subject = dto.Subject;
         cmd.Message = dto.Message;
         cmd.Url = window.location.toString();
         Griffin.Cqs.CqsClient.command(cmd)
-            .done(function () {
+            .done(function() {
                 humane.log("We'll contact you as soon as we can. Thank you.");
             })
-            .fail(function (rejection) {
+            .fail(function(rejection) {
                 console.log(rejection.message);
             });
     }
-    $('#support-form-view .btn-primary').click(function (e) {
-        e.preventDefault();
-        submitSupportRequest();
-        $('#support-form [name="Subject"]').val('');
-        $('#support-form [name="Message"]').val('');
-        $('#support-form-view').modal('hide');
-    });
-    $('#support-form').submit(function (e) {
-        e.preventDefault();
-        submitSupportRequest();
-        $('#support-form [name="Subject"]').val('');
-        $('#support-form [name="Message"]').val('');
-        $('#support-form-view').modal('hide');
-    });
+
+    $('#support-form-view .btn-primary')
+        .click(function(e) {
+            e.preventDefault();
+            submitSupportRequest();
+            $('#support-form [name="Subject"]').val('');
+            $('#support-form [name="Message"]').val('');
+            $('#support-form-view').modal('hide');
+        });
+    $('#support-form')
+        .submit(function(e) {
+            e.preventDefault();
+            submitSupportRequest();
+            $('#support-form [name="Subject"]').val('');
+            $('#support-form [name="Message"]').val('');
+            $('#support-form-view').modal('hide');
+        });
 </script>

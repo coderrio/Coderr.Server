@@ -6,14 +6,14 @@ using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 using OneTrueError.Api.Modules.Triggers.Queries;
-using OneTrueError.SqlServer.Tools;
 
 namespace OneTrueError.SqlServer.Modules.Triggers
 {
     [Component]
-    class GetContextCollectionMetadataHandler : IQueryHandler<GetContextCollectionMetadata, GetContextCollectionMetadataItem[]>
+    internal class GetContextCollectionMetadataHandler :
+        IQueryHandler<GetContextCollectionMetadata, GetContextCollectionMetadataItem[]>
     {
-        private IAdoNetUnitOfWork _unitOfWork;
+        private readonly IAdoNetUnitOfWork _unitOfWork;
 
         public GetContextCollectionMetadataHandler(IAdoNetUnitOfWork unitOfWork)
         {
@@ -22,7 +22,7 @@ namespace OneTrueError.SqlServer.Modules.Triggers
 
         public async Task<GetContextCollectionMetadataItem[]> ExecuteAsync(GetContextCollectionMetadata query)
         {
-            using (var cmd = (DbCommand)_unitOfWork.CreateCommand())
+            using (var cmd = (DbCommand) _unitOfWork.CreateCommand())
             {
                 cmd.CommandText =
                     "SELECT * FROM CollectionMetadata WHERE ApplicationId = @id";

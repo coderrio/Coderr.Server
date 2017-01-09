@@ -3,13 +3,12 @@
 namespace OneTrueError.App.Modules.Similarities.Domain.Adapters.Normalizers
 {
     /// <summary>
-    /// Divides memory usage into ranges,
+    ///     Divides memory usage into ranges,
     /// </summary>
     public static class MemoryNormalizer
     {
-
         /// <summary>
-        /// Divide using a predefined segmentation size.
+        ///     Divide using a predefined segmentation size.
         /// </summary>
         /// <param name="memoryInMb">Memory usage</param>
         /// <param name="segmentSize">segment size in Mb</param>
@@ -23,7 +22,7 @@ namespace OneTrueError.App.Modules.Similarities.Domain.Adapters.Normalizers
         }
 
         /// <summary>
-        /// Divide using a predefined segmentation size.
+        ///     Divide using a predefined segmentation size.
         /// </summary>
         /// <param name="memoryInMb">Memory usage</param>
         /// <param name="segmentSize">segment size in Mb</param>
@@ -39,7 +38,7 @@ namespace OneTrueError.App.Modules.Similarities.Domain.Adapters.Normalizers
             if (memoryInMb > 2000)
                 return "> 2Gb";
 
-            var lowerPart = ((long) Math.Floor(memoryInMb/segmentSize))*segmentSize;
+            var lowerPart = (long) Math.Floor(memoryInMb/segmentSize)*segmentSize;
             return "Range " + lowerPart + "-" + (lowerPart + segmentSize) + " Mb";
         }
     }

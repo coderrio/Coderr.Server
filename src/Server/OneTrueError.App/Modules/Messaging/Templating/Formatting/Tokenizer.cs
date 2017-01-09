@@ -22,12 +22,13 @@ namespace OneTrueError.App.Modules.Messaging.Templating.Formatting
     /// </example>
     public class Tokenizer
     {
+        private readonly List<Token> _tokens = new List<Token>();
+
         /// <summary>
         ///     Delimiters which makes switches from argument name to text when found inside of "{}".
         /// </summary>
-        private readonly char[] NameDelimiters = new[] {'{', '}', ' ', '-', '+', '/', '\t', ',', ':'};
+        private readonly char[] NameDelimiters = {'{', '}', ' ', '-', '+', '/', '\t', ',', ':'};
 
-        private readonly List<Token> _tokens = new List<Token>();
         private bool _isInCurly;
         private int _offset;
         private int _textStartPos = -1;

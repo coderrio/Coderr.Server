@@ -10,6 +10,5 @@ namespace OneTrueError.SqlServer.Modules.Similarities.Mappers
         {
             //Property(x => x.Id).PrimaryKey(true);
         }
-
     }
 }

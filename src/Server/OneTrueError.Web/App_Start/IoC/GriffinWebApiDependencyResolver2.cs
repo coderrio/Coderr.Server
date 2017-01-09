@@ -17,7 +17,6 @@ namespace OneTrueError.Web.IoC
 
         public void Dispose()
         {
-
         }
 
         public object GetService(Type serviceType)

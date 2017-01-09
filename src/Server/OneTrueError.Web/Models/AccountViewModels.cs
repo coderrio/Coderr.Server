@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace OneTrueError.Web.Models
 {
@@ -9,20 +8,19 @@ namespace OneTrueError.Web.Models
     {
         public string Name { get; set; }
 
-        public string Url { get; set; }
-
         public string State { get; set; }
+
+        public string Url { get; set; }
     }
 
     public class ManageInfoViewModel
     {
-        public string LocalLoginProvider { get; set; }
-
         public string Email { get; set; }
 
-        public IEnumerable<UserLoginInfoViewModel> Logins { get; set; }
-
         public IEnumerable<ExternalLoginViewModel> ExternalLoginProviders { get; set; }
+        public string LocalLoginProvider { get; set; }
+
+        public IEnumerable<UserLoginInfoViewModel> Logins { get; set; }
     }
 
     public class UserInfoViewModel

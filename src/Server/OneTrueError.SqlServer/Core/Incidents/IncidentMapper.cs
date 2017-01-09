@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Griffin.Data.Mapper;
+﻿using Griffin.Data.Mapper;
 using OneTrueError.App.Core.Incidents;
 using OneTrueError.SqlServer.Tools;
 
@@ -31,7 +29,6 @@ namespace OneTrueError.SqlServer.Core.Incidents
 
             Property(x => x.IsSolutionShared)
                 .ToPropertyValue(DbConverters.BoolFromByteArray);
-
         }
     }
 }

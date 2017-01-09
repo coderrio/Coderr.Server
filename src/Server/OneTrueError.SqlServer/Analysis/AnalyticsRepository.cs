@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Messaging;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 using log4net;
-using OneTrueError.App.Configuration;
 using OneTrueError.Infrastructure.Configuration;
 using OneTrueError.Infrastructure.Queueing;
 using OneTrueError.Infrastructure.Queueing.Msmq;
@@ -23,9 +20,9 @@ namespace OneTrueError.SqlServer.Analysis
     [Component]
     public class AnalyticsRepository : IAnalyticsRepository, IDisposable
     {
+        private readonly ILog _logger = LogManager.GetLogger(typeof(AnalyticsRepository));
         private readonly ReportDtoConverter _reportDtoConverter = new ReportDtoConverter();
         private readonly IAdoNetUnitOfWork _unitOfWork;
-        private readonly ILog _logger = LogManager.GetLogger(typeof(AnalyticsRepository));
         private MsmqMessageQueue _queue;
 
         public AnalyticsRepository(IAdoNetUnitOfWork unitOfWork)
@@ -37,64 +34,6 @@ namespace OneTrueError.SqlServer.Analysis
             {
                 _queue = new MsmqMessageQueue(settings.ReportQueue, settings.ReportAuthentication,
                     settings.ReportTransactions);
-            }
-
-        }
-
-        //TODO: Break this out to a separate repository so that we can register it in the container
-        //using either the SQL or MSMQ implementation.
-        public IReadOnlyList<ErrorReportEntity> GetReportsToAnalyze()
-        {
-            if (_queue == null)
-                return GetReportsUsingSql();
-
-
-            var report = _queue.TryReceive<ErrorReportEntity>(TimeSpan.FromSeconds(1));
-            return new[] { report };
-        }
-
-        private IReadOnlyList<ErrorReportEntity> GetReportsUsingSql()
-        {
-            using (var cmd = _unitOfWork.CreateCommand())
-            {
-                cmd.CommandText = @"SELECT QueueReports.*
-                                    FROM QueueReports
-                                    ORDER BY QueueReports.Id";
-                cmd.Limit(10);
-
-                try
-                {
-                    var reports = new List<ErrorReportEntity>();
-                    var idsToRemove = new List<int>();
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            var json = "";
-                            try
-                            {
-                                json = (string)reader["body"];
-                                var report = _reportDtoConverter.LoadReportFromJson(json);
-                                var newReport = _reportDtoConverter.ConvertReport(report, (int)reader["ApplicationId"]);
-                                newReport.RemoteAddress = (string)reader["RemoteAddress"];
-                                reports.Add(newReport);
-                                idsToRemove.Add(reader.GetInt32(0));
-                            }
-                            catch (Exception ex)
-                            {
-                                _logger.Error("Failed to deserialize " + json, ex);
-                            }
-                        }
-                    }
-                    if (idsToRemove.Any())
-                        _unitOfWork.ExecuteNonQuery("DELETE FROM QueueReports WHERE Id IN (" +
-                                                    string.Join(",", idsToRemove) + ")");
-                    return reports;
-                }
-                catch (Exception ex)
-                {
-                    throw cmd.CreateDataException(ex);
-                }
             }
         }
 
@@ -151,7 +90,7 @@ namespace OneTrueError.SqlServer.Analysis
                 cmd.AddParameter("UpdatedAtUtc", incident.UpdatedAtUtc);
                 cmd.AddParameter("Description", incident.Description);
                 cmd.AddParameter("FullName", incident.FullName);
-                var id = (int)(decimal)cmd.ExecuteScalar();
+                var id = (int) (decimal) cmd.ExecuteScalar();
                 incident.GetType()
                     .GetProperty("Id", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
                     .SetValue(incident, id);
@@ -189,12 +128,12 @@ namespace OneTrueError.SqlServer.Analysis
             {
                 cmd.CommandText = "SELECT Name FROM Applications WHERE Id = @id";
                 cmd.AddParameter("id", applicationId);
-                return (string)cmd.ExecuteScalar();
+                return (string) cmd.ExecuteScalar();
             }
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>
         public void Dispose()
@@ -202,8 +141,20 @@ namespace OneTrueError.SqlServer.Analysis
             Dispose(true);
         }
 
+        //TODO: Break this out to a separate repository so that we can register it in the container
+        //using either the SQL or MSMQ implementation.
+        public IReadOnlyList<ErrorReportEntity> GetReportsToAnalyze()
+        {
+            if (_queue == null)
+                return GetReportsUsingSql();
+
+
+            var report = _queue.TryReceive<ErrorReportEntity>(TimeSpan.FromSeconds(1));
+            return new[] {report};
+        }
+
         /// <summary>
-        /// Dispose pattern.
+        ///     Dispose pattern.
         /// </summary>
         /// <param name="isDisposing">Invoked from Dispose().</param>
         protected virtual void Dispose(bool isDisposing)
@@ -212,6 +163,51 @@ namespace OneTrueError.SqlServer.Analysis
             {
                 _queue.Dispose();
                 _queue = null;
+            }
+        }
+
+        private IReadOnlyList<ErrorReportEntity> GetReportsUsingSql()
+        {
+            using (var cmd = _unitOfWork.CreateCommand())
+            {
+                cmd.CommandText = @"SELECT QueueReports.*
+                                    FROM QueueReports
+                                    ORDER BY QueueReports.Id";
+                cmd.Limit(10);
+
+                try
+                {
+                    var reports = new List<ErrorReportEntity>();
+                    var idsToRemove = new List<int>();
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var json = "";
+                            try
+                            {
+                                json = (string) reader["body"];
+                                var report = _reportDtoConverter.LoadReportFromJson(json);
+                                var newReport = _reportDtoConverter.ConvertReport(report, (int) reader["ApplicationId"]);
+                                newReport.RemoteAddress = (string) reader["RemoteAddress"];
+                                reports.Add(newReport);
+                                idsToRemove.Add(reader.GetInt32(0));
+                            }
+                            catch (Exception ex)
+                            {
+                                _logger.Error("Failed to deserialize " + json, ex);
+                            }
+                        }
+                    }
+                    if (idsToRemove.Any())
+                        _unitOfWork.ExecuteNonQuery("DELETE FROM QueueReports WHERE Id IN (" +
+                                                    string.Join(",", idsToRemove) + ")");
+                    return reports;
+                }
+                catch (Exception ex)
+                {
+                    throw cmd.CreateDataException(ex);
+                }
             }
         }
     }

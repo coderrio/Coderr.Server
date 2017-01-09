@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FluentAssertions;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 using OneTrueError.Api.Core.ApiKeys.Queries;
 using OneTrueError.App.Core.ApiKeys;
-using OneTrueError.SqlServer.Core.ApiKeys;
 using OneTrueError.SqlServer.Core.ApiKeys.Queries;
 using Xunit;
 
@@ -16,8 +11,8 @@ namespace OneTrueError.SqlServer.Tests.Core.ApiKeys.Queries
 {
     public class ListApiKeysHandlerTests : IDisposable
     {
-        private IAdoNetUnitOfWork _uow;
-        private ApiKey _existingEntity;
+        private readonly ApiKey _existingEntity;
+        private readonly IAdoNetUnitOfWork _uow;
 
         public ListApiKeysHandlerTests()
         {
@@ -27,12 +22,18 @@ namespace OneTrueError.SqlServer.Tests.Core.ApiKeys.Queries
                 GeneratedKey = Guid.NewGuid().ToString("N"),
                 SharedSecret = Guid.NewGuid().ToString("N"),
                 CreatedById = 20,
-                CreatedAtUtc = DateTime.UtcNow,
+                CreatedAtUtc = DateTime.UtcNow
             };
             _existingEntity.Add(22);
             _uow = ConnectionFactory.Create();
             _uow.Insert(_existingEntity);
         }
+
+        public void Dispose()
+        {
+            _uow.Dispose();
+        }
+
         [Fact]
         public async void should_be_able_to_load_a_key()
         {
@@ -44,11 +45,6 @@ namespace OneTrueError.SqlServer.Tests.Core.ApiKeys.Queries
             result.Keys.Should().NotBeEmpty();
             result.Keys[0].ApiKey.Should().Be(_existingEntity.GeneratedKey);
             result.Keys[0].ApplicationName.Should().Be(_existingEntity.ApplicationName);
-        }
-
-        public void Dispose()
-        {
-            _uow.Dispose();
         }
     }
 }

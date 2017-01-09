@@ -2,7 +2,6 @@
 
 namespace OneTrueError.Web.Areas.Installation.Models
 {
-    
     public class BasicsViewModel
     {
         [Required, MinLength(4)]

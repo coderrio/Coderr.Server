@@ -1,28 +1,39 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
+using DotNetCqs;
 using Griffin.ApplicationServices;
 using Griffin.Container;
 using Griffin.Data;
-using Griffin.Data.Mapper;
 using log4net;
 using OneTrueError.Web.Cqs;
+using Owin;
 
 namespace OneTrueError.Web.Services
 {
+    /// <summary>
+    ///     Used to configure the back-end. It's a mess, but a limited mess.
+    /// </summary>
     public class ServiceRunner : IDisposable
     {
-        private readonly ILog _log = LogManager.GetLogger(typeof (ServiceRunner));
-        private ApplicationServiceManager _appManager;
-        private BackgroundJobManager _backgroundJobManager;
         private readonly CompositionRoot _compositionRoot = new CompositionRoot();
         private readonly CqsBuilder _cqsBuilder = new CqsBuilder();
+        private readonly ILog _log = LogManager.GetLogger(typeof(ServiceRunner));
+        private ApplicationServiceManager _appManager;
+        private BackgroundJobManager _backgroundJobManager;
 
         public IContainer Container
         {
             get { return CompositionRoot.Container; }
         }
 
-        public void Start()
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        public void Start(IAppBuilder app)
         {
             _log.Debug("Starting ...");
             try
@@ -32,11 +43,15 @@ namespace OneTrueError.Web.Services
                     registrar.RegisterService(x => _cqsBuilder.CreateCommandBus(Container), Lifetime.Singleton);
                     registrar.RegisterService(x => _cqsBuilder.CreateQueryBus(Container), Lifetime.Singleton);
                     registrar.RegisterService(x => _cqsBuilder.CreateEventBus(Container), Lifetime.Singleton);
+
+                    // let us guard it since it runs events in the background.
+                    var service = registrar.Registrations.First(x => x.Implements(typeof(IEventBus)));
+                    service.AddService(typeof(IApplicationService));
+
                     registrar.RegisterService(x => _cqsBuilder.CreateRequestReplyBus(Container), Lifetime.Singleton);
                 });
-                BuildServices();
-                ConfigureDataMapper();
 
+                BuildServices();
                 _appManager.Start();
                 _backgroundJobManager.Start();
                 _log.Debug("...started");
@@ -48,17 +63,25 @@ namespace OneTrueError.Web.Services
             }
         }
 
-        private static void ConfigureDataMapper()
+        public void Stop()
         {
-            var provider = new AssemblyScanningMappingProvider();
-            provider.Scan();
-            EntityMappingProvider.Provider = provider;
+            _backgroundJobManager.Stop();
+            _appManager.Stop();
         }
 
+        protected virtual void Dispose(bool isDisposing)
+        {
+            if (_backgroundJobManager != null)
+            {
+                _backgroundJobManager.Dispose();
+                _backgroundJobManager = null;
+            }
+        }
 
         private void BuildServices()
         {
             _appManager = new ApplicationServiceManager(CompositionRoot.Container);
+            _appManager.Settings = new ApplicationServiceManagerSettingsWithDefaultOn();
             _appManager.ServiceFailed += OnServiceFailed;
 
             _backgroundJobManager = new BackgroundJobManager(CompositionRoot.Container);
@@ -78,11 +101,6 @@ namespace OneTrueError.Web.Services
             _log.Error("Failed to execute " + e.Job, e.Exception);
         }
 
-        private void OnServiceFailed(object sender, ApplicationServiceFailedEventArgs e)
-        {
-            _log.Error("Failed to execute " + e.ApplicationService, e.Exception);
-        }
-
 
         private void OnScopeClosing(object sender, ScopeClosingEventArgs e)
         {
@@ -96,25 +114,9 @@ namespace OneTrueError.Web.Services
             }
         }
 
-        public void Stop()
+        private void OnServiceFailed(object sender, ApplicationServiceFailedEventArgs e)
         {
-            _backgroundJobManager.Stop();
-            _appManager.Stop();
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool isDisposing)
-        {
-            if (_backgroundJobManager != null)
-            {
-                _backgroundJobManager.Dispose();
-                _backgroundJobManager = null;
-            }
+            _log.Error("Failed to execute " + e.ApplicationService, e.Exception);
         }
     }
 }

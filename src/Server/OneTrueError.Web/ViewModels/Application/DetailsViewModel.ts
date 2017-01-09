@@ -48,7 +48,7 @@ module OneTrueError.Application {
                 self.renderChart(result);
             };
 
-            var appQuery = new Core.Applications.Queries.GetApplicationInfo();
+            const appQuery = new Core.Applications.Queries.GetApplicationInfo();
             appQuery.ApplicationId = ctx.routeData["applicationId"];
             CqsClient.query<Core.Applications.Queries.GetApplicationInfoResult>(appQuery)
                 .done(info => {
@@ -61,7 +61,7 @@ module OneTrueError.Application {
                     firstIsRun = true;
                     this.renderInfo(info);
                 });
-            var query = new Core.Applications.Queries.GetApplicationOverview(this.applicationId);
+            const query = new Core.Applications.Queries.GetApplicationOverview(this.applicationId);
             CqsClient.query<Core.Applications.Queries.GetApplicationOverviewResult>(query)
                 .done(response => {
 
@@ -85,9 +85,9 @@ module OneTrueError.Application {
         }
 
         onRange(e: Event) {
-            var elem = <HTMLInputElement>e.target;
-            var days = parseInt(elem.value, 10);
-            var query = new Core.Applications.Queries.GetApplicationOverview(this.applicationId);
+            const elem = e.target as HTMLInputElement;
+            const days = parseInt(elem.value, 10);
+            const query = new Core.Applications.Queries.GetApplicationOverview(this.applicationId);
             query.NumberOfDays = days;
             CqsClient.query<Core.Applications.Queries.GetApplicationOverviewResult>(query)
                 .done(response => {
@@ -118,18 +118,18 @@ module OneTrueError.Application {
 
         onPager(pager: Pager): void {
             this.getIncidentsFromServer(pager.currentPage);
-            var table = this._ctx.select.one("#incidentTable");
+            const table = this._ctx.select.one("#incidentTable");
             //.scrollIntoView(true);
-            var y = this.findYPosition(table);
+            const y = this.findYPosition(table);
             window.scrollTo(null, y - 50); //navbar 
         }
 
         private findYPosition(element: HTMLElement): number {
-            var curtop = 0;
             if (element.offsetParent) {
+                let curtop = 0;
                 do {
                     curtop += element.offsetTop;
-                    element = <HTMLElement>(element.offsetParent);
+                    element = ((element.offsetParent) as HTMLElement);
                 } while (element);
                 return curtop;
             }
@@ -156,7 +156,7 @@ module OneTrueError.Application {
 
 
         private renderTable(pageNumber: number, data: Core.Incidents.Queries.FindIncidentResult) {
-            var directives = {
+            const directives = {
                 Items: {
                     IncidentName: {
                         text(data) {
@@ -189,13 +189,13 @@ module OneTrueError.Application {
 
             //workaround for root dto name rendering over our collection name
             data.Items.forEach(item => {
-                (<any>item).IncidentName = item.Name;
+                (item as any).IncidentName = item.Name;
             });
             this._ctx.renderPartial("#incidentTable", data, directives);
         }
 
         private renderInfo(dto: Core.Applications.Queries.GetApplicationInfoResult) {
-            var directives = {
+            const directives = {
                 CreatedAtUtc: {
                     text(value) {
                         return new Date(value).toLocaleString();
@@ -223,7 +223,7 @@ module OneTrueError.Application {
 
         private updateSortingUI(parentElement: any) {
             this._sortAscending = !this._sortAscending;
-            var icon = DetailsViewModel.UP;
+            let icon = DetailsViewModel.UP;
             if (!this._sortAscending) {
                 icon = DetailsViewModel.DOWN;
             }
@@ -240,7 +240,7 @@ module OneTrueError.Application {
             if (pageNumber === -1) {
                 pageNumber = this.pager.currentPage;
             }
-            var query = new FindIncidents();
+            const query = new FindIncidents();
             query.SortType = this._sortType;
             query.SortAscending = this._sortAscending;
             query.PageNumber = pageNumber;
@@ -269,7 +269,7 @@ module OneTrueError.Application {
 
         renderChart(result: Core.Applications.Queries.GetApplicationOverviewResult) {
 
-            var legend = [
+            const legend = [
                 {
                     color: LineChart.LineThemes[0].strokeColor,
                     label: "Incidents"
@@ -279,16 +279,16 @@ module OneTrueError.Application {
                 }
             ];
 
-            var incidentsDataset = new Dataset();
+            const incidentsDataset = new Dataset();
             incidentsDataset.label = "Incidents";
             incidentsDataset.data = result.Incidents;
 
-            var reportDataset = new Dataset();
+            const reportDataset = new Dataset();
             reportDataset.label = "Reports";
             reportDataset.data = result.ErrorReports;
 
 
-            var directives = {
+            const directives = {
                 color: {
                     text() {
                         return "";
@@ -306,7 +306,7 @@ module OneTrueError.Application {
             this._ctx.renderPartial("#chart-legend", legend, directives);
             //$('#chart-legend').render(legend, directives);
 
-            var data = new LineData();
+            const data = new LineData();
             data.datasets = [incidentsDataset, reportDataset];
             data.labels = result.TimeAxisLabels;
             this.lineChart.render(data);

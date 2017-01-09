@@ -23,13 +23,13 @@ module OneTrueError.Incident {
             this.context = context;
 
             this.incidentId = parseInt(context.routeData["incidentId"]);
-            var query = new GetIncident(parseInt(context.routeData["incidentId"], 10));
-            var incidentPromise = CqsClient.query<IncidentResult>(query);
+            const query = new GetIncident(parseInt(context.routeData["incidentId"], 10));
+            const incidentPromise = CqsClient.query<IncidentResult>(query);
             incidentPromise.done(result => context.render(result));
 
 
-            var service = new ApplicationService();
-            var appPromise = service.get(context.routeData["applicationId"]);
+            const service = new ApplicationService();
+            const appPromise = service.get(context.routeData["applicationId"]);
             appPromise.done(result => {
                 this.app = result;
             });
@@ -46,7 +46,7 @@ module OneTrueError.Incident {
         deactivate() {}
 
         onToggleMessagePane() {
-            var panel = this.context.select.one("#status-panel");
+            const panel = this.context.select.one("#status-panel");
             if (panel.style.display === "none") {
                 panel.style.display = "";
             } else {
@@ -56,15 +56,15 @@ module OneTrueError.Incident {
         }
 
         onCloseIncident() {
-            var solution = <HTMLInputElement>this.context.select.one('[name="solution"]');
+            const solution = this.context.select.one('[name="solution"]') as HTMLInputElement;
 
-            var closeCmd = new CloseIncident(solution.value, this.incidentId);
+            const closeCmd = new CloseIncident(solution.value, this.incidentId);
 
-            var sendMessage = <HTMLInputElement>this.context.select.one('sendCustomerMessage');
+            const sendMessage = this.context.select.one("sendCustomerMessage") as HTMLInputElement;
             console.log(sendMessage);
             if (sendMessage.checked) {
-                var subject = (<HTMLInputElement>this.context.select.one('[name="UserSubject"]'));
-                var text = (<HTMLInputElement>this.context.select.one('[name="UserText"]'));
+                const subject = (this.context.select.one('[name="UserSubject"]') as HTMLInputElement);
+                const text = (this.context.select.one('[name="UserText"]') as HTMLInputElement);
                 if (subject.value.length === 0 || text.value.length === 0) {
                     alert("You specified that you wanted to send a notification to your users, but you have not specified subject or body of the message.");
                     return;

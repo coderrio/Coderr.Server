@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Messaging;
 using System.Runtime.Serialization.Formatters;
@@ -12,9 +11,9 @@ namespace OneTrueError.Infrastructure.Queueing.Msmq
 {
     public class MsmqMessageQueue : IMessageQueue, IDisposable
     {
-        private MessageQueue _queue;
         private readonly bool _useAuthentication;
         private readonly bool _useTransactions;
+        private MessageQueue _queue;
 
         public MsmqMessageQueue(string queueName, bool useAuthentication, bool useTransactions)
         {
@@ -27,6 +26,15 @@ namespace OneTrueError.Infrastructure.Queueing.Msmq
             _queue.Formatter = null;
         }
 
+        /// <summary>
+        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <filterpriority>2</filterpriority>
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
         public T Receive<T>()
         {
             var message =
@@ -34,23 +42,17 @@ namespace OneTrueError.Infrastructure.Queueing.Msmq
             return Deserialize<T>(message);
         }
 
-        private T Deserialize<T>(Message message)
-        {
-            var reader = new StreamReader(message.BodyStream, Encoding.UTF8);
-            var json = reader.ReadToEnd();
-            return OneTrueSerializer.Deserialize<T>(json);
-        }
-
         public object Receive()
         {
-            var  msg =_queue.Receive();
+            var msg = _queue.Receive();
 
             var reader = new StreamReader(msg.BodyStream, Encoding.UTF8);
             var json = reader.ReadToEnd();
             var metadata = MetadataHeader.Deserialize(msg);
             var type = Type.GetType(metadata.AssemblyQualifiedTypeName);
             if (type == null)
-                throw new NotSupportedException("Failed to get type class from string '" + metadata.AssemblyQualifiedTypeName + "'.");
+                throw new NotSupportedException("Failed to get type class from string '" +
+                                                metadata.AssemblyQualifiedTypeName + "'.");
 
             return OneTrueSerializer.Deserialize(json, type);
         }
@@ -131,6 +133,26 @@ namespace OneTrueError.Infrastructure.Queueing.Msmq
                 _queue.Send(msg);
         }
 
+        /// <summary>
+        ///     Dispose pattern
+        /// </summary>
+        /// <param name="isDisposing">Invoked from Dispose()</param>
+        protected virtual void Dispose(bool isDisposing)
+        {
+            if (_queue != null)
+            {
+                _queue.Dispose();
+                _queue = null;
+            }
+        }
+
+        private T Deserialize<T>(Message message)
+        {
+            var reader = new StreamReader(message.BodyStream, Encoding.UTF8);
+            var json = reader.ReadToEnd();
+            return OneTrueSerializer.Deserialize<T>(json);
+        }
+
         private static void SerializeBody(object message, Message msg)
         {
             msg.Extension = new MetadataHeader(message).Serialize();
@@ -156,7 +178,7 @@ namespace OneTrueError.Infrastructure.Queueing.Msmq
                 Headers = new Dictionary<string, string>();
             }
 
-            public string AssemblyQualifiedTypeName { get; set; }
+            public string AssemblyQualifiedTypeName { get; }
 
             public Dictionary<string, string> Headers { get; set; }
 
@@ -185,28 +207,6 @@ namespace OneTrueError.Infrastructure.Queueing.Msmq
                     AssemblyFormat = FormatterAssemblyStyle.Simple,
                     TypeFormat = FormatterTypeStyle.TypesWhenNeeded
                 };
-            }
-        }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-
-        /// <summary>
-        /// Dispose pattern
-        /// </summary>
-        /// <param name="isDisposing">Invoked from Dispose()</param>
-        protected virtual void Dispose(bool isDisposing)
-        {
-            if (_queue != null)
-            {
-                _queue.Dispose();
-                _queue = null;
             }
         }
     }

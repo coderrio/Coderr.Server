@@ -4,7 +4,7 @@ using Griffin.Container;
 namespace OneTrueError.App.Modules.Tagging.Identifiers
 {
     /// <summary>
-    /// Identifies Newtonsoft.Json
+    ///     Identifies Newtonsoft.Json
     /// </summary>
     [Component]
     public class JsonNetIdentifier : ITagIdentifier

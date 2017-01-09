@@ -56,19 +56,19 @@ namespace OneTrueError.Web.Infrastructure.Cqs
             if (cqsType.IsAbstract || cqsType.IsInterface)
                 return false;
 
-            if (cqsType.IsSubclassOf(typeof (Command))
-                || cqsType.IsSubclassOf(typeof (ApplicationEvent)))
+            if (cqsType.IsSubclassOf(typeof(Command))
+                || cqsType.IsSubclassOf(typeof(ApplicationEvent)))
                 return true;
 
-            if (cqsType.BaseType == typeof (object) || cqsType.BaseType == null)
+            if (cqsType.BaseType == typeof(object) || cqsType.BaseType == null)
                 return false;
 
             if (!cqsType.BaseType.IsGenericType)
                 return false;
 
             var typeDef = cqsType.BaseType.GetGenericTypeDefinition();
-            if (typeDef == typeof (Query<>)
-                || typeDef == typeof (Request<>))
+            if (typeDef == typeof(Query<>)
+                || typeDef == typeof(Request<>))
                 return true;
 
 

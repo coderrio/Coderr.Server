@@ -4,28 +4,31 @@
     <th>Name</th>
     </thead>
     <tbody data-collection="Members">
-        <tr>
-            <td data-name="UserName"></td>
-            <td><button class="btn btn-danger" data-name="RemoveUser">Remove</button></td>
-        </tr>
+    <tr>
+        <td data-name="UserName"></td>
+        <td>
+            <button class="btn btn-danger" data-name="RemoveUser">Remove</button>
+        </td>
+    </tr>
     </tbody>
 </table>
 <p data-unless="Members">
     No team members have been specified for this project.
 </p>
-<hr />
+<hr/>
 <h3>Pending invites</h3>
 <div data-collection="Invited">
     <div data-name="EmailAddress"></div>
 </div>
-<hr />
+<hr/>
 <button id="ShowInviteDlg" class="btn btn-primary">Invite</button>
 <div class="modal fade" id="inviteUserDlg">
     <form method="POST" action="">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">Invite user</h4>
                 </div>
                 <div class="modal-body">
@@ -47,12 +50,20 @@
     </form>
 </div>
 <script type="text/javascript">
-    $('#ShowInviteDlg').on('click', function() {
-        $('#inviteUserDlg').modal('show');
-    })
+    $('#ShowInviteDlg')
+        .on('click',
+            function() {
+                $('#inviteUserDlg').modal('show');
+            })
 </script>
 <ul data-navigation="main-navigation">
-    <li><a href="#/application/:applicationId/">Appinfo</a></li>
-    <li><a href="#/application/:applicationId/incidents">Incidents</a></li>
-    <li><a href="#/application/:applicationId/feedback">Feedback</a></li>
+    <li>
+        <a href="#/application/:applicationId/">Appinfo</a>
+    </li>
+    <li>
+        <a href="#/application/:applicationId/incidents">Incidents</a>
+    </li>
+    <li>
+        <a href="#/application/:applicationId/feedback">Feedback</a>
+    </li>
 </ul>

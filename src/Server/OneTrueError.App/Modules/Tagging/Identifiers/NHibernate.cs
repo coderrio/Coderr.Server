@@ -4,7 +4,7 @@ using Griffin.Container;
 namespace OneTrueError.App.Modules.Tagging.Identifiers
 {
     /// <summary>
-    /// Identifies nhibernate, fluent-nhibernate and other nhibernate related assemblies.
+    ///     Identifies nhibernate, fluent-nhibernate and other nhibernate related assemblies.
     /// </summary>
     [Component]
     public class NHibernate : ITagIdentifier
@@ -22,7 +22,7 @@ namespace OneTrueError.App.Modules.Tagging.Identifiers
             context.AddIfFound("NHibernate.Criterion", "nhibernate-criteria");
             context.AddIfFound("NHibernate.Linq", "linq-to-nhibernate");
             context.AddIfFound("NHibernate.Mapping.", "nhibernate-mapping");
-                
+
             //linq-to-nhibernate
         }
     }

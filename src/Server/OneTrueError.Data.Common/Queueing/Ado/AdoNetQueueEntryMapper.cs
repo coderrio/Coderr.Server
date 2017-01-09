@@ -2,11 +2,7 @@
 
 namespace OneTrueError.Infrastructure.Queueing.Ado
 {
-    class AdoNetQueueEntryMapper : EntityMapper<AdoNetQueueEntry>
+    internal class AdoNetQueueEntryMapper : EntityMapper<AdoNetQueueEntry>
     {
-        public AdoNetQueueEntryMapper()
-        {
-        }
-
     }
 }

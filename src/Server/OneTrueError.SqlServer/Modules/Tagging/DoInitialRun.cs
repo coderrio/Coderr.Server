@@ -39,7 +39,7 @@
 //                if (cmd.ExecuteScalar() != null)
 //                    return;
 //            }
-            
+
 //            using (var cmd = _unitOfWork.CreateCommand())
 //            {
 //                cmd.CommandText = "INSERT INTO Settings (Name, Value) VALUES('TagRun', @date)";
@@ -93,3 +93,4 @@
 //        }
 //    }
 //}
+

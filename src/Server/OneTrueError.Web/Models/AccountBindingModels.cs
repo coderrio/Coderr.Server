@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using Newtonsoft.Json;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace OneTrueError.Web.Models
 {
@@ -15,10 +13,10 @@ namespace OneTrueError.Web.Models
 
     public class ChangePasswordBindingModel
     {
-        [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Current password")]
-        public string OldPassword { get; set; }
+        [Display(Name = "Confirm new password")]
+        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+        public string ConfirmPassword { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
@@ -26,14 +24,19 @@ namespace OneTrueError.Web.Models
         [Display(Name = "New password")]
         public string NewPassword { get; set; }
 
+        [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm new password")]
-        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
-        public string ConfirmPassword { get; set; }
+        [Display(Name = "Current password")]
+        public string OldPassword { get; set; }
     }
 
     public class RegisterBindingModel
     {
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirm password")]
+        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        public string ConfirmPassword { get; set; }
+
         [Required]
         [Display(Name = "Email")]
         public string Email { get; set; }
@@ -43,11 +46,6 @@ namespace OneTrueError.Web.Models
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
-
-        [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-        public string ConfirmPassword { get; set; }
     }
 
     public class RegisterExternalBindingModel
@@ -70,15 +68,15 @@ namespace OneTrueError.Web.Models
 
     public class SetPasswordBindingModel
     {
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirm new password")]
+        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+        public string ConfirmPassword { get; set; }
+
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "New password")]
         public string NewPassword { get; set; }
-
-        [DataType(DataType.Password)]
-        [Display(Name = "Confirm new password")]
-        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
-        public string ConfirmPassword { get; set; }
     }
 }

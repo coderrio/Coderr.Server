@@ -83,7 +83,14 @@
     <Compile Include="Queueing\Msmq\MsmqMessageQueue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queueing\QueueProvider.cs" />
+    <Compile Include="Security\ClaimsExtensions.cs" />
+    <Compile Include="Security\IPrincipalFactory.cs" />
+    <Compile Include="Security\OneTrueClaims.cs" />
+    <Compile Include="Security\PrincipalFactory.cs" />
+    <Compile Include="Security\PrincipalFactoryContext.cs" />
+    <Compile Include="Security\UpdatesLoggedInAccountAttribute.cs" />
     <Compile Include="SetupTools.cs" />
+    <Compile Include="TypeHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

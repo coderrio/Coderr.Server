@@ -1,22 +1,30 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Filters;
-using OneTrueError.App;
 using OneTrueError.App.Core.ApiKeys;
+using OneTrueError.Infrastructure.Security;
 
 namespace OneTrueError.Web.Infrastructure.Auth
 {
     public class ApiKeyAuthenticator : IAuthenticationFilter
     {
-        public bool AllowMultiple { get { return true; } }
+        public bool AllowMultiple
+        {
+            get { return true; }
+        }
 
 #pragma warning disable 1998
         public async Task AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken)
 #pragma warning restore 1998
         {
+            var p = context.Principal as ClaimsPrincipal;
+            if (p != null && p.Identity.IsAuthenticated)
+                return;
+
             IEnumerable<string> apiKeys;
             IEnumerable<string> tokens;
             if (!context.Request.Headers.TryGetValues("X-Api-Key", out apiKeys) ||
@@ -39,18 +47,21 @@ namespace OneTrueError.Web.Infrastructure.Auth
                     return;
                 }
 
-                var roles = key.AllowedApplications.Select(x => "Application_" + x).ToArray();
-                var principal = new OneTruePrincipal(0, key.GeneratedKey, roles);
-                principal.Identity.AuthenticationType = "ApiKey";
+                var claims = key.Claims;
+                var factoryContext = new PrincipalFactoryContext(0, key.GeneratedKey, new[] {OneTrueClaims.RoleSystem})
+                {
+                    AuthenticationType = "ApiKey",
+                    Claims = claims
+                };
+                var principal = await PrincipalFactory.CreateAsync(factoryContext);
                 context.Principal = principal;
                 Thread.CurrentPrincipal = principal;
             }
         }
 
-#pragma warning disable 1998
-        public async Task ChallengeAsync(HttpAuthenticationChallengeContext context, CancellationToken cancellationToken)
-#pragma warning restore 1998
+        public Task ChallengeAsync(HttpAuthenticationChallengeContext context, CancellationToken cancellationToken)
         {
+            return Task.FromResult<object>(null);
         }
     }
 }

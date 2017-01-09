@@ -18,10 +18,10 @@ namespace OneTrueError.Web.Areas.Receiver.Controllers
     [AllowAnonymous]
     public class FeedbackController : ApiController
     {
-        private ILog _logger = LogManager.GetLogger(typeof(FeedbackController));
-        private IMessageQueue _queue;
+        private readonly ILog _logger = LogManager.GetLogger(typeof(FeedbackController));
+        private readonly IMessageQueue _queue;
 
-        public FeedbackController(OneTrueError.Infrastructure.Queueing.IMessageQueueProvider queueProvider)
+        public FeedbackController(IMessageQueueProvider queueProvider)
         {
             _queue = queueProvider.Open("FeedbackQueue");
         }
@@ -40,7 +40,6 @@ namespace OneTrueError.Web.Areas.Receiver.Controllers
                         cmd.AddParameter("key", appKey);
                         appId = (int) await cmd.ExecuteScalarAsync();
                     }
-
                 }
                 using (var transaction = _queue.BeginTransaction())
                 {
@@ -62,12 +61,11 @@ namespace OneTrueError.Web.Areas.Receiver.Controllers
             catch (Exception ex)
             {
                 _logger.Warn(
-                    "Failed to submit feedback: " + JsonConvert.SerializeObject(new {appKey = appKey, model = model}),
+                    "Failed to submit feedback: " + JsonConvert.SerializeObject(new {appKey, model}),
                     ex);
             }
 
             return new HttpResponseMessage(HttpStatusCode.NoContent);
         }
-
     }
 }

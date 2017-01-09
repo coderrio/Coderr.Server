@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace OneTrueError.Web.Areas.Admin.Models.ApiKeys
 {
     public class CreateViewModel
     {
-        public Dictionary<string,string> Applications { get; set; }
-
-
         [Required, Display(Name = "Application name")]
         public string ApplicationName { get; set; }
+
+        public Dictionary<string, string> Applications { get; set; }
 
         public bool ReadOnly { get; set; }
 

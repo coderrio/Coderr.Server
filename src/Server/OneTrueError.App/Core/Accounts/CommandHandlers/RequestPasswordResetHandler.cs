@@ -1,5 +1,4 @@
-﻿using System.Configuration;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
 using log4net;
@@ -18,7 +17,7 @@ namespace OneTrueError.App.Core.Accounts.CommandHandlers
     {
         private readonly IAccountRepository _accountRepository;
         private readonly ICommandBus _commandBus;
-        private readonly ILog _logger = LogManager.GetLogger(typeof (RequestPasswordResetHandler));
+        private readonly ILog _logger = LogManager.GetLogger(typeof(RequestPasswordResetHandler));
 
         public RequestPasswordResetHandler(IAccountRepository accountRepository, ICommandBus commandBus)
         {

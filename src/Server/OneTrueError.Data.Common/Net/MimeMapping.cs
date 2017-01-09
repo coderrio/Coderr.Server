@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace OneTrueError.Infrastructure.Net
 {
     /// <summary>
-    /// Mappings between file extensions and mime types
+    ///     Mappings between file extensions and mime types
     /// </summary>
     public static class MimeMapping
     {
@@ -12,6 +12,7 @@ namespace OneTrueError.Infrastructure.Net
             new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase)
             {
                 #region Big freaking list of mime types
+
                 // combination of values from Windows 7 Registry and 
                 // from C:\Windows\System32\inetsrv\config\applicationHost.config
                 // some added, including .7z and .dat
@@ -573,13 +574,13 @@ namespace OneTrueError.Infrastructure.Net
                 {".xtp", "application/octet-stream"},
                 {".xwd", "image/x-xwindowdump"},
                 {".z", "application/x-compress"},
-                {".zip", "application/x-zip-compressed"},
+                {".zip", "application/x-zip-compressed"}
 
                 #endregion
             };
 
         /// <summary>
-        /// Get mime type from file extension
+        ///     Get mime type from file extension
         /// </summary>
         /// <param name="extension">Extension with or without dot as prefix.</param>
         /// <returns>mime type</returns>

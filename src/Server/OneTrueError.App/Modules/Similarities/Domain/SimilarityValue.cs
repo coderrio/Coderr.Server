@@ -55,7 +55,7 @@ namespace OneTrueError.App.Modules.Similarities.Domain
         public string Value { get; private set; }
 
         /// <summary>
-        /// Increase usage of this value
+        ///     Increase usage of this value
         /// </summary>
         /// <param name="totalCount">Total count for all values (not just this one)</param>
         public void IncreaseUsage(int totalCount)

@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Installation - Database configuration";
 }
 <div class="container">
@@ -17,13 +16,13 @@
             </p>
             <form method="post" action="@Url.Action("Connection", "Sql")" style="width: 100%" class="form-inline" id="dbForm">
                 <div>
-                    <br /><br />
+                    <br/><br/>
                     @Html.Raw(ViewBag.PrevLink)
                     <button id="saveButton" class="btn">Test Connection</button>
                     @Html.Raw(ViewBag.NextLink)
                 </div>
             </form>
-            <br />
+            <br/>
             <div class="alert alert-warning" id="error" style="display: none">
             </div>
         </div>
@@ -40,8 +39,12 @@
             <pre><code>Data Source=(localdb)\ProjectsV12;Initial Catalog=OneTrueError;Integrated Security=True;Connect Timeout=30;</code></pre>
 
             <h2>Tip!</h2>
-            <p>Do you want to give permissions to the IIS app pool? Add <em>"IIS APPPOOL\YourAppPool"</em> as the windows account in SQL Server Management Studio. </p>
-            <p>For instance <code>IIS APPPOOL\DefaultAppPool</code>.</p>
+            <p>
+                Do you want to give permissions to the IIS app pool? Add <em>"IIS APPPOOL\YourAppPool"</em> as the windows account in SQL Server Management Studio.
+            </p>
+            <p>
+                For instance <code>IIS APPPOOL\DefaultAppPool</code>.
+            </p>
         </div>
     </div>
 </div>
@@ -50,20 +53,22 @@
 {
 
     <script type="text/javascript">
-        $('#saveButton').click(function (e) {
-            e.preventDefault();
-            var conStr = encodeURIComponent($('[name="connectionString"]').val());
-            $.getJSON('@Url.RouteUrl(new {Area = "Installation", Controller = "Sql", Action = "Validate"})/?connectionString=' + conStr)
-                .done(function (data) {
-                    if (data.result == "fail") {
-                        $('#error').text(data.reason).show();
-                    } else {
-                        $('#error').hide();
-                        $("#testConnection").removeClass("btn-primary");
-                        $('#saveButton').removeAttr("disabled").addClass("btn-primary");
-                        humane.log("Connection was successful. Click on the Next button to continue.");
-                    }
-                });
-        });
+        $('#saveButton')
+            .click(function(e) {
+                e.preventDefault();
+                var conStr = encodeURIComponent($('[name="connectionString"]').val());
+                $
+                    .getJSON('@Url.RouteUrl(new {Area = "Installation", Controller = "Sql", Action = "Validate"})/?connectionString=' + conStr)
+                    .done(function(data) {
+                        if (data.result == "fail") {
+                            $('#error').text(data.reason).show();
+                        } else {
+                            $('#error').hide();
+                            $("#testConnection").removeClass("btn-primary");
+                            $('#saveButton').removeAttr("disabled").addClass("btn-primary");
+                            humane.log("Connection was successful. Click on the Next button to continue.");
+                        }
+                    });
+            });
     </script>
 }

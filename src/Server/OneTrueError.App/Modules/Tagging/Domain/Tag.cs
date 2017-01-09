@@ -3,12 +3,12 @@
 namespace OneTrueError.App.Modules.Tagging.Domain
 {
     /// <summary>
-    /// Stack overflow tag
+    ///     Stack overflow tag
     /// </summary>
     public class Tag
     {
         /// <summary>
-        /// Creates a new instance of <see cref="Tag"/>.
+        ///     Creates a new instance of <see cref="Tag" />.
         /// </summary>
         /// <param name="name">name</param>
         /// <param name="orderNumber">order. 1 = first.</param>
@@ -21,25 +21,24 @@ namespace OneTrueError.App.Modules.Tagging.Domain
         }
 
         /// <summary>
-        /// Serialization constructor
+        ///     Serialization constructor
         /// </summary>
         protected Tag()
         {
-            
         }
 
         /// <summary>
-        /// Identity
+        ///     Identity
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        /// Name
+        ///     Name
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Order
+        ///     Order
         /// </summary>
         public int OrderNumber { get; set; }
     }

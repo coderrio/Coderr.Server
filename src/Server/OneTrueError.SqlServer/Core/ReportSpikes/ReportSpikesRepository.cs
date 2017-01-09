@@ -8,7 +8,6 @@ using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 using OneTrueError.App.Modules.ReportSpikes;
-using OneTrueError.SqlServer.Tools;
 
 namespace OneTrueError.SqlServer.Core.ReportSpikes
 {
@@ -76,7 +75,7 @@ namespace OneTrueError.SqlServer.Core.ReportSpikes
         {
             await _unitOfWork.InsertAsync(spike);
         }
-     
+
         public async Task UpdateSpikeAsync(ErrorReportSpike spike)
         {
             await _unitOfWork.UpdateAsync(spike);

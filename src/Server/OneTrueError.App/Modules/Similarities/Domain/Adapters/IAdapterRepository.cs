@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace OneTrueError.App.Modules.Similarities.Domain.Adapters
 {
@@ -10,10 +11,10 @@ namespace OneTrueError.App.Modules.Similarities.Domain.Adapters
     public interface IAdapterRepository
     {
         /// <summary>
-        /// Get a list of all value adapters.
+        ///     Get a list of all value adapters.
         /// </summary>
         /// <returns>All identified adapters (single instances)</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
+        [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         IReadOnlyList<IValueAdapter> GetAdapters();
     }
 }

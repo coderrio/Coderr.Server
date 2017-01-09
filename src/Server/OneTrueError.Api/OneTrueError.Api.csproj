@@ -63,6 +63,7 @@
     <Compile Include="Core\Accounts\Events\AccountRegistered.cs" />
     <Compile Include="Core\Accounts\Events\InvitationAccepted.cs" />
     <Compile Include="Core\Accounts\Events\LoginFailed.cs" />
+    <Compile Include="Core\Applications\Events\UserAddedToApplication.cs" />
     <Compile Include="Core\Accounts\NamespaceDoc.cs" />
     <Compile Include="Core\Accounts\Queries\AccountDTO.cs" />
     <Compile Include="Core\Accounts\Queries\AccountStateDTO.cs" />
@@ -87,6 +88,8 @@
     <Compile Include="Core\Accounts\Requests\ValidateNewLoginReply.cs" />
     <Compile Include="Core\ApiKeys\Commands\CreateApiKey.cs" />
     <Compile Include="Core\ApiKeys\Commands\DeleteApiKey.cs" />
+    <Compile Include="Core\ApiKeys\Events\ApiKeyCreated.cs" />
+    <Compile Include="Core\ApiKeys\Events\ApiKeyRemoved.cs" />
     <Compile Include="Core\ApiKeys\Queries\GetApiKey.cs" />
     <Compile Include="Core\ApiKeys\Queries\GetApiKeyResult.cs" />
     <Compile Include="Core\ApiKeys\Queries\GetApiKeyResultApplication.cs" />
@@ -95,6 +98,8 @@
     <Compile Include="Core\ApiKeys\Queries\ListApiKeysResultItem.cs" />
     <Compile Include="Core\Applications\ApplicationListItem.cs" />
     <Compile Include="Core\Applications\Commands\CreateApplication.cs" />
+    <Compile Include="Core\Applications\Commands\DeleteApplication.cs" />
+    <Compile Include="Core\Applications\Events\ApplicationDeleted.cs" />
     <Compile Include="Core\Applications\NamespaceDoc.cs" />
     <Compile Include="Core\Applications\Queries\GetApplicationTeamResult.cs" />
     <Compile Include="Core\Applications\Queries\OverviewStatSummary.cs" />

@@ -31,7 +31,7 @@ namespace OneTrueError.Web.Areas.Receiver.Helpers
             else
             {
                 var canAccept = value >= Count;
-                if (!canAccept) 
+                if (!canAccept)
                     return false;
 
                 _currentCount = 0;

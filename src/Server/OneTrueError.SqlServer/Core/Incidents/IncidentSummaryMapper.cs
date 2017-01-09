@@ -9,22 +9,21 @@ namespace OneTrueError.SqlServer.Core.Incidents
     {
         public object Create(IDataRecord record)
         {
-            return new IncidentSummaryDTO((int)record["Id"], (string)record["Description"]);
+            return new IncidentSummaryDTO((int) record["Id"], (string) record["Description"]);
         }
 
         public void Map(IDataRecord source, object destination)
         {
-            Map(source, (IncidentSummaryDTO)destination);
+            Map(source, (IncidentSummaryDTO) destination);
         }
 
         public void Map(IDataRecord source, IncidentSummaryDTO destination)
         {
-            destination.ApplicationId = (int)source["ApplicationId"];
-            destination.ApplicationName = (string)source["ApplicationName"];
-            destination.ReportCount = (int)source["Count"];
-            destination.LastUpdateAtUtc = (DateTime)source["UpdatedAtUtc"];
-            destination.CreatedAtUtc = (DateTime)source["CreatedAtUtc"];
+            destination.ApplicationId = (int) source["ApplicationId"];
+            destination.ApplicationName = (string) source["ApplicationName"];
+            destination.ReportCount = (int) source["Count"];
+            destination.LastUpdateAtUtc = (DateTime) source["UpdatedAtUtc"];
+            destination.CreatedAtUtc = (DateTime) source["CreatedAtUtc"];
         }
-
     }
 }

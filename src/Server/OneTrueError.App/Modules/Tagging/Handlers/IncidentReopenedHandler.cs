@@ -26,10 +26,10 @@ namespace OneTrueError.App.Modules.Tagging.Handlers
             _repository = repository;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public async Task HandleAsync(IncidentReOpened e)
         {
-            await _repository.AddAsync(e.IncidentId, new[] { new Tag("incident-reopened", 1) });
+            await _repository.AddAsync(e.IncidentId, new[] {new Tag("incident-reopened", 1)});
         }
     }
 }

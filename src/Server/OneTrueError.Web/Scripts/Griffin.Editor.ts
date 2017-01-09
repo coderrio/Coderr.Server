@@ -170,10 +170,10 @@ module Griffin {
             }
 
             this.id = this.containerElement.id;
-            var id = this.containerElement.id;
+            const id = this.containerElement.id;
             this.element = (this.containerElement.getElementsByTagName("textarea")[0]);
             this.previewElement = document.getElementById(id + "-preview");
-            this.toolbarElement = <HTMLElement>this.containerElement.getElementsByClassName("toolbar")[0];
+            this.toolbarElement = (this.containerElement.getElementsByClassName("toolbar")[0] as HTMLElement);
             this.textSelector = new TextSelector(this.element);
             this.toolbarHandler = new MarkdownToolbar(parser);
             this.assignAccessKeys();
@@ -191,16 +191,16 @@ module Griffin {
 
 
         private trimSpaceInSelection() {
-            var selectedText = this.textSelector.text();
-            var pos = this.textSelector.get();
+            const selectedText = this.textSelector.text();
+            const pos = this.textSelector.get();
             if (selectedText.substr(selectedText.length - 1, 1) === " ") {
                 this.textSelector.select(pos.start, pos.end - 1);
             }
         }
 
         private getActionNameFromClass(classString: string) {
-            var classNames = classString.split(/\s+/);
-            for (var i = 0; i < classNames.length; i++) {
+            const classNames = classString.split(/\s+/);
+            for (let i = 0; i < classNames.length; i++) {
                 if (classNames[i].substr(0, 7) === "button-") {
                     return classNames[i].substr(7);
                 }
@@ -210,17 +210,17 @@ module Griffin {
         }
 
         private assignAccessKeys() {
-            var self = this;
-            var spans = this.toolbarElement.getElementsByTagName("span");
-            var len = spans.length;
-            for (var i = 0; i < len; i++) {
+            const self = this;
+            const spans = this.toolbarElement.getElementsByTagName("span");
+            const len = spans.length;
+            for (let i = 0; i < len; i++) {
                 if (!spans[i].getAttribute("accesskey"))
                     continue;
 
-                var button = spans[i];
-                var title = button.getAttribute("title");
-                var key = button.getAttribute("accesskey").toUpperCase();
-                var actionName = self.getActionNameFromClass(button.className);
+                const button = spans[i];
+                const title = button.getAttribute("title");
+                const key = button.getAttribute("accesskey").toUpperCase();
+                const actionName = self.getActionNameFromClass(button.className);
                 button.setAttribute("title", title + " [CTRL+" + key + "]");
                 this.keyMap[key] = actionName;
             }
@@ -231,25 +231,27 @@ module Griffin {
                 return;
             }
 
-            var twin = $(this).data("twin-area");
+            let twin = $(this).data("twin-area");
             if (typeof twin === "undefined") {
                 twin = $('<textarea style="position:absolute; top: -10000px"></textarea>');
                 twin.appendTo("body");
                 //div.appendTo('body');
                 $(this).data("twin-area", twin);
-                $(this).data("originalSize", {
-                    width: this.element.clientWidth,
-                    height: this.element.clientHeight,
-                    //position: data.editor.css('position'), 
-                    top: this.getTopPos(this.element),
-                    left: this.getLeftPos(this.element)
-                });
+                $(this)
+                    .data("originalSize",
+                    {
+                        width: this.element.clientWidth,
+                        height: this.element.clientHeight,
+                        //position: data.editor.css('position'), 
+                        top: this.getTopPos(this.element),
+                        left: this.getLeftPos(this.element)
+                    });
             }
             twin.css("height", this.element.clientHeight);
             twin.css("width", this.element.clientWidth);
             twin.html(this.element.getAttribute("value") + "some\r\nmore\r\n");
             if (twin[0].clientHeight < twin[0].scrollHeight) {
-                var style = {
+                const style = {
                     height: (this.element.clientHeight + 100) + "px",
                     width: this.element.clientWidth,
                     //position: 'absolute', 
@@ -271,35 +273,41 @@ module Griffin {
 
         private bindEditorEvents(): void {
             var self = this;
-            this.element.addEventListener("focus", (e: FocusEvent) => {
+            this.element.addEventListener("focus",
+            (e: FocusEvent) => {
                 //grow editor
             });
-            this.element.addEventListener("blur", (e: FocusEvent) => {
+            this.element.addEventListener("blur",
+            (e: FocusEvent) => {
                 //shrink editor
             });
-            this.element.addEventListener("keyup", (e: KeyboardEvent) => {
+            this.element.addEventListener("keyup",
+            (e: KeyboardEvent) => {
                 self.preview();
                 //self.invokeAutoSize();
             });
-            this.element.addEventListener("paste", (e: any) => {
+            this.element.addEventListener("paste",
+            (e: any) => {
                 setTimeout(function() {
-                    self.preview();
-                }, 100);
+                        self.preview();
+                    },
+                    100);
             });
         }
 
         private bindToolbarEvents(): void {
-            var spans = this.toolbarElement.getElementsByTagName("span");
-            var len = spans.length;
+            const spans = this.toolbarElement.getElementsByTagName("span");
+            const len = spans.length;
             var self = this;
-            for (var i = 0; i < len; i++) {
+            for (let i = 0; i < len; i++) {
                 if (spans[i].className.indexOf("button") === -1)
                     continue;
-                var button = spans[i];
-                button.addEventListener("click", (e: MouseEvent) => {
-                    var btn = <HTMLElement>e.target;
+                const button = spans[i];
+                button.addEventListener("click",
+                (e: MouseEvent) => {
+                    var btn = e.target as HTMLElement;
                     if (btn.tagName != "span") {
-                        btn = (<HTMLElement>e.target).parentElement;
+                        btn = (e.target as HTMLElement).parentElement;
                     }
                     var actionName = self.getActionNameFromClass(btn.className);
                     self.invokeAction(actionName);
@@ -313,7 +321,8 @@ module Griffin {
             var self = this;
 
             //required to override browser keys
-            document.addEventListener("keydown", (e: KeyboardEvent) => {
+            document.addEventListener("keydown",
+            (e: KeyboardEvent) => {
                 if (!e.ctrlKey)
                     return;
                 var key = String.fromCharCode(e.which);
@@ -329,7 +338,8 @@ module Griffin {
                     e.preventDefault();
                 }
             });
-            this.element.addEventListener("keyup", (e: KeyboardEvent) => {
+            this.element.addEventListener("keyup",
+            (e: KeyboardEvent) => {
                 if (!e.ctrlKey)
                     return;
 
@@ -363,11 +373,15 @@ module Griffin {
         }
 
         private getTopPos(element: HTMLElement): number {
-            return element.getBoundingClientRect().top + window.pageYOffset - element.ownerDocument.documentElement.clientTop;
+            return element.getBoundingClientRect().top +
+                window.pageYOffset -
+                element.ownerDocument.documentElement.clientTop;
         }
 
         private getLeftPos(element: HTMLElement): number {
-            return element.getBoundingClientRect().left + window.pageXOffset - element.ownerDocument.documentElement.clientLeft;
+            return element.getBoundingClientRect().left +
+                window.pageXOffset -
+                element.ownerDocument.documentElement.clientLeft;
         }
 
         /**
@@ -384,19 +398,20 @@ module Griffin {
             }
             if (this.syntaxHighlighter) {
                 this.editorTimer = setTimeout(() => {
-                    var tags = this.previewElement.getElementsByTagName("code");
-                    var inlineBlocks = [];
-                    var codeBlocks = [];
-                    for (var i = 0; i < tags.length; i++) {
-                        var elem = <HTMLElement>tags[i];
-                        if (elem.parentElement.tagName === "PRE") {
-                            codeBlocks.push(elem);
-                        } else {
-                            inlineBlocks.push(elem);
+                        var tags = this.previewElement.getElementsByTagName("code");
+                        var inlineBlocks = [];
+                        var codeBlocks = [];
+                        for (let i = 0; i < tags.length; i++) {
+                            const elem = tags[i] as HTMLElement;
+                            if (elem.parentElement.tagName === "PRE") {
+                                codeBlocks.push(elem);
+                            } else {
+                                inlineBlocks.push(elem);
+                            }
                         }
-                    }
-                    this.syntaxHighlighter.highlight(inlineBlocks, codeBlocks);
-                }, 1000);
+                        this.syntaxHighlighter.highlight(inlineBlocks, codeBlocks);
+                    },
+                    1000);
             }
         }
 
@@ -429,20 +444,22 @@ module Griffin {
             var dialog = $(`#${context.editor.id}-imageDialog`);
             if (!dialog.data("griffin-imageDialog-inited")) {
                 dialog.data("griffin-imageDialog-inited", true);
-                $("[data-success]", dialog).click(() => {
-                    dialog.modal("hide");
-                    callback({
-                        href: $('[name="imageUrl"]', dialog).val(),
-                        title: $('[name="imageCaption"]', dialog).val()
+                $("[data-success]", dialog)
+                    .click(() => {
+                        dialog.modal("hide");
+                        callback({
+                            href: $('[name="imageUrl"]', dialog).val(),
+                            title: $('[name="imageCaption"]', dialog).val()
+                        });
+                        context.editorElement.focus();
                     });
-                    context.editorElement.focus();
-                });
             }
 
             if (context.selection.isSelected()) {
                 $('[name="imageCaption"]', dialog).val(context.selection.text());
             }
-            dialog.on("shown.bs.modal", () => {
+            dialog.on("shown.bs.modal",
+            () => {
                 $('[name="imageUrl"]', dialog).focus();
             });
 
@@ -456,18 +473,21 @@ module Griffin {
             var dialog = $(`#${context.editor.id}-linkDialog`);
             if (!dialog.data("griffin-linkDialog-inited")) {
                 dialog.data("griffin-linkDialog-inited", true);
-                $("[data-success]", dialog).click(() => {
-                    dialog.modal("hide");
-                    callback({
-                        url: $('[name="linkUrl"]', dialog).val(),
-                        text: $('[name="linkText"]', dialog).val()
+                $("[data-success]", dialog)
+                    .click(() => {
+                        dialog.modal("hide");
+                        callback({
+                            url: $('[name="linkUrl"]', dialog).val(),
+                            text: $('[name="linkText"]', dialog).val()
+                        });
+                        context.editorElement.focus();
                     });
-                    context.editorElement.focus();
-                });
-                dialog.on("shown.bs.modal", () => {
+                dialog.on("shown.bs.modal",
+                () => {
                     $('[name="linkUrl"]', dialog).focus();
                 });
-                dialog.on("hidden.bs.modal", () => {
+                dialog.on("hidden.bs.modal",
+                () => {
                     context.editorElement.focus();
                 });
             }
@@ -494,9 +514,9 @@ module Griffin {
         invokeAction(context: IToolbarContext) {
             //			console.log(griffinEditor);
 
-            var method = `action${context.actionName.substr(0, 1).toUpperCase()}${context.actionName.substr(1)}`;
+            const method = `action${context.actionName.substr(0, 1).toUpperCase()}${context.actionName.substr(1)}`;
             if (this[method]) {
-                var args = [];
+                const args = [];
                 args[0] = context.selection;
                 args[1] = context;
                 return this[method].apply(this, args);
@@ -517,9 +537,9 @@ module Griffin {
         }
 
         private removeWrapping(selection: TextSelector, wrapperString: string) {
-            var wrapperLength = wrapperString.length;
-            var editor = selection.element;
-            var pos = selection.get();
+            const wrapperLength = wrapperString.length;
+            const editor = selection.element;
+            let pos = selection.get();
 
             // expand double click
             if (pos.start !== 0 && editor.value.substr(pos.start - wrapperLength, wrapperLength) === wrapperString) {
@@ -529,7 +549,7 @@ module Griffin {
 
             // remove 
             if (selection.text().substr(0, wrapperLength) === wrapperString) {
-                var text = selection.text().substr(wrapperLength, selection.text().length - (wrapperLength * 2));
+                const text = selection.text().substr(wrapperLength, selection.text().length - (wrapperLength * 2));
                 selection.replace(text);
                 selection.select(pos.start, pos.end - (wrapperLength * 2));
                 return true;
@@ -540,8 +560,8 @@ module Griffin {
 
 
         private actionBold(selection: TextSelector) {
-            var isSelected = selection.isSelected();
-            var pos = selection.get();
+            const isSelected = selection.isSelected();
+            const pos = selection.get();
 
             if (this.removeWrapping(selection, "**")) {
                 return this;
@@ -559,8 +579,8 @@ module Griffin {
         }
 
         private actionItalic(selection: TextSelector) {
-            var isSelected = selection.isSelected();
-            var pos = selection.get();
+            const isSelected = selection.isSelected();
+            const pos = selection.get();
 
             if (this.removeWrapping(selection, "_")) {
                 return this;
@@ -578,17 +598,17 @@ module Griffin {
         }
 
         private addTextToBeginningOfLine(selection: TextSelector, textToAdd: string) {
-            var isSelected = selection.isSelected();
+            const isSelected = selection.isSelected();
             if (!isSelected) {
-                var text = selection.element.value;
-                var orgPos = selection.get().start;;
-                var xStart = selection.get().start;
-                var found = false;
+                const text = selection.element.value;
+                const orgPos = selection.get().start;;
+                let xStart = selection.get().start;
+                let found = false;
 
                 //find beginning of line so that we can check
                 //if the text already exists.
                 while (xStart > 0) {
-                    var ch = text.substr(xStart, 1);
+                    const ch = text.substr(xStart, 1);
                     if (ch === "\r" || ch === "\n") {
                         if (text.substr(xStart + 1, textToAdd.length) === textToAdd) {
                             selection.select(xStart + 1, textToAdd.length);
@@ -615,7 +635,7 @@ module Griffin {
                 return;
             }
 
-            var pos = selection.get();
+            const pos = selection.get();
             selection.replace(textToAdd + selection.text());
             selection.select(pos.end + textToAdd.length, pos.end + textToAdd.length);
         }
@@ -635,7 +655,7 @@ module Griffin {
         }
 
         private actionBullets(selection: TextSelector) {
-            var pos = selection.get();
+            const pos = selection.get();
             selection.replace(`* ${selection.text()}`);
             selection.select(pos.end + 2, pos.end + 2);
         }
@@ -645,7 +665,7 @@ module Griffin {
         }
 
         private actionSourcecode(selection: TextSelector) {
-            var pos = selection.get();
+            const pos = selection.get();
             if (!selection.isSelected()) {
                 selection.replace("> ");
                 selection.select(pos.start + 2, pos.start + 2);
@@ -658,7 +678,7 @@ module Griffin {
                 return;
             }
 
-            var text = `    ${selection.text().replace(/\n/g, "\n    ")}`;
+            let text = `    ${selection.text().replace(/\n/g, "\n    ")}`;
             if (text.substr(text.length - 3, 1) === " " && text.substr(text.length - 1, 1) === " ") {
                 text = text.substr(0, text.length - 4);
             }
@@ -667,7 +687,7 @@ module Griffin {
         }
 
         private actionQuote(selection: TextSelector) {
-            var pos = selection.get();
+            const pos = selection.get();
             if (!selection.isSelected()) {
                 selection.replace("> ");
                 selection.select(pos.start + 2, pos.start + 2);
@@ -675,7 +695,7 @@ module Griffin {
             }
 
 
-            var text = `> ${selection.text().replace(/\n/g, "\n> ")}`;
+            let text = `> ${selection.text().replace(/\n/g, "\n> ")}`;
             if (text.substr(text.length - 3, 1) === " ") {
                 text = text.substr(0, text.length - 4);
             }
@@ -686,10 +706,10 @@ module Griffin {
         //context: { url: 'urlToImage' }
         private actionImage(selection: TextSelector, context: IToolbarContext) {
             var pos = selection.get();
-            var text = selection.text();
+            const text = selection.text();
             selection.store();
 
-            var options = {
+            const options = {
                 editor: context.editor,
                 editorElement: context.editorElement,
                 selection: selection,
@@ -700,26 +720,31 @@ module Griffin {
             if (!selection.isSelected()) {
                 options.href = "";
                 options.title = "";
-            } else if (text.substr(-4, 4) === ".png" || text.substr(-4, 4) === ".gif" || text.substr(-4, 4) === ".jpg") {
+            } else if (text
+                .substr(-4, 4) ===
+                ".png" ||
+                text.substr(-4, 4) === ".gif" ||
+                text.substr(-4, 4) === ".jpg") {
                 options.href = text;
             } else {
                 options.title = text;
             }
-            context.editor.dialogProvider.image(options, result => {
-                var newText = `![${result.title}](${result.href})`;
-                selection.load();
-                selection.replace(newText);
-                selection.select(pos.start + newText.length, pos.start + newText.length);
-                context.editor.preview();
-            });
+            context.editor.dialogProvider.image(options,
+                result => {
+                    var newText = `![${result.title}](${result.href})`;
+                    selection.load();
+                    selection.replace(newText);
+                    selection.select(pos.start + newText.length, pos.start + newText.length);
+                    context.editor.preview();
+                });
         }
 
         private actionLink(selection: TextSelector, context: IToolbarContext) {
             var pos = selection.get();
-            var text = selection.text();
+            const text = selection.text();
             selection.store();
 
-            var options = {
+            const options = {
                 editor: context.editor,
                 editorElement: context.editorElement,
                 selection: selection,
@@ -734,13 +759,14 @@ module Griffin {
                     options.text = text;
                 }
             }
-            context.editor.dialogProvider.link(options, result => {
-                selection.load();
-                var newText = `[${result.text}](${result.url})`;
-                selection.replace(newText);
-                selection.select(pos.start + newText.length, pos.start + newText.length);
-                context.editor.preview();
-            });
+            context.editor.dialogProvider.link(options,
+                result => {
+                    selection.load();
+                    var newText = `[${result.text}](${result.url})`;
+                    selection.replace(newText);
+                    selection.select(pos.start + newText.length, pos.start + newText.length);
+                    context.editor.preview();
+                });
         }
     }
 
@@ -751,7 +777,7 @@ module Griffin {
 
         constructor(elementOrId: any) {
             if (typeof elementOrId === "string") {
-                this.element = <HTMLTextAreaElement>document.getElementById(elementOrId);
+                this.element = (document.getElementById(elementOrId) as HTMLTextAreaElement);
             } else {
                 this.element = elementOrId;
             }
@@ -772,13 +798,13 @@ module Griffin {
                 };
             }
 
-            var doc = <any>document;
-            var range = doc.selection.createRange();
-            var storedRange = range.duplicate();
+            const doc = document as any;
+            const range = doc.selection.createRange();
+            const storedRange = range.duplicate();
             storedRange.moveToElementText(this.element);
             storedRange.setEndPoint("EndToEnd", range);
-            var start = storedRange.text.length - range.text.length;
-            var end = start + range.text.length;
+            const start = storedRange.text.length - range.text.length;
+            const end = start + range.text.length;
 
             return { start: start, end: end, length: range.text.length };
         }
@@ -786,9 +812,9 @@ module Griffin {
         /** Replace selected text with the specified one */
         replace(newText: string) {
             if (typeof this.element.selectionStart !== "undefined") {
-                this.element.value = this.element.value.substr(0, this.element.selectionStart)
-                    + newText
-                    + this.element.value.substr(this.element.selectionEnd);
+                this.element.value = this.element.value.substr(0, this.element.selectionStart) +
+                    newText +
+                    this.element.value.substr(this.element.selectionEnd);
                 return this;
             }
 
@@ -813,7 +839,7 @@ module Griffin {
          * @param end End character
          */
         select(startOrSelection: any, end?: number) {
-            var start = startOrSelection;
+            let start = startOrSelection;
 
             if (typeof startOrSelection.start !== "undefined") {
                 end = startOrSelection.end;
@@ -826,7 +852,7 @@ module Griffin {
                 this.element.focus();
                 this.element.setSelectionRange(start, end);
             } else if (typeof this.element.createTextRange !== "undefined") {
-                var range = this.element.createTextRange();
+                const range = this.element.createTextRange();
                 range.collapse(true);
                 range.moveEnd("character", end);
                 range.moveStart("character", start);
@@ -849,7 +875,8 @@ module Griffin {
                 return document["selection"].createRange().text;
             }
 
-            return this.element.value.substr(this.element.selectionStart, this.element.selectionEnd - this.element.selectionStart);
+            return this.element.value.substr(this.element.selectionStart,
+                this.element.selectionEnd - this.element.selectionStart);
         }
 
         moveCursor(position: number) {
@@ -859,7 +886,7 @@ module Griffin {
                 this.element.focus();
                 this.element.setSelectionRange(position, 0);
             } else if (typeof this.element.createTextRange !== "undefined") {
-                var range = this.element.createTextRange();
+                const range = this.element.createTextRange();
                 range.collapse(true);
                 range.moveStart("character", position);
                 range.select();

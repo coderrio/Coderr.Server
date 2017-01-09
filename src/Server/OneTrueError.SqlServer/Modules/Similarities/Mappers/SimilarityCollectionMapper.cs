@@ -3,7 +3,7 @@ using OneTrueError.App.Modules.Similarities.Domain;
 
 namespace OneTrueError.SqlServer.Modules.Similarities.Mappers
 {
-    public class SimilarityCollectionMapper : CrudEntityMapper<App.Modules.Similarities.Domain.SimilarityCollection>
+    public class SimilarityCollectionMapper : CrudEntityMapper<SimilarityCollection>
     {
         public SimilarityCollectionMapper()
             : base("SimilarityCollections")
@@ -17,8 +17,6 @@ namespace OneTrueError.SqlServer.Modules.Similarities.Mappers
 
             Property(x => x.Name)
                 .ColumnName("ContextName");
-
         }
-
     }
 }

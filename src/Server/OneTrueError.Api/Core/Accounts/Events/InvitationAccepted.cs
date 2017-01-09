@@ -9,7 +9,7 @@ namespace OneTrueError.Api.Core.Accounts.Events
     public class InvitationAccepted : ApplicationEvent
     {
         /// <summary>
-        /// Creates a new instance of <see cref="InvitationAccepted"/>.
+        ///     Creates a new instance of <see cref="InvitationAccepted" />.
         /// </summary>
         /// <param name="accountId">account that accepted the inviation</param>
         /// <param name="invitedByUserName">user that made the invite</param>
@@ -27,11 +27,16 @@ namespace OneTrueError.Api.Core.Accounts.Events
         }
 
         /// <summary>
-        /// Serialization constructor.
+        ///     Serialization constructor.
         /// </summary>
         protected InvitationAccepted()
         {
         }
+
+        /// <summary>
+        ///     The email that the inviation was accepted by.
+        /// </summary>
+        public string AcceptedEmailAddress { get; set; }
 
         /// <summary>
         ///     Id of the user that accepted the invitation
@@ -49,13 +54,13 @@ namespace OneTrueError.Api.Core.Accounts.Events
         public string InvitedByUserName { get; set; }
 
         /// <summary>
+        ///     Email address that the invitation was sent to.
+        /// </summary>
+        public string InvitedEmailAddress { get; set; }
+
+        /// <summary>
         ///     The user that accepted the invitation
         /// </summary>
         public string UserName { get; set; }
-
-        /// <summary>
-        ///     Email address of the user that accepted the invitation
-        /// </summary>
-        public string EmailAddress { get; set; }
     }
 }

@@ -10,24 +10,56 @@ namespace OneTrueError.Web.Areas.Installation.Controllers
 {
     public class SetupController : Controller
     {
-        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        [HttpPost, AllowAnonymous]
+        public ActionResult Activate()
         {
-            ViewBag.PrevLink = Url.GetPreviousWizardStepLink();
-            ViewBag.NextLink = Url.GetNextWizardStepLink();
-            base.OnActionExecuting(filterContext);
+            ConfigurationManager.RefreshSection("appSettings");
+            if (ConfigurationManager.AppSettings["Configured"] != "true")
+            {
+                return RedirectToAction("Completed", new
+                {
+                    displayError = 1
+                });
+            }
+            return Redirect("~/?#/welcome");
         }
 
-        // GET: Installation/Home
-        public ActionResult Index()
+        public ActionResult Basics()
         {
-            try
+            var model = new BasicsViewModel();
+            var config = ConfigurationStore.Instance.Load<BaseConfiguration>();
+            if (config != null)
             {
-                ConnectionFactory.Create();
+                model.BaseUrl = config.BaseUrl.ToString();
+                model.SupportEmail = config.SupportEmail;
             }
-            catch
+            else
             {
-                ViewBag.Ready = false;
+                model.BaseUrl = Request.Url.ToString().Replace("installation/setup/basics/", "");
+                ViewBag.NextLink = "";
             }
+
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Basics(BasicsViewModel model)
+        {
+            var settings = new BaseConfiguration();
+            if (!model.BaseUrl.EndsWith("/"))
+                model.BaseUrl += "/";
+
+            settings.BaseUrl = new Uri(model.BaseUrl);
+            settings.SupportEmail = model.SupportEmail;
+            ConfigurationStore.Instance.Store(settings);
+            return Redirect(Url.GetNextWizardStep());
+        }
+
+
+        public ActionResult Completed(string displayError = null)
+        {
+            ViewBag.DisplayError = displayError == "1";
             return View();
         }
 
@@ -61,54 +93,25 @@ namespace OneTrueError.Web.Areas.Installation.Controllers
             return Redirect(Url.GetNextWizardStep());
         }
 
-        public ActionResult Basics()
+        // GET: Installation/Home
+        public ActionResult Index()
         {
-            var model = new BasicsViewModel();
-            var config = ConfigurationStore.Instance.Load<BaseConfiguration>();
-            if (config != null)
+            try
             {
-                model.BaseUrl = config.BaseUrl.ToString();
-                model.SupportEmail = config.SupportEmail;
+                ConnectionFactory.Create();
             }
-            else
+            catch
             {
-                model.BaseUrl = Request.Url.ToString().Replace("installation/setup/basics/", "");
-                ViewBag.NextLink = "";
+                ViewBag.Ready = false;
             }
-
-
-            return View(model);
-        }
-
-        [HttpPost]
-        public ActionResult Basics(BasicsViewModel model)
-        {
-            var settings = new BaseConfiguration();
-            settings.BaseUrl = new Uri(model.BaseUrl);
-            settings.SupportEmail = model.SupportEmail;
-            ConfigurationStore.Instance.Store(settings);
-            return Redirect(Url.GetNextWizardStep());
-        }
-
-        [HttpPost, AllowAnonymous]
-        public ActionResult Activate()
-        {
-            ConfigurationManager.RefreshSection("appSettings");
-            if (ConfigurationManager.AppSettings["Configured"] != "true")
-            {
-                return RedirectToAction("Completed", new
-                {
-                    displayError = 1
-                });
-            }
-            return Redirect("~/?#/welcome");
-        }
-
-
-        public ActionResult Completed(string displayError = null)
-        {
-            ViewBag.DisplayError = displayError == "1";
             return View();
+        }
+
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            ViewBag.PrevLink = Url.GetPreviousWizardStepLink();
+            ViewBag.NextLink = Url.GetNextWizardStepLink();
+            base.OnActionExecuting(filterContext);
         }
     }
 }

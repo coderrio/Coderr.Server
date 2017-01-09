@@ -1,5 +1,4 @@
-﻿using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
 namespace OneTrueError.Web
 {
@@ -9,27 +8,27 @@ namespace OneTrueError.Web
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js",
-                        "~/Scripts/application.js",
-                        "~/Scripts/prism.js",
-                        "~/Scripts/marked.min.js",
-                        "~/Scripts/humane.js",
-                        "~/Scripts/Base64.js",
-                        "~/Scripts/transparency.min.js")
-                        );
+                "~/Scripts/jquery-{version}.js",
+                "~/Scripts/application.js",
+                "~/Scripts/prism.js",
+                "~/Scripts/marked.min.js",
+                "~/Scripts/humane.js",
+                "~/Scripts/Base64.js",
+                "~/Scripts/transparency.min.js")
+                );
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        "~/Scripts/jquery.validate*"));
+                "~/Scripts/jquery.validate*"));
 
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
-                        "~/Scripts/modernizr-*"));
+                "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
+                "~/Scripts/bootstrap.js",
+                "~/Scripts/respond.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/app")
                 .Include(
@@ -44,11 +43,10 @@ namespace OneTrueError.Web
                 );
 
 
-
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/ote_bootstrap.min.css",
-                      "~/Content/humane.flatty.css",
-                      "~/Content/site.css"));
+                "~/Content/ote_bootstrap.min.css",
+                "~/Content/humane.flatty.css",
+                "~/Content/site.css"));
         }
     }
 }

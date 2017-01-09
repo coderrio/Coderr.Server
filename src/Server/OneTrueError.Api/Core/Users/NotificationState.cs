@@ -1,27 +1,27 @@
 ﻿namespace OneTrueError.Api.Core.Users
 {
     /// <summary>
-    /// Type of notification to use
+    ///     Type of notification to use
     /// </summary>
     public enum NotificationState
     {
         /// <summary>
-        /// Use global setting
+        ///     Use global setting
         /// </summary>
         UseGlobalSetting,
 
         /// <summary>
-        /// Do not notify
+        ///     Do not notify
         /// </summary>
         Disabled,
 
         /// <summary>
-        /// By cellphone (text message)
+        ///     By cellphone (text message)
         /// </summary>
         Cellphone,
 
         /// <summary>
-        /// By email
+        ///     By email
         /// </summary>
         Email
     }

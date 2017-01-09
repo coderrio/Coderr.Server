@@ -4,7 +4,6 @@ using Griffin.Container;
 using Griffin.Data;
 using OneTrueError.App.Modules.Tagging;
 using OneTrueError.App.Modules.Tagging.Domain;
-using OneTrueError.SqlServer.Tools;
 
 namespace OneTrueError.SqlServer.Modules.Tagging
 {
@@ -45,7 +44,7 @@ namespace OneTrueError.SqlServer.Modules.Tagging
                     var tags = new List<Tag>();
                     while (await reader.ReadAsync())
                     {
-                        var tag = new Tag((string)reader["TagName"], (int)reader["OrderNumber"]);
+                        var tag = new Tag((string) reader["TagName"], (int) reader["OrderNumber"]);
                         tags.Add(tag);
                     }
                     return tags;

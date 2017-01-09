@@ -54,7 +54,7 @@ namespace OneTrueError.App.Modules.Triggers.Queries
                     return TriggerFilterCondition.StartsWith;
                 default:
                     throw new FormatException(string.Format("Value '{0}' do not exist in the {1} enum.",
-                        filter, typeof (TriggerFilterCondition).Name));
+                        filter, typeof(TriggerFilterCondition).Name));
             }
         }
 
@@ -78,7 +78,7 @@ namespace OneTrueError.App.Modules.Triggers.Queries
                     return TriggerRuleAction.ExecuteActions;
                 default:
                     throw new FormatException(string.Format("Value '{0}' do not exist in the {1} enum.",
-                        ruleAction, typeof (TriggerRuleAction).Name));
+                        ruleAction, typeof(TriggerRuleAction).Name));
             }
         }
 
@@ -98,7 +98,7 @@ namespace OneTrueError.App.Modules.Triggers.Queries
                     return LastTriggerActionDTO.ExecuteActions;
                 default:
                     throw new FormatException(string.Format("Value '{0}' do not exist in the {1} enum.",
-                        lastTriggerAction, typeof (LastTriggerAction).Name));
+                        lastTriggerAction, typeof(LastTriggerAction).Name));
             }
         }
 

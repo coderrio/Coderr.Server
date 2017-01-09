@@ -32,8 +32,8 @@ namespace OneTrueError.Web
             builder.RegisterComponents(Lifetime.Scoped, typeof(ScanForNewErrorReports).Assembly);
             builder.RegisterComponents(Lifetime.Scoped, typeof(QueueProvider).Assembly);
 
-            builder.RegisterService<IContainer>(x => Container, Lifetime.Singleton);
-            builder.RegisterService<IServiceLocator>(x => x);
+            builder.RegisterService(x => Container, Lifetime.Singleton);
+            builder.RegisterService(x => x);
 
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
             builder.RegisterControllers(Assembly.GetExecutingAssembly());
@@ -45,13 +45,6 @@ namespace OneTrueError.Web
             Container = new GriffinContainerAdapter(ioc);
         }
 
-        private IScopedTaskInvoker CreateTaskInvoker(IServiceLocator arg)
-        {
-            var invoker = new ScopedTaskInvoker(Container);
-            invoker.TaskExecuted += (sender, args) => args.Scope.Resolve<IAdoNetUnitOfWork>().SaveChanges();
-            return invoker;
-        }
-
         private IAdoNetUnitOfWork CreateConnection(IServiceLocator arg)
         {
             var conStr = ConfigurationManager.ConnectionStrings["Db"];
@@ -60,5 +53,11 @@ namespace OneTrueError.Web
             return new AdoNetUnitOfWork(connection, true);
         }
 
+        private IScopedTaskInvoker CreateTaskInvoker(IServiceLocator arg)
+        {
+            var invoker = new ScopedTaskInvoker(Container);
+            invoker.TaskExecuted += (sender, args) => args.Scope.Resolve<IAdoNetUnitOfWork>().SaveChanges();
+            return invoker;
+        }
     }
 }

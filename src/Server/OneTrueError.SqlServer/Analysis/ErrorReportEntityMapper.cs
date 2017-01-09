@@ -1,5 +1,4 @@
 ﻿using Griffin.Data.Mapper;
-using Newtonsoft.Json;
 using OneTrueError.ReportAnalyzer.Domain.Reports;
 using OneTrueError.SqlServer.Tools;
 

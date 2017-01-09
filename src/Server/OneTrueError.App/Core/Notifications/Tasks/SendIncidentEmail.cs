@@ -48,7 +48,7 @@ namespace OneTrueError.App.Core.Notifications.Tasks
                 ? incident.Name.Substring(0, 40) + "..."
                 : incident.Name;
 
-            var baseUrl = string.Format("{0}/#/application/{1}/incident/{2}", 
+            var baseUrl = string.Format("{0}/#/application/{1}/incident/{2}",
                 config.BaseUrl.ToString().TrimEnd('/'),
                 report.ApplicationId,
                 report.IncidentId);
@@ -87,7 +87,5 @@ Exception: {2}
             var emailCmd = new SendEmail(msg);
             await _commandBus.ExecuteAsync(emailCmd);
         }
-
-
     }
 }

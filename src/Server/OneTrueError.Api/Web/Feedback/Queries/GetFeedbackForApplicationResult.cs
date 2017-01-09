@@ -3,24 +3,24 @@
 namespace OneTrueError.Api.Web.Feedback.Queries
 {
     /// <summary>
-    /// Result for <see cref="GetFeedbackForApplicationPage"/>
+    ///     Result for <see cref="GetFeedbackForApplicationPage" />
     /// </summary>
     public class GetFeedbackForApplicationPageResult
     {
         /// <summary>
-        /// Total number of items
+        ///     All emails (included in the first page)
         /// </summary>
-        public int TotalCount { get; set; }
+        //TODO: crappy solution
+        public List<string> Emails { get; set; }
 
         /// <summary>
-        /// items on this page
+        ///     items on this page
         /// </summary>
         public GetFeedbackForApplicationPageResultItem[] Items { get; set; }
 
         /// <summary>
-        /// All emails (included in the first page)
+        ///     Total number of items
         /// </summary>
-        //TODO: crappy solution
-        public List<string> Emails { get; set; }
+        public int TotalCount { get; set; }
     }
 }

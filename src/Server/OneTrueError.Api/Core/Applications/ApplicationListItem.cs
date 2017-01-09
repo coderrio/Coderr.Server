@@ -39,5 +39,9 @@ namespace OneTrueError.Api.Core.Applications
         /// </summary>
         public string Name { get; set; }
 
+        /// <summary>
+        /// User that requested this list is the admin of the specified application.
+        /// </summary>
+        public bool IsAdmin { get; set; }
     }
 }

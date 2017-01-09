@@ -3,26 +3,26 @@
 namespace OneTrueError.App.Modules.Triggers.Domain.Rules
 {
     /// <summary>
-    /// Base for trigger rules
+    ///     Base for trigger rules
     /// </summary>
     public class RuleBase
     {
         /// <summary>
-        /// How to compare the values
+        ///     How to compare the values
         /// </summary>
         public FilterCondition Condition { get; set; }
 
         /// <summary>
-        /// Result to use if value comparison succeeds.
+        ///     Result to use if value comparison succeeds.
         /// </summary>
         public FilterResult ResultToUse { get; set; }
 
         /// <summary>
-        /// Match
+        ///     Match
         /// </summary>
         /// <param name="value1">first value</param>
         /// <param name="value2">second value</param>
-        /// <returns><c>true</c> if values matches according to <see cref="Condition"/>; otherwise <c>false</c>.</returns>
+        /// <returns><c>true</c> if values matches according to <see cref="Condition" />; otherwise <c>false</c>.</returns>
         public bool Matches(string value1, string value2)
         {
             if (value1 == null) throw new ArgumentNullException("value1");
@@ -41,7 +41,6 @@ namespace OneTrueError.App.Modules.Triggers.Domain.Rules
                     return value1.Equals(value2, StringComparison.CurrentCultureIgnoreCase);
                 default:
                     throw new NotSupportedException(Condition.ToString());
-
             }
         }
     }

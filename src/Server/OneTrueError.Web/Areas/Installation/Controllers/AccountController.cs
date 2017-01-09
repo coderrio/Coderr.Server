@@ -1,16 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 using Griffin.Data;
-using OneTrueError.Api.Core.Applications.Queries;
+using Microsoft.Owin.Security;
+using OneTrueError.Api.Core.Applications;
 using OneTrueError.App.Core.Accounts;
+using OneTrueError.App.Core.Applications;
 using OneTrueError.App.Core.Users;
 using OneTrueError.Infrastructure;
+using OneTrueError.Infrastructure.Security;
 using OneTrueError.SqlServer.Core.Accounts;
 using OneTrueError.SqlServer.Core.Applications;
 using OneTrueError.SqlServer.Core.Users;
 using OneTrueError.Web.Areas.Installation.Models;
-using OneTrueError.Web.Models;
 
 namespace OneTrueError.Web.Areas.Installation.Controllers
 {
@@ -53,19 +58,35 @@ namespace OneTrueError.Web.Areas.Installation.Controllers
                 await userRepos.CreateAsync(user);
 
                 var repos2 = new ApplicationRepository(uow);
-                /*insert into ApplicationMembers (AccountId, ApplicationId, EmailAddress, AddedAtUtc, AddedByName, Roles) SELECT 1, 1, (SELECT TOP 1 email FROM accounts), GetUtcDate(), 'admin', 'Admin,Member';
-*/
-                var tm = new ApplicationTeamMember(1, account.Email)
+                var app = new Application(user.AccountId, "DemoApp")
                 {
-                    AccountId = account.Id,
-                    AddedByName = "system",
-                    Roles = new[] {"Admin, Member"},
+                    ApplicationType = TypeOfApplication.DesktopApplication
+                };
+                await repos2.CreateAsync(app);
+
+                var tm = new ApplicationTeamMember(app.Id, account.Id)
+                {
+                    AddedByName = "System",
+                    Roles = new[] {ApplicationRole.Admin, ApplicationRole.Member},
                     UserName = account.UserName
                 };
                 await repos2.CreateAsync(tm);
 
                 uow.SaveChanges();
-                SessionUser.Current = new SessionUser(account.Id, model.UserName);
+
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.NameIdentifier, account.Id.ToString(), ClaimValueTypes.Integer32),
+                    new Claim(ClaimTypes.Name, account.UserName, ClaimValueTypes.String),
+                    new Claim(ClaimTypes.Email, account.Email, ClaimValueTypes.String),
+                    new Claim(OneTrueClaims.Application, app.Id.ToString(), ClaimValueTypes.Integer32),
+                    new Claim(OneTrueClaims.ApplicationAdmin, app.Id.ToString(), ClaimValueTypes.Integer32),
+                    new Claim(ClaimTypes.Role, OneTrueClaims.RoleSysAdmin, ClaimValueTypes.String)
+                };
+                var identity = new ClaimsIdentity(claims, "Cookie", ClaimTypes.Name, ClaimTypes.Role);
+                var properties = new AuthenticationProperties {IsPersistent = false};
+                HttpContext.GetOwinContext().Authentication.SignIn(properties, identity);
+
                 return Redirect(Url.GetNextWizardStep());
             }
             catch (Exception ex)
@@ -87,7 +108,7 @@ namespace OneTrueError.Web.Areas.Installation.Controllers
         {
             ViewBag.Exception = null;
             ViewBag.AlreadyCreated = false;
-            if (SessionUser.Current != null)
+            if (User.Identity.IsAuthenticated)
                 ViewBag.AlreadyCreated = true;
             else
             {

@@ -4,12 +4,12 @@ using DotNetCqs;
 namespace OneTrueError.Api.Core.Accounts.Commands
 {
     /// <summary>
-    /// Register a new account and send out an activation email.
+    ///     Register a new account and send out an activation email.
     /// </summary>
     public class RegisterAccount : Command
     {
         /// <summary>
-        /// Creates a new instance of <see cref="RegisterAccount"/>
+        ///     Creates a new instance of <see cref="RegisterAccount" />
         /// </summary>
         /// <param name="userName">User name</param>
         /// <param name="password">Password as entered by the user</param>
@@ -25,26 +25,25 @@ namespace OneTrueError.Api.Core.Accounts.Commands
         }
 
         /// <summary>
-        /// Serialization constructor.
+        ///     Serialization constructor.
         /// </summary>
         protected RegisterAccount()
         {
-            
         }
 
         /// <summary>
-        /// User name
+        ///     Email address.
         /// </summary>
-        public string UserName { get; private set; }
+        public string Email { get; private set; }
 
         /// <summary>
-        /// Password as entered by the user.
+        ///     Password as entered by the user.
         /// </summary>
         public string Password { get; private set; }
 
         /// <summary>
-        /// Email address.
+        ///     User name
         /// </summary>
-        public string Email { get; private set; }
+        public string UserName { get; private set; }
     }
 }

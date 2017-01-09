@@ -15,7 +15,7 @@ namespace OneTrueError.Web.Areas.Receiver.Controllers
     public class ReportController : ApiController
     {
         private static readonly SamplingCounter _samplingCounter = new SamplingCounter();
-        private readonly ILog _logger = LogManager.GetLogger(typeof (ReportController));
+        private readonly ILog _logger = LogManager.GetLogger(typeof(ReportController));
         private readonly IMessageQueueProvider _queueProvider;
 
         static ReportController()
@@ -43,6 +43,8 @@ namespace OneTrueError.Web.Areas.Receiver.Controllers
         [HttpPost, Route("receiver/report/{appKey}")]
         public async Task<HttpResponseMessage> Post(string appKey, string sig)
         {
+            return Request.CreateErrorResponse(HttpStatusCode.NotFound, "No fuck!");
+
             if (HttpContext.Current.Request.InputStream.Length > 20000000)
             {
                 return await KillLargeReportAsync(appKey);

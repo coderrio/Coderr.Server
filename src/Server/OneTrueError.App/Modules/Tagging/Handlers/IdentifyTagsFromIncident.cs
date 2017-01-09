@@ -14,7 +14,7 @@ namespace OneTrueError.App.Modules.Tagging.Handlers
     [Component(RegisterAsSelf = true)]
     public class IdentifyTagsFromIncident : IApplicationEventSubscriber<ReportAddedToIncident>
     {
-        private readonly ILog _logger = LogManager.GetLogger(typeof (IdentifyTagsFromIncident));
+        private readonly ILog _logger = LogManager.GetLogger(typeof(IdentifyTagsFromIncident));
         private readonly ITagsRepository _repository;
 
         /// <summary>

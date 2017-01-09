@@ -2,7 +2,6 @@
 
 namespace OneTrueError.Web.Areas.Admin.Models
 {
-    
     public class BasicsViewModel
     {
         [Required, MinLength(4)]

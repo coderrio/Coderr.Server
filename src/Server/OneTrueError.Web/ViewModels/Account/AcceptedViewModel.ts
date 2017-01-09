@@ -8,6 +8,6 @@
             context.resolve();
         }
 
-        deactivate() { }
+        deactivate() {}
     }
 }

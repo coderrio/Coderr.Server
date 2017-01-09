@@ -5,12 +5,12 @@ using OneTrueError.Api.Core.Reports;
 namespace OneTrueError.Api.Core.Incidents.Events
 {
     /// <summary>
-    /// We just received a new report and attached it to the given incident.
+    ///     We just received a new report and attached it to the given incident.
     /// </summary>
     public class ReportAddedToIncident : ApplicationEvent
     {
         /// <summary>
-        /// Creates a new instance of <see cref="ReportAddedToIncident"/>.
+        ///     Creates a new instance of <see cref="ReportAddedToIncident" />.
         /// </summary>
         /// <param name="incident">incident that the report was added to</param>
         /// <param name="report">received report</param>
@@ -27,26 +27,25 @@ namespace OneTrueError.Api.Core.Incidents.Events
         }
 
         /// <summary>
-        /// Serialization constructor
+        ///     Serialization constructor
         /// </summary>
         protected ReportAddedToIncident()
         {
-            
         }
 
         /// <summary>
-        /// Incident that the report was added to.
+        ///     Incident that the report was added to.
         /// </summary>
         public IncidentSummaryDTO Incident { get; private set; }
 
         /// <summary>
-        /// Received report.
-        /// </summary>
-        public ReportDTO Report { get; private set; }
-
-        /// <summary>
-        /// Incident was marked as closed, so the received report opened it again.
+        ///     Incident was marked as closed, so the received report opened it again.
         /// </summary>
         public bool IsReOpened { get; set; }
+
+        /// <summary>
+        ///     Received report.
+        /// </summary>
+        public ReportDTO Report { get; private set; }
     }
 }

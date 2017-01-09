@@ -4,12 +4,12 @@ using DotNetCqs;
 namespace OneTrueError.Api.Core.Accounts.Queries
 {
     /// <summary>
-    /// Get email for a specific account
+    ///     Get email for a specific account
     /// </summary>
     public class GetAccountEmailById : Query<string>
     {
         /// <summary>
-        /// Creates a new instance of <see cref="GetAccountById"/>.
+        ///     Creates a new instance of <see cref="GetAccountById" />.
         /// </summary>
         /// <param name="accountId">account</param>
         public GetAccountEmailById(int accountId)
@@ -19,15 +19,14 @@ namespace OneTrueError.Api.Core.Accounts.Queries
         }
 
         /// <summary>
-        /// Serialization constructor.
+        ///     Serialization constructor.
         /// </summary>
         protected GetAccountEmailById()
         {
-            
         }
 
         /// <summary>
-        /// Account
+        ///     Account
         /// </summary>
         public int AccountId { get; private set; }
     }

@@ -41,5 +41,10 @@ namespace OneTrueError.SqlServer.Core.Invitations
         {
             await _unitOfWork.UpdateAsync(invitation);
         }
+
+        public async Task<Invitation> GetByInvitationKeyAsync(string invitationKey)
+        {
+            return await _unitOfWork.FirstOrDefaultAsync<Invitation>(new {InvitationKey = invitationKey});
+        }
     }
 }

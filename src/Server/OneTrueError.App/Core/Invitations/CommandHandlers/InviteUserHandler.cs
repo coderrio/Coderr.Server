@@ -1,8 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
 using OneTrueError.Api.Core.Applications.Events;
+using OneTrueError.Api.Core.Applications.Events.OneTrueError.Api.Core.Accounts.Events;
 using OneTrueError.Api.Core.Invitations.Commands;
 using OneTrueError.Api.Core.Messaging;
 using OneTrueError.Api.Core.Messaging.Commands;
@@ -38,14 +38,14 @@ namespace OneTrueError.App.Core.Invitations.CommandHandlers
             var invitedUser = await _userRepository.FindByEmailAsync(command.EmailAddress);
             if (invitedUser != null)
             {
-                var member = new ApplicationTeamMember(command.ApplicationId, command.EmailAddress)
+                var member = new ApplicationTeamMember(command.ApplicationId, invitedUser.AccountId)
                 {
-                    AccountId = invitedUser.AccountId,
                     AddedByName = inviter.UserName,
                     Roles = new[] {ApplicationRole.Member}
                 };
 
                 await _applicationRepository.CreateAsync(member);
+                await _eventBus.PublishAsync(new UserAddedToApplication(command.ApplicationId, member.AccountId));
                 return;
             }
 
@@ -55,7 +55,6 @@ namespace OneTrueError.App.Core.Invitations.CommandHandlers
                 Roles = new[] {ApplicationRole.Member}
             };
             await _applicationRepository.CreateAsync(invitedMember);
-
             var invitation = await _invitationRepository.FindByEmailAsync(command.EmailAddress);
             if (invitation == null)
             {
@@ -65,15 +64,13 @@ namespace OneTrueError.App.Core.Invitations.CommandHandlers
             }
 
             invitation.Add(command.ApplicationId, inviter.UserName);
-            try
-            {
-                await _invitationRepository.UpdateAsync(invitation);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
-            var evt = new UserInvitedToApplication(command.ApplicationId,
+            await _invitationRepository.UpdateAsync(invitation);
+
+            var app = await _applicationRepository.GetByIdAsync(command.ApplicationId);
+            var evt = new UserInvitedToApplication(
+                invitation.InvitationKey,
+                command.ApplicationId,
+                app.Name,
                 command.EmailAddress,
                 inviter.UserName);
 

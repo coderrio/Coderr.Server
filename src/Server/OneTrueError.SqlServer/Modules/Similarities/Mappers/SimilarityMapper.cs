@@ -9,7 +9,7 @@ namespace OneTrueError.SqlServer.Modules.Similarities.Mappers
             : base("Similarities")
         {
             Property(x => x.Id)
-               .PrimaryKey(true);
+                .PrimaryKey(true);
 
             Property(x => x.PropertyName)
                 .ColumnName("Name");
@@ -18,6 +18,5 @@ namespace OneTrueError.SqlServer.Modules.Similarities.Mappers
                 .NotForCrud()
                 .NotForQueries();
         }
-
     }
 }

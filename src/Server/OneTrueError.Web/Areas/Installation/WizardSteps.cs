@@ -15,7 +15,7 @@ namespace OneTrueError.Web.Areas.Installation
             new WizardStepInfo("Mail settings", "~/installation/messaging/email/"),
             new WizardStepInfo("Completed", "~/installation/setup/completed/")
         };
-        
+
 
         public static string GetNextWizardStep(this UrlHelper urlHelper)
         {
@@ -38,7 +38,8 @@ namespace OneTrueError.Web.Areas.Installation
                 index++;
 
             var step = Steps[index];
-            return $@"<a class=""btn btn- btn-default"" href=""{urlHelper.Content(step.VirtualPath)}"">{step.Name} &gt;&gt;</a>";
+            return
+                $@"<a class=""btn btn- btn-default"" href=""{urlHelper.Content(step.VirtualPath)}"">{step.Name} &gt;&gt;</a>";
         }
 
         public static string GetPreviousWizardStepLink(this UrlHelper urlHelper)
@@ -50,7 +51,8 @@ namespace OneTrueError.Web.Areas.Installation
                 index--;
 
             var step = Steps[index];
-            return $@"<a class=""btn btn-default"" href=""{urlHelper.Content(step.VirtualPath)}"">&lt;&lt; {step.Name}</a>";
+            return
+                $@"<a class=""btn btn-default"" href=""{urlHelper.Content(step.VirtualPath)}"">&lt;&lt; {step.Name}</a>";
         }
 
         private static int FindCurrentIndex(UrlHelper urlHelper)

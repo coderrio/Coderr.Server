@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Data.Common;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 using Griffin.Data;
 using log4net;
@@ -13,33 +11,18 @@ using OneTrueError.ReportAnalyzer.LibContracts;
 namespace OneTrueError.ReportAnalyzer.Domain.FailedReports
 {
     /// <summary>
-    /// TODO: Remove or refactor?
+    ///     TODO: Remove or refactor?
     /// </summary>
     internal class SaveReportHandlerOld
     {
-        private readonly ILog _logger = LogManager.GetLogger(typeof (SaveReportHandlerOld));
-        private IAdoNetUnitOfWork _unitOfWork;
+        private readonly ILog _logger = LogManager.GetLogger(typeof(SaveReportHandlerOld));
+        private readonly IAdoNetUnitOfWork _unitOfWork;
 
         public SaveReportHandlerOld(IAdoNetUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-
-        protected CustomerApplication GetApplication(string appKey)
-        {
-            using (var cmd = _unitOfWork.CreateCommand())
-            {
-                cmd.CommandText = "SELECT SharedSecret FROM Applications WHERE ApplicationKey = @key";
-                cmd.AddParameter("key", appKey);
-                var secret = (string) cmd.ExecuteScalar();
-                return new CustomerApplication
-                {
-                    SharedSecret = secret
-                };
-
-            }
-        }
         public async Task<bool> BuildReportAsync(string fileId, string appKey, string sig, byte[] reportBody)
         {
             Guid appKeyGuid;
@@ -66,6 +49,21 @@ namespace OneTrueError.ReportAnalyzer.Domain.FailedReports
             var report = DeserializeBody(reportBody);
             await StoreReport(appKey, "", report);
             return true;
+        }
+
+
+        protected CustomerApplication GetApplication(string appKey)
+        {
+            using (var cmd = _unitOfWork.CreateCommand())
+            {
+                cmd.CommandText = "SELECT SharedSecret FROM Applications WHERE ApplicationKey = @key";
+                cmd.AddParameter("key", appKey);
+                var secret = (string) cmd.ExecuteScalar();
+                return new CustomerApplication
+                {
+                    SharedSecret = secret
+                };
+            }
         }
 
         private ReceivedReportDTO DeserializeBody(byte[] body)

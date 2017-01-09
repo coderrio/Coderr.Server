@@ -1,4 +1,3 @@
-using System;
 using System.Data;
 
 namespace OneTrueError.Infrastructure.Queueing.Ado

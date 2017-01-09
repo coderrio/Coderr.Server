@@ -4,15 +4,6 @@ namespace OneTrueError.Web.Models.Account
 {
     public class RegisterViewModel
     {
-        [Required]
-        public string UserName { get; set; }
-
-        [Required, Compare("Password2")]
-        public string Password { get; set; }
-
-        [Display(Name = "Retype password")]
-        public string Password2 { get; set; }
-
         [Required, Display(Description = "Used to send notification and password resets.")]
         public string Email { get; set; }
 
@@ -23,8 +14,16 @@ namespace OneTrueError.Web.Models.Account
         [Display(Name = "Last name")]
         public string LastName { get; set; }
 
+        [Required, Compare("Password2")]
+        public string Password { get; set; }
+
+        [Display(Name = "Retype password")]
+        public string Password2 { get; set; }
+
         [Required]
         public bool Terms { get; private set; }
 
+        [Required]
+        public string UserName { get; set; }
     }
 }

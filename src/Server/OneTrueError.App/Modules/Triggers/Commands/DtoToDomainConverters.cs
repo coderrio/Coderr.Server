@@ -17,7 +17,6 @@ namespace OneTrueError.App.Modules.Triggers.Commands
     /// </remarks>
     public static class DtoToDomainConverters
     {
-
         /// <summary>
         ///     Convert the dto to an entity
         /// </summary>
@@ -55,7 +54,7 @@ namespace OneTrueError.App.Modules.Triggers.Commands
                     return FilterCondition.StartsWith;
                 default:
                     throw new FormatException(string.Format("Value '{0}' do not exist in the {1} enum.",
-                        filter, typeof (FilterCondition).Name));
+                        filter, typeof(FilterCondition).Name));
             }
         }
 
@@ -79,7 +78,7 @@ namespace OneTrueError.App.Modules.Triggers.Commands
                     return FilterResult.Grant;
                 default:
                     throw new FormatException(string.Format("Value '{0}' do not exist in the {1} enum.",
-                        ruleAction, typeof (FilterResult).Name));
+                        ruleAction, typeof(FilterResult).Name));
             }
         }
 
@@ -99,7 +98,7 @@ namespace OneTrueError.App.Modules.Triggers.Commands
                     return LastTriggerAction.Grant;
                 default:
                     throw new FormatException(string.Format("Value '{0}' do not exist in the {1} enum.",
-                        lastTriggerAction, typeof (LastTriggerAction).Name));
+                        lastTriggerAction, typeof(LastTriggerAction).Name));
             }
         }
 

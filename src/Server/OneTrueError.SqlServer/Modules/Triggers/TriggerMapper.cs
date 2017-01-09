@@ -19,8 +19,8 @@ namespace OneTrueError.SqlServer.Modules.Triggers
                 .ToPropertyValue(o => EntitySerializer.Deserialize<IEnumerable<ActionConfigurationData>>((string) o))
                 .ToColumnValue(o => o.ToString());
 
-            Property(x=>x.Rules)
-                .ToPropertyValue(o => EntitySerializer.Deserialize<IEnumerable<ITriggerRule>>((string)o))
+            Property(x => x.Rules)
+                .ToPropertyValue(o => EntitySerializer.Deserialize<IEnumerable<ITriggerRule>>((string) o))
                 .ToColumnValue(o => o.ToString());
 
             Property(x => x.RunForExistingIncidents)
@@ -32,6 +32,5 @@ namespace OneTrueError.SqlServer.Modules.Triggers
             Property(x => x.RunForReopenedIncidents)
                 .ToPropertyValue(Convert.ToBoolean);
         }
-        
     }
 }

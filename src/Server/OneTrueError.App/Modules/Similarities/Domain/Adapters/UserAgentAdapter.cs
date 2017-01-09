@@ -5,7 +5,7 @@ using UAParser;
 namespace OneTrueError.App.Modules.Similarities.Domain.Adapters
 {
     /// <summary>
-    /// Splits a user agent string into multiple context properties.
+    ///     Splits a user agent string into multiple context properties.
     /// </summary>
     public class UserAgentAdapter : IValueAdapter
     {

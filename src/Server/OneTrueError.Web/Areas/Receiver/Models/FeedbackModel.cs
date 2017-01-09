@@ -2,8 +2,8 @@
 {
     public class FeedbackModel
     {
-        public string ReportId { get; set; }
-        public string EmailAddress { get; set; }
         public string Description { get; set; }
+        public string EmailAddress { get; set; }
+        public string ReportId { get; set; }
     }
 }

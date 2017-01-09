@@ -3,12 +3,12 @@
 namespace OneTrueError.Api.Core.Accounts.Requests
 {
     /// <summary>
-    /// Reply for <see cref="ActivateAccount"/>.
+    ///     Reply for <see cref="ActivateAccount" />.
     /// </summary>
     public class ActivateAccountReply
     {
         /// <summary>
-        /// Creates a new instance of <see cref="ActivateAccountReply"/>.
+        ///     Creates a new instance of <see cref="ActivateAccountReply" />.
         /// </summary>
         /// <param name="accountId">Account identifier</param>
         /// <param name="userName">Username used when registering the account</param>
@@ -24,22 +24,21 @@ namespace OneTrueError.Api.Core.Accounts.Requests
         }
 
         /// <summary>
-        /// Serialization constructor.
+        ///     Serialization constructor.
         /// </summary>
         protected ActivateAccountReply()
         {
-            
         }
 
-        /// <summary>
-        /// Username as entered when registering.
-        /// </summary>
-        public string UserName { get; set; }
-
 
         /// <summary>
-        /// Account identifier.
+        ///     Account identifier.
         /// </summary>
         public int AccountId { get; set; }
+
+        /// <summary>
+        ///     Username as entered when registering.
+        /// </summary>
+        public string UserName { get; set; }
     }
 }

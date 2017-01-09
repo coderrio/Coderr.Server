@@ -23,13 +23,13 @@ module OneTrueError.Incident {
             this.context = context;
 
             this.incidentId = parseInt(context.routeData["incidentId"]);
-            var query = new GetIncident(parseInt(context.routeData["incidentId"], 10));
-            var incidentPromise = CqsClient.query<IncidentResult>(query);
+            const query = new GetIncident(parseInt(context.routeData["incidentId"], 10));
+            const incidentPromise = CqsClient.query<IncidentResult>(query);
             incidentPromise.done(result => context.render(result));
 
 
-            var service = new ApplicationService();
-            var appPromise = service.get(context.routeData["applicationId"]);
+            const service = new ApplicationService();
+            const appPromise = service.get(context.routeData["applicationId"]);
             appPromise.done(result => {
                 this.app = result;
             });
@@ -46,7 +46,7 @@ module OneTrueError.Incident {
 
 
         onIgnoreIncident() {
-            var ignoreCmd = new IgnoreIncident(this.incidentId);
+            const ignoreCmd = new IgnoreIncident(this.incidentId);
             CqsClient.command(ignoreCmd);
             humane.log("Incident have been marked as ignored.");
             window.location.hash = `#/application/${this.context.routeData["applicationId"]}`;

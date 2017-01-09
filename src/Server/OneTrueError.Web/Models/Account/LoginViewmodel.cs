@@ -5,11 +5,11 @@ namespace OneTrueError.Web.Models.Account
     public class LoginViewModel
     {
         [Required]
-        public string UserName { get; set; }
+        public string Password { get; set; }
+
+        public bool RememberMe { get; set; }
 
         [Required]
-        public string Password { get; set; }
-        
-        public bool RememberMe { get; set; }
+        public string UserName { get; set; }
     }
 }

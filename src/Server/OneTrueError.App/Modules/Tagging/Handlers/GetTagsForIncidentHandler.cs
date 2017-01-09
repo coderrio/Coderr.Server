@@ -9,9 +9,9 @@ using OneTrueError.App.Modules.Tagging.Domain;
 namespace OneTrueError.App.Modules.Tagging.Handlers
 {
     [Component]
-    class GetTagsForIncidentHandler : IQueryHandler<GetTagsForIncident, TagDTO[]>
+    internal class GetTagsForIncidentHandler : IQueryHandler<GetTagsForIncident, TagDTO[]>
     {
-        private ITagsRepository _repository;
+        private readonly ITagsRepository _repository;
 
         public GetTagsForIncidentHandler(ITagsRepository repository)
         {

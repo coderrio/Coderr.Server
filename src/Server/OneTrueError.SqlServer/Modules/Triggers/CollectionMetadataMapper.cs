@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Griffin.Data.Mapper;
-using Newtonsoft.Json;
 using OneTrueError.App.Modules.Triggers.Domain;
 using OneTrueError.SqlServer.Tools;
 

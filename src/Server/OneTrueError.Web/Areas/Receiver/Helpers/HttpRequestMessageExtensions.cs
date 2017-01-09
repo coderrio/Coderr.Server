@@ -5,8 +5,10 @@ namespace OneTrueError.Web.Areas.Receiver.Helpers
     public static class HttpRequestMessageExtensions
     {
         private const string HttpContext = "MS_HttpContext";
+
         private const string RemoteEndpointMessage =
             "System.ServiceModel.Channels.RemoteEndpointMessageProperty";
+
         private const string OwinContext = "MS_OwinContext";
 
         public static string GetClientIpAddress(this HttpRequestMessage request)
@@ -44,5 +46,4 @@ namespace OneTrueError.Web.Areas.Receiver.Helpers
             return null;
         }
     }
-
 }

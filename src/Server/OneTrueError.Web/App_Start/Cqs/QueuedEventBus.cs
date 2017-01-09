@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.ApplicationServices;
-using Griffin.Container;
 using log4net;
 using Newtonsoft.Json;
 using OneTrueError.Infrastructure.Queueing;
@@ -12,9 +11,9 @@ namespace OneTrueError.Web.Cqs
 {
     public class QueuedEventBus : ApplicationServiceThread, IEventBus, IDisposable
     {
-        private readonly IEventBus _writeBus;
         private readonly ILog _logger = LogManager.GetLogger(typeof(QueuedEventBus));
         private readonly IMessageQueue _queue;
+        private readonly IEventBus _writeBus;
 
         public QueuedEventBus(IEventBus writeBus, IMessageQueueProvider queueProvider)
         {
@@ -27,19 +26,12 @@ namespace OneTrueError.Web.Cqs
             Dispose(true);
         }
 
-        protected virtual void Dispose(bool isDisposing)
-        {
-            //TODO: Dispose queue
-        }
-
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        public async Task PublishAsync<TApplicationEvent>(TApplicationEvent e)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+        public Task PublishAsync<TApplicationEvent>(TApplicationEvent e)
             where TApplicationEvent : ApplicationEvent
         {
             try
             {
-                _logger.Debug("Publishing: " + JsonConvert.SerializeObject(e));
+                _logger.Debug("Enqueueing: " + e.GetType().Name + " " + JsonConvert.SerializeObject(e));
                 _queue.Write(0, e);
             }
             catch (Exception ex)
@@ -47,11 +39,19 @@ namespace OneTrueError.Web.Cqs
                 _logger.Error("Failed to publish " + JsonConvert.SerializeObject(e), ex);
                 throw;
             }
+
+            return Task.FromResult<object>(null);
+        }
+
+        protected virtual void Dispose(bool isDisposing)
+        {
+            //TODO: Dispose queue
         }
 
         protected override void Run(WaitHandle shutdownHandle)
         {
-            while (true)
+            _logger.Debug("Starting up event queue...");
+            while (!shutdownHandle.WaitOne(0))
             {
                 object msg = null;
                 try
@@ -61,20 +61,21 @@ namespace OneTrueError.Web.Cqs
                 catch (Exception ex)
                 {
                     _logger.Error("Failed to receive.", ex);
-                    Thread.Sleep(10000);
+                    if (shutdownHandle.WaitOne(10000))
+                        break;
                     continue;
                 }
 
                 if (msg == null)
                 {
-                    Thread.Sleep(1000);
+                    if (shutdownHandle.WaitOne(1000))
+                        break;
                     continue;
                 }
 
                 try
                 {
                     ExecuteMessage(msg);
-                    break;
                 }
                 catch (Exception ex)
                 {
@@ -85,10 +86,12 @@ namespace OneTrueError.Web.Cqs
 
         private void ExecuteMessage(object message)
         {
+            _logger.Debug("PUBLISHING " + message.GetType().Name + " " + JsonConvert.SerializeObject(message));
             var method = typeof(IEventBus).GetMethod("PublishAsync");
             var mi = method.MakeGenericMethod(message.GetType());
-            var task = (Task)mi.Invoke(_writeBus, new[] { message });
+            var task = (Task) mi.Invoke(_writeBus, new[] {message});
             task.Wait();
+            _logger.Debug("Done PUBLISHING " + message.GetType().Name);
         }
     }
 }

@@ -15,11 +15,11 @@ namespace OneTrueError.App.Modules.Triggers.EventHandlers
     [Component(RegisterAsSelf = true)]
     public class UpdateCollectionsOnReportAdded : IApplicationEventSubscriber<ReportAddedToIncident>
     {
-        private readonly ILog _logger = LogManager.GetLogger(typeof (UpdateCollectionsOnReportAdded));
+        private readonly ILog _logger = LogManager.GetLogger(typeof(UpdateCollectionsOnReportAdded));
         private readonly ITriggerRepository _repository;
 
         /// <summary>
-        /// Creates a new instance of <see cref="UpdateCollectionsOnReportAdded"/>.
+        ///     Creates a new instance of <see cref="UpdateCollectionsOnReportAdded" />.
         /// </summary>
         /// <param name="repository">repos</param>
         /// <exception cref="ArgumentNullException">repository</exception>
@@ -30,11 +30,11 @@ namespace OneTrueError.App.Modules.Triggers.EventHandlers
         }
 
         /// <summary>
-        /// Process an event asynchronously.
+        ///     Process an event asynchronously.
         /// </summary>
         /// <param name="e">event to process</param>
         /// <returns>
-        /// Task to wait on.
+        ///     Task to wait on.
         /// </returns>
         public async Task HandleAsync(ReportAddedToIncident e)
         {

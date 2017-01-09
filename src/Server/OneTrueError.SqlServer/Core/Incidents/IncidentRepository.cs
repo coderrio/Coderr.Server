@@ -23,22 +23,9 @@ namespace OneTrueError.SqlServer.Core.Incidents
             _uow = uow;
         }
 
-        public IEnumerable<IncidentSummaryDTO> FindLatestForOrganization(int count)
-        {
-            using (var cmd = _uow.CreateCommand())
-            {
-                cmd.CommandText =
-                    "SELECT TOP " + count + " * FROM Incidents WHERE IsSolved=0 ORDER BY UpdatedAtUtc DESC";
-
-
-                return cmd.ToList<IncidentSummaryDTO>();
-            }
-        }
-
         public async Task UpdateAsync(Incident incident)
         {
-
-            using (var cmd = (DbCommand)_uow.CreateCommand())
+            using (var cmd = (DbCommand) _uow.CreateCommand())
             {
                 cmd.CommandText =
                     @"UPDATE Incidents SET 
@@ -69,25 +56,25 @@ namespace OneTrueError.SqlServer.Core.Incidents
 
         public async Task<int> GetTotalCountForAppInfoAsync(int applicationId)
         {
-            using (var cmd = (DbCommand)_uow.CreateCommand())
+            using (var cmd = (DbCommand) _uow.CreateCommand())
             {
                 cmd.CommandText =
                     @"SELECT CAST(count(*) as int) FROM Incidents WHERE ApplicationId = @ApplicationId";
                 cmd.AddParameter("ApplicationId", applicationId);
-                var result = (int)await cmd.ExecuteScalarAsync();
+                var result = (int) await cmd.ExecuteScalarAsync();
                 return result;
             }
         }
 
-        public Incident Get(int id)
+        public Task<Incident> GetAsync(int id)
         {
-            using (var cmd = _uow.CreateCommand())
+            using (var cmd = (DbCommand) _uow.CreateCommand())
             {
                 cmd.CommandText =
-                    "SELECT TOP 3 * FROM Incidents WHERE Id = @id";
+                    "SELECT TOP 1 * FROM Incidents WHERE Id = @id";
 
                 cmd.AddParameter("id", id);
-                return cmd.First(new IncidentMapper());
+                return cmd.FirstAsync(new IncidentMapper());
             }
         }
 
@@ -100,18 +87,6 @@ namespace OneTrueError.SqlServer.Core.Incidents
 
                 cmd.AddParameter("id", id);
                 return cmd.FirstOrDefault(new IncidentMapper());
-            }
-        }
-
-        public Task<Incident> GetAsync(int id)
-        {
-            using (var cmd = (DbCommand)_uow.CreateCommand())
-            {
-                cmd.CommandText =
-                    "SELECT TOP 1 * FROM Incidents WHERE Id = @id";
-
-                cmd.AddParameter("id", id);
-                return cmd.FirstAsync(new IncidentMapper());
             }
         }
 
@@ -128,6 +103,18 @@ namespace OneTrueError.SqlServer.Core.Incidents
             }
         }
 
+        public IEnumerable<IncidentSummaryDTO> FindLatestForOrganization(int count)
+        {
+            using (var cmd = _uow.CreateCommand())
+            {
+                cmd.CommandText =
+                    "SELECT TOP " + count + " * FROM Incidents WHERE IsSolved=0 ORDER BY UpdatedAtUtc DESC";
+
+
+                return cmd.ToList<IncidentSummaryDTO>();
+            }
+        }
+
         public IEnumerable<IncidentSummaryDTO> FindWithMostReportsForOrganization(int count)
         {
             using (var cmd = _uow.CreateCommand())
@@ -135,7 +122,19 @@ namespace OneTrueError.SqlServer.Core.Incidents
                 cmd.CommandText =
                     "SELECT TOP " + count + " * FROM Incidents WHERE IsSolved=0 ORDER BY Count DESC";
 
-                return cmd.ToList <IncidentSummaryDTO>();
+                return cmd.ToList<IncidentSummaryDTO>();
+            }
+        }
+
+        public Incident Get(int id)
+        {
+            using (var cmd = _uow.CreateCommand())
+            {
+                cmd.CommandText =
+                    "SELECT TOP 3 * FROM Incidents WHERE Id = @id";
+
+                cmd.AddParameter("id", id);
+                return cmd.First(new IncidentMapper());
             }
         }
     }

@@ -16,33 +16,41 @@
             </ul>
             <table class="table table-striped">
                 <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th style="min-width: 150px;">Application</th>
-                        <th style="cursor: pointer; min-width: 150px;" id="LastReportCol">Last report <span id="lastReport-sort" class="glyphicon glyphicon-chevron-down"></span></th>
-                        <th style="cursor: pointer; min-width: 150px;" id="CountCol">Report count <span id="count-sort" class="glyphicon glyphicon-chevron-down" style="visibility: hidden"></span></th>
-                        <th>&nbsp;</th>
-                    </tr>
+                <tr>
+                    <th>Name</th>
+                    <th style="min-width: 150px;">Application</th>
+                    <th style="cursor: pointer; min-width: 150px;" id="LastReportCol">Last report <span id="lastReport-sort" class="glyphicon glyphicon-chevron-down"></span></th>
+                    <th style="cursor: pointer; min-width: 150px;" id="CountCol">Report count <span id="count-sort" class="glyphicon glyphicon-chevron-down" style="visibility: hidden"></span></th>
+                    <th>&nbsp;</th>
+                </tr>
                 </thead>
                 <tbody id="incidentTable">
-                    <tr data-collection="Items">
-                        <td><a href="" data-name="Name"></a></td>
-                        <td><a data-name="ApplicationName"></a></td>
-                        <td data-name="LastUpdateAtUtc"></td>
-                        <td data-name="ReportCount"></td>
-                        <td></td>
-                    </tr>
+                <tr data-collection="Items">
+                    <td>
+                        <a href="" data-name="Name"></a>
+                    </td>
+                    <td>
+                        <a data-name="ApplicationName"></a>
+                    </td>
+                    <td data-name="LastUpdateAtUtc"></td>
+                    <td data-name="ReportCount"></td>
+                    <td></td>
+                </tr>
                 </tbody>
                 <tfoot>
-                    <tr>
-                        <td colspan="4" class="text-right" id="pager"></td>
-                    </tr>
+                <tr>
+                    <td colspan="4" class="text-right" id="pager"></td>
+                </tr>
                 </tfoot>
             </table>
         </div>
     </div>
 </div>
 <ul data-navigation="main-navigation">
-    <li><a href="#/">Back..</a></li>
-    <li><a href="#/feedback">Feedback</a></li>
+    <li>
+        <a href="#/">Back..</a>
+    </li>
+    <li>
+        <a href="#/feedback">Feedback</a>
+    </li>
 </ul>

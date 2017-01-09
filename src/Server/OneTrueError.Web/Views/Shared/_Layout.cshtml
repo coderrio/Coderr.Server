@@ -1,208 +1,210 @@
-﻿@using OneTrueError.App.Configuration
-@using OneTrueError.Infrastructure.Configuration
-@using OneTrueError.Web.Models
-@{
-    //TODO: Move all this to an global action filter which is run before the view is rendered.
-    if (Request.Url?.Port == 50473)
-    {
-        ViewBag.AppUrl = "http://localhost:50473/";
-    }
-    else
-    {
-        ViewBag.AppUrl = ConfigurationStore.Instance.Load<BaseConfiguration>()?.BaseUrl.ToString().TrimEnd('/');
-    }
-    var currentUrl = Request.Url.AbsolutePath;
-    if (!currentUrl.EndsWith("/"))
-    {
-        currentUrl += "/";
-    }
-    var baseUrl = Url.Content("~/");
-    ViewBag.CanStartSpa = currentUrl.Equals(baseUrl, StringComparison.OrdinalIgnoreCase);
-    ViewBag.BaseUrl = baseUrl;
-}
+﻿@using Newtonsoft.Json
+@using OneTrueError.Infrastructure.Security
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@Request.Url.Host  @ViewBag.Title - OneTrueError</title>
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <title>@ViewBag.Title - OneTrueError</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @RenderSection("Styles", false)
 
     <link rel="stylesheet" href="@Url.Content("~/Content/morris.css")">
-    <meta name="description" content="The description of my page" />
+    <meta name="description" content="OneTrueError - Automated exception handling"/>
 </head>
 <body class="full-width">
-    <div class="navbar navbar-fixed-top navbar-default">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-            @if (!SessionUser.IsAuthenticated)
-            {
-                <span class="navbar-brand">OneTrueError</span>
-            }
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    @if (SessionUser.IsAuthenticated)
+<div class="navbar navbar-fixed-top navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        @if (!User.Identity.IsAuthenticated)
+        {
+            <span class="navbar-brand">OneTrueError</span>
+        }
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    if (!User.IsSysAdmin() && Applications.Count == 1)
+                    {
+                        <li>
+                            <a>@Applications.Values.First()</a>
+                        </li>
+                    }
+                    else
                     {
                         <li>
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 <span id="appTitle">
-                                    @if (@SessionUser.Current.Applications != null && @SessionUser.Current.Applications.Count > 0)
-                                    {
-                                        @SessionUser.Current.Applications[SessionUser.Current.ApplicationId]
-                                    }
-                                    else
-                                    {
                                         <text>Dashboard</text>
-                                    }
-                                </span>
+                                    </span>
                                 <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu" role="menu" id="applicationsMenu">
-                                <li><a href="#create-application" data-toggle="modal" data-target="#create-application">Create new application</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#/">Global overview</a></li>
-                                @foreach (var app in SessionUser.Current.Applications)
+                                @if (User.IsSysAdmin())
                                 {
-                                    if (app.Key == 0)
+                                    <li>
+                                        <a href="#create-application" data-toggle="modal" data-target="#create-application">Create new application</a>
+                                    </li>
+                                    <li class="divider"></li>
+                                }
+                                @if (Applications.Count > 1)
+                                {
+                                    <li>
+                                        <a href="#/">Global overview</a>
+                                    </li>
+                                }
+                                @foreach (var app in Applications)
+                                {
+                                    if (app.Key == "0")
                                     {
                                         continue;
                                     }
 
-                                    <li><a href="#/application/@app.Key">@app.Value</a></li>
+                                    <li>
+                                        <a href="#/application/@app.Key">@app.Value</a>
+                                    </li>
                                 }
                             </ul>
                         </li>
-
-
                         <li class="divider"></li>
                     }
+                }
 
+            </ul>
+            <ul class="nav navbar-nav" id="main-navigation"></ul>
+            <ul class="nav navbar-nav navbar-right settings">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li>
 
-                </ul>
-                <ul class="nav navbar-nav" id="main-navigation"></ul>
-                <ul class="nav navbar-nav navbar-right settings">
-                    @if (SessionUser.IsAuthenticated)
-                    {
-                        <li>
+                        <a href="@Url.Content("~/Dashboard")" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" title="Settings">
+                            <span class="glyphicon glyphicon-cog" style="font-size: 1.2em"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <a href="#/settings/notifications">Notification settings</a>
+                            </li>
+                            <li>
+                                <a href="#/settings/personal">Personal settings</a>
+                            </li>
+                            @if (User.IsInRole(OneTrueClaims.RoleSysAdmin))
+                            {
+                                <li>
+                                    <a href="@Url.Content("~/Admin")">Admin area</a>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#support-form-view" data-toggle="modal" data-target="#support-form-view" title="Contact support" id="SupportLink">
+                            <span class="glyphicon glyphicon-question-sign"></span></a>
+                    </li>
+                    <li>
+                        <a href="@Url.Content("~/account/Logout")" title="Log off">
+                            <span class="glyphicon glyphicon-off "></span></a>
+                    </li>
+                }
+            </ul>
+        </div>
 
-                            <a href="@Url.Content("~/Dashboard")" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" title="Settings">
-                                <span class="glyphicon glyphicon-cog" style="font-size: 1.2em"></span>
-                            </a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="#/settings/notifications">Notification settings</a></li>
-                                <li><a href="#/settings/personal">Personal settings</a></li>
-                                @if (SessionUser.Current.AccountId == 1)
-                                {
-                                    <li><a href="@Url.Content("~/Admin")">Admin area</a></li>
-                                }
-                            </ul>
-                        </li>
-                        <li><a href="#support-form-view" data-toggle="modal" data-target="#support-form-view" title="Contact support" id="SupportLink"><span class="glyphicon glyphicon-question-sign"></span></a></li>
-                        <li><a href="@Url.Content("~/account/Logout")" title="Log off"><span class="glyphicon glyphicon-off "></span></a></li>
-                    }
-                </ul>
-            </div>
-
+    </div>
+</div>
+@if (IsSectionDefined("SubMenu"))
+{
+    <div class="navbar navbar-default navbar-inverse sub-menu">
+        <div class="container">
+            @RenderSection("SubMenu", false)
         </div>
     </div>
-    @if (IsSectionDefined("SubMenu"))
-    {
-        <div class="navbar navbar-default navbar-inverse sub-menu">
-            <div class="container">
-                @RenderSection("SubMenu", false)
-            </div>
-        </div>
-    }
+}
 
 
-    <div class="container body-content">
-        <div id="YoView">
-            @RenderBody()
-        </div>
-        <hr />
-        <footer>
-            <p>
-                &copy; 2015 - Gauffin Interactive AB | <a href="mailto:support@onetrueerror.com">support@onetrueerror.com</a>
-            </p>
-        </footer>
+<div class="container body-content">
+    <div id="YoView">
+        @RenderBody()
     </div>
+    <hr/>
+    <footer>
+        <p>
+            &copy; 2015 - Gauffin Interactive AB | <a href="mailto:support@onetrueerror.com">support@onetrueerror.com</a>
+        </p>
+    </footer>
+</div>
+@Scripts.Render("~/bundles/jquery")
+<script src="@Url.Content("~/Scripts/raphael-min.js")"></script>
+<script src="@Url.Content("~/Scripts/morris.min.js")"></script>
+<script src="@Url.Content("~/Scripts/Chart.min.js")"></script>
+@Scripts.Render("~/bundles/bootstrap")
+<script src="@Url.Content("~/Scripts/Promise.js")"></script>
+<script src="@Url.Content("~/Scripts/CqsClient.js")"></script>
+@Scripts.Render("~/bundles/app")
+<script type="text/javascript">
+    var API_URL = '@ApiUrl';
+    Griffin.Net.HttpClient.REDIRECT_401_TO = '@LoginUrl';
+</script>
+@RenderSection("scripts", false)
+@RenderSection("ViewModelScripts", false)
+@if (User.Identity.IsAuthenticated)
+{
     <script type="text/javascript">
-    @{
-
-    }
-        var API_URL = '@ViewBag.AppUrl';
-        var ROOT_URL = '@Url.Content("~/")';
-        HttpClient.REDIRECT_401_TO = ROOT_URL + 'account/login';
-
-    </script>
-    @Scripts.Render("~/bundles/jquery")
-    <script src="@Url.Content("~/Scripts/raphael-min.js")"></script>
-    <script src="@Url.Content("~/Scripts/morris.min.js")"></script>
-    <script src="@Url.Content("~/Scripts/Chart.min.js")"></script>
-    @Scripts.Render("~/bundles/bootstrap")
-    <script src="@Url.Content("~/Scripts/Promise.js")"></script>
-    <script src="@Url.Content("~/Scripts/CqsClient.js")"></script>
-    @Scripts.Render("~/bundles/app")
-    @RenderSection("scripts", required: false)
-    @RenderSection("ViewModelScripts", required: false)
-    @if (SessionUser.IsAuthenticated)
-    {
-        <script type="text/javascript">
-            @if (ViewBag.CanStartSpa)
+        @if (CanStartSpa)
+        {
+            <text>startSpaApplication();</text>
+            if (!User.IsSysAdmin() && Applications.Count == 1)
             {
-                <text>startSpaApplication();</text>
+                <text>window.location.hash = "#/application/@Applications.Keys.First()";</text>
             }
+        }
 
 
-            function startSpaApplication() {
-                Griffin.Yo.Views.ViewRenderer.DEBUG = false;
-                Griffin.Yo.GlobalConfig.resourceLocator = {
-                    getHtml: function (section) {
-                        return '/Page?path=/Views/' + section + ".cshtml";
-                    },
-                    getScript: function (section) {
-                        return '/ViewModels/' + section + "ViewModel.js";
-                    }
-                };
-                var spa = new Griffin.Yo.Spa.SpaEngine('OneTrueError');
-                spa.addTarget('BootstrapModal', new Griffin.Yo.Routing.ViewTargets.BootstrapModalViewTarget());
+        function startSpaApplication() {
+            Griffin.Yo.Views.ViewRenderer.DEBUG = false;
+            Griffin.Yo.GlobalConfig.resourceLocator = {
+                getHtml: function(section) {
+                    return '/Page?path=/Views/' + section + ".cshtml";
+                },
+                getScript: function(section) {
+                    return '/ViewModels/' + section + "ViewModel.js";
+                }
+            };
+            var spa = new Griffin.Yo.Spa.SpaEngine('OneTrueError');
+            spa.addTarget('BootstrapModal', new Griffin.Yo.Routing.ViewTargets.BootstrapModalViewTarget());
 
-                //Griffin.Yo.GlobalConfig.viewDirectives.add()
-                spa.mapRoute('', 'overview/overview');
-                spa.mapRoute('feedback', 'feedback/overview');
-                spa.mapRoute('welcome', 'home/welcome');
-                spa.mapRoute('account/accepted', 'account/accepted');
-                spa.mapRoute('application/:applicationId/feedback', 'feedback/application');
-                spa.mapRoute('application/:applicationId/incident/:incidentId/feedback', 'feedback/incident');
-                spa.mapRoute('application/:applicationId/incident/:incidentId/close', 'incident/close');
-                spa.mapRoute('application/:applicationId/incident/:incidentId/ignore', 'incident/ignore', 'BootstrapModal');
-                spa.mapRoute('application/:applicationId/incident/:incidentId/communication', 'incident/communication');
-                spa.mapRoute('application/:applicationId/incident/:incidentId/reports', 'incident/reports');
-                spa.mapRoute('application/:applicationId/incident/:incidentId/context', 'incident/similarities');
-                spa.mapRoute('application/:applicationId/incident/:incidentId/origins', 'incident/origins');
-                spa.mapRoute('application/:applicationId/incident/:incidentId/report/:reportId', 'report/report');
-                spa.mapRoute('application/:applicationId/incident/:incidentId', 'incident/incident');
-                spa.mapRoute('application/:applicationId/installation', 'application/installation');
-                spa.mapRoute('application/:applicationId/team', 'application/team');
-                spa.mapRoute('application/:applicationId', 'application/details');
-                spa.mapRoute('incidents', 'incident/index');
-                spa.mapRoute('incident/:incidentId', 'incident/incident');
-                spa.mapRoute('settings/notifications', 'user/notifications');
-                spa.mapRoute('settings/personal', 'user/settings');
-                spa.run();
-            }
-        </script>
-    }
-    @Html.Partial("~/Views/Application/_create.cshtml")
-    @Html.Partial("~/Views/Shared/_support.cshtml")
+            //Griffin.Yo.GlobalConfig.viewDirectives.add()
+            spa.mapRoute('', 'overview/overview');
+            spa.mapRoute('feedback', 'feedback/overview');
+            spa.mapRoute('welcome', 'home/welcome');
+            spa.mapRoute('account/accepted', 'account/accepted');
+            spa.mapRoute('application/:applicationId/feedback', 'feedback/application');
+            spa.mapRoute('application/:applicationId/incident/:incidentId/feedback', 'feedback/incident');
+            spa.mapRoute('application/:applicationId/incident/:incidentId/close', 'incident/close');
+            spa.mapRoute('application/:applicationId/incident/:incidentId/ignore', 'incident/ignore', 'BootstrapModal');
+            spa.mapRoute('application/:applicationId/incident/:incidentId/communication', 'incident/communication');
+            spa.mapRoute('application/:applicationId/incident/:incidentId/reports', 'incident/reports');
+            spa.mapRoute('application/:applicationId/incident/:incidentId/context', 'incident/similarities');
+            spa.mapRoute('application/:applicationId/incident/:incidentId/origins', 'incident/origins');
+            spa.mapRoute('application/:applicationId/incident/:incidentId/report/:reportId', 'report/report');
+            spa.mapRoute('application/:applicationId/incident/:incidentId', 'incident/incident');
+            spa.mapRoute('application/:applicationId/installation', 'application/installation');
+            spa.mapRoute('application/:applicationId/team', 'application/team');
+            spa.mapRoute('application/:applicationId', 'application/details');
+            spa.mapRoute('incidents', 'incident/index');
+            spa.mapRoute('incident/:incidentId', 'incident/incident');
+            spa.mapRoute('settings/notifications', 'user/notifications');
+            spa.mapRoute('settings/personal', 'user/settings');
+            spa.run();
+        }
+    </script>
+}
+@Html.Partial("~/Views/Application/_create.cshtml")
+@Html.Partial("~/Views/Shared/_support.cshtml")
 </body>
 </html>

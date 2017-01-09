@@ -12,12 +12,10 @@ namespace OneTrueError.SqlServer.Core.ApiKeys.Mappings
 
         public void Map(IDataRecord source, object destination)
         {
-            
         }
 
         public void Map(IDataRecord source, int destination)
         {
-            
         }
     }
 }

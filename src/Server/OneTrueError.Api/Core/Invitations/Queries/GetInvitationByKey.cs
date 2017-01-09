@@ -4,12 +4,12 @@ using DotNetCqs;
 namespace OneTrueError.Api.Core.Invitations.Queries
 {
     /// <summary>
-    /// Get invitation by using the emailed invitation key
+    ///     Get invitation by using the emailed invitation key
     /// </summary>
     public class GetInvitationByKey : Query<GetInvitationByKeyResult>
     {
         /// <summary>
-        /// Creates a new instance of <see cref="GetInvitationByKey"/>.
+        ///     Creates a new instance of <see cref="GetInvitationByKey" />.
         /// </summary>
         /// <param name="invitationKey">Emailed key</param>
         /// <exception cref="ArgumentNullException">invitationKey</exception>
@@ -20,15 +20,14 @@ namespace OneTrueError.Api.Core.Invitations.Queries
         }
 
         /// <summary>
-        /// Serialization constructor
+        ///     Serialization constructor
         /// </summary>
         protected GetInvitationByKey()
         {
-            
         }
 
         /// <summary>
-        /// Invitation key
+        ///     Invitation key
         /// </summary>
         public string InvitationKey { get; private set; }
     }

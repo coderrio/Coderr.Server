@@ -27,18 +27,31 @@ namespace OneTrueError.SqlServer.Core.Applications
             await _uow.InsertAsync(member);
         }
 
-        public async Task<Application[]> GetForUserAsync(int accountId)
+        public async Task<UserApplication[]> GetForUserAsync(int accountId)
         {
             if (accountId <= 0) throw new ArgumentOutOfRangeException(nameof(accountId));
             using (var cmd = (DbCommand) _uow.CreateCommand())
             {
-                cmd.CommandText = @"SELECT * 
-                                        FROM Applications 
-                                        JOIN ApplicationMembers ON (ApplicationMembers.ApplicationId = Applications.Id) 
+                cmd.CommandText = @"SELECT a.Id ApplicationId, a.Name ApplicationName, ApplicationMembers.Roles
+                                        FROM Applications a
+                                        JOIN ApplicationMembers ON (ApplicationMembers.ApplicationId = a.Id) 
                                         WHERE ApplicationMembers.AccountId = @userId";
                 cmd.AddParameter("userId", accountId);
-                var result = await cmd.ToListAsync<Application>();
-                return result.ToArray();
+                using (var reader = await cmd.ExecuteReaderAsync())
+                {
+                    List<UserApplication> apps = new List<UserApplication>();
+                    while (await reader.ReadAsync())
+                    {
+                        var a = new UserApplication
+                        {
+                            IsAdmin = reader.GetString(2).Contains("Admin"),
+                            ApplicationName = reader.GetString(1),
+                            ApplicationId = reader.GetInt32(0)
+                        };
+                        apps.Add(a);
+                    }
+                    return apps.ToArray();
+                }
             }
         }
 

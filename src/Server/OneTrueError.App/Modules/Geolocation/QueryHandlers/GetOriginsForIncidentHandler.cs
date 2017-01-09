@@ -38,13 +38,13 @@ namespace OneTrueError.App.Modules.Geolocation.QueryHandlers
         {
             var reports = await _repository.FindForIncidentAsync(query.IncidentId);
             var items = from x in reports
-                        select new GetOriginsForIncidentResultItem
-                        {
-                            Longitude = x.Longitude,
-                            Latitude = x.Latitude,
-                            NumberOfErrorReports = x.NumberOfErrorReports
-                        };
-            return new GetOriginsForIncidentResult { Items = items.ToArray() };
+                select new GetOriginsForIncidentResultItem
+                {
+                    Longitude = x.Longitude,
+                    Latitude = x.Latitude,
+                    NumberOfErrorReports = x.NumberOfErrorReports
+                };
+            return new GetOriginsForIncidentResult {Items = items.ToArray()};
         }
     }
 }

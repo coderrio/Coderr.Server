@@ -13,8 +13,8 @@ namespace OneTrueError.App.Core.Feedback.EventSubscribers
     [Component(RegisterAsSelf = true)]
     internal class AttachFeedbackToIncident : IApplicationEventSubscriber<ReportAddedToIncident>
     {
-        private readonly IFeedbackRepository _repository;
         private readonly IEventBus _eventBus;
+        private readonly IFeedbackRepository _repository;
 
         public AttachFeedbackToIncident(IFeedbackRepository repository, IEventBus eventBus)
         {
@@ -31,7 +31,12 @@ namespace OneTrueError.App.Core.Feedback.EventSubscribers
 
             feedback.AssignToReport(e.Report.Id, e.Incident.Id, e.Incident.ApplicationId);
 
-            var evt = new FeedbackAttachedToIncident {IncidentId = e.Incident.Id, Message = feedback.Description, UserEmailAddress = feedback.EmailAddress};
+            var evt = new FeedbackAttachedToIncident
+            {
+                IncidentId = e.Incident.Id,
+                Message = feedback.Description,
+                UserEmailAddress = feedback.EmailAddress
+            };
             await _eventBus.PublishAsync(evt);
             await _repository.UpdateAsync(feedback);
         }

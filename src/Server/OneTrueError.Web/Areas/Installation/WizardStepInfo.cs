@@ -11,8 +11,9 @@ namespace OneTrueError.Web.Areas.Installation
             VirtualPath = virtualPath;
         }
 
-        public string VirtualPath { get; set; }
         public string Name { get; set; }
+
+        public string VirtualPath { get; set; }
 
         public bool IsForAbsolutePath(string currentPath, UrlHelper helper)
         {

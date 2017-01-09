@@ -16,7 +16,7 @@ namespace OneTrueError.App.Core.Accounts.Requests
     public class LoginHandler : IRequestHandler<Login, LoginReply>
     {
         private readonly IEventBus _eventBus;
-        private readonly ILog _logger = LogManager.GetLogger(typeof (LoginHandler));
+        private readonly ILog _logger = LogManager.GetLogger(typeof(LoginHandler));
         private readonly IAccountRepository _repository;
 
         /// <summary>

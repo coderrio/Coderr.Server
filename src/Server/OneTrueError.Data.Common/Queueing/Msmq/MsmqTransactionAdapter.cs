@@ -6,17 +6,13 @@ namespace OneTrueError.Infrastructure.Queueing.Msmq
     public class MsmqTransactionAdapter : IQueueTransaction
     {
         private bool _haveDisposed; // To detect redundant calls
-        private readonly MessageQueueTransaction _transaction;
 
         public MsmqTransactionAdapter()
         {
-            _transaction = new MessageQueueTransaction();
+            Transaction = new MessageQueueTransaction();
         }
 
-        public MessageQueueTransaction Transaction
-        {
-            get { return _transaction; }
-        }
+        public MessageQueueTransaction Transaction { get; }
 
         public void Commit()
         {
@@ -40,7 +36,7 @@ namespace OneTrueError.Infrastructure.Queueing.Msmq
 
             if (disposing)
             {
-                _transaction.Dispose();
+                Transaction.Dispose();
             }
 
             _haveDisposed = true;

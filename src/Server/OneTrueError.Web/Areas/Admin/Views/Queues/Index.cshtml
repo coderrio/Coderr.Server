@@ -7,7 +7,7 @@
 
         <h2>Message queues</h2>
         <p>
-            To get a bit  of separation in the project we are using messaging between different
+            To get a bit of separation in the project we are using messaging between different
             concerns in the code. The queues also give you an indication on how busy the system is
             analyzing reports.
         </p>
@@ -30,15 +30,15 @@
         <form method="post" action="@Url.Action("Index")" class="form">
             @Html.ValidationSummary(false)
             <label>
-                <input type="checkbox" id="UseSql" name="UseSql" value="true" @(Model.UseSql ? " checked=\"checked\"" : "") /> Use SQL tables.
+                <input type="checkbox" id="UseSql" name="UseSql" value="true" @(Model.UseSql ? " checked=\"checked\"" : "")/> Use SQL tables.
             </label>
-            <hr />
-            <div id="msmq" style="display:none">
+            <hr/>
+            <div id="msmq" style="display: none">
                 <div class="form-group">
                     <label class="control-label">
                         Report queue
                     </label>
-                    @Html.TextBoxFor(x => x.ReportQueue, new { @class = "form-control", placeholder = ".\\private$\\OneTrueError.Reports" })
+                    @Html.TextBoxFor(x => x.ReportQueue, new {@class = "form-control", placeholder = ".\\private$\\OneTrueError.Reports"})
                     <label>
                         @Html.CheckBoxFor(x => x.ReportAuthentication)
                         Use MSMQ authentication
@@ -52,7 +52,7 @@
                     <label class="control-label">
                         Feedback queue
                     </label>
-                    @Html.TextBoxFor(x => x.FeedbackQueue, new { @class = "form-control", placeholder = ".\\private$\\OneTrueError.Feedback" })
+                    @Html.TextBoxFor(x => x.FeedbackQueue, new {@class = "form-control", placeholder = ".\\private$\\OneTrueError.Feedback"})
                     <label>
                         @Html.CheckBoxFor(x => x.FeedbackAuthentication)
                         Use MSMQ authentication
@@ -66,7 +66,7 @@
                     <label class="control-label">
                         Event queue
                     </label>
-                    @Html.TextBoxFor(x => x.EventQueue, new { @class = "form-control", placeholder = ".\\private$\\OneTrueError.Events" })
+                    @Html.TextBoxFor(x => x.EventQueue, new {@class = "form-control", placeholder = ".\\private$\\OneTrueError.Events"})
                     <label>
                         @Html.CheckBoxFor(x => x.EventAuthentication)
                         Use MSMQ authentication
@@ -77,8 +77,8 @@
                     </label>
                 </div>
             </div>
-            <br />
-            <input type="submit" class="btn btn-primary" value="Save" />
+            <br/>
+            <input type="submit" class="btn btn-primary" value="Save"/>
         </form>
     </div>
 </div>
@@ -86,9 +86,10 @@
 @section scripts
 {
     <script>
-        $('#UseSql').click(function (e) {
-            $('#msmq').toggle();
-        });
+        $('#UseSql')
+            .click(function(e) {
+                $('#msmq').toggle();
+            });
         if ($('#UseSql').is(':checked')) {
             $('#msmq').hide();
         }

@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OneTrueError.App.Configuration;
+﻿using System.Collections.Generic;
 using OneTrueError.Infrastructure.Configuration;
 
 namespace OneTrueError.App.Tests.Configuration.TestEntitites
 {
-    class SoCultural  : IConfigurationSection
+    internal class SoCultural : IConfigurationSection
     {
         public float Number { get; set; }
 
@@ -24,7 +19,6 @@ namespace OneTrueError.App.Tests.Configuration.TestEntitites
 
         public void Load(IDictionary<string, string> settings)
         {
-            
         }
     }
 }

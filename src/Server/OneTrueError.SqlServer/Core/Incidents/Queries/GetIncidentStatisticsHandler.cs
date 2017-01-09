@@ -6,7 +6,6 @@ using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
 using OneTrueError.Api.Core.Incidents.Queries;
-using OneTrueError.SqlServer.Tools;
 
 namespace OneTrueError.SqlServer.Core.Incidents.Queries
 {
@@ -32,7 +31,7 @@ namespace OneTrueError.SqlServer.Core.Incidents.Queries
                 Values = new int[query.NumberOfDays]
             };
 
-            var startDate = DateTime.Today.AddDays(-query.NumberOfDays+1);
+            var startDate = DateTime.Today.AddDays(-query.NumberOfDays + 1);
             for (var i = 0; i < query.NumberOfDays; i++)
             {
                 result.Values[i] = 0;
@@ -95,8 +94,8 @@ GROUP BY DATEPART(HOUR, ErrorReports.CreatedAtUtc);";
                         var todayWithHour = DateTime.Today.AddHours(DateTime.Now.Hour);
                         var hour = reader.GetInt32(0);
                         var date = hour < todayWithHour.Hour
-                                ? DateTime.Today.AddHours(hour)
-                                : DateTime.Today.AddDays(-1).AddHours(hour);
+                            ? DateTime.Today.AddHours(hour)
+                            : DateTime.Today.AddDays(-1).AddHours(hour);
                         values[date] = reader.GetInt32(1);
                     }
                 }

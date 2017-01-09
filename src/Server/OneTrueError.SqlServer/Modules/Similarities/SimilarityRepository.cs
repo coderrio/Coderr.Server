@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Griffin.Container;
 using Griffin.Data;
 using log4net;
-using OneTrueError.App;
 using OneTrueError.App.Modules.Similarities.Domain;
 using OneTrueError.Infrastructure;
 using OneTrueError.SqlServer.Modules.Similarities.Entities;
@@ -17,7 +16,7 @@ namespace OneTrueError.SqlServer.Modules.Similarities
     public class SimilarityRepository : ISimilarityRepository
     {
         private readonly IAdoNetUnitOfWork _uow;
-        private ILog _logger = LogManager.GetLogger(typeof (SimilarityRepository));
+        private ILog _logger = LogManager.GetLogger(typeof(SimilarityRepository));
 
         public SimilarityRepository(IAdoNetUnitOfWork uow)
         {
@@ -67,7 +66,7 @@ namespace OneTrueError.SqlServer.Modules.Similarities
                             where IncidentId = @incidentId";
                 cmd.AddParameter("incidentId", incidentId);
 
-                var collections = new List<App.Modules.Similarities.Domain.SimilarityCollection>();
+                var collections = new List<SimilarityCollection>();
 
                 using (var reader = cmd.ExecuteReader())
                 {
@@ -75,7 +74,7 @@ namespace OneTrueError.SqlServer.Modules.Similarities
                     {
                         var json = (string) reader["Properties"];
                         var properties = OneTrueSerializer.Deserialize<ContextCollectionPropertyDbEntity[]>(json);
-                        var col = new App.Modules.Similarities.Domain.SimilarityCollection(incidentId, reader.GetString(1));
+                        var col = new SimilarityCollection(incidentId, reader.GetString(1));
                         col.SetId(reader.GetInt32(0));
                         foreach (var entity in properties)
                         {

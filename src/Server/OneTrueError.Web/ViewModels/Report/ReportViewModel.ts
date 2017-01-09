@@ -1,21 +1,17 @@
-﻿/// <reference path="../../Scripts/Promise.ts"/>
+﻿/// <reference path="../../Scripts/Promise.ts" />
 /// <reference path="../../Scripts/Griffin.WebApp.ts" />
-/// <reference path="../../Scripts/CqsClient.ts"/>
-/// <reference path="../../Scripts/Griffin.Yo.d.ts"/>
-
+/// <reference path="../../Scripts/CqsClient.ts" />
+/// <reference path="../../Scripts/Griffin.Yo.d.ts" />
 module OneTrueError.Report {
     import CqsClient = Griffin.Cqs.CqsClient;
-    import ClickEventArgs = Griffin.WebApp.ClickEventArgs;
-    import Yo = Griffin.Yo;
-    import ReportResult = OneTrueError.Core.Reports.Queries.GetReportResult;
-    import ReportResultContextCollection = OneTrueError.Core.Reports.Queries.GetReportResultContextCollection;
+    import ReportResult = Core.Reports.Queries.GetReportResult;
 
     export class ReportViewModel implements Griffin.Yo.Spa.ViewModels.IViewModel {
         private context: Griffin.Yo.Spa.ViewModels.IActivationContext;
         private dto: ReportResult;
 
         private renderView(): void {
-            var directives = {
+            const directives = {
                 CreatedAtUtc: {
                     text(value) {
                         return new Date(value).toLocaleString();
@@ -26,8 +22,8 @@ module OneTrueError.Report {
                         html(value, dto) {
                             return dto.Name;
                         },
-                        href(value,dto) {
-                            return '#' + dto.Name;
+                        href(value, dto) {
+                            return `#${dto.Name}`;
                         }
                     }
                 }
@@ -36,14 +32,14 @@ module OneTrueError.Report {
         }
 
         getTitle(): string {
-            return 'Report';
+            return "Report";
 
         }
 
         activate(context: Griffin.Yo.Spa.ViewModels.IActivationContext): void {
             this.context = context;
-            var reportId = context.routeData["reportId"];
-            var query = new Core.Reports.Queries.GetReport(reportId);
+            const reportId = context.routeData["reportId"];
+            const query = new Core.Reports.Queries.GetReport(reportId);
             CqsClient.query<ReportResult>(query)
                 .done(dto => {
                     this.dto = dto;
@@ -51,27 +47,29 @@ module OneTrueError.Report {
                     context.resolve();
                 });
 
-            context.handle.click('[data-collection="ContextCollections"]', evt => {
-                evt.preventDefault();
-                var target = <HTMLElement>evt.target;
-                if (target.tagName === 'LI') {
-                    this.selectCollection(target.firstElementChild.textContent);
-                    $('li', target.parentElement).removeClass('active');
-                    $(target).addClass('active');
-                } else if (target.tagName === 'A') {
-                    this.selectCollection(target.textContent);
-                    $('li', target.parentElement.parentElement).removeClass('active');
-                    $(target.parentElement).addClass('active');
-                }
-            }, true);
-            
+            context.handle.click('[data-collection="ContextCollections"]',
+                evt => {
+                    evt.preventDefault();
+                    var target = evt.target as HTMLElement;
+                    if (target.tagName === "LI") {
+                        this.selectCollection(target.firstElementChild.textContent);
+                        $("li", target.parentElement).removeClass("active");
+                        $(target).addClass("active");
+                    } else if (target.tagName === "A") {
+                        this.selectCollection(target.textContent);
+                        $("li", target.parentElement.parentElement).removeClass("active");
+                        $(target.parentElement).addClass("active");
+                    }
+                },
+                true);
+
         }
 
         private selectCollection(collectionName: string) {
             this.dto.ContextCollections.forEach(item => {
                 if (item.Name === collectionName) {
-                    var directives = {
-                    Properties: {
+                    const directives = {
+                        Properties: {
                             Key: {
                                 html(value) {
                                     return value;
@@ -79,8 +77,8 @@ module OneTrueError.Report {
                             },
                             Value: {
                                 html(value, dto) {
-                                    if (collectionName === 'Screenshots') {
-                                        return '<img alt="Embedded Image" src="data:image/png;base64,' + value + '" />';
+                                    if (collectionName === "Screenshots") {
+                                        return `<img alt="Embedded Image" src="data:image/png;base64,${value}" />`;
                                     } else {
                                         return value.replace(/;;/g, "<br>");
                                     }
@@ -88,7 +86,7 @@ module OneTrueError.Report {
                             }
                         }
                     };
-                    this.context.renderPartial('propertyTable', item, directives);
+                    this.context.renderPartial("propertyTable", item, directives);
                     return;
                 }
             });

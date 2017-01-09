@@ -18,7 +18,7 @@ namespace OneTrueError.SqlServer.Analysis
     public class ScanForNewFeedback : ApplicationServiceTimer
     {
         private readonly ICommandBus _cmdBus;
-        private readonly ILog _logger = LogManager.GetLogger(typeof (ScanForNewFeedback));
+        private readonly ILog _logger = LogManager.GetLogger(typeof(ScanForNewFeedback));
         private readonly IMessageQueue _messageQueue;
 
         public ScanForNewFeedback(ICommandBus cmdBus, IMessageQueueProvider queueProvider)

@@ -1,106 +1,113 @@
 ﻿body {
-  padding-top: 50px;
-  padding-bottom: 20px;
+    padding-bottom: 20px;
+    padding-top: 50px;
 }
+
 /* Set padding to keep content from hitting the edges */
+
 .body-content {
-  padding-left: 15px;
-  padding-right: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
 }
+
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
 */
-.dl-horizontal dt {
-  white-space: normal;
-}
+
+.dl-horizontal dt { white-space: normal; }
+
 /* Set width on the form input elements since they're 100% wide by default */
+
 input,
 select,
-textarea {
-  max-width: 280px;
-}
+textarea { max-width: 280px; }
+
 /* Custom container */
+
 .full-width .container {
-  margin: 0 auto;
-  width: 100%;
+    margin: 0 auto;
+    width: 100%;
 }
-.full-width .body-content {
-  margin-top: 50px;
-}
+
+.full-width .body-content { margin-top: 50px; }
+
 .full-width .navbar-brand,
 .full-width .navbar-nav > li > a {
-  padding-left: 30px;
-  padding-right: 30px;
-  padding-top: 20px;
-  padding-bottom: 20px;
+    padding-bottom: 20px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 20px;
 }
+
 .full-width .navbar-brand,
 .full-width .navbar-nav.settings > li > a {
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 20px;
-  padding-bottom: 20px;
+    padding-bottom: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 20px;
 }
-.full-width .navbar-nav > .active > a {
-  opacity: .6;
-}
+
+.full-width .navbar-nav > .active > a { opacity: .6; }
+
 .tile h3,
 .tile h4,
-.tile h2 {
-  margin-top: 5px !important;
-}
+.tile h2 { margin-top: 5px !important; }
+
 .sub-menu.navbar {
-  msargin-top: 10px;
-  padding-top: 10px;
-  padding-left: 20px;
-  color: #fff;
-  background-color: #337ab7;
+    background-color: #337ab7;
+    color: #fff;
+    msargin-top: 10px;
+    padding-left: 20px;
+    padding-top: 10px;
 }
+
 .sub-menu.navbar .navbar-nav .navbar-brand {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 12px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
 }
-.sub-menu.navbar .navbar-nav > li > a {
-  color: #fff;
-}
+
+.sub-menu.navbar .navbar-nav > li > a { color: #fff; }
+
 .sub-menu.navbar .navbar-nav > li > a:hover,
 .sub-menu.navbar .navbar-nav > li > a:focus {
-  color: #f2f2f2;
-  background-color: #2d6da3;
+    background-color: #2d6da3;
+    color: #f2f2f2;
 }
+
 .sub-menu.navbar .navbar-nav > .active > a,
 .sub-menu.navbar .navbar-nav > .active > a:hover,
 .sub-menu.navbar .navbar-nav > .active > a:focus {
-  color: #fff;
-  background-color: #285f8f;
+    background-color: #285f8f;
+    color: #fff;
 }
+
 .sub-menu.navbar .navbar-nav > .disabled > a,
 .sub-menu.navbar .navbar-nav > .disabled > a:hover,
 .sub-menu.navbar .navbar-nav > .disabled > a:focus {
-  color: #999999;
-  background-color: #000000;
+    background-color: #000000;
+    color: #999999;
 }
-.vertical-spacer {
-  margin-top: 30px;
-}
+
+.vertical-spacer { margin-top: 30px; }
+
 .tile.tile-wide,
 .tile.tile-double {
-  height: auto;
-  min-height: 150;
+    height: auto;
+    min-height: 150;
 }
+
 .tag {
-  padding: 0 4px;
-  color: white;
-  opacity: 0.75;
+    color: white;
+    opacity: 0.75;
+    padding: 0 4px;
 }
+
 .tag:hover {
-  color: #eee;
-  opacity: 1;
-  text-decoration: none;
+    color: #eee;
+    opacity: 1;
+    text-decoration: none;
 }
-.tag.nephritis {
-  background: #27ae60;
-}
-#chart-legend span {
-  font-family: sans-serif;
-}
+
+.tag.nephritis { background: #27ae60; }
+
+#chart-legend span { font-family: sans-serif; }

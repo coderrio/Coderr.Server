@@ -6,7 +6,6 @@ using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
 using OneTrueError.Api.Core.Applications.Queries;
-using OneTrueError.SqlServer.Tools;
 
 namespace OneTrueError.SqlServer.Core.Applications.Queries
 {
@@ -69,12 +68,12 @@ group by cast(ErrorReports.CreatedAtUtc as date);";
                 {
                     while (await reader.ReadAsync())
                     {
-                        incidents[(DateTime)reader[0]] = (int)reader[1];
+                        incidents[(DateTime) reader[0]] = (int) reader[1];
                     }
                     await reader.NextResultAsync();
                     while (await reader.ReadAsync())
                     {
-                        errorReports[(DateTime)reader[0]] = (int)reader[1];
+                        errorReports[(DateTime) reader[0]] = (int) reader[1];
                     }
 
                     result.ErrorReports = errorReports.Select(x => x.Value).ToArray();
@@ -185,8 +184,8 @@ group by DATEPART(HOUR, ErrorReports.CreatedAtUtc);";
                     {
                         var hour = reader.GetInt32(0);
                         var date = hour < todayWithHour.Hour
-                                ? DateTime.Today.AddHours(hour)
-                                : DateTime.Today.AddDays(-1).AddHours(hour);
+                            ? DateTime.Today.AddHours(hour)
+                            : DateTime.Today.AddDays(-1).AddHours(hour);
                         incidentValues[date] = reader.GetInt32(1);
                     }
                     await reader.NextResultAsync();
@@ -194,8 +193,8 @@ group by DATEPART(HOUR, ErrorReports.CreatedAtUtc);";
                     {
                         var hour = reader.GetInt32(0);
                         var date = hour < todayWithHour.Hour
-                                ? DateTime.Today.AddHours(hour)
-                                : DateTime.Today.AddDays(-1).AddHours(hour);
+                            ? DateTime.Today.AddHours(hour)
+                            : DateTime.Today.AddDays(-1).AddHours(hour);
                         reportValues[date] = reader.GetInt32(1);
                     }
                 }
@@ -210,6 +209,4 @@ group by DATEPART(HOUR, ErrorReports.CreatedAtUtc);";
             return result;
         }
     }
-
-
 }

@@ -3,6 +3,7 @@
 /// <reference path="../../Scripts/Griffin.Yo.d.ts" />
 /// <reference path="../ChartViewModel.ts" />
 declare function htmlentities(text: string): string;
+
 declare function nl2br(text: string): string;
 
 module OneTrueError.Feedback {
@@ -46,11 +47,12 @@ module OneTrueError.Feedback {
 
         activate(ctx: Griffin.Yo.Spa.ViewModels.IActivationContext) {
             this.ctx = ctx;
-            var query = new GetIncidentFeedback(ctx.routeData["incidentId"]);
-            CqsClient.query<GetIncidentFeedbackResult>(query).done(result => {
-                this.ctx.render(result, IncidentViewModel.directives);
-                ctx.resolve();
-            });
+            const query = new GetIncidentFeedback(ctx.routeData["incidentId"]);
+            CqsClient.query<GetIncidentFeedbackResult>(query)
+                .done(result => {
+                    this.ctx.render(result, IncidentViewModel.directives);
+                    ctx.resolve();
+                });
 
 
         }

@@ -9,7 +9,7 @@ namespace OneTrueError.Api.Core.Incidents.Events
     public class IncidentIgnored : ApplicationEvent
     {
         /// <summary>
-        /// Creates a new instance of <see cref="IncidentIgnored"/>.
+        ///     Creates a new instance of <see cref="IncidentIgnored" />.
         /// </summary>
         /// <param name="incidentId">incident being ignored</param>
         /// <param name="accountId">account ignoring the incident</param>
@@ -28,21 +28,21 @@ namespace OneTrueError.Api.Core.Incidents.Events
         }
 
         /// <summary>
-        /// Serialization constructor
+        ///     Serialization constructor
         /// </summary>
         protected IncidentIgnored()
         {
         }
 
         /// <summary>
-        /// Incident id
-        /// </summary>
-        public int IncidentId { get; set; }
-
-        /// <summary>
         ///     User that configured ignore.
         /// </summary>
         public int AccountId { get; set; }
+
+        /// <summary>
+        ///     Incident id
+        /// </summary>
+        public int IncidentId { get; set; }
 
         /// <summary>
         ///     Name of the user.

@@ -1,8 +1,7 @@
 ﻿namespace OneTrueError.Api.Core.Applications.Queries
 {
-
     /// <summary>
-    /// Result for <see cref="GetApplicationOverview"/>.
+    ///     Result for <see cref="GetApplicationOverview" />.
     /// </summary>
     //TODO, move to the web namespace.
     public class GetApplicationOverviewResult
@@ -13,22 +12,22 @@
         public int Days { get; set; }
 
         /// <summary>
-        /// One entry for each day
+        ///     One entry for each day
         /// </summary>
         public int[] ErrorReports { get; set; }
 
         /// <summary>
-        /// One incident count for each day
+        ///     One incident count for each day
         /// </summary>
         public int[] Incidents { get; set; }
 
         /// <summary>
-        /// Statistics summary
+        ///     Statistics summary
         /// </summary>
         public OverviewStatSummary StatSummary { get; set; }
 
         /// <summary>
-        /// Labels for X axis
+        ///     Labels for X axis
         /// </summary>
         public string[] TimeAxisLabels { get; set; }
     }

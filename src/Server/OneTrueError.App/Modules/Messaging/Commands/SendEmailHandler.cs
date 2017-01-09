@@ -17,7 +17,7 @@ namespace OneTrueError.App.Modules.Messaging.Commands
     [Component]
     internal class SendEmailHandler : ICommandHandler<SendEmail>
     {
-        private IQueryBus _queryBus;
+        private readonly IQueryBus _queryBus;
 
         public SendEmailHandler(IQueryBus queryBus)
         {

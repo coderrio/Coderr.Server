@@ -23,7 +23,7 @@ namespace OneTrueError.SqlServer.Core.Incidents.Queries
         {
             using (var cmd = _unitOfWork.CreateCommand())
             {
-                int totalCount = 0;
+                var totalCount = 0;
                 cmd.AddParameter("incidentId", query.IncidentId);
                 if (query.PageNumber > 0)
                 {
@@ -38,8 +38,7 @@ namespace OneTrueError.SqlServer.Core.Incidents.Queries
                 else
                 {
                     cmd.CommandText =
-    "SELECT Id, Title, CreatedAtUtc, RemoteAddress, Exception FROM ErrorReports WHERE IncidentId = @incidentId ORDER BY Id DESC";
-
+                        "SELECT Id, Title, CreatedAtUtc, RemoteAddress, Exception FROM ErrorReports WHERE IncidentId = @incidentId ORDER BY Id DESC";
                 }
                 var items = await cmd.ToListAsync<GetReportListResultItem>();
                 return new GetReportListResult(items.ToArray())

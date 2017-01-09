@@ -4,30 +4,30 @@ using System.Linq;
 namespace OneTrueError.App.Modules.Triggers.Domain.Rules
 {
     /// <summary>
-    /// Check a context collection in the trigger
+    ///     Check a context collection in the trigger
     /// </summary>
     public class ContextCollectionRule : RuleBase, ITriggerRule
     {
         /// <summary>
-        /// Context collection to check
+        ///     Context collection to check
         /// </summary>
         public string ContextName { get; set; }
 
 
         /// <summary>
-        /// Property in that collection
+        ///     Property in that collection
         /// </summary>
         public string PropertyName { get; set; }
 
 
         /// <summary>
-        /// Value for the property
+        ///     Value for the property
         /// </summary>
         public string PropertyValue { get; set; }
 
 
         /// <summary>
-        /// Validate report
+        ///     Validate report
         /// </summary>
         /// <param name="context">Context info</param>
         /// <returns>Recommendation</returns>

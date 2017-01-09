@@ -3,18 +3,18 @@
 namespace OneTrueError.Api.Core.Accounts.Requests
 {
     /// <summary>
-    /// Check if the user name or email address are taken
+    ///     Check if the user name or email address are taken
     /// </summary>
     public class ValidateNewLogin : Request<ValidateNewLoginReply>
     {
         /// <summary>
-        /// Email address
+        ///     Email address
         /// </summary>
         public string Email { get; set; }
 
 
         /// <summary>
-        /// User name
+        ///     User name
         /// </summary>
         public string UserName { get; set; }
     }

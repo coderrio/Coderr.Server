@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Threading.Tasks;
 using Griffin.ApplicationServices;
@@ -7,7 +6,6 @@ using Griffin.Data;
 using Griffin.Data.Mapper;
 using log4net;
 using OneTrueError.App.Core.Feedback;
-using OneTrueError.SqlServer.Tools;
 
 namespace OneTrueError.SqlServer.Core.Feedback
 {
@@ -15,8 +13,8 @@ namespace OneTrueError.SqlServer.Core.Feedback
     //[Component(RegisterAsSelf = true)]
     public class LookupReportsForFeedback : IBackgroundJobAsync
     {
+        private readonly ILog _logger = LogManager.GetLogger(typeof(LookupReportsForFeedback));
         private readonly IAdoNetUnitOfWork _unitOfWork;
-        private readonly ILog _logger = LogManager.GetLogger(typeof (LookupReportsForFeedback));
 
 
         public LookupReportsForFeedback(IAdoNetUnitOfWork unitOfWork)
@@ -64,6 +62,24 @@ namespace OneTrueError.SqlServer.Core.Feedback
             }
         }
 
+        private async Task GetPendingFeedback(ICollection<FeedbackEntity> items)
+        {
+            using (var cmd = (DbCommand) _unitOfWork.CreateCommand())
+            {
+                cmd.CommandText =
+                    "SELECT * FROM incidentfeedback WHERE IncidentId is null";
+                var myItems = await cmd.ToListAsync<FeedbackEntity>();
+                foreach (var item in myItems)
+                {
+                    items.Add(item);
+                }
+
+                if (items.Count > 0)
+                    if (items.Count > 0)
+                        _logger.Debug("Added " + items.Count + " items.");
+            }
+        }
+
         private async Task LookupReportInfo(IEnumerable<FeedbackEntity> items)
         {
             foreach (var item in items)
@@ -94,26 +110,6 @@ namespace OneTrueError.SqlServer.Core.Feedback
                                       item.Id);
                     }
                 }
-            }
-        }
-
-        private async Task GetPendingFeedback(ICollection<FeedbackEntity> items)
-        {
-            using (var cmd = (DbCommand) _unitOfWork.CreateCommand())
-            {
-
-                cmd.CommandText =
-                    "SELECT * FROM incidentfeedback WHERE IncidentId is null";
-                var myItems = await cmd.ToListAsync<FeedbackEntity>();
-                foreach (var item in myItems)
-                {
-                    items.Add(item);
-                }
-
-                if (items.Count > 0)
-                    if (items.Count > 0)
-                        _logger.Debug("Added " + items.Count + " items.");
-
             }
         }
     }

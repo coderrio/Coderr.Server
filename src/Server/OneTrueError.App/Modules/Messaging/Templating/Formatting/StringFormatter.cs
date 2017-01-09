@@ -1,20 +1,21 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace OneTrueError.App.Modules.Messaging.Templating.Formatting
 {
     /// <summary>
-    /// Converts a string 
+    ///     Converts a string
     /// </summary>
     public class StringFormatter
     {
         /// <summary>
-        /// Format a string
+        ///     Format a string
         /// </summary>
         /// <param name="source">string to format</param>
         /// <param name="arguments">arguments to replace</param>
         /// <returns>formatted string</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
         public string Format(string source, params object[] arguments)
         {
             if (source == null) throw new ArgumentNullException("source");
@@ -24,7 +25,7 @@ namespace OneTrueError.App.Modules.Messaging.Templating.Formatting
 
             var tokenizer = new Tokenizer();
             var tokens = tokenizer.Parse(source);
-            
+
             //Console.WriteLine(string.Join("+", tokens.Select(x => x.Name + x.Value)));
             var converter = new ObjectToDictionaryConverter();
             var model = converter.Convert(arguments[0]);
@@ -56,12 +57,11 @@ namespace OneTrueError.App.Modules.Messaging.Templating.Formatting
                 {
                     object value;
                     if (!model.TryGetValue(token.Name, out value))
-                        throw new System.FormatException("Failed to find '" + token.Name + "' in model");
+                        throw new FormatException("Failed to find '" + token.Name + "' in model");
                     sb.Append(value);
                 }
             }
             return sb.ToString();
         }
-
     }
 }

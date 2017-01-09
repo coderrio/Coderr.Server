@@ -3,10 +3,10 @@
 namespace OneTrueError.App.Modules.Triggers.Domain.Filters
 {
     /// <summary>
-    /// Innehåller våra fördefinierade filter.
+    ///     Innehåller våra fördefinierade filter.
     /// </summary>
     [CompilerGenerated]
-    class NamespaceDoc
+    internal class NamespaceDoc
     {
     }
 }

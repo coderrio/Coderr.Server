@@ -8,9 +8,8 @@ namespace OneTrueError.Api.Modules.Triggers.Queries
     /// </summary>
     public class GetContextCollectionMetadata : Query<GetContextCollectionMetadataItem[]>
     {
-
         /// <summary>
-        /// Creates a new instance of <see cref="GetContextCollectionMetadata"/>.
+        ///     Creates a new instance of <see cref="GetContextCollectionMetadata" />.
         /// </summary>
         /// <param name="applicationId">applicationId</param>
         /// <exception cref="ArgumentOutOfRangeException">applicationId</exception>

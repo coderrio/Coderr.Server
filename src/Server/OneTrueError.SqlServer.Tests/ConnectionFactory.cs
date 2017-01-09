@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Griffin.Data;
 
 namespace OneTrueError.SqlServer.Tests
 {
-    class ConnectionFactory
+    internal class ConnectionFactory
     {
         public static IAdoNetUnitOfWork Create()
         {

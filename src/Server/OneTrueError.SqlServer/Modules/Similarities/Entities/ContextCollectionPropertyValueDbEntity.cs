@@ -15,7 +15,6 @@ namespace OneTrueError.SqlServer.Modules.Similarities.Entities
 
         protected ContextCollectionPropertyValueDbEntity()
         {
-            
         }
 
 

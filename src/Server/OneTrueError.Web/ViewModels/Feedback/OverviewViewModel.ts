@@ -29,7 +29,8 @@ module OneTrueError.Feedback {
                         return "color:#ccc";
                     },
                     html(value, dto) {
-                        return `Reported for <a style="color: #ee99ee" href="#/application/${dto.ApplicationId}">${dto.ApplicationName}</a> at ${new Date(dto.WrittenAtUtc).toLocaleString()}`;
+                        return `Reported for <a style="color: #ee99ee" href="#/application/${dto.ApplicationId}">${
+                            dto.ApplicationName}</a> at ${new Date(dto.WrittenAtUtc).toLocaleString()}`;
                     }
                 },
                 EmailAddress: {
@@ -60,11 +61,12 @@ module OneTrueError.Feedback {
         }
 
         activate(context: Griffin.Yo.Spa.ViewModels.IActivationContext): void {
-            var query = new OverviewFeedback();
-            CqsClient.query<OverviewFeedbackResult>(query).done(result => {
-                context.render(result, this.feedbackDirectives);
-                context.resolve();
-            });
+            const query = new OverviewFeedback();
+            CqsClient.query<OverviewFeedbackResult>(query)
+                .done(result => {
+                    context.render(result, this.feedbackDirectives);
+                    context.resolve();
+                });
 
         }
 

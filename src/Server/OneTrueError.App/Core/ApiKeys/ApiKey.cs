@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using OneTrueError.Infrastructure.Security;
 
 namespace OneTrueError.App.Core.ApiKeys
 {
@@ -10,22 +12,23 @@ namespace OneTrueError.App.Core.ApiKeys
     /// </summary>
     public class ApiKey
     {
-        private List<int> _applications = new List<int>();
-
-        /// <summary>
-        ///     Application ids that we've been granted to work with
-        /// </summary>
-        public IEnumerable<int> AllowedApplications
-        {
-            get { return _applications; }
-            private set { _applications = new List<int>(value); }
-        }
+        private readonly List<Claim> _claims = new List<Claim>();
 
         /// <summary>
         ///     Application that will be using this key
         /// </summary>
         public string ApplicationName { get; set; }
 
+
+        /// <summary>
+        ///     Claims associated with this key
+        /// </summary>
+        /// <remarks>
+        ///     <para>
+        ///         Typically contains <see cref="OneTrueClaims.Application" /> to identity which applications the key can access.
+        ///     </para>
+        /// </remarks>
+        public Claim[] Claims { get; set; }
 
         /// <summary>
         ///     When this key was generated
@@ -60,9 +63,9 @@ namespace OneTrueError.App.Core.ApiKeys
         /// <param name="applicationId">application id</param>
         public void Add(int applicationId)
         {
-            if (applicationId <= 0) throw new ArgumentOutOfRangeException(nameof(applicationId));
+            if (applicationId <= 0) throw new ArgumentOutOfRangeException("applicationId");
 
-            _applications.Add(applicationId);
+            _claims.Add(new Claim(OneTrueClaims.Application, applicationId.ToString(), ClaimValueTypes.Integer32));
         }
 
         /// <summary>

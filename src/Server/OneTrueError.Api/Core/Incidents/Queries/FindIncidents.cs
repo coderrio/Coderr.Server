@@ -7,14 +7,14 @@ namespace OneTrueError.Api.Core.Incidents.Queries
     ///     Find incidents
     /// </summary>
     /// <remarks>
-    /// <para>
-    /// Default query is only open incidents with 20 items per page.
-    /// </para>
+    ///     <para>
+    ///         Default query is only open incidents with 20 items per page.
+    ///     </para>
     /// </remarks>
     public class FindIncidents : Query<FindIncidentResult>
     {
         /// <summary>
-        /// Creates a new instance of <see cref="FindIncidents"/>.
+        ///     Creates a new instance of <see cref="FindIncidents" />.
         /// </summary>
         public FindIncidents()
         {

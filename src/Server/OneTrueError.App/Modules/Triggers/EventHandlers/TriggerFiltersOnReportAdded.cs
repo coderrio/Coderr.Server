@@ -11,18 +11,18 @@ using OneTrueError.App.Modules.Triggers.Domain.Actions;
 namespace OneTrueError.App.Modules.Triggers.EventHandlers
 {
     /// <summary>
-    /// Waits on the ReportAdded and then loads all notifications for the application that the report belongs to.
+    ///     Waits on the ReportAdded and then loads all notifications for the application that the report belongs to.
     /// </summary>
     [Component(RegisterAsSelf = true)]
     public class TriggerFiltersOnReportAdded : IApplicationEventSubscriber<ReportAddedToIncident>
     {
-        private readonly ITriggerRepository _repository;
         private readonly ITriggerActionFactory _actionFactory;
-        private ILog _logger = LogManager.GetLogger(typeof (TriggerFiltersOnReportAdded));
+        private readonly ITriggerRepository _repository;
+        private readonly ILog _logger = LogManager.GetLogger(typeof(TriggerFiltersOnReportAdded));
 
 
         /// <summary>
-        /// Creates a new instance of <see cref="TriggerFiltersOnReportAdded"/>.
+        ///     Creates a new instance of <see cref="TriggerFiltersOnReportAdded" />.
         /// </summary>
         /// <param name="repository">repos</param>
         /// <param name="actionFactory">repos</param>
@@ -36,11 +36,11 @@ namespace OneTrueError.App.Modules.Triggers.EventHandlers
         }
 
         /// <summary>
-        /// Process an event asynchronously.
+        ///     Process an event asynchronously.
         /// </summary>
         /// <param name="e">event to process</param>
         /// <returns>
-        /// Task to wait on.
+        ///     Task to wait on.
         /// </returns>
         public async Task HandleAsync(ReportAddedToIncident e)
         {
@@ -58,16 +58,16 @@ namespace OneTrueError.App.Modules.Triggers.EventHandlers
 
             foreach (var trigger in triggers)
             {
-                var triggerContext = new TriggerExecutionContext()
+                var triggerContext = new TriggerExecutionContext
                 {
-                    Incident = e.Incident, ErrorReport = e.Report
+                    Incident = e.Incident,
+                    ErrorReport = e.Report
                 };
                 var triggerResults = trigger.Run(triggerContext);
                 foreach (var actionData in triggerResults)
                 {
-                    
                     var action = _actionFactory.Create(actionData.ActionName);
-                    var context = new ActionExecutionContext()
+                    var context = new ActionExecutionContext
                     {
                         Config = actionData,
                         ErrorReport = e.Report,
@@ -75,11 +75,9 @@ namespace OneTrueError.App.Modules.Triggers.EventHandlers
                     };
                     await action.ExecuteAsync(context);
                 }
-               
             }
 
             _logger.Debug("filters done..");
-
         }
     }
 }

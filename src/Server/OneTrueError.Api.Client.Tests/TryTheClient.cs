@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
 using OneTrueError.Api.Core.Accounts.Queries;
@@ -16,16 +13,15 @@ namespace OneTrueError.Api.Client.Tests
         [Fact]
         public async Task Test()
         {
-            OneTrueApiClient client = new OneTrueApiClient();
+            var client = new OneTrueApiClient();
             client.Open(new Uri("http://localhost/onetrueerror/"), "", "");
             FindAccountByUserNameResult result = null;
             try
             {
                 result = await client.QueryAsync(new FindAccountByUserName("admin"));
             }
-            catch (WebException ex) 
+            catch (WebException ex)
             {
-                
             }
 
 

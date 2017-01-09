@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
@@ -14,16 +11,18 @@ using OneTrueError.SqlServer.Core.ApiKeys.Mappings;
 namespace OneTrueError.SqlServer.Core.ApiKeys.Queries
 {
     /// <summary>
-    /// Handler for <see cref="GetApiKey"/>.
+    ///     Handler for <see cref="GetApiKey" />.
     /// </summary>
     [Component(RegisterAsSelf = true)]
     public class GetApiKeyHandler : IQueryHandler<GetApiKey, GetApiKeyResult>
     {
-        private IAdoNetUnitOfWork _uow;
-        private static MirrorMapper<GetApiKeyResultApplication> _appMapping = new MirrorMapper<GetApiKeyResultApplication>();
+        private static readonly MirrorMapper<GetApiKeyResultApplication> _appMapping =
+            new MirrorMapper<GetApiKeyResultApplication>();
+
+        private readonly IAdoNetUnitOfWork _uow;
 
         /// <summary>
-        /// Creates a new instance of <see cref="GetApiKeyHandler"/>.
+        ///     Creates a new instance of <see cref="GetApiKeyHandler" />.
         /// </summary>
         /// <param name="uow">valid uow</param>
         public GetApiKeyHandler(IAdoNetUnitOfWork uow)

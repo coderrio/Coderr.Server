@@ -9,7 +9,7 @@ namespace OneTrueError.Web.Controllers
         [Route("guid/"), HttpGet]
         public ActionResult New()
         {
-            return new ContentResult(){Content = Guid.NewGuid().ToString("N"), ContentType = "text/plain"};
+            return new ContentResult {Content = Guid.NewGuid().ToString("N"), ContentType = "text/plain"};
         }
     }
 }

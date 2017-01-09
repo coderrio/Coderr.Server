@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,7 +6,6 @@ using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 using OneTrueError.App.Modules.Triggers.Domain;
-using OneTrueError.App.Modules.Triggers.Domain.Actions;
 using OneTrueError.SqlServer.Tools;
 
 namespace OneTrueError.SqlServer.Modules.Triggers
@@ -62,7 +60,7 @@ namespace OneTrueError.SqlServer.Modules.Triggers
                 cmd.AddParameter("Name", entity.Name);
                 cmd.AddParameter("ApplicationId", entity.ApplicationId);
                 cmd.AddParameter("Properties", props);
-               await cmd.ExecuteNonQueryAsync();
+                await cmd.ExecuteNonQueryAsync();
             }
         }
 
@@ -88,7 +86,7 @@ namespace OneTrueError.SqlServer.Modules.Triggers
 
         public IEnumerable<Trigger> GetForApplication(int applicationId)
         {
-            using (var cmd = (DbCommand)_unitOfWork.CreateCommand())
+            using (var cmd = (DbCommand) _unitOfWork.CreateCommand())
             {
                 cmd.CommandText =
                     "SELECT * FROM Triggers WHERE ApplicationId = @applicationId";
@@ -97,10 +95,10 @@ namespace OneTrueError.SqlServer.Modules.Triggers
             }
         }
 
-    
+
         public async Task<Trigger> GetAsync(int id)
         {
-            using (var cmd = (DbCommand)_unitOfWork.CreateCommand())
+            using (var cmd = (DbCommand) _unitOfWork.CreateCommand())
             {
                 cmd.CommandText =
                     "SELECT * FROM Triggers WHERE Id = @id";

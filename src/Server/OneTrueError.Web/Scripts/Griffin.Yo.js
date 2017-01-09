@@ -178,16 +178,16 @@ var Griffin;
                     return arr;
                 };
                 FormReader.prototype.pullElement = function (container) {
-                    if (container.tagName == 'SELECT') {
-                        var select = container;
-                        if (select.selectedIndex == -1) {
-                            return null;
+                    if (container.childElementCount === 0) {
+                        if (container.tagName == 'SELECT') {
+                            var select = container;
+                            if (select.selectedIndex == -1) {
+                                return null;
+                            }
+                            var value1 = select.options[select.selectedIndex];
+                            return this.processValue(value1.value);
                         }
-                        var value1 = select.options[select.selectedIndex];
-                        return this.processValue(value1.value);
-                    }
-                    else if (container.childElementCount === 0) {
-                        if (container.tagName == 'INPUT') {
+                        else if (container.tagName == 'INPUT') {
                             var input = container;
                             var typeStr = container.getAttribute('type');
                             if (typeStr === 'radio' || typeStr === 'checkbox') {
@@ -198,8 +198,8 @@ var Griffin;
                             }
                             return this.processValue(input.value);
                         }
-                        else {
-                            var value3 = container.getAttribute('value') || '';
+                        else if (container.tagName == 'TEXTAREA') {
+                            var value3 = container.value;
                             return this.processValue(value3);
                         }
                     }
@@ -366,7 +366,7 @@ var Griffin;
                     request.onload = function () {
                         if (request.status >= 200 && request.status < 400) {
                             if (request.status === 304) {
-                                request.responseText = _this.cache[url].content;
+                                request["responseText"] = _this.cache[url].content;
                             }
                             else {
                                 var header = request.getResponseHeader("Last-Modified");
@@ -378,7 +378,7 @@ var Griffin;
                                 }
                             }
                             if (contentType === "application/json") {
-                                request.responseBody = JSON.parse(request.responseText);
+                                request["responseBody"] = JSON.parse(request.responseText);
                                 var tempFix = request;
                                 tempFix["responseJson"] = JSON.parse(request.responseText);
                             }
@@ -459,10 +459,10 @@ var Griffin;
                         request.send();
                     }
                 };
-                Http.cache = {};
-                Http.useCaching = true;
                 return Http;
             }());
+            Http.cache = {};
+            Http.useCaching = true;
             Net.Http = Http;
         })(Net = Yo.Net || (Yo.Net = {}));
     })(Yo = Griffin.Yo || (Griffin.Yo = {}));
@@ -674,6 +674,7 @@ var Griffin;
                         this.node.querySelector('.modal-body').appendChild(element);
                         var footer = this.node.querySelector('.modal-footer');
                         this.modal = $(this.node).modal();
+                        var m = this.modal;
                         $(this.modal).on('hidden.bs.modal', function () {
                             _this.modal.modal('hide').data('bs.modal', null);
                             _this.node.parentElement.removeChild(_this.node);
@@ -686,8 +687,8 @@ var Griffin;
                             for (var i = 0; i < buttons.length; i++) {
                                 var button = buttons[i];
                                 button.className += ' btn';
-                                button.addEventListener('click', function (target, button, e) {
-                                    target.modal.modal('hide');
+                                button.addEventListener('click', function (button, e) {
+                                    this.modal('hide');
                                     if ((button.tagName === "input" && button.type !== "submit") || button.hasAttribute("data-dismiss")) {
                                         window.history.go(-1);
                                     }
@@ -802,9 +803,9 @@ var Griffin;
             var Config = (function () {
                 function Config() {
                 }
-                Config.applicationScope = {};
                 return Config;
             }());
+            Config.applicationScope = {};
             Spa.Config = Config;
             var RouteRunner = (function () {
                 function RouteRunner(section, applicationName) {
@@ -861,8 +862,11 @@ var Griffin;
                 RouteRunner.prototype.removeConditions = function (elem, context) {
                     for (var i = 0; i < elem.childElementCount; i++) {
                         var child = elem.children[i];
+                        if (!child.hasAttribute("data-if")) {
+                            continue;
+                        }
                         var ifStatement = child.getAttribute("data-if");
-                        var ifResult = !ifStatement || !this.evalInContext(ifStatement, context);
+                        var ifResult = this.evalInContext(ifStatement, context);
                         if (!ifResult) {
                             child.parentNode.removeChild(child);
                             continue;
@@ -1129,6 +1133,7 @@ var Griffin;
                     }
                     var target2 = target;
                     target2.name = name;
+                    console.log('adding view target');
                     this.viewTargets.push(target2);
                 };
                 SpaEngine.prototype.navigate = function (url, targetElement) {
@@ -1261,7 +1266,10 @@ var Griffin;
                 ViewRenderer.prototype.renderElement = function (element, data, directives) {
                     if (directives === void 0) { directives = {}; }
                     var elementName = this.getName(element);
-                    if ((element.childElementCount === 0 || element.tagName === "SELECT") && elementName && !element.hasAttribute("data-unless") && !element.hasAttribute("data-data-if") ) {
+                    if (elementName) {
+                        this.log('renderElement', this.getName(element));
+                    }
+                    if (element.childElementCount === 0 && elementName) {
                         if (data && data.hasOwnProperty(elementName)) {
                             data = data[elementName];
                         }
@@ -1330,11 +1338,6 @@ var Griffin;
                                     || childDirective.hasOwnProperty("html");
                             }
                             if (!gotValueProvider) {
-                                if (item.getAttribute("data-unless") === name) {
-                                    if (childData && childData.length > 0) {
-                                        item.style.display = "none";
-                                    }
-                                }
                                 this.log('got no data and no directives.');
                                 continue;
                             }
@@ -1348,7 +1351,7 @@ var Griffin;
                         }
                         else {
                             if (item.getAttribute("data-unless") === name) {
-                                if (childData && childData.length > 0) {
+                                if (childData) {
                                     item.style.display = "none";
                                 }
                             }
@@ -1496,7 +1499,7 @@ var Griffin;
                 ViewRenderer.prototype.log = function () {
                     var args = [];
                     for (var _i = 0; _i < arguments.length; _i++) {
-                        args[_i - 0] = arguments[_i];
+                        args[_i] = arguments[_i];
                     }
                     if (ViewRenderer.DEBUG && console && console.log) {
                         args.unshift(this.dtoStack[this.dtoStack.length - 1]);
@@ -1510,10 +1513,10 @@ var Griffin;
                         console.log.apply(console, args);
                     }
                 };
-                ViewRenderer.globalValueDirectives = [];
-                ViewRenderer.DEBUG = false;
                 return ViewRenderer;
             }());
+            ViewRenderer.globalValueDirectives = [];
+            ViewRenderer.DEBUG = false;
             Views.ViewRenderer = ViewRenderer;
             var ViewValueDirectiveContext = (function () {
                 function ViewValueDirectiveContext() {
@@ -1535,10 +1538,10 @@ var Griffin;
                 var r = new Yo.Views.ViewRenderer(idOrElem);
                 r.render(dto, directives);
             };
-            G.select = new Yo.Dom.Selector();
-            G.handle = new Yo.Dom.EventMapper();
             return G;
         }());
+        G.select = new Yo.Dom.Selector();
+        G.handle = new Yo.Dom.EventMapper();
         Yo.G = G;
     })(Yo = Griffin.Yo || (Griffin.Yo = {}));
 })(Griffin || (Griffin = {}));
@@ -1549,9 +1552,9 @@ var Griffin;
         var GlobalConfig = (function () {
             function GlobalConfig() {
             }
-            GlobalConfig.applicationScope = {};
             return GlobalConfig;
         }());
+        GlobalConfig.applicationScope = {};
         Yo.GlobalConfig = GlobalConfig;
         GlobalConfig.resourceLocator = {
             getHtml: function (section) {

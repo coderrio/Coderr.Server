@@ -6,7 +6,7 @@ using OneTrueError.App.Modules.Similarities.Domain.Adapters.Runner;
 namespace OneTrueError.App.Modules.Similarities.Domain.Adapters
 {
     /// <summary>
-    /// Generates the "ApplicationInfo" context collection from information in different uploaded collections.
+    ///     Generates the "ApplicationInfo" context collection from information in different uploaded collections.
     /// </summary>
     public class ApplicationInfoAdapter : IValueAdapter
     {
@@ -41,7 +41,7 @@ namespace OneTrueError.App.Modules.Similarities.Domain.Adapters
                 }
 
                 value = value/1000000;
-                return MemoryNormalizer.Divide(value, context.TypeOfApplication.ToString() == "Mobile" ? 32 : 512);
+                return MemoryNormalizer.Divide(value, context.TypeOfApplication == "Mobile" ? 32 : 512);
             }
 
             if (context.PropertyName == "ThreadCount")

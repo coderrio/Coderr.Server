@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OneTrueError.SqlServer
 {
@@ -12,6 +8,5 @@ namespace OneTrueError.SqlServer
         {
             return value == DateTime.MinValue ? (object) DBNull.Value : value;
         }
-
     }
 }

@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Reflection;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -12,10 +12,12 @@ using Griffin;
 using Griffin.Cqs;
 using Griffin.Cqs.Authorization;
 using Griffin.Cqs.Net;
+using log4net;
+using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security;
 using OneTrueError.Api.Core.Applications.Commands;
-using OneTrueError.App;
+using OneTrueError.Infrastructure.Security;
 using OneTrueError.Web.Infrastructure.Cqs;
-using OneTrueError.Web.Models;
 
 namespace OneTrueError.Web.Controllers
 {
@@ -25,11 +27,12 @@ namespace OneTrueError.Web.Controllers
         private static readonly CqsObjectMapper _cqsObjectMapper = new CqsObjectMapper();
         private static readonly CqsJsonNetSerializer _serializer = new CqsJsonNetSerializer();
         private readonly CqsMessageProcessor _cqsProcessor;
+        private readonly ILog _logger = LogManager.GetLogger(typeof(CqsController));
 
         static CqsController()
         {
             if (_cqsObjectMapper.IsEmpty)
-                _cqsObjectMapper.ScanAssembly(typeof (CreateApplication).Assembly);
+                _cqsObjectMapper.ScanAssembly(typeof(CreateApplication).Assembly);
         }
 
         public CqsController(IQueryBus queryBus, IRequestReplyBus requestReplyBus, ICommandBus commandBus,
@@ -45,7 +48,10 @@ namespace OneTrueError.Web.Controllers
         }
 
 
-        [Route("api/cqs"), HttpGet, HttpPost]
+        [Route("api/cqs")]
+        [HttpGet]
+        [HttpPost]
+        [Route("cqs")]
         public async Task<HttpResponseMessage> Cqs()
         {
             var dotNetType = Request.Headers.Contains("X-Cqs-Object-Type")
@@ -89,15 +95,18 @@ namespace OneTrueError.Web.Controllers
                 return response;
             }
 
-            var prop = cqsObject.GetType().GetProperty("UserId");
-            if (prop != null && prop.CanWrite)
-                prop.SetValue(cqsObject, OneTruePrincipal.Current.Identity.AccountId);
-
-            prop = cqsObject.GetType().GetProperty("AccountId");
-            if (prop != null && prop.CanWrite)
-                prop.SetValue(cqsObject, OneTruePrincipal.Current.Identity.AccountId);
-
-
+            if (User.Identity.AuthenticationType != "ApiKey")
+            {
+                var prop = cqsObject.GetType().GetProperty("CreatedById");
+                if ((prop != null) && prop.CanWrite)
+                    prop.SetValue(cqsObject, ClaimsPrincipal.Current.GetAccountId());
+                prop = cqsObject.GetType().GetProperty("AccountId");
+                if ((prop != null) && prop.CanWrite)
+                    prop.SetValue(cqsObject, ClaimsPrincipal.Current.GetAccountId());
+                prop = cqsObject.GetType().GetProperty("UserId");
+                if ((prop != null) && prop.CanWrite)
+                    prop.SetValue(cqsObject, ClaimsPrincipal.Current.GetAccountId());
+            }
 
             RestrictOnApplicationId(cqsObject);
 
@@ -105,11 +114,14 @@ namespace OneTrueError.Web.Controllers
             Exception ex = null;
             try
             {
+                _logger.Debug("Invoking " + cqsObject.GetType().Name + " " + json);
                 cqsReplyObject = await _cqsProcessor.ProcessAsync(cqsObject);
                 RestrictOnApplicationId(cqsReplyObject);
+                await HandleSecurityPrincipalUpdates();
             }
             catch (AggregateException e1)
             {
+                _logger.Error("Failed to process '" + json + "'.", e1);
                 ex = e1.InnerException;
             }
 
@@ -156,29 +168,52 @@ namespace OneTrueError.Web.Controllers
             return reply;
         }
 
-        private static void RestrictOnApplicationId(object cqsObject)
+        private string FirstLine(string msg)
         {
-            PropertyInfo prop;
-            if (OneTruePrincipal.Current.Identity.AuthenticationType == "ApiKey")
+            var pos = msg.IndexOfAny(new[] {'\r', '\n'});
+            return pos == -1 ? msg : msg.Substring(0, pos);
+        }
+
+        private async Task HandleSecurityPrincipalUpdates()
+        {
+            var gotUpdate = ClaimsPrincipal.Current.Identities.First().TryRemoveClaim(OneTrueClaims.UpdateIdentity);
+
+            //to be sure that there are no other points in the flow that added the same claim
+            while (ClaimsPrincipal.Current.Identities.First().TryRemoveClaim(OneTrueClaims.UpdateIdentity))
             {
-                prop = cqsObject.GetType().GetProperty("ApplicationId");
-                if (prop != null && prop.CanRead)
+            }
+
+            if (gotUpdate)
+            {
+                var usr = (ClaimsPrincipal) User;
+                var c = ClaimsPrincipal.Current;
+                var t = usr.GetHashCode() == c.GetHashCode();
+
+                var context = Request.GetOwinContext();
+                var authenticationContext =
+                    await context.Authentication.AuthenticateAsync(DefaultAuthenticationTypes.ApplicationCookie);
+
+                if (authenticationContext != null)
                 {
-                    var value = (int) prop.GetValue(cqsObject);
-                    if (!OneTruePrincipal.Current.IsInRole("Application_" + value) &&
-                        !OneTruePrincipal.Current.IsInRole("AllApplications"))
-                        throw new HttpException(403, "The given application key is not allowed for application " + value);
+                    context.Authentication.AuthenticationResponseGrant = new AuthenticationResponseGrant(
+                        (ClaimsPrincipal) User,
+                        authenticationContext.Properties);
                 }
             }
         }
 
-        private string FirstLine(string msg)
+        private static void RestrictOnApplicationId(object cqsObject)
         {
-            var pos = msg.IndexOfAny(new[] {'\r', '\n'});
-            if (pos == -1)
-                return msg;
+            if (ClaimsPrincipal.Current.Identity.AuthenticationType != "ApiKey")
+                return;
 
-            return msg.Substring(0, pos);
+            var prop = cqsObject.GetType().GetProperty("ApplicationId");
+            if ((prop == null) || !prop.CanRead)
+                return;
+
+            var value = (int) prop.GetValue(cqsObject);
+            if (!ClaimsPrincipal.Current.IsApplicationMember(value))
+                throw new HttpException(403, "The given application key is not allowed for application " + value);
         }
     }
 }

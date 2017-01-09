@@ -15,14 +15,14 @@ namespace OneTrueError.Web.Areas.Receiver.Helpers
         protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
         {
             //TODO: Maybe cache
-            JsonProperty prop = base.CreateProperty(member, memberSerialization);
+            var prop = base.CreateProperty(member, memberSerialization);
 
             if (!prop.Writable)
             {
                 var property = member as PropertyInfo;
                 if (property != null)
                 {
-                    bool hasPrivateSetter = property.GetSetMethod(true) != null;
+                    var hasPrivateSetter = property.GetSetMethod(true) != null;
                     prop.Writable = hasPrivateSetter;
                 }
             }

@@ -25,11 +25,10 @@ namespace OneTrueError.App.Core.Incidents
         }
 
         /// <summary>
-        /// Serialization constructor.
+        ///     Serialization constructor.
         /// </summary>
         protected IncidentSolution()
         {
-            
         }
 
         /// <summary>

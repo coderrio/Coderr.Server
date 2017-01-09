@@ -4,10 +4,10 @@ using Griffin.Container;
 namespace OneTrueError.App.Modules.Tagging.Identifiers
 {
     /// <summary>
-    /// Checks if C# is loaded and which version of it.
+    ///     Checks if C# is loaded and which version of it.
     /// </summary>
     [Component]
-    class CSharpIdentifier : ITagIdentifier
+    internal class CSharpIdentifier : ITagIdentifier
     {
         public void Identify(TagIdentifierContext context)
         {

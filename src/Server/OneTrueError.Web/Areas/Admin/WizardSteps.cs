@@ -12,8 +12,9 @@ namespace OneTrueError.Web.Areas.Admin
             new WizardStepInfo("Api keys", "~/admin/apikeys/"),
             new WizardStepInfo("Mail settings", "~/admin/messaging/email/"),
             new WizardStepInfo("Message queues", "~/admin/queues/"),
+            new WizardStepInfo("Report settings", "~/admin/reporting/")
         };
-        
+
 
         public static string GetNextWizardStep(this UrlHelper urlHelper)
         {
@@ -36,7 +37,8 @@ namespace OneTrueError.Web.Areas.Admin
                 index++;
 
             var step = Steps[index];
-            return $@"<a class=""btn btn- btn-default"" href=""{urlHelper.Content(step.VirtualPath)}"">{step.Name} &gt;&gt;</a>";
+            return
+                $@"<a class=""btn btn- btn-default"" href=""{urlHelper.Content(step.VirtualPath)}"">{step.Name} &gt;&gt;</a>";
         }
 
         public static string GetPreviousWizardStepLink(this UrlHelper urlHelper)
@@ -48,14 +50,15 @@ namespace OneTrueError.Web.Areas.Admin
                 index--;
 
             var step = Steps[index];
-            return $@"<a class=""btn btn-default"" href=""{urlHelper.Content(step.VirtualPath)}"">&lt;&lt; {step.Name}</a>";
+            return
+                $@"<a class=""btn btn-default"" href=""{urlHelper.Content(step.VirtualPath)}"">&lt;&lt; {step.Name}</a>";
         }
 
         public static bool IsCurrentStep(this UrlHelper urlHelper, WizardStepInfo step)
         {
             var currentIndex = FindCurrentIndex(urlHelper);
             var indexOfGivenStep = -1;
-            for (int i = 0; i < Steps.Length; i++)
+            for (var i = 0; i < Steps.Length; i++)
             {
                 if (Steps[i] == step)
                 {

@@ -42,14 +42,12 @@ module P {
 
     export function unfold<Seed, Element>(
         unspool: (current: Seed) => { promise: Promise<Element>; next?: Seed },
-        seed: Seed)
-        : Promise<Element[]> {
-        var d = defer<Element[]>();
-        var elements: Element[] = new Array<Element>();
+        seed: Seed): Promise<Element[]> {
+        const d = defer<Element[]>();
+        const elements = new Array<Element>();
 
-        unfoldCore<Seed, Element>(elements, d, unspool, seed)
-
-		return d.promise();
+        unfoldCore<Seed, Element>(elements, d, unspool, seed);
+        return d.promise();
     }
 
     function unfoldCore<Seed, Element>(
@@ -65,7 +63,7 @@ module P {
 
         // fastpath: don't waste stack space if promise resolves immediately.
 
-        while (result.next && result.promise.status == P.Status.Resolved) {
+        while (result.next && result.promise.status == Status.Resolved) {
             elements.push(result.promise.result);
             result = unspool(result.next);
             if (!result) {
@@ -90,7 +88,7 @@ module P {
     /**
         The status of a Promise. Initially a Promise is Unfulfilled and may
         change to Rejected or Resolved.
-	 
+     
         Once a promise is either Rejected or Resolved, it can not change its 
         status anymore.
     */
@@ -138,7 +136,7 @@ module P {
             Returns a promise that represents a promise chain that consists of this
             promise and the promise that is returned by the function provided.
             The function receives the value of this promise as soon it is resolved.
-			
+            
             If this promise fails, the function is never called and the returned promise 
             will also fail.
         */
@@ -217,13 +215,13 @@ module P {
         The Promise<Value> instance is a proxy to the Deferred<Value> instance.
     */
 
-    class PromiseI<Value> implements Promise<Value>
-    {
-        constructor(public deferred: DeferredI<Value>)
-        { }
+    class PromiseI<Value> implements Promise<Value> {
+        constructor(public deferred: DeferredI<Value>) {}
 
         get status(): Status { return this.deferred.status; }
+
         get result(): Value { return this.deferred.result; }
+
         get error(): Rejection { return this.deferred.error; }
 
         done(f: (v: Value) => void): Promise<Value> {
@@ -250,12 +248,12 @@ module P {
         Implementation of a deferred.
     */
 
-    class DeferredI<Value> implements Deferred<Value>{
+    class DeferredI<Value> implements Deferred<Value> {
 
-        private _resolved: (v: Value) => void = _ => { };
-        private _rejected: (err: Rejection) => void = _ => { };
+        private _resolved: (v: Value) => void = _ => {};
+        private _rejected: (err: Rejection) => void = _ => {};
 
-        private _status: Status = Status.Unfulfilled;
+        private _status = Status.Unfulfilled;
         private _result: Value;
         private _error: Rejection = { message: "" };
         private _promise: Promise<Value>;
@@ -295,7 +293,7 @@ module P {
                     // type Promise<any>, otherwise we would not support other 
                     // implementations here.
                     if (promiseOrValue instanceof PromiseI) {
-                        var p = <Promise<Result>> promiseOrValue;
+                        const p = promiseOrValue as Promise<Result>;
                         p.done(v2 => d.resolve(v2))
                             .fail(err => d.reject(err));
                         return p;
@@ -318,9 +316,11 @@ module P {
                 return this;
 
             var prev = this._resolved;
-            this._resolved = v => { prev(v); f(v); }
-
-			return this;
+            this._resolved = v => {
+                prev(v);
+                f(v);
+            };
+            return this;
         }
 
         fail(f: (err: Rejection) => void): Deferred<Value> {
@@ -333,9 +333,11 @@ module P {
                 return this;
 
             var prev = this._rejected;
-            this._rejected = e => { prev(e); f(e); }
-
-			return this;
+            this._rejected = e => {
+                prev(e);
+                f(e);
+            };
+            return this;
         }
 
         always(f: (v?: Value, err?: Rejection) => void): Deferred<Value> {
@@ -371,8 +373,8 @@ module P {
         }
 
         private detach() {
-            this._resolved = _ => { };
-            this._rejected = _ => { };
+            this._resolved = _ => {};
+            this._rejected = _ => {};
         }
     }
 
@@ -397,15 +399,13 @@ module P {
         return new IteratorI<E>(f);
     }
 
-    class IteratorI<E> implements Iterator<E>
-    {
+    class IteratorI<E> implements Iterator<E> {
         current: E = undefined;
 
-        constructor(private f: () => Promise<E>)
-        { }
+        constructor(private f: () => Promise<E>) {}
 
         advance(): Promise<boolean> {
-            var res = this.f();
+            const res = this.f();
             return res.then(value => {
                 if (isUndefined(value))
                     return false;
@@ -421,7 +421,7 @@ module P {
     */
 
     export function each<E>(gen: Generator<E>, f: (e: E) => void): Promise<{}> {
-        var d = defer();
+        const d = defer();
         eachCore(d, gen(), f);
         return d.promise();
     }
@@ -434,8 +434,8 @@ module P {
                     return;
                 }
 
-                f(it.current)
-				eachCore<E>(fin, it, f);
+                f(it.current);
+                eachCore<E>(fin, it, f);
             })
             .fail(err => fin.reject(err));
     }
@@ -445,6 +445,6 @@ module P {
     */
 
     export function isUndefined(v) {
-        return typeof v === 'undefined';
+        return typeof v === "undefined";
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
-using Griffin.Data.Mapper;
+﻿using Griffin.Data.Mapper;
 using OneTrueError.Api.Web.Feedback.Queries;
 
 namespace OneTrueError.SqlServer.Web.Feedback.Queries

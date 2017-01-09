@@ -1,17 +1,17 @@
 ﻿namespace OneTrueError.App.Modules.Triggers.Domain
 {
     /// <summary>
-    /// What to do if all filter rules have accepted the report.
+    ///     What to do if all filter rules have accepted the report.
     /// </summary>
     public enum LastTriggerAction
     {
         /// <summary>
-        /// Grant actions execution.
+        ///     Grant actions execution.
         /// </summary>
         Grant,
 
         /// <summary>
-        /// Abort.
+        ///     Abort.
         /// </summary>
         Revoke
     }

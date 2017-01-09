@@ -28,7 +28,7 @@ namespace OneTrueError.App.Core.Notifications
 
 
         /// <summary>
-        ///     Get application settings for all users. 
+        ///     Get application settings for all users.
         /// </summary>
         /// <param name="applicationId">applicationId</param>
         /// <returns>Default setting will be returned for users that do not have any application specific.</returns>

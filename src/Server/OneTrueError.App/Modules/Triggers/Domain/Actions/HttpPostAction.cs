@@ -13,7 +13,7 @@ namespace OneTrueError.App.Modules.Triggers.Domain.Actions
     [TriggerActionName("Http")]
     public class HttpPostAction : ITriggerAction
     {
-        private readonly ILog _log = LogManager.GetLogger(typeof (HttpPostAction));
+        private readonly ILog _log = LogManager.GetLogger(typeof(HttpPostAction));
 
         /// <summary>
         ///     POSTs data using JSON. Json object is <c>{ Report = ErrorReport, Incident = incident }</c>

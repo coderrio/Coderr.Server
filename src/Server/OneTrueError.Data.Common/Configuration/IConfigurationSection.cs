@@ -10,8 +10,8 @@ namespace OneTrueError.Infrastructure.Configuration
     {
         string SectionName { get; }
 
-        IDictionary<string, string> ToDictionary();
-
         void Load(IDictionary<string, string> settings);
+
+        IDictionary<string, string> ToDictionary();
     }
 }

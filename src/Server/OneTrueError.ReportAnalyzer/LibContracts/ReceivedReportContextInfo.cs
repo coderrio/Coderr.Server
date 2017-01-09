@@ -32,16 +32,16 @@ namespace OneTrueError.ReportAnalyzer.LibContracts
             Properties = properties;
         }
 
-        /// <summary>
-        ///     Properties
-        /// </summary>
-        public Dictionary<string, string> Properties { get; set; }
-
 
         /// <summary>
         ///     Context collection name
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        ///     Properties
+        /// </summary>
+        public Dictionary<string, string> Properties { get; set; }
 
         /// <summary>
         ///     Returns a string that represents the current object.

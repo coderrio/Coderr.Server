@@ -29,7 +29,7 @@ module Griffin.WebApp {
         }
 
         setContent(value: any) {
-            var elm = <any>this.elem;
+            const elm = this.elem as any;
             if (elm.value === "undefined") {
                 elm.value = value;
             } else {
@@ -47,11 +47,11 @@ module Griffin.WebApp {
         constructor(modelId: string, viewModel: any) {
             this.id = modelId;
             this.instance = viewModel;
-            for (var fieldName in viewModel) {
-                var underscorePos = fieldName.indexOf("_");
+            for (let fieldName in viewModel) {
+                const underscorePos = fieldName.indexOf("_");
                 if (underscorePos > 0 && typeof viewModel[fieldName] === "function") {
-                    var propertyName = fieldName.substr(0, underscorePos);
-                    var eventName = fieldName.substr(underscorePos + 1);
+                    const propertyName = fieldName.substr(0, underscorePos);
+                    const eventName = fieldName.substr(underscorePos + 1);
                     if (typeof this.jqueryMappings[propertyName] == "undefined") {
                         this.jqueryMappings[propertyName] = new FieldModel(propertyName);
                         var elem = this.elem(propertyName, this.id);
@@ -90,14 +90,15 @@ module Griffin.WebApp {
         mapChanged(elementNameOrId: string): P.Promise<ChangedEventArgs> {
             var p = P.defer<ChangedEventArgs>();
 
-            var elem = elem(elementNameOrId, this.id);
+            const elem = this.elem(elementNameOrId, this.id);
             if (elem.length === 0)
                 throw `Failed to find child element "${elementNameOrId}" in model "${this.id}"`;
 
             var model = this;
-            elem.on("changed", function() {
-                p.resolve(new ChangedEventArgs(model, <HTMLElement>this, $(this).val()));
-            });
+            elem.on("changed",
+                function() {
+                    p.resolve(new ChangedEventArgs(model, this as HTMLElement, $(this).val()));
+                });
 
             return p.promise();
         }
@@ -107,8 +108,8 @@ module Griffin.WebApp {
         }
 
         private getField(name: string): FieldModel {
-            for (var fieldName in this.jqueryMappings) {
-                var field = this.jqueryMappings[fieldName];
+            for (let fieldName in this.jqueryMappings) {
+                const field = this.jqueryMappings[fieldName];
                 if (field.equalsName(name))
                     return field;
             }
@@ -116,9 +117,9 @@ module Griffin.WebApp {
         }
 
         update(json: any) {
-            var model = this;
-            for (var fieldName in json) {
-                var field = this.getField(fieldName);
+            const model = this;
+            for (let fieldName in json) {
+                const field = this.getField(fieldName);
                 if (field !== null) {
                     field.setContent(json[fieldName]);
                 }
@@ -126,7 +127,7 @@ module Griffin.WebApp {
         }
 
         private elem(name: string, parent: any = null): JQuery {
-            var searchString = `#${name},[data-name="${name}"],[name="${name}"]`;
+            const searchString = `#${name},[data-name="${name}"],[name="${name}"]`;
             if (parent == null)
                 return $(searchString);
 
@@ -138,33 +139,35 @@ module Griffin.WebApp {
         }
 
         private mapEvent(propertyName, eventName, fieldName): void {
-            var elem = this.elem(propertyName, this.id);
+            const elem = this.elem(propertyName, this.id);
             if (elem.length === 0)
                 throw `Failed to find child element "${propertyName}" in model "${this.id}" for event "${eventName}'.`;
 
             var binder = this;
             if (eventName === "change" || eventName === "changed") {
-                elem.on("change", function(e) {
-                    var args = new ChangedEventArgs(binder.instance, this, $(this).val());
-                    binder.jqueryMappings[propertyName][eventName].apply(binder.instance, [args]);
-                    if (args.isHandled) {
-                        e.preventDefault();
-                    }
-                });
+                elem.on("change",
+                    function(e) {
+                        const args = new ChangedEventArgs(binder.instance, this, $(this).val());
+                        binder.jqueryMappings[propertyName][eventName].apply(binder.instance, [args]);
+                        if (args.isHandled) {
+                            e.preventDefault();
+                        }
+                    });
             } else if (eventName === "click" || eventName === "clicked") {
-                elem.on("click", function(e) {
-                    var value = "";
-                    if (this.tagName == "A") {
-                        value = this.getAttribute("href");
-                    } else {
-                        value = $(this).val();
-                    }
-                    var args = new ClickEventArgs(binder.instance, this, value);
-                    binder.jqueryMappings[propertyName][eventName].apply(binder.instance, [args]);
-                    if (args.isHandled) {
-                        e.preventDefault();
-                    }
-                });
+                elem.on("click",
+                    function(e) {
+                        var value = "";
+                        if (this.tagName == "A") {
+                            value = this.getAttribute("href");
+                        } else {
+                            value = $(this).val();
+                        }
+                        const args = new ClickEventArgs(binder.instance, this, value);
+                        binder.jqueryMappings[propertyName][eventName].apply(binder.instance, [args]);
+                        if (args.isHandled) {
+                            e.preventDefault();
+                        }
+                    });
             }
         }
     }
@@ -213,7 +216,6 @@ module Griffin.WebApp {
         }
 
         update(currentPage: number, pageSize: number, totalNumberOfItems: number) {
-            console.log(currentPage, pageSize, totalNumberOfItems);
             if (totalNumberOfItems < pageSize || pageSize === 0 || totalNumberOfItems === 0) {
                 this.pageCount = 0;
                 this.pages = [];
@@ -223,12 +225,12 @@ module Griffin.WebApp {
                 return;
             }
 
-            var isFirstUpdate = this.totalNumberOfItems === 0;
+            const isFirstUpdate = this.totalNumberOfItems === 0;
             this.pageCount = Math.ceil(totalNumberOfItems / pageSize);
             this.currentPage = currentPage;
             this.totalNumberOfItems = totalNumberOfItems;
             this.pageSize = pageSize;
-            var i = 1;
+            let i = 1;
             this.pages = new Array();
             for (i = 1; i <= this.pageCount; i++)
                 this.pages.push(new PagerPage(i, i === currentPage));
@@ -298,14 +300,15 @@ module Griffin.WebApp {
         }
 
         private createListItem(title: string, callback: () => void): HTMLElement {
-            var btn = document.createElement("button");
+            const btn = document.createElement("button");
             btn.innerHTML = title;
             btn.className = Pager.BTN_CLASS;
-            btn.addEventListener("click", function(e) {
-                e.preventDefault();
-                callback();
-            });
-            var li = document.createElement("li");
+            btn.addEventListener("click",
+                function(e) {
+                    e.preventDefault();
+                    callback();
+                });
+            const li = document.createElement("li");
             li.appendChild(btn);
             return li;
         }
@@ -334,9 +337,10 @@ module Griffin.WebApp {
             var ul = document.createElement("ul");
 
             //prev
-            var li = this.createListItem("&lt;&lt; Previous", function() {
-                self.movePrevious();
-            });
+            var li = this.createListItem("&lt;&lt; Previous",
+                function() {
+                    self.movePrevious();
+                });
             ul.appendChild(li);
             this.prevItem = li;
             if (this.currentPage <= 1 || this.pageCount <= 1) {
@@ -347,9 +351,10 @@ module Griffin.WebApp {
 
             //pages
             this.pages.forEach(item => {
-                var li = this.createListItem(item.pageNumber.toString(), function() {
-                    self.goto(item.pageNumber);
-                });
+                var li = this.createListItem(item.pageNumber.toString(),
+                    function() {
+                        self.goto(item.pageNumber);
+                    });
                 item.listItem = li;
                 ul.appendChild(li);
                 if (item.selected) {
@@ -359,9 +364,10 @@ module Griffin.WebApp {
             });
 
             //next
-            var li = this.createListItem("Next &gt;&gt;", function() {
-                self.moveNext();
-            });
+            var li = this.createListItem("Next &gt;&gt;",
+                function() {
+                    self.moveNext();
+                });
             ul.appendChild(li);
             this.nextItem = li;
             if (this.currentPage >= this.pageCount || this.pageCount <= 1) {

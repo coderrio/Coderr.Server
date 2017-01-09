@@ -19,7 +19,7 @@ namespace OneTrueError.App.Modules.Tagging
         {
             foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
             {
-                if (type.IsAbstract || type.IsInterface || !typeof (ITagIdentifier).IsAssignableFrom(type))
+                if (type.IsAbstract || type.IsInterface || !typeof(ITagIdentifier).IsAssignableFrom(type))
                     continue;
 
                 Identifiers.Add((ITagIdentifier) Activator.CreateInstance(type));

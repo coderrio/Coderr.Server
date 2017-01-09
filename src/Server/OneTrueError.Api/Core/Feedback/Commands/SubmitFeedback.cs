@@ -50,19 +50,31 @@ namespace OneTrueError.Api.Core.Feedback.Commands
         }
 
         /// <summary>
-        /// Serialization constructor
+        ///     Serialization constructor
         /// </summary>
         protected SubmitFeedback()
         {
         }
 
         /// <summary>
-        /// When the feedback was created in the client library
+        ///     When the feedback was created in the client library
         /// </summary>
         public DateTime CreatedAtUtc { get; set; }
 
         /// <summary>
-        /// Error description
+        ///     Email address (user want to get status updates)
+        /// </summary>
+        public string Email { get; set; }
+
+        /// <summary>
+        ///     Error id generated in our client library. Used to identify error reports before they have been saved into our
+        ///     system
+        /// </summary>
+        [Required]
+        public string ErrorId { get; private set; }
+
+        /// <summary>
+        ///     Error description
         /// </summary>
         public string Feedback { get; set; }
 
@@ -73,24 +85,12 @@ namespace OneTrueError.Api.Core.Feedback.Commands
         public string RemoteAddress { get; set; }
 
         /// <summary>
-        ///     Error id generated in our client library. Used to identify error reports before they have been saved into our
-        ///     system
-        /// </summary>
-        [Required]
-        public string ErrorId { get; private set; }
-
-        /// <summary>
         ///     PK from the db entry of the error report.
         /// </summary>
         public int ReportId { get; private set; }
 
         /// <summary>
-        /// Email address (user want to get status updates)
-        /// </summary>
-        public string Email { get; set; }
-
-        /// <summary>
-        /// Validate contents of this command
+        ///     Validate contents of this command
         /// </summary>
         /// <param name="validationContext">validation context</param>
         /// <returns>Validation errors if any</returns>

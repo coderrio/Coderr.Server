@@ -1,22 +1,29 @@
 ﻿using System;
-using System.ComponentModel.Design;
 using DotNetCqs;
 
 namespace OneTrueError.Api.Core.ApiKeys.Commands
 {
     /// <summary>
-    /// Create a new api key
+    ///     Create a new api key
     /// </summary>
     [AuthorizeRoles("SysAdmin")]
     public class CreateApiKey : Command
     {
         /// <summary>
-        /// Creates a new instance of <see cref="CreateApiKey"/>.
+        ///     Creates a new instance of <see cref="CreateApiKey" />.
         /// </summary>
-        /// <param name="applicationName"><see cref="ApplicationName"/></param>
-        /// <param name="apiKey"><see cref="ApiKey"/></param>
-        /// <param name="sharedSecret"><see cref="SharedSecret"/></param>
-        /// <param name="applicationIds"><see cref="ApplicationIds"/></param>
+        /// <param name="applicationName">
+        ///     <see cref="ApplicationName" />
+        /// </param>
+        /// <param name="apiKey">
+        ///     <see cref="ApiKey" />
+        /// </param>
+        /// <param name="sharedSecret">
+        ///     <see cref="SharedSecret" />
+        /// </param>
+        /// <param name="applicationIds">
+        ///     <see cref="ApplicationIds" />
+        /// </param>
         public CreateApiKey(string applicationName, string apiKey, string sharedSecret, int[] applicationIds)
         {
             if (applicationName == null) throw new ArgumentNullException("applicationName");
@@ -31,11 +38,17 @@ namespace OneTrueError.Api.Core.ApiKeys.Commands
         }
 
         /// <summary>
-        /// Creates a new instance of <see cref="CreateApiKey"/>.
+        ///     Creates a new instance of <see cref="CreateApiKey" />.
         /// </summary>
-        /// <param name="applicationName"><see cref="ApplicationName"/></param>
-        /// <param name="apiKey"><see cref="ApiKey"/></param>
-        /// <param name="sharedSecret"><see cref="SharedSecret"/></param>
+        /// <param name="applicationName">
+        ///     <see cref="ApplicationName" />
+        /// </param>
+        /// <param name="apiKey">
+        ///     <see cref="ApiKey" />
+        /// </param>
+        /// <param name="sharedSecret">
+        ///     <see cref="SharedSecret" />
+        /// </param>
         public CreateApiKey(string applicationName, string apiKey, string sharedSecret)
         {
             if (applicationName == null) throw new ArgumentNullException("applicationName");
@@ -49,36 +62,35 @@ namespace OneTrueError.Api.Core.ApiKeys.Commands
         }
 
         /// <summary>
-        /// Serialization constructor
+        ///     Serialization constructor
         /// </summary>
         protected CreateApiKey()
         {
-            
         }
 
 
         /// <summary>
-        /// Must always be the one that creates the key (will be assigned by the CommandBus per convention)
+        ///     Must always be the one that creates the key (will be assigned by the CommandBus per convention)
         /// </summary>
         public int AccountId { get; set; }
 
         /// <summary>
-        /// Generated api key
+        ///     Generated api key
         /// </summary>
         public string ApiKey { get; set; }
 
         /// <summary>
-        /// applications that this key may modify. Empty = allow for all applications.
+        ///     applications that this key may modify. Empty = allow for all applications.
         /// </summary>
         public int[] ApplicationIds { get; set; }
 
         /// <summary>
-        /// Application that uses this api key
+        ///     Application that uses this api key
         /// </summary>
         public string ApplicationName { get; set; }
 
         /// <summary>
-        /// Used to sign all requests.
+        ///     Used to sign all requests.
         /// </summary>
         public string SharedSecret { get; set; }
     }

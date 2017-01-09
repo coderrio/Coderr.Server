@@ -4,7 +4,7 @@ using Griffin.Container;
 namespace OneTrueError.App.Modules.Tagging.Identifiers
 {
     /// <summary>
-    /// Checks if the application was run as an console application.
+    ///     Checks if the application was run as an console application.
     /// </summary>
     [Component]
     public class ConsoleApplication : ITagIdentifier
@@ -19,7 +19,7 @@ namespace OneTrueError.App.Modules.Tagging.Identifiers
 
             if (context.IsFound("System.Windows.Forms"))
                 return;
-            
+
             context.AddIfFound("Program.Main(String[] args)", "console-application");
         }
     }

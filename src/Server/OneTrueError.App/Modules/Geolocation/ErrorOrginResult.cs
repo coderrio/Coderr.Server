@@ -1,7 +1,7 @@
 ﻿namespace OneTrueError.App.Modules.Geolocation
 {
     /// <summary>
-    /// List result item for repository queries
+    ///     List result item for repository queries
     /// </summary>
     public class ErrorOrginListItem
     {

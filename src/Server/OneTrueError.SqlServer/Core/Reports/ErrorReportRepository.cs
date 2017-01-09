@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Griffin.Container;
@@ -9,7 +10,6 @@ using Griffin.Data.Mapper;
 using OneTrueError.Api.Core.Reports;
 using OneTrueError.App.Core.Reports;
 using OneTrueError.App.Core.Reports.Invalid;
-using OneTrueError.SqlServer.Tools;
 
 namespace OneTrueError.SqlServer.Core.Reports
 {
@@ -27,7 +27,7 @@ namespace OneTrueError.SqlServer.Core.Reports
 
         public async Task CreateAsync(InvalidErrorReport entity)
         {
-            using (var cmd = (DbCommand)_uow.CreateCommand())
+            using (var cmd = (DbCommand) _uow.CreateCommand())
             {
                 cmd.CommandText =
                     @"INSERT INTO InvalidErrorReports (Id, AddedAtUtc, ApplicationId, Body, Exception) VALUES(@Id, @AddedAtUtc, @OrganizationId, @ApplicationId, @Body, @Exception)";
@@ -37,24 +37,6 @@ namespace OneTrueError.SqlServer.Core.Reports
                 cmd.AddParameter("Body", entity.Report);
                 cmd.AddParameter("Exception", entity.Exception);
                 await cmd.ExecuteNonQueryAsync();
-            }
-        }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities")]
-        public IEnumerable<ReportDTO> GetAll(int[] ids)
-        {
-            //TODO: Remove SQL injection vulnerability
-
-            using (var cmd = _uow.CreateCommand())
-            {
-                var idString = string.Join(",", ids.Select(x => "'" + x + "'"));
-
-                cmd.CommandText =
-                    string.Format(
-                        "SELECT * FROM ErrorReports WHERE Id IN ({0})",
-                        idString);
-
-                return cmd.ToList<ReportDTO>().ToList();
             }
         }
 
@@ -113,6 +95,22 @@ namespace OneTrueError.SqlServer.Core.Reports
             }
         }
 
-       
+        [SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities")]
+        public IEnumerable<ReportDTO> GetAll(int[] ids)
+        {
+            //TODO: Remove SQL injection vulnerability
+
+            using (var cmd = _uow.CreateCommand())
+            {
+                var idString = string.Join(",", ids.Select(x => "'" + x + "'"));
+
+                cmd.CommandText =
+                    string.Format(
+                        "SELECT * FROM ErrorReports WHERE Id IN ({0})",
+                        idString);
+
+                return cmd.ToList<ReportDTO>().ToList();
+            }
+        }
     }
 }

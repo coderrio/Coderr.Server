@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FluentAssertions;
-using OneTrueError.App.Configuration;
 using OneTrueError.App.Tests.Configuration.TestEntitites;
-using OneTrueError.Infrastructure.Configuration;
+using OneTrueError.Infrastructure.Configuration.ConfigFile;
 using Xunit;
 
 namespace OneTrueError.App.Tests.Configuration
@@ -17,7 +12,6 @@ namespace OneTrueError.App.Tests.Configuration
         [Fact]
         public void should_be_able_to_read_an_existing_category()
         {
-            
             var sut = new ConfigFileStore();
             var actual = sut.Load<MySection>();
 
@@ -27,7 +21,6 @@ namespace OneTrueError.App.Tests.Configuration
         [Fact]
         public void should_return_null_if_a_category_is_missing()
         {
-
             var sut = new ConfigFileStore();
             var actual = sut.Load<NonExistantSection>();
 
@@ -47,7 +40,5 @@ namespace OneTrueError.App.Tests.Configuration
 
             actual.Should().Be(expected);
         }
-
-
     }
 }

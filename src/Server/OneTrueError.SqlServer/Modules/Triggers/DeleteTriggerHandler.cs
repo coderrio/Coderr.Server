@@ -4,7 +4,6 @@ using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
 using OneTrueError.Api.Modules.Triggers.Commands;
-using OneTrueError.SqlServer.Tools;
 
 namespace OneTrueError.SqlServer.Modules.Triggers
 {

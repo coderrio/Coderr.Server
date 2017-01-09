@@ -46,7 +46,7 @@ namespace OneTrueError.Web.Areas.Receiver.Models
         {
             var path = AppDomain.CurrentDomain.BaseDirectory;
             //if (Debugger.IsAttached)
-                //path = Path.GetFullPath(path + "..\\..");
+            //path = Path.GetFullPath(path + "..\\..");
 
             path = Path.Combine(path, "SamplingSettings.json");
             return path;

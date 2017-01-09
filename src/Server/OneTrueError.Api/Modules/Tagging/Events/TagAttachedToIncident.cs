@@ -4,12 +4,12 @@ using DotNetCqs;
 namespace OneTrueError.Api.Modules.Tagging.Events
 {
     /// <summary>
-    /// New tag(s) have been identified for the processed incident.
+    ///     New tag(s) have been identified for the processed incident.
     /// </summary>
     public class TagAttachedToIncident : ApplicationEvent
     {
         /// <summary>
-        /// Creates a new instance of <see cref="TagAttachedToIncident"/>.
+        ///     Creates a new instance of <see cref="TagAttachedToIncident" />.
         /// </summary>
         /// <param name="incidentId">Incident being processed</param>
         /// <param name="tags">tags</param>
@@ -24,12 +24,12 @@ namespace OneTrueError.Api.Modules.Tagging.Events
         }
 
         /// <summary>
-        /// Incident being processed
+        ///     Incident being processed
         /// </summary>
         public int IncidentId { get; private set; }
 
         /// <summary>
-        /// Identified tags
+        ///     Identified tags
         /// </summary>
         public TagDTO[] Tags { get; private set; }
     }

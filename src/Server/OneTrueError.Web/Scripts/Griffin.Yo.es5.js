@@ -8,6 +8,7 @@ var Griffin;
         (function (Dom) {
             var ElemUtils = (function () {
                 function ElemUtils() {}
+
                 ElemUtils.removeChildren = function (n) {
                     if (!n) {
                         throw new Error("Element not set: " + n);
@@ -32,7 +33,7 @@ var Griffin;
                     if (name != null) return name;
                     name = e.getAttribute("data-name");
                     if (name != null) return name;
-                    var attrs = '';
+                    var attrs = "";
                     for (var i = 0; i < e.attributes.length; i++) {
                         attrs = attrs + e.attributes[i].name + "=" + e.attributes[i].value + ",";
                     }
@@ -49,6 +50,7 @@ var Griffin;
                         this.scope = scope;
                     }
                 }
+
                 EventMapper.prototype.click = function (selector, listener, useCapture) {
                     var items = this.scope.querySelectorAll(selector);
                     if (items.length === 0) throw new Error("Failed to bind \"click\" to selector \"" + selector + "\", no elements found.");
@@ -84,7 +86,7 @@ var Griffin;
                 function FormReader(elemOrName) {
                     this.stack = [];
                     if (typeof elemOrName === "string") {
-                        this.container = document.querySelector('#' + elemOrName + ",[data-name=\"" + elemOrName + "\"]");
+                        this.container = document.querySelector("#" + elemOrName + ",[data-name=\"" + elemOrName + "\"]");
                         if (!this.container) {
                             throw new Error("Failed to locate '" + elemOrName + "'.");
                         }
@@ -92,6 +94,7 @@ var Griffin;
                         this.container = elemOrName;
                     }
                 }
+
                 FormReader.prototype.read = function () {
                     var motherObject = {};
                     for (var i = 0; i < this.container.childElementCount; i++) {
@@ -135,8 +138,8 @@ var Griffin;
                             }
                             continue;
                         }
-                        var isOptionOrCheckbox = elem.getAttribute('type') === 'checkbox' || elem.getAttribute('type') === 'radio';
-                        if (name !== '[]' && addedItems.indexOf(name) >= 0 && !isOptionOrCheckbox) {
+                        var isOptionOrCheckbox = elem.getAttribute("type") === "checkbox" || elem.getAttribute("type") === "radio";
+                        if (name !== "[]" && addedItems.indexOf(name) >= 0 && !isOptionOrCheckbox) {
                             arr.push(currentArrayItem);
                             currentArrayItem = {};
                             addedItems = [];
@@ -151,7 +154,7 @@ var Griffin;
                                 continue;
                             }
                         }
-                        if (name === '[]') {
+                        if (name === "[]") {
                             arr.push(value);
                         } else {
                             this.assignByName(name, currentArrayItem, value);
@@ -163,7 +166,7 @@ var Griffin;
                     return arr;
                 };
                 FormReader.prototype.pullElement = function (container) {
-                    if (container.tagName == 'SELECT') {
+                    if (container.tagName == "SELECT") {
                         var select = container;
                         if (select.selectedIndex == -1) {
                             return null;
@@ -171,10 +174,10 @@ var Griffin;
                         var value1 = select.options[select.selectedIndex];
                         return this.processValue(value1.value);
                     } else if (container.childElementCount === 0) {
-                        if (container.tagName == 'INPUT') {
+                        if (container.tagName == "INPUT") {
                             var input = container;
-                            var typeStr = container.getAttribute('type');
-                            if (typeStr === 'radio' || typeStr === 'checkbox') {
+                            var typeStr = container.getAttribute("type");
+                            if (typeStr === "radio" || typeStr === "checkbox") {
                                 if (input.checked) {
                                     return this.processValue(input.value);
                                 }
@@ -182,7 +185,7 @@ var Griffin;
                             }
                             return this.processValue(input.value);
                         } else {
-                            var value3 = container.getAttribute('value') || '';
+                            var value3 = container.getAttribute("value") || "";
                             return this.processValue(value3);
                         }
                     }
@@ -231,18 +234,18 @@ var Griffin;
                 FormReader.prototype.processValue = function (value) {
                     if (!isNaN(value)) {
                         return parseInt(value, 10);
-                    } else if (value == 'true') {
+                    } else if (value == "true") {
                         return true;
-                    } else if (value == 'false') {
+                    } else if (value == "false") {
                         return false;
                     }
                     return value;
                 };
                 FormReader.prototype.assignByName = function (name, parentObject, value) {
-                    var parts = name.split('.');
+                    var parts = name.split(".");
                     var obj = parentObject;
                     var parent = parentObject;
-                    var lastKey = '';
+                    var lastKey = "";
                     parts.forEach(function (key) {
                         lastKey = key;
                         if (!obj.hasOwnProperty(key)) {
@@ -269,10 +272,10 @@ var Griffin;
                     return true;
                 };
                 FormReader.prototype.getName = function (el) {
-                    return el.getAttribute('name') || el.getAttribute('data-name') || el.getAttribute('data-collection');
+                    return el.getAttribute("name") || el.getAttribute("data-name") || el.getAttribute("data-collection");
                 };
                 FormReader.prototype.isCollection = function (el) {
-                    return el.hasAttribute('data-collection');
+                    return el.hasAttribute("data-collection");
                 };
                 return FormReader;
             })();
@@ -286,6 +289,7 @@ var Griffin;
                     }
                     if (!this.scope) throw new Error("Failed to identify scope");
                 }
+
                 Selector.prototype.one = function (idOrselector) {
                     if (idOrselector.substr(0, 1) === "#") {
                         var el2 = this.scope.querySelector(idOrselector);
@@ -324,6 +328,7 @@ var Griffin;
         (function (Net) {
             var Http = (function () {
                 function Http() {}
+
                 Http.get = function (url, callback, contentType) {
                     var _this = this;
                     if (contentType === void 0) {
@@ -368,16 +373,16 @@ var Griffin;
                     if (!data) {
                         throw new Error("You must specify a body when using POST.");
                     }
-                    Http.invokeRequest('POST', url, data, callback, options);
+                    Http.invokeRequest("POST", url, data, callback, options);
                 };
                 Http.put = function (url, data, callback, options) {
                     if (!data) {
                         throw new Error("You must specify a body when using PUT.");
                     }
-                    Http.invokeRequest('PUT', url, data, callback, options);
+                    Http.invokeRequest("PUT", url, data, callback, options);
                 };
                 Http["delete"] = function (url, callback, options) {
-                    Http.invokeRequest('DELETE', url, null, callback, options);
+                    Http.invokeRequest("DELETE", url, null, callback, options);
                 };
                 Http.invokeRequest = function (verb, url, data, callback, options) {
                     if (!verb) {
@@ -450,6 +455,7 @@ var Griffin;
                     this.parts = [];
                     this.parts = route.replace(/^\//, "").replace(/\/$/, "").split("/");
                 }
+
                 Route.prototype.isMatch = function (ctx) {
                     var urlParts = ctx.url.split("/", 10);
                     for (var i = 0; i < this.parts.length; i++) {
@@ -499,6 +505,7 @@ var Griffin;
                 function Router() {
                     this.routes = [];
                 }
+
                 Router.prototype.add = function (route, handler, targetElement) {
                     this.routes.push(new Route(route, handler, targetElement));
                 };
@@ -552,6 +559,7 @@ var Griffin;
                     function BootstrapModalViewTarget() {
                         this.name = "BootstrapModal";
                     }
+
                     BootstrapModalViewTarget.prototype.assignOptions = function (options) {};
                     BootstrapModalViewTarget.prototype.attachViewModel = function (script) {
                         this.currentNode = new BootstrapModalViewTargetRequest(this.name);
@@ -570,30 +578,31 @@ var Griffin;
                 var BootstrapModalViewTargetRequest = (function () {
                     function BootstrapModalViewTargetRequest(name) {
                         this.name = name;
-                        this.node = document.createElement('div');
-                        this.node.setAttribute('id', this.name);
-                        this.node.setAttribute('class', 'modal fade view-target');
-                        this.node.setAttribute('role', 'dialog');
+                        this.node = document.createElement("div");
+                        this.node.setAttribute("id", this.name);
+                        this.node.setAttribute("class", "modal fade view-target");
+                        this.node.setAttribute("role", "dialog");
                         document.body.appendChild(this.node);
-                        var contents = '\r\n' + '  <div class="modal-dialog">\r\n' + '\r\n' + '    <div class="modal-content">\r\n' + '      <div class="modal-header">\r\n' + '        <button type="button" class="close" data-dismiss="modal">&times;</button>\r\n' + '        <h4 class="modal-title"></h4>\r\n' + '      </div>\r\n' + '      <div class="modal-body">\r\n' + '        \r\n' + '      </div>\r\n' + '      <div class="modal-footer">\r\n' + '        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>\r\n' + '      </div>\r\n' + '    </div>\r\n' + '\r\n' + '  </div>\r\n' + '';
+                        var contents = "\r\n" + '  <div class="modal-dialog">\r\n' + "\r\n" + '    <div class="modal-content">\r\n' + '      <div class="modal-header">\r\n' + '        <button type="button" class="close" data-dismiss="modal">&times;</button>\r\n' + '        <h4 class="modal-title"></h4>\r\n' + "      </div>\r\n" + '      <div class="modal-body">\r\n' + "        \r\n" + "      </div>\r\n" + '      <div class="modal-footer">\r\n' + '        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>\r\n' + "      </div>\r\n" + "    </div>\r\n" + "\r\n" + "  </div>\r\n" + "";
                         this.node.innerHTML = contents;
                     }
+
                     BootstrapModalViewTargetRequest.prototype.prepare = function (options) {
-                        var body = this.node.querySelector('.modal-body');
+                        var body = this.node.querySelector(".modal-body");
                         while (body.firstChild) body.removeChild(body.firstChild);
-                        var footer = this.node.querySelector('.modal-footer');
+                        var footer = this.node.querySelector(".modal-footer");
                         while (footer.firstChild) footer.removeChild(footer.firstChild);
                         if (options && options.buttons) {
                             options.buttons.forEach(function (item) {
-                                var button = document.createElement('button');
+                                var button = document.createElement("button");
                                 if (item.className) {
-                                    button.setAttribute('class', 'btn ' + item.className);
+                                    button.setAttribute("class", "btn " + item.className);
                                 } else {
-                                    button.setAttribute('class', 'btn btn-default');
+                                    button.setAttribute("class", "btn btn-default");
                                 }
-                                button.setAttribute('data-dismiss', 'modal');
+                                button.setAttribute("data-dismiss", "modal");
                                 button.innerText = item.title;
-                                button.addEventListener('click', function (e) {
+                                button.addEventListener("click", function (e) {
                                     item.callback(body.firstElementChild);
                                 });
                                 footer.appendChild(button);
@@ -601,18 +610,18 @@ var Griffin;
                         }
                     };
                     BootstrapModalViewTargetRequest.prototype.attachViewModel = function (script) {
-                        this.node.querySelector('.modal-body').appendChild(script);
+                        this.node.querySelector(".modal-body").appendChild(script);
                     };
                     BootstrapModalViewTargetRequest.prototype.setTitle = function (title) {
-                        this.node.querySelector('.modal-title').innerText = title;
+                        this.node.querySelector(".modal-title").innerText = title;
                     };
                     BootstrapModalViewTargetRequest.prototype.render = function (element) {
                         var _this = this;
-                        this.node.querySelector('.modal-body').appendChild(element);
-                        var footer = this.node.querySelector('.modal-footer');
+                        this.node.querySelector(".modal-body").appendChild(element);
+                        var footer = this.node.querySelector(".modal-footer");
                         this.modal = $(this.node).modal();
-                        $(this.modal).on('hidden.bs.modal', function () {
-                            _this.modal.modal('hide').data('bs.modal', null);
+                        $(this.modal).on("hidden.bs.modal", function () {
+                            _this.modal.modal("hide").data("bs.modal", null);
                             _this.node.parentElement.removeChild(_this.node);
                         });
                         var buttons = element.querySelectorAll('button,input[type="submit"],input[type="button"]');
@@ -622,9 +631,9 @@ var Griffin;
                             }
                             for (var i = 0; i < buttons.length; i++) {
                                 var button = buttons[i];
-                                button.className += ' btn';
-                                button.addEventListener('click', (function (target, button, e) {
-                                    target.modal.modal('hide');
+                                button.className += " btn";
+                                button.addEventListener("click", (function (button, e) {
+                                    this.modal.modal("hide");
                                     if (button.tagName === "input" && button.type !== "submit" || button.hasAttribute("data-dismiss")) {
                                         window.history.go(-1);
                                     }
@@ -632,13 +641,13 @@ var Griffin;
                                 footer.appendChild(buttons[i]);
                             }
                             if (buttons.length === 1) {
-                                buttons[0].className += ' btn-primary';
+                                buttons[0].className += " btn-primary";
                             } else {
-                                buttons[0].className += ' btn-primary';
-                                buttons[buttons.length - 1].className += ' btn-cancel';
+                                buttons[0].className += " btn-primary";
+                                buttons[buttons.length - 1].className += " btn-cancel";
                             }
                         }
-                        this.modal.modal('show');
+                        this.modal.modal("show");
                     };
                     return BootstrapModalViewTargetRequest;
                 })();
@@ -655,6 +664,7 @@ var Griffin;
                         }
                         this.name = this.container.id;
                     }
+
                     ElementViewTarget.prototype.assignOptions = function () {};
                     ElementViewTarget.prototype.attachViewModel = function (script) {
                         this.container.appendChild(script);
@@ -682,6 +692,7 @@ var Griffin;
             (function (ViewModels) {
                 var ClassFactory = (function () {
                     function ClassFactory() {}
+
                     ClassFactory.getConstructor = function (appName, viewModelModuleAndName) {
                         var nameParts = viewModelModuleAndName.split(".");
                         var fn = window[appName] || this[appName];
@@ -731,6 +742,7 @@ var Griffin;
             var Net = Yo.Net;
             var Config = (function () {
                 function Config() {}
+
                 Config.applicationScope = {};
                 return Config;
             })();
@@ -746,6 +758,7 @@ var Griffin;
                     }
                     this.applicationName = applicationName;
                 }
+
                 RouteRunner.replaceAll = function (str, replaceWhat, replaceTo) {
                     replaceWhat = replaceWhat.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
                     var re = new RegExp(replaceWhat, "g");
@@ -789,8 +802,11 @@ var Griffin;
                 RouteRunner.prototype.removeConditions = function (elem, context) {
                     for (var i = 0; i < elem.childElementCount; i++) {
                         var child = elem.children[i];
+                        if (!child.hasAttribute("data-if")) {
+                            continue;
+                        }
                         var ifStatement = child.getAttribute("data-if");
-                        var ifResult = !ifStatement || !this.evalInContext(ifStatement, context);
+                        var ifResult = this.evalInContext(ifStatement, context);
                         if (!ifResult) {
                             child.parentNode.removeChild(child);
                             continue;
@@ -805,7 +821,7 @@ var Griffin;
                 };
                 RouteRunner.prototype.isIE = function () {
                     var myNav = navigator.userAgent.toLowerCase();
-                    return myNav.indexOf('msie') != -1 ? parseInt(myNav.split('msie')[1]) : false;
+                    return myNav.indexOf("msie") != -1 ? parseInt(myNav.split("msie")[1]) : false;
                 };
                 RouteRunner.prototype.invoke = function (ctx) {
                     var _this = this;
@@ -864,11 +880,13 @@ var Griffin;
                                 for (var j = 0; j < allIfs.length; j++) {
                                     var elem = allIfs[j];
                                     var condition = elem.getAttribute("data-if");
-                                    if (condition.substr(0, 3) != 'vm.' && condition.substr(0, 6) != 'model.' && condition.substr(0, 4) != 'ctx.') {
+                                    var check = condition;
+                                    if (check.substr(0, 1) === '!') check = check.substr(1);
+                                    if (check.substr(0, 3) != "vm." && check.substr(0, 6) != "model." && check.substr(0, 4) != "ctx.") {
                                         continue;
                                     }
-                                    var result = self.evalInContext(condition, { model: vm, ctx: ctx, vm: vm });
-                                    if (!result) {
+                                    var evalResult = self.evalInContext(condition, { model: vm, ctx: ctx, vm: vm });
+                                    if (!evalResult) {
                                         elem.parentNode.removeChild(elem);
                                     }
                                 }
@@ -876,7 +894,7 @@ var Griffin;
                                 for (var j = 0; j < allUnless.length; j++) {
                                     var elem = allUnless[j];
                                     var condition = elem.getAttribute("data-unless");
-                                    if (condition.substr(0, 3) != 'vm.' && condition.substr(0, 6) != 'model.' && condition.substr(0, 4) != 'ctx.') {
+                                    if (condition.substr(0, 3) != "vm." && condition.substr(0, 6) != "model." && condition.substr(0, 4) != "ctx.") {
                                         continue;
                                     }
                                     var result = self.evalInContext(condition, { ctx: ctx, vm: vm });
@@ -941,6 +959,7 @@ var Griffin;
                     this.container = container;
                     if (!ScriptLoader.dummyScriptNode) ScriptLoader.dummyScriptNode = document.createElement("script");
                 }
+
                 ScriptLoader.prototype.stateChange = function () {
                     if (this.pendingScripts.length === 0) {
                         if (console && console.log) console.log("Got ready state for a non existent script: ", this);
@@ -1041,10 +1060,11 @@ var Griffin;
                     this.basePath = window.location.pathname;
                     this.defaultViewTarget = new ViewTargets.ElementViewTarget("#YoView");
                 }
+
                 SpaEngine.prototype.addTarget = function (name, target) {
                     if (typeof target === "string") {
                         var id = target;
-                        if (id.substr(0, 1) != '#') throw new Error("Element id must start with #.");
+                        if (id.substr(0, 1) != "#") throw new Error("Element id must start with #.");
                         target = new Griffin.Yo.Routing.ViewTargets.ElementViewTarget(id);
                     }
                     var target2 = target;
@@ -1081,7 +1101,7 @@ var Griffin;
                     window.addEventListener("hashchange", function () {
                         var hash = window.location.hash;
                         if (!hash) {
-                            hash = '#/';
+                            hash = "#/";
                         }
                         if (hash.substr(1, 1) !== "/") return;
                         var changedUrl = hash.substr(2);
@@ -1157,6 +1177,7 @@ var Griffin;
                         this.container = elemOrName;
                     }
                 }
+
                 ViewRenderer.prototype.register = function (directive) {
                     this.directives.push(directive);
                 };
@@ -1182,19 +1203,19 @@ var Griffin;
                         directives = {};
                     }
                     var elementName = this.getName(element);
-                    if ((element.childElementCount === 0 || element.tagName === "SELECT") && elementName && !element.hasAttribute("data-unless") && !element.hasAttribute("data-data-if")) {
+                    if ((element.childElementCount === 0 || element.tagName === "SELECT") && elementName && !element.hasAttribute("data-unless") && !element.hasAttribute("data-if")) {
                         if (data && data.hasOwnProperty(elementName)) {
                             data = data[elementName];
                         }
                         data = this.runDirectives(element, data);
                         if (directives) {
                             if (this.applyEmbeddedDirectives(element, data, directives)) {
-                                this.log('directives applied to element, done.');
+                                this.log("directives applied to element, done.");
                                 return;
                             }
                         }
                         if (typeof data === "undefined") {
-                            this.log('directives, but no data');
+                            this.log("directives, but no data");
                             return;
                         }
                         if (element.tagName === "INPUT") {
@@ -1213,16 +1234,16 @@ var Griffin;
                             for (var j = 0; j < sel.options.length; j++) {
                                 var opt = sel.options[j];
                                 if (opt.value === data || opt.label === data) {
-                                    this.log('setting option ' + opt.label + " to selected");
+                                    this.log("setting option " + opt.label + " to selected");
                                     opt.selected = true;
                                     break;
                                 }
                             }
                         } else if (element.tagName === "TEXTAREA") {
-                            this.log('textarea => ' + data);
+                            this.log("textarea => " + data);
                             element.innerText = data;
                         } else {
-                            this.log('innerHTML => ' + data);
+                            this.log("innerHTML => " + data);
                             element.innerHTML = data;
                         }
                     }
@@ -1239,7 +1260,7 @@ var Griffin;
                             childDirective = directives[name];
                         }
                         if (typeof childData === "undefined") {
-                            this.log('got no data, checking directives.');
+                            this.log("got no data, checking directives.");
                             var gotValueProvider = false;
                             if (childDirective) {
                                 gotValueProvider = childDirective.hasOwnProperty("value") || childDirective.hasOwnProperty("text") || childDirective.hasOwnProperty("html");
@@ -1250,7 +1271,7 @@ var Griffin;
                                         item.style.display = "none";
                                     }
                                 }
-                                this.log('got no data and no directives.');
+                                this.log("got no data and no directives.");
                                 continue;
                             }
                         }
@@ -1266,7 +1287,7 @@ var Griffin;
                                     item.style.display = "none";
                                 }
                             } else if (childData instanceof Array) {
-                                var wrapper = document.createElement('div');
+                                var wrapper = document.createElement("div");
                                 wrapper.appendChild(item.cloneNode(true));
                                 var elementHtml = wrapper.innerHTML;
                                 var elemPath = name;
@@ -1289,7 +1310,7 @@ var Griffin;
                         directive = null;
                     }
                     var container = element;
-                    this.log('renderCollection');
+                    this.log("renderCollection");
                     if (element.hasAttribute("data-unless")) {
                         var value = element.getAttribute("data-unless");
                         var name = this.getName(element);
@@ -1301,16 +1322,16 @@ var Griffin;
                             result = this.evalInContext(value, ctx);
                         }
                         if (result) {
-                            this.log('unless(show)');
+                            this.log("unless(show)");
                             element.style.display = "";
                         } else {
-                            this.log('unless(hide)');
+                            this.log("unless(hide)");
                             element.style.display = "none";
                         }
                     }
                     if (container.tagName === "TR" || container.tagName === "LI") {
                         container = container.parentElement;
-                        this.log('correcting container element by moving to up to parent', container);
+                        this.log("correcting container element by moving to up to parent", container);
                         container.setAttribute("data-collection", element.getAttribute("data-collection"));
                         element.setAttribute("data-name", "value");
                         element.removeAttribute("data-collection");
@@ -1348,17 +1369,17 @@ var Griffin;
                         var value = directives[key].apply(element, [data, this.dtoStack[this.dtoStack.length - 2]]);
                         if (key === "html") {
                             isDirectiveValueSpecified = true;
-                            this.log('Assigning html', value, "to", element);
+                            this.log("Assigning html", value, "to", element);
                             element.innerHTML = value;
                         } else if (key === "text") {
                             isDirectiveValueSpecified = true;
-                            this.log('Assigning text', value, "to", element);
+                            this.log("Assigning text", value, "to", element);
                             element.innerText = value;
                         } else {
                             if (key === "value") {
                                 isDirectiveValueSpecified = true;
                             }
-                            this.log('Assigning', value, "to", element, 'attribute', key);
+                            this.log("Assigning", value, "to", element, "attribute", key);
                             element.setAttribute(key, value);
                         }
                     }
@@ -1374,17 +1395,15 @@ var Griffin;
                     };
                     this.directives.forEach(function (directive) {
                         if (!directive.process(context)) {
-                            _this.log('Local directive ', directive, "cancelled processing of", context);
+                            _this.log("Local directive ", directive, "cancelled processing of", context);
                             return false;
-                        }
-                        ;
+                        };
                     });
                     ViewRenderer.globalValueDirectives.forEach(function (directive) {
                         if (!directive.process(context)) {
-                            _this.log('Global directive ', directive, "cancelled processing of", context);
+                            _this.log("Global directive ", directive, "cancelled processing of", context);
                             return false;
-                        }
-                        ;
+                        };
                     });
                     return context.value;
                 };
@@ -1411,7 +1430,7 @@ var Griffin;
                     if (ViewRenderer.DEBUG && console && console.log) {
                         args.unshift(this.dtoStack[this.dtoStack.length - 1]);
                         if (this.lineage.length == 0) {
-                            args.unshift('rootNode');
+                            args.unshift("rootNode");
                         } else {
                             args.unshift(this.lineage[this.lineage.length - 1]);
                         }
@@ -1426,6 +1445,7 @@ var Griffin;
             Views.ViewRenderer = ViewRenderer;
             var ViewValueDirectiveContext = (function () {
                 function ViewValueDirectiveContext() {}
+
                 return ViewValueDirectiveContext;
             })();
             Views.ViewValueDirectiveContext = ViewValueDirectiveContext;
@@ -1438,6 +1458,7 @@ var Griffin;
     (function (Yo) {
         var G = (function () {
             function G() {}
+
             G.render = function (idOrElem, dto, directives) {
                 var r = new Yo.Views.ViewRenderer(idOrElem);
                 r.render(dto, directives);
@@ -1455,6 +1476,7 @@ var Griffin;
     (function (Yo) {
         var GlobalConfig = (function () {
             function GlobalConfig() {}
+
             GlobalConfig.applicationScope = {};
             return GlobalConfig;
         })();

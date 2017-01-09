@@ -1,56 +1,55 @@
-﻿@using System.Configuration
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - OneTrueError</title>
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @RenderSection("Styles", false)
-    <meta name="description" content="The description of my page" />
+    <meta name="description" content="The description of my page"/>
 </head>
 <body class="full-width">
-    <div class="navbar navbar-fixed-top navbar-default">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-            <span class="navbar-brand">OneTrueError - Installation</span>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav" id="main-navigation"></ul>
-                <ul class="nav navbar-nav navbar-right settings"></ul>
-            </div>
-
+<div class="navbar navbar-fixed-top navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
         </div>
+        <span class="navbar-brand">OneTrueError - Installation</span>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav" id="main-navigation"></ul>
+            <ul class="nav navbar-nav navbar-right settings"></ul>
+        </div>
+
     </div>
+</div>
 
-    <div class="container body-content">
-        <div class="row">
-            <div class="col-lg-12">
-                <div id="YoView">
-                    @RenderBody()
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <hr />
-                <footer>
-                    <p>
-                        &copy; 2015 - Gauffin Interactive AB | <a href="mailto:support@onetrueerror.com">support@onetrueerror.com</a>
-                    </p>
-                </footer>
+<div class="container body-content">
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="YoView">
+                @RenderBody()
             </div>
         </div>
     </div>
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+    <div class="row">
+        <div class="col-lg-12">
+            <hr/>
+            <footer>
+                <p>
+                    &copy; 2015 - Gauffin Interactive AB | <a href="mailto:support@onetrueerror.com">support@onetrueerror.com</a>
+                </p>
+            </footer>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@RenderSection("scripts", false)
 </body>
 </html>

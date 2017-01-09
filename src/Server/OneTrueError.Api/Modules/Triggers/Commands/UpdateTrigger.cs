@@ -4,7 +4,7 @@ using DotNetCqs;
 namespace OneTrueError.Api.Modules.Triggers.Commands
 {
     /// <summary>
-    /// Update an existing trigger
+    ///     Update an existing trigger
     /// </summary>
     public class UpdateTrigger : Command
     {

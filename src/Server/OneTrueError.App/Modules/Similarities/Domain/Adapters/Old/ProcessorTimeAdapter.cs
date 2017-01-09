@@ -38,7 +38,7 @@ namespace OneTrueError.App.Modules.Similarities.Domain.Adapters.Old
             if (timeSpan > TimeSpan.FromDays(365/2))
                 return "between 6 months and a year";
 
-            return "up to " + ((int) timeSpan.TotalDays/365) + " years";
+            return "up to " + (int) timeSpan.TotalDays/365 + " years";
         }
     }
 }

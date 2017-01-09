@@ -206,6 +206,7 @@
     <Compile Include="App_Start\Cqs\CqsBuilder.cs" />
     <Compile Include="App_Start\Cqs\JsonFormatter.cs" />
     <Compile Include="App_Start\Cqs\Metadata.cs" />
+    <Compile Include="App_Start\Cqs\MyEventHandlerRegistry.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IoC\GriffinContainerAdapter.cs" />
     <Compile Include="App_Start\IoC\GriffinContainerScopeAdapter.cs" />
@@ -213,13 +214,14 @@
     <Compile Include="App_Start\IoC\GriffinWebApiDependencyResolver2.cs" />
     <Compile Include="App_Start\LogConfigurator.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\Services\ApplicationServiceManagerSettingsWithDefaultOn.cs" />
     <Compile Include="App_Start\Services\ServiceRunner.cs" />
-    <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Admin\Controllers\ApiKeysController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ReportingController.cs" />
     <Compile Include="Areas\Admin\Models\ApiKeys\CreateViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ApiKeys\ListViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ApiKeys\ListViewModelItem.cs" />
+    <Compile Include="Areas\Admin\Models\ReportingViewModel.cs" />
     <Compile Include="Areas\Installation\Controllers\AccountController.cs" />
     <Compile Include="Areas\Installation\Controllers\MessagingController.cs" />
     <Compile Include="Areas\Installation\Controllers\SetupController.cs" />
@@ -235,7 +237,7 @@
     <Compile Include="Areas\Admin\Controllers\MessagingController.cs" />
     <Compile Include="Areas\Admin\Controllers\QueuesController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
-    <Compile Include="Areas\Admin\InstallationAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Models\AccountViewModel.cs" />
     <Compile Include="Areas\Admin\Models\BasicsViewModel.cs" />
     <Compile Include="Areas\Admin\Models\EmailViewModel.cs" />
@@ -271,14 +273,13 @@
     </Compile>
     <Compile Include="Infrastructure\Cqs\CqsClientFactory.cs" />
     <Compile Include="Infrastructure\CustomerInfoProvider.cs" />
-    <Compile Include="Infrastructure\Auth\CustomMvcAuthorizeFilter.cs" />
     <Compile Include="App_Start\Cqs\QueuedEventBus.cs" />
     <Compile Include="Infrastructure\InstallationHelper.cs" />
     <Compile Include="Infrastructure\Logging\LogAdapter.cs" />
     <Compile Include="Infrastructure\Logging\LogManagerAdapter.cs" />
     <Compile Include="Infrastructure\Logging\WebApiLogger.cs" />
     <Compile Include="Infrastructure\Auth\SignalRAuthenticateAttribute.cs" />
-    <Compile Include="Infrastructure\Auth\WebApiAuthenticationFilter.cs" />
+    <Compile Include="Infrastructure\SessionStoreMediator.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Account\AcceptViewModel.cs" />
@@ -287,10 +288,10 @@
     <Compile Include="Models\Account\RegisterViewModel.cs" />
     <Compile Include="Models\Account\RequestPasswordResetViewModel.cs" />
     <Compile Include="Models\Account\ResetPasswordViewModel.cs" />
-    <Compile Include="Models\SessionUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Views\BaseViewPage.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\alertifyjs\alertify.css" />
@@ -390,6 +391,7 @@
     <Content Include="Areas\Admin\Views\ApiKeys\Created.cshtml" />
     <Content Include="Areas\Admin\Views\ApiKeys\Details.cshtml" />
     <Content Include="Areas\Admin\Views\ApiKeys\Deleted.cshtml" />
+    <Content Include="Areas\Admin\Views\Reporting\Index.cshtml" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>

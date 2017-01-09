@@ -1,11 +1,7 @@
 ﻿/// <reference path="../../Scripts/CqsClient.ts" />
 /// <reference path="../../Scripts/Griffin.Yo.d.ts" />
-
 module OneTrueError.User {
     var cqs = Griffin.Cqs.CqsClient;
-    import Yo = Griffin.Yo;
-    import UserSettingsResult = Core.Users.Queries.GetUserSettingsResult;
-    import GetUserSettings = Core.Users.Queries.GetUserSettings;
     import CqsClient = Griffin.Cqs.CqsClient;
 
     export class SettingsViewModel implements Griffin.Yo.Spa.ViewModels.IViewModel {
@@ -20,7 +16,7 @@ module OneTrueError.User {
 
         changePassword_click(e: any) {
             e.preventDefault();
-            var dto = this.context.readForm("PasswordView");
+            const dto = this.context.readForm("PasswordView");
             if (dto.NewPassword !== dto.NewPassword2) {
                 humane.error("New passwords do not match.");
                 return;
@@ -30,7 +26,7 @@ module OneTrueError.User {
                 return;
             }
 
-            var cmd = new Core.Accounts.Requests.ChangePassword(dto.CurrentPassword, dto.NewPassword);
+            const cmd = new Core.Accounts.Requests.ChangePassword(dto.CurrentPassword, dto.NewPassword);
             CqsClient.request<Core.Accounts.Requests.ChangePasswordReply>(cmd)
                 .done(result => {
                     if (result.Success) {
@@ -45,8 +41,8 @@ module OneTrueError.User {
 
         saveSettings_click(e: any) {
             e.isHandled = true;
-            var dto = this.context.readForm("PersonalSettings");
-            var cmd = new Core.Users.Commands.UpdatePersonalSettings();
+            const dto = this.context.readForm("PersonalSettings");
+            const cmd = new Core.Users.Commands.UpdatePersonalSettings();
             cmd.FirstName = dto.FirstName;
             cmd.LastName = dto.LastName;
             cmd.MobileNumber = dto.MobileNumber;
@@ -61,11 +57,12 @@ module OneTrueError.User {
 
             context.handle.click("[name=\"saveSettings\"]", ev => this.saveSettings_click(ev));
             context.handle.click("[name='changePassword']", ev => this.changePassword_click(ev));
-            var query = new Core.Users.Queries.GetUserSettings();
-            cqs.query<Core.Users.Queries.GetUserSettingsResult>(query).done(result => {
-                context.render(result);
-                context.resolve();
-            });
+            const query = new Core.Users.Queries.GetUserSettings();
+            cqs.query<Core.Users.Queries.GetUserSettingsResult>(query)
+                .done(result => {
+                    context.render(result);
+                    context.resolve();
+                });
 
         }
 

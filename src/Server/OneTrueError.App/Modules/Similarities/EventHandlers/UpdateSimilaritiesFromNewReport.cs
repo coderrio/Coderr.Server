@@ -17,11 +17,11 @@ namespace OneTrueError.App.Modules.Similarities.EventHandlers
     public class UpdateSimilaritiesFromNewReport : IApplicationEventSubscriber<ReportAddedToIncident>
     {
         private readonly AdapterRepository _adapterRepository = new AdapterRepository();
-        private readonly ILog _logger = LogManager.GetLogger(typeof (UpdateSimilaritiesFromNewReport));
+        private readonly ILog _logger = LogManager.GetLogger(typeof(UpdateSimilaritiesFromNewReport));
         private readonly ISimilarityRepository _similarityRepository;
 
         /// <summary>
-        /// Creates a new instance of <see cref="UpdateSimilaritiesFromNewReport"/>.
+        ///     Creates a new instance of <see cref="UpdateSimilaritiesFromNewReport" />.
         /// </summary>
         /// <param name="similarityRepository">epos</param>
         /// <exception cref="ArgumentNullException">similarityReposiotry</exception>
@@ -32,11 +32,11 @@ namespace OneTrueError.App.Modules.Similarities.EventHandlers
         }
 
         /// <summary>
-        /// Process an event asynchronously.
+        ///     Process an event asynchronously.
         /// </summary>
         /// <param name="e">event to process</param>
         /// <returns>
-        /// Task to wait on.
+        ///     Task to wait on.
         /// </returns>
         public async Task HandleAsync(ReportAddedToIncident e)
         {

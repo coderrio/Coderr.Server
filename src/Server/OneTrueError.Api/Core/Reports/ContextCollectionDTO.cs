@@ -4,21 +4,20 @@ using System.Linq;
 
 namespace OneTrueError.Api.Core.Reports
 {
-
     /// <summary>
-    /// Context collection DTO.
+    ///     Context collection DTO.
     /// </summary>
     public class ContextCollectionDTO
     {
         /// <summary>
-        /// Creates a new instance of <see cref="ContextCollectionDTO"/>.
+        ///     Creates a new instance of <see cref="ContextCollectionDTO" />.
         /// </summary>
         protected ContextCollectionDTO()
         {
         }
 
         /// <summary>
-        /// Creates a new instance of <see cref="ContextCollectionDTO"/>.
+        ///     Creates a new instance of <see cref="ContextCollectionDTO" />.
         /// </summary>
         /// <param name="name">Name as specified in the client library</param>
         /// <param name="items">Properties.</param>
@@ -33,26 +32,26 @@ namespace OneTrueError.Api.Core.Reports
 
 
         /// <summary>
-        /// Name as specified in the client library
+        ///     Name as specified in the client library
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Properties.
+        ///     Properties.
         /// </summary>
         public IDictionary<string, string> Properties { get; set; }
 
         /// <summary>
-        /// Returns a string that represents the current object.
+        ///     Returns a string that represents the current object.
         /// </summary>
         /// <returns>
-        /// A string that represents the current object.
+        ///     A string that represents the current object.
         /// </returns>
         /// <filterpriority>2</filterpriority>
         public override string ToString()
         {
             var flatten = Properties.Select(x => x.Key + "=" + x.Value);
-            var joinProps = string.Join(", ",flatten);
+            var joinProps = string.Join(", ", flatten);
             return string.Format("{0} [{1}]", Name, joinProps);
         }
     }

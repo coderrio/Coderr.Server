@@ -19,6 +19,5 @@ namespace OneTrueError.Web.Areas.Admin.Models
         ///     </para>
         /// </remarks>
         public string InstallationId { get; set; }
-
     }
 }

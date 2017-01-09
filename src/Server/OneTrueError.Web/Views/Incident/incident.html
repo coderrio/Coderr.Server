@@ -12,8 +12,12 @@
                 Action <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
-                <li><a href="#/application/:applicationId/incident/:incidentId/close" title="This incident have been corrected and should not generate any more reports">Close incident</a></li>
-                <li><a href="#/application/:applicationId/incident/:incidentId/ignore" title="Do not trigger notifications or show this incident as active, no matter how many reports it receive.">Ignore incident</a></li>
+                <li>
+                    <a href="#/application/:applicationId/incident/:incidentId/close" title="This incident have been corrected and should not generate any more reports">Close incident</a>
+                </li>
+                <li>
+                    <a href="#/application/:applicationId/incident/:incidentId/ignore" title="Do not trigger notifications or show this incident as active, no matter how many reports it receive.">Ignore incident</a>
+                </li>
             </ul>
         </div>
     </div>
@@ -49,9 +53,9 @@
             <div style="margin-bottom: 20px;">
                 <div class="pull-right">
                     <form id="refresh-chart" style="background: rgba(220, 230, 250, 0.5); padding: 5px">
-                        <input type="radio" name="range" value="30" /> month
-                        <input type="radio" name="range" value="7" /> week
-                        <input type="radio" name="range" value="1" /> day
+                        <input type="radio" name="range" value="30"/> month
+                        <input type="radio" name="range" value="7"/> week
+                        <input type="radio" name="range" value="1"/> day
                     </form>
                 </div>
                 <div class="clearfix" style="clear: both"></div>
@@ -90,39 +94,49 @@
             <h2 id="Reports">Reports</h2>
             <table id="reportsTable" class="table table-striped">
                 <thead>
-                    <tr>
-                        <th>Message</th>
-                        <th>Reported at (UTC)</th>
-                        <th>Ip address</th>
-                        <th>&nbsp;</th>
-                    </tr>
+                <tr>
+                    <th>Message</th>
+                    <th>Reported at (UTC)</th>
+                    <th>Ip address</th>
+                    <th>&nbsp;</th>
+                </tr>
                 </thead>
                 <tbody data-collection="Items">
-                    <tr>
-                        <td><a href="" data-name="Message"></a></td>
-                        <td data-name="CreatedAtUtc"></td>
-                        <td data-name="RemoteAddress"></td>
-                        <td></td>
-                    </tr>
+                <tr>
+                    <td>
+                        <a href="" data-name="Message"></a>
+                    </td>
+                    <td data-name="CreatedAtUtc"></td>
+                    <td data-name="RemoteAddress"></td>
+                    <td></td>
+                </tr>
                 </tbody>
                 <tfoot>
-                    <tr>
-                        <td colspan="4" class="text-right" id="pager"></td>
-                    </tr>
+                <tr>
+                    <td colspan="4" class="text-right" id="pager"></td>
+                </tr>
                 </tfoot>
             </table>
         </div>
     </div>
 </div>
 <ul data-navigation="main-navigation">
-    <li data-if="ctx.routeData['applicationId']"><a href="#/application/:applicationId/">Back..</a></li>
-    <li data-if="!ctx.routeData['applicationId']"><a href="#/">Back..</a></li>
-    <li><a href="#/application/:applicationId/incident/:incidentId/context">Context data</a></li>
-    <li><a href="#/application/:applicationId/incident/:incidentId/origins">Report origins</a></li>
-    <li><a href="#/application/:applicationId/incident/:incidentId/feedback">Feedback</a></li>
+    <li data-if="ctx.routeData['applicationId'] != null">
+        <a href="#/application/:applicationId/">Back1..</a>
+    </li>
+    <li data-if="ctx.routeData['applicationId'] === undefined">
+        <a href="#/">Back2..</a>
+    </li>
+    <li>
+        <a href="#/application/:applicationId/incident/:incidentId/context">Context data</a>
+    </li>
+    <li>
+        <a href="#/application/:applicationId/incident/:incidentId/origins">Report origins</a>
+    </li>
+    <li>
+        <a href="#/application/:applicationId/incident/:incidentId/feedback">Feedback</a>
+    </li>
 </ul>
 <style>
-    .tag {
-        margin-right: 5px;
-    }
+    .tag { margin-right: 5px; }
 </style>

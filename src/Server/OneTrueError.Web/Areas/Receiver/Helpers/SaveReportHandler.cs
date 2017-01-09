@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data;
-using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,15 +17,15 @@ using OneTrueError.Web.Areas.Receiver.ReportingApi;
 namespace OneTrueError.Web.Areas.Receiver.Helpers
 {
     /// <summary>
-    /// Validates inbound report and store it in our internal queue for analysis.
+    ///     Validates inbound report and store it in our internal queue for analysis.
     /// </summary>
     public class SaveReportHandler
     {
-        private readonly ILog _logger = LogManager.GetLogger(typeof (SaveReportHandler));
-        private IMessageQueue _queue;
+        private readonly ILog _logger = LogManager.GetLogger(typeof(SaveReportHandler));
+        private readonly IMessageQueue _queue;
 
         /// <summary>
-        /// Creates a new instance of <see cref="SaveReportHandler"/>.
+        ///     Creates a new instance of <see cref="SaveReportHandler" />.
         /// </summary>
         /// <param name="queueProvider">provider</param>
         public SaveReportHandler(IMessageQueueProvider queueProvider)
@@ -35,7 +34,8 @@ namespace OneTrueError.Web.Areas.Receiver.Helpers
             _queue = queueProvider.Open("ReportQueue");
         }
 
-        public async Task BuildReportAsync(string appKey, string signatureProvidedByTheClient, string remoteAddress, byte[] reportBody)
+        public async Task BuildReportAsync(string appKey, string signatureProvidedByTheClient, string remoteAddress,
+            byte[] reportBody)
         {
             Guid tempKey;
             if (!Guid.TryParse(appKey, out tempKey))
@@ -74,27 +74,9 @@ namespace OneTrueError.Web.Areas.Receiver.Helpers
             await StoreReportAsync(internalDto);
         }
 
-        private static async Task<AppInfo> GetAppAsync(string appKey)
+        private static ReceivedReportContextInfo ConvertCollection(NewReportContextInfo arg)
         {
-            using (var con = ConnectionFactory.Create())
-            {
-                using (var cmd = con.CreateDbCommand())
-                {
-                    cmd.CommandText = "SELECT Id, SharedSecret FROM Applications WHERE AppKey = @key";
-                    cmd.AddParameter("key", appKey);
-                    using (var reader = await cmd.ExecuteReaderAsync())
-                    {
-                        if (!await reader.ReadAsync())
-                            return null;
-
-                        return new AppInfo
-                        {
-                            Id = reader.GetInt32(0),
-                            SharedSecret = reader.GetString(1)
-                        };
-                    }
-                }
-            }
+            return new ReceivedReportContextInfo(arg.Name, arg.Properties);
         }
 
         private static ReceivedReportException ConvertException(NewReportException exception)
@@ -116,11 +98,6 @@ namespace OneTrueError.Web.Areas.Receiver.Helpers
             return ex;
         }
 
-        private static ReceivedReportContextInfo ConvertCollection(NewReportContextInfo arg)
-        {
-             return new ReceivedReportContextInfo(arg.Name, arg.Properties);
-        }
-
         private NewReportDTO DeserializeBody(byte[] body)
         {
             var decompressor = new ReportDecompressor();
@@ -133,6 +110,29 @@ namespace OneTrueError.Web.Areas.Receiver.Helpers
                     ContractResolver =
                         new IncludeNonPublicMembersContractResolver()
                 });
+        }
+
+        private static async Task<AppInfo> GetAppAsync(string appKey)
+        {
+            using (var con = ConnectionFactory.Create())
+            {
+                using (var cmd = con.CreateDbCommand())
+                {
+                    cmd.CommandText = "SELECT Id, SharedSecret FROM Applications WHERE AppKey = @key";
+                    cmd.AddParameter("key", appKey);
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        if (!await reader.ReadAsync())
+                            return null;
+
+                        return new AppInfo
+                        {
+                            Id = reader.GetInt32(0),
+                            SharedSecret = reader.GetString(1)
+                        };
+                    }
+                }
+            }
         }
 
         private async Task StoreInvalidReportAsync(string appKey, string sig, string remoteAddress, byte[] reportBody)

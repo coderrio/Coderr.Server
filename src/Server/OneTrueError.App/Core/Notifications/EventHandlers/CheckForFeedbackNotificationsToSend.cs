@@ -7,7 +7,6 @@ using OneTrueError.Api.Core.Incidents.Queries;
 using OneTrueError.Api.Core.Messaging;
 using OneTrueError.Api.Core.Messaging.Commands;
 using OneTrueError.App.Configuration;
-using OneTrueError.App.Core.Users;
 using OneTrueError.Infrastructure.Configuration;
 
 namespace OneTrueError.App.Core.Notifications.EventHandlers
@@ -57,7 +56,7 @@ namespace OneTrueError.App.Core.Notifications.EventHandlers
                 if (string.IsNullOrEmpty(e.UserEmailAddress))
                     e.UserEmailAddress = "unknown";
 
-                var incidentUrl = string.Format("{0}/#/application/{1}/incident/{2}", 
+                var incidentUrl = string.Format("{0}/#/application/{1}/incident/{2}",
                     config.BaseUrl.ToString().TrimEnd('/'),
                     incident.ApplicationId,
                     incident.Id);

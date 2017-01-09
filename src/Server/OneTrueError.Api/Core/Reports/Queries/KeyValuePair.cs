@@ -3,12 +3,12 @@
 namespace OneTrueError.Api.Core.Reports.Queries
 {
     /// <summary>
-    /// Key value pair
+    ///     Key value pair
     /// </summary>
     public class KeyValuePair
     {
         /// <summary>
-        /// Creates a new instance of <see cref="KeyValuePair"/>.
+        ///     Creates a new instance of <see cref="KeyValuePair" />.
         /// </summary>
         /// <param name="key">key</param>
         /// <param name="value">value (null is allowed)</param>
@@ -22,20 +22,19 @@ namespace OneTrueError.Api.Core.Reports.Queries
         }
 
         /// <summary>
-        /// Serialization constructor
+        ///     Serialization constructor
         /// </summary>
         protected KeyValuePair()
         {
-
         }
 
         /// <summary>
-        /// Key
+        ///     Key
         /// </summary>
         public string Key { get; private set; }
 
         /// <summary>
-        /// Value
+        ///     Value
         /// </summary>
         public string Value { get; private set; }
     }

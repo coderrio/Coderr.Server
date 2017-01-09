@@ -2,7 +2,8 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Create application</h4>
             </div>
             <div class="modal-body">
@@ -35,33 +36,38 @@
         var hostType = $('[name="hostType"]').val();
 
         var client = new Griffin.Net.HttpClient();
-        client.get(window.API_URL + '/guid').done(function (response) {
-            var appKey = response.body;
-            var cmd = new OneTrueError.Core.Applications.Commands.CreateApplication(name, hostType);
-            cmd.ApplicationKey = appKey;
-            Griffin.Cqs.CqsClient.command(cmd)
-                .done(function () {
-                    var query = new OneTrueError.Core.Applications.Queries.GetApplicationIdByKey(appKey);
-                    Griffin.Cqs.CqsClient.query(query)
-                        .done(function (result) {
-                            $('#appName').val('');
-                            $('#applicationsMenu').append('<li><a href="#/application/' + result.Id + '">' + name + '</a></li>');
-                            window.location.hash = '#/application/' + result.Id;
-                        });
-                })
-                .fail(function (rejection) {
-                    console.log(rejection.message);
-                });
-            $.post(window.API_URL + '/account/UpdateSession');
-        });
+        client.get(window.API_URL + '/guid')
+            .done(function(response) {
+                var appKey = response.body;
+                var cmd = new OneTrueError.Core.Applications.Commands.CreateApplication(name, hostType);
+                cmd.ApplicationKey = appKey;
+                Griffin.Cqs.CqsClient.command(cmd)
+                    .done(function() {
+                        var query = new OneTrueError.Core.Applications.Queries.GetApplicationIdByKey(appKey);
+                        Griffin.Cqs.CqsClient.query(query)
+                            .done(function(result) {
+                                $('#appName').val('');
+                                $('#applicationsMenu')
+                                    .append('<li><a href="#/application/' + result.Id + '">' + name + '</a></li>');
+                                window.location.hash = '#/application/' + result.Id;
+                            });
+                    })
+                    .fail(function(rejection) {
+                        console.log(rejection.message);
+                    });
+                $.post(window.API_URL + '/account/UpdateSession');
+            });
     }
-    $('#create-application .btn-primary').click(function (e) {
-        e.preventDefault();
-        $('#CreateAppForm').submit();
-    });
-    $('#CreateAppForm').submit(function (e) {
-        e.preventDefault();
-        createAppliction();
-        $('#create-application').modal('hide');
-    });
+
+    $('#create-application .btn-primary')
+        .click(function(e) {
+            e.preventDefault();
+            $('#CreateAppForm').submit();
+        });
+    $('#CreateAppForm')
+        .submit(function(e) {
+            e.preventDefault();
+            createAppliction();
+            $('#create-application').modal('hide');
+        });
 </script>

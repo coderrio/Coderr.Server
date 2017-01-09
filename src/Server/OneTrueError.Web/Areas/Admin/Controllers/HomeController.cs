@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.Web.Mvc;
 using OneTrueError.App.Configuration;
 using OneTrueError.Infrastructure;
@@ -10,19 +9,33 @@ namespace OneTrueError.Web.Areas.Admin.Controllers
 {
     public class HomeController : Controller
     {
-       
-        // GET: Installation/Home
-        public ActionResult Index()
+        public ActionResult Basics()
         {
-            try
+            var model = new BasicsViewModel();
+            var config = ConfigurationStore.Instance.Load<BaseConfiguration>();
+            if (config != null)
             {
-                ConnectionFactory.Create();
+                model.BaseUrl = config.BaseUrl.ToString();
+                model.SupportEmail = config.SupportEmail;
             }
-            catch
+            else
             {
-                ViewBag.Ready = false;
+                model.BaseUrl = Request.Url.ToString().Replace("installation/setup/basics/", "");
+                ViewBag.NextLink = "";
             }
-            return View();
+
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Basics(BasicsViewModel model)
+        {
+            var settings = new BaseConfiguration();
+            settings.BaseUrl = new Uri(model.BaseUrl);
+            settings.SupportEmail = model.SupportEmail;
+            ConfigurationStore.Instance.Store(settings);
+            return Redirect(Url.GetNextWizardStep());
         }
 
         public ActionResult Errors()
@@ -55,35 +68,18 @@ namespace OneTrueError.Web.Areas.Admin.Controllers
             return Redirect(Url.GetNextWizardStep());
         }
 
-        public ActionResult Basics()
+        // GET: Installation/Home
+        public ActionResult Index()
         {
-            var model = new BasicsViewModel();
-            var config = ConfigurationStore.Instance.Load<BaseConfiguration>();
-            if (config != null)
+            try
             {
-                model.BaseUrl = config.BaseUrl.ToString();
-                model.SupportEmail = config.SupportEmail;
+                ConnectionFactory.Create();
             }
-            else
+            catch
             {
-                model.BaseUrl = Request.Url.ToString().Replace("installation/setup/basics/", "");
-                ViewBag.NextLink = "";
+                ViewBag.Ready = false;
             }
-
-
-            return View(model);
+            return View();
         }
-
-        [HttpPost]
-        public ActionResult Basics(BasicsViewModel model)
-        {
-            var settings = new BaseConfiguration();
-            settings.BaseUrl = new Uri(model.BaseUrl);
-            settings.SupportEmail = model.SupportEmail;
-            ConfigurationStore.Instance.Store(settings);
-            return Redirect(Url.GetNextWizardStep());
-        }
-
-     
     }
 }

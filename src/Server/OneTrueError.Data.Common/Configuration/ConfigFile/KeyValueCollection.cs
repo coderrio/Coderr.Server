@@ -1,12 +1,13 @@
 using System;
 using System.Configuration;
+using System.Diagnostics.CodeAnalysis;
 
 namespace OneTrueError.Infrastructure.Configuration.ConfigFile
 {
     /// <summary>
     ///     A configuration element used to represent a keu/value collections
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1010:CollectionsShouldImplementGenericInterface")]
+    [SuppressMessage("Microsoft.Design", "CA1010:CollectionsShouldImplementGenericInterface")]
     public class KeyValueCollection : ConfigurationElementCollection
     {
         /// <summary>
@@ -18,6 +19,14 @@ namespace OneTrueError.Infrastructure.Configuration.ConfigFile
         public override ConfigurationElementCollectionType CollectionType
         {
             get { return ConfigurationElementCollectionType.BasicMap; }
+        }
+
+        /// <summary>
+        ///     "setting"
+        /// </summary>
+        protected override string ElementName
+        {
+            get { return "setting"; }
         }
 
         /// <summary>
@@ -42,14 +51,6 @@ namespace OneTrueError.Infrastructure.Configuration.ConfigFile
         public KeyValueElement this[int index]
         {
             get { return (KeyValueElement) BaseGet(index); }
-        }
-
-        /// <summary>
-        ///     "setting"
-        /// </summary>
-        protected override string ElementName
-        {
-            get { return "setting"; }
         }
 
         /// <summary>

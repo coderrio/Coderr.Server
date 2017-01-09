@@ -4,7 +4,7 @@ using Griffin.Container;
 namespace OneTrueError.App.Modules.Tagging.Identifiers
 {
     /// <summary>
-    /// Identifies ASP.NET MVC and WebApi including their versions.
+    ///     Identifies ASP.NET MVC and WebApi including their versions.
     /// </summary>
     [Component]
     public class AspNetMvcAndWebApiIdentifier : ITagIdentifier

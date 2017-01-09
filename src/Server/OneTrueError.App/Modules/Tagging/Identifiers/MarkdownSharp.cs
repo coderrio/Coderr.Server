@@ -3,7 +3,7 @@
 namespace OneTrueError.App.Modules.Tagging.Identifiers
 {
     /// <summary>
-    /// Identifies the MarkdownSharp library
+    ///     Identifies the MarkdownSharp library
     /// </summary>
     public class MarkdownSharpIdentifier : ITagIdentifier
     {

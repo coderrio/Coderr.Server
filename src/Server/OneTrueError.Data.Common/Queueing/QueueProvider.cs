@@ -8,7 +8,8 @@ using OneTrueError.Infrastructure.Queueing.Msmq;
 namespace OneTrueError.Infrastructure.Queueing
 {
     /// <summary>
-    /// Purpose of this class is to abstract away the queue creation and coupling to specific implementations (and their life times).
+    ///     Purpose of this class is to abstract away the queue creation and coupling to specific implementations (and their
+    ///     life times).
     /// </summary>
     [Component(Lifetime = Lifetime.Singleton)]
     public class QueueProvider : IMessageQueueProvider
@@ -20,7 +21,7 @@ namespace OneTrueError.Infrastructure.Queueing
         public IMessageQueue Open(string queueName)
         {
             var config = ConfigurationStore.Instance.Load<MessageQueueSettings>()
-                ?? new MessageQueueSettings(); //isn't added by the installation guide.
+                         ?? new MessageQueueSettings(); //isn't added by the installation guide.
             var conString = ConfigurationManager.ConnectionStrings["Db"].ConnectionString;
             var provider = ConfigurationManager.ConnectionStrings["Db"].ProviderName;
             switch (queueName)

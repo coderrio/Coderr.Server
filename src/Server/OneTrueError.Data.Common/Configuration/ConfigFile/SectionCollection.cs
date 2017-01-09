@@ -37,6 +37,14 @@ namespace OneTrueError.Infrastructure.Configuration.ConfigFile
         }
 
         /// <summary>
+        ///     "section"
+        /// </summary>
+        protected override string ElementName
+        {
+            get { return "section"; }
+        }
+
+        /// <summary>
         ///     Gives access to a specific section
         /// </summary>
         /// <param name="index">zero based index</param>
@@ -61,14 +69,6 @@ namespace OneTrueError.Infrastructure.Configuration.ConfigFile
         public new SectionConfigElement this[string name]
         {
             get { return (SectionConfigElement) BaseGet(name); }
-        }
-
-        /// <summary>
-        ///     "section"
-        /// </summary>
-        protected override string ElementName
-        {
-            get { return "section"; }
         }
 
         /// <summary>

@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace OneTrueError.Api.Client.Tests
+namespace OneTrueError.Api.Client
 {
-    static class StringBuilderExtensions
+    internal static class StringBuilderExtensions
     {
         public static void AppendUrlEncoded(this StringBuilder sb, string name, string value)
         {
@@ -16,6 +13,5 @@ namespace OneTrueError.Api.Client.Tests
             sb.Append("=");
             sb.Append(Uri.EscapeDataString(value));
         }
-
     }
 }

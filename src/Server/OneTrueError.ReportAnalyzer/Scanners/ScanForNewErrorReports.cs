@@ -15,7 +15,7 @@ namespace OneTrueError.ReportAnalyzer.Scanners
     public class ScanForNewErrorReports
     {
         private readonly Services.ReportAnalyzer _analyzer;
-        private readonly ILog _logger = LogManager.GetLogger(typeof (ScanForNewErrorReports));
+        private readonly ILog _logger = LogManager.GetLogger(typeof(ScanForNewErrorReports));
         private readonly IMessageQueue _queue;
 
         /// <summary>

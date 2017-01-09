@@ -19,7 +19,7 @@ namespace OneTrueError.App.Modules.Similarities.Domain.Adapters.Normalizers
             if (value2 >= max)
                 return "> " + max;
 
-            var lowerValue = ((int) Math.Floor(value2/step))*(int) step;
+            var lowerValue = (int) Math.Floor(value2/step)*(int) step;
             return "Between " + lowerValue + " and " + (lowerValue + (int) step);
         }
     }

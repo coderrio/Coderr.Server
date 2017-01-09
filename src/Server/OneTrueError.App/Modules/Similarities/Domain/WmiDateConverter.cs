@@ -10,7 +10,7 @@ namespace OneTrueError.App.Modules.Similarities.Domain
     /// </summary>
     public static class WmiDateConverter
     {
-        private static readonly ILog _logger = LogManager.GetLogger(typeof (WmiDateConverter));
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(WmiDateConverter));
 
         /// <summary>
         ///     Try parse a WMI date

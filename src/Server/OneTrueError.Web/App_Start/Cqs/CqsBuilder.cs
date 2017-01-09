@@ -13,8 +13,15 @@ namespace OneTrueError.Web.Cqs
 {
     public class CqsBuilder
     {
-        private readonly ILog _log = LogManager.GetLogger(typeof (CqsBuilder));
+        private static readonly MyEventHandlerRegistry _registry = new MyEventHandlerRegistry();
+        private readonly ILog _log = LogManager.GetLogger(typeof(CqsBuilder));
         private readonly IMessageQueueProvider _queueProvider = new QueueProvider();
+        private IEventBus _eventBus;
+
+        public EventHandlerRegistry EventHandlerRegistry
+        {
+            get { return _registry; }
+        }
 
         public static void CloseUnitOfWorks(IContainerScope scope)
         {
@@ -25,19 +32,26 @@ namespace OneTrueError.Web.Cqs
         {
             var iocBus = new IocCommandBus(container);
             iocBus.CommandInvoked += OnCommandInvoked;
+            iocBus.ScopeCreated += OnCommandScope;
             return iocBus;
         }
 
         public IEventBus CreateEventBus(IContainer container)
         {
-            var registry = new EventHandlerRegistry();
-            registry.ScanAssembly(typeof (ValidateNewLoginHandler).Assembly);
-            registry.ScanAssembly(typeof (UserRepository).Assembly);
-            registry.ScanAssembly(typeof (ScanForNewErrorReports).Assembly);
+            // should not happen, but does sometimes. 
+            // seems related to Mvc contra WebApi
+            // but can't figure out why
+            if (_eventBus != null)
+                return _eventBus;
 
-            var inner = new SeparateScopesIocEventBus(container, registry);
-            var bus = new QueuedEventBus(inner, _queueProvider);
-            inner.ScopeClosing += (sender, args) => args.Scope.Resolve<IAdoNetUnitOfWork>().SaveChanges();
+            _registry.ScanAssembly(typeof(ValidateNewLoginHandler).Assembly);
+            _registry.ScanAssembly(typeof(UserRepository).Assembly);
+            _registry.ScanAssembly(typeof(ScanForNewErrorReports).Assembly);
+
+            //var inner = new SeparateScopesIocEventBus(container, _registry);
+            var inner = new IocEventBus(container);
+            inner.EventPublished += (sender, args) => CloseUnitOfWorks(args.Scope);
+            //inner.ScopeClosing += (sender, args) => CloseUnitOfWorks(args.Scope);
             inner.HandlerFailed += (sender, args) =>
             {
                 foreach (var failure in args.Failures)
@@ -46,7 +60,9 @@ namespace OneTrueError.Web.Cqs
                         failure.Exception);
                 }
             };
-            bus.Start();
+
+            var bus = new QueuedEventBus(inner, _queueProvider);
+            _eventBus = bus;
 
             return bus;
         }
@@ -76,6 +92,10 @@ namespace OneTrueError.Web.Cqs
             {
                 _log.Fatal("failed to commit", exception);
             }
+        }
+
+        private void OnCommandScope(object sender, ScopeCreatedEventArgs e)
+        {
         }
     }
 }

@@ -3,12 +3,12 @@
 namespace OneTrueError.Api.Core.Accounts.Requests
 {
     /// <summary>
-    /// Reply for <see cref="AcceptInvitation"/>.
+    ///     Reply for <see cref="AcceptInvitation" />.
     /// </summary>
     public class AcceptInvitationReply
     {
         /// <summary>
-        /// Creates a new instance of <see cref="AcceptInvitationReply"/>.
+        ///     Creates a new instance of <see cref="AcceptInvitationReply" />.
         /// </summary>
         /// <param name="accountId">Primary key for the generated account</param>
         /// <param name="userName">Username</param>
@@ -22,20 +22,20 @@ namespace OneTrueError.Api.Core.Accounts.Requests
         }
 
         /// <summary>
-        /// Primary key for the generated account
+        ///     Primary key for the generated account
         /// </summary>
         public int AccountId { get; private set; }
 
         /// <summary>
-        /// Username
+        ///     Username
         /// </summary>
         public string UserName { get; private set; }
 
         /// <summary>
-        /// Returns a string that represents the current object.
+        ///     Returns a string that represents the current object.
         /// </summary>
         /// <returns>
-        /// A string that represents the current object.
+        ///     A string that represents the current object.
         /// </returns>
         /// <filterpriority>2</filterpriority>
         public override string ToString()

@@ -7,13 +7,6 @@ namespace OneTrueError.Web.Areas.Installation.Controllers
 {
     public class MessagingController : Controller
     {
-        protected override void OnActionExecuting(ActionExecutingContext filterContext)
-        {
-            ViewBag.PrevLink = Url.GetPreviousWizardStepLink();
-            ViewBag.NextLink = Url.GetNextWizardStepLink();
-            base.OnActionExecuting(filterContext);
-        }
-
         public ActionResult Email()
         {
             var model = new EmailViewModel();
@@ -50,6 +43,13 @@ namespace OneTrueError.Web.Areas.Installation.Controllers
             };
             ConfigurationStore.Instance.Store(settings);
             return Redirect(Url.GetNextWizardStep());
+        }
+
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            ViewBag.PrevLink = Url.GetPreviousWizardStepLink();
+            ViewBag.NextLink = Url.GetNextWizardStepLink();
+            base.OnActionExecuting(filterContext);
         }
     }
 }

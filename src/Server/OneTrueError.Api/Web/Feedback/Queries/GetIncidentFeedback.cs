@@ -1,20 +1,18 @@
 ﻿using System;
 using DotNetCqs;
-using OneTrueError.Api.Core;
 
 namespace OneTrueError.Api.Web.Feedback.Queries
 {
     /// <summary>
-    /// Lists all feedback which has been made for an incident
+    ///     Lists all feedback which has been made for an incident
     /// </summary>
     /// <remarks>
-    /// <para>Will only fetch for the most specific id</para>
+    ///     <para>Will only fetch for the most specific id</para>
     /// </remarks>
     public class GetIncidentFeedback : Query<GetIncidentFeedbackResult>
     {
-        
         /// <summary>
-        /// Creates a new instance of <see cref="GetIncidentFeedback"/>.
+        ///     Creates a new instance of <see cref="GetIncidentFeedback" />.
         /// </summary>
         /// <param name="incidentId">Incident to get feedback for</param>
         /// <exception cref="ArgumentOutOfRangeException">incidentId</exception>
@@ -25,7 +23,7 @@ namespace OneTrueError.Api.Web.Feedback.Queries
         }
 
         /// <summary>
-        /// Incident to get feedback for
+        ///     Incident to get feedback for
         /// </summary>
         public int IncidentId { get; private set; }
     }

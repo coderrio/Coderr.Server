@@ -4,18 +4,17 @@ using Newtonsoft.Json;
 namespace OneTrueError.Infrastructure
 {
     /// <summary>
-    /// Internal serializer, used only to store stuff that aren´t exposed outside the App/data namespace.
+    ///     Internal serializer, used only to store stuff that aren´t exposed outside the App/data namespace.
     /// </summary>
     public static class OneTrueSerializer
     {
-        private static readonly JsonSerializerSettings Settings = new JsonSerializerSettings()
+        private static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
         {
-            ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
-            
+            ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor
         };
 
         /// <summary>
-        /// Intern
+        ///     Intern
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="json"></param>
@@ -26,7 +25,7 @@ namespace OneTrueError.Infrastructure
         }
 
         /// <summary>
-        /// Deserialize JSON
+        ///     Deserialize JSON
         /// </summary>
         /// <param name="json">json</param>
         /// <param name="type">type being deserialized</param>
@@ -37,7 +36,7 @@ namespace OneTrueError.Infrastructure
         }
 
         /// <summary>
-        /// Serialize to JSON
+        ///     Serialize to JSON
         /// </summary>
         /// <param name="data">entity</param>
         /// <returns>JSON</returns>

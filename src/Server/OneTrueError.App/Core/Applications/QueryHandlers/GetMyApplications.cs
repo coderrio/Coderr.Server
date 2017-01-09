@@ -36,14 +36,18 @@ namespace OneTrueError.App.Core.Applications.QueryHandlers
         public async Task<ApplicationListItem[]> ExecuteAsync(GetApplicationList query)
         {
             if (query == null) throw new ArgumentNullException("query");
+            ApplicationListItem[] result;
+
             if (query.AccountId != 0)
-                return (await _applicationRepository.GetForUserAsync(query.AccountId))
+                result = (await _applicationRepository.GetForUserAsync(query.AccountId))
+                    .Select(x => new ApplicationListItem(x.ApplicationId, x.ApplicationName) {IsAdmin = x.IsAdmin})
+                    .ToArray();
+            else
+                result = (await _applicationRepository.GetAllAsync())
                     .Select(x => new ApplicationListItem(x.Id, x.Name))
                     .ToArray();
 
-            return (await _applicationRepository.GetAllAsync())
-                .Select(x => new ApplicationListItem(x.Id, x.Name))
-                .ToArray();
+            return result;
         }
     }
 }

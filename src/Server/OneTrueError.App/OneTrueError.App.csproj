@@ -81,10 +81,17 @@
     <Compile Include="Configuration\BaseConfiguration.cs" />
     <Compile Include="Configuration\OneTrueErrorConfigSection.cs" />
     <Compile Include="Core\ApiKeys\ApiKey.cs" />
+    <Compile Include="Core\ApiKeys\Events\ApplicationDeletedHandler.cs" />
     <Compile Include="Core\ApiKeys\IApiKeyRepository.cs" />
     <Compile Include="Core\Applications\ApplicationRole.cs" />
+    <Compile Include="Core\Applications\CommandHandlers\DeleteApplicationHandler.cs" />
     <Compile Include="Core\Applications\EventHandlers\UpdateTeamOnInvitationAccepted.cs" />
+    <Compile Include="Core\Applications\UserApplication.cs" />
+    <Compile Include="Core\Incidents\Jobs\DeleteEmptyIncidents.cs" />
     <Compile Include="Core\Notifications\EventHandlers\CheckForFeedbackNotificationsToSend.cs" />
+    <Compile Include="Core\Reports\Config\ReportConfig.cs" />
+    <Compile Include="Core\Reports\Jobs\DeleteOldReports.cs" />
+    <Compile Include="Core\Reports\Jobs\DeleteReportsBelowReportLimit.cs" />
     <Compile Include="Core\Reports\PagedReports.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Modules\Geolocation\ErrorOrginResult.cs" />
@@ -147,8 +154,6 @@
     <Compile Include="Modules\ReportSpikes\CheckForReportPeak.cs" />
     <Compile Include="Modules\ReportSpikes\NewSpike.cs" />
     <Compile Include="Modules\Tagging\Handlers\IncidentReopenedHandler.cs" />
-    <Compile Include="OneTrueIdentity.cs" />
-    <Compile Include="OneTruePrincipal.cs" />
     <Compile Include="Core\Notifications\EventHandlers\CheckForNotificationsToSend.cs" />
     <Compile Include="Modules\ReportSpikes\IReportSpikeRepository.cs" />
     <Compile Include="Core\Notifications\INotificationsRepository.cs" />

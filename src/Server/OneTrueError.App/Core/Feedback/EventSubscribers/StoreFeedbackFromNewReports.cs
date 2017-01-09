@@ -16,7 +16,7 @@ namespace OneTrueError.App.Core.Feedback.EventSubscribers
     public class StoreFeedbackFromNewReports : IApplicationEventSubscriber<ReportAddedToIncident>
     {
         private readonly ICommandBus _commandBus;
-        private readonly ILog _logger = LogManager.GetLogger(typeof (StoreFeedbackFromNewReports));
+        private readonly ILog _logger = LogManager.GetLogger(typeof(StoreFeedbackFromNewReports));
 
         /// <summary>
         ///     Creates a new instance of <see cref="StoreFeedbackFromNewReports" />.

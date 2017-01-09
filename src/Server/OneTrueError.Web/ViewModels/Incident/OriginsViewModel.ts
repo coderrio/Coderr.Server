@@ -19,9 +19,11 @@ module OneTrueError.Incident {
 
             context.resolve();
 
-            var js = document.createElement("script");
+            const js = document.createElement("script");
             js.type = "text/javascript";
-            js.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBleXqcxCLRwuhcXk-3904HaJt9Vd1-CZc&libraries=visualization";
+            js
+                .src =
+                "https://maps.googleapis.com/maps/api/js?key=AIzaSyBleXqcxCLRwuhcXk-3904HaJt9Vd1-CZc&libraries=visualization";
             this.context.viewContainer.appendChild(js);
 
             //var myLatLng = { lat: -25.363, lng: 131.044 };
@@ -31,20 +33,23 @@ module OneTrueError.Incident {
             //    title: 'Hello World!'
             //});
 
-            js.onload = function (e) {
-                var mapDiv = context.select.one('#map');
-                var map = new google.maps.Map(mapDiv, {
+            js.onload = function(e) {
+                const mapDiv = context.select.one("#map");
+                var map = new google.maps.Map(mapDiv,
+                {
                     zoom: 3,
                     center: { lat: 37.775, lng: -122.434 }
                 });
-                google.maps.event.addDomListener(window, "resize", function () {
-                    var center = map.getCenter();
-                    google.maps.event.trigger(map, "resize");
-                    map.setCenter(center);
-                });
+                google.maps.event.addDomListener(window,
+                    "resize",
+                    function() {
+                        const center = map.getCenter();
+                        google.maps.event.trigger(map, "resize");
+                        map.setCenter(center);
+                    });
 
 
-                var query = new Modules.ErrorOrigins.Queries.GetOriginsForIncident(context.routeData["incidentId"]);
+                const query = new Modules.ErrorOrigins.Queries.GetOriginsForIncident(context.routeData["incidentId"]);
                 CqsClient.query<Modules.ErrorOrigins.Queries.GetOriginsForIncidentResult>(query)
                     .done(response => {
 
@@ -64,8 +69,7 @@ module OneTrueError.Incident {
                         });
 
                     });
-            }
-
+            };
         }
 
         deactivate() {}

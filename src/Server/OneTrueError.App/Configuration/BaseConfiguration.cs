@@ -5,7 +5,7 @@ using OneTrueError.Infrastructure.Configuration;
 namespace OneTrueError.App.Configuration
 {
     /// <summary>
-    /// Base configuration for the OneTrueError service.
+    ///     Base configuration for the OneTrueError service.
     /// </summary>
     public sealed class BaseConfiguration : IConfigurationSection
     {
@@ -15,14 +15,14 @@ namespace OneTrueError.App.Configuration
         public Uri BaseUrl { get; set; }
 
         /// <summary>
-        /// Address to contact when having trouble with OneTrueError (account issues etc).
-        /// </summary>
-        public string SupportEmail { get; set; }
-
-        /// <summary>
-        /// Address used as "From" in all emails sent by the system.
+        ///     Address used as "From" in all emails sent by the system.
         /// </summary>
         public string SenderEmail { get; set; }
+
+        /// <summary>
+        ///     Address to contact when having trouble with OneTrueError (account issues etc).
+        /// </summary>
+        public string SupportEmail { get; set; }
 
         string IConfigurationSection.SectionName
         {

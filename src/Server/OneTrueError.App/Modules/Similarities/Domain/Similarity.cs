@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace OneTrueError.App.Modules.Similarities.Domain
@@ -40,19 +41,19 @@ namespace OneTrueError.App.Modules.Similarities.Domain
         }
 
         /// <summary>
-        /// Serialization constructor
+        ///     Serialization constructor
         /// </summary>
         protected Similarity()
         {
         }
 
         /// <summary>
-        /// Id of <see cref="SimilarityCollection"/>.
+        ///     Id of <see cref="SimilarityCollection" />.
         /// </summary>
         public int CollectionId { get; set; }
 
         /// <summary>
-        /// Similarity id
+        ///     Similarity id
         /// </summary>
         public int Id { get; set; }
 
@@ -67,9 +68,9 @@ namespace OneTrueError.App.Modules.Similarities.Domain
         public int ValueCount { get; set; }
 
         /// <summary>
-        /// All values which have been collected for this similarity (i.e. context collection property)
+        ///     All values which have been collected for this similarity (i.e. context collection property)
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         public IEnumerable<SimilarityValue> Values
         {
             get { return _similarityValues.Values; }
@@ -114,10 +115,10 @@ namespace OneTrueError.App.Modules.Similarities.Domain
         }
 
         /// <summary>
-        /// Get the value with highest percentage count.
+        ///     Get the value with highest percentage count.
         /// </summary>
         /// <returns>Value</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
+        [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public SimilarityValue GetMostFrequentlyUsedValue()
         {
             return _similarityValues.Values
@@ -147,10 +148,10 @@ namespace OneTrueError.App.Modules.Similarities.Domain
         }
 
         /// <summary>
-        /// Returns a string that represents the current object.
+        ///     Returns a string that represents the current object.
         /// </summary>
         /// <returns>
-        /// A string that represents the current object.
+        ///     A string that represents the current object.
         /// </returns>
         /// <filterpriority>2</filterpriority>
         public override string ToString()

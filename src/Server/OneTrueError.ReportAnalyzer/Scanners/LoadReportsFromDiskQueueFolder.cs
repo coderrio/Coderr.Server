@@ -48,9 +48,7 @@
 //                    File.WriteAllText(Path.Combine(folder, Guid.NewGuid().ToString() + ".json"), json);
 //                    throw;
 //                }
-                
 
-                
 
 //                var app = _applications.FirstOrDefault(x => x.ApplicationKey.Equals((string)headers["ApplicationKey"], StringComparison.OrdinalIgnoreCase));
 //                if (app == null)
@@ -122,3 +120,4 @@
 
 //    }
 //}
+

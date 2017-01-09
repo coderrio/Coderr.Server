@@ -3,7 +3,6 @@ using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
 using OneTrueError.Api.Core.Applications.Queries;
-using OneTrueError.SqlServer.Tools;
 
 namespace OneTrueError.SqlServer.Core.Applications.Queries
 {
@@ -23,7 +22,7 @@ namespace OneTrueError.SqlServer.Core.Applications.Queries
             {
                 cmd.CommandText = "SELECT Id FROM Applications WHERE AppKey = @appKey";
                 cmd.AddParameter("appKey", query.ApplicationKey);
-                return new GetApplicationIdByKeyResult{Id = (int) await cmd.ExecuteScalarAsync()};
+                return new GetApplicationIdByKeyResult {Id = (int) await cmd.ExecuteScalarAsync()};
             }
         }
     }

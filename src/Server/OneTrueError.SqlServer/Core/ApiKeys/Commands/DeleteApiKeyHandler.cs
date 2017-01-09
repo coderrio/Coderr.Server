@@ -3,9 +3,7 @@ using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
-using Griffin.Data.Mapper;
 using OneTrueError.Api.Core.ApiKeys.Commands;
-using OneTrueError.App.Core.ApiKeys;
 
 namespace OneTrueError.SqlServer.Core.ApiKeys.Commands
 {
@@ -25,7 +23,10 @@ namespace OneTrueError.SqlServer.Core.ApiKeys.Commands
             int id;
             if (!string.IsNullOrEmpty(command.ApiKey))
             {
-                id = (int) _unitOfWork.ExecuteScalar("SELECT Id FROM ApiKeys WHERE GeneratedKey = @key", new { key=command.ApiKey});
+                id =
+                    (int)
+                        _unitOfWork.ExecuteScalar("SELECT Id FROM ApiKeys WHERE GeneratedKey = @key",
+                            new {key = command.ApiKey});
             }
             else
             {
@@ -33,7 +34,7 @@ namespace OneTrueError.SqlServer.Core.ApiKeys.Commands
             }
 
             _unitOfWork.ExecuteNonQuery("DELETE FROM [ApiKeyApplications] WHERE ApiKeyId = @id", new {id});
-            _unitOfWork.ExecuteNonQuery("DELETE FROM [ApiKeys] WHERE Id = @id", new { id });
+            _unitOfWork.ExecuteNonQuery("DELETE FROM [ApiKeys] WHERE Id = @id", new {id});
             return Task.FromResult<object>(null);
         }
     }

@@ -40,7 +40,9 @@ namespace OneTrueError.SqlServer.Core.ApiKeys.Mappings
             for (var i = 0; i < source.FieldCount; i++)
             {
                 var name = source.GetName(i);
-                fields[i] = type.GetProperty(name, BindingFlags.IgnoreCase|BindingFlags.Public|BindingFlags.Instance).SetMethod;
+                fields[i] =
+                    type.GetProperty(name, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance)
+                        .SetMethod;
             }
             return fields;
         }

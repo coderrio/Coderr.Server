@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
-using OneTrueError.Api.Web.Overview;
 using OneTrueError.Api.Web.Overview.Queries;
-using OneTrueError.SqlServer.Tools;
 
 namespace OneTrueError.SqlServer.Web.Overview
 {
-  
     [Component]
     internal class GetOverviewHandler : IQueryHandler<GetOverview, GetOverviewResult>
     {
@@ -21,6 +17,15 @@ namespace OneTrueError.SqlServer.Web.Overview
         public GetOverviewHandler(IAdoNetUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
+        }
+
+        private DateTime StartDateForHours
+        {
+            get
+            {
+                //since we want to 22 if time is 21:30
+                return DateTime.Today.AddHours(DateTime.Now.Hour).AddHours(-22);
+            }
         }
 
         public async Task<GetOverviewResult> ExecuteAsync(GetOverview query)
@@ -32,9 +37,9 @@ namespace OneTrueError.SqlServer.Web.Overview
                 return await GetTodaysOverviewAsync(query);
 
             var apps = new Dictionary<int, GetOverviewApplicationResult>();
-            var labels = new string[query.NumberOfDays+1]; //+1 for today
+            var labels = new string[query.NumberOfDays + 1]; //+1 for today
             var startDate = DateTime.Today.AddDays(-query.NumberOfDays);
-            for (int i = 0; i <= query.NumberOfDays; i++) 
+            for (var i = 0; i <= query.NumberOfDays; i++)
             {
                 labels[i] = startDate.AddDays(i).ToShortDateString();
             }
@@ -42,7 +47,7 @@ namespace OneTrueError.SqlServer.Web.Overview
             var result = new GetOverviewResult();
             using (var cmd = _unitOfWork.CreateDbCommand())
             {
-                cmd.CommandText= @"select Applications.Id, Applications.Name, cte.Date, cte.Count
+                cmd.CommandText = @"select Applications.Id, Applications.Name, cte.Date, cte.Count
 FROM 
 (
 	select Incidents.ApplicationId , cast(Incidents.CreatedAtUtc as date) as Date, count(Incidents.Id) as Count
@@ -53,7 +58,7 @@ FROM
 right join applications on (applicationid=applications.id)
 ;";
 
-               
+
                 cmd.AddParameter("minDate", startDate);
                 using (var reader = await cmd.ExecuteReaderAsync())
                 {
@@ -63,16 +68,17 @@ right join applications on (applicationid=applications.id)
                         GetOverviewApplicationResult app;
                         if (!apps.TryGetValue(appId, out app))
                         {
-                            app = new GetOverviewApplicationResult(reader.GetString(1), startDate, query.NumberOfDays+1); //+1 for today
+                            app = new GetOverviewApplicationResult(reader.GetString(1), startDate,
+                                query.NumberOfDays + 1); //+1 for today
                             apps[appId] = app;
                         }
                         //no stats at all for this app
                         if (reader[2] is DBNull)
                         {
                             var startDate2 = DateTime.Today.AddDays(-query.NumberOfDays + 1);
-                            for (int i = 0; i < query.NumberOfDays; i++)
+                            for (var i = 0; i < query.NumberOfDays; i++)
                             {
-                                app.AddValue( startDate2.AddDays(i),0);
+                                app.AddValue(startDate2.AddDays(i), 0);
                             }
                         }
                         else
@@ -140,14 +146,6 @@ AND DATALENGTH(Description) > 0;";
             }
         }
 
-        private DateTime StartDateForHours
-        {
-            get
-            {
-                //since we want to 22 if time is 21:30
-                return DateTime.Today.AddHours(DateTime.Now.Hour).AddHours(-22);
-            }
-        }
         private async Task<GetOverviewResult> GetTodaysOverviewAsync(GetOverview query)
         {
             var result = new GetOverviewResult

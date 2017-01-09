@@ -1,10 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Griffin.Data;
 
 namespace OneTrueError.Infrastructure.Configuration.Database
 {
+    /// <summary>
+    ///     Uses a DB to store configuration.
+    /// </summary>
+    /// <remarks>
+    ///     <para>
+    ///         Items are cached for 30 seconds to avoid loading the DB.
+    ///     </para>
+    /// </remarks>
     public class DatabaseStore : ConfigurationStore
     {
+        private readonly Dictionary<Type, Wrapper> _items = new Dictionary<Type, Wrapper>();
+
+
         /// <summary>
         ///     Load a settings section
         /// </summary>
@@ -12,6 +24,13 @@ namespace OneTrueError.Infrastructure.Configuration.Database
         /// <returns>Category if found; otherwise <c>null</c>.</returns>
         public override T Load<T>()
         {
+            lock (_items)
+            {
+                Wrapper t;
+                if (_items.TryGetValue(typeof(T), out t) && !t.HasExpired())
+                    return (T) t.Value;
+            }
+
             var section = new T();
             using (var connection = ConnectionFactory.Create())
             {
@@ -35,11 +54,13 @@ namespace OneTrueError.Infrastructure.Configuration.Database
                 }
             }
 
+            SetCache(section);
             return section;
         }
 
         public override void Store(IConfigurationSection section)
         {
+            SetCache(section);
             using (var connection = ConnectionFactory.Create())
             {
                 using (var cmd = connection.CreateCommand())
@@ -64,6 +85,25 @@ namespace OneTrueError.Infrastructure.Configuration.Database
                     cmd.AddParameter("section", section.SectionName);
                     cmd.ExecuteNonQuery();
                 }
+            }
+        }
+
+        private void SetCache<T>(T section)
+        {
+            lock (_items)
+            {
+                _items[typeof(T)] = new Wrapper {AddedAtUtc = DateTime.UtcNow, Value = section};
+            }
+        }
+
+        private class Wrapper
+        {
+            public DateTime AddedAtUtc { get; set; }
+            public object Value { get; set; }
+
+            public bool HasExpired()
+            {
+                return DateTime.UtcNow.Subtract(AddedAtUtc).TotalSeconds >= 60;
             }
         }
     }

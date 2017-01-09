@@ -9,7 +9,7 @@ using OneTrueError.App.Modules.Triggers.Domain;
 namespace OneTrueError.App.Modules.Triggers.Queries
 {
     /// <summary>
-    /// Handler for <see cref="GetTrigger"/>.
+    ///     Handler for <see cref="GetTrigger" />.
     /// </summary>
     [Component]
     public class GetTriggerHandler : IQueryHandler<GetTrigger, GetTriggerDTO>
@@ -17,7 +17,7 @@ namespace OneTrueError.App.Modules.Triggers.Queries
         private readonly ITriggerRepository _repository;
 
         /// <summary>
-        /// Creates a new instance of <see cref="GetTriggerHandler"/>.
+        ///     Creates a new instance of <see cref="GetTriggerHandler" />.
         /// </summary>
         /// <param name="repository">repos</param>
         /// <exception cref="ArgumentNullException">repository</exception>
@@ -28,15 +28,14 @@ namespace OneTrueError.App.Modules.Triggers.Queries
         }
 
         /// <summary>
-        /// Method used to execute the query
+        ///     Method used to execute the query
         /// </summary>
         /// <param name="query">Query to execute.</param>
         /// <returns>
-        /// Task which will contain the result once completed.
+        ///     Task which will contain the result once completed.
         /// </returns>
         public async Task<GetTriggerDTO> ExecuteAsync(GetTrigger query)
         {
-
             var trigger = await _repository.GetAsync(query.Id);
             return new GetTriggerDTO
             {

@@ -68,7 +68,8 @@ namespace OneTrueError.App.Modules.Messaging.Commands
                 var dimensions = ImageHelper.GetDimensions(reader);
                 var key = string.Format("src=\"cid:{0}\"", resource.Key);
                 complete = complete.Replace(key,
-                    string.Format("{0} width=\"{1}\" height=\"{2}\" style=\"border: 1px solid #000\"", key, dimensions.Width, dimensions.Height));
+                    string.Format("{0} width=\"{1}\" height=\"{2}\" style=\"border: 1px solid #000\"", key,
+                        dimensions.Width, dimensions.Height));
                 resource.Value.Position = 0;
 
                 msg.Resources.Add(linkedResource);

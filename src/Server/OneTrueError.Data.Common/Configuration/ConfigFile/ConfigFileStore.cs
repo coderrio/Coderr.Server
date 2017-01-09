@@ -3,60 +3,14 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Web;
 using System.Web.Configuration;
-using OneTrueError.Infrastructure.Configuration.ConfigFile;
 
-namespace OneTrueError.Infrastructure.Configuration
+namespace OneTrueError.Infrastructure.Configuration.ConfigFile
 {
     /// <summary>
-    /// Store the configuration in <c>web.config</c>.
+    ///     Store the configuration in <c>web.config</c>.
     /// </summary>
     public class ConfigFileStore : ConfigurationStore
     {
-        /// <summary>
-        ///     Store a settings section.
-        /// </summary>
-        /// <param name="section">Category to persist.</param>
-        /// <exception cref="ArgumentNullException">section</exception>
-        /// <remarks>
-        /// <para>
-        /// The section name is used as a prefix for the appSetting key. i.e. the setting <c>Name</c> in a section named <c>Properties</c> would
-        /// be stored with the key <c>Properties.Name</c>
-        /// </para>
-        /// </remarks>
-        public override void Store(IConfigurationSection section)
-        {
-            if (section == null) throw new ArgumentNullException("section");
-
-            var configuration = HttpContext.Current == null
-                ? ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None)
-                : WebConfigurationManager.OpenWebConfiguration("~/");
-
-            var config = (OneTrueErrorConfigurationSection)configuration.GetSection("oneTrueError");
-            var appConfigSection = config.Sections[section.SectionName];
-            if (appConfigSection == null)
-            {
-                appConfigSection = new SectionConfigElement() { Name = section.SectionName };
-                config.Sections.Add(appConfigSection);
-            }
-
-            var props = section.ToDictionary();
-            foreach (var kvp in props)
-            {
-                var configItem = appConfigSection.Settings[kvp.Key];
-                if (configItem == null)
-                {
-                    configItem = new KeyValueElement(kvp.Key, kvp.Value);
-                    appConfigSection.Settings.Add(configItem);
-                }
-                else
-                    appConfigSection.Settings[kvp.Key].Value = kvp.Value;
-            }
-
-
-            configuration.Save();
-            ConfigurationManager.RefreshSection("appSettings");
-        }
-
         /// <summary>
         ///     Load a settings section
         /// </summary>
@@ -82,6 +36,52 @@ namespace OneTrueError.Infrastructure.Configuration
 
             settingsType.Load(dict);
             return settingsType;
+        }
+
+        /// <summary>
+        ///     Store a settings section.
+        /// </summary>
+        /// <param name="section">Category to persist.</param>
+        /// <exception cref="ArgumentNullException">section</exception>
+        /// <remarks>
+        ///     <para>
+        ///         The section name is used as a prefix for the appSetting key. i.e. the setting <c>Name</c> in a section named
+        ///         <c>Properties</c> would
+        ///         be stored with the key <c>Properties.Name</c>
+        ///     </para>
+        /// </remarks>
+        public override void Store(IConfigurationSection section)
+        {
+            if (section == null) throw new ArgumentNullException("section");
+
+            var configuration = HttpContext.Current == null
+                ? ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None)
+                : WebConfigurationManager.OpenWebConfiguration("~/");
+
+            var config = (OneTrueErrorConfigurationSection) configuration.GetSection("oneTrueError");
+            var appConfigSection = config.Sections[section.SectionName];
+            if (appConfigSection == null)
+            {
+                appConfigSection = new SectionConfigElement {Name = section.SectionName};
+                config.Sections.Add(appConfigSection);
+            }
+
+            var props = section.ToDictionary();
+            foreach (var kvp in props)
+            {
+                var configItem = appConfigSection.Settings[kvp.Key];
+                if (configItem == null)
+                {
+                    configItem = new KeyValueElement(kvp.Key, kvp.Value);
+                    appConfigSection.Settings.Add(configItem);
+                }
+                else
+                    appConfigSection.Settings[kvp.Key].Value = kvp.Value;
+            }
+
+
+            configuration.Save();
+            ConfigurationManager.RefreshSection("appSettings");
         }
     }
 }

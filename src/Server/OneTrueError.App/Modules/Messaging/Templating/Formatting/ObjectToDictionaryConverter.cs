@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace OneTrueError.App.Modules.Messaging.Templating.Formatting
 {
     /// <summary>
-    /// Converts an object into a dictionary (to be able to process it in the template)
+    ///     Converts an object into a dictionary (to be able to process it in the template)
     /// </summary>
     public class ObjectToDictionaryConverter
     {
@@ -16,14 +17,14 @@ namespace OneTrueError.App.Modules.Messaging.Templating.Formatting
         /// <remarks>
         ///     Look at the class doc for an example.
         /// </remarks>
-        public Dictionary<string,object> Convert(object instance)
+        public Dictionary<string, object> Convert(object instance)
         {
             if (instance == null)
                 throw new ArgumentNullException("instance");
 
             var dictionary = new Dictionary<string, object>();
             ReflectObject(instance, "", dictionary);
-            
+
             return dictionary;
         }
 
@@ -37,8 +38,8 @@ namespace OneTrueError.App.Modules.Messaging.Templating.Formatting
             if (type == null) throw new ArgumentNullException("type");
 
             return type.IsPrimitive
-                   || type == typeof(Decimal)
-                   || type == typeof(String)
+                   || type == typeof(decimal)
+                   || type == typeof(string)
                    || type == typeof(DateTime)
                    || type == typeof(int)
                    || type == typeof(DateTimeOffset)
@@ -51,7 +52,8 @@ namespace OneTrueError.App.Modules.Messaging.Templating.Formatting
         /// <param name="instance">Current object to reflect</param>
         /// <param name="prefix">Prefix, like "User.Address.Postal.ZipCode"</param>
         /// <param name="dictionary">Collection that values should be added to.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1820:TestForEmptyStringsUsingStringLength", Justification = "Null check is done on the argument.")]
+        [SuppressMessage("Microsoft.Performance", "CA1820:TestForEmptyStringsUsingStringLength",
+            Justification = "Null check is done on the argument.")]
         protected void ReflectObject(object instance, string prefix, IDictionary<string, object> dictionary)
         {
             if (instance == null) throw new ArgumentNullException("instance");

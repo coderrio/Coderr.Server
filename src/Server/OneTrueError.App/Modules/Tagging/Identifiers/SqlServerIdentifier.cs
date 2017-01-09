@@ -4,7 +4,7 @@ using Griffin.Container;
 namespace OneTrueError.App.Modules.Tagging.Identifiers
 {
     /// <summary>
-    /// Add the "sql-server" tag-
+    ///     Add the "sql-server" tag-
     /// </summary>
     [Component]
     public class SqlServerIdentifier : ITagIdentifier

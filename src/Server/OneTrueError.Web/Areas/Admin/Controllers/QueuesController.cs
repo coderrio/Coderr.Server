@@ -32,7 +32,7 @@ namespace OneTrueError.Web.Areas.Admin.Controllers
 
             return View(model);
         }
-      
+
 
         [HttpPost]
         public ActionResult Index(QueueViewModel model)
@@ -47,17 +47,20 @@ namespace OneTrueError.Web.Areas.Admin.Controllers
 
             var errorMessage = "";
             if (
-                !SetupTools.ValidateMessageQueue(model.ReportQueue, model.ReportAuthentication, model.ReportTransactions, out errorMessage))
+                !SetupTools.ValidateMessageQueue(model.ReportQueue, model.ReportAuthentication, model.ReportTransactions,
+                    out errorMessage))
             {
                 ModelState.AddModelError("ReportQueue", errorMessage);
             }
             if (
-                !SetupTools.ValidateMessageQueue(model.FeedbackQueue, model.FeedbackAuthentication, model.FeedbackTransactions, out errorMessage))
+                !SetupTools.ValidateMessageQueue(model.FeedbackQueue, model.FeedbackAuthentication,
+                    model.FeedbackTransactions, out errorMessage))
             {
                 ModelState.AddModelError("FeedbackQueue", errorMessage);
             }
             if (
-                !SetupTools.ValidateMessageQueue(model.EventQueue, model.EventAuthentication, model.EventTransactions, out errorMessage))
+                !SetupTools.ValidateMessageQueue(model.EventQueue, model.EventAuthentication, model.EventTransactions,
+                    out errorMessage))
             {
                 ModelState.AddModelError("EventQueue", errorMessage);
             }
