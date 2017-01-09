@@ -10,6 +10,7 @@ namespace OneTrueError.Web.Areas.Admin
             new WizardStepInfo("Base configuration", "~/admin/home/basics/"),
             new WizardStepInfo("Error tracking", "~/admin/home/errors/"),
             new WizardStepInfo("Api keys", "~/admin/apikeys/"),
+            new WizardStepInfo("Applications", "~/admin/application/"),
             new WizardStepInfo("Mail settings", "~/admin/messaging/email/"),
             new WizardStepInfo("Message queues", "~/admin/queues/"),
             new WizardStepInfo("Report settings", "~/admin/reporting/")

@@ -4,14 +4,24 @@ using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Reflection;
 using OneTrueError.Infrastructure;
 
 namespace OneTrueError.SqlServer
 {
+    /// <summary>
+    ///     MS Sql Server specific implementation of the database tools.
+    /// </summary>
     public class SqlServerTools : ISetupDatabaseTools
     {
+        private readonly SchemaManager _schemaManager;
+
+        public SqlServerTools()
+        {
+            _schemaManager = new SchemaManager(OpenConnection);
+        }
+
+        internal static string DbName { get; set; }
+
         private bool IsConnectionConfigured
         {
             get
@@ -21,6 +31,9 @@ namespace OneTrueError.SqlServer
             }
         }
 
+        /// <summary>
+        ///     Checks if the tables exists and are for the current DB schema.
+        /// </summary>
         public bool GotUpToDateTables()
         {
             if (!IsConnectionConfigured)
@@ -37,6 +50,22 @@ namespace OneTrueError.SqlServer
                     return result != null && !(result is DBNull);
                 }
             }
+        }
+
+        /// <summary>
+        ///     Check if the current DB schema is out of date compared to the embedded schema resources.
+        /// </summary>
+        public bool CanSchemaBeUpgraded()
+        {
+            return _schemaManager.CanSchemaBeUpgraded();
+        }
+
+        /// <summary>
+        ///     Update DB schema to latest version.
+        /// </summary>
+        public void UpgradeDatabaseSchema()
+        {
+            _schemaManager.UpgradeDatabaseSchema();
         }
 
         public void CheckConnectionString(string connectionString)
@@ -60,20 +89,7 @@ namespace OneTrueError.SqlServer
             Justification = "Installation import = control over SQL")]
         public void CreateTables()
         {
-            using (var con = OpenConnection())
-            {
-                var resourceName = GetType().Namespace + ".Database.sql";
-                var res = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
-                var sql = new StreamReader(res).ReadToEnd();
-                using (var transaction = con.BeginTransaction())
-                using (var cmd = con.CreateCommand())
-                {
-                    cmd.Transaction = transaction;
-                    cmd.CommandText = sql;
-                    cmd.ExecuteNonQuery();
-                    transaction.Commit();
-                }
-            }
+            _schemaManager.CreateInitialStructure();
         }
 
         IDbConnection ISetupDatabaseTools.OpenConnection()
@@ -85,6 +101,9 @@ namespace OneTrueError.SqlServer
         {
             var con = new SqlConnection(connectionString);
             con.Open();
+            if (DbName != null)
+                con.ChangeDatabase(DbName);
+
             return con;
         }
 

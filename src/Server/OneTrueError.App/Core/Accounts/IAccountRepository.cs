@@ -20,7 +20,7 @@ namespace OneTrueError.App.Core.Accounts
         Task CreateAsync(Account account);
 
         /// <summary>
-        ///     find by using the actiovation key
+        ///     find by using the activation key
         /// </summary>
         /// <param name="activationKey"></param>
         /// <returns>account if found; otherwise <c>null</c>.</returns>

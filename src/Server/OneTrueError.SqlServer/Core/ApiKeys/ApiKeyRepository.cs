@@ -99,7 +99,7 @@ namespace OneTrueError.SqlServer.Core.ApiKeys
             var keys = new List<ApiKey>();
             foreach (var id in apiKeyIds)
             {
-                var key = await GetByKeyId(id);
+                var key = await GetByKeyIdAsync(id);
                 keys.Add(key);
             }
             return keys;
@@ -127,7 +127,7 @@ namespace OneTrueError.SqlServer.Core.ApiKeys
         /// <param name="id">PK</param>
         /// <returns>key</returns>
         /// <exception cref="EntityNotFoundException">Given key was not found.</exception>
-        public async Task<ApiKey> GetByKeyId(int id)
+        public async Task<ApiKey> GetByKeyIdAsync(int id)
         {
             var key = await _uow.FirstAsync<ApiKey>("id=@1", id);
             var sql = "SELECT [ApplicationId] FROM [ApiKeyApplications] WHERE [ApiKeyId] = @1";

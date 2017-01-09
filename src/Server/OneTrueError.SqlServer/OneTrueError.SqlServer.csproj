@@ -80,6 +80,7 @@
     <Compile Include="Core\ApiKeys\Queries\ListApiKeysHandler.cs" />
     <Compile Include="Core\ApiKeys\Mappings\MirrorMapper.cs" />
     <Compile Include="DbConverters.cs" />
+    <Compile Include="SchemaManager.cs" />
     <Compile Include="Web\Feedback\Queries\GetOverviewFeedbackHandler.cs" />
     <Compile Include="Web\Feedback\Queries\GetOverviewFeedbackResultItemMapper.cs" />
     <Compile Include="Core\Incidents\ReportDayMapper.cs" />
@@ -169,10 +170,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Database.sql" />
+    <EmbeddedResource Include="Schema\Database.sql" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Core\Accounts\CommandHandlers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Schema\Update.v2.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Schema\Update.v3.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

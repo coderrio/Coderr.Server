@@ -1,4 +1,6 @@
 ﻿using System.Web.Mvc;
+using OneTrueError.Api.Core.Applications;
+using OneTrueError.Api.Core.Applications.Commands;
 
 namespace OneTrueError.Web.Controllers
 {
@@ -21,5 +23,6 @@ namespace OneTrueError.Web.Controllers
         {
             return RedirectToRoute(new {Controller = "Setup", Area = "Installation"});
         }
+        
     }
 }

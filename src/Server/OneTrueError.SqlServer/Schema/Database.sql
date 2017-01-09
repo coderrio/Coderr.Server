@@ -81,7 +81,7 @@ END
 
 IF OBJECT_ID(N'dbo.[ErrorOrigins]', N'U') IS NULL
 BEGIN
-		CREATE TABLE [dbo].[ErrorOrigins] (
+	CREATE TABLE [dbo].[ErrorOrigins] (
         [Id]             INT            IDENTITY (1, 1) NOT NULL primary key,
         [IpAddress]      VARCHAR (20)   NOT NULL,
         [CountryCode]    VARCHAR (5)    NULL,
@@ -98,7 +98,7 @@ END
 
 IF OBJECT_ID(N'dbo.[ErrorReportOrigins]', N'U') IS NULL
 BEGIN
-		CREATE TABLE [dbo].[ErrorReportOrigins] (
+	CREATE TABLE [dbo].[ErrorReportOrigins] (
         [ErrorOriginId]             INT NOT NULL,
         [IncidentId]             INT NOT NULL,
         [ReportId]    INT  NOT NULL,
@@ -110,7 +110,7 @@ END
 
 IF OBJECT_ID(N'dbo.[ErrorReports]', N'U') IS NULL
 BEGIN
-		CREATE TABLE [dbo].[ErrorReports] (
+	CREATE TABLE [dbo].[ErrorReports] (
         [Id]                 INT            IDENTITY (1, 1) NOT NULL primary key,
         [IncidentId]         INT            NOT NULL,
         [ErrorId]            VARCHAR (36)   NOT NULL,
@@ -140,7 +140,7 @@ END
 
 IF OBJECT_ID(N'dbo.[IncidentFeedback]', N'U') IS NULL
 BEGIN
-		CREATE TABLE [dbo].[IncidentFeedback] (
+	CREATE TABLE [dbo].[IncidentFeedback] (
         [Id]                 INT            IDENTITY (1, 1) NOT NULL primary key,
         [ApplicationId]      INT            NULL,
         [IncidentId]         INT            NULL,
@@ -186,7 +186,7 @@ END
 
 IF OBJECT_ID(N'dbo.[IncidentTags]', N'U') IS NULL
 BEGIN
-		CREATE TABLE [dbo].[IncidentTags] (
+    CREATE TABLE [dbo].[IncidentTags] (
         [id]          INT          IDENTITY (1, 1) NOT NULL primary key,
         [IncidentId]  INT          NOT NULL,
         [TagName]     VARCHAR (40) NOT NULL,
@@ -224,7 +224,6 @@ BEGIN
         [Properties]              text NOT NULL
 	);
 END
-
 
 IF OBJECT_ID(N'dbo.[IncidentContextCollections_IncidentId]', N'U') IS NULL
 BEGIN
@@ -285,8 +284,7 @@ BEGIN
 		[EmailAddress]  nvarchar(255) not null,
         [AddedAtUtc]    DATETIME      NOT NULL,
         [AddedByName]   VARCHAR (50)  NOT NULL,
-        [Roles]         VARCHAR (255) NOT NULL,
-		
+        [Roles]         VARCHAR (255) NOT NULL
 	);
 END
 
@@ -324,34 +322,4 @@ BEGIN
         [Body]         text NOT NULL,
 		
 	);
-END
-
-insert into Applications (Name, AppKey, CreatedById, CreatedAtUtc, ApplicationType, SharedSecret) VALUES('test', '13d82df603a845c7a27164c4fec19dd6', 1, GetUtcDate(), 'DesktopApplication', '6f0a0a7fac6d42caa7cc47bb34a6520b');
-
-IF OBJECT_ID(N'dbo.[DatabaseSchema]', N'U') IS NULL
-BEGIN
-	CREATE TABLE [dbo].[DatabaseSchema] (
-        [Version] int not null default 1
-	);
-
-END
-
-IF OBJECT_ID(N'dbo.[ApiKeys]', N'U') IS NULL
-BEGIN
-	CREATE TABLE [dbo].[ApiKeys] (
-        [Id]     INT identity      not    NULL primary key,
-		[ApplicationName] varchar(40) NOT NULL, 
-        [CreatedAtUtc]    DATETIME      NOT NULL,
-        [CreatedById]   int NOT NULL,
-        [GeneratedKey]   varchar(36) NOT NULL,
-        [SharedSecret]   varchar(36) NOT NULL
-	);
-	CREATE TABLE [dbo].[ApiKeyApplications] (
-        [ApiKeyId]     INT not    NULL,
-		[ApplicationId] INT NOT NULL,
-		Primary key (ApiKeyId, ApplicationId),
-		FOREIGN KEY (ApiKeyId) REFERENCES ApiKeys(Id),
-		FOREIGN KEY (ApplicationId) REFERENCES Applications(Id)
-	);
-	update DatabaseSchema SET Version = 2;
 END

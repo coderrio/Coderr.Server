@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
@@ -16,7 +17,7 @@ namespace OneTrueError.App.Core.ApiKeys.Events
         private readonly IApiKeyRepository _repository;
 
         /// <summary>
-        ///     Creates a new instance of <see cref="ApplicationDeletedHandler" />.
+        /// Creates a new instance of <see cref="ApplicationDeletedHandler"/>.
         /// </summary>
         /// <param name="repository">repos</param>
         public ApplicationDeletedHandler(IApiKeyRepository repository)

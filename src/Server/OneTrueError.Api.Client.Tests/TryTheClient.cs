@@ -10,7 +10,7 @@ namespace OneTrueError.Api.Client.Tests
 #if DEBUG
     public class TryTheClient
     {
-        [Fact]
+        //[Fact]
         public async Task Test()
         {
             var client = new OneTrueApiClient();

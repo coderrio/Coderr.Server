@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Configuration;
 using System.Web.Mvc;
+using Griffin.Data;
+using OneTrueError.App.Core.Applications;
 using OneTrueError.Infrastructure;
+using OneTrueError.SqlServer.Core.Applications;
 
 namespace OneTrueError.Web.Areas.Installation.Controllers
 {
@@ -48,6 +51,7 @@ namespace OneTrueError.Web.Areas.Installation.Controllers
             try
             {
                 SetupTools.DbTools.CreateTables();
+                SetupTools.DbTools.UpgradeDatabaseSchema();
                 return Redirect(Url.GetNextWizardStep());
             }
             catch (Exception ex)
