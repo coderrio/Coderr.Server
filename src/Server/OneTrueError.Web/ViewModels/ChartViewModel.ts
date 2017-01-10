@@ -51,31 +51,31 @@ module OneTrueError {
                 pointStrokeColor: "#ff5216",
                 pointHighlightFill: "#fff",
                 pointHighlightStroke: "rgba(255,255,255,0.5)"
+            },
+            {
+                fillColor: "rgba(255,152,22,0.2)",
+                strokeColor: "#ffc216",
+                pointColor: "#ffc216",
+                pointStrokeColor: "#ffc216",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(255,255,255,0.5)",
+            },
+            {
+                fillColor: "rgba(255,187,22,0.2)",
+                strokeColor: "#ff9816",
+                pointColor: "#ff9816",
+                pointStrokeColor: "#ff9816",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(255,255,255,0.5)",
+            },
+            {
+                fillColor: "rgba(255,82,22,0.2)",
+                strokeColor: "#ff5216",
+                pointColor: "#ff5216",
+                pointStrokeColor: "#ff5216",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(255,255,255,0.5)",
             }
-            //{
-            //    fillColor: "rgba(255,152,22,0.2)",
-            //    strokeColor: "#ffc216",
-            //    pointColor: "#ffc216",
-            //    pointStrokeColor: "#ffc216",
-            //    pointHighlightFill: "#fff",
-            //    pointHighlightStroke: "rgba(255,255,255,0.5)",
-            //},
-            //{
-            //    fillColor: "rgba(255,187,22,0.2)",
-            //    strokeColor: "#ff9816",
-            //    pointColor: "#ff9816",
-            //    pointStrokeColor: "#ff9816",
-            //    pointHighlightFill: "#fff",
-            //    pointHighlightStroke: "rgba(255,255,255,0.5)",
-            //},
-            //{
-            //    fillColor: "rgba(255,82,22,0.2)",
-            //    strokeColor: "#ff5216",
-            //    pointColor: "#ff5216",
-            //    pointStrokeColor: "#ff5216",
-            //    pointHighlightFill: "#fff",
-            //    pointHighlightStroke: "rgba(255,255,255,0.5)",
-            //}
         ];
 
         constructor(targetElementOrId: any) {
