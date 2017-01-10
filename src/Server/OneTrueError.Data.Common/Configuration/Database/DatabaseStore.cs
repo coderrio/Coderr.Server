@@ -16,7 +16,6 @@ namespace OneTrueError.Infrastructure.Configuration.Database
     {
         private readonly Dictionary<Type, Wrapper> _items = new Dictionary<Type, Wrapper>();
 
-
         /// <summary>
         ///     Load a settings section
         /// </summary>
@@ -28,7 +27,9 @@ namespace OneTrueError.Infrastructure.Configuration.Database
             {
                 Wrapper t;
                 if (_items.TryGetValue(typeof(T), out t) && !t.HasExpired())
-                    return (T) t.Value;
+                {
+                    return (T)t.Value;
+                }
             }
 
             var section = new T();
@@ -88,11 +89,11 @@ namespace OneTrueError.Infrastructure.Configuration.Database
             }
         }
 
-        private void SetCache<T>(T section)
+        private void SetCache(IConfigurationSection section)
         {
             lock (_items)
             {
-                _items[typeof(T)] = new Wrapper {AddedAtUtc = DateTime.UtcNow, Value = section};
+                _items[section.GetType()] = new Wrapper {AddedAtUtc = DateTime.UtcNow, Value = section};
             }
         }
 
