@@ -37,6 +37,7 @@ namespace OneTrueError.App.Core.Notifications.EventHandlers
             _queryBus = queryBus;
         }
 
+        /// <inheritdoc/>
         public async Task HandleAsync(FeedbackAttachedToIncident e)
         {
             var settings = await _notificationsRepository.GetAllAsync(-1);

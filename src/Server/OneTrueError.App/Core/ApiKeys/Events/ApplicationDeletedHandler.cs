@@ -26,6 +26,7 @@ namespace OneTrueError.App.Core.ApiKeys.Events
             _repository = repository;
         }
 
+        /// <inheritdoc />
         public async Task HandleAsync(ApplicationDeleted e)
         {
             var apps = await _repository.GetForApplicationAsync(e.ApplicationId);

@@ -24,6 +24,7 @@ namespace OneTrueError.App.Core.Notifications.EventHandlers
             _uow = uow;
         }
 
+        /// <inheritdoc />
         public Task HandleAsync(ApplicationDeleted e)
         {
             _uow.ExecuteNonQuery("DELETE FROM UserNotificationSettings WHERE ApplicationId = @id", new { id = e.ApplicationId });

@@ -20,7 +20,7 @@ namespace OneTrueError.Api.Client.Tests
             {
                 result = await client.QueryAsync(new FindAccountByUserName("admin"));
             }
-            catch (WebException ex)
+            catch (WebException)
             {
             }
 

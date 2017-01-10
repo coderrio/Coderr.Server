@@ -26,6 +26,7 @@ namespace OneTrueError.App.Core.Applications.CommandHandlers
             _eventBus = eventBus;
         }
 
+        /// <inheritdoc/>
         public async Task ExecuteAsync(DeleteApplication command)
         {
             var app = await _repository.GetByIdAsync(command.Id);

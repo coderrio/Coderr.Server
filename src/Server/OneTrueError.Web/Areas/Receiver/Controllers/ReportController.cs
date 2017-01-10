@@ -43,8 +43,6 @@ namespace OneTrueError.Web.Areas.Receiver.Controllers
         [HttpPost, Route("receiver/report/{appKey}")]
         public async Task<HttpResponseMessage> Post(string appKey, string sig)
         {
-            return Request.CreateErrorResponse(HttpStatusCode.NotFound, "No fuck!");
-
             if (HttpContext.Current.Request.InputStream.Length > 20000000)
             {
                 return await KillLargeReportAsync(appKey);
