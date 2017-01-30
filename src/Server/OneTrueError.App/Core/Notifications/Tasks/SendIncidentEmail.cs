@@ -60,28 +60,31 @@ namespace OneTrueError.App.Core.Notifications.Tasks
                 msg.Subject = "ReOpened: " + shortName;
                 msg.TextBody = string.Format(@"Incident: {0}
 Report url: {0}/report/{1}
-Exception: {2}
+Description: {2}
+Exception: {3}
 
-{3}
-", baseUrl, report.Id, report.Exception.FullName, report.Exception.StackTrace);
+{4}
+", baseUrl, report.Id, incident.Name, report.Exception.FullName, report.Exception.StackTrace);
             }
             else if (incident.ReportCount == 1)
             {
                 msg.Subject = "New: " + shortName;
                 msg.TextBody = string.Format(@"Incident: {0}
-Exception: {1}
+Description: {1}
+Exception: {2}
 
-{2}", baseUrl, report.Exception.FullName, report.Exception.StackTrace);
+{3}", baseUrl, incident.Name, report.Exception.FullName, report.Exception.StackTrace);
             }
             else
             {
                 msg.Subject = "Updated: " + shortName;
                 msg.TextBody = string.Format(@"Incident: {0}
 Report url: {0}/report/{1}
-Exception: {2}
+Description: {2}
+Exception: {3}
 
-{3}
-", baseUrl, report.Id, report.Exception.FullName, report.Exception.StackTrace);
+{4}
+", baseUrl, report.Id, incident.Name, report.Exception.FullName, report.Exception.StackTrace);
             }
 
             var emailCmd = new SendEmail(msg);
