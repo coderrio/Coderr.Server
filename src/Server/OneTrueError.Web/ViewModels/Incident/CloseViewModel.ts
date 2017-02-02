@@ -76,7 +76,7 @@ module OneTrueError.Incident {
 
             CqsClient.command(closeCmd);
             window.location.hash = `#/application/${this.context.routeData["applicationId"]}`;
-            humane.log("Incident have been closed.");
+            humane.log("Incident has been closed.");
         }
 
         incidentId: number;
