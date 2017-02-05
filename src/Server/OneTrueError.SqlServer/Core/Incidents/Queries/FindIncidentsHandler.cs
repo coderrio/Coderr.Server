@@ -34,7 +34,7 @@ namespace OneTrueError.SqlServer.Core.Incidents.Queries
                 cmd.AddParameter("accountId", ClaimsPrincipal.Current.GetAccountId());
                 if (query.ApplicationId > 0)
                 {
-                    sqlQuery += " WHERE ApplicationId = @id AND (";
+                    sqlQuery += " WHERE Applications.Id = @id AND (";
                     cmd.AddParameter("id", query.ApplicationId);
                 }
                 else

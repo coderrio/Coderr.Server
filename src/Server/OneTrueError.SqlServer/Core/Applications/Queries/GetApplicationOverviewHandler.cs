@@ -43,11 +43,13 @@ namespace OneTrueError.SqlServer.Core.Applications.Queries
                 var sql = @"select cast(Incidents.CreatedAtUtc as date), count(Id)
 from Incidents
 where Incidents.CreatedAtUtc >= @minDate
+AND Incidents.CreatedAtUtc <= GetUtcDate()
 {0}
 group by cast(Incidents.CreatedAtUtc as date);
 select cast(ErrorReports.CreatedAtUtc as date), count(Id)
 from ErrorReports
 where ErrorReports.CreatedAtUtc >= @minDate
+AND ErrorReports.CreatedAtUtc <= GetUtcDate()
 {1}
 group by cast(ErrorReports.CreatedAtUtc as date);";
 
@@ -94,22 +96,26 @@ group by cast(ErrorReports.CreatedAtUtc as date);";
             {
                 cmd.CommandText = @"select count(id) from incidents 
 where CreatedAtUtc >= @minDate
+AND CreatedAtUtc <= GetUtcDate()
 AND ApplicationId = @appId 
 AND Incidents.IgnoreReports = 0 
 AND Incidents.IsSolved = 0;
 
 select count(id) from errorreports 
 where CreatedAtUtc >= @minDate
+AND CreatedAtUtc <= GetUtcDate()
 AND ApplicationId = @appId;
 
 select count(distinct emailaddress) from IncidentFeedback
 where CreatedAtUtc >= @minDate
+AND CreatedAtUtc <= GetUtcDate()
 AND ApplicationId = @appId
 AND emailaddress is not null
 AND DATALENGTH(emailaddress) > 0;
 
 select count(*) from IncidentFeedback 
 where CreatedAtUtc >= @minDate
+AND CreatedAtUtc <= GetUtcDate()
 AND ApplicationId = @appId
 AND Description is not null
 AND DATALENGTH(Description) > 0;";
@@ -164,11 +170,13 @@ AND DATALENGTH(Description) > 0;";
                 var sql = @"SELECT DATEPART(HOUR, Incidents.CreatedAtUtc), cast(count(Id) as int)
 from Incidents
 where Incidents.CreatedAtUtc >= @minDate
+AND Incidents.CreatedAtUtc <= GetUtcDate()
 {0}
 group by DATEPART(HOUR, Incidents.CreatedAtUtc);
 select DATEPART(HOUR, ErrorReports.CreatedAtUtc), cast(count(Id) as int)
 from ErrorReports
 where ErrorReports.CreatedAtUtc >= @minDate
+AND ErrorReports.CreatedAtUtc <= GetUtcDate()
 {1}
 group by DATEPART(HOUR, ErrorReports.CreatedAtUtc);";
 
