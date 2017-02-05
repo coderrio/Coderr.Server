@@ -1,13 +1,19 @@
 OneTrueError
 ================================
 
-Open source exception handling for .NET.
+OneTrueError is an open source error handling service for .NET. It includes the context information that you forgot to include when you logged/reported the exception.
 
 ![](screenshot.png)
 
 
-[Getting started guide](http://onetrueerror.com/documentation/client/gettingstarted.md)
+[Getting started guide](https://www.codeproject.com/articles/1126297/onetrueerror-automated-exception-handling)
 
+
+## Love or hate our service? 
+
+Please write a review.
+
+* [G2 Crowd](https://www.g2crowd.com/products/onetrueerror/reviews)
 
 
 ## Licensing
