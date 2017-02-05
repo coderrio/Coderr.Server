@@ -69,6 +69,11 @@ namespace OneTrueError.Api.Web.Overview.Queries
         public void AddValue(DateTime date, int value)
         {
             if (value < 0) throw new ArgumentOutOfRangeException("value");
+
+            //future date = malconfigured reporting clients.
+            if (!_index.ContainsKey(date))
+                return;
+            
             var indexPos = _index[date];
             Values[indexPos] = value;
         }

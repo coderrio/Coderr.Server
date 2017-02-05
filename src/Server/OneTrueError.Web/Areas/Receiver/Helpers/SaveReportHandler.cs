@@ -59,6 +59,11 @@ namespace OneTrueError.Web.Areas.Receiver.Helpers
             }
 
             var report = DeserializeBody(reportBody);
+
+            //fix malconfigured clients
+            if (report.CreatedAtUtc > DateTime.UtcNow)
+                report.CreatedAtUtc = DateTime.UtcNow;
+
             var internalDto = new ReceivedReportDTO
             {
                 ApplicationId = application.Id,

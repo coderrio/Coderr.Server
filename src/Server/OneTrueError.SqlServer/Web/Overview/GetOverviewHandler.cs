@@ -49,6 +49,8 @@ namespace OneTrueError.SqlServer.Web.Overview
 
         public async Task<GetOverviewResult> ExecuteAsync(GetOverview query)
         {
+            if (query.NumberOfDays == 0)
+                query.NumberOfDays = 30;
             var labels = CreateTimeLabels(query);
 
             if (!ClaimsPrincipal.Current.FindAll(x => x.Type == OneTrueClaims.Application).Any())
@@ -61,8 +63,6 @@ namespace OneTrueError.SqlServer.Web.Overview
                 };
             }
 
-            if (query.NumberOfDays == 0)
-                query.NumberOfDays = 30;
             if (query.NumberOfDays == 1)
                 return await GetTodaysOverviewAsync(query);
 
@@ -76,7 +76,8 @@ FROM
 (
 	select Incidents.ApplicationId , cast(Incidents.CreatedAtUtc as date) as Date, count(Incidents.Id) as Count
 	from Incidents
-	where Incidents.CreatedAtUtc >= @minDate
+	where Incidents.CreatedAtUtc >= @minDate 
+    AND Incidents.CreatedAtUtc <= GetUtcDate()
 	AND Incidents.ApplicationId in ({ApplicationIds})
 	group by Incidents.ApplicationId, cast(Incidents.CreatedAtUtc as date)
 ) cte
@@ -139,6 +140,7 @@ right join applications on (applicationid=applications.id)
             {
                 cmd.CommandText = string.Format(@"select count(id) from incidents 
 where CreatedAtUtc >= @minDate
+AND CreatedAtUtc <= GetUtcDate()
 AND Incidents.ApplicationId IN ({0})
 AND Incidents.IgnoreReports = 0 
 AND Incidents.IsSolved = 0;
@@ -149,12 +151,14 @@ AND ApplicationId IN ({0})
 
 select count(distinct emailaddress) from IncidentFeedback
 where CreatedAtUtc >= @minDate
+AND CreatedAtUtc <= GetUtcDate()
 AND ApplicationId IN ({0})
 AND emailaddress is not null
 AND DATALENGTH(emailaddress) > 0;
 
 select count(*) from IncidentFeedback 
 where CreatedAtUtc >= @minDate
+AND CreatedAtUtc <= GetUtcDate()
 AND ApplicationId IN ({0})
 AND Description is not null
 AND DATALENGTH(Description) > 0;", ApplicationIds);
@@ -208,6 +212,7 @@ FROM
 	select Incidents.ApplicationId , DATEPART(HOUR, Incidents.CreatedAtUtc) as Date, count(Incidents.Id) as Count
 	from Incidents
 	where Incidents.CreatedAtUtc >= @minDate
+    AND CreatedAtUtc <= GetUtcDate()
     AND Incidents.ApplicationId IN ({0})
 	group by Incidents.ApplicationId, DATEPART(HOUR, Incidents.CreatedAtUtc)
 ) cte
