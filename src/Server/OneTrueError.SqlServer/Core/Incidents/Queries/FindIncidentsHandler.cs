@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.Common;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
@@ -8,6 +9,7 @@ using Griffin.Data;
 using Griffin.Data.Mapper;
 using OneTrueError.Api.Core.Incidents;
 using OneTrueError.Api.Core.Incidents.Queries;
+using OneTrueError.Infrastructure.Security;
 
 namespace OneTrueError.SqlServer.Core.Incidents.Queries
 {
@@ -27,7 +29,9 @@ namespace OneTrueError.SqlServer.Core.Incidents.Queries
             {
                 var sqlQuery = @"SELECT {0}
                                     FROM Incidents 
-                                    JOIN Applications ON (Applications.Id = Incidents.ApplicationId)";
+                                    JOIN Applications ON (Applications.Id = Incidents.ApplicationId)
+                                    JOIN ApplicationMembers atm ON (atm.ApplicationId = Applications.Id AND AccountId = @accountId)";
+                cmd.AddParameter("accountId", ClaimsPrincipal.Current.GetAccountId());
                 if (query.ApplicationId > 0)
                 {
                     sqlQuery += " WHERE ApplicationId = @id AND (";

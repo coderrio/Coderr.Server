@@ -203,10 +203,18 @@ var OneTrueError;
                 var found = false;
                 var index = 0;
                 result.IncidentsPerApplication.forEach(function (app) {
+                    var sum = app.Values.reduce(function (a, b) { return a + b; }, 0);
+                    if (sum === 0) {
+                        return;
+                    }
                     var ds = new OneTrueError.Dataset();
                     ds.label = app.Label;
                     ds.data = app.Values;
                     data.datasets.push(ds);
+                    //not enough color themes to display all.
+                    if (index > OneTrueError.LineChart.LineThemes.length) {
+                        return;
+                    }
                     var l = {
                         label: app.Label,
                         color: OneTrueError.LineChart.LineThemes[index++].strokeColor

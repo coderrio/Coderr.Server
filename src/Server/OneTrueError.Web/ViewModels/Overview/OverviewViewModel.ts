@@ -233,11 +233,22 @@ module OneTrueError.Overview {
             var legend = [];
             var found = false;
             var index = 0;
-            result.IncidentsPerApplication.forEach(function(app) {
+            result.IncidentsPerApplication.forEach(function (app) {
+                var sum = app.Values.reduce(function (a, b) { return a + b; }, 0);
+                if (sum === 0) {
+                    return;
+                }
+
                 const ds = new Dataset();
                 ds.label = app.Label;
                 ds.data = app.Values;
                 data.datasets.push(ds);
+
+                //not enough color themes to display all.
+                if (index > LineChart.LineThemes.length) {
+                    return;
+                }
+
                 const l = {
                     label: app.Label,
                     color: LineChart.LineThemes[index++].strokeColor

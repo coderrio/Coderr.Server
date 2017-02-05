@@ -1351,7 +1351,7 @@ var Griffin;
                         }
                         else {
                             if (item.getAttribute("data-unless") === name) {
-                                if (childData) {
+                                if (childData && childData.length > 0) {
                                     item.style.display = "none";
                                 }
                             }

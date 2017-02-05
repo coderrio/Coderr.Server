@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using DotNetCqs;
 
 namespace OneTrueError.Api.Core.Accounts.Requests
@@ -62,6 +63,7 @@ namespace OneTrueError.Api.Core.Accounts.Requests
         ///         sure that this one is assigned to the created account.
         ///     </para>
         /// </remarks>
+        [Required]
         public string AcceptedEmail { get; set; }
 
         /// <summary>

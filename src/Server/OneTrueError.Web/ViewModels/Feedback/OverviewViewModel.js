@@ -10,6 +10,7 @@ var OneTrueError;
     (function (Feedback) {
         var CqsClient = Griffin.Cqs.CqsClient;
         var OverviewFeedback = OneTrueError.Web.Feedback.Queries.GetFeedbackForDashboardPage;
+        //import Yo = Griffin.Yo;
         var OverviewViewModel = (function () {
             function OverviewViewModel() {
                 this.feedbackDirectives = {
@@ -47,11 +48,15 @@ var OneTrueError;
             OverviewViewModel.prototype.getTitle = function () {
                 return "All feedback";
             };
+            OverviewViewModel.prototype.isEmpty = function () {
+                return this.empty;
+            };
             OverviewViewModel.prototype.activate = function (context) {
                 var _this = this;
                 var query = new OverviewFeedback();
                 CqsClient.query(query)
                     .done(function (result) {
+                    _this.empty = result.TotalCount === 0;
                     context.render(result, _this.feedbackDirectives);
                     context.resolve();
                 });

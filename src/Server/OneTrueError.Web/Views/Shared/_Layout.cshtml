@@ -72,6 +72,10 @@
                                         <a href="#/application/@app.Key">@app.Value</a>
                                     </li>
                                 }
+                                @if (!User.IsSysAdmin() && Applications.Count == 0)
+                                {
+                                    <li><em>(You have not been<br /> added to any applications)</em></li>
+                                }
                             </ul>
                         </li>
                         <li class="divider"></li>

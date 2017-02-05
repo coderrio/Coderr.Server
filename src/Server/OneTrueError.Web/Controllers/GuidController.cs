@@ -3,7 +3,7 @@ using System.Web.Mvc;
 
 namespace OneTrueError.Web.Controllers
 {
-    [System.Web.Http.Authorize]
+    [Authorize]
     public class GuidController : Controller
     {
         [Route("guid/"), HttpGet]

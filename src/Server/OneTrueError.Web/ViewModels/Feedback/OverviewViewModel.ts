@@ -12,7 +12,9 @@ module OneTrueError.Feedback {
     import CqsClient = Griffin.Cqs.CqsClient;
     import OverviewFeedback = Web.Feedback.Queries.GetFeedbackForDashboardPage;
     import OverviewFeedbackResult = Web.Feedback.Queries.GetFeedbackForDashboardPageResult;
-    import Yo = Griffin.Yo; //import Yo = Griffin.Yo;
+    import Yo = Griffin.Yo;
+    import FeedbackForDashboardPageResultItem = OneTrueError.Web.Feedback.Queries.GetFeedbackForDashboardPageResultItem;
+//import Yo = Griffin.Yo;
 
     export class OverviewViewModel implements Yo.Spa.ViewModels.IViewModel {
         private applicationTitle: string;
@@ -60,10 +62,17 @@ module OneTrueError.Feedback {
             return "All feedback";
         }
 
+        public isEmpty() {
+            return this.empty;
+        }
+
+        private empty: boolean;
+
         activate(context: Griffin.Yo.Spa.ViewModels.IActivationContext): void {
             const query = new OverviewFeedback();
             CqsClient.query<OverviewFeedbackResult>(query)
                 .done(result => {
+                    this.empty = result.TotalCount === 0;
                     context.render(result, this.feedbackDirectives);
                     context.resolve();
                 });

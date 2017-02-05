@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
 using OneTrueError.Api.Web.Overview.Queries;
+using OneTrueError.Infrastructure.Security;
 
 namespace OneTrueError.SqlServer.Web.Overview
 {
@@ -13,6 +15,7 @@ namespace OneTrueError.SqlServer.Web.Overview
     internal class GetOverviewHandler : IQueryHandler<GetOverview, GetOverviewResult>
     {
         private readonly IAdoNetUnitOfWork _unitOfWork;
+        private string _appIds;
 
         public GetOverviewHandler(IAdoNetUnitOfWork unitOfWork)
         {
@@ -28,34 +31,57 @@ namespace OneTrueError.SqlServer.Web.Overview
             }
         }
 
+        private string ApplicationIds
+        {
+            get
+            {
+                if (_appIds != null)
+                    return _appIds;
+
+                var appIds = ClaimsPrincipal.Current
+    .FindAll(x => x.Type == OneTrueClaims.Application)
+    .Select(x => int.Parse(x.Value).ToString())
+    .ToList();
+                _appIds = string.Join(",", appIds);
+                return _appIds;
+            }
+        }
+
         public async Task<GetOverviewResult> ExecuteAsync(GetOverview query)
         {
+            var labels = CreateTimeLabels(query);
+
+            if (!ClaimsPrincipal.Current.FindAll(x => x.Type == OneTrueClaims.Application).Any())
+            {
+                return new GetOverviewResult()
+                {
+                    StatSummary = new OverviewStatSummary(),
+                    IncidentsPerApplication = new GetOverviewApplicationResult[0],
+                    TimeAxisLabels = labels
+                };
+            }
+
             if (query.NumberOfDays == 0)
                 query.NumberOfDays = 30;
-
             if (query.NumberOfDays == 1)
                 return await GetTodaysOverviewAsync(query);
 
             var apps = new Dictionary<int, GetOverviewApplicationResult>();
-            var labels = new string[query.NumberOfDays + 1]; //+1 for today
             var startDate = DateTime.Today.AddDays(-query.NumberOfDays);
-            for (var i = 0; i <= query.NumberOfDays; i++)
-            {
-                labels[i] = startDate.AddDays(i).ToShortDateString();
-            }
-
             var result = new GetOverviewResult();
             using (var cmd = _unitOfWork.CreateDbCommand())
             {
-                cmd.CommandText = @"select Applications.Id, Applications.Name, cte.Date, cte.Count
+                cmd.CommandText = $@"select Applications.Id, Applications.Name, cte.Date, cte.Count
 FROM 
 (
 	select Incidents.ApplicationId , cast(Incidents.CreatedAtUtc as date) as Date, count(Incidents.Id) as Count
 	from Incidents
 	where Incidents.CreatedAtUtc >= @minDate
+	AND Incidents.ApplicationId in ({ApplicationIds})
 	group by Incidents.ApplicationId, cast(Incidents.CreatedAtUtc as date)
 ) cte
 right join applications on (applicationid=applications.id)
+
 ;";
 
 
@@ -96,27 +122,42 @@ right join applications on (applicationid=applications.id)
             return result;
         }
 
+        private static string[] CreateTimeLabels(GetOverview query)
+        {
+            var startDate = DateTime.Today.AddDays(-query.NumberOfDays);
+            var labels = new string[query.NumberOfDays + 1]; //+1 for today
+            for (var i = 0; i <= query.NumberOfDays; i++)
+            {
+                labels[i] = startDate.AddDays(i).ToShortDateString();
+            }
+            return labels;
+        }
+
         private async Task GetStatSummary(GetOverview query, GetOverviewResult result)
         {
             using (var cmd = _unitOfWork.CreateDbCommand())
             {
-                cmd.CommandText = @"select count(id) from incidents 
+                cmd.CommandText = string.Format(@"select count(id) from incidents 
 where CreatedAtUtc >= @minDate
+AND Incidents.ApplicationId IN ({0})
 AND Incidents.IgnoreReports = 0 
 AND Incidents.IsSolved = 0;
 
 select count(id) from errorreports 
 where CreatedAtUtc >= @minDate
+AND ApplicationId IN ({0})
 
 select count(distinct emailaddress) from IncidentFeedback
 where CreatedAtUtc >= @minDate
+AND ApplicationId IN ({0})
 AND emailaddress is not null
 AND DATALENGTH(emailaddress) > 0;
 
 select count(*) from IncidentFeedback 
 where CreatedAtUtc >= @minDate
+AND ApplicationId IN ({0})
 AND Description is not null
-AND DATALENGTH(Description) > 0;";
+AND DATALENGTH(Description) > 0;", ApplicationIds);
 
                 var minDate = query.NumberOfDays == 1
                     ? StartDateForHours
@@ -161,15 +202,16 @@ AND DATALENGTH(Description) > 0;";
 
             using (var cmd = _unitOfWork.CreateDbCommand())
             {
-                cmd.CommandText = @"select Applications.Id, Applications.Name, cte.Date, cte.Count
+                cmd.CommandText = string.Format(@"select Applications.Id, Applications.Name, cte.Date, cte.Count
 FROM 
 (
 	select Incidents.ApplicationId , DATEPART(HOUR, Incidents.CreatedAtUtc) as Date, count(Incidents.Id) as Count
 	from Incidents
 	where Incidents.CreatedAtUtc >= @minDate
+    AND Incidents.ApplicationId IN ({0})
 	group by Incidents.ApplicationId, DATEPART(HOUR, Incidents.CreatedAtUtc)
 ) cte
-right join applications on (applicationid=applications.id)";
+right join applications on (applicationid=applications.id)", ApplicationIds);
 
 
                 cmd.AddParameter("minDate", startDate);

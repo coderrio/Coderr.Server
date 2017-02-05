@@ -69,6 +69,7 @@ namespace OneTrueError.Web.Controllers
                 cqsObject = _cqsObjectMapper.Deserialize(dotNetType, json);
                 if (cqsObject == null)
                 {
+                    _logger.Error($"Could not deserialize[{dotNetType}]: {json}");
                     var response = Request.CreateResponse(HttpStatusCode.OK);
                     response.StatusCode = HttpStatusCode.BadRequest;
                     response.ReasonPhrase = "Unknown type: " + dotNetType;
@@ -80,6 +81,7 @@ namespace OneTrueError.Web.Controllers
                 cqsObject = _cqsObjectMapper.Deserialize(cqsName, json);
                 if (cqsObject == null)
                 {
+                    _logger.Error($"Could not deserialize[{cqsName}]: {json}");
                     var response = Request.CreateResponse(HttpStatusCode.OK);
                     response.StatusCode = HttpStatusCode.BadRequest;
                     response.ReasonPhrase = "Unknown type: " + cqsName;
@@ -127,6 +129,7 @@ namespace OneTrueError.Web.Controllers
 
             if (ex is HttpException)
             {
+                _logger.Error("HTTP error for " + json, ex);
                 var response = Request.CreateResponse(HttpStatusCode.OK);
                 response.StatusCode = (HttpStatusCode) ((HttpException) ex).GetHttpCode();
                 response.ReasonPhrase = FirstLine(ex.Message);
@@ -134,6 +137,7 @@ namespace OneTrueError.Web.Controllers
             }
             if (ex is AuthorizationException)
             {
+                _logger.Error("Auth error for " + json, ex);
                 var authEx = (AuthorizationException) ex;
                 var response = Request.CreateResponse(HttpStatusCode.OK);
                 response.StatusCode = HttpStatusCode.Unauthorized;
@@ -142,6 +146,7 @@ namespace OneTrueError.Web.Controllers
             }
             if (ex != null)
             {
+                _logger.Error("Failed to process result for " + json, ex);
                 var response = Request.CreateResponse(HttpStatusCode.OK);
                 response.StatusCode = HttpStatusCode.InternalServerError;
                 response.ReasonPhrase = FirstLine(ex.Message);
@@ -160,10 +165,14 @@ namespace OneTrueError.Web.Controllers
 
                 string cnt;
                 json = _serializer.Serialize(cqsReplyObject.Body, out cnt);
+                _logger.Debug("Reply to " + cqsObject.GetType().Name + ": " + json);
                 reply.Content = new StringContent(json, Encoding.UTF8, "application/json");
             }
             else
+            {
+                _logger.Debug("Reply to " + cqsObject.GetType().Name + ": [emptry response]");
                 reply.StatusCode = HttpStatusCode.NoContent;
+            }
 
             return reply;
         }
@@ -202,9 +211,11 @@ namespace OneTrueError.Web.Controllers
             }
         }
 
-        private static void RestrictOnApplicationId(object cqsObject)
+        private void RestrictOnApplicationId(object cqsObject)
         {
             if (ClaimsPrincipal.Current.Identity.AuthenticationType != "ApiKey")
+                return;
+            if (ClaimsPrincipal.Current.IsInRole(OneTrueClaims.RoleSysAdmin))
                 return;
 
             var prop = cqsObject.GetType().GetProperty("ApplicationId");
@@ -213,7 +224,11 @@ namespace OneTrueError.Web.Controllers
 
             var value = (int) prop.GetValue(cqsObject);
             if (!ClaimsPrincipal.Current.IsApplicationMember(value))
+            {
+                _logger.Warn("Tried to access an application without privileges. accountId: " + User.Identity.Name + ", appId: " + value);
                 throw new HttpException(403, "The given application key is not allowed for application " + value);
+            }
+                
         }
     }
 }

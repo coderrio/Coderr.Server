@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
+using log4net;
 using OneTrueError.Api.Core.Applications.Events;
 using OneTrueError.Api.Core.Applications.Events.OneTrueError.Api.Core.Accounts.Events;
 using OneTrueError.Api.Core.Invitations.Commands;
@@ -13,15 +15,32 @@ using OneTrueError.Infrastructure.Configuration;
 
 namespace OneTrueError.App.Core.Invitations.CommandHandlers
 {
+    /// <summary>
+    ///     Handler for <see cref="InviteUser" />
+    /// </summary>
+    /// <remarks>
+    ///     <para>
+    /// 
+    ///     </para>
+    /// </remarks>
     [Component]
-    internal class InviteUserHandler : ICommandHandler<InviteUser>
+    public class InviteUserHandler : ICommandHandler<InviteUser>
     {
         private readonly IApplicationRepository _applicationRepository;
         private readonly ICommandBus _commandBus;
         private readonly IEventBus _eventBus;
         private readonly IInvitationRepository _invitationRepository;
         private readonly IUserRepository _userRepository;
+        private readonly ILog _logger = LogManager.GetLogger(typeof(InviteUserHandler));
 
+        /// <summary>
+        ///     Creates a new instance of <see cref="InviteUserHandler" />.
+        /// </summary>
+        /// <param name="invitationRepository">Store invitations</param>
+        /// <param name="eventBus">publish invite events</param>
+        /// <param name="userRepository">To load inviter and invitee</param>
+        /// <param name="applicationRepository">Add pending member</param>
+        /// <param name="commandBus">To send in invitation email</param>
         public InviteUserHandler(IInvitationRepository invitationRepository, IEventBus eventBus,
             IUserRepository userRepository, IApplicationRepository applicationRepository, ICommandBus commandBus)
         {
@@ -32,12 +51,21 @@ namespace OneTrueError.App.Core.Invitations.CommandHandlers
             _commandBus = commandBus;
         }
 
+        /// <inheritdoc />
         public async Task ExecuteAsync(InviteUser command)
         {
             var inviter = await _userRepository.GetUserAsync(command.UserId);
             var invitedUser = await _userRepository.FindByEmailAsync(command.EmailAddress);
             if (invitedUser != null)
             {
+                //correction of issue #21, verify that the person isn't already a member.
+                var members = await _applicationRepository.GetTeamMembersAsync(command.ApplicationId);
+                if (members.Any(x => x.AccountId == invitedUser.AccountId))
+                {
+                    _logger.Warn("User " + invitedUser.AccountId + " is already a member.");
+                    return;
+                }
+
                 var member = new ApplicationTeamMember(command.ApplicationId, invitedUser.AccountId)
                 {
                     AddedByName = inviter.UserName,
@@ -47,6 +75,16 @@ namespace OneTrueError.App.Core.Invitations.CommandHandlers
                 await _applicationRepository.CreateAsync(member);
                 await _eventBus.PublishAsync(new UserAddedToApplication(command.ApplicationId, member.AccountId));
                 return;
+            }
+            else
+            {
+                //correction of issue #21, verify that the person isn't already a member.
+                var members = await _applicationRepository.GetTeamMembersAsync(command.ApplicationId);
+                if (members.Any(x => x.EmailAddress == command.EmailAddress))
+                {
+                    _logger.Warn("User " + command.EmailAddress + " is already invited.");
+                    return;
+                }
             }
 
             var invitedMember = new ApplicationTeamMember(command.ApplicationId, command.EmailAddress)
@@ -77,6 +115,12 @@ namespace OneTrueError.App.Core.Invitations.CommandHandlers
             await _eventBus.PublishAsync(evt);
         }
 
+        /// <summary>
+        /// Send invitation email
+        /// </summary>
+        /// <param name="invitation">Invitation to generate an email for</param>
+        /// <param name="reason">Why the user was invited (optional)</param>
+        /// <returns>task</returns>
         protected virtual async Task SendInvitationEmailAsync(Invitation invitation, string reason)
         {
             var config = ConfigurationStore.Instance.Load<BaseConfiguration>();

@@ -21,17 +21,23 @@ namespace OneTrueError.App.Core.Invitations.CommandHandlers
     ///         Do note that an invitation can be accepted by using another email address than the one that the invitation was
     ///         sent to. So take care
     ///         when handling the <see cref="InvitationAccepted" /> event. Update the email that as used when sending the
-    ///         inviation.
+    ///         invitation.
     ///     </para>
     /// </remarks>
     [Component, UpdatesLoggedInAccount]
-    internal class AcceptInvitationHandler : IRequestHandler<AcceptInvitation, AcceptInvitationReply>
+    public class AcceptInvitationHandler : IRequestHandler<AcceptInvitation, AcceptInvitationReply>
     {
         private readonly IAccountRepository _accountRepository;
         private readonly IEventBus _eventBus;
         private readonly ILog _logger = LogManager.GetLogger(typeof(AcceptInvitationHandler));
         private readonly IInvitationRepository _repository;
 
+        /// <summary>
+        /// Creates a new instance of <see cref="AcceptInvitationHandler"/>.
+        /// </summary>
+        /// <param name="repository">invitation repos</param>
+        /// <param name="accountRepository">To load inviter and invitee</param>
+        /// <param name="eventBus">to publish <see cref="InvitationAccepted"/></param>
         public AcceptInvitationHandler(IInvitationRepository repository,
             IAccountRepository accountRepository, IEventBus eventBus)
         {
@@ -40,6 +46,7 @@ namespace OneTrueError.App.Core.Invitations.CommandHandlers
             _eventBus = eventBus;
         }
 
+        /// <inheritdoc />
         public async Task<AcceptInvitationReply> ExecuteAsync(AcceptInvitation request)
         {
             var invitation = await _repository.GetByInvitationKeyAsync(request.InvitationKey);

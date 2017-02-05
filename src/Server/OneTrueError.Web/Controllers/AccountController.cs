@@ -348,6 +348,7 @@ namespace OneTrueError.Web.Controllers
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
                 Claims = claims.ToArray()
+                
             };
             return (ClaimsIdentity) PrincipalFactory.CreateAsync(context).Result.Identity;
         }
@@ -356,7 +357,8 @@ namespace OneTrueError.Web.Controllers
         {
             var props = new AuthenticationProperties
             {
-                IsPersistent = true
+                IsPersistent = true,
+                ExpiresUtc = DateTimeOffset.UtcNow.AddDays(14)
             };
             var ctx = Request.GetOwinContext();
             ctx.Authentication.SignIn(props, identity);

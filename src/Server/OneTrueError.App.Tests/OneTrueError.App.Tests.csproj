@@ -26,6 +26,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
+    <NoWarn>4014</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -103,6 +104,9 @@
     <Compile Include="Configuration\TestEntitites\WriteTestSection.cs" />
     <Compile Include="Core\Accounts\AccountTests.cs" />
     <Compile Include="Core\Accounts\CommandHandlers\RegisterAccountHandlerTests.cs" />
+    <Compile Include="Core\Applications\Commands\InviteUserHandlerTests.cs" />
+    <Compile Include="Core\Invitations\Commands\AcceptInvitationHandlerTests.cs" />
+    <Compile Include="TestStore.cs" />
     <Compile Include="NSubstittueExtensions.cs" />
     <Compile Include="ObjectExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

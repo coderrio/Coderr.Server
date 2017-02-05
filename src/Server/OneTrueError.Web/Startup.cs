@@ -82,12 +82,13 @@ namespace OneTrueError.Web
                 }
             };
 
-            var loginUrl = VirtualPathUtility.ToAbsolute("~/Account/Login");
+            var loginUrl = "/Account/Login"; //VirtualPathUtility.ToAbsolute("~/Account/Login");
             BaseViewPage.LoginUrl = loginUrl;
             AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
+                ExpireTimeSpan = TimeSpan.FromDays(14),
                 LoginPath = new PathString(loginUrl),
                 Provider = provider,
                 SessionStore = new SessionStoreMediator()
