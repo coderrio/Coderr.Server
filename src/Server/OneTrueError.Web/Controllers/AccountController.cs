@@ -46,7 +46,8 @@ namespace OneTrueError.Web.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [Route("account/accept/{id}"), HttpGet]
+        [Route("account/accept/{id}")]
+        [HttpGet]
         public async Task<ActionResult> Accept(string id)
         {
             try
@@ -54,9 +55,7 @@ namespace OneTrueError.Web.Controllers
                 var query = new GetInvitationByKey(id);
                 var invitation = await _queryBus.QueryAsync(query);
                 if (invitation == null)
-                {
                     return View("InvitationNotFound");
-                }
 
                 var model = new AcceptViewModel
                 {
@@ -74,7 +73,8 @@ namespace OneTrueError.Web.Controllers
             }
         }
 
-        [HttpPost, Route("account/accept")]
+        [HttpPost]
+        [Route("account/accept")]
         public async Task<ActionResult> Accept(AcceptViewModel model)
         {
             if (!ModelState.IsValid)
@@ -83,9 +83,7 @@ namespace OneTrueError.Web.Controllers
             var query = new GetInvitationByKey(model.InvitationKey);
             var invitation = await _queryBus.QueryAsync(query);
             if (invitation == null)
-            {
                 return View("InvitationNotFound");
-            }
 
             var cmd = new AcceptInvitation(model.UserName, model.Password, model.InvitationKey)
             {
@@ -103,7 +101,7 @@ namespace OneTrueError.Web.Controllers
                 return View(new AcceptViewModel());
             }
 
-            var getApps = new GetApplicationList();
+            var getApps = new GetApplicationList {AccountId = reply.AccountId};
             var apps = await _queryBus.QueryAsync(getApps);
 
 
@@ -117,7 +115,7 @@ namespace OneTrueError.Web.Controllers
             try
             {
                 var reply = await _requestReplyBus.ExecuteAsync(new ActivateAccount(id));
-                var getApps = new GetApplicationList();
+                var getApps = new GetApplicationList {AccountId = reply.AccountId};
                 var apps = await _queryBus.QueryAsync(getApps);
 
                 var identity = CreateIdentity(reply.AccountId, reply.UserName, apps);
@@ -266,7 +264,8 @@ namespace OneTrueError.Web.Controllers
             return View();
         }
 
-        [Route("password/request/reset"), HttpPost]
+        [Route("password/request/reset")]
+        [HttpPost]
         public async Task<ActionResult> RequestPasswordReset(RequestPasswordResetViewModel model)
         {
             if (!ModelState.IsValid)
@@ -284,7 +283,8 @@ namespace OneTrueError.Web.Controllers
             return View(new ResetPasswordViewModel {ActivationKey = activationKey});
         }
 
-        [Route("password/reset"), HttpPost]
+        [Route("password/reset")]
+        [HttpPost]
         public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
         {
             if (!ModelState.IsValid)
@@ -317,7 +317,7 @@ namespace OneTrueError.Web.Controllers
 
         public async Task<ActionResult> UpdateSession()
         {
-            var getApps = new GetApplicationList();
+            var getApps = new GetApplicationList {AccountId = User.GetAccountId()};
             var apps = await _queryBus.QueryAsync(getApps);
             var ctx = Request.GetOwinContext();
             ctx.Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
@@ -348,7 +348,6 @@ namespace OneTrueError.Web.Controllers
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
                 Claims = claims.ToArray()
-                
             };
             return (ClaimsIdentity) PrincipalFactory.CreateAsync(context).Result.Identity;
         }

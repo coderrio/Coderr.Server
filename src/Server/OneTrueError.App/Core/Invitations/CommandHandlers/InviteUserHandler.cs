@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using System.Security;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
@@ -12,6 +14,7 @@ using OneTrueError.App.Configuration;
 using OneTrueError.App.Core.Applications;
 using OneTrueError.App.Core.Users;
 using OneTrueError.Infrastructure.Configuration;
+using OneTrueError.Infrastructure.Security;
 
 namespace OneTrueError.App.Core.Invitations.CommandHandlers
 {
@@ -55,6 +58,13 @@ namespace OneTrueError.App.Core.Invitations.CommandHandlers
         public async Task ExecuteAsync(InviteUser command)
         {
             var inviter = await _userRepository.GetUserAsync(command.UserId);
+            if (!ClaimsPrincipal.Current.IsSysAdmin() &&
+                !ClaimsPrincipal.Current.IsApplicationAdmin(command.ApplicationId))
+            {
+                _logger.Warn($"User {command.UserId} attempted to do an invite for an application: {command.ApplicationId}.");
+                throw new SecurityException("You are not an admin of that application.");
+            }
+
             var invitedUser = await _userRepository.FindByEmailAsync(command.EmailAddress);
             if (invitedUser != null)
             {

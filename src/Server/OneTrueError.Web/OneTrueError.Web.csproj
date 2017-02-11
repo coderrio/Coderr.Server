@@ -305,6 +305,7 @@
     <Compile Include="Infrastructure\Logging\LogManagerAdapter.cs" />
     <Compile Include="Infrastructure\Logging\WebApiLogger.cs" />
     <Compile Include="Infrastructure\Auth\SignalRAuthenticateAttribute.cs" />
+    <Compile Include="Infrastructure\SchemaUpdateModule.cs" />
     <Compile Include="Infrastructure\SessionStoreMediator.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />

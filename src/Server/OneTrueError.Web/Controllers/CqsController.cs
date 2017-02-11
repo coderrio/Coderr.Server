@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -125,6 +126,11 @@ namespace OneTrueError.Web.Controllers
             {
                 _logger.Error("Failed to process '" + json + "'.", e1);
                 ex = e1.InnerException;
+            }
+            catch (Exception e1)
+            {
+                _logger.Error("Failed to process2 '" + json + "'.", e1);
+                ex = e1;
             }
 
             if (ex is HttpException)

@@ -54,7 +54,7 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-primary">Sign in</button>
+                <input id="login-button" type="submit" class="btn btn-primary" value="Sign in" />
                 <a href="@Url.Content("~/password/request/reset")" class="btn">Reset password</a>
                 @Html.ActionLink("Register", "Register", null, new {@class = "btn"})
 
@@ -64,7 +64,9 @@
 
     </fieldset>
 }
-
-@section ViewModelScripts
+@section scripts
 {
+    <script>
+        $('#login-button').focus();
+    </script>
 }

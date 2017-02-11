@@ -54,7 +54,7 @@ namespace OneTrueError.App.Core.Reports.Jobs
         {
             using (var cmd = _unitOfWork.CreateDbCommand())
             {
-                var sql = @"DELETE FROM ErrorReports WHERE CreatedAtUtc < @date";
+                var sql = @"DELETE TOP(1000) FROM ErrorReports WHERE CreatedAtUtc < @date";
                 cmd.CommandText = sql;
                 cmd.AddParameter("date", DateTime.UtcNow.AddDays(-RetentionDays));
                 cmd.CommandTimeout = 90;

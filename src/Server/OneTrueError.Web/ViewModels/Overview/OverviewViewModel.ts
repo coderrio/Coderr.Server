@@ -273,7 +273,10 @@ module OneTrueError.Overview {
             };
             this._ctx.renderPartial("#chart-legend", legend, directives);
             data.labels = result.TimeAxisLabels;
-            //if (data.)
+            if (data.datasets.length === 0) {
+                data.datasets.push({ label: 'No data', data: [] });
+            }
+
             this.lineChart.render(data);
             this._ctx.renderPartial("StatSummary", result.StatSummary);
         }

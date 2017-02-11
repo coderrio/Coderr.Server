@@ -16,6 +16,7 @@ module Griffin.Cqs {
                     d.resolve(response.body);
                 })
                 .fail(rejection => {
+                    humane.log("ERROR: " + rejection.message);
                     d.reject(rejection);
                 });
 
@@ -34,6 +35,7 @@ module Griffin.Cqs {
                     d.resolve(response.body);
                 })
                 .fail(rejection => {
+                    humane.log("ERROR: " + rejection.message);
                     d.reject(rejection);
                 });
 
@@ -66,6 +68,8 @@ module Griffin.Cqs {
                     d.resolve(response.body);
                 })
                 .fail(rejection => {
+                    humane.log("ERROR: " + rejection.message);
+                    console.log(rejection);
                     d.reject(rejection);
                 });
 

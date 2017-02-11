@@ -71,6 +71,11 @@ namespace OneTrueError.App.Core.Accounts
         public int Id { get; private set; }
 
         /// <summary>
+        ///     IS system administrator
+        /// </summary>
+        public bool IsSysAdmin { get; set; }
+
+        /// <summary>
         ///     When last successful login attempt was made.
         /// </summary>
         public DateTime LastLoginAtUtc { get; private set; }

@@ -52,7 +52,7 @@ namespace OneTrueError.App.Core.Accounts.Requests
             account.Activate();
             await _repository.UpdateAsync(account);
 
-            var query = new GetApplicationList();
+            var query = new GetApplicationList {AccountId = account.Id};
             var apps = await _queryBus.QueryAsync(query);
             var claims =
                 apps.Select(x => new Claim(OneTrueClaims.Application, x.Id.ToString(), ClaimValueTypes.Integer32))
@@ -60,7 +60,7 @@ namespace OneTrueError.App.Core.Accounts.Requests
 
             if (ClaimsPrincipal.Current.IsAccount(account.Id))
             {
-                var context = new PrincipalFactoryContext(account.Id, account.UserName, new string[0]) {Claims = claims};
+                var context = new PrincipalFactoryContext(account.Id, account.UserName, new string[0]) { Claims = claims };
                 var identity = await PrincipalFactory.CreateAsync(context);
                 identity.AddUpdateCredentialClaim();
                 Thread.CurrentPrincipal = identity;

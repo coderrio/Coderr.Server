@@ -15,6 +15,7 @@ var Griffin;
                     d.resolve(response.body);
                 })
                     .fail(function (rejection) {
+                    humane.log("ERROR: " + rejection.message);
                     d.reject(rejection);
                 });
                 return d.promise();
@@ -27,6 +28,7 @@ var Griffin;
                     d.resolve(response.body);
                 })
                     .fail(function (rejection) {
+                    humane.log("ERROR: " + rejection.message);
                     d.reject(rejection);
                 });
                 return d.promise();
@@ -51,6 +53,8 @@ var Griffin;
                     d.resolve(response.body);
                 })
                     .fail(function (rejection) {
+                    humane.log("ERROR: " + rejection.message);
+                    console.log(rejection);
                     d.reject(rejection);
                 });
                 return d.promise();
