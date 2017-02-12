@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 using OneTrueError.App.Configuration;
+using OneTrueError.Client;
 using OneTrueError.Infrastructure;
 using OneTrueError.Infrastructure.Configuration;
 using OneTrueError.Web.Areas.Admin.Models;
@@ -65,6 +66,7 @@ namespace OneTrueError.Web.Areas.Admin.Controllers
             settings.ContactEmail = model.ContactEmail;
             settings.InstallationId = model.InstallationId;
             ConfigurationStore.Instance.Store(settings);
+            WebApiApplication.ReportToOneTrueError = model.ActivateTracking;
             return Redirect(Url.GetNextWizardStep());
         }
 
