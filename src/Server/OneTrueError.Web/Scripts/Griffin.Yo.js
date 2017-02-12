@@ -178,16 +178,16 @@ var Griffin;
                     return arr;
                 };
                 FormReader.prototype.pullElement = function (container) {
-                    if (container.childElementCount === 0) {
-                        if (container.tagName == 'SELECT') {
-                            var select = container;
-                            if (select.selectedIndex == -1) {
-                                return null;
-                            }
-                            var value1 = select.options[select.selectedIndex];
-                            return this.processValue(value1.value);
+                    if (container.tagName == 'SELECT') {
+                        var select = container;
+                        if (select.selectedIndex == -1) {
+                            return null;
                         }
-                        else if (container.tagName == 'INPUT') {
+                        var value1 = select.options[select.selectedIndex];
+                        return this.processValue(value1.value);
+                    }
+                    if (container.childElementCount === 0) {
+                        if (container.tagName == 'INPUT') {
                             var input = container;
                             var typeStr = container.getAttribute('type');
                             if (typeStr === 'radio' || typeStr === 'checkbox') {
@@ -1269,7 +1269,18 @@ var Griffin;
                     if (elementName) {
                         this.log('renderElement', this.getName(element));
                     }
-                    if (element.childElementCount === 0 && elementName) {
+                    if (elementName && element.tagName === "SELECT") {
+                        var sel = element;
+                        for (var j = 0; j < sel.options.length; j++) {
+                            var opt = sel.options[j];
+                            if (opt.value === data || opt.label === data) {
+                                this.log('setting option ' + opt.label + " to selected");
+                                opt.selected = true;
+                                break;
+                            }
+                        }
+                    }
+                    else if (element.childElementCount === 0 && elementName) {
                         if (data && data.hasOwnProperty(elementName)) {
                             data = data[elementName];
                         }
@@ -1295,17 +1306,6 @@ var Griffin;
                             else {
                                 this.log(input.type + ".value => " + data);
                                 input.value = data;
-                            }
-                        }
-                        else if (element.tagName === "SELECT") {
-                            var sel = element;
-                            for (var j = 0; j < sel.options.length; j++) {
-                                var opt = sel.options[j];
-                                if (opt.value === data || opt.label === data) {
-                                    this.log('setting option ' + opt.label + " to selected");
-                                    opt.selected = true;
-                                    break;
-                                }
                             }
                         }
                         else if (element.tagName === "TEXTAREA") {

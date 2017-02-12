@@ -27,7 +27,7 @@ namespace OneTrueError.SqlServer.Modules.ReportSpikes
             {
                 cmd.CommandText = @"SELECT 
           [Day]  = DATENAME(WEEKDAY, createdatutc),
-          Totals = COUNT(*)
+          Totals = cast (COUNT(*) as int)
         FROM errorreports
             WHERE applicationid=@appId
         GROUP BY 
@@ -38,7 +38,7 @@ namespace OneTrueError.SqlServer.Modules.ReportSpikes
                 {
                     while (await reader.ReadAsync())
                     {
-                        numbers.Add((int) reader[0]);
+                        numbers.Add((int) reader[1]);
                     }
                 }
                 numbers.Sort();

@@ -120,7 +120,6 @@
     <Compile Include="Core\Incidents\Queries\GetReportListResultItemMapper.cs" />
     <Compile Include="Core\Notifications\NotificationRepository.cs" />
     <Compile Include="Core\Notifications\UserNotificationSettingsMap.cs" />
-    <Compile Include="Core\ReportSpikes\ReportSpikesRepository.cs" />
     <Compile Include="Core\Reports\ErrorReportDtoMapper.cs" />
     <Compile Include="Core\Reports\ErrorReportRepository.cs" />
     <Compile Include="Core\Users\ApplicationTeamMemberMapper.cs" />
