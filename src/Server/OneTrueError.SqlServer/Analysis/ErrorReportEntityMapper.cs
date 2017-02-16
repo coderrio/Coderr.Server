@@ -8,6 +8,9 @@ namespace OneTrueError.SqlServer.Analysis
     {
         public ErrorReportEntityMapper() : base("ErrorReports")
         {
+            Property(x => x.Id)
+                .PrimaryKey(true);
+
             Property(x => x.Exception)
                 .ToPropertyValue(EntitySerializer.Deserialize<ErrorReportException>)
                 .ToColumnValue(EntitySerializer.Serialize);

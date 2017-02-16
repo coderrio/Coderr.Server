@@ -109,13 +109,17 @@ namespace OneTrueError.Web
             var errorTrackingConfig = ConfigurationStore.Instance.Load<OneTrueErrorConfigSection>();
             if ((errorTrackingConfig != null) && errorTrackingConfig.ActivateTracking)
             {
-                var uri = new Uri("http://reporting.onetrueerror.com");
+                var uri = new Uri("https://report.onetrueerror.com");
                 if (!string.IsNullOrEmpty(errorTrackingConfig.ContactEmail) ||
                     !string.IsNullOrEmpty(errorTrackingConfig.InstallationId))
+                {
                     OneTrue.Configuration.ContextProviders.Add(new CustomerInfoProvider(
                         errorTrackingConfig.ContactEmail,
                         errorTrackingConfig.InstallationId));
-                OneTrue.Configuration.Credentials(uri, "appKey", "sharedSecret");
+                }
+                OneTrue.Configuration.Credentials(uri, "2b3002d3ab3e4a57ad45cff2210221ab", "f381a5c9797f49bd8a3238b892d02806");
+                WebApiApplication.ReportToOneTrueError = true;
+                GlobalConfiguration.Configuration.Services.Add(typeof(IExceptionLogger), new WebApiLogger());
             }
             else
             {
