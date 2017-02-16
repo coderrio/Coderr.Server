@@ -258,6 +258,7 @@
     <Compile Include="Areas\Installation\Models\EmailViewModel.cs" />
     <Compile Include="Areas\Installation\Models\ErrorTrackingViewModel.cs" />
     <Compile Include="Areas\Installation\Models\QueueViewModel.cs" />
+    <Compile Include="Areas\Installation\Models\SupportViewModel.cs" />
     <Compile Include="Areas\Installation\WizardStepInfo.cs" />
     <Compile Include="Areas\Installation\WizardSteps.cs" />
     <Compile Include="Areas\Admin\Controllers\MessagingController.cs" />
@@ -419,6 +420,7 @@
     <Content Include="Areas\Admin\Views\ApiKeys\Details.cshtml" />
     <Content Include="Areas\Admin\Views\ApiKeys\Deleted.cshtml" />
     <Content Include="Areas\Admin\Views\Reporting\Index.cshtml" />
+    <Content Include="Areas\Installation\Views\Setup\Support.cshtml" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>

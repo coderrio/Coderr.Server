@@ -94,6 +94,7 @@
     <Compile Include="Core\Reports\Jobs\DeleteOldReports.cs" />
     <Compile Include="Core\Reports\Jobs\DeleteReportsBelowReportLimit.cs" />
     <Compile Include="Core\Reports\PagedReports.cs" />
+    <Compile Include="Core\Support\SendSupportRequestHandler.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Modules\Geolocation\ErrorOrginResult.cs" />
     <Compile Include="Modules\Geolocation\QueryHandlers\GetOriginsForIncidentHandler.cs" />

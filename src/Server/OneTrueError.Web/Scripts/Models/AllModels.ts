@@ -757,6 +757,7 @@ module OneTrueError.Core.Incidents.Queries {
         SortAscending: boolean;
         SortType: Incidents.IncidentOrder;
         QueryId: string;
+        FreeText: string;
     }
 
     export class GetIncident {

@@ -72,6 +72,11 @@ namespace OneTrueError.Api.Core.Incidents.Queries
         public bool ReOpened { get; set; }
 
         /// <summary>
+        /// Will be searched in incident.message and report.stacktrace.
+        /// </summary>
+        public string FreeText { get; set; }
+
+        /// <summary>
         ///     Sort order
         /// </summary>
         public bool SortAscending { get; set; }
