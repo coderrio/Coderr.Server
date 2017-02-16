@@ -68,7 +68,7 @@ namespace OneTrueError.Web.Areas.Installation.Controllers
             }
             else
             {
-                model.BaseUrl = Request.Url.ToString().Replace("installation/setup/basics/", "");
+                model.BaseUrl = Request.Url.ToString().Replace("installation/setup/basics/", "").Replace("localhost", "yourServerName");
                 ViewBag.NextLink = "";
             }
 
@@ -83,6 +83,11 @@ namespace OneTrueError.Web.Areas.Installation.Controllers
             if (!model.BaseUrl.EndsWith("/"))
                 model.BaseUrl += "/";
 
+            if (model.BaseUrl.IndexOf("localhost", StringComparison.OrdinalIgnoreCase) != -1)
+            {
+                ModelState.AddModelError("BaseUrl", "Use the servers real DNS name instead of 'localhost'. If you don't the Ajax request wont work as CORS would be enforced by IIS.");
+                return View(model);
+            }
             settings.BaseUrl = new Uri(model.BaseUrl);
             settings.SupportEmail = model.SupportEmail;
             ConfigurationStore.Instance.Store(settings);

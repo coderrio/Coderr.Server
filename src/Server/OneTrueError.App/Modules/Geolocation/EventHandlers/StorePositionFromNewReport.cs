@@ -42,10 +42,10 @@ namespace OneTrueError.App.Modules.Geolocation.EventHandlers
             if (string.IsNullOrEmpty(e.Report.RemoteAddress))
                 return;
 
-            //if (e.Report.RemoteAddress == "::1")
-            //    return;
-            //if (e.Report.RemoteAddress == "127.0.0.1")
-            //    return;
+            if (e.Report.RemoteAddress == "::1")
+                return;
+            if (e.Report.RemoteAddress == "127.0.0.1")
+                return;
 
             var request = WebRequest.CreateHttp("http://freegeoip.net/json/" + e.Report.RemoteAddress);
             try
