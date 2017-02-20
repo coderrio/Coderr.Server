@@ -16,6 +16,7 @@ module OneTrueError.Application {
         private applicationId: number;
         private applicationName: string;
         private lineChart: LineChart;
+        private freeText: string = '';
         private static UP = "glyphicon-chevron-up";
         private static DOWN = "glyphicon-chevron-down";
         private _sortType = IncidentOrder.Newest;
@@ -78,6 +79,7 @@ module OneTrueError.Application {
             ctx.handle.click("#LastReportCol", e => this.onLastReportCol(e));
             ctx.handle.click("#CountCol", e => this.onCountCol(e));
             ctx.handle.change('[name="range"]', e => this.onRange(e));
+            ctx.handle.keyUp('[data-name="freeText"]', e => this.onFreeText(e));
         }
 
         deactivate() {
@@ -93,6 +95,19 @@ module OneTrueError.Application {
                 .done(response => {
                     this.renderChart(response);
                 });
+        }
+
+        private onFreeText(e: Event): void {
+            var el = <HTMLInputElement>(e.target);
+            if (el.value.length >= 3) {
+                this.freeText = el.value;
+                this.getIncidentsFromServer(this.pager.currentPage);
+            } else if (el.value === '') {
+                this.freeText = el.value;
+                this.getIncidentsFromServer(this.pager.currentPage);
+            } else {
+                this.freeText = el.value;
+            }
         }
 
         private onBtnActive(e: Event): void {
@@ -246,6 +261,7 @@ module OneTrueError.Application {
             query.PageNumber = pageNumber;
             query.ItemsPerPage = 10;
             query.ApplicationId = this.applicationId;
+            query.FreeText = this.freeText;
             if (this._incidentType === "closed") {
                 query.Closed = true;
                 query.Open = false;

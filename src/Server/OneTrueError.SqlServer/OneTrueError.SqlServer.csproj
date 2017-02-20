@@ -125,7 +125,7 @@
     <Compile Include="Core\Users\ApplicationTeamMemberMapper.cs" />
     <Compile Include="Core\Users\UserMapper.cs" />
     <Compile Include="Core\Users\UserRepository.cs" />
-    <Compile Include="Modules\Geolocation\StoreErrorOriginHandler.cs" />
+    <Compile Include="Modules\Geolocation\ErrorOriginRepository.cs" />
     <Compile Include="Modules\ReportSpikes\ReportSpikesRepository.cs" />
     <Compile Include="Modules\Similarities\Mappers\SimilarityCollectionMapper.cs" />
     <Compile Include="Modules\Similarities\Mappers\SimilarityMapper.cs" />

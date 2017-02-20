@@ -12,6 +12,7 @@ var OneTrueError;
         var Yo = Griffin.Yo;
         var DetailsViewModel = (function () {
             function DetailsViewModel() {
+                this.freeText = '';
                 this._sortType = IncidentOrder.Newest;
                 this._sortAscending = false;
                 this._incidentType = "active";
@@ -65,6 +66,7 @@ var OneTrueError;
                 ctx.handle.click("#LastReportCol", function (e) { return _this.onLastReportCol(e); });
                 ctx.handle.click("#CountCol", function (e) { return _this.onCountCol(e); });
                 ctx.handle.change('[name="range"]', function (e) { return _this.onRange(e); });
+                ctx.handle.keyUp('[data-name="freeText"]', function (e) { return _this.onFreeText(e); });
             };
             DetailsViewModel.prototype.deactivate = function () {
             };
@@ -78,6 +80,20 @@ var OneTrueError;
                     .done(function (response) {
                     _this.renderChart(response);
                 });
+            };
+            DetailsViewModel.prototype.onFreeText = function (e) {
+                var el = (e.target);
+                if (el.value.length >= 3) {
+                    this.freeText = el.value;
+                    this.getIncidentsFromServer(this.pager.currentPage);
+                }
+                else if (el.value === '') {
+                    this.freeText = el.value;
+                    this.getIncidentsFromServer(this.pager.currentPage);
+                }
+                else {
+                    this.freeText = el.value;
+                }
             };
             DetailsViewModel.prototype.onBtnActive = function (e) {
                 e.preventDefault();
@@ -216,6 +232,7 @@ var OneTrueError;
                 query.PageNumber = pageNumber;
                 query.ItemsPerPage = 10;
                 query.ApplicationId = this.applicationId;
+                query.FreeText = this.freeText;
                 if (this._incidentType === "closed") {
                     query.Closed = true;
                     query.Open = false;

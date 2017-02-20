@@ -32,16 +32,22 @@ namespace OneTrueError.SqlServer.Core.Incidents.Queries
                                     JOIN Applications ON (Applications.Id = Incidents.ApplicationId)
                                     JOIN ApplicationMembers atm ON (atm.ApplicationId = Applications.Id AND AccountId = @accountId)";
                 cmd.AddParameter("accountId", ClaimsPrincipal.Current.GetAccountId());
+
                 if (query.ApplicationId > 0)
                 {
-                    sqlQuery += " WHERE Applications.Id = @id AND (";
+                    sqlQuery += " WHERE Applications.Id = @id";
                     cmd.AddParameter("id", query.ApplicationId);
                 }
-                else
+                if (query.FreeText != null)
                 {
-                    sqlQuery += "AND (";
+                    sqlQuery += @" AND (
+                                    Incidents.Id IN (SELECT Distinct IncidentId FROM ErrorReports WHERE StackTrace LIKE @FreeText
+                                    Or Incidents.Description LIKE @FreeText)
+                                    )";
+                    cmd.AddParameter("FreeText", $"%{query.FreeText}%");
                 }
 
+                sqlQuery += " AND (";
                 if (query.Ignored)
                     sqlQuery += "IgnoreReports = 1 OR ";
                 if (query.Closed)

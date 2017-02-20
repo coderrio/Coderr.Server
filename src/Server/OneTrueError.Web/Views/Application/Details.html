@@ -5,9 +5,9 @@
             <div style="margin-bottom: 20px;">
                 <div class="pull-right">
                     <form id="refresh-chart" style="background: rgba(220, 230, 250, 0.5); padding: 5px">
-                        <input type="radio" name="range" value="30"/> month
-                        <input type="radio" name="range" value="7"/> week
-                        <input type="radio" name="range" value="1"/> day
+                        <input type="radio" name="range" value="30" /> month
+                        <input type="radio" name="range" value="7" /> week
+                        <input type="radio" name="range" value="1" /> day
                     </form>
                 </div>
                 <div class="clearfix" style="clear: both"></div>
@@ -56,14 +56,14 @@
             </h3>
             <table class="table table-condensed">
                 <tbody>
-                <tr>
-                    <th>AppKey</th>
-                    <td data-name="AppKey"></td>
-                </tr>
-                <tr>
-                    <th>SharedSecret</th>
-                    <td data-name="SharedSecret"></td>
-                </tr>
+                    <tr>
+                        <th>AppKey</th>
+                        <td data-name="AppKey"></td>
+                    </tr>
+                    <tr>
+                        <th>SharedSecret</th>
+                        <td data-name="SharedSecret"></td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -81,30 +81,33 @@
                 <li>
                     <a href="#ignored" id="btnIgnored" data-toggle="tab">Ignored</a>
                 </li>
+                <li role="presentation">
+                    <input type="text" data-name="freeText" placeholder="Search (min 3 chars)" class="form-control" style="margin-top: 0px" />
+                </li>
             </ul>
             <table id="incidentTable" class="table table-striped">
                 <thead>
-                <tr>
-                    <th>Name</th>
-                    <th style="cursor: pointer; min-width: 150px" id="LastReportCol">Last report <span id="lastReport-sort" class="glyphicon glyphicon-chevron-down"></span></th>
-                    <th style="cursor: pointer; min-width: 120px" id="CountCol">Report count <span id="count-sort" class="glyphicon glyphicon-chevron-up" style="visibility: hidden"></span></th>
-                    <th>&nbsp;</th>
-                </tr>
+                    <tr>
+                        <th>Name</th>
+                        <th style="cursor: pointer; min-width: 150px" id="LastReportCol">Last report <span id="lastReport-sort" class="glyphicon glyphicon-chevron-down"></span></th>
+                        <th style="cursor: pointer; min-width: 120px" id="CountCol">Report count <span id="count-sort" class="glyphicon glyphicon-chevron-up" style="visibility: hidden"></span></th>
+                        <th>&nbsp;</th>
+                    </tr>
                 </thead>
                 <tbody data-collection="Items">
-                <tr>
-                    <td>
-                        <a href="#/application/:applicationId/incident/:incidentId" data-name="IncidentName"></a>
-                    </td>
-                    <td data-name="LastUpdateAtUtc"></td>
-                    <td data-name="ReportCount"></td>
-                    <td></td>
-                </tr>
+                    <tr>
+                        <td>
+                            <a href="#/application/:applicationId/incident/:incidentId" data-name="IncidentName"></a>
+                        </td>
+                        <td data-name="LastUpdateAtUtc"></td>
+                        <td data-name="ReportCount"></td>
+                        <td></td>
+                    </tr>
                 </tbody>
                 <tfoot>
-                <tr>
-                    <td colspan="4" class="text-right" id="pager"></td>
-                </tr>
+                    <tr>
+                        <td colspan="4" class="text-right" id="pager"></td>
+                    </tr>
                 </tfoot>
             </table>
         </div>

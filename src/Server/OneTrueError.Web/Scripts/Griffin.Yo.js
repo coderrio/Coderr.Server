@@ -74,7 +74,8 @@ var Griffin;
                     if (items.length === 0)
                         throw new Error("Failed to bind \"keyup\" to selector \"" + selector + "\", no elements found.");
                     for (var i = 0; i < items.length; i++) {
-                        items[i].addEventListener("keyup", listener, useCapture);
+                        //items[i].addEventListener("keyup", function (e) { console.log(e); });
+                        items[i].addEventListener("keyup", listener);
                     }
                 };
                 EventMapper.prototype.keyDown = function (selector, listener, useCapture) {
