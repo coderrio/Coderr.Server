@@ -84,5 +84,12 @@ namespace OneTrueError.App.Core.Applications
         /// <param name="member">member</param>
         /// <returns>task</returns>
         Task UpdateAsync(ApplicationTeamMember member);
+
+        /// <summary>
+        ///     Update application.
+        /// </summary>
+        /// <param name="entity">app</param>
+        /// <returns>task</returns>
+        Task UpdateAsync(Application entity);
     }
 }

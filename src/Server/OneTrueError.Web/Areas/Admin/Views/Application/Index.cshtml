@@ -18,6 +18,7 @@
                     <tr>
                         <td>@item.Name</td>
                         <td>
+                            <a class="btn btn-default" href="@Url.Action("Edit", new {id=item.Id})" data-name="@item.Name">Rename</a>
                             <a class="btn btn-danger" href="#@item.Id" data-name="@item.Name">Delete</a>
                         </td>
                     </tr>
@@ -31,7 +32,7 @@
 </form>
 @section scripts{
     <script>
-        $('#applications a').click(function (e) {
+        $('#applications a.btn-danger').click(function (e) {
             e.preventDefault();
             var name = $(this).attr('data-name');
             var id = $(this).attr('href').substr(1);

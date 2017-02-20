@@ -5,7 +5,7 @@
 });
 
 function nl2br(str, is_xhtml) {
-    var breakTag = (is_xhtml) ? "<br />" : "<br>";
+    var breakTag = is_xhtml ? "<br />" : "<br>";
     return (str + "").replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1" + breakTag + "$2");
 }
 
@@ -21,8 +21,8 @@ function getUrlVars() {
 }
 
 var vars = getUrlVars();
-if (vars["toastr.info"]) {
-    toastr.info(decodeURIComponent(vars["toastr.info"]));
+if (vars["usernote"]) {
+    humane.log(decodeURIComponent(vars["usernote"]));
 }
 
 var ChartService = {
@@ -34,7 +34,7 @@ var ChartService = {
         var color = window.ChartService.ColorThemes[themeIndex];
         return {
             fillColor: "rgba(" + color.Red + "," + color.Green + "," + color.Blue + ",0.2)",
-            strokeColor: "rgba(" + color.Red + "," + color.Green + "," + color.Blue + ",0.8)",
+            strokeColor: "rgba(" + color.Red + "," + color.Green + "," + color.Blue + ",0.8)"
         };
     },
     Build: function(graphId, datasets, options) {
@@ -57,7 +57,7 @@ var ChartService = {
             });
 
         for (var i = 0; i < options.labels.x.length; i++) {
-            if (i % 2 == 0)
+            if (i % 2 === 0)
                 options.labels.x[i] = "";
         }
 

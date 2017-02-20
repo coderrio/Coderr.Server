@@ -63,6 +63,7 @@
     <Compile Include="Core\Accounts\Events\AccountRegistered.cs" />
     <Compile Include="Core\Accounts\Events\InvitationAccepted.cs" />
     <Compile Include="Core\Accounts\Events\LoginFailed.cs" />
+    <Compile Include="Core\Applications\Commands\UpdateApplication.cs" />
     <Compile Include="Core\Applications\Events\UserAddedToApplication.cs" />
     <Compile Include="Core\Accounts\NamespaceDoc.cs" />
     <Compile Include="Core\Accounts\Queries\AccountDTO.cs" />

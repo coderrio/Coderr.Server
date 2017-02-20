@@ -303,7 +303,7 @@ namespace OneTrueError.Web.Controllers
             }
 
             var drDictionary = new RouteValueDictionary();
-            drDictionary.Add("toastr.info", "Password have been changed, you may now login.");
+            drDictionary.Add("usernote", "Password have been changed, you may now login.");
             return RedirectToAction("Login", drDictionary);
         }
 
@@ -315,7 +315,7 @@ namespace OneTrueError.Web.Controllers
             return View("Simple");
         }
 
-        public async Task<ActionResult> UpdateSession()
+        public async Task<ActionResult> UpdateSession(string returnUrl = null)
         {
             var getApps = new GetApplicationList {AccountId = User.GetAccountId()};
             var apps = await _queryBus.QueryAsync(getApps);
@@ -324,6 +324,9 @@ namespace OneTrueError.Web.Controllers
 
             var identity = CreateIdentity(User.GetAccountId(), User.Identity.Name, apps);
             SignIn(identity);
+
+            if (returnUrl != null)
+                return Redirect(returnUrl);
 
             return new EmptyResult();
         }

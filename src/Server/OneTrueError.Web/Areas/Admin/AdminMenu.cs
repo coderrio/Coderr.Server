@@ -2,18 +2,18 @@
 
 namespace OneTrueError.Web.Areas.Admin
 {
-    public static class WizardSteps
+    public static class AdminMenu
     {
-        public static readonly WizardStepInfo[] Steps =
+        public static readonly MenuItem[] Steps =
         {
-            new WizardStepInfo("Start page", "~/admin"),
-            new WizardStepInfo("Base configuration", "~/admin/home/basics/"),
-            new WizardStepInfo("Error tracking", "~/admin/home/errors/"),
-            new WizardStepInfo("Api keys", "~/admin/apikeys/"),
-            new WizardStepInfo("Applications", "~/admin/application/"),
-            new WizardStepInfo("Mail settings", "~/admin/messaging/email/"),
-            new WizardStepInfo("Message queues", "~/admin/queues/"),
-            new WizardStepInfo("Report settings", "~/admin/reporting/")
+            new MenuItem("Start page", "~/admin"),
+            new MenuItem("Base configuration", "~/admin/home/basics/"),
+            new MenuItem("Error tracking", "~/admin/home/errors/"),
+            new MenuItem("Api keys", "~/admin/apikeys/"),
+            new MenuItem("Applications", "~/admin/application/"),
+            new MenuItem("Mail settings", "~/admin/messaging/email/"),
+            new MenuItem("Message queues", "~/admin/queues/"),
+            new MenuItem("Report settings", "~/admin/reporting/")
         };
 
 
@@ -55,7 +55,7 @@ namespace OneTrueError.Web.Areas.Admin
                 $@"<a class=""btn btn-default"" href=""{urlHelper.Content(step.VirtualPath)}"">&lt;&lt; {step.Name}</a>";
         }
 
-        public static bool IsCurrentStep(this UrlHelper urlHelper, WizardStepInfo step)
+        public static bool IsCurrentStep(this UrlHelper urlHelper, MenuItem step)
         {
             var currentIndex = FindCurrentIndex(urlHelper);
             var indexOfGivenStep = -1;

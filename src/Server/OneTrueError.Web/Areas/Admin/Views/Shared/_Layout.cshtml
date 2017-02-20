@@ -42,7 +42,7 @@
         <div class="col-lg-2 col-md-8" style="background-color: #eee">
             <h2>Settings</h2>
             <ul>
-                @foreach (var step in WizardSteps.Steps)
+                @foreach (var step in AdminMenu.Steps)
                 {
                     <li @(Url.IsCurrentStep(step) ? "selected=\"selected\"" : "")>
                         <a href="@Url.Content(step.VirtualPath)">@step.Name</a>

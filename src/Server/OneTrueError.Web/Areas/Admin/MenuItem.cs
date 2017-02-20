@@ -3,9 +3,9 @@ using System.Web.Mvc;
 
 namespace OneTrueError.Web.Areas.Admin
 {
-    public class WizardStepInfo
+    public class MenuItem
     {
-        public WizardStepInfo(string name, string virtualPath)
+        public MenuItem(string name, string virtualPath)
         {
             Name = name;
             VirtualPath = virtualPath;

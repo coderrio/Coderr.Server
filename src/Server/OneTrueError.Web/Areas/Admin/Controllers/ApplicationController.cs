@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using System.Web.Routing;
 using DotNetCqs;
 using OneTrueError.Api.Core.Applications.Commands;
 using OneTrueError.Api.Core.Applications.Queries;
 using OneTrueError.Web.Areas.Admin.Models.Applications;
-using OneTrueError.Web.Models;
 
 namespace OneTrueError.Web.Areas.Admin.Controllers
 {
     public class ApplicationController : Controller
     {
-        private IQueryBus _queryBus;
-        private ICommandBus _cmdBus;
+        private readonly ICommandBus _cmdBus;
+        private readonly IQueryBus _queryBus;
 
 
         public ApplicationController(IQueryBus queryBus, ICommandBus cmdBus)
@@ -30,13 +31,41 @@ namespace OneTrueError.Web.Areas.Admin.Controllers
         {
             var cmd = new DeleteApplication(id);
             await _cmdBus.ExecuteAsync(cmd);
-            SessionUser.Current.Applications.Remove(id);
-            return RedirectToAction("Deleted");
+            await Task.Delay(500);
+
+            var url = Url.Action("Deleted");
+            return RedirectToAction("UpdateSession", "Account", new {area = "", returnUrl = url});
         }
 
         public ActionResult Deleted()
         {
             return View();
+        }
+
+        public async Task<ActionResult> Edit(int id)
+        {
+            var query = new GetApplicationInfo(id);
+            var app = await _queryBus.QueryAsync(query);
+            var model = new EditViewModel
+            {
+                ApplicationId = app.Id,
+                Name = app.Name
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Edit(EditViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var cmd = new UpdateApplication(model.ApplicationId, model.Name);
+            await _cmdBus.ExecuteAsync(cmd);
+
+            var dict = new RouteValueDictionary {{"usernote", "Application was updated"}};
+            return RedirectToAction("Index", dict);
         }
 
         public async Task<ActionResult> Index()

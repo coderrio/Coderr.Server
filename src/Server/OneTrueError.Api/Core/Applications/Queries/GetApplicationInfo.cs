@@ -12,6 +12,33 @@ namespace OneTrueError.Api.Core.Applications.Queries
         private int _applicationId;
 
         /// <summary>
+        ///     Creates a new instance of <see cref="GetApplicationInfo" />.
+        /// </summary>
+        /// <param name="id">identity of the application</param>
+        public GetApplicationInfo(int id)
+        {
+            if (id <= 0) throw new ArgumentOutOfRangeException("id");
+            ApplicationId = id;
+        }
+
+        /// <summary>
+        ///     Creates a new instance of <see cref="GetApplicationInfo" />.
+        /// </summary>
+        /// <param name="appKey">Application key used when sending error reports</param>
+        public GetApplicationInfo(string appKey)
+        {
+            if (appKey == null) throw new ArgumentNullException("appKey");
+            AppKey = appKey;
+        }
+
+        /// <summary>
+        ///     Creates a new instance of <see cref="GetApplicationInfo" />.
+        /// </summary>
+        protected GetApplicationInfo()
+        {
+        }
+
+        /// <summary>
         ///     Application key from the user interface
         /// </summary>
         /// <exception cref="FormatException">Not a valid application key.</exception>

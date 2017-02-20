@@ -169,5 +169,10 @@ namespace OneTrueError.SqlServer.Core.Applications
             if (application == null) throw new ArgumentNullException("application");
             await DeleteAsync(application.Id);
         }
+
+        public async Task UpdateAsync(Application entity)
+        {
+            await _uow.UpdateAsync(entity);
+        }
     }
 }

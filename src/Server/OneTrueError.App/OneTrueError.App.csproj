@@ -85,6 +85,7 @@
     <Compile Include="Core\ApiKeys\IApiKeyRepository.cs" />
     <Compile Include="Core\Applications\ApplicationRole.cs" />
     <Compile Include="Core\Applications\CommandHandlers\DeleteApplicationHandler.cs" />
+    <Compile Include="Core\Applications\CommandHandlers\UpdateApplicationHandler.cs" />
     <Compile Include="Core\Applications\EventHandlers\UpdateTeamOnInvitationAccepted.cs" />
     <Compile Include="Core\Applications\UserApplication.cs" />
     <Compile Include="Core\Notifications\EventHandlers\ApplicationDeletedHandler.cs" />

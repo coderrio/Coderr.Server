@@ -243,10 +243,13 @@
     <Compile Include="App_Start\Services\ApplicationServiceManagerSettingsWithDefaultOn.cs" />
     <Compile Include="App_Start\Services\ServiceRunner.cs" />
     <Compile Include="Areas\Admin\Controllers\ApiKeysController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ApplicationController.cs" />
     <Compile Include="Areas\Admin\Controllers\ReportingController.cs" />
     <Compile Include="Areas\Admin\Models\ApiKeys\CreateViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ApiKeys\ListViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ApiKeys\ListViewModelItem.cs" />
+    <Compile Include="Areas\Admin\Models\Applications\ApplicationViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\Applications\EditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ReportingViewModel.cs" />
     <Compile Include="Areas\Installation\Controllers\AccountController.cs" />
     <Compile Include="Areas\Installation\Controllers\MessagingController.cs" />
@@ -269,8 +272,8 @@
     <Compile Include="Areas\Admin\Models\EmailViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ErrorTrackingViewModel.cs" />
     <Compile Include="Areas\Admin\Models\QueueViewModel.cs" />
-    <Compile Include="Areas\Admin\WizardStepInfo.cs" />
-    <Compile Include="Areas\Admin\WizardSteps.cs" />
+    <Compile Include="Areas\Admin\MenuItem.cs" />
+    <Compile Include="Areas\Admin\AdminMenu.cs" />
     <Compile Include="Areas\Receiver\Controllers\FeedbackController.cs" />
     <Compile Include="Areas\Receiver\Controllers\ReportController.cs" />
     <Compile Include="Areas\Receiver\Models\ReportValidator.cs" />
@@ -419,6 +422,9 @@
     <Content Include="Areas\Admin\Views\ApiKeys\Details.cshtml" />
     <Content Include="Areas\Admin\Views\ApiKeys\Deleted.cshtml" />
     <Content Include="Areas\Admin\Views\Reporting\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Application\Deleted.cshtml" />
+    <Content Include="Areas\Admin\Views\Application\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Application\Edit.cshtml" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>

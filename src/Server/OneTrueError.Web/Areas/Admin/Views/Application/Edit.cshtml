@@ -1,0 +1,22 @@
+﻿@model OneTrueError.Web.Areas.Admin.Models.Applications.EditViewModel
+@{
+    ViewBag.Title = "Edit application";
+}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <form method="post" action="@Url.Action("edit")">
+                <h2>Edit application</h2>
+                @Html.HiddenFor(x => x.ApplicationId)
+                <div class="form-group">
+                    <input type="text" name="Name" class="input-lg form-control" value="@Model.Name" placeholder="Application name" />
+                </div>
+                <div>
+                    <input type="submit" class="btn btn-lg" value="Update" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

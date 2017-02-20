@@ -22,6 +22,7 @@ namespace OneTrueError.App.Core.Applications.QueryHandlers
         ///     Creates a new instance of <see cref="GetApplicationInfoHandler" />.
         /// </summary>
         /// <param name="applicationRepository">repos</param>
+        /// <param name="accountRepository">used to check if the user is sysadmin (can get all applications)</param>
         public GetApplicationListHandler(IApplicationRepository applicationRepository,
             IAccountRepository accountRepository)
         {

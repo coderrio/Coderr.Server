@@ -9,10 +9,10 @@ namespace OneTrueError.Web
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                 "~/Scripts/jquery-{version}.js",
+                "~/Scripts/humane.js",
                 "~/Scripts/application.js",
                 "~/Scripts/prism.js",
                 "~/Scripts/marked.min.js",
-                "~/Scripts/humane.js",
                 "~/Scripts/Base64.js",
                 "~/Scripts/transparency.min.js")
                 );
