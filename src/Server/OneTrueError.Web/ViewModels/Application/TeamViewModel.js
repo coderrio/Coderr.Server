@@ -4,6 +4,7 @@ var OneTrueError;
     var Application;
     (function (Application) {
         var CqsClient = Griffin.Cqs.CqsClient;
+        var RemoveTeamMember = OneTrueError.Core.Applications.Commands.RemoveTeamMember;
         var TeamViewModel = (function () {
             function TeamViewModel() {
             }
@@ -22,9 +23,27 @@ var OneTrueError;
                     _this.data = result;
                     context.resolve();
                     context.handle.click("#InviteUserBtn", function (e) { return _this.onInviteUser(e); });
+                    context.handle.click('[data-name="RemoveUser"]', function (e) { return _this.onBtnRemoveUser(e); });
                 });
             };
             TeamViewModel.prototype.deactivate = function () { };
+            TeamViewModel.prototype.onBtnRemoveUser = function (e) {
+                e.preventDefault();
+                var node = e.target;
+                var input = node.previousElementSibling;
+                var accountId = parseInt(input.value, 10);
+                if (accountId === 0)
+                    throw new Error("Failed to find accountID");
+                var cmd = new RemoveTeamMember(this.applicationId, accountId);
+                CqsClient.command(cmd).done(function (v) {
+                    var parent = node.parentElement;
+                    while (parent.tagName != 'TR') {
+                        parent = parent.parentElement;
+                    }
+                    parent.parentElement.removeChild(parent);
+                    humane.log('User was removed');
+                });
+            };
             TeamViewModel.prototype.onInviteUser = function (mouseEvent) {
                 mouseEvent.preventDefault();
                 var inputElement = this.context.select.one("emailAddress");

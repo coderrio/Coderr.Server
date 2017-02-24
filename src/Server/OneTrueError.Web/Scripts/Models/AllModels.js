@@ -9,7 +9,7 @@ var OneTrueError;
                 var GetOverview = (function () {
                     function GetOverview() {
                     }
-                    GetOverview.TYPE_NAME = "GetOverview";
+                    GetOverview.TYPE_NAME = 'GetOverview';
                     return GetOverview;
                 }());
                 Queries.GetOverview = GetOverview;
@@ -17,21 +17,21 @@ var OneTrueError;
                     function GetOverviewApplicationResult(label, startDate, days) {
                         this.Label = label;
                     }
-                    GetOverviewApplicationResult.TYPE_NAME = "GetOverviewApplicationResult";
+                    GetOverviewApplicationResult.TYPE_NAME = 'GetOverviewApplicationResult';
                     return GetOverviewApplicationResult;
                 }());
                 Queries.GetOverviewApplicationResult = GetOverviewApplicationResult;
                 var GetOverviewResult = (function () {
                     function GetOverviewResult() {
                     }
-                    GetOverviewResult.TYPE_NAME = "GetOverviewResult";
+                    GetOverviewResult.TYPE_NAME = 'GetOverviewResult';
                     return GetOverviewResult;
                 }());
                 Queries.GetOverviewResult = GetOverviewResult;
                 var OverviewStatSummary = (function () {
                     function OverviewStatSummary() {
                     }
-                    OverviewStatSummary.TYPE_NAME = "OverviewStatSummary";
+                    OverviewStatSummary.TYPE_NAME = 'OverviewStatSummary';
                     return OverviewStatSummary;
                 }());
                 Queries.OverviewStatSummary = OverviewStatSummary;
@@ -51,21 +51,21 @@ var OneTrueError;
                     function GetFeedbackForApplicationPage(applicationId) {
                         this.ApplicationId = applicationId;
                     }
-                    GetFeedbackForApplicationPage.TYPE_NAME = "GetFeedbackForApplicationPage";
+                    GetFeedbackForApplicationPage.TYPE_NAME = 'GetFeedbackForApplicationPage';
                     return GetFeedbackForApplicationPage;
                 }());
                 Queries.GetFeedbackForApplicationPage = GetFeedbackForApplicationPage;
                 var GetFeedbackForApplicationPageResult = (function () {
                     function GetFeedbackForApplicationPageResult() {
                     }
-                    GetFeedbackForApplicationPageResult.TYPE_NAME = "GetFeedbackForApplicationPageResult";
+                    GetFeedbackForApplicationPageResult.TYPE_NAME = 'GetFeedbackForApplicationPageResult';
                     return GetFeedbackForApplicationPageResult;
                 }());
                 Queries.GetFeedbackForApplicationPageResult = GetFeedbackForApplicationPageResult;
                 var GetFeedbackForApplicationPageResultItem = (function () {
                     function GetFeedbackForApplicationPageResultItem() {
                     }
-                    GetFeedbackForApplicationPageResultItem.TYPE_NAME = "GetFeedbackForApplicationPageResultItem";
+                    GetFeedbackForApplicationPageResultItem.TYPE_NAME = 'GetFeedbackForApplicationPageResultItem';
                     return GetFeedbackForApplicationPageResultItem;
                 }());
                 Queries.GetFeedbackForApplicationPageResultItem = GetFeedbackForApplicationPageResultItem;
@@ -73,7 +73,7 @@ var OneTrueError;
                     function GetIncidentFeedback(incidentId) {
                         this.IncidentId = incidentId;
                     }
-                    GetIncidentFeedback.TYPE_NAME = "GetIncidentFeedback";
+                    GetIncidentFeedback.TYPE_NAME = 'GetIncidentFeedback';
                     return GetIncidentFeedback;
                 }());
                 Queries.GetIncidentFeedback = GetIncidentFeedback;
@@ -82,35 +82,35 @@ var OneTrueError;
                         this.Items = items;
                         this.Emails = emails;
                     }
-                    GetIncidentFeedbackResult.TYPE_NAME = "GetIncidentFeedbackResult";
+                    GetIncidentFeedbackResult.TYPE_NAME = 'GetIncidentFeedbackResult';
                     return GetIncidentFeedbackResult;
                 }());
                 Queries.GetIncidentFeedbackResult = GetIncidentFeedbackResult;
                 var GetIncidentFeedbackResultItem = (function () {
                     function GetIncidentFeedbackResultItem() {
                     }
-                    GetIncidentFeedbackResultItem.TYPE_NAME = "GetIncidentFeedbackResultItem";
+                    GetIncidentFeedbackResultItem.TYPE_NAME = 'GetIncidentFeedbackResultItem';
                     return GetIncidentFeedbackResultItem;
                 }());
                 Queries.GetIncidentFeedbackResultItem = GetIncidentFeedbackResultItem;
                 var GetFeedbackForDashboardPage = (function () {
                     function GetFeedbackForDashboardPage() {
                     }
-                    GetFeedbackForDashboardPage.TYPE_NAME = "GetFeedbackForDashboardPage";
+                    GetFeedbackForDashboardPage.TYPE_NAME = 'GetFeedbackForDashboardPage';
                     return GetFeedbackForDashboardPage;
                 }());
                 Queries.GetFeedbackForDashboardPage = GetFeedbackForDashboardPage;
                 var GetFeedbackForDashboardPageResult = (function () {
                     function GetFeedbackForDashboardPageResult() {
                     }
-                    GetFeedbackForDashboardPageResult.TYPE_NAME = "GetFeedbackForDashboardPageResult";
+                    GetFeedbackForDashboardPageResult.TYPE_NAME = 'GetFeedbackForDashboardPageResult';
                     return GetFeedbackForDashboardPageResult;
                 }());
                 Queries.GetFeedbackForDashboardPageResult = GetFeedbackForDashboardPageResult;
                 var GetFeedbackForDashboardPageResultItem = (function () {
                     function GetFeedbackForDashboardPageResultItem() {
                     }
-                    GetFeedbackForDashboardPageResultItem.TYPE_NAME = "GetFeedbackForDashboardPageResultItem";
+                    GetFeedbackForDashboardPageResultItem.TYPE_NAME = 'GetFeedbackForDashboardPageResultItem';
                     return GetFeedbackForDashboardPageResultItem;
                 }());
                 Queries.GetFeedbackForDashboardPageResultItem = GetFeedbackForDashboardPageResultItem;
@@ -132,21 +132,21 @@ var OneTrueError;
             var TriggerActionDataDTO = (function () {
                 function TriggerActionDataDTO() {
                 }
-                TriggerActionDataDTO.TYPE_NAME = "TriggerActionDataDTO";
+                TriggerActionDataDTO.TYPE_NAME = 'TriggerActionDataDTO';
                 return TriggerActionDataDTO;
             }());
             Triggers.TriggerActionDataDTO = TriggerActionDataDTO;
             var TriggerContextRule = (function () {
                 function TriggerContextRule() {
                 }
-                TriggerContextRule.TYPE_NAME = "TriggerContextRule";
+                TriggerContextRule.TYPE_NAME = 'TriggerContextRule';
                 return TriggerContextRule;
             }());
             Triggers.TriggerContextRule = TriggerContextRule;
             var TriggerExceptionRule = (function () {
                 function TriggerExceptionRule() {
                 }
-                TriggerExceptionRule.TYPE_NAME = "TriggerExceptionRule";
+                TriggerExceptionRule.TYPE_NAME = 'TriggerExceptionRule';
                 return TriggerExceptionRule;
             }());
             Triggers.TriggerExceptionRule = TriggerExceptionRule;
@@ -161,7 +161,7 @@ var OneTrueError;
             var TriggerDTO = (function () {
                 function TriggerDTO() {
                 }
-                TriggerDTO.TYPE_NAME = "TriggerDTO";
+                TriggerDTO.TYPE_NAME = 'TriggerDTO';
                 return TriggerDTO;
             }());
             Triggers.TriggerDTO = TriggerDTO;
@@ -174,7 +174,7 @@ var OneTrueError;
             var TriggerRuleBase = (function () {
                 function TriggerRuleBase() {
                 }
-                TriggerRuleBase.TYPE_NAME = "TriggerRuleBase";
+                TriggerRuleBase.TYPE_NAME = 'TriggerRuleBase';
                 return TriggerRuleBase;
             }());
             Triggers.TriggerRuleBase = TriggerRuleBase;
@@ -193,14 +193,14 @@ var OneTrueError;
                     function GetContextCollectionMetadata(applicationId) {
                         this.ApplicationId = applicationId;
                     }
-                    GetContextCollectionMetadata.TYPE_NAME = "GetContextCollectionMetadata";
+                    GetContextCollectionMetadata.TYPE_NAME = 'GetContextCollectionMetadata';
                     return GetContextCollectionMetadata;
                 }());
                 Queries.GetContextCollectionMetadata = GetContextCollectionMetadata;
                 var GetContextCollectionMetadataItem = (function () {
                     function GetContextCollectionMetadataItem() {
                     }
-                    GetContextCollectionMetadataItem.TYPE_NAME = "GetContextCollectionMetadataItem";
+                    GetContextCollectionMetadataItem.TYPE_NAME = 'GetContextCollectionMetadataItem';
                     return GetContextCollectionMetadataItem;
                 }());
                 Queries.GetContextCollectionMetadataItem = GetContextCollectionMetadataItem;
@@ -208,14 +208,14 @@ var OneTrueError;
                     function GetTrigger(id) {
                         this.Id = id;
                     }
-                    GetTrigger.TYPE_NAME = "GetTrigger";
+                    GetTrigger.TYPE_NAME = 'GetTrigger';
                     return GetTrigger;
                 }());
                 Queries.GetTrigger = GetTrigger;
                 var GetTriggerDTO = (function () {
                     function GetTriggerDTO() {
                     }
-                    GetTriggerDTO.TYPE_NAME = "GetTriggerDTO";
+                    GetTriggerDTO.TYPE_NAME = 'GetTriggerDTO';
                     return GetTriggerDTO;
                 }());
                 Queries.GetTriggerDTO = GetTriggerDTO;
@@ -223,7 +223,7 @@ var OneTrueError;
                     function GetTriggersForApplication(applicationId) {
                         this.ApplicationId = applicationId;
                     }
-                    GetTriggersForApplication.TYPE_NAME = "GetTriggersForApplication";
+                    GetTriggersForApplication.TYPE_NAME = 'GetTriggersForApplication';
                     return GetTriggersForApplication;
                 }());
                 Queries.GetTriggersForApplication = GetTriggersForApplication;
@@ -244,7 +244,7 @@ var OneTrueError;
                         this.ApplicationId = applicationId;
                         this.Name = name;
                     }
-                    CreateTrigger.TYPE_NAME = "CreateTrigger";
+                    CreateTrigger.TYPE_NAME = 'CreateTrigger';
                     return CreateTrigger;
                 }());
                 Commands.CreateTrigger = CreateTrigger;
@@ -252,7 +252,7 @@ var OneTrueError;
                     function DeleteTrigger(id) {
                         this.Id = id;
                     }
-                    DeleteTrigger.TYPE_NAME = "DeleteTrigger";
+                    DeleteTrigger.TYPE_NAME = 'DeleteTrigger';
                     return DeleteTrigger;
                 }());
                 Commands.DeleteTrigger = DeleteTrigger;
@@ -261,7 +261,7 @@ var OneTrueError;
                         this.Id = id;
                         this.Name = name;
                     }
-                    UpdateTrigger.TYPE_NAME = "UpdateTrigger";
+                    UpdateTrigger.TYPE_NAME = 'UpdateTrigger';
                     return UpdateTrigger;
                 }());
                 Commands.UpdateTrigger = UpdateTrigger;
@@ -278,7 +278,7 @@ var OneTrueError;
             var TagDTO = (function () {
                 function TagDTO() {
                 }
-                TagDTO.TYPE_NAME = "TagDTO";
+                TagDTO.TYPE_NAME = 'TagDTO';
                 return TagDTO;
             }());
             Tagging.TagDTO = TagDTO;
@@ -297,7 +297,7 @@ var OneTrueError;
                     function GetTagsForIncident(incidentId) {
                         this.IncidentId = incidentId;
                     }
-                    GetTagsForIncident.TYPE_NAME = "GetTagsForIncident";
+                    GetTagsForIncident.TYPE_NAME = 'GetTagsForIncident';
                     return GetTagsForIncident;
                 }());
                 Queries.GetTagsForIncident = GetTagsForIncident;
@@ -318,7 +318,7 @@ var OneTrueError;
                         this.IncidentId = incidentId;
                         this.Tags = tags;
                     }
-                    TagAttachedToIncident.TYPE_NAME = "TagAttachedToIncident";
+                    TagAttachedToIncident.TYPE_NAME = 'TagAttachedToIncident';
                     return TagAttachedToIncident;
                 }());
                 Events.TagAttachedToIncident = TagAttachedToIncident;
@@ -338,21 +338,21 @@ var OneTrueError;
                     function GetSimilarities(incidentId) {
                         this.IncidentId = incidentId;
                     }
-                    GetSimilarities.TYPE_NAME = "GetSimilarities";
+                    GetSimilarities.TYPE_NAME = 'GetSimilarities';
                     return GetSimilarities;
                 }());
                 Queries.GetSimilarities = GetSimilarities;
                 var GetSimilaritiesCollection = (function () {
                     function GetSimilaritiesCollection() {
                     }
-                    GetSimilaritiesCollection.TYPE_NAME = "GetSimilaritiesCollection";
+                    GetSimilaritiesCollection.TYPE_NAME = 'GetSimilaritiesCollection';
                     return GetSimilaritiesCollection;
                 }());
                 Queries.GetSimilaritiesCollection = GetSimilaritiesCollection;
                 var GetSimilaritiesResult = (function () {
                     function GetSimilaritiesResult() {
                     }
-                    GetSimilaritiesResult.TYPE_NAME = "GetSimilaritiesResult";
+                    GetSimilaritiesResult.TYPE_NAME = 'GetSimilaritiesResult';
                     return GetSimilaritiesResult;
                 }());
                 Queries.GetSimilaritiesResult = GetSimilaritiesResult;
@@ -360,7 +360,7 @@ var OneTrueError;
                     function GetSimilaritiesSimilarity(name) {
                         this.Name = name;
                     }
-                    GetSimilaritiesSimilarity.TYPE_NAME = "GetSimilaritiesSimilarity";
+                    GetSimilaritiesSimilarity.TYPE_NAME = 'GetSimilaritiesSimilarity';
                     return GetSimilaritiesSimilarity;
                 }());
                 Queries.GetSimilaritiesSimilarity = GetSimilaritiesSimilarity;
@@ -370,7 +370,7 @@ var OneTrueError;
                         this.Percentage = percentage;
                         this.Count = count;
                     }
-                    GetSimilaritiesValue.TYPE_NAME = "GetSimilaritiesValue";
+                    GetSimilaritiesValue.TYPE_NAME = 'GetSimilaritiesValue';
                     return GetSimilaritiesValue;
                 }());
                 Queries.GetSimilaritiesValue = GetSimilaritiesValue;
@@ -390,21 +390,21 @@ var OneTrueError;
                     function GetOriginsForIncident(incidentId) {
                         this.IncidentId = incidentId;
                     }
-                    GetOriginsForIncident.TYPE_NAME = "GetOriginsForIncident";
+                    GetOriginsForIncident.TYPE_NAME = 'GetOriginsForIncident';
                     return GetOriginsForIncident;
                 }());
                 Queries.GetOriginsForIncident = GetOriginsForIncident;
                 var GetOriginsForIncidentResult = (function () {
                     function GetOriginsForIncidentResult() {
                     }
-                    GetOriginsForIncidentResult.TYPE_NAME = "GetOriginsForIncidentResult";
+                    GetOriginsForIncidentResult.TYPE_NAME = 'GetOriginsForIncidentResult';
                     return GetOriginsForIncidentResult;
                 }());
                 Queries.GetOriginsForIncidentResult = GetOriginsForIncidentResult;
                 var GetOriginsForIncidentResultItem = (function () {
                     function GetOriginsForIncidentResultItem() {
                     }
-                    GetOriginsForIncidentResultItem.TYPE_NAME = "GetOriginsForIncidentResultItem";
+                    GetOriginsForIncidentResultItem.TYPE_NAME = 'GetOriginsForIncidentResultItem';
                     return GetOriginsForIncidentResultItem;
                 }());
                 Queries.GetOriginsForIncidentResultItem = GetOriginsForIncidentResultItem;
@@ -419,7 +419,7 @@ var OneTrueError;
         var IgnoreFieldAttribute = (function () {
             function IgnoreFieldAttribute() {
             }
-            IgnoreFieldAttribute.TYPE_NAME = "IgnoreFieldAttribute";
+            IgnoreFieldAttribute.TYPE_NAME = 'IgnoreFieldAttribute';
             return IgnoreFieldAttribute;
         }());
         Core.IgnoreFieldAttribute = IgnoreFieldAttribute;
@@ -434,7 +434,7 @@ var OneTrueError;
             var NotificationSettings = (function () {
                 function NotificationSettings() {
                 }
-                NotificationSettings.TYPE_NAME = "NotificationSettings";
+                NotificationSettings.TYPE_NAME = 'NotificationSettings';
                 return NotificationSettings;
             }());
             Users.NotificationSettings = NotificationSettings;
@@ -459,14 +459,14 @@ var OneTrueError;
                 var GetUserSettings = (function () {
                     function GetUserSettings() {
                     }
-                    GetUserSettings.TYPE_NAME = "GetUserSettings";
+                    GetUserSettings.TYPE_NAME = 'GetUserSettings';
                     return GetUserSettings;
                 }());
                 Queries.GetUserSettings = GetUserSettings;
                 var GetUserSettingsResult = (function () {
                     function GetUserSettingsResult() {
                     }
-                    GetUserSettingsResult.TYPE_NAME = "GetUserSettingsResult";
+                    GetUserSettingsResult.TYPE_NAME = 'GetUserSettingsResult';
                     return GetUserSettingsResult;
                 }());
                 Queries.GetUserSettingsResult = GetUserSettingsResult;
@@ -485,14 +485,14 @@ var OneTrueError;
                 var UpdateNotifications = (function () {
                     function UpdateNotifications() {
                     }
-                    UpdateNotifications.TYPE_NAME = "UpdateNotifications";
+                    UpdateNotifications.TYPE_NAME = 'UpdateNotifications';
                     return UpdateNotifications;
                 }());
                 Commands.UpdateNotifications = UpdateNotifications;
                 var UpdatePersonalSettings = (function () {
                     function UpdatePersonalSettings() {
                     }
-                    UpdatePersonalSettings.TYPE_NAME = "UpdatePersonalSettings";
+                    UpdatePersonalSettings.TYPE_NAME = 'UpdatePersonalSettings';
                     return UpdatePersonalSettings;
                 }());
                 Commands.UpdatePersonalSettings = UpdatePersonalSettings;
@@ -509,7 +509,7 @@ var OneTrueError;
             var SendSupportRequest = (function () {
                 function SendSupportRequest() {
                 }
-                SendSupportRequest.TYPE_NAME = "SendSupportRequest";
+                SendSupportRequest.TYPE_NAME = 'SendSupportRequest';
                 return SendSupportRequest;
             }());
             Support.SendSupportRequest = SendSupportRequest;
@@ -526,21 +526,21 @@ var OneTrueError;
                 function ContextCollectionDTO(name, items) {
                     this.Name = name;
                 }
-                ContextCollectionDTO.TYPE_NAME = "ContextCollectionDTO";
+                ContextCollectionDTO.TYPE_NAME = 'ContextCollectionDTO';
                 return ContextCollectionDTO;
             }());
             Reports.ContextCollectionDTO = ContextCollectionDTO;
             var ReportDTO = (function () {
                 function ReportDTO() {
                 }
-                ReportDTO.TYPE_NAME = "ReportDTO";
+                ReportDTO.TYPE_NAME = 'ReportDTO';
                 return ReportDTO;
             }());
             Reports.ReportDTO = ReportDTO;
             var ReportExeptionDTO = (function () {
                 function ReportExeptionDTO() {
                 }
-                ReportExeptionDTO.TYPE_NAME = "ReportExeptionDTO";
+                ReportExeptionDTO.TYPE_NAME = 'ReportExeptionDTO';
                 return ReportExeptionDTO;
             }());
             Reports.ReportExeptionDTO = ReportExeptionDTO;
@@ -559,14 +559,14 @@ var OneTrueError;
                     function GetReport(reportId) {
                         this.ReportId = reportId;
                     }
-                    GetReport.TYPE_NAME = "GetReport";
+                    GetReport.TYPE_NAME = 'GetReport';
                     return GetReport;
                 }());
                 Queries.GetReport = GetReport;
                 var GetReportException = (function () {
                     function GetReportException() {
                     }
-                    GetReportException.TYPE_NAME = "GetReportException";
+                    GetReportException.TYPE_NAME = 'GetReportException';
                     return GetReportException;
                 }());
                 Queries.GetReportException = GetReportException;
@@ -574,7 +574,7 @@ var OneTrueError;
                     function GetReportList(incidentId) {
                         this.IncidentId = incidentId;
                     }
-                    GetReportList.TYPE_NAME = "GetReportList";
+                    GetReportList.TYPE_NAME = 'GetReportList';
                     return GetReportList;
                 }());
                 Queries.GetReportList = GetReportList;
@@ -582,21 +582,21 @@ var OneTrueError;
                     function GetReportListResult(items) {
                         this.Items = items;
                     }
-                    GetReportListResult.TYPE_NAME = "GetReportListResult";
+                    GetReportListResult.TYPE_NAME = 'GetReportListResult';
                     return GetReportListResult;
                 }());
                 Queries.GetReportListResult = GetReportListResult;
                 var GetReportListResultItem = (function () {
                     function GetReportListResultItem() {
                     }
-                    GetReportListResultItem.TYPE_NAME = "GetReportListResultItem";
+                    GetReportListResultItem.TYPE_NAME = 'GetReportListResultItem';
                     return GetReportListResultItem;
                 }());
                 Queries.GetReportListResultItem = GetReportListResultItem;
                 var GetReportResult = (function () {
                     function GetReportResult() {
                     }
-                    GetReportResult.TYPE_NAME = "GetReportResult";
+                    GetReportResult.TYPE_NAME = 'GetReportResult';
                     return GetReportResult;
                 }());
                 Queries.GetReportResult = GetReportResult;
@@ -605,7 +605,7 @@ var OneTrueError;
                         this.Name = name;
                         this.Properties = properties;
                     }
-                    GetReportResultContextCollection.TYPE_NAME = "GetReportResultContextCollection";
+                    GetReportResultContextCollection.TYPE_NAME = 'GetReportResultContextCollection';
                     return GetReportResultContextCollection;
                 }());
                 Queries.GetReportResultContextCollection = GetReportResultContextCollection;
@@ -614,7 +614,7 @@ var OneTrueError;
                         this.Key = key;
                         this.Value = value;
                     }
-                    KeyValuePair.TYPE_NAME = "KeyValuePair";
+                    KeyValuePair.TYPE_NAME = 'KeyValuePair';
                     return KeyValuePair;
                 }());
                 Queries.KeyValuePair = KeyValuePair;
@@ -632,14 +632,14 @@ var OneTrueError;
                 function EmailAddress(address) {
                     this.Address = address;
                 }
-                EmailAddress.TYPE_NAME = "EmailAddress";
+                EmailAddress.TYPE_NAME = 'EmailAddress';
                 return EmailAddress;
             }());
             Messaging.EmailAddress = EmailAddress;
             var EmailMessage = (function () {
                 function EmailMessage() {
                 }
-                EmailMessage.TYPE_NAME = "EmailMessage";
+                EmailMessage.TYPE_NAME = 'EmailMessage';
                 return EmailMessage;
             }());
             Messaging.EmailMessage = EmailMessage;
@@ -648,7 +648,7 @@ var OneTrueError;
                     this.Name = name;
                     this.Content = content;
                 }
-                EmailResource.TYPE_NAME = "EmailResource";
+                EmailResource.TYPE_NAME = 'EmailResource';
                 return EmailResource;
             }());
             Messaging.EmailResource = EmailResource;
@@ -663,10 +663,19 @@ var OneTrueError;
         (function (Messaging) {
             var Commands;
             (function (Commands) {
+                var SendSms = (function () {
+                    function SendSms(phoneNumber, message) {
+                        this.PhoneNumber = phoneNumber;
+                        this.Message = message;
+                    }
+                    SendSms.TYPE_NAME = 'SendSms';
+                    return SendSms;
+                }());
+                Commands.SendSms = SendSms;
                 var SendEmail = (function () {
                     function SendEmail() {
                     }
-                    SendEmail.TYPE_NAME = "SendEmail";
+                    SendEmail.TYPE_NAME = 'SendEmail';
                     return SendEmail;
                 }());
                 Commands.SendEmail = SendEmail;
@@ -675,7 +684,7 @@ var OneTrueError;
                         this.MailTitle = mailTitle;
                         this.TemplateName = templateName;
                     }
-                    SendTemplateEmail.TYPE_NAME = "SendTemplateEmail";
+                    SendTemplateEmail.TYPE_NAME = 'SendTemplateEmail';
                     return SendTemplateEmail;
                 }());
                 Commands.SendTemplateEmail = SendTemplateEmail;
@@ -695,14 +704,14 @@ var OneTrueError;
                     function GetInvitationByKey(invitationKey) {
                         this.InvitationKey = invitationKey;
                     }
-                    GetInvitationByKey.TYPE_NAME = "GetInvitationByKey";
+                    GetInvitationByKey.TYPE_NAME = 'GetInvitationByKey';
                     return GetInvitationByKey;
                 }());
                 Queries.GetInvitationByKey = GetInvitationByKey;
                 var GetInvitationByKeyResult = (function () {
                     function GetInvitationByKeyResult() {
                     }
-                    GetInvitationByKeyResult.TYPE_NAME = "GetInvitationByKeyResult";
+                    GetInvitationByKeyResult.TYPE_NAME = 'GetInvitationByKeyResult';
                     return GetInvitationByKeyResult;
                 }());
                 Queries.GetInvitationByKeyResult = GetInvitationByKeyResult;
@@ -723,7 +732,7 @@ var OneTrueError;
                         this.ApplicationId = applicationId;
                         this.EmailAddress = emailAddress;
                     }
-                    InviteUser.TYPE_NAME = "InviteUser";
+                    InviteUser.TYPE_NAME = 'InviteUser';
                     return InviteUser;
                 }());
                 Commands.InviteUser = InviteUser;
@@ -748,7 +757,7 @@ var OneTrueError;
                     this.Id = id;
                     this.Name = name;
                 }
-                IncidentSummaryDTO.TYPE_NAME = "IncidentSummaryDTO";
+                IncidentSummaryDTO.TYPE_NAME = 'IncidentSummaryDTO';
                 return IncidentSummaryDTO;
             }());
             Incidents.IncidentSummaryDTO = IncidentSummaryDTO;
@@ -766,7 +775,7 @@ var OneTrueError;
                 var FindIncidentResult = (function () {
                     function FindIncidentResult() {
                     }
-                    FindIncidentResult.TYPE_NAME = "FindIncidentResult";
+                    FindIncidentResult.TYPE_NAME = 'FindIncidentResult';
                     return FindIncidentResult;
                 }());
                 Queries.FindIncidentResult = FindIncidentResult;
@@ -775,14 +784,14 @@ var OneTrueError;
                         this.Id = id;
                         this.Name = name;
                     }
-                    FindIncidentResultItem.TYPE_NAME = "FindIncidentResultItem";
+                    FindIncidentResultItem.TYPE_NAME = 'FindIncidentResultItem';
                     return FindIncidentResultItem;
                 }());
                 Queries.FindIncidentResultItem = FindIncidentResultItem;
                 var FindIncidents = (function () {
                     function FindIncidents() {
                     }
-                    FindIncidents.TYPE_NAME = "FindIncidents";
+                    FindIncidents.TYPE_NAME = 'FindIncidents';
                     return FindIncidents;
                 }());
                 Queries.FindIncidents = FindIncidents;
@@ -790,7 +799,7 @@ var OneTrueError;
                     function GetIncident(incidentId) {
                         this.IncidentId = incidentId;
                     }
-                    GetIncident.TYPE_NAME = "GetIncident";
+                    GetIncident.TYPE_NAME = 'GetIncident';
                     return GetIncident;
                 }());
                 Queries.GetIncident = GetIncident;
@@ -798,42 +807,42 @@ var OneTrueError;
                     function GetIncidentForClosePage(incidentId) {
                         this.IncidentId = incidentId;
                     }
-                    GetIncidentForClosePage.TYPE_NAME = "GetIncidentForClosePage";
+                    GetIncidentForClosePage.TYPE_NAME = 'GetIncidentForClosePage';
                     return GetIncidentForClosePage;
                 }());
                 Queries.GetIncidentForClosePage = GetIncidentForClosePage;
                 var GetIncidentForClosePageResult = (function () {
                     function GetIncidentForClosePageResult() {
                     }
-                    GetIncidentForClosePageResult.TYPE_NAME = "GetIncidentForClosePageResult";
+                    GetIncidentForClosePageResult.TYPE_NAME = 'GetIncidentForClosePageResult';
                     return GetIncidentForClosePageResult;
                 }());
                 Queries.GetIncidentForClosePageResult = GetIncidentForClosePageResult;
                 var GetIncidentResult = (function () {
                     function GetIncidentResult() {
                     }
-                    GetIncidentResult.TYPE_NAME = "GetIncidentResult";
+                    GetIncidentResult.TYPE_NAME = 'GetIncidentResult';
                     return GetIncidentResult;
                 }());
                 Queries.GetIncidentResult = GetIncidentResult;
                 var GetIncidentStatistics = (function () {
                     function GetIncidentStatistics() {
                     }
-                    GetIncidentStatistics.TYPE_NAME = "GetIncidentStatistics";
+                    GetIncidentStatistics.TYPE_NAME = 'GetIncidentStatistics';
                     return GetIncidentStatistics;
                 }());
                 Queries.GetIncidentStatistics = GetIncidentStatistics;
                 var GetIncidentStatisticsResult = (function () {
                     function GetIncidentStatisticsResult() {
                     }
-                    GetIncidentStatisticsResult.TYPE_NAME = "GetIncidentStatisticsResult";
+                    GetIncidentStatisticsResult.TYPE_NAME = 'GetIncidentStatisticsResult';
                     return GetIncidentStatisticsResult;
                 }());
                 Queries.GetIncidentStatisticsResult = GetIncidentStatisticsResult;
                 var ReportDay = (function () {
                     function ReportDay() {
                     }
-                    ReportDay.TYPE_NAME = "ReportDay";
+                    ReportDay.TYPE_NAME = 'ReportDay';
                     return ReportDay;
                 }());
                 Queries.ReportDay = ReportDay;
@@ -855,7 +864,7 @@ var OneTrueError;
                         this.AccountId = accountId;
                         this.UserName = userName;
                     }
-                    IncidentIgnored.TYPE_NAME = "IncidentIgnored";
+                    IncidentIgnored.TYPE_NAME = 'IncidentIgnored';
                     return IncidentIgnored;
                 }());
                 Events.IncidentIgnored = IncidentIgnored;
@@ -865,7 +874,7 @@ var OneTrueError;
                         this.IncidentId = incidentId;
                         this.CreatedAtUtc = createdAtUtc;
                     }
-                    IncidentReOpened.TYPE_NAME = "IncidentReOpened";
+                    IncidentReOpened.TYPE_NAME = 'IncidentReOpened';
                     return IncidentReOpened;
                 }());
                 Events.IncidentReOpened = IncidentReOpened;
@@ -875,7 +884,7 @@ var OneTrueError;
                         this.Report = report;
                         this.IsReOpened = isReOpened;
                     }
-                    ReportAddedToIncident.TYPE_NAME = "ReportAddedToIncident";
+                    ReportAddedToIncident.TYPE_NAME = 'ReportAddedToIncident';
                     return ReportAddedToIncident;
                 }());
                 Events.ReportAddedToIncident = ReportAddedToIncident;
@@ -896,7 +905,7 @@ var OneTrueError;
                         this.Solution = solution;
                         this.IncidentId = incidentId;
                     }
-                    CloseIncident.TYPE_NAME = "CloseIncident";
+                    CloseIncident.TYPE_NAME = 'CloseIncident';
                     return CloseIncident;
                 }());
                 Commands.CloseIncident = CloseIncident;
@@ -904,7 +913,7 @@ var OneTrueError;
                     function IgnoreIncident(incidentId) {
                         this.IncidentId = incidentId;
                     }
-                    IgnoreIncident.TYPE_NAME = "IgnoreIncident";
+                    IgnoreIncident.TYPE_NAME = 'IgnoreIncident';
                     return IgnoreIncident;
                 }());
                 Commands.IgnoreIncident = IgnoreIncident;
@@ -925,12 +934,141 @@ var OneTrueError;
                         this.ErrorId = errorId;
                         this.RemoteAddress = remoteAddress;
                     }
-                    SubmitFeedback.TYPE_NAME = "SubmitFeedback";
+                    SubmitFeedback.TYPE_NAME = 'SubmitFeedback';
                     return SubmitFeedback;
                 }());
                 Commands.SubmitFeedback = SubmitFeedback;
             })(Commands = Feedback.Commands || (Feedback.Commands = {}));
         })(Feedback = Core.Feedback || (Core.Feedback = {}));
+    })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
+})(OneTrueError || (OneTrueError = {}));
+var OneTrueError;
+(function (OneTrueError) {
+    var Core;
+    (function (Core) {
+        var Feedback;
+        (function (Feedback) {
+            var Events;
+            (function (Events) {
+                var FeedbackAttachedToIncident = (function () {
+                    function FeedbackAttachedToIncident() {
+                    }
+                    FeedbackAttachedToIncident.TYPE_NAME = 'FeedbackAttachedToIncident';
+                    return FeedbackAttachedToIncident;
+                }());
+                Events.FeedbackAttachedToIncident = FeedbackAttachedToIncident;
+            })(Events = Feedback.Events || (Feedback.Events = {}));
+        })(Feedback = Core.Feedback || (Core.Feedback = {}));
+    })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
+})(OneTrueError || (OneTrueError = {}));
+var OneTrueError;
+(function (OneTrueError) {
+    var Core;
+    (function (Core) {
+        var ApiKeys;
+        (function (ApiKeys) {
+            var Queries;
+            (function (Queries) {
+                var GetApiKey = (function () {
+                    function GetApiKey(id) {
+                        this.Id = id;
+                    }
+                    GetApiKey.TYPE_NAME = 'GetApiKey';
+                    return GetApiKey;
+                }());
+                Queries.GetApiKey = GetApiKey;
+                var GetApiKeyResult = (function () {
+                    function GetApiKeyResult() {
+                    }
+                    GetApiKeyResult.TYPE_NAME = 'GetApiKeyResult';
+                    return GetApiKeyResult;
+                }());
+                Queries.GetApiKeyResult = GetApiKeyResult;
+                var GetApiKeyResultApplication = (function () {
+                    function GetApiKeyResultApplication() {
+                    }
+                    GetApiKeyResultApplication.TYPE_NAME = 'GetApiKeyResultApplication';
+                    return GetApiKeyResultApplication;
+                }());
+                Queries.GetApiKeyResultApplication = GetApiKeyResultApplication;
+                var ListApiKeys = (function () {
+                    function ListApiKeys() {
+                    }
+                    ListApiKeys.TYPE_NAME = 'ListApiKeys';
+                    return ListApiKeys;
+                }());
+                Queries.ListApiKeys = ListApiKeys;
+                var ListApiKeysResult = (function () {
+                    function ListApiKeysResult() {
+                    }
+                    ListApiKeysResult.TYPE_NAME = 'ListApiKeysResult';
+                    return ListApiKeysResult;
+                }());
+                Queries.ListApiKeysResult = ListApiKeysResult;
+                var ListApiKeysResultItem = (function () {
+                    function ListApiKeysResultItem() {
+                    }
+                    ListApiKeysResultItem.TYPE_NAME = 'ListApiKeysResultItem';
+                    return ListApiKeysResultItem;
+                }());
+                Queries.ListApiKeysResultItem = ListApiKeysResultItem;
+            })(Queries = ApiKeys.Queries || (ApiKeys.Queries = {}));
+        })(ApiKeys = Core.ApiKeys || (Core.ApiKeys = {}));
+    })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
+})(OneTrueError || (OneTrueError = {}));
+var OneTrueError;
+(function (OneTrueError) {
+    var Core;
+    (function (Core) {
+        var ApiKeys;
+        (function (ApiKeys) {
+            var Events;
+            (function (Events) {
+                var ApiKeyCreated = (function () {
+                    function ApiKeyCreated(applicationNameForTheAppUsingTheKey, apiKey, sharedSecret, applicationIds, createdById) {
+                        this.ApplicationNameForTheAppUsingTheKey = applicationNameForTheAppUsingTheKey;
+                        this.ApiKey = apiKey;
+                        this.SharedSecret = sharedSecret;
+                        this.ApplicationIds = applicationIds;
+                        this.CreatedById = createdById;
+                    }
+                    ApiKeyCreated.TYPE_NAME = 'ApiKeyCreated';
+                    return ApiKeyCreated;
+                }());
+                Events.ApiKeyCreated = ApiKeyCreated;
+            })(Events = ApiKeys.Events || (ApiKeys.Events = {}));
+        })(ApiKeys = Core.ApiKeys || (Core.ApiKeys = {}));
+    })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
+})(OneTrueError || (OneTrueError = {}));
+var OneTrueError;
+(function (OneTrueError) {
+    var Core;
+    (function (Core) {
+        var ApiKeys;
+        (function (ApiKeys) {
+            var Commands;
+            (function (Commands) {
+                var CreateApiKey = (function () {
+                    function CreateApiKey(applicationName, apiKey, sharedSecret, applicationIds) {
+                        this.ApplicationName = applicationName;
+                        this.ApiKey = apiKey;
+                        this.SharedSecret = sharedSecret;
+                        this.ApplicationIds = applicationIds;
+                    }
+                    CreateApiKey.TYPE_NAME = 'CreateApiKey';
+                    return CreateApiKey;
+                }());
+                Commands.CreateApiKey = CreateApiKey;
+                var DeleteApiKey = (function () {
+                    function DeleteApiKey(id) {
+                        this.Id = id;
+                    }
+                    DeleteApiKey.TYPE_NAME = 'DeleteApiKey';
+                    return DeleteApiKey;
+                }());
+                Commands.DeleteApiKey = DeleteApiKey;
+            })(Commands = ApiKeys.Commands || (ApiKeys.Commands = {}));
+        })(ApiKeys = Core.ApiKeys || (Core.ApiKeys = {}));
     })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
 })(OneTrueError || (OneTrueError = {}));
 var OneTrueError;
@@ -944,7 +1082,7 @@ var OneTrueError;
                     this.Id = id;
                     this.Name = name;
                 }
-                ApplicationListItem.TYPE_NAME = "ApplicationListItem";
+                ApplicationListItem.TYPE_NAME = 'ApplicationListItem';
                 return ApplicationListItem;
             }());
             Applications.ApplicationListItem = ApplicationListItem;
@@ -963,51 +1101,19 @@ var OneTrueError;
     (function (Core) {
         var Applications;
         (function (Applications) {
-            var Events;
-            (function (Events) {
-                var ApplicationCreated = (function () {
-                    function ApplicationCreated(id, name, createdById, appKey, sharedSecret) {
-                        this.CreatedById = createdById;
-                        this.AppKey = appKey;
-                        this.SharedSecret = sharedSecret;
-                    }
-                    ApplicationCreated.TYPE_NAME = "ApplicationCreated";
-                    return ApplicationCreated;
-                }());
-                Events.ApplicationCreated = ApplicationCreated;
-                var UserInvitedToApplication = (function () {
-                    function UserInvitedToApplication(applicationId, emailAddress, invitedBy) {
-                        this.ApplicationId = applicationId;
-                        this.EmailAddress = emailAddress;
-                        this.InvitedBy = invitedBy;
-                    }
-                    UserInvitedToApplication.TYPE_NAME = "UserInvitedToApplication";
-                    return UserInvitedToApplication;
-                }());
-                Events.UserInvitedToApplication = UserInvitedToApplication;
-            })(Events = Applications.Events || (Applications.Events = {}));
-        })(Applications = Core.Applications || (Core.Applications = {}));
-    })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
-})(OneTrueError || (OneTrueError = {}));
-var OneTrueError;
-(function (OneTrueError) {
-    var Core;
-    (function (Core) {
-        var Applications;
-        (function (Applications) {
             var Queries;
             (function (Queries) {
                 var GetApplicationTeamResult = (function () {
                     function GetApplicationTeamResult() {
                     }
-                    GetApplicationTeamResult.TYPE_NAME = "GetApplicationTeamResult";
+                    GetApplicationTeamResult.TYPE_NAME = 'GetApplicationTeamResult';
                     return GetApplicationTeamResult;
                 }());
                 Queries.GetApplicationTeamResult = GetApplicationTeamResult;
                 var OverviewStatSummary = (function () {
                     function OverviewStatSummary() {
                     }
-                    OverviewStatSummary.TYPE_NAME = "OverviewStatSummary";
+                    OverviewStatSummary.TYPE_NAME = 'OverviewStatSummary';
                     return OverviewStatSummary;
                 }());
                 Queries.OverviewStatSummary = OverviewStatSummary;
@@ -1015,42 +1121,42 @@ var OneTrueError;
                     function GetApplicationIdByKey(applicationKey) {
                         this.ApplicationKey = applicationKey;
                     }
-                    GetApplicationIdByKey.TYPE_NAME = "GetApplicationIdByKey";
+                    GetApplicationIdByKey.TYPE_NAME = 'GetApplicationIdByKey';
                     return GetApplicationIdByKey;
                 }());
                 Queries.GetApplicationIdByKey = GetApplicationIdByKey;
                 var GetApplicationIdByKeyResult = (function () {
                     function GetApplicationIdByKeyResult() {
                     }
-                    GetApplicationIdByKeyResult.TYPE_NAME = "GetApplicationIdByKeyResult";
+                    GetApplicationIdByKeyResult.TYPE_NAME = 'GetApplicationIdByKeyResult';
                     return GetApplicationIdByKeyResult;
                 }());
                 Queries.GetApplicationIdByKeyResult = GetApplicationIdByKeyResult;
                 var GetApplicationInfo = (function () {
                     function GetApplicationInfo() {
                     }
-                    GetApplicationInfo.TYPE_NAME = "GetApplicationInfo";
+                    GetApplicationInfo.TYPE_NAME = 'GetApplicationInfo';
                     return GetApplicationInfo;
                 }());
                 Queries.GetApplicationInfo = GetApplicationInfo;
                 var GetApplicationInfoResult = (function () {
                     function GetApplicationInfoResult() {
                     }
-                    GetApplicationInfoResult.TYPE_NAME = "GetApplicationInfoResult";
+                    GetApplicationInfoResult.TYPE_NAME = 'GetApplicationInfoResult';
                     return GetApplicationInfoResult;
                 }());
                 Queries.GetApplicationInfoResult = GetApplicationInfoResult;
                 var GetApplicationList = (function () {
                     function GetApplicationList() {
                     }
-                    GetApplicationList.TYPE_NAME = "GetApplicationList";
+                    GetApplicationList.TYPE_NAME = 'GetApplicationList';
                     return GetApplicationList;
                 }());
                 Queries.GetApplicationList = GetApplicationList;
                 var GetApplicationOverviewResult = (function () {
                     function GetApplicationOverviewResult() {
                     }
-                    GetApplicationOverviewResult.TYPE_NAME = "GetApplicationOverviewResult";
+                    GetApplicationOverviewResult.TYPE_NAME = 'GetApplicationOverviewResult';
                     return GetApplicationOverviewResult;
                 }());
                 Queries.GetApplicationOverviewResult = GetApplicationOverviewResult;
@@ -1058,21 +1164,21 @@ var OneTrueError;
                     function GetApplicationTeam(applicationId) {
                         this.ApplicationId = applicationId;
                     }
-                    GetApplicationTeam.TYPE_NAME = "GetApplicationTeam";
+                    GetApplicationTeam.TYPE_NAME = 'GetApplicationTeam';
                     return GetApplicationTeam;
                 }());
                 Queries.GetApplicationTeam = GetApplicationTeam;
                 var GetApplicationTeamMember = (function () {
                     function GetApplicationTeamMember() {
                     }
-                    GetApplicationTeamMember.TYPE_NAME = "GetApplicationTeamMember";
+                    GetApplicationTeamMember.TYPE_NAME = 'GetApplicationTeamMember';
                     return GetApplicationTeamMember;
                 }());
                 Queries.GetApplicationTeamMember = GetApplicationTeamMember;
                 var GetApplicationTeamResultInvitation = (function () {
                     function GetApplicationTeamResultInvitation() {
                     }
-                    GetApplicationTeamResultInvitation.TYPE_NAME = "GetApplicationTeamResultInvitation";
+                    GetApplicationTeamResultInvitation.TYPE_NAME = 'GetApplicationTeamResultInvitation';
                     return GetApplicationTeamResultInvitation;
                 }());
                 Queries.GetApplicationTeamResultInvitation = GetApplicationTeamResultInvitation;
@@ -1080,7 +1186,7 @@ var OneTrueError;
                     function GetApplicationOverview(applicationId) {
                         this.ApplicationId = applicationId;
                     }
-                    GetApplicationOverview.TYPE_NAME = "GetApplicationOverview";
+                    GetApplicationOverview.TYPE_NAME = 'GetApplicationOverview';
                     return GetApplicationOverview;
                 }());
                 Queries.GetApplicationOverview = GetApplicationOverview;
@@ -1094,17 +1200,120 @@ var OneTrueError;
     (function (Core) {
         var Applications;
         (function (Applications) {
+            var Events;
+            (function (Events) {
+                var ApplicationDeleted = (function () {
+                    function ApplicationDeleted() {
+                    }
+                    ApplicationDeleted.TYPE_NAME = 'ApplicationDeleted';
+                    return ApplicationDeleted;
+                }());
+                Events.ApplicationDeleted = ApplicationDeleted;
+                var ApplicationCreated = (function () {
+                    function ApplicationCreated(id, name, createdById, appKey, sharedSecret) {
+                        this.CreatedById = createdById;
+                        this.AppKey = appKey;
+                        this.SharedSecret = sharedSecret;
+                    }
+                    ApplicationCreated.TYPE_NAME = 'ApplicationCreated';
+                    return ApplicationCreated;
+                }());
+                Events.ApplicationCreated = ApplicationCreated;
+                var UserInvitedToApplication = (function () {
+                    function UserInvitedToApplication(invitationKey, applicationId, applicationName, emailAddress, invitedBy) {
+                        this.InvitationKey = invitationKey;
+                        this.ApplicationId = applicationId;
+                        this.ApplicationName = applicationName;
+                        this.EmailAddress = emailAddress;
+                        this.InvitedBy = invitedBy;
+                    }
+                    UserInvitedToApplication.TYPE_NAME = 'UserInvitedToApplication';
+                    return UserInvitedToApplication;
+                }());
+                Events.UserInvitedToApplication = UserInvitedToApplication;
+            })(Events = Applications.Events || (Applications.Events = {}));
+        })(Applications = Core.Applications || (Core.Applications = {}));
+    })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
+})(OneTrueError || (OneTrueError = {}));
+var OneTrueError;
+(function (OneTrueError_1) {
+    var Core;
+    (function (Core_1) {
+        var Applications;
+        (function (Applications) {
+            var Events;
+            (function (Events_1) {
+                var OneTrueError;
+                (function (OneTrueError) {
+                    var Api;
+                    (function (Api) {
+                        var Core;
+                        (function (Core) {
+                            var Accounts;
+                            (function (Accounts) {
+                                var Events;
+                                (function (Events) {
+                                    var UserAddedToApplication = (function () {
+                                        function UserAddedToApplication(applicationId, accountId) {
+                                            this.ApplicationId = applicationId;
+                                            this.AccountId = accountId;
+                                        }
+                                        UserAddedToApplication.TYPE_NAME = 'UserAddedToApplication';
+                                        return UserAddedToApplication;
+                                    }());
+                                    Events.UserAddedToApplication = UserAddedToApplication;
+                                })(Events = Accounts.Events || (Accounts.Events = {}));
+                            })(Accounts = Core.Accounts || (Core.Accounts = {}));
+                        })(Core = Api.Core || (Api.Core = {}));
+                    })(Api = OneTrueError.Api || (OneTrueError.Api = {}));
+                })(OneTrueError = Events_1.OneTrueError || (Events_1.OneTrueError = {}));
+            })(Events = Applications.Events || (Applications.Events = {}));
+        })(Applications = Core_1.Applications || (Core_1.Applications = {}));
+    })(Core = OneTrueError_1.Core || (OneTrueError_1.Core = {}));
+})(OneTrueError || (OneTrueError = {}));
+var OneTrueError;
+(function (OneTrueError) {
+    var Core;
+    (function (Core) {
+        var Applications;
+        (function (Applications) {
             var Commands;
             (function (Commands) {
+                var RemoveTeamMember = (function () {
+                    function RemoveTeamMember(applicationId, userToRemove) {
+                        this.ApplicationId = applicationId;
+                        this.UserToRemove = userToRemove;
+                    }
+                    RemoveTeamMember.TYPE_NAME = 'RemoveTeamMember';
+                    return RemoveTeamMember;
+                }());
+                Commands.RemoveTeamMember = RemoveTeamMember;
+                var UpdateApplication = (function () {
+                    function UpdateApplication(applicationId, name) {
+                        this.ApplicationId = applicationId;
+                        this.Name = name;
+                    }
+                    UpdateApplication.TYPE_NAME = 'UpdateApplication';
+                    return UpdateApplication;
+                }());
+                Commands.UpdateApplication = UpdateApplication;
                 var CreateApplication = (function () {
                     function CreateApplication(name, typeOfApplication) {
                         this.Name = name;
                         this.TypeOfApplication = typeOfApplication;
                     }
-                    CreateApplication.TYPE_NAME = "CreateApplication";
+                    CreateApplication.TYPE_NAME = 'CreateApplication';
                     return CreateApplication;
                 }());
                 Commands.CreateApplication = CreateApplication;
+                var DeleteApplication = (function () {
+                    function DeleteApplication(id) {
+                        this.Id = id;
+                    }
+                    DeleteApplication.TYPE_NAME = 'DeleteApplication';
+                    return DeleteApplication;
+                }());
+                Commands.DeleteApplication = DeleteApplication;
             })(Commands = Applications.Commands || (Applications.Commands = {}));
         })(Applications = Core.Applications || (Core.Applications = {}));
     })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
@@ -1119,7 +1328,7 @@ var OneTrueError;
                 function RegisterSimple(emailAddress) {
                     this.EmailAddress = emailAddress;
                 }
-                RegisterSimple.TYPE_NAME = "RegisterSimple";
+                RegisterSimple.TYPE_NAME = 'RegisterSimple';
                 return RegisterSimple;
             }());
             Accounts.RegisterSimple = RegisterSimple;
@@ -1140,7 +1349,7 @@ var OneTrueError;
                         this.Password = password;
                         this.InvitationKey = invitationKey;
                     }
-                    AcceptInvitation.TYPE_NAME = "AcceptInvitation";
+                    AcceptInvitation.TYPE_NAME = 'AcceptInvitation';
                     return AcceptInvitation;
                 }());
                 Requests.AcceptInvitation = AcceptInvitation;
@@ -1149,7 +1358,7 @@ var OneTrueError;
                         this.AccountId = accountId;
                         this.UserName = userName;
                     }
-                    AcceptInvitationReply.TYPE_NAME = "AcceptInvitationReply";
+                    AcceptInvitationReply.TYPE_NAME = 'AcceptInvitationReply';
                     return AcceptInvitationReply;
                 }());
                 Requests.AcceptInvitationReply = AcceptInvitationReply;
@@ -1157,7 +1366,7 @@ var OneTrueError;
                     function ActivateAccount(activationKey) {
                         this.ActivationKey = activationKey;
                     }
-                    ActivateAccount.TYPE_NAME = "ActivateAccount";
+                    ActivateAccount.TYPE_NAME = 'ActivateAccount';
                     return ActivateAccount;
                 }());
                 Requests.ActivateAccount = ActivateAccount;
@@ -1166,7 +1375,7 @@ var OneTrueError;
                         this.AccountId = accountId;
                         this.UserName = userName;
                     }
-                    ActivateAccountReply.TYPE_NAME = "ActivateAccountReply";
+                    ActivateAccountReply.TYPE_NAME = 'ActivateAccountReply';
                     return ActivateAccountReply;
                 }());
                 Requests.ActivateAccountReply = ActivateAccountReply;
@@ -1175,21 +1384,21 @@ var OneTrueError;
                         this.CurrentPassword = currentPassword;
                         this.NewPassword = newPassword;
                     }
-                    ChangePassword.TYPE_NAME = "ChangePassword";
+                    ChangePassword.TYPE_NAME = 'ChangePassword';
                     return ChangePassword;
                 }());
                 Requests.ChangePassword = ChangePassword;
                 var ChangePasswordReply = (function () {
                     function ChangePasswordReply() {
                     }
-                    ChangePasswordReply.TYPE_NAME = "ChangePasswordReply";
+                    ChangePasswordReply.TYPE_NAME = 'ChangePasswordReply';
                     return ChangePasswordReply;
                 }());
                 Requests.ChangePasswordReply = ChangePasswordReply;
                 var IgnoreFieldAttribute = (function () {
                     function IgnoreFieldAttribute() {
                     }
-                    IgnoreFieldAttribute.TYPE_NAME = "IgnoreFieldAttribute";
+                    IgnoreFieldAttribute.TYPE_NAME = 'IgnoreFieldAttribute';
                     return IgnoreFieldAttribute;
                 }());
                 Requests.IgnoreFieldAttribute = IgnoreFieldAttribute;
@@ -1198,14 +1407,14 @@ var OneTrueError;
                         this.UserName = userName;
                         this.Password = password;
                     }
-                    Login.TYPE_NAME = "Login";
+                    Login.TYPE_NAME = 'Login';
                     return Login;
                 }());
                 Requests.Login = Login;
                 var LoginReply = (function () {
                     function LoginReply() {
                     }
-                    LoginReply.TYPE_NAME = "LoginReply";
+                    LoginReply.TYPE_NAME = 'LoginReply';
                     return LoginReply;
                 }());
                 Requests.LoginReply = LoginReply;
@@ -1220,28 +1429,28 @@ var OneTrueError;
                         this.ActivationKey = activationKey;
                         this.NewPassword = newPassword;
                     }
-                    ResetPassword.TYPE_NAME = "ResetPassword";
+                    ResetPassword.TYPE_NAME = 'ResetPassword';
                     return ResetPassword;
                 }());
                 Requests.ResetPassword = ResetPassword;
                 var ResetPasswordReply = (function () {
                     function ResetPasswordReply() {
                     }
-                    ResetPasswordReply.TYPE_NAME = "ResetPasswordReply";
+                    ResetPasswordReply.TYPE_NAME = 'ResetPasswordReply';
                     return ResetPasswordReply;
                 }());
                 Requests.ResetPasswordReply = ResetPasswordReply;
                 var ValidateNewLogin = (function () {
                     function ValidateNewLogin() {
                     }
-                    ValidateNewLogin.TYPE_NAME = "ValidateNewLogin";
+                    ValidateNewLogin.TYPE_NAME = 'ValidateNewLogin';
                     return ValidateNewLogin;
                 }());
                 Requests.ValidateNewLogin = ValidateNewLogin;
                 var ValidateNewLoginReply = (function () {
                     function ValidateNewLoginReply() {
                     }
-                    ValidateNewLoginReply.TYPE_NAME = "ValidateNewLoginReply";
+                    ValidateNewLoginReply.TYPE_NAME = 'ValidateNewLoginReply';
                     return ValidateNewLoginReply;
                 }());
                 Requests.ValidateNewLoginReply = ValidateNewLoginReply;
@@ -1260,7 +1469,7 @@ var OneTrueError;
                 var AccountDTO = (function () {
                     function AccountDTO() {
                     }
-                    AccountDTO.TYPE_NAME = "AccountDTO";
+                    AccountDTO.TYPE_NAME = 'AccountDTO';
                     return AccountDTO;
                 }());
                 Queries.AccountDTO = AccountDTO;
@@ -1275,7 +1484,7 @@ var OneTrueError;
                     function FindAccountByUserName(userName) {
                         this.UserName = userName;
                     }
-                    FindAccountByUserName.TYPE_NAME = "FindAccountByUserName";
+                    FindAccountByUserName.TYPE_NAME = 'FindAccountByUserName';
                     return FindAccountByUserName;
                 }());
                 Queries.FindAccountByUserName = FindAccountByUserName;
@@ -1283,7 +1492,7 @@ var OneTrueError;
                     function GetAccountById(accountId) {
                         this.AccountId = accountId;
                     }
-                    GetAccountById.TYPE_NAME = "GetAccountById";
+                    GetAccountById.TYPE_NAME = 'GetAccountById';
                     return GetAccountById;
                 }());
                 Queries.GetAccountById = GetAccountById;
@@ -1291,7 +1500,7 @@ var OneTrueError;
                     function GetAccountEmailById(accountId) {
                         this.AccountId = accountId;
                     }
-                    GetAccountEmailById.TYPE_NAME = "GetAccountEmailById";
+                    GetAccountEmailById.TYPE_NAME = 'GetAccountEmailById';
                     return GetAccountEmailById;
                 }());
                 Queries.GetAccountEmailById = GetAccountEmailById;
@@ -1300,7 +1509,7 @@ var OneTrueError;
                         this.AccountId = accountId;
                         this.DisplayName = displayName;
                     }
-                    FindAccountByUserNameResult.TYPE_NAME = "FindAccountByUserNameResult";
+                    FindAccountByUserNameResult.TYPE_NAME = 'FindAccountByUserNameResult';
                     return FindAccountByUserNameResult;
                 }());
                 Queries.FindAccountByUserNameResult = FindAccountByUserNameResult;
@@ -1321,7 +1530,7 @@ var OneTrueError;
                         this.AccountId = accountId;
                         this.UserName = userName;
                     }
-                    AccountActivated.TYPE_NAME = "AccountActivated";
+                    AccountActivated.TYPE_NAME = 'AccountActivated';
                     return AccountActivated;
                 }());
                 Events.AccountActivated = AccountActivated;
@@ -1330,7 +1539,7 @@ var OneTrueError;
                         this.AccountId = accountId;
                         this.UserName = userName;
                     }
-                    AccountRegistered.TYPE_NAME = "AccountRegistered";
+                    AccountRegistered.TYPE_NAME = 'AccountRegistered';
                     return AccountRegistered;
                 }());
                 Events.AccountRegistered = AccountRegistered;
@@ -1340,7 +1549,7 @@ var OneTrueError;
                         this.InvitedByUserName = invitedByUserName;
                         this.UserName = userName;
                     }
-                    InvitationAccepted.TYPE_NAME = "InvitationAccepted";
+                    InvitationAccepted.TYPE_NAME = 'InvitationAccepted';
                     return InvitationAccepted;
                 }());
                 Events.InvitationAccepted = InvitationAccepted;
@@ -1348,7 +1557,7 @@ var OneTrueError;
                     function LoginFailed(userName) {
                         this.UserName = userName;
                     }
-                    LoginFailed.TYPE_NAME = "LoginFailed";
+                    LoginFailed.TYPE_NAME = 'LoginFailed';
                     return LoginFailed;
                 }());
                 Events.LoginFailed = LoginFailed;
@@ -1368,7 +1577,7 @@ var OneTrueError;
                     function DeclineInvitation(invitationId) {
                         this.InvitationId = invitationId;
                     }
-                    DeclineInvitation.TYPE_NAME = "DeclineInvitation";
+                    DeclineInvitation.TYPE_NAME = 'DeclineInvitation';
                     return DeclineInvitation;
                 }());
                 Commands.DeclineInvitation = DeclineInvitation;
@@ -1378,7 +1587,7 @@ var OneTrueError;
                         this.Password = password;
                         this.Email = email;
                     }
-                    RegisterAccount.TYPE_NAME = "RegisterAccount";
+                    RegisterAccount.TYPE_NAME = 'RegisterAccount';
                     return RegisterAccount;
                 }());
                 Commands.RegisterAccount = RegisterAccount;
@@ -1386,7 +1595,7 @@ var OneTrueError;
                     function RequestPasswordReset(emailAddress) {
                         this.EmailAddress = emailAddress;
                     }
-                    RequestPasswordReset.TYPE_NAME = "RequestPasswordReset";
+                    RequestPasswordReset.TYPE_NAME = 'RequestPasswordReset';
                     return RequestPasswordReset;
                 }());
                 Commands.RequestPasswordReset = RequestPasswordReset;

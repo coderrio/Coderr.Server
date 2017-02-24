@@ -21,6 +21,20 @@ namespace OneTrueError.Infrastructure.Security
         }
 
         /// <summary>
+        ///     Throws if <see cref="IsApplicationAdmin" /> returns false.
+        /// </summary>
+        /// <param name="principal">principal to search in</param>
+        /// <param name="applicationId">application to check</param>
+        /// <returns><c>true</c> if the claim was found with the given value; otherwise <c>false</c>.</returns>
+        /// <exception cref="InvalidOperationException">Claim is not found in the identity.</exception>
+        public static void EnsureApplicationAdmin(this ClaimsPrincipal principal, int applicationId)
+        {
+            if (!IsApplicationAdmin(principal, applicationId))
+                throw new UnauthorizedAccessException(
+                    $"User {principal.Identity.Name} is not authorized to manage application {applicationId}.");
+        }
+
+        /// <summary>
         ///     Get account id (<see cref="ClaimTypes.NameIdentifier" />).
         /// </summary>
         /// <param name="principal">principal to search in</param>
@@ -94,29 +108,33 @@ namespace OneTrueError.Infrastructure.Security
         }
 
         /// <summary>
-        ///     Get if the <c>OneTrueClaims.ApplicationAdmin</c> claim is specified for the given application (claim value)
+        ///     Checks if the user has the <c>OneTrueClaims.ApplicationAdmin</c> claim or if user is SysAdmin or System.
         /// </summary>
         /// <param name="principal">principal to search in</param>
+        /// <param name="applicationId">Application to check</param>
         /// <returns><c>true</c> if the claim was found with the given value; otherwise <c>false</c>.</returns>
         /// <exception cref="InvalidOperationException">Claim is not found in the identity.</exception>
         public static bool IsApplicationAdmin(this ClaimsPrincipal principal, int applicationId)
         {
-            return
-                principal.FindFirst(
-                    x => (x.Type == OneTrueClaims.ApplicationAdmin) && (x.Value == applicationId.ToString())) != null;
+            return principal.HasClaim(OneTrueClaims.ApplicationAdmin, applicationId.ToString())
+                   || principal.IsInRole(OneTrueClaims.RoleSysAdmin)
+                   || principal.IsInRole(OneTrueClaims.RoleSystem);
         }
 
         /// <summary>
         ///     Get if the <c>OneTrueClaims.Application</c> claim is specified for the given application (claim value)
         /// </summary>
         /// <param name="principal">principal to search in</param>
+        /// <param name="applicationId">App to check</param>
+        /// <param name="checkSystemRoles">Check if user is in role SysAdmin or if the user is the System.</param>
         /// <returns><c>true</c> if the claim was found with the given value; otherwise <c>false</c>.</returns>
         /// <exception cref="InvalidOperationException">Claim is not found in the identity.</exception>
-        public static bool IsApplicationMember(this ClaimsPrincipal principal, int applicationId)
+        public static bool IsApplicationMember(this ClaimsPrincipal principal, int applicationId, bool checkSystemRoles = false)
         {
-            return
-                principal.FindFirst(x => (x.Type == OneTrueClaims.Application) && (x.Value == applicationId.ToString())) !=
-                null;
+            var isAdmin = principal.HasClaim(OneTrueClaims.Application, applicationId.ToString());
+            if (checkSystemRoles)
+                isAdmin = isAdmin || IsSysAdmin(principal) || principal.IsInRole(OneTrueClaims.RoleSystem);
+            return isAdmin;
         }
 
         /// <summary>

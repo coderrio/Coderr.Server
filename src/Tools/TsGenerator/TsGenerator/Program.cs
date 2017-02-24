@@ -18,12 +18,12 @@ namespace TsGenerator
             var l = Type.GetType(s);
 
             var path = AppDomain.CurrentDomain.BaseDirectory;
-            var pos = path.IndexOf(@"src3");
+            var pos = path.IndexOf(@"\src\Tools\");
             path = path.Substring(0, pos + 5);
 
-            var destDir = Path.Combine(path, @"OneTrueError\OneTrueError.Web\Scripts\Models\");
-            ResolvePath = Path.Combine(path, @"OneTrueError\OneTrueError.Api\bin\Debug");
-            var srcPath= Path.Combine(path, @"OneTrueError\OneTrueError.Api\bin\Debug");
+            var destDir = Path.Combine(path, @"Server\OneTrueError.Web\Scripts\Models\");
+            ResolvePath = Path.Combine(path, @"Server\OneTrueError.Api\bin\Debug");
+            var srcPath= Path.Combine(path, @"Server\OneTrueError.Api\bin\Debug");
             AppDomain.CurrentDomain.AssemblyResolve += OnLoadAssembly;
 
             var assemblies = Directory.GetFiles(srcPath, "*api*.dll").Select(Assembly.LoadFile);

@@ -62,7 +62,7 @@ var OneTrueError;
                 this.getIncidentsFromServer(1);
                 ctx.handle.click("#btnClosed", function (e) { return _this.onBtnClosed(e); });
                 ctx.handle.click("#btnActive", function (e) { return _this.onBtnActive(e); });
-                ctx.handle.click("#btnIgnored", function (e) { return _this.onBtnIgnored(e); });
+                ctx.handle.click("#btnActive", function (e) { return _this.onBtnActive(e); });
                 ctx.handle.click("#LastReportCol", function (e) { return _this.onLastReportCol(e); });
                 ctx.handle.click("#CountCol", function (e) { return _this.onCountCol(e); });
                 ctx.handle.change('[name="range"]', function (e) { return _this.onRange(e); });

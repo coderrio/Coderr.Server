@@ -174,5 +174,16 @@ namespace OneTrueError.SqlServer.Core.Applications
         {
             await _uow.UpdateAsync(entity);
         }
+
+        public async Task RemoveTeamMemberAsync(int applicationId, int userId)
+        {
+            using (var cmd = (DbCommand)_uow.CreateCommand())
+            {
+                cmd.CommandText = "DELETE FROM ApplicationMembers WHERE ApplicationId=@appId AND AccountId = @userId";
+                cmd.AddParameter("appId", applicationId);
+                cmd.AddParameter("userId", userId);
+                await cmd.ExecuteNonQueryAsync();
+            }
+        }
     }
 }

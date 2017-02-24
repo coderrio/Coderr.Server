@@ -79,6 +79,14 @@ namespace OneTrueError.App.Core.Applications
         Task<IList<ApplicationTeamMember>> GetTeamMembersAsync(int applicationId);
 
         /// <summary>
+        ///     remove a member from an application
+        /// </summary>
+        /// <param name="applicationId">app</param>
+        /// <param name="userId">user</param>
+        /// <returns>task</returns>
+        Task RemoveTeamMemberAsync(int applicationId, int userId);
+
+        /// <summary>
         ///     Update application member
         /// </summary>
         /// <param name="member">member</param>

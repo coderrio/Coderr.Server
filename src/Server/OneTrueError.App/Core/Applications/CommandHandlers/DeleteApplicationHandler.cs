@@ -1,8 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Security.Claims;
+using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
 using OneTrueError.Api.Core.Applications.Commands;
 using OneTrueError.Api.Core.Applications.Events;
+using OneTrueError.Infrastructure.Security;
 
 namespace OneTrueError.App.Core.Applications.CommandHandlers
 {
@@ -29,6 +31,8 @@ namespace OneTrueError.App.Core.Applications.CommandHandlers
         /// <inheritdoc/>
         public async Task ExecuteAsync(DeleteApplication command)
         {
+            ClaimsPrincipal.Current.EnsureApplicationAdmin(command.Id);
+
             var app = await _repository.GetByIdAsync(command.Id);
             await _repository.DeleteAsync(command.Id);
             var evt = new ApplicationDeleted {ApplicationName = app.Name, ApplicationId = app.Id, AppKey = app.AppKey};

@@ -2,6 +2,7 @@
 
 module OneTrueError.Application {
     import CqsClient = Griffin.Cqs.CqsClient;
+    import RemoveTeamMember = OneTrueError.Core.Applications.Commands.RemoveTeamMember;
 
     export class TeamViewModel implements Griffin.Yo.Spa.ViewModels.IViewModel {
         private context: Griffin.Yo.Spa.ViewModels.IActivationContext;
@@ -25,10 +26,29 @@ module OneTrueError.Application {
                     this.data = result;
                     context.resolve();
                     context.handle.click("#InviteUserBtn", e => this.onInviteUser(e));
+                    context.handle.click('[data-name="RemoveUser"]', e => this.onBtnRemoveUser(e));
                 });
         }
 
-        deactivate() {}
+        deactivate() { }
+
+        private onBtnRemoveUser(e: Event): void {
+            e.preventDefault();
+            var node = <HTMLElement>e.target;
+            var input = <HTMLInputElement>node.previousElementSibling;
+            var accountId = parseInt(input.value, 10);
+            if (accountId === 0)
+                throw new Error("Failed to find accountID");
+            var cmd = new RemoveTeamMember(this.applicationId, accountId);
+            CqsClient.command(cmd).done(v => {
+                var parent = node.parentElement;
+                while (parent.tagName != 'TR') {
+                    parent = parent.parentElement;
+                }
+                parent.parentElement.removeChild(parent);
+                humane.log('User was removed');
+            });
+        }
 
         onInviteUser(mouseEvent: MouseEvent) {
             mouseEvent.preventDefault();

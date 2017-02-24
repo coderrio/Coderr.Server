@@ -109,6 +109,8 @@ namespace TsGenerator
                     {
                         continue;
                     }
+                    if (type.GetCustomAttributes().Any(x => x.GetType().Name.Contains("Ignore")))
+                        continue;
 
                     _generatedTypes.Add(type, new GeneratedTypeScript
                     {

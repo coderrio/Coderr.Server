@@ -1,11 +1,12 @@
 ﻿using System;
+using OneTrueError.Api.Core;
 
 namespace OneTrueError.Api
 {
     /// <summary>
     ///     Authorize on specific roles.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class)]
+    [AttributeUsage(AttributeTargets.Class), IgnoreField]
     public class AuthorizeRolesAttribute : Attribute
     {
         /// <summary>

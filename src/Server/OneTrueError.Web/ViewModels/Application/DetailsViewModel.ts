@@ -10,6 +10,7 @@ module OneTrueError.Application {
     import FindIncidents = Core.Incidents.Queries.FindIncidents;
     import ActivationContext = Griffin.Yo.Spa.ViewModels.IActivationContext;
     import Yo = Griffin.Yo;
+    import RemoveTeamMember = OneTrueError.Core.Applications.Commands.RemoveTeamMember;
 
     export class DetailsViewModel implements Griffin.Yo.Spa.ViewModels.IViewModel, PagerSubscriber {
         private pager: Pager;
@@ -75,7 +76,7 @@ module OneTrueError.Application {
             this.getIncidentsFromServer(1);
             ctx.handle.click("#btnClosed", e => this.onBtnClosed(e));
             ctx.handle.click("#btnActive", e => this.onBtnActive(e));
-            ctx.handle.click("#btnIgnored", e => this.onBtnIgnored(e));
+            ctx.handle.click("#btnActive", e => this.onBtnActive(e));
             ctx.handle.click("#LastReportCol", e => this.onLastReportCol(e));
             ctx.handle.click("#CountCol", e => this.onCountCol(e));
             ctx.handle.change('[name="range"]', e => this.onRange(e));
@@ -109,6 +110,8 @@ module OneTrueError.Application {
                 this.freeText = el.value;
             }
         }
+
+
 
         private onBtnActive(e: Event): void {
             e.preventDefault();
