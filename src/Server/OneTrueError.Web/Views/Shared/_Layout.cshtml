@@ -152,6 +152,8 @@
 @Scripts.Render("~/bundles/app")
 <script type="text/javascript">
     var API_URL = '@ApiUrl';
+    var WEB_SITE = '@(new Uri(Request.Url, Url.Content("~")))';
+    var WEB_ROOT = '@Url.Content("~")';
     Griffin.Net.HttpClient.REDIRECT_401_TO = '@LoginUrl';
 </script>
 @RenderSection("scripts", false)

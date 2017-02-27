@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Configuration;
+using System.Web.Mvc;
 
 namespace OneTrueError.Web.Areas.Installation
 {
@@ -11,6 +12,9 @@ namespace OneTrueError.Web.Areas.Installation
 
         public override void RegisterArea(AreaRegistrationContext context)
         {
+            if (ConfigurationManager.AppSettings["Configured"] != "false")
+                return;
+
             context.MapRoute(
                 "Installation_default",
                 "Installation/{controller}/{action}/{id}",

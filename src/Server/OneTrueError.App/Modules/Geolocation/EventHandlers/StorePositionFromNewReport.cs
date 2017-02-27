@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
@@ -48,34 +49,36 @@ namespace OneTrueError.App.Modules.Geolocation.EventHandlers
                 return;
 
             var request = WebRequest.CreateHttp("http://freegeoip.net/json/" + e.Report.RemoteAddress);
+            string json = "";
             try
             {
                 var response = await request.GetResponseAsync();
                 var stream = response.GetResponseStream();
                 var reader = new StreamReader(stream);
-                var json = await reader.ReadToEndAsync();
+                json = await reader.ReadToEndAsync();
                 var jsonObj = JObject.Parse(json);
 
                 /*    /*{"ip":"94.254.21.175","country_code":"SE","country_name":"Sweden","region_code":"10","region_name":"Dalarnas Lan","city":"Falun","zipcode":"",
                  * "latitude":60.6,"longitude":15.6333,
      * "metro_code":"","areacode":""}*/
 
-                var lat = double.Parse(jsonObj["latitude"].Value<string>());
-                var lon = double.Parse(jsonObj["longitude"].Value<string>());
-                var cmd = new ErrorOrigin(e.Report.RemoteAddress, lon, lat);
-                cmd.City = jsonObj["city"].ToString();
-                cmd.CountryName = jsonObj["city"].ToString();
-                cmd.CountryCode = jsonObj["country_code"].ToString();
-                cmd.CountryName = jsonObj["country_name"].ToString();
-                cmd.RegionCode = jsonObj["region_code"].ToString();
-                cmd.RegionName = jsonObj["region_name"].ToString();
-                cmd.ZipCode = jsonObj["zip_code"].ToString();
+                var lat = double.Parse(jsonObj["latitude"].Value<string>(), CultureInfo.InvariantCulture);
+                var lon = double.Parse(jsonObj["longitude"].Value<string>(), CultureInfo.InvariantCulture);
+                var cmd = new ErrorOrigin(e.Report.RemoteAddress, lon, lat)
+                {
+                    City = jsonObj["city"].ToString(),
+                    CountryCode = jsonObj["country_code"].ToString(),
+                    CountryName = jsonObj["country_name"].ToString(),
+                    RegionCode = jsonObj["region_code"].ToString(),
+                    RegionName = jsonObj["region_name"].ToString(),
+                    ZipCode = jsonObj["zip_code"].ToString()
+                };
 
                 await _repository.CreateAsync(cmd, e.Incident.ApplicationId, e.Incident.Id, e.Report.Id);
             }
             catch (Exception exception)
             {
-                _logger.Error("Failed to store location.", exception);
+                _logger.Error("Failed to store location: " + json, exception);
             }
         }
     }

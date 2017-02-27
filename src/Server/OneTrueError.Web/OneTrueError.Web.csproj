@@ -426,6 +426,7 @@
     <Content Include="Areas\Installation\Views\Setup\Support.cshtml" />
     <Content Include="Areas\Admin\Views\Application\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Application\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Application\Deleted.cshtml" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
