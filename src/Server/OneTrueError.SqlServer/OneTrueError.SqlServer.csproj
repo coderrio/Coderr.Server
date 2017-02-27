@@ -1,36 +1,52 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B967BEEA-CDDD-4A83-A4F2-1C946099ED51}</ProjectGuid>
-    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OneTrueError.SqlServer</RootNamespace>
     <AssemblyName>OneTrueError.SqlServer</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <OutputType>Library</OutputType>
+    <ProjectGuid>{B967BEEA-CDDD-4A83-A4F2-1C946099ED51}</ProjectGuid>
+    <RootNamespace>OneTrueError.SqlServer</RootNamespace>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile />
+    <ErrorReport>prompt</ErrorReport>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OneTrueError.Api\OneTrueError.Api.csproj">
+      <Name>OneTrueError.Api</Name>
+      <Project>{fc331a95-fca4-4764-8004-0884665dd01f}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\OneTrueError.App\OneTrueError.App.csproj">
+      <Name>OneTrueError.App</Name>
+      <Project>{5ef42a74-9323-49fa-a1f6-974d6de77202}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\OneTrueError.Data.Common\OneTrueError.Infrastructure.csproj">
+      <Name>OneTrueError.Infrastructure</Name>
+      <Project>{A78A50DA-C9D7-47F2-8528-D7EE39D91924}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\OneTrueError.ReportAnalyzer\OneTrueError.ReportAnalyzer.csproj">
+      <Name>OneTrueError.ReportAnalyzer</Name>
+      <Project>{29FBF805-CAFD-426A-A576-9756D375BF18}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="DotNetCqs, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetCqs.1.0.0\lib\net45\DotNetCqs.dll</HintPath>
@@ -48,6 +64,7 @@
       <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -56,13 +73,12 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Messaging" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Messaging" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Analysis\AnalyticsRepository.cs" />
@@ -70,30 +86,17 @@
     <Compile Include="Analysis\ErrorReportRepository.cs" />
     <Compile Include="Analysis\Incident2Mapper.cs" />
     <Compile Include="Analysis\ScanForNewFeedback.cs" />
-    <Compile Include="Core\Accounts\QueryHandlers\GetAccountEmailByIdHandler.cs" />
-    <Compile Include="Core\ApiKeys\Commands\DeleteApiKeyHandler.cs" />
-    <Compile Include="Core\ApiKeys\Mappings\ApiKeyMapper.cs" />
-    <Compile Include="Core\ApiKeys\ApiKeyRepository.cs" />
-    <Compile Include="Core\ApiKeys\Commands\CreateApiKeyHandler.cs" />
-    <Compile Include="Core\ApiKeys\Mappings\IntMapper.cs" />
-    <Compile Include="Core\ApiKeys\Queries\GetApiKeyHandler.cs" />
-    <Compile Include="Core\ApiKeys\Queries\ListApiKeysHandler.cs" />
-    <Compile Include="Core\ApiKeys\Mappings\MirrorMapper.cs" />
-    <Compile Include="DbConverters.cs" />
-    <Compile Include="SchemaManager.cs" />
-    <Compile Include="Web\Feedback\Queries\GetOverviewFeedbackHandler.cs" />
-    <Compile Include="Web\Feedback\Queries\GetOverviewFeedbackResultItemMapper.cs" />
-    <Compile Include="Core\Incidents\ReportDayMapper.cs" />
-    <Compile Include="DateTimeExtensions.cs" />
-    <Compile Include="Modules\Similarities\Entities\ContextCollectionPropertyDbEntity.cs" />
-    <Compile Include="Modules\Similarities\Entities\ContextCollectionPropertyValueDbEntity.cs" />
-    <Compile Include="Modules\Similarities\Queries\GetSimilaritiesHandler.cs" />
-    <Compile Include="SqlServerTools.cs" />
     <Compile Include="Core\Accounts\AccountMapper.cs" />
     <Compile Include="Core\Accounts\AccountRepository.cs" />
-    <Compile Include="Core\Invitations\GetInvitationByKeyHandler.cs" />
-    <Compile Include="Core\Invitations\InvitationMapping.cs" />
-    <Compile Include="Core\Invitations\InvitationRepository.cs" />
+    <Compile Include="Core\Accounts\QueryHandlers\GetAccountEmailByIdHandler.cs" />
+    <Compile Include="Core\ApiKeys\ApiKeyRepository.cs" />
+    <Compile Include="Core\ApiKeys\Commands\CreateApiKeyHandler.cs" />
+    <Compile Include="Core\ApiKeys\Commands\DeleteApiKeyHandler.cs" />
+    <Compile Include="Core\ApiKeys\Mappings\ApiKeyMapper.cs" />
+    <Compile Include="Core\ApiKeys\Mappings\IntMapper.cs" />
+    <Compile Include="Core\ApiKeys\Mappings\MirrorMapper.cs" />
+    <Compile Include="Core\ApiKeys\Queries\GetApiKeyHandler.cs" />
+    <Compile Include="Core\ApiKeys\Queries\ListApiKeysHandler.cs" />
     <Compile Include="Core\Applications\ApplicationMapper.cs" />
     <Compile Include="Core\Applications\ApplicationRepository.cs" />
     <Compile Include="Core\Applications\GetApplicationByAppKeyHandler.cs" />
@@ -103,9 +106,6 @@
     <Compile Include="Core\Feedback\FeedbackEntityMapper.cs" />
     <Compile Include="Core\Feedback\FeedbackRepository.cs" />
     <Compile Include="Core\Feedback\LookupReportsForFeedback.cs" />
-    <Compile Include="Web\Feedback\Queries\GetApplicationFeedbackHandler.cs" />
-    <Compile Include="Web\Feedback\Queries\GetApplicationFeedbackResultItemMapper.cs" />
-    <Compile Include="Web\Feedback\Queries\GetIncidentFeedbackItemsHandler.cs" />
     <Compile Include="Core\Incidents\IncidentMapper.cs" />
     <Compile Include="Core\Incidents\IncidentRepository.cs" />
     <Compile Include="Core\Incidents\IncidentSummaryMapper.cs" />
@@ -118,6 +118,10 @@
     <Compile Include="Core\Incidents\Queries\GetIncidentStatisticsHandler.cs" />
     <Compile Include="Core\Incidents\Queries\GetReportListHandler.cs" />
     <Compile Include="Core\Incidents\Queries\GetReportListResultItemMapper.cs" />
+    <Compile Include="Core\Incidents\ReportDayMapper.cs" />
+    <Compile Include="Core\Invitations\GetInvitationByKeyHandler.cs" />
+    <Compile Include="Core\Invitations\InvitationMapping.cs" />
+    <Compile Include="Core\Invitations\InvitationRepository.cs" />
     <Compile Include="Core\Notifications\NotificationRepository.cs" />
     <Compile Include="Core\Notifications\UserNotificationSettingsMap.cs" />
     <Compile Include="Core\Reports\ErrorReportDtoMapper.cs" />
@@ -125,18 +129,19 @@
     <Compile Include="Core\Users\ApplicationTeamMemberMapper.cs" />
     <Compile Include="Core\Users\UserMapper.cs" />
     <Compile Include="Core\Users\UserRepository.cs" />
+    <Compile Include="DateTimeExtensions.cs" />
+    <Compile Include="DbConverters.cs" />
     <Compile Include="Modules\Geolocation\ErrorOriginRepository.cs" />
     <Compile Include="Modules\ReportSpikes\ReportSpikesRepository.cs" />
+    <Compile Include="Modules\Similarities\Entities\ContextCollectionPropertyDbEntity.cs" />
+    <Compile Include="Modules\Similarities\Entities\ContextCollectionPropertyValueDbEntity.cs" />
     <Compile Include="Modules\Similarities\Mappers\SimilarityCollectionMapper.cs" />
     <Compile Include="Modules\Similarities\Mappers\SimilarityMapper.cs" />
-    <Compile Include="Modules\Similarities\SimilarityRepository.cs" />
     <Compile Include="Modules\Similarities\Mappers\SimilarityValueMapper.cs" />
+    <Compile Include="Modules\Similarities\Queries\GetSimilaritiesHandler.cs" />
+    <Compile Include="Modules\Similarities\SimilarityRepository.cs" />
     <Compile Include="Modules\Tagging\DoInitialRun.cs" />
     <Compile Include="Modules\Tagging\TagsRepository.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tools\DbCommandExtensions.cs" />
-    <Compile Include="Tools\EntitySerializer.cs" />
-    <Compile Include="Tools\ICustomerIdPrincipal.cs" />
     <Compile Include="Modules\Triggers\CollectionMetadataMapper.cs" />
     <Compile Include="Modules\Triggers\DeleteTriggerHandler.cs" />
     <Compile Include="Modules\Triggers\GetContextCollectionMetadataHandler.cs" />
@@ -144,48 +149,34 @@
     <Compile Include="Modules\Triggers\TriggerDtoMapper.cs" />
     <Compile Include="Modules\Triggers\TriggerMapper.cs" />
     <Compile Include="Modules\Triggers\TriggerRepository.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SchemaManager.cs" />
+    <Compile Include="SqlServerTools.cs" />
+    <Compile Include="Tools\DbCommandExtensions.cs" />
+    <Compile Include="Tools\EntitySerializer.cs" />
+    <Compile Include="Tools\ICustomerIdPrincipal.cs" />
+    <Compile Include="Web\Feedback\Queries\GetApplicationFeedbackHandler.cs" />
+    <Compile Include="Web\Feedback\Queries\GetApplicationFeedbackResultItemMapper.cs" />
+    <Compile Include="Web\Feedback\Queries\GetIncidentFeedbackItemsHandler.cs" />
+    <Compile Include="Web\Feedback\Queries\GetOverviewFeedbackHandler.cs" />
+    <Compile Include="Web\Feedback\Queries\GetOverviewFeedbackResultItemMapper.cs" />
     <Compile Include="Web\Overview\GetOverviewHandler.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Core\Accounts\CommandHandlers\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OneTrueError.Api\OneTrueError.Api.csproj">
-      <Project>{fc331a95-fca4-4764-8004-0884665dd01f}</Project>
-      <Name>OneTrueError.Api</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OneTrueError.App\OneTrueError.App.csproj">
-      <Project>{5ef42a74-9323-49fa-a1f6-974d6de77202}</Project>
-      <Name>OneTrueError.App</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OneTrueError.Data.Common\OneTrueError.Infrastructure.csproj">
-      <Project>{A78A50DA-C9D7-47F2-8528-D7EE39D91924}</Project>
-      <Name>OneTrueError.Infrastructure</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OneTrueError.ReportAnalyzer\OneTrueError.ReportAnalyzer.csproj">
-      <Project>{29FBF805-CAFD-426A-A576-9756D375BF18}</Project>
-      <Name>OneTrueError.ReportAnalyzer</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Schema\Database.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Core\Accounts\CommandHandlers\" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Schema\Update.v2.sql" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Schema\Update.v3.sql" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Schema\Update.v4.sql" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Schema\Update.v5.sql" />
   </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

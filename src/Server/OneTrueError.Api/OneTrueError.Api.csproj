@@ -1,35 +1,34 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FC331A95-FCA4-4764-8004-0884665DD01F}</ProjectGuid>
-    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OneTrueError.Api</RootNamespace>
     <AssemblyName>OneTrueError.Api</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <OutputType>Library</OutputType>
+    <ProjectGuid>{FC331A95-FCA4-4764-8004-0884665DD01F}</ProjectGuid>
+    <RootNamespace>OneTrueError.Api</RootNamespace>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>bin\Debug\OneTrueError.Api.XML</DocumentationFile>
+    <ErrorReport>prompt</ErrorReport>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\OneTrueError.Api.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>bin\Release\OneTrueError.Api.XML</DocumentationFile>
+    <ErrorReport>prompt</ErrorReport>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\OneTrueError.Api.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetCqs, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -44,15 +43,15 @@
       <HintPath>..\packages\Griffin.Framework.1.0.39\lib\net45\Griffin.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AuthorizeAttribute.cs" />
@@ -63,16 +62,13 @@
     <Compile Include="Core\Accounts\Events\AccountRegistered.cs" />
     <Compile Include="Core\Accounts\Events\InvitationAccepted.cs" />
     <Compile Include="Core\Accounts\Events\LoginFailed.cs" />
-    <Compile Include="Core\Applications\Commands\RemoveTeamMember.cs" />
-    <Compile Include="Core\Applications\Commands\UpdateApplication.cs" />
-    <Compile Include="Core\Applications\Events\UserAddedToApplication.cs" />
     <Compile Include="Core\Accounts\NamespaceDoc.cs" />
     <Compile Include="Core\Accounts\Queries\AccountDTO.cs" />
     <Compile Include="Core\Accounts\Queries\AccountStateDTO.cs" />
     <Compile Include="Core\Accounts\Queries\FindAccountByUserName.cs" />
+    <Compile Include="Core\Accounts\Queries\FindAccountByUserNameResult.cs" />
     <Compile Include="Core\Accounts\Queries\GetAccountById.cs" />
     <Compile Include="Core\Accounts\Queries\GetAccountEmailById.cs" />
-    <Compile Include="Core\Accounts\Queries\FindAccountByUserNameResult.cs" />
     <Compile Include="Core\Accounts\RegisterSimple.cs" />
     <Compile Include="Core\Accounts\Requests\AcceptInvitation.cs" />
     <Compile Include="Core\Accounts\Requests\AcceptInvitationReply.cs" />
@@ -101,16 +97,13 @@
     <Compile Include="Core\Applications\ApplicationListItem.cs" />
     <Compile Include="Core\Applications\Commands\CreateApplication.cs" />
     <Compile Include="Core\Applications\Commands\DeleteApplication.cs" />
-    <Compile Include="Core\Applications\Events\ApplicationDeleted.cs" />
-    <Compile Include="Core\Applications\NamespaceDoc.cs" />
-    <Compile Include="Core\Applications\Queries\GetApplicationTeamResult.cs" />
-    <Compile Include="Core\Applications\Queries\OverviewStatSummary.cs" />
-    <Compile Include="Core\Feedback\Events\FeedbackAttachedToIncident.cs" />
-    <Compile Include="Core\Feedback\NamespaceDoc.cs" />
-    <Compile Include="Core\Incidents\NamespaceDoc.cs" />
-    <Compile Include="Core\Invitations\Commands\InviteUser.cs" />
+    <Compile Include="Core\Applications\Commands\RemoveTeamMember.cs" />
+    <Compile Include="Core\Applications\Commands\UpdateApplication.cs" />
     <Compile Include="Core\Applications\Events\ApplicationCreated.cs" />
+    <Compile Include="Core\Applications\Events\ApplicationDeleted.cs" />
+    <Compile Include="Core\Applications\Events\UserAddedToApplication.cs" />
     <Compile Include="Core\Applications\Events\UserInvitedToApplication.cs" />
+    <Compile Include="Core\Applications\NamespaceDoc.cs" />
     <Compile Include="Core\Applications\Queries\GetApplicationIdByKey.cs" />
     <Compile Include="Core\Applications\Queries\GetApplicationIdByKeyResult.cs" />
     <Compile Include="Core\Applications\Queries\GetApplicationInfo.cs" />
@@ -119,31 +112,15 @@
     <Compile Include="Core\Applications\Queries\GetApplicationOverviewResult.cs" />
     <Compile Include="Core\Applications\Queries\GetApplicationTeam.cs" />
     <Compile Include="Core\Applications\Queries\GetApplicationTeamMember.cs" />
+    <Compile Include="Core\Applications\Queries\GetApplicationTeamResult.cs" />
     <Compile Include="Core\Applications\Queries\GetApplicationTeamResultInvitation.cs" />
     <Compile Include="Core\Applications\Queries\GetOverview.cs" />
+    <Compile Include="Core\Applications\Queries\OverviewStatSummary.cs" />
     <Compile Include="Core\Applications\TypeOfApplication.cs" />
     <Compile Include="Core\EnumExtensions.cs" />
     <Compile Include="Core\Feedback\Commands\SubmitFeedback.cs" />
-    <Compile Include="Core\Invitations\NamespaceDoc.cs" />
-    <Compile Include="Core\Messaging\Commands\SendSms.cs" />
-    <Compile Include="Core\Messaging\NamespaceDoc.cs" />
-    <Compile Include="Core\NamespaceDoc.cs" />
-    <Compile Include="Core\Reports\NamespaceDoc.cs" />
-    <Compile Include="Core\Support\NamespaceDoc.cs" />
-    <Compile Include="Core\Users\NamespaceDoc.cs" />
-    <Compile Include="Modules\ErrorOrigins\Queries\GetOriginsForIncident.cs" />
-    <Compile Include="Modules\ErrorOrigins\Queries\GetOriginsForIncidentResult.cs" />
-    <Compile Include="Modules\ErrorOrigins\Queries\GetOriginsForIncidentResultItem.cs" />
-    <Compile Include="NamespaceDoc.cs" />
-    <Compile Include="Web\Feedback\Queries\GetFeedbackForApplication.cs" />
-    <Compile Include="Web\Feedback\Queries\GetFeedbackForApplicationResult.cs" />
-    <Compile Include="Web\Feedback\Queries\GetFeedbackForApplicationResultItem.cs" />
-    <Compile Include="Web\Feedback\Queries\GetIncidentFeedback.cs" />
-    <Compile Include="Web\Feedback\Queries\GetIncidentFeedbackResult.cs" />
-    <Compile Include="Web\Feedback\Queries\GetIncidentFeedbackResultItem.cs" />
-    <Compile Include="Web\Feedback\Queries\GetFeedbackForDashboardPage.cs" />
-    <Compile Include="Web\Feedback\Queries\GetFeedbackForDashboardPageResult.cs" />
-    <Compile Include="Web\Feedback\Queries\GetFeedbackForDashboardPageResultItem.cs" />
+    <Compile Include="Core\Feedback\Events\FeedbackAttachedToIncident.cs" />
+    <Compile Include="Core\Feedback\NamespaceDoc.cs" />
     <Compile Include="Core\IgnoreFieldAttribute.cs" />
     <Compile Include="Core\Incidents\Commands\CloseIncident.cs" />
     <Compile Include="Core\Incidents\Commands\IgnoreIncident.cs" />
@@ -152,6 +129,7 @@
     <Compile Include="Core\Incidents\Events\ReportAddedToIncident.cs" />
     <Compile Include="Core\Incidents\IncidentOrder.cs" />
     <Compile Include="Core\Incidents\IncidentSummaryDTO.cs" />
+    <Compile Include="Core\Incidents\NamespaceDoc.cs" />
     <Compile Include="Core\Incidents\Queries\FindIncidentResult.cs" />
     <Compile Include="Core\Incidents\Queries\FindIncidentResultItem.cs" />
     <Compile Include="Core\Incidents\Queries\FindIncidents.cs" />
@@ -162,14 +140,20 @@
     <Compile Include="Core\Incidents\Queries\GetIncidentStatistics.cs" />
     <Compile Include="Core\Incidents\Queries\GetIncidentStatisticsResult.cs" />
     <Compile Include="Core\Incidents\Queries\ReportDay.cs" />
+    <Compile Include="Core\Invitations\Commands\InviteUser.cs" />
+    <Compile Include="Core\Invitations\NamespaceDoc.cs" />
     <Compile Include="Core\Invitations\Queries\GetInvitationByKey.cs" />
     <Compile Include="Core\Invitations\Queries\GetInvitationByKeyResult.cs" />
     <Compile Include="Core\Messaging\Commands\SendEmail.cs" />
+    <Compile Include="Core\Messaging\Commands\SendSms.cs" />
     <Compile Include="Core\Messaging\Commands\SendTemplateEmail.cs" />
     <Compile Include="Core\Messaging\EmailAddress.cs" />
     <Compile Include="Core\Messaging\EmailMessage.cs" />
     <Compile Include="Core\Messaging\EmailResource.cs" />
+    <Compile Include="Core\Messaging\NamespaceDoc.cs" />
+    <Compile Include="Core\NamespaceDoc.cs" />
     <Compile Include="Core\Reports\ContextCollectionDTO.cs" />
+    <Compile Include="Core\Reports\NamespaceDoc.cs" />
     <Compile Include="Core\Reports\Queries\GetReport.cs" />
     <Compile Include="Core\Reports\Queries\GetReportException.cs" />
     <Compile Include="Core\Reports\Queries\GetReportList.cs" />
@@ -180,9 +164,11 @@
     <Compile Include="Core\Reports\Queries\KeyValuePair.cs" />
     <Compile Include="Core\Reports\ReportDTO.cs" />
     <Compile Include="Core\Reports\ReportExeptionDTO.cs" />
+    <Compile Include="Core\Support\NamespaceDoc.cs" />
     <Compile Include="Core\Support\SendSupportRequest.cs" />
     <Compile Include="Core\Users\Commands\UpdateNotifications.cs" />
     <Compile Include="Core\Users\Commands\UpdatePersonalSettings.cs" />
+    <Compile Include="Core\Users\NamespaceDoc.cs" />
     <Compile Include="Core\Users\NotificationSettings.cs" />
     <Compile Include="Core\Users\NotificationState.cs" />
     <Compile Include="Core\Users\Queries\GetUserSettings.cs" />
@@ -192,6 +178,9 @@
     <Compile Include="Modules\ContextData\Queries\GetSimilaritiesResult.cs" />
     <Compile Include="Modules\ContextData\Queries\GetSimilaritiesSimilarity.cs" />
     <Compile Include="Modules\ContextData\Queries\GetSimilaritiesValue.cs" />
+    <Compile Include="Modules\ErrorOrigins\Queries\GetOriginsForIncident.cs" />
+    <Compile Include="Modules\ErrorOrigins\Queries\GetOriginsForIncidentResult.cs" />
+    <Compile Include="Modules\ErrorOrigins\Queries\GetOriginsForIncidentResultItem.cs" />
     <Compile Include="Modules\Tagging\Events\TagAttachedToIncident.cs" />
     <Compile Include="Modules\Tagging\Queries\GetTagsForIncident.cs" />
     <Compile Include="Modules\Tagging\TagDTO.cs" />
@@ -206,18 +195,27 @@
     <Compile Include="Modules\Triggers\Queries\GetTriggersForApplication.cs" />
     <Compile Include="Modules\Triggers\TriggerActionDataDTO.cs" />
     <Compile Include="Modules\Triggers\TriggerContextRule.cs" />
+    <Compile Include="Modules\Triggers\TriggerDTO.cs" />
     <Compile Include="Modules\Triggers\TriggerExceptionRule.cs" />
     <Compile Include="Modules\Triggers\TriggerFilterCondition.cs" />
-    <Compile Include="Modules\Triggers\TriggerDTO.cs" />
     <Compile Include="Modules\Triggers\TriggerRuleAction.cs" />
     <Compile Include="Modules\Triggers\TriggerRuleBase.cs" />
+    <Compile Include="NamespaceDoc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Web\Feedback\Queries\GetFeedbackForApplication.cs" />
+    <Compile Include="Web\Feedback\Queries\GetFeedbackForApplicationResult.cs" />
+    <Compile Include="Web\Feedback\Queries\GetFeedbackForApplicationResultItem.cs" />
+    <Compile Include="Web\Feedback\Queries\GetFeedbackForDashboardPage.cs" />
+    <Compile Include="Web\Feedback\Queries\GetFeedbackForDashboardPageResult.cs" />
+    <Compile Include="Web\Feedback\Queries\GetFeedbackForDashboardPageResultItem.cs" />
+    <Compile Include="Web\Feedback\Queries\GetIncidentFeedback.cs" />
+    <Compile Include="Web\Feedback\Queries\GetIncidentFeedbackResult.cs" />
+    <Compile Include="Web\Feedback\Queries\GetIncidentFeedbackResultItem.cs" />
     <Compile Include="Web\Overview\Queries\GetOverview.cs" />
     <Compile Include="Web\Overview\Queries\GetOverviewApplicationResult.cs" />
     <Compile Include="Web\Overview\Queries\GetOverviewResult.cs" />
     <Compile Include="Web\Overview\Queries\OverviewStatSummary.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <None Include="Core\Accounts\ReadMe.md" />
     <None Include="Core\ApiKeys\ReadMe.md" />
@@ -234,6 +232,7 @@
     <None Include="packages.config" />
     <None Include="ReadMe.md" />
   </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
