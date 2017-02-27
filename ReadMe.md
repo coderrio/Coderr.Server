@@ -11,10 +11,11 @@ OneTrueError is an open source error handling service for .NET. It includes the 
 
 ## Love or hate our service? 
 
-Please write a review.
+Share your opinion
 
 * [G2 Crowd](https://www.g2crowd.com/products/onetrueerror/reviews)
-
+* [Capterra](http://www.capterra.com/bug-tracking-software/reviews/146546/OneTrueError/Gauffin%20Interactive/new?utm_source=vp&utm_medium=none&utm_campaign=vendor_request)
+* [Twitter](http://twitter.com/intent/tweet?text=I%20use%20%40onetrueerror%20to%20rock%20my%20exceptions!%20%23csharp)
 
 ## Licensing
 
