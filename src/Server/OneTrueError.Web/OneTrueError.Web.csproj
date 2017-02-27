@@ -370,7 +370,6 @@
     <Content Include="Areas\Installation\Views\Account\Admin.cshtml" />
     <Content Include="Areas\Installation\Views\Messaging\Email.cshtml" />
     <Content Include="Areas\Installation\Views\Setup\Basics.cshtml" />
-    <Content Include="Areas\Installation\Views\Setup\Completed.cshtml" />
     <Content Include="Areas\Installation\Views\Setup\ErrorTracking.cshtml" />
     <Content Include="Areas\Installation\Views\Setup\Index.cshtml" />
     <Content Include="Areas\Installation\Views\Setup\Support.cshtml" />
@@ -617,6 +616,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\Installation\Views\Setup\Completed.cshtml" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
@@ -689,15 +689,16 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <CustomServerUrl />
           <DevelopmentServerPort>50473</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:50473/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
-          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
           <UseCustomServer>False</UseCustomServer>
-          <UseIIS>False</UseIIS>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>
