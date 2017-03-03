@@ -1,2 +1,2 @@
 [config]
-project = OneTrueError.Web\OneTrueError.Web.csproj
+project = src\OneTrueError.Web\OneTrueError.Web.csproj
