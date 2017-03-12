@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneTrueError.Api.Client", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneTrueError.Api.Client.Tests", "OneTrueError.Api.Client.Tests\OneTrueError.Api.Client.Tests.csproj", "{62989500-31BC-44FA-97CA-84F484C6F1AA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneTrueError.ReportAnalyzer.Tests", "OneTrueError.ReportAnalyzer.Tests\OneTrueError.ReportAnalyzer.Tests.csproj", "{421C787A-079B-4A88-A6C5-1ACD9A7C6A7E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{62989500-31BC-44FA-97CA-84F484C6F1AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62989500-31BC-44FA-97CA-84F484C6F1AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62989500-31BC-44FA-97CA-84F484C6F1AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{421C787A-079B-4A88-A6C5-1ACD9A7C6A7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{421C787A-079B-4A88-A6C5-1ACD9A7C6A7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{421C787A-079B-4A88-A6C5-1ACD9A7C6A7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{421C787A-079B-4A88-A6C5-1ACD9A7C6A7E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

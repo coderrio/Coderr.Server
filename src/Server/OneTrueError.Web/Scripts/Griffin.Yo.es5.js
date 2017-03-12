@@ -67,7 +67,8 @@ var Griffin;
                     var items = this.scope.querySelectorAll(selector);
                     if (items.length === 0) throw new Error("Failed to bind \"keyup\" to selector \"" + selector + "\", no elements found.");
                     for (var i = 0; i < items.length; i++) {
-                        items[i].addEventListener("keyup", listener, useCapture);
+                        //items[i].addEventListener("keyup", function (e) { console.log(e); });
+                        items[i].addEventListener("keyup", listener);
                     }
                 };
                 EventMapper.prototype.keyDown = function (selector, listener, useCapture) {
@@ -885,7 +886,8 @@ var Griffin;
                                         continue;
                                     }
                                     var result = self.evalInContext(condition, { ctx: ctx, vm: vm });
-                                    if (!result) {
+                                    //unless is flux. for instance haveRows = true means that we should execute, i.e. remove the node
+                                    if (result) {
                                         elem.parentNode.removeChild(elem);
                                     }
                                 }
@@ -1054,7 +1056,6 @@ var Griffin;
                     }
                     var target2 = target;
                     target2.name = name;
-                    console.log('adding view target');
                     this.viewTargets.push(target2);
                 };
                 SpaEngine.prototype.navigate = function (url, targetElement) {
@@ -1349,6 +1350,11 @@ var Griffin;
                 ViewRenderer.prototype.applyEmbeddedDirectives = function (element, data, directives) {
                     var isDirectiveValueSpecified = false;
                     for (var key in directives) {
+                        var dir = directives[key];
+                        if (typeof dir === 'undefined') {
+
+                            continue;
+                        }
                         var value = directives[key].apply(element, [data, this.dtoStack[this.dtoStack.length - 2]]);
                         if (key === "html") {
                             isDirectiveValueSpecified = true;
@@ -1393,10 +1399,10 @@ var Griffin;
                     return context.value;
                 };
                 ViewRenderer.prototype.getName = function (el) {
-                    return el.getAttribute("name") || el.getAttribute("data-name") || el.getAttribute("data-collection") || el.getAttribute("data-unless");
+                    return el.getAttribute("name") || el.getAttribute("data-name") || el.getAttribute("data-collection");
                 };
                 ViewRenderer.prototype.hasName = function (el) {
-                    return el.hasAttribute("name") || el.hasAttribute("data-name") || el.hasAttribute("data-collection") || el.hasAttribute("data-unless");
+                    return el.hasAttribute("name") || el.hasAttribute("data-name") || el.hasAttribute("data-collection");
                 };
                 ViewRenderer.prototype.isCollection = function (el) {
                     return el.hasAttribute("data-collection");

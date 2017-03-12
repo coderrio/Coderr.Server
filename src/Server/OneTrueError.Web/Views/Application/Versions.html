@@ -1,21 +1,29 @@
 ﻿<h2>Application versions</h2>
 <p>Lists the application versions and the number of errors each version have.</p>
-<table class="table table-striped">
+<table class="table table-striped" data-if="vm.haveItems">
     <thead>
-    <th>Version</th>
-    <th>Incidents</th>
-    <th>Reports</th>
-    </thead>
-    <tbody data-collection="Items">
         <tr>
+            <th>Version</th>
+            <th>Incidents</th>
+            <th>Reports</th>
+            <th>Oldest report</th>
+            <th>Newest report</th>
+        </tr>
+    </thead>
+    <tbody id="itemsTable">
+        <tr data-collection="Items">
             <td data-name="Version"></td>
-            <td data-name="Incidents"></td>
-            <td data-name="Reports"></td>
+            <td data-name="IncidentCount"></td>
+            <td data-name="ReportCount"></td>
+            <td data-name="FirstReportReceivedAtUtc"></td>
+            <td data-name="LastReportReceivedAtUtc"></td>
         </tr>
     </tbody>
 </table>
-<p data-unless="Items">
-    No incidents have been reported yet, or you haven't configured version assembly in the admin area.
+<p data-unless="vm.haveItems">
+    <em>
+        No incidents have been reported yet, or you haven't configured the version assembly in the admin area.
+    </em>
 </p>
 
 <ul data-navigation="main-navigation">

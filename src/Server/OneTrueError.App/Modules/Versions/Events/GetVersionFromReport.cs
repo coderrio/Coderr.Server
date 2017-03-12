@@ -28,7 +28,7 @@ namespace OneTrueError.App.Modules.Versions.Events
         public async Task HandleAsync(ReportAddedToIncident e)
         {
             var assemblyName = GetVersionAssemblyName(e.Incident.ApplicationId);
-            if (assemblyName != null)
+            if (assemblyName == null)
             {
                 var notice = new AddNotification(OneTrueClaims.RoleSysAdmin,
                     "There is no version assembly configured for " + e.Incident.ApplicationName +
@@ -56,9 +56,10 @@ namespace OneTrueError.App.Modules.Versions.Events
 
             var isNewIncident = e.Incident.ReportCount <= 1;
             var versionEntity = await _repository.GetVersionAsync(e.Incident.ApplicationId, version)
-                                ??
-                                new ApplicationVersion(e.Incident.ApplicationId, e.Incident.ApplicationName,
+                                ?? new ApplicationVersion(e.Incident.ApplicationId, e.Incident.ApplicationName,
                                     version);
+            if (versionEntity.Version != version)
+                versionEntity = new ApplicationVersion(e.Incident.ApplicationId, e.Incident.ApplicationName, version);
             versionEntity.UpdateReportDate();
 
             if (versionEntity.Id == 0)
@@ -66,7 +67,7 @@ namespace OneTrueError.App.Modules.Versions.Events
             else
                 await _repository.UpdateAsync(versionEntity);
 
-            await IncreaseReportCounter(e.Incident.ApplicationId, versionEntity.Id, isNewIncident);
+            await IncreaseReportCounter(versionEntity.Id, isNewIncident);
         }
 
         private string GetVersionAssemblyName(int applicationId)
@@ -75,11 +76,11 @@ namespace OneTrueError.App.Modules.Versions.Events
             return config == null ? null : config.GetAssemblyName(applicationId);
         }
 
-        private async Task IncreaseReportCounter(int applicationId, int versionId, bool isNewIncident)
+        private async Task IncreaseReportCounter(int versionId, bool isNewIncident)
         {
             var month =
-                await _repository.GetMonthForApplicationAsync(applicationId, DateTime.Today.Year, DateTime.Today.Month) ??
-                new ApplicationVersionMonth(versionId, DateTime.Today);
+                await _repository.GetMonthForApplicationAsync(versionId, DateTime.Today.Year, DateTime.Today.Month) ??
+                new ApplicationVersionMonth(versionId, new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1));
 
             if (isNewIncident)
                 month.IncreaseIncidentCount();

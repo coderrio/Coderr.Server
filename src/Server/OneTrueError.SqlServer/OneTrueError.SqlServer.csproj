@@ -153,6 +153,7 @@
     <Compile Include="Modules\Versions\ApplicationVersionConfigMapper.cs" />
     <Compile Include="Modules\Versions\ApplicationVersionMapper.cs" />
     <Compile Include="Modules\Versions\ApplicationVersionMonthMapper.cs" />
+    <Compile Include="Modules\Versions\Queries\GetApplicationVersionsHandler.cs" />
     <Compile Include="Modules\Versions\VersionRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SchemaManager.cs" />

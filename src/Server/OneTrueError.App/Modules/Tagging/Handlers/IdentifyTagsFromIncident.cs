@@ -40,15 +40,9 @@ namespace OneTrueError.App.Modules.Tagging.Handlers
         /// </returns>
         public async Task HandleAsync(ReportAddedToIncident e)
         {
-            if (e.Incident.ReportCount != 1)
-            {
-                var tags = await _repository.GetTagsAsync(e.Incident.Id);
-                if (tags.Count > 0)
-                    return;
-            }
-
             _logger.Debug("Checking tags..");
-            var ctx = new TagIdentifierContext(e.Report);
+            var tags = await _repository.GetTagsAsync(e.Incident.Id);
+            var ctx = new TagIdentifierContext(e.Report, tags);
             var identifiers = _tagIdentifierProvider.GetIdentifiers(ctx);
             foreach (var identifier in identifiers)
             {
@@ -57,9 +51,12 @@ namespace OneTrueError.App.Modules.Tagging.Handlers
 
             ExtractTagsFromCollections(e, ctx);
 
-            _logger.Debug("done..");
+            _logger.DebugFormat("Done, identified {0} new tags", ctx.NewTags);
 
-            await _repository.AddAsync(e.Incident.Id, ctx.Tags.ToArray());
+            if (ctx.NewTags.Count == 0)
+                return;
+
+            await _repository.AddAsync(e.Incident.Id, ctx.NewTags.ToArray());
         }
 
         private void ExtractTagsFromCollections(ReportAddedToIncident e, TagIdentifierContext ctx)

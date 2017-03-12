@@ -31,10 +31,10 @@ namespace OneTrueError.SqlServer.Modules.Versions
             await _uow.InsertAsync(entity);
         }
 
-        public Task<ApplicationVersionMonth> GetMonthForApplicationAsync(int applicationId, int year, int month)
+        public Task<ApplicationVersionMonth> GetMonthForApplicationAsync(int versionId, int year, int month)
         {
             var date = new DateTime(year, month, 1);
-            return _uow.FirstOrDefaultAsync<ApplicationVersionMonth>(new {ApplicationId = applicationId, YearMonth = date});
+            return _uow.FirstOrDefaultAsync<ApplicationVersionMonth>(new { VersionId = versionId, YearMonth = date});
 
         }
 

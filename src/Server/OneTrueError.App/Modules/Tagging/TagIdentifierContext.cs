@@ -13,18 +13,21 @@ namespace OneTrueError.App.Modules.Tagging
     {
         private readonly ReportDTO _reportToAnalyze;
         private readonly string[] _stacktrace;
-        private readonly List<Tag> _tags = new List<Tag>();
+        private readonly List<Tag> _newTags = new List<Tag>();
+        private IReadOnlyList<Tag> _existingTags;
 
 
         /// <summary>
         ///     Creates a new instance of <see cref="TagIdentifierContext" />.
         /// </summary>
         /// <param name="reportToAnalyze">rta</param>
+        /// <param name="tags"></param>
         /// <exception cref="ArgumentNullException">reportToAnalyze</exception>
-        public TagIdentifierContext(ReportDTO reportToAnalyze)
+        public TagIdentifierContext(ReportDTO reportToAnalyze, IReadOnlyList<Tag> tags)
         {
             if (reportToAnalyze == null) throw new ArgumentNullException("reportToAnalyze");
 
+            _existingTags = tags;
             _reportToAnalyze = reportToAnalyze;
             var ex = reportToAnalyze.Exception;
             if (ex != null && ex.StackTrace != null)
@@ -48,9 +51,9 @@ namespace OneTrueError.App.Modules.Tagging
         /// <remarks>
         ///     <para>These tags are used directly to search for possible solutions.</para>
         /// </remarks>
-        public IReadOnlyList<Tag> Tags
+        public IReadOnlyList<Tag> NewTags
         {
-            get { return _tags; }
+            get { return _newTags; }
         }
 
         /// <summary>
@@ -83,9 +86,12 @@ namespace OneTrueError.App.Modules.Tagging
         /// <param name="orderNumber">used to customize in which order the tags appear on the web page. 1 = first</param>
         public void AddTag(string tag, int orderNumber)
         {
-            if (_tags.Any(x => x.Name == tag))
+            if (_newTags.Any(x => x.Name == tag))
                 return;
-            _tags.Add(new Tag(tag, orderNumber));
+            if (_existingTags.Any(x => x.Name == tag))
+                return;
+
+            _newTags.Add(new Tag(tag, orderNumber));
         }
 
         /// <summary>
@@ -117,5 +123,6 @@ namespace OneTrueError.App.Modules.Tagging
             if (libraryToFind == null) throw new ArgumentNullException("libraryToFind");
             return _stacktrace.Any(t => t.IndexOf(libraryToFind, StringComparison.OrdinalIgnoreCase) != -1);
         }
+
     }
 }

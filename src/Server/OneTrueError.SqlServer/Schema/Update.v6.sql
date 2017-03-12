@@ -18,12 +18,4 @@ create table ApplicationVersionMonths
 	LastUpdateAtUtc datetime not null
 );
 
-create table ApplicationVersionConfig
-(
-	Id int not null identity primary key,
-	ApplicationId int not null,
-	AssemblyName varchar(255) not null
-);
-
-
 UPDATE DatabaseSchema SET Version = 6;

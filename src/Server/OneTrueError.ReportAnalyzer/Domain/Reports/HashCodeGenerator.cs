@@ -15,7 +15,7 @@ namespace OneTrueError.ReportAnalyzer.Domain.Reports
     [Component]
     public class HashCodeGenerator
     {
-        private const string RemoveLineNumbersRegEx = @"(:[\w]+ [\d]+)\r\n";
+        private const string RemoveLineNumbersRegEx = @"^(.*)(:[\w]+ [\d]+)";
         private readonly IServiceLocator _serviceLocator;
 
         /// <summary>
@@ -62,7 +62,9 @@ namespace OneTrueError.ReportAnalyzer.Domain.Reports
 
             //TODO: Ta bort radnummers stripparen
             var hashSource = report.Exception.FullName + "\r\n";
-            hashSource += Regex.Replace(report.Exception.StackTrace, RemoveLineNumbersRegEx, "", RegexOptions.Multiline);
+            var re = new Regex(RemoveLineNumbersRegEx, RegexOptions.Multiline);
+            var withoutLineNumbers = re.Replace(report.Exception.StackTrace, "$1", 1000);
+            hashSource += withoutLineNumbers;
 
             var hash = 23;
             foreach (var c in hashSource)

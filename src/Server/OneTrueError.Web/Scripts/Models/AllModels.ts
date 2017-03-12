@@ -57,6 +57,27 @@ module OneTrueError.Web.Feedback.Queries {
         public WrittenAtUtc: any;
     }
 
+    export class GetFeedbackForDashboardPage {
+        public static TYPE_NAME: string = 'GetFeedbackForDashboardPage';
+        public QueryId: string;
+    }
+
+    export class GetFeedbackForDashboardPageResult {
+        public static TYPE_NAME: string = 'GetFeedbackForDashboardPageResult';
+        public Emails: string[];
+        public Items: OneTrueError.Web.Feedback.Queries.GetFeedbackForDashboardPageResultItem[];
+        public TotalCount: number;
+    }
+
+    export class GetFeedbackForDashboardPageResultItem {
+        public static TYPE_NAME: string = 'GetFeedbackForDashboardPageResultItem';
+        public ApplicationId: number;
+        public ApplicationName: string;
+        public EmailAddress: string;
+        public Message: string;
+        public WrittenAtUtc: any;
+    }
+
     export class GetIncidentFeedback {
         public static TYPE_NAME: string = 'GetIncidentFeedback';
         public IncidentId: number;
@@ -83,25 +104,29 @@ module OneTrueError.Web.Feedback.Queries {
         public WrittenAtUtc: any;
     }
 
-    export class GetFeedbackForDashboardPage {
-        public static TYPE_NAME: string = 'GetFeedbackForDashboardPage';
-        public QueryId: string;
-    }
-
-    export class GetFeedbackForDashboardPageResult {
-        public static TYPE_NAME: string = 'GetFeedbackForDashboardPageResult';
-        public Emails: string[];
-        public Items: OneTrueError.Web.Feedback.Queries.GetFeedbackForDashboardPageResultItem[];
-        public TotalCount: number;
-    }
-
-    export class GetFeedbackForDashboardPageResultItem {
-        public static TYPE_NAME: string = 'GetFeedbackForDashboardPageResultItem';
+}
+module OneTrueError.Modules.Versions.Queries {
+    export class GetApplicationVersions {
+        public static TYPE_NAME: string = 'GetApplicationVersions';
         public ApplicationId: number;
-        public ApplicationName: string;
-        public EmailAddress: string;
-        public Message: string;
-        public WrittenAtUtc: any;
+        public QueryId: string;
+        public constructor(applicationId: number) {
+            this.ApplicationId = applicationId;
+        }
+    }
+
+    export class GetApplicationVersionsResult {
+        public static TYPE_NAME: string = 'GetApplicationVersionsResult';
+        public Items: OneTrueError.Modules.Versions.Queries.GetApplicationVersionsResultItem[];
+    }
+
+    export class GetApplicationVersionsResultItem {
+        public static TYPE_NAME: string = 'GetApplicationVersionsResultItem';
+        public FirstReportReceivedAtUtc: any;
+        public IncidentCount: number;
+        public LastReportReceivedAtUtc: any;
+        public ReportCount: number;
+        public Version: string;
     }
 
 }
@@ -126,6 +151,14 @@ module OneTrueError.Modules.Triggers {
         public ResultToUse: TriggerRuleAction;
     }
 
+    export class TriggerDTO {
+        public static TYPE_NAME: string = 'TriggerDTO';
+        public Description: string;
+        public Id: string;
+        public Name: string;
+        public Summary: string;
+    }
+
     export class TriggerExceptionRule {
         public static TYPE_NAME: string = 'TriggerExceptionRule';
         public FieldName: string;
@@ -140,14 +173,6 @@ module OneTrueError.Modules.Triggers {
         Contains = 2,
         DoNotContain = 3,
         Equals = 4,
-    }
-
-    export class TriggerDTO {
-        public static TYPE_NAME: string = 'TriggerDTO';
-        public Description: string;
-        public Id: string;
-        public Name: string;
-        public Summary: string;
     }
 
     export enum TriggerRuleAction {
@@ -292,6 +317,29 @@ module OneTrueError.Modules.Tagging.Events {
     }
 
 }
+module OneTrueError.Modules.ErrorOrigins.Queries {
+    export class GetOriginsForIncident {
+        public static TYPE_NAME: string = 'GetOriginsForIncident';
+        public IncidentId: number;
+        public QueryId: string;
+        public constructor(incidentId: number) {
+            this.IncidentId = incidentId;
+        }
+    }
+
+    export class GetOriginsForIncidentResult {
+        public static TYPE_NAME: string = 'GetOriginsForIncidentResult';
+        public Items: OneTrueError.Modules.ErrorOrigins.Queries.GetOriginsForIncidentResultItem[];
+    }
+
+    export class GetOriginsForIncidentResultItem {
+        public static TYPE_NAME: string = 'GetOriginsForIncidentResultItem';
+        public Latitude: number;
+        public Longitude: number;
+        public NumberOfErrorReports: number;
+    }
+
+}
 module OneTrueError.Modules.ContextData.Queries {
     export class GetSimilarities {
         public static TYPE_NAME: string = 'GetSimilarities';
@@ -332,29 +380,6 @@ module OneTrueError.Modules.ContextData.Queries {
             this.Percentage = percentage;
             this.Count = count;
         }
-    }
-
-}
-module OneTrueError.Modules.ErrorOrigins.Queries {
-    export class GetOriginsForIncident {
-        public static TYPE_NAME: string = 'GetOriginsForIncident';
-        public IncidentId: number;
-        public QueryId: string;
-        public constructor(incidentId: number) {
-            this.IncidentId = incidentId;
-        }
-    }
-
-    export class GetOriginsForIncidentResult {
-        public static TYPE_NAME: string = 'GetOriginsForIncidentResult';
-        public Items: OneTrueError.Modules.ErrorOrigins.Queries.GetOriginsForIncidentResultItem[];
-    }
-
-    export class GetOriginsForIncidentResultItem {
-        public static TYPE_NAME: string = 'GetOriginsForIncidentResultItem';
-        public Latitude: number;
-        public Longitude: number;
-        public NumberOfErrorReports: number;
     }
 
 }
@@ -559,6 +584,22 @@ module OneTrueError.Core.Reports.Queries {
     }
 
 }
+module OneTrueError.Core.Notifications {
+    export class AddNotification {
+        public static TYPE_NAME: string = 'AddNotification';
+        public NotificationType: string;
+        public HoldbackInterval: any;
+        public Message: string;
+        public AccountId: number;
+        public RoleName: string;
+        public CommandId: string;
+        public constructor(accountId: number, message: string) {
+            this.AccountId = accountId;
+            this.Message = message;
+        }
+    }
+
+}
 module OneTrueError.Core.Messaging {
     export class EmailAddress {
         public static TYPE_NAME: string = 'EmailAddress';
@@ -590,6 +631,12 @@ module OneTrueError.Core.Messaging {
 
 }
 module OneTrueError.Core.Messaging.Commands {
+    export class SendEmail {
+        public static TYPE_NAME: string = 'SendEmail';
+        public EmailMessage: OneTrueError.Core.Messaging.EmailMessage;
+        public CommandId: string;
+    }
+
     export class SendSms {
         public static TYPE_NAME: string = 'SendSms';
         public Message: string;
@@ -599,12 +646,6 @@ module OneTrueError.Core.Messaging.Commands {
             this.PhoneNumber = phoneNumber;
             this.Message = message;
         }
-    }
-
-    export class SendEmail {
-        public static TYPE_NAME: string = 'SendEmail';
-        public EmailMessage: OneTrueError.Core.Messaging.EmailMessage;
-        public CommandId: string;
     }
 
     export class SendTemplateEmail {
@@ -860,6 +901,16 @@ module OneTrueError.Core.Incidents.Commands {
     }
 
 }
+module OneTrueError.Core.Feedback.Events {
+    export class FeedbackAttachedToIncident {
+        public static TYPE_NAME: string = 'FeedbackAttachedToIncident';
+        public IncidentId: number;
+        public Message: string;
+        public UserEmailAddress: string;
+        public EventId: string;
+    }
+
+}
 module OneTrueError.Core.Feedback.Commands {
     export class SubmitFeedback {
         public static TYPE_NAME: string = 'SubmitFeedback';
@@ -877,13 +928,220 @@ module OneTrueError.Core.Feedback.Commands {
     }
 
 }
-module OneTrueError.Core.Feedback.Events {
-    export class FeedbackAttachedToIncident {
-        public static TYPE_NAME: string = 'FeedbackAttachedToIncident';
-        public IncidentId: number;
-        public Message: string;
-        public UserEmailAddress: string;
+module OneTrueError.Core.Applications {
+    export class ApplicationListItem {
+        public static TYPE_NAME: string = 'ApplicationListItem';
+        public Id: number;
+        public Name: string;
+        public IsAdmin: boolean;
+        public constructor(id: number, name: string) {
+            this.Id = id;
+            this.Name = name;
+        }
+    }
+
+    export enum TypeOfApplication {
+        Mobile = 0,
+        DesktopApplication = 1,
+        Server = 2,
+    }
+
+}
+module OneTrueError.Core.Applications.Queries {
+    export class GetApplicationIdByKey {
+        public static TYPE_NAME: string = 'GetApplicationIdByKey';
+        public ApplicationKey: string;
+        public QueryId: string;
+        public constructor(applicationKey: string) {
+            this.ApplicationKey = applicationKey;
+        }
+    }
+
+    export class GetApplicationIdByKeyResult {
+        public static TYPE_NAME: string = 'GetApplicationIdByKeyResult';
+        public Id: number;
+    }
+
+    export class GetApplicationInfo {
+        public static TYPE_NAME: string = 'GetApplicationInfo';
+        public AppKey: string;
+        public ApplicationId: number;
+        public QueryId: string;
+    }
+
+    export class GetApplicationInfoResult {
+        public static TYPE_NAME: string = 'GetApplicationInfoResult';
+        public AppKey: string;
+        public ApplicationType: OneTrueError.Core.Applications.TypeOfApplication;
+        public Id: number;
+        public Name: string;
+        public SharedSecret: string;
+        public TotalIncidentCount: number;
+    }
+
+    export class GetApplicationList {
+        public static TYPE_NAME: string = 'GetApplicationList';
+        public AccountId: number;
+        public FilterAsAdmin: boolean;
+        public QueryId: string;
+    }
+
+    export class GetApplicationOverviewResult {
+        public static TYPE_NAME: string = 'GetApplicationOverviewResult';
+        public Days: number;
+        public ErrorReports: number[];
+        public Incidents: number[];
+        public StatSummary: OneTrueError.Core.Applications.Queries.OverviewStatSummary;
+        public TimeAxisLabels: string[];
+    }
+
+    export class GetApplicationTeam {
+        public static TYPE_NAME: string = 'GetApplicationTeam';
+        public ApplicationId: number;
+        public QueryId: string;
+        public constructor(applicationId: number) {
+            this.ApplicationId = applicationId;
+        }
+    }
+
+    export class GetApplicationTeamMember {
+        public static TYPE_NAME: string = 'GetApplicationTeamMember';
+        public JoinedAtUtc: any;
+        public UserId: number;
+        public UserName: string;
+    }
+
+    export class GetApplicationTeamResult {
+        public static TYPE_NAME: string = 'GetApplicationTeamResult';
+        public Invited: OneTrueError.Core.Applications.Queries.GetApplicationTeamResultInvitation[];
+        public Members: OneTrueError.Core.Applications.Queries.GetApplicationTeamMember[];
+    }
+
+    export class GetApplicationTeamResultInvitation {
+        public static TYPE_NAME: string = 'GetApplicationTeamResultInvitation';
+        public EmailAddress: string;
+        public InvitedAtUtc: any;
+        public InvitedByUserName: string;
+    }
+
+    export class GetApplicationOverview {
+        public static TYPE_NAME: string = 'GetApplicationOverview';
+        public ApplicationId: number;
+        public NumberOfDays: number;
+        public QueryId: string;
+        public constructor(applicationId: number) {
+            this.ApplicationId = applicationId;
+        }
+    }
+
+    export class OverviewStatSummary {
+        public static TYPE_NAME: string = 'OverviewStatSummary';
+        public Followers: number;
+        public Incidents: number;
+        public Reports: number;
+        public UserFeedback: number;
+    }
+
+}
+module OneTrueError.Core.Applications.Events {
+    export class ApplicationCreated {
+        public static TYPE_NAME: string = 'ApplicationCreated';
+        public AppKey: string;
+        public ApplicationId: number;
+        public ApplicationName: string;
+        public CreatedById: number;
+        public SharedSecret: string;
         public EventId: string;
+        public constructor(id: number, name: string, createdById: number, appKey: string, sharedSecret: string) {
+            this.CreatedById = createdById;
+            this.AppKey = appKey;
+            this.SharedSecret = sharedSecret;
+        }
+    }
+
+    export class ApplicationDeleted {
+        public static TYPE_NAME: string = 'ApplicationDeleted';
+        public AppKey: string;
+        public ApplicationId: number;
+        public ApplicationName: string;
+        public EventId: string;
+    }
+
+    export class UserInvitedToApplication {
+        public static TYPE_NAME: string = 'UserInvitedToApplication';
+        public ApplicationId: number;
+        public ApplicationName: string;
+        public EmailAddress: string;
+        public InvitationKey: string;
+        public InvitedBy: string;
+        public EventId: string;
+        public constructor(invitationKey: string, applicationId: number, applicationName: string, emailAddress: string, invitedBy: string) {
+            this.InvitationKey = invitationKey;
+            this.ApplicationId = applicationId;
+            this.ApplicationName = applicationName;
+            this.EmailAddress = emailAddress;
+            this.InvitedBy = invitedBy;
+        }
+    }
+
+}
+module OneTrueError.Core.Applications.Events.OneTrueError.Api.Core.Accounts.Events {
+    export class UserAddedToApplication {
+        public static TYPE_NAME: string = 'UserAddedToApplication';
+        public AccountId: number;
+        public ApplicationId: number;
+        public EventId: string;
+        public constructor(applicationId: number, accountId: number) {
+            this.ApplicationId = applicationId;
+            this.AccountId = accountId;
+        }
+    }
+
+}
+module OneTrueError.Core.Applications.Commands {
+    export class CreateApplication {
+        public static TYPE_NAME: string = 'CreateApplication';
+        public ApplicationKey: string;
+        public Name: string;
+        public TypeOfApplication: OneTrueError.Core.Applications.TypeOfApplication;
+        public UserId: number;
+        public CommandId: string;
+        public constructor(name: string, typeOfApplication: OneTrueError.Core.Applications.TypeOfApplication) {
+            this.Name = name;
+            this.TypeOfApplication = typeOfApplication;
+        }
+    }
+
+    export class DeleteApplication {
+        public static TYPE_NAME: string = 'DeleteApplication';
+        public Id: number;
+        public CommandId: string;
+        public constructor(id: number) {
+            this.Id = id;
+        }
+    }
+
+    export class RemoveTeamMember {
+        public static TYPE_NAME: string = 'RemoveTeamMember';
+        public ApplicationId: number;
+        public UserToRemove: number;
+        public CommandId: string;
+        public constructor(applicationId: number, userToRemove: number) {
+            this.ApplicationId = applicationId;
+            this.UserToRemove = userToRemove;
+        }
+    }
+
+    export class UpdateApplication {
+        public static TYPE_NAME: string = 'UpdateApplication';
+        public ApplicationId: number;
+        public Name: string;
+        public TypeOfApplication: OneTrueError.Core.Applications.TypeOfApplication;
+        public CommandId: string;
+        public constructor(applicationId: number, name: string) {
+            this.ApplicationId = applicationId;
+            this.Name = name;
+        }
     }
 
 }
@@ -972,223 +1230,6 @@ module OneTrueError.Core.ApiKeys.Commands {
     export class DeleteApiKey {
         public static TYPE_NAME: string = 'DeleteApiKey';
         public ApiKey: string;
-        public Id: number;
-        public CommandId: string;
-        public constructor(id: number) {
-            this.Id = id;
-        }
-    }
-
-}
-module OneTrueError.Core.Applications {
-    export class ApplicationListItem {
-        public static TYPE_NAME: string = 'ApplicationListItem';
-        public Id: number;
-        public Name: string;
-        public IsAdmin: boolean;
-        public constructor(id: number, name: string) {
-            this.Id = id;
-            this.Name = name;
-        }
-    }
-
-    export enum TypeOfApplication {
-        Mobile = 0,
-        DesktopApplication = 1,
-        Server = 2,
-    }
-
-}
-module OneTrueError.Core.Applications.Queries {
-    export class GetApplicationTeamResult {
-        public static TYPE_NAME: string = 'GetApplicationTeamResult';
-        public Invited: OneTrueError.Core.Applications.Queries.GetApplicationTeamResultInvitation[];
-        public Members: OneTrueError.Core.Applications.Queries.GetApplicationTeamMember[];
-    }
-
-    export class OverviewStatSummary {
-        public static TYPE_NAME: string = 'OverviewStatSummary';
-        public Followers: number;
-        public Incidents: number;
-        public Reports: number;
-        public UserFeedback: number;
-    }
-
-    export class GetApplicationIdByKey {
-        public static TYPE_NAME: string = 'GetApplicationIdByKey';
-        public ApplicationKey: string;
-        public QueryId: string;
-        public constructor(applicationKey: string) {
-            this.ApplicationKey = applicationKey;
-        }
-    }
-
-    export class GetApplicationIdByKeyResult {
-        public static TYPE_NAME: string = 'GetApplicationIdByKeyResult';
-        public Id: number;
-    }
-
-    export class GetApplicationInfo {
-        public static TYPE_NAME: string = 'GetApplicationInfo';
-        public AppKey: string;
-        public ApplicationId: number;
-        public QueryId: string;
-    }
-
-    export class GetApplicationInfoResult {
-        public static TYPE_NAME: string = 'GetApplicationInfoResult';
-        public AppKey: string;
-        public ApplicationType: OneTrueError.Core.Applications.TypeOfApplication;
-        public Id: number;
-        public Name: string;
-        public SharedSecret: string;
-        public TotalIncidentCount: number;
-    }
-
-    export class GetApplicationList {
-        public static TYPE_NAME: string = 'GetApplicationList';
-        public AccountId: number;
-        public FilterAsAdmin: boolean;
-        public QueryId: string;
-    }
-
-    export class GetApplicationOverviewResult {
-        public static TYPE_NAME: string = 'GetApplicationOverviewResult';
-        public Days: number;
-        public ErrorReports: number[];
-        public Incidents: number[];
-        public StatSummary: OneTrueError.Core.Applications.Queries.OverviewStatSummary;
-        public TimeAxisLabels: string[];
-    }
-
-    export class GetApplicationTeam {
-        public static TYPE_NAME: string = 'GetApplicationTeam';
-        public ApplicationId: number;
-        public QueryId: string;
-        public constructor(applicationId: number) {
-            this.ApplicationId = applicationId;
-        }
-    }
-
-    export class GetApplicationTeamMember {
-        public static TYPE_NAME: string = 'GetApplicationTeamMember';
-        public JoinedAtUtc: any;
-        public UserId: number;
-        public UserName: string;
-    }
-
-    export class GetApplicationTeamResultInvitation {
-        public static TYPE_NAME: string = 'GetApplicationTeamResultInvitation';
-        public EmailAddress: string;
-        public InvitedAtUtc: any;
-        public InvitedByUserName: string;
-    }
-
-    export class GetApplicationOverview {
-        public static TYPE_NAME: string = 'GetApplicationOverview';
-        public ApplicationId: number;
-        public NumberOfDays: number;
-        public QueryId: string;
-        public constructor(applicationId: number) {
-            this.ApplicationId = applicationId;
-        }
-    }
-
-}
-module OneTrueError.Core.Applications.Events {
-    export class ApplicationDeleted {
-        public static TYPE_NAME: string = 'ApplicationDeleted';
-        public AppKey: string;
-        public ApplicationId: number;
-        public ApplicationName: string;
-        public EventId: string;
-    }
-
-    export class ApplicationCreated {
-        public static TYPE_NAME: string = 'ApplicationCreated';
-        public AppKey: string;
-        public ApplicationId: number;
-        public ApplicationName: string;
-        public CreatedById: number;
-        public SharedSecret: string;
-        public EventId: string;
-        public constructor(id: number, name: string, createdById: number, appKey: string, sharedSecret: string) {
-            this.CreatedById = createdById;
-            this.AppKey = appKey;
-            this.SharedSecret = sharedSecret;
-        }
-    }
-
-    export class UserInvitedToApplication {
-        public static TYPE_NAME: string = 'UserInvitedToApplication';
-        public ApplicationId: number;
-        public ApplicationName: string;
-        public EmailAddress: string;
-        public InvitationKey: string;
-        public InvitedBy: string;
-        public EventId: string;
-        public constructor(invitationKey: string, applicationId: number, applicationName: string, emailAddress: string, invitedBy: string) {
-            this.InvitationKey = invitationKey;
-            this.ApplicationId = applicationId;
-            this.ApplicationName = applicationName;
-            this.EmailAddress = emailAddress;
-            this.InvitedBy = invitedBy;
-        }
-    }
-
-}
-module OneTrueError.Core.Applications.Events.OneTrueError.Api.Core.Accounts.Events {
-    export class UserAddedToApplication {
-        public static TYPE_NAME: string = 'UserAddedToApplication';
-        public AccountId: number;
-        public ApplicationId: number;
-        public EventId: string;
-        public constructor(applicationId: number, accountId: number) {
-            this.ApplicationId = applicationId;
-            this.AccountId = accountId;
-        }
-    }
-
-}
-module OneTrueError.Core.Applications.Commands {
-    export class RemoveTeamMember {
-        public static TYPE_NAME: string = 'RemoveTeamMember';
-        public ApplicationId: number;
-        public UserToRemove: number;
-        public CommandId: string;
-        public constructor(applicationId: number, userToRemove: number) {
-            this.ApplicationId = applicationId;
-            this.UserToRemove = userToRemove;
-        }
-    }
-
-    export class UpdateApplication {
-        public static TYPE_NAME: string = 'UpdateApplication';
-        public ApplicationId: number;
-        public Name: string;
-        public TypeOfApplication: OneTrueError.Core.Applications.TypeOfApplication;
-        public CommandId: string;
-        public constructor(applicationId: number, name: string) {
-            this.ApplicationId = applicationId;
-            this.Name = name;
-        }
-    }
-
-    export class CreateApplication {
-        public static TYPE_NAME: string = 'CreateApplication';
-        public ApplicationKey: string;
-        public Name: string;
-        public TypeOfApplication: OneTrueError.Core.Applications.TypeOfApplication;
-        public UserId: number;
-        public CommandId: string;
-        public constructor(name: string, typeOfApplication: OneTrueError.Core.Applications.TypeOfApplication) {
-            this.Name = name;
-            this.TypeOfApplication = typeOfApplication;
-        }
-    }
-
-    export class DeleteApplication {
-        public static TYPE_NAME: string = 'DeleteApplication';
         public Id: number;
         public CommandId: string;
         public constructor(id: number) {
@@ -1360,6 +1401,16 @@ module OneTrueError.Core.Accounts.Queries {
         }
     }
 
+    export class FindAccountByUserNameResult {
+        public static TYPE_NAME: string = 'FindAccountByUserNameResult';
+        public AccountId: number;
+        public DisplayName: string;
+        public constructor(accountId: number, displayName: string) {
+            this.AccountId = accountId;
+            this.DisplayName = displayName;
+        }
+    }
+
     export class GetAccountById {
         public static TYPE_NAME: string = 'GetAccountById';
         public AccountId: number;
@@ -1375,16 +1426,6 @@ module OneTrueError.Core.Accounts.Queries {
         public QueryId: string;
         public constructor(accountId: number) {
             this.AccountId = accountId;
-        }
-    }
-
-    export class FindAccountByUserNameResult {
-        public static TYPE_NAME: string = 'FindAccountByUserNameResult';
-        public AccountId: number;
-        public DisplayName: string;
-        public constructor(accountId: number, displayName: string) {
-            this.AccountId = accountId;
-            this.DisplayName = displayName;
         }
     }
 

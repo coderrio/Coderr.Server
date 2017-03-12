@@ -9,6 +9,10 @@ namespace OneTrueError.SqlServer.Modules.Versions
         {
             Property(x => x.Id)
                 .PrimaryKey(true);
+            Property(x => x.ReceivedFirstReportAtUtc)
+                .ColumnName("FirstReportDate");
+            Property(x => x.ReceivedLastReportAtUtc)
+                .ColumnName("LastReportDate");
         }
     }
 }
