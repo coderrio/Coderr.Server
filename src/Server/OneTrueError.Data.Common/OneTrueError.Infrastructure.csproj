@@ -68,6 +68,7 @@
     <Compile Include="ConnectionFactory.cs" />
     <Compile Include="IDatabaseUtilities.cs" />
     <Compile Include="IncludeNonPublicMembersContractResolver.cs" />
+    <Compile Include="IUrlHelper.cs" />
     <Compile Include="Net\MimeMapping.cs" />
     <Compile Include="OneTrueSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

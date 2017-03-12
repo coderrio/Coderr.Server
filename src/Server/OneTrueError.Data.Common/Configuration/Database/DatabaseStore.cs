@@ -73,7 +73,7 @@ namespace OneTrueError.Infrastructure.Configuration.Database
                 using (var cmd = connection.CreateCommand())
                 {
                     var index = 0;
-                    foreach (var kvp in section.ToConfigDictionary())
+                    foreach (var kvp in section.ToDictionary())
                     {
                         cmd.CommandText +=
                             string.Format(

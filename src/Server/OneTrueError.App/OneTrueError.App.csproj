@@ -136,6 +136,7 @@
     <Compile Include="Core\Invitations\CommandHandlers\InviteUserHandler.cs" />
     <Compile Include="Core\Invitations\IInvitationRepository.cs" />
     <Compile Include="Core\Invitations\Invitation.cs" />
+    <Compile Include="Core\Notifications\Commands\AddNotificationHandler.cs" />
     <Compile Include="Core\Notifications\EventHandlers\ApplicationDeletedHandler.cs" />
     <Compile Include="Core\Notifications\EventHandlers\CheckForFeedbackNotificationsToSend.cs" />
     <Compile Include="Core\Notifications\EventHandlers\CheckForNotificationsToSend.cs" />
@@ -211,7 +212,7 @@
     <Compile Include="Modules\Tagging\Handlers\GetTagsForIncidentHandler.cs" />
     <Compile Include="Modules\Tagging\Handlers\IdentifyTagsFromIncident.cs" />
     <Compile Include="Modules\Tagging\Handlers\IncidentReopenedHandler.cs" />
-    <Compile Include="Modules\Tagging\IdentifierProvider.cs" />
+    <Compile Include="Modules\Tagging\AssemblyScanningTagIdentifierProvider.cs" />
     <Compile Include="Modules\Tagging\Identifiers\AdoNetIdentifier.cs" />
     <Compile Include="Modules\Tagging\Identifiers\AspNetMvcAndWebApiIdentifier.cs" />
     <Compile Include="Modules\Tagging\Identifiers\ConsoleApplication.cs" />
@@ -226,7 +227,9 @@
     <Compile Include="Modules\Tagging\Identifiers\SqlServerIdentifier.cs" />
     <Compile Include="Modules\Tagging\Identifiers\WcfIdentifier.cs" />
     <Compile Include="Modules\Tagging\Identifiers\WinFormsIdentifier.cs" />
+    <Compile Include="Modules\Tagging\IocIdentifierProvider.cs" />
     <Compile Include="Modules\Tagging\ITagIdentifier.cs" />
+    <Compile Include="Modules\Tagging\ITagIdentifierProvider.cs" />
     <Compile Include="Modules\Tagging\ITagsRepository.cs" />
     <Compile Include="Modules\Tagging\TagIdentifierContext.cs" />
     <Compile Include="Modules\Triggers\Commands\CreateTriggerHandler.cs" />
@@ -263,6 +266,14 @@
     <Compile Include="Modules\Triggers\JsonCreationConverter.cs" />
     <Compile Include="Modules\Triggers\Queries\DomainToDtoConverters.cs" />
     <Compile Include="Modules\Triggers\Queries\GetTriggerHandler.cs" />
+    <Compile Include="Modules\Versions\ApplicationVersion.cs" />
+    <Compile Include="Modules\Versions\Config\ApplicationVersionConfig.cs" />
+    <Compile Include="Modules\Versions\Config\ApplicationVersionConfigItem.cs" />
+    <Compile Include="Modules\Versions\Events\AttachVersionTagToIncident.cs" />
+    <Compile Include="Modules\Versions\Events\GetVersionFromReport.cs" />
+    <Compile Include="Modules\Versions\IVersionRepository.cs" />
+    <Compile Include="Modules\Versions\NewVersionReported.cs" />
+    <Compile Include="Modules\Versions\ApplicationVersionMonth.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

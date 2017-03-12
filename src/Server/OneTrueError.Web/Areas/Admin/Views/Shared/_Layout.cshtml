@@ -45,7 +45,7 @@
                 @foreach (var step in AdminMenu.Steps)
                 {
                     <li @(Url.IsCurrentStep(step) ? "selected=\"selected\"" : "")>
-                        <a href="@Url.Content(step.VirtualPath)">@step.Name</a>
+                        <a href="@Url.Content(step.VirtualPath)">@step.DisplayName</a>
                     </li>
                 }
 

@@ -152,6 +152,7 @@
     <Compile Include="Core\Messaging\EmailResource.cs" />
     <Compile Include="Core\Messaging\NamespaceDoc.cs" />
     <Compile Include="Core\NamespaceDoc.cs" />
+    <Compile Include="Core\Notifications\AddNotification.cs" />
     <Compile Include="Core\Reports\ContextCollectionDTO.cs" />
     <Compile Include="Core\Reports\NamespaceDoc.cs" />
     <Compile Include="Core\Reports\Queries\GetReport.cs" />
@@ -200,6 +201,9 @@
     <Compile Include="Modules\Triggers\TriggerFilterCondition.cs" />
     <Compile Include="Modules\Triggers\TriggerRuleAction.cs" />
     <Compile Include="Modules\Triggers\TriggerRuleBase.cs" />
+    <Compile Include="Modules\Versions\Queries\GetApplicationVersions.cs" />
+    <Compile Include="Modules\Versions\Queries\GetApplicationVersionsResult.cs" />
+    <Compile Include="Modules\Versions\Queries\GetApplicationVersionsResultItem.cs" />
     <Compile Include="NamespaceDoc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Web\Feedback\Queries\GetFeedbackForApplication.cs" />

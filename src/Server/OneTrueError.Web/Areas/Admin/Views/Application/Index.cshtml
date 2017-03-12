@@ -19,6 +19,7 @@
                         <td>@item.Name</td>
                         <td>
                             <a class="btn btn-default" href="@Url.Action("Edit", new {id=item.Id})" data-name="@item.Name">Rename</a>
+                            <a class="btn btn-default" href="@Url.Action("Versions", new {id=item.Id})" data-name="@item.Name" title="Select the assembly which contains the application version">Version assembly</a>
                             <a class="btn btn-danger" href="#@item.Id" data-name="@item.Name">Delete</a>
                         </td>
                     </tr>

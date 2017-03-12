@@ -1,0 +1,31 @@
+﻿<h2>Application versions</h2>
+<p>Lists the application versions and the number of errors each version have.</p>
+<table class="table table-striped">
+    <thead>
+    <th>Version</th>
+    <th>Incidents</th>
+    <th>Reports</th>
+    </thead>
+    <tbody data-collection="Items">
+        <tr>
+            <td data-name="Version"></td>
+            <td data-name="Incidents"></td>
+            <td data-name="Reports"></td>
+        </tr>
+    </tbody>
+</table>
+<p data-unless="Items">
+    No incidents have been reported yet, or you haven't configured version assembly in the admin area.
+</p>
+
+<ul data-navigation="main-navigation">
+    <li>
+        <a href="#/application/:applicationId/">Appinfo</a>
+    </li>
+    <li>
+        <a href="#/application/:applicationId/incidents">Incidents</a>
+    </li>
+    <li>
+        <a href="#/application/:applicationId/feedback">Feedback</a>
+    </li>
+</ul>

@@ -2,7 +2,7 @@
 {
     /// <summary>
     ///     Purpose of this interface is to provide a way to be able to search through the error report context to be able to
-    ///     identify stackoverflow tags.
+    ///     identify StackOverflow.com tags.
     /// </summary>
     public interface ITagIdentifier
     {

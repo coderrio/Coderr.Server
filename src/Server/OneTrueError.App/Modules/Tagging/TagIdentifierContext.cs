@@ -7,7 +7,7 @@ using OneTrueError.App.Modules.Tagging.Domain;
 namespace OneTrueError.App.Modules.Tagging
 {
     /// <summary>
-    ///     Context used when trying to identify stackoverflow tags
+    ///     Context used when trying to identify StackOverflow.com tags
     /// </summary>
     public class TagIdentifierContext
     {
@@ -31,7 +31,12 @@ namespace OneTrueError.App.Modules.Tagging
                 _stacktrace = ex.StackTrace.Split(new[] {"\r\n"}, StringSplitOptions.RemoveEmptyEntries);
             else
                 _stacktrace = new string[0];
+
         }
+        /// <summary>
+        /// Application that the report is for
+        /// </summary>
+        public int ApplicationId { get { return _reportToAnalyze.ApplicationId; } }
 
         /// <summary>
         ///     Exception to find tags for.
@@ -72,10 +77,10 @@ namespace OneTrueError.App.Modules.Tagging
         }
 
         /// <summary>
-        ///     Add a stackoverflow tag
+        ///     Add an incident tag
         /// </summary>
         /// <param name="tag">tag name</param>
-        /// <param name="orderNumber">used to customize in which order the tags appear on the web page.</param>
+        /// <param name="orderNumber">used to customize in which order the tags appear on the web page. 1 = first</param>
         public void AddTag(string tag, int orderNumber)
         {
             if (_tags.Any(x => x.Name == tag))

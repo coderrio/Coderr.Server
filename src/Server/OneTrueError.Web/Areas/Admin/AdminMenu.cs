@@ -39,7 +39,7 @@ namespace OneTrueError.Web.Areas.Admin
 
             var step = Steps[index];
             return
-                $@"<a class=""btn btn- btn-default"" href=""{urlHelper.Content(step.VirtualPath)}"">{step.Name} &gt;&gt;</a>";
+                $@"<a class=""btn btn- btn-default"" href=""{urlHelper.Content(step.VirtualPath)}"">{step.DisplayName} &gt;&gt;</a>";
         }
 
         public static string GetPreviousWizardStepLink(this UrlHelper urlHelper)
@@ -52,7 +52,7 @@ namespace OneTrueError.Web.Areas.Admin
 
             var step = Steps[index];
             return
-                $@"<a class=""btn btn-default"" href=""{urlHelper.Content(step.VirtualPath)}"">&lt;&lt; {step.Name}</a>";
+                $@"<a class=""btn btn-default"" href=""{urlHelper.Content(step.VirtualPath)}"">&lt;&lt; {step.DisplayName}</a>";
         }
 
         public static bool IsCurrentStep(this UrlHelper urlHelper, MenuItem step)

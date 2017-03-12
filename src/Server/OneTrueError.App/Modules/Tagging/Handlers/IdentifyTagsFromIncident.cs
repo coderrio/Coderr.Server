@@ -16,16 +16,19 @@ namespace OneTrueError.App.Modules.Tagging.Handlers
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(IdentifyTagsFromIncident));
         private readonly ITagsRepository _repository;
+        private ITagIdentifierProvider _tagIdentifierProvider;
 
         /// <summary>
         ///     Creates a new instance of <see cref="IdentifyTagsFromIncident" />.
         /// </summary>
         /// <param name="repository">repos</param>
+        /// <param name="tagIdentifierProvider">Used to be able to create tag identifiers in all modules</param>
         /// <exception cref="ArgumentNullException">repository</exception>
-        public IdentifyTagsFromIncident(ITagsRepository repository)
+        public IdentifyTagsFromIncident(ITagsRepository repository, ITagIdentifierProvider tagIdentifierProvider)
         {
             if (repository == null) throw new ArgumentNullException("repository");
             _repository = repository;
+            _tagIdentifierProvider = tagIdentifierProvider;
         }
 
         /// <summary>
@@ -46,8 +49,7 @@ namespace OneTrueError.App.Modules.Tagging.Handlers
 
             _logger.Debug("Checking tags..");
             var ctx = new TagIdentifierContext(e.Report);
-            var identifierProvider = new IdentifierProvider();
-            var identifiers = identifierProvider.GetIdentifiers(ctx);
+            var identifiers = _tagIdentifierProvider.GetIdentifiers(ctx);
             foreach (var identifier in identifiers)
             {
                 identifier.Identify(ctx);

@@ -149,6 +149,11 @@
     <Compile Include="Modules\Triggers\TriggerDtoMapper.cs" />
     <Compile Include="Modules\Triggers\TriggerMapper.cs" />
     <Compile Include="Modules\Triggers\TriggerRepository.cs" />
+    <Compile Include="Modules\Versions\ApplicationVersionConfig.cs" />
+    <Compile Include="Modules\Versions\ApplicationVersionConfigMapper.cs" />
+    <Compile Include="Modules\Versions\ApplicationVersionMapper.cs" />
+    <Compile Include="Modules\Versions\ApplicationVersionMonthMapper.cs" />
+    <Compile Include="Modules\Versions\VersionRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SchemaManager.cs" />
     <Compile Include="SqlServerTools.cs" />
@@ -175,6 +180,9 @@
     <EmbeddedResource Include="Schema\Update.v3.sql" />
     <EmbeddedResource Include="Schema\Update.v4.sql" />
     <EmbeddedResource Include="Schema\Update.v5.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Schema\Update.v6.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

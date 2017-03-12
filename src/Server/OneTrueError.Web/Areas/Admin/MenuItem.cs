@@ -1,17 +1,17 @@
-using System;
+﻿using System;
 using System.Web.Mvc;
 
 namespace OneTrueError.Web.Areas.Admin
 {
     public class MenuItem
     {
-        public MenuItem(string name, string virtualPath)
+        public MenuItem(string displayName, string virtualPath)
         {
-            Name = name;
+            DisplayName = displayName;
             VirtualPath = virtualPath;
         }
 
-        public string Name { get; set; }
+        public string DisplayName { get; set; }
 
         public string VirtualPath { get; set; }
 

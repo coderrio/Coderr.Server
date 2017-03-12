@@ -1,0 +1,30 @@
+﻿@model OneTrueError.Web.Areas.Admin.Models.Applications.ApplicationVersionViewModel
+@{
+    ViewBag.Title = "Application version assembly";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <form method="post" action="@Url.Action("Versions")">
+                <h2>Version assembly</h2>
+                <p>To be able to extract application version you need to specify which assembly you have set your version in (using the "Assembly version" property page in Visual Studio).</p>
+                <p>This allows us to track which versions errors are for, if the number of errors decrease between versions etc.</p>
+                @Html.HiddenFor(x => x.ApplicationId)
+                <div class="form-group">
+                    @if (@Model.Assemblies.Length == 0)
+                    {
+                        <input type="text" name="SelectedAssembly" class="input-lg form-control" value="@Model.SelectedAssembly" placeholder="Application name" />
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(x => x.SelectedAssembly, Model.Assemblies, "(select version assembly)", new { @class = "form-control" })
+                    }
+                </div>
+                <div>
+                    <input type="submit" class="btn btn-lg" value="Save" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

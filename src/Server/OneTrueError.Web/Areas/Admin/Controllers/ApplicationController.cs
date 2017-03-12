@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Routing;
 using DotNetCqs;
 using OneTrueError.Api.Core.Applications.Commands;
 using OneTrueError.Api.Core.Applications.Queries;
+using OneTrueError.Api.Modules.Triggers.Queries;
+using OneTrueError.App.Modules.Versions.Config;
+using OneTrueError.Infrastructure.Configuration;
 using OneTrueError.Web.Areas.Admin.Models.Applications;
 
 namespace OneTrueError.Web.Areas.Admin.Controllers
@@ -73,6 +75,56 @@ namespace OneTrueError.Web.Areas.Admin.Controllers
             var apps = await _queryBus.QueryAsync(new GetApplicationList());
             var model = apps.Select(x => new ApplicationViewModel {Id = x.Id, Name = x.Name}).ToList();
             return View(model);
+        }
+
+        public async Task<ActionResult> Versions(int id)
+        {
+            var items = await FetchAssemblies(id);
+            var model = new ApplicationVersionViewModel
+            {
+                ApplicationId = id,
+                Assemblies = items
+            };
+
+            //null if this is the first time we run or if this specific application have not been configured yet.
+            var item = ConfigurationStore.Instance.Load<ApplicationVersionConfig>();
+            var myAssembly = item?.Items.FirstOrDefault(x => x.ApplicationId == id);
+            model.SelectedAssembly = myAssembly?.AssemblyName;
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Versions(ApplicationVersionViewModel model)
+        {
+            model.Assemblies = await FetchAssemblies(model.ApplicationId);
+            if (!ModelState.IsValid)
+                return View(model);
+
+            //null if this is the first time we run
+            var config = ConfigurationStore.Instance.Load<ApplicationVersionConfig>() ?? new ApplicationVersionConfig();
+            config.AddOrUpdate(model.ApplicationId, model.SelectedAssembly);
+            ConfigurationStore.Instance.Store(config);
+
+            return RedirectToAction("Index", new {usernote = "Assembly was updated successfully."});
+        }
+
+        private async Task<SelectListItem[]> FetchAssemblies(int id)
+        {
+            var query = new GetContextCollectionMetadata(id);
+            var assemblyReslt = await _queryBus.QueryAsync(query);
+            var assemblyCollection = assemblyReslt.FirstOrDefault(x => x.Name == "Assemblies");
+            var items = new SelectListItem[0];
+            if (assemblyCollection != null)
+            {
+                items = (
+                    from x in assemblyCollection.Properties
+                    where !x.StartsWith("System.", StringComparison.OrdinalIgnoreCase)
+                          && !x.StartsWith("Microsoft", StringComparison.OrdinalIgnoreCase)
+                    select new SelectListItem {Value = x, Text = x}
+                ).ToArray();
+            }
+            return items;
         }
     }
 }

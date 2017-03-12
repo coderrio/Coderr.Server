@@ -265,11 +265,12 @@
     <Compile Include="Areas\Admin\AdminMenu.cs" />
     <Compile Include="Areas\Admin\Controllers\ApiKeysController.cs" />
     <Compile Include="Areas\Admin\Controllers\ApplicationController.cs" />
+    <Compile Include="Areas\Admin\MenuItem.cs" />
+    <Compile Include="Areas\Admin\Models\Applications\ApplicationVersionViewModel.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\MessagingController.cs" />
     <Compile Include="Areas\Admin\Controllers\QueuesController.cs" />
     <Compile Include="Areas\Admin\Controllers\ReportingController.cs" />
-    <Compile Include="Areas\Admin\MenuItem.cs" />
     <Compile Include="Areas\Admin\Models\AccountViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ApiKeys\CreateViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ApiKeys\ListViewModel.cs" />
@@ -564,6 +565,7 @@
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Views\Application\Versions.html" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Account\Accept.cshtml" />
     <Content Include="Views\Account\Accepted.html" />
@@ -617,6 +619,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Installation\Views\Setup\Completed.cshtml" />
+    <Content Include="Areas\Admin\Views\Application\Versions.cshtml" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
@@ -646,6 +649,7 @@
     <TypeScriptCompile Include="ViewModels\Account\SettingsViewModel.ts" />
     <TypeScriptCompile Include="ViewModels\Account\WelcomeViewModel.ts" />
     <TypeScriptCompile Include="ViewModels\Application\DetailsViewModel.ts" />
+    <TypeScriptCompile Include="ViewModels\Application\VersionsViewModel.ts" />
     <TypeScriptCompile Include="ViewModels\Application\InstallationViewModel.ts" />
     <TypeScriptCompile Include="ViewModels\Application\TeamViewModel.ts" />
     <TypeScriptCompile Include="ViewModels\ChartViewModel.ts" />
