@@ -62,7 +62,6 @@ namespace OneTrueError.SqlServer.Analysis
 
 
                 cmd.AddParameter("ReportHashCode", reportHashCode);
-                cmd.AddParameter("HashCodeIdentifier", hashCodeIdentifier);
                 cmd.AddParameter("applicationId", applicationId);
 
                 var incidents = cmd.ToList<IncidentBeingAnalyzed>();

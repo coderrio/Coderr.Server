@@ -56,7 +56,8 @@ namespace OneTrueError.ReportAnalyzer.Services
 
             try
             {
-                report.Init(_hashCodeGenerator.GenerateHashCode(report));
+                var hashCode = _hashCodeGenerator.GenerateHashCode(report);
+                report.Init(hashCode);
             }
             catch (Exception ex)
             {
@@ -65,10 +66,8 @@ namespace OneTrueError.ReportAnalyzer.Services
             }
 
             var isReOpened = false;
-            var incident = _repository.FindIncidentForReport(report.ApplicationId, report.ReportHashCode,
-                report.GenerateHashCodeIdentifier());
-
-
+            var firstLine = report.GenerateHashCodeIdentifier();
+            var incident = _repository.FindIncidentForReport(report.ApplicationId, report.ReportHashCode, firstLine);
             if (incident == null)
             {
                 incident = BuildIncident(report);
@@ -156,7 +155,7 @@ namespace OneTrueError.ReportAnalyzer.Services
                 {
                     var item = JObject.Parse(entity.Exception.Everything);
                     var i = new IncidentBeingAnalyzed(entity);
-                    var items = (JObject) item["LoaderExceptions"];
+                    var items = (JObject)item["LoaderExceptions"];
                     var exception = items.First;
 
 

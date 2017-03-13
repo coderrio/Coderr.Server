@@ -116,9 +116,10 @@ namespace OneTrueError.ReportAnalyzer.Domain.Reports
             if (string.IsNullOrEmpty(Exception.StackTrace))
                 return identifier;
 
-            var pos = Exception.StackTrace.IndexOf("\r\n", StringComparison.Ordinal);
+            var trace = HashCodeGenerator.StripLineNumbers(Exception.StackTrace);
+            var pos = trace.IndexOf("\r\n", StringComparison.Ordinal);
             if (pos != -1)
-                identifier += Exception.StackTrace.Substring(0, pos);
+                identifier += trace.Substring(0, pos);
 
             return identifier;
         }

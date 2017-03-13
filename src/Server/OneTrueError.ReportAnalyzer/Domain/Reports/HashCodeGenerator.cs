@@ -62,9 +62,7 @@ namespace OneTrueError.ReportAnalyzer.Domain.Reports
 
             //TODO: Ta bort radnummers stripparen
             var hashSource = report.Exception.FullName + "\r\n";
-            var re = new Regex(RemoveLineNumbersRegEx, RegexOptions.Multiline);
-            var withoutLineNumbers = re.Replace(report.Exception.StackTrace, "$1", 1000);
-            hashSource += withoutLineNumbers;
+            hashSource += StripLineNumbers(report.Exception.StackTrace ?? "");
 
             var hash = 23;
             foreach (var c in hashSource)
@@ -72,6 +70,12 @@ namespace OneTrueError.ReportAnalyzer.Domain.Reports
                 hash = hash*31 + c;
             }
             return hash.ToString("X");
+        }
+
+        internal static string StripLineNumbers(string stacktrace)
+        {
+            var re = new Regex(RemoveLineNumbersRegEx, RegexOptions.Multiline);
+            return re.Replace(stacktrace, "$1", 1000);
         }
     }
 }
