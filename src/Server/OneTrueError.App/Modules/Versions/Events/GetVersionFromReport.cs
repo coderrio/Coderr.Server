@@ -52,6 +52,7 @@ namespace OneTrueError.App.Modules.Versions.Events
                 notice.HoldbackInterval = TimeSpan.FromDays(3);
                 notice.NotificationType = NotifyNotRecognizedVersion;
                 await _commandBus.ExecuteAsync(notice);
+                return;
             }
 
             var isNewIncident = e.Incident.ReportCount <= 1;

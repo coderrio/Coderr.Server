@@ -48,6 +48,9 @@ namespace OneTrueError.App.Core.Notifications.Tasks
                 ? incident.Name.Substring(0, 40) + "..."
                 : incident.Name;
 
+            // need to be safe for subjects
+            shortName = shortName.Replace("\n", ";");
+
             var baseUrl = string.Format("{0}/#/application/{1}/incident/{2}",
                 config.BaseUrl.ToString().TrimEnd('/'),
                 report.ApplicationId,
