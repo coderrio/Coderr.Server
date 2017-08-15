@@ -247,9 +247,7 @@ module Griffin.Net {
             const response = new HttpResponse();
             response.statusCode = xhr.status;
             response.statusReason = xhr.statusText;
-            if (xhr.responseBody) {
-                response.body = xhr.responseBody;
-            } else if (xhr.responseXML) {
+            if (xhr.responseXML) {
                 response.body = xhr.responseXML;
             } else {
                 response.body = xhr.responseText;

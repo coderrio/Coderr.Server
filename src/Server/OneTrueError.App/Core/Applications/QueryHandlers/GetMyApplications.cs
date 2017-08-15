@@ -43,11 +43,16 @@ namespace OneTrueError.App.Core.Applications.QueryHandlers
             if (query == null) throw new ArgumentNullException("query");
             ApplicationListItem[] result;
 
+            var isSysAdmin = false;
             if (query.AccountId > 0)
             {
                 var account = await _accountRepository.GetByIdAsync(query.AccountId);
                 if (account.IsSysAdmin)
+                {
                     query.AccountId = 0;
+                    isSysAdmin = true;
+                }
+
             }
 
             if (query.AccountId != 0)
@@ -55,12 +60,12 @@ namespace OneTrueError.App.Core.Applications.QueryHandlers
                 var apps = await _applicationRepository.GetForUserAsync(query.AccountId);
                 result = (
                     from x in apps
-                    select new ApplicationListItem(x.ApplicationId, x.ApplicationName) {IsAdmin = x.IsAdmin}
+                    select new ApplicationListItem(x.ApplicationId, x.ApplicationName) { IsAdmin = x.IsAdmin }
                 ).ToArray();
             }
             else
                 result = (await _applicationRepository.GetAllAsync())
-                    .Select(x => new ApplicationListItem(x.Id, x.Name))
+                    .Select(x => new ApplicationListItem(x.Id, x.Name) { IsAdmin = isSysAdmin })
                     .ToArray();
 
             return result;

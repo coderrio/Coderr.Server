@@ -171,7 +171,7 @@ module Griffin {
 
             this.id = this.containerElement.id;
             const id = this.containerElement.id;
-            this.element = (this.containerElement.getElementsByTagName("textarea")[0]);
+            this.element = <HTMLTextAreaElement>(this.containerElement.getElementsByTagName("textarea")[0]);
             this.previewElement = document.getElementById(id + "-preview");
             this.toolbarElement = (this.containerElement.getElementsByClassName("toolbar")[0] as HTMLElement);
             this.textSelector = new TextSelector(this.element);
@@ -851,13 +851,13 @@ module Griffin {
             } else if (typeof this.element.setSelectionRange !== "undefined") {
                 this.element.focus();
                 this.element.setSelectionRange(start, end);
-            } else if (typeof this.element.createTextRange !== "undefined") {
-                const range = this.element.createTextRange();
-                range.collapse(true);
-                range.moveEnd("character", end);
-                range.moveStart("character", start);
-                range.select();
-            }
+            } //else if (typeof this.element.createTextRange !== "undefined") {
+            //    const range = this.element.createTextRange();
+            //    range.collapse(true);
+            //    range.moveEnd("character", end);
+            //    range.moveStart("character", start);
+            //    range.select();
+            //}
 
             return this;
         }
@@ -885,12 +885,12 @@ module Griffin {
             } else if (typeof this.element.setSelectionRange !== "undefined") {
                 this.element.focus();
                 this.element.setSelectionRange(position, 0);
-            } else if (typeof this.element.createTextRange !== "undefined") {
-                const range = this.element.createTextRange();
-                range.collapse(true);
-                range.moveStart("character", position);
-                range.select();
-            }
+            } //else if (typeof this.element.createTextRange !== "undefined") {
+            //    const range = this.element.createTextRange();
+            //    range.collapse(true);
+            //    range.moveStart("character", position);
+            //    range.select();
+            //}
 
         }
     }

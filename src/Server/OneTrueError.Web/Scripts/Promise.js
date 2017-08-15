@@ -76,12 +76,12 @@ var P;
         Once a promise is either Rejected or Resolved, it can not change its
         status anymore.
     */
+    var Status;
     (function (Status) {
         Status[Status["Unfulfilled"] = 0] = "Unfulfilled";
         Status[Status["Rejected"] = 1] = "Rejected";
         Status[Status["Resolved"] = 2] = "Resolved";
-    })(P.Status || (P.Status = {}));
-    var Status = P.Status;
+    })(Status = P.Status || (P.Status = {}));
     /**
         Creates a promise that gets resolved when all the promises in the argument list get resolved.
         As soon one of the arguments gets rejected, the resulting promise gets rejected.
@@ -90,7 +90,7 @@ var P;
     function when() {
         var promises = [];
         for (var _i = 0; _i < arguments.length; _i++) {
-            promises[_i - 0] = arguments[_i];
+            promises[_i] = arguments[_i];
         }
         var allDone = defer();
         if (!promises.length) {
