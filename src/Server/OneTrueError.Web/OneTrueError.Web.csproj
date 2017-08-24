@@ -18,11 +18,12 @@
     <RootNamespace>OneTrueError.Web</RootNamespace>
     <SchemaVersion>2.0</SchemaVersion>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <TypeScriptToolsVersion>1.8</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>2.3</TypeScriptToolsVersion>
     <UseGlobalApplicationHostFile />
     <UseIISExpress>true</UseIISExpress>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -625,7 +626,6 @@
     <None Include="Properties\PublishProfiles\WebPI Site.pubxml" />
     <None Include="Properties\PublishProfiles\WebPI VDir.pubxml" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-2.2.4.intellisense.js" />
   </ItemGroup>
   <ItemGroup>

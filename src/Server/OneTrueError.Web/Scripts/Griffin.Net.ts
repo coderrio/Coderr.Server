@@ -73,23 +73,23 @@ module Griffin.Net {
             const data = str.trim()
                 .split("&")
                 .reduce((ret, param) => {
-                    var parts = param.replace(/\+/g, " ").split("=");
-                    var key = parts[0];
-                    var val = parts[1];
+                        var parts = param.replace(/\+/g, " ").split("=");
+                        var key = parts[0];
+                        var val = parts[1];
 
-                    key = decodeURIComponent(key);
-                    val = val === undefined ? null : decodeURIComponent(val);
-                    if (!ret.hasOwnProperty(key)) {
-                        ret[key] = val;
-                    } else if (Array.isArray(ret[key])) {
-                        ret[key].push(val);
-                    } else {
-                        ret[key] = [ret[key], val];
-                    }
+                        key = decodeURIComponent(key);
+                        val = val === undefined ? null : decodeURIComponent(val);
+                        if (!ret.hasOwnProperty(key)) {
+                            ret[key] = val;
+                        } else if (Array.isArray(ret[key])) {
+                            ret[key].push(val);
+                        } else {
+                            ret[key] = [ret[key], val];
+                        }
 
-                    return ret;
-                },
-                {});
+                        return ret;
+                    },
+                    {});
 
             return data;
         }
@@ -130,7 +130,7 @@ module Griffin.Net {
 
         post(url: string,
             body: any = null,
-            contentType: string= "application/x-www-form-urlencoded",
+            contentType: string = "application/x-www-form-urlencoded",
             queryString: any = null,
             headers: any = null): P.Promise<HttpResponse> {
             const request = new HttpRequest("POST", url);
@@ -227,7 +227,7 @@ module Griffin.Net {
         }
 
         private urlEncodeObject(obj: any, prefix: string = null): string {
-            const str = [];
+            const str: string[] = [];
             for (let p in obj) {
                 if (obj.hasOwnProperty(p)) {
                     const k = prefix ? prefix + "." + p : p;
@@ -235,9 +235,11 @@ module Griffin.Net {
                     if (v instanceof Array) {
 
                     }
-                    str.push(typeof v == "object"
+                    var value = typeof v == "object"
                         ? this.urlEncodeObject(v, k)
-                        : encodeURIComponent(k) + "=" + encodeURIComponent(v));
+                        : encodeURIComponent(k) + "=" + encodeURIComponent(v);
+
+                    str.push(value);
                 }
             }
             return str.join("&");
@@ -247,9 +249,7 @@ module Griffin.Net {
             const response = new HttpResponse();
             response.statusCode = xhr.status;
             response.statusReason = xhr.statusText;
-            if (xhr.responseBody) {
-                response.body = xhr.responseBody;
-            } else if (xhr.responseXML) {
+            if (xhr.responseXML) {
                 response.body = xhr.responseXML;
             } else {
                 response.body = xhr.responseText;

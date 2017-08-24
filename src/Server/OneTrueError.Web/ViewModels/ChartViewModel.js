@@ -54,6 +54,10 @@ var OneTrueError;
             if (this.lineChart !== null)
                 this.lineChart.destroy();
             if (data.datasets.length) {
+                //let ds = new Dataset();
+                //ds.label = "";
+                //ds.data = new 
+                //data.datasets.push()
             }
             for (var j = 0; j < data.datasets.length; j++) {
                 data.datasets[j] = this.mergeOptions(data.datasets[j], LineChart.LineThemes[j]);
@@ -112,58 +116,58 @@ var OneTrueError;
                 legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span class=\"glyphicon glyphicon-stop\" style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
             };
         };
-        LineChart.LineThemes = [
-            {
-                fillColor: "rgba(245,254,22,0.2)",
-                strokeColor: "#ffda70",
-                pointColor: "#ffda70",
-                pointStrokeColor: "#ffda70",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(255,255,255,0.5)"
-            },
-            {
-                fillColor: "rgba(221,19,165,0.2)",
-                strokeColor: "#ff9570",
-                pointColor: "#ff9570",
-                pointStrokeColor: "#ff9570",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(255,255,255,0.5)"
-            },
-            {
-                fillColor: "rgba(255,82,22,0.2)",
-                strokeColor: "#ff5216",
-                pointColor: "#ff5216",
-                pointStrokeColor: "#ff5216",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(255,255,255,0.5)"
-            },
-            {
-                fillColor: "rgba(255,152,22,0.2)",
-                strokeColor: "#ffc216",
-                pointColor: "#ffc216",
-                pointStrokeColor: "#ffc216",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(255,255,255,0.5)",
-            },
-            {
-                fillColor: "rgba(255,187,22,0.2)",
-                strokeColor: "#ff9816",
-                pointColor: "#ff9816",
-                pointStrokeColor: "#ff9816",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(255,255,255,0.5)",
-            },
-            {
-                fillColor: "rgba(255,82,22,0.2)",
-                strokeColor: "#ff5216",
-                pointColor: "#ff5216",
-                pointStrokeColor: "#ff5216",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(255,255,255,0.5)",
-            }
-        ];
         return LineChart;
     }());
+    LineChart.LineThemes = [
+        {
+            fillColor: "rgba(245,254,22,0.2)",
+            strokeColor: "#ffda70",
+            pointColor: "#ffda70",
+            pointStrokeColor: "#ffda70",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(255,255,255,0.5)"
+        },
+        {
+            fillColor: "rgba(221,19,165,0.2)",
+            strokeColor: "#ff9570",
+            pointColor: "#ff9570",
+            pointStrokeColor: "#ff9570",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(255,255,255,0.5)"
+        },
+        {
+            fillColor: "rgba(255,82,22,0.2)",
+            strokeColor: "#ff5216",
+            pointColor: "#ff5216",
+            pointStrokeColor: "#ff5216",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(255,255,255,0.5)"
+        },
+        {
+            fillColor: "rgba(255,152,22,0.2)",
+            strokeColor: "#ffc216",
+            pointColor: "#ffc216",
+            pointStrokeColor: "#ffc216",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(255,255,255,0.5)",
+        },
+        {
+            fillColor: "rgba(255,187,22,0.2)",
+            strokeColor: "#ff9816",
+            pointColor: "#ff9816",
+            pointStrokeColor: "#ff9816",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(255,255,255,0.5)",
+        },
+        {
+            fillColor: "rgba(255,82,22,0.2)",
+            strokeColor: "#ff5216",
+            pointColor: "#ff5216",
+            pointStrokeColor: "#ff5216",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(255,255,255,0.5)",
+        }
+    ];
     OneTrueError.LineChart = LineChart;
 })(OneTrueError || (OneTrueError = {}));
 //# sourceMappingURL=ChartViewModel.js.map

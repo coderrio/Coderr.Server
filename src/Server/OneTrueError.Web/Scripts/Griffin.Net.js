@@ -137,6 +137,7 @@ var Griffin;
                             throw "You may not specify 'Content-Type' as a header, use the specific property.";
                         //if (request.hasOwnProperty(header)) {
                         xhr.setRequestHeader(header, request.headers[header]);
+                        //}
                     }
                 }
                 if (!request.contentType || request.contentType === "")
@@ -190,9 +191,10 @@ var Griffin;
                         var v = obj[p];
                         if (v instanceof Array) {
                         }
-                        str.push(typeof v == "object"
+                        var value = typeof v == "object"
                             ? this.urlEncodeObject(v, k)
-                            : encodeURIComponent(k) + "=" + encodeURIComponent(v));
+                            : encodeURIComponent(k) + "=" + encodeURIComponent(v);
+                        str.push(value);
                     }
                 }
                 return str.join("&");
@@ -201,10 +203,7 @@ var Griffin;
                 var response = new HttpResponse();
                 response.statusCode = xhr.status;
                 response.statusReason = xhr.statusText;
-                if (xhr.responseBody) {
-                    response.body = xhr.responseBody;
-                }
-                else if (xhr.responseXML) {
+                if (xhr.responseXML) {
                     response.body = xhr.responseXML;
                 }
                 else {
@@ -228,9 +227,9 @@ var Griffin;
                 }
                 return response;
             };
-            HttpClient.REDIRECT_401_TO = "/account/login";
             return HttpClient;
         }());
+        HttpClient.REDIRECT_401_TO = "/account/login";
         Net.HttpClient = HttpClient;
     })(Net = Griffin.Net || (Griffin.Net = {}));
 })(Griffin || (Griffin = {})); // ReSharper restore InconsistentNaming

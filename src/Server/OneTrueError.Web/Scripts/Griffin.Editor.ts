@@ -171,7 +171,7 @@ module Griffin {
 
             this.id = this.containerElement.id;
             const id = this.containerElement.id;
-            this.element = (this.containerElement.getElementsByTagName("textarea")[0]);
+            this.element = <HTMLTextAreaElement>(this.containerElement.getElementsByTagName("textarea")[0]);
             this.previewElement = document.getElementById(id + "-preview");
             this.toolbarElement = (this.containerElement.getElementsByClassName("toolbar")[0] as HTMLElement);
             this.textSelector = new TextSelector(this.element);
@@ -232,20 +232,20 @@ module Griffin {
             }
 
             let twin = $(this).data("twin-area");
-            if (typeof twin === "undefined") {
-                twin = $('<textarea style="position:absolute; top: -10000px"></textarea>');
+            if (twin == null) {
+                twin = $("<textarea style=\"position:absolute; top: -10000px\"></textarea>");
                 twin.appendTo("body");
                 //div.appendTo('body');
                 $(this).data("twin-area", twin);
                 $(this)
                     .data("originalSize",
-                    {
-                        width: this.element.clientWidth,
-                        height: this.element.clientHeight,
-                        //position: data.editor.css('position'), 
-                        top: this.getTopPos(this.element),
-                        left: this.getLeftPos(this.element)
-                    });
+                        {
+                            width: this.element.clientWidth,
+                            height: this.element.clientHeight,
+                            //position: data.editor.css('position'), 
+                            top: this.getTopPos(this.element),
+                            left: this.getLeftPos(this.element)
+                        });
             }
             twin.css("height", this.element.clientHeight);
             twin.css("width", this.element.clientWidth);
@@ -274,25 +274,24 @@ module Griffin {
         private bindEditorEvents(): void {
             var self = this;
             this.element.addEventListener("focus",
-            (e: FocusEvent) => {
-                //grow editor
-            });
+                () => {
+                    //grow editor
+                });
             this.element.addEventListener("blur",
-            (e: FocusEvent) => {
-                //shrink editor
-            });
+                () => {
+                    //shrink editor
+                });
             this.element.addEventListener("keyup",
-            (e: KeyboardEvent) => {
-                self.preview();
-                //self.invokeAutoSize();
-            });
+                () => {
+                    self.preview();
+                    //self.invokeAutoSize();
+                });
             this.element.addEventListener("paste",
-            (e: any) => {
-                setTimeout(function() {
+                () => {
+                    setTimeout(() => {
                         self.preview();
-                    },
-                    100);
-            });
+                    }, 100);
+                });
         }
 
         private bindToolbarEvents(): void {
@@ -303,11 +302,10 @@ module Griffin {
                 if (spans[i].className.indexOf("button") === -1)
                     continue;
                 const button = spans[i];
-                button.addEventListener("click",
-                (e: MouseEvent) => {
-                    var btn = e.target as HTMLElement;
-                    if (btn.tagName != "span") {
-                        btn = (e.target as HTMLElement).parentElement;
+                button.addEventListener("click", (e: MouseEvent) => {
+                    var btn = <HTMLElement>e.target;
+                    if (btn.tagName !== "span") {
+                        btn = (<HTMLElement>e.target).parentElement;
                     }
                     var actionName = self.getActionNameFromClass(btn.className);
                     self.invokeAction(actionName);
@@ -322,37 +320,37 @@ module Griffin {
 
             //required to override browser keys
             document.addEventListener("keydown",
-            (e: KeyboardEvent) => {
-                if (!e.ctrlKey)
-                    return;
-                var key = String.fromCharCode(e.which);
-                if (!key || key.length === 0)
-                    return;
-                if (e.target !== self.element)
-                    return;
+                (e: KeyboardEvent) => {
+                    if (!e.ctrlKey)
+                        return;
+                    var key = String.fromCharCode(e.which);
+                    if (!key || key.length === 0)
+                        return;
+                    if (e.target !== self.element)
+                        return;
 
-                var actionName = this.keyMap[key];
-                if (actionName) {
-                    e.cancelBubble = true;
-                    e.stopPropagation();
-                    e.preventDefault();
-                }
-            });
+                    var actionName = this.keyMap[key];
+                    if (actionName) {
+                        e.cancelBubble = true;
+                        e.stopPropagation();
+                        e.preventDefault();
+                    }
+                });
             this.element.addEventListener("keyup",
-            (e: KeyboardEvent) => {
-                if (!e.ctrlKey)
-                    return;
+                (e: KeyboardEvent) => {
+                    if (!e.ctrlKey)
+                        return;
 
-                var key = String.fromCharCode(e.which);
-                if (!key || key.length === 0)
-                    return;
+                    var key = String.fromCharCode(e.which);
+                    if (!key || key.length === 0)
+                        return;
 
-                var actionName = this.keyMap[key];
-                if (actionName) {
-                    this.invokeAction(actionName);
-                    self.preview();
-                }
-            });
+                    var actionName = this.keyMap[key];
+                    if (actionName) {
+                        this.invokeAction(actionName);
+                        self.preview();
+                    }
+                });
         }
 
         /**
@@ -398,20 +396,19 @@ module Griffin {
             }
             if (this.syntaxHighlighter) {
                 this.editorTimer = setTimeout(() => {
-                        var tags = this.previewElement.getElementsByTagName("code");
-                        var inlineBlocks = [];
-                        var codeBlocks = [];
-                        for (let i = 0; i < tags.length; i++) {
-                            const elem = tags[i] as HTMLElement;
-                            if (elem.parentElement.tagName === "PRE") {
-                                codeBlocks.push(elem);
-                            } else {
-                                inlineBlocks.push(elem);
-                            }
+                    var tags = this.previewElement.getElementsByTagName("code");
+                    var inlineBlocks = [];
+                    var codeBlocks = [];
+                    for (let i = 0; i < tags.length; i++) {
+                        const elem = tags[i] as HTMLElement;
+                        if (elem.parentElement.tagName === "PRE") {
+                            codeBlocks.push(elem);
+                        } else {
+                            inlineBlocks.push(elem);
                         }
-                        this.syntaxHighlighter.highlight(inlineBlocks, codeBlocks);
-                    },
-                    1000);
+                    }
+                    this.syntaxHighlighter.highlight(inlineBlocks, codeBlocks);
+                }, 1000);
             }
         }
 
@@ -459,9 +456,9 @@ module Griffin {
                 $('[name="imageCaption"]', dialog).val(context.selection.text());
             }
             dialog.on("shown.bs.modal",
-            () => {
-                $('[name="imageUrl"]', dialog).focus();
-            });
+                () => {
+                    $('[name="imageUrl"]', dialog).focus();
+                });
 
 
             dialog.modal({
@@ -483,13 +480,13 @@ module Griffin {
                         context.editorElement.focus();
                     });
                 dialog.on("shown.bs.modal",
-                () => {
-                    $('[name="linkUrl"]', dialog).focus();
-                });
+                    () => {
+                        $('[name="linkUrl"]', dialog).focus();
+                    });
                 dialog.on("hidden.bs.modal",
-                () => {
-                    context.editorElement.focus();
-                });
+                    () => {
+                        context.editorElement.focus();
+                    });
             }
 
             if (context.selection.isSelected()) {
@@ -514,15 +511,16 @@ module Griffin {
         invokeAction(context: IToolbarContext) {
             //			console.log(griffinEditor);
 
-            const method = `action${context.actionName.substr(0, 1).toUpperCase()}${context.actionName.substr(1)}`;
-            if (this[method]) {
+            const methodName = `action${context.actionName.substr(0, 1).toUpperCase()}${context.actionName.substr(1)}`;
+            if (this[methodName]) {
                 const args = [];
-                args[0] = context.selection;
-                args[1] = context;
-                return this[method].apply(this, args);
+                args[0] = <any>context.selection;
+                args[1] = <any>context;
+                var method = this[methodName];
+                return method.apply(this, args);
             } else {
                 if (typeof alert !== "undefined") {
-                    alert(`Missing ${method} in the active textHandler (griffinEditorExtension)`);
+                    alert(`Missing ${methodName} in the active textHandler (griffinEditorExtension)`);
                 }
             }
 
@@ -601,8 +599,9 @@ module Griffin {
             const isSelected = selection.isSelected();
             if (!isSelected) {
                 const text = selection.element.value;
-                const orgPos = selection.get().start;;
+                const orgPos = selection.get().start;
                 let xStart = selection.get().start;
+                console.log(orgPos, text.substr(xStart));
                 let found = false;
 
                 //find beginning of line so that we can check
@@ -611,9 +610,10 @@ module Griffin {
                     const ch = text.substr(xStart, 1);
                     if (ch === "\r" || ch === "\n") {
                         if (text.substr(xStart + 1, textToAdd.length) === textToAdd) {
-                            selection.select(xStart + 1, textToAdd.length);
+                            selection.select(xStart + 1, xStart + 1 + textToAdd.length);
                             selection.replace("");
                         } else {
+                            selection.select(xStart + 1, xStart + 1);
                             selection.replace(textToAdd);
                         }
                         found = true;
@@ -636,7 +636,8 @@ module Griffin {
             }
 
             const pos = selection.get();
-            selection.replace(textToAdd + selection.text());
+            var newText = textToAdd + selection.text();
+            selection.replace(newText);
             selection.select(pos.end + textToAdd.length, pos.end + textToAdd.length);
         }
 
@@ -667,7 +668,7 @@ module Griffin {
         private actionSourcecode(selection: TextSelector) {
             const pos = selection.get();
             if (!selection.isSelected()) {
-                selection.replace("> ");
+                selection.replace("    ");
                 selection.select(pos.start + 2, pos.start + 2);
                 return;
             }
@@ -729,7 +730,7 @@ module Griffin {
             } else {
                 options.title = text;
             }
-            context.editor.dialogProvider.image(options,
+            context.editor.dialogProvider.image(<IDialogProviderContext>options,
                 result => {
                     var newText = `![${result.title}](${result.href})`;
                     selection.load();
@@ -759,7 +760,7 @@ module Griffin {
                     options.text = text;
                 }
             }
-            context.editor.dialogProvider.link(options,
+            context.editor.dialogProvider.link(<IDialogProviderContext>options,
                 result => {
                     selection.load();
                     var newText = `[${result.text}](${result.url})`;
@@ -782,6 +783,7 @@ module Griffin {
                 this.element = elementOrId;
             }
         }
+
 
         /** @returns object {start: X, end: Y, length: Z} 
           * x = start character
@@ -810,7 +812,7 @@ module Griffin {
         }
 
         /** Replace selected text with the specified one */
-        replace(newText: string) {
+        replace(newText: string): TextSelector {
             if (typeof this.element.selectionStart !== "undefined") {
                 this.element.value = this.element.value.substr(0, this.element.selectionStart) +
                     newText +
@@ -818,8 +820,52 @@ module Griffin {
                 return this;
             }
 
-            this.element.focus();
-            document["selection"].createRange().text = newText;
+
+            //source: https://stackoverflow.com/questions/5393922/javascript-replace-selection-all-browsers
+
+            if (typeof window.getSelection != "undefined") {
+                // IE 9 and other non-IE browsers
+                const sel = window.getSelection();
+
+                // Test that the Selection object contains at least one Range
+                if (sel.getRangeAt && sel.rangeCount) {
+                    // Get the first Range (only Firefox supports more than one)
+                    const range = window.getSelection().getRangeAt(0);
+                    range.deleteContents();
+
+                    // Create a DocumentFragment to insert and populate it with HTML
+                    // Need to test for the existence of range.createContextualFragment
+                    // because it's non-standard and IE 9 does not support it
+                    let fragment: DocumentFragment;
+                    if (range.createContextualFragment) {
+                        fragment = range.createContextualFragment(newText);
+                    } else {
+                        // In IE 9 we need to use innerHTML of a temporary element
+                        var div = document.createElement("div"), child;
+                        div.innerHTML = newText;
+                        fragment = document.createDocumentFragment();
+                        while ((child = div.firstChild)) {
+                            fragment.appendChild(child);
+                        }
+                    }
+                    var firstInsertedNode = fragment.firstChild;
+                    var lastInsertedNode = fragment.lastChild;
+                    range.insertNode(fragment);
+                    //if (selectInserted) {
+                    //    if (firstInsertedNode) {
+                    //        range.setStartBefore(firstInsertedNode);
+                    //        range.setEndAfter(lastInsertedNode);
+                    //    }
+                    //    sel.removeAllRanges();
+                    //    sel.addRange(range);
+                    //}
+                }
+            } else if (document['selection'] && document['selection'].type !== "Control") {
+                // IE 8 and below
+                const range = document['selection'].createRange();
+                range.pasteHTML(newText);
+            }
+
             return this;
         }
 
@@ -838,7 +884,7 @@ module Griffin {
          * @param start Start character
          * @param end End character
          */
-        select(startOrSelection: any, end?: number) {
+        select(startOrSelection: any, end?: number): TextSelector {
             let start = startOrSelection;
 
             if (typeof startOrSelection.start !== "undefined") {
@@ -851,32 +897,25 @@ module Griffin {
             } else if (typeof this.element.setSelectionRange !== "undefined") {
                 this.element.focus();
                 this.element.setSelectionRange(start, end);
-            } else if (typeof this.element.createTextRange !== "undefined") {
-                const range = this.element.createTextRange();
-                range.collapse(true);
-                range.moveEnd("character", end);
-                range.moveStart("character", start);
-                range.select();
+            } else {
+                throw new Error("Selection not supported.");
             }
 
             return this;
         }
 
         /** @returns if anything is selected */
-        isSelected() {
+        isSelected(): boolean {
             return this.get().length !== 0;
         }
 
         /** @returns selected text */
-        text() {
-            if (typeof document["selection"] !== "undefined") {
-                //elem.focus();
-                //console.log(document.selection.createRange().text);
-                return document["selection"].createRange().text;
+        text(): string {
+            if (typeof document['selection'] !== 'undefined') {
+                return document['selection'].createRange().text;
             }
 
-            return this.element.value.substr(this.element.selectionStart,
-                this.element.selectionEnd - this.element.selectionStart);
+            return this.element.value.substr(this.element.selectionStart, this.element.selectionEnd - this.element.selectionStart);
         }
 
         moveCursor(position: number) {
@@ -885,11 +924,8 @@ module Griffin {
             } else if (typeof this.element.setSelectionRange !== "undefined") {
                 this.element.focus();
                 this.element.setSelectionRange(position, 0);
-            } else if (typeof this.element.createTextRange !== "undefined") {
-                const range = this.element.createTextRange();
-                range.collapse(true);
-                range.moveStart("character", position);
-                range.select();
+            } else {
+                throw new Error("Selection not supported.");
             }
 
         }
