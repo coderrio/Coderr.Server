@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Security;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -52,14 +53,21 @@ namespace OneTrueError.App.Core.Invitations.CommandHandlers
             _userRepository = userRepository;
             _applicationRepository = applicationRepository;
             _commandBus = commandBus;
+            PrincipalAccessor = () => ClaimsPrincipal.Current;
         }
+
+        /// <summary>
+        /// To enable switching principal for unit tests
+        /// </summary>
+        internal Func<ClaimsPrincipal> PrincipalAccessor { get; set; }
 
         /// <inheritdoc />
         public async Task ExecuteAsync(InviteUser command)
         {
             var inviter = await _userRepository.GetUserAsync(command.UserId);
-            if (!ClaimsPrincipal.Current.IsSysAdmin() &&
-                !ClaimsPrincipal.Current.IsApplicationAdmin(command.ApplicationId))
+            var principal = PrincipalAccessor();
+            if (!principal.IsSysAdmin() &&
+                !principal.IsApplicationAdmin(command.ApplicationId))
             {
                 _logger.Warn($"User {command.UserId} attempted to do an invite for an application: {command.ApplicationId}.");
                 throw new SecurityException("You are not an admin of that application.");
