@@ -68,10 +68,21 @@ namespace OneTrueError.SqlServer.Core.ApiKeys
             var key = await _uow.FirstAsync<ApiKey>("GeneratedKey=@1", apiKey);
             var sql = "SELECT [ApplicationId] FROM [ApiKeyApplications] WHERE [ApiKeyId] = @1";
             var apps = await _uow.ToListAsync(new IntMapper(), sql, key.Id);
+
+            // apikeys without application restrictions should have access to all applications.
+            if (apps.Count == 0)
+            {
+                sql = "SELECT [Id] FROM [Applications]";
+                apps = await _uow.ToListAsync(new IntMapper(), sql);
+
+            }
+
             foreach (var app in apps)
             {
                 key.Add(app);
             }
+
+            
             return key;
         }
 

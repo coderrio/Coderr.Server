@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using Griffin.Data;
@@ -155,7 +156,8 @@ namespace OneTrueError.Web.Areas.Receiver.Helpers
                         cmd.AddParameter("appKey", appKey);
                         cmd.AddParameter("signature", sig);
                         var p = cmd.CreateParameter();
-                        p.SqlDbType = SqlDbType.Image;
+                        var json = Encoding.UTF8.GetString(reportBody);
+                        p.SqlDbType = SqlDbType.Binary;
                         p.ParameterName = "reportbody";
                         p.Value = reportBody;
                         cmd.Parameters.Add(p);

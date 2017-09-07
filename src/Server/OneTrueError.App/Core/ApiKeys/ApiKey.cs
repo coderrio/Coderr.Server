@@ -12,7 +12,7 @@ namespace OneTrueError.App.Core.ApiKeys
     /// </summary>
     public class ApiKey
     {
-        private readonly List<Claim> _claims = new List<Claim>();
+        private List<Claim> _claims = new List<Claim>();
 
         /// <summary>
         ///     Application that will be using this key
@@ -28,7 +28,7 @@ namespace OneTrueError.App.Core.ApiKeys
         ///         Typically contains <see cref="OneTrueClaims.Application" /> to identity which applications the key can access.
         ///     </para>
         /// </remarks>
-        public Claim[] Claims { get; set; }
+        public Claim[] Claims { get { return _claims.ToArray(); } private set { _claims = new List<Claim>(value); } }
 
         /// <summary>
         ///     When this key was generated
@@ -44,7 +44,6 @@ namespace OneTrueError.App.Core.ApiKeys
         ///     Api key
         /// </summary>
         public string GeneratedKey { get; set; }
-
 
         /// <summary>
         ///     PK
