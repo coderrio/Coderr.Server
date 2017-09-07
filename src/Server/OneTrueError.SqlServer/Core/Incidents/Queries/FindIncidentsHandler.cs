@@ -41,8 +41,13 @@ namespace OneTrueError.SqlServer.Core.Incidents.Queries
                 if (query.FreeText != null)
                 {
                     sqlQuery += @" AND (
-                                    Incidents.Id IN (SELECT Distinct IncidentId FROM ErrorReports WHERE StackTrace LIKE @FreeText
-                                    Or Incidents.Description LIKE @FreeText)
+                                    Incidents.Id IN 
+                                    (
+                                        SELECT Distinct IncidentId 
+                                        FROM ErrorReports 
+                                        WHERE StackTrace LIKE @FreeText 
+                                            OR ErrorReports.Title LIKE @FreeText
+                                            OR Incidents.Description LIKE @FreeText)
                                     )";
                     cmd.AddParameter("FreeText", $"%{query.FreeText}%");
                 }
