@@ -50,9 +50,9 @@ The context information will be attached as:
 
 ## Community
 
-* [Discussion board](https://discuss.onetrueerror.com]
+* [Discussion board](https://discuss.onetrueerror.com)
 * [Report bugs](https://github.com/onetrueerror/onetrueerror.server/issues)
-* [Documentation](https://onetrueerror.com/documentation]
+* [Documentation](https://onetrueerror.com/documentation)
 * [Commercial support](mailto:support@onetrueerror.com?subject=Commercial%20support%20inquiry)
 
 ## Licensing
