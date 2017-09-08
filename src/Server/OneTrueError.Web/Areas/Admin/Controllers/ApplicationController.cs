@@ -11,6 +11,7 @@ using OneTrueError.Web.Areas.Admin.Models.Applications;
 
 namespace OneTrueError.Web.Areas.Admin.Controllers
 {
+    [Authorize]
     public class ApplicationController : Controller
     {
         private readonly ICommandBus _cmdBus;

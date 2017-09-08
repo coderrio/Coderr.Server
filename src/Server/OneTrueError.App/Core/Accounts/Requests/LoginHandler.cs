@@ -69,7 +69,8 @@ namespace OneTrueError.App.Core.Accounts.Requests
             {
                 Result = LoginResult.Successful,
                 UserName = account.UserName,
-                AccountId = account.Id
+                AccountId = account.Id,
+                IsSysAdmin = account.IsSysAdmin
             };
         }
     }

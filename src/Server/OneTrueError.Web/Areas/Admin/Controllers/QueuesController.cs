@@ -6,6 +6,7 @@ using OneTrueError.Web.Areas.Admin.Models;
 
 namespace OneTrueError.Web.Areas.Admin.Controllers
 {
+    [Authorize]
     public class QueuesController : Controller
     {
         public ActionResult Index()

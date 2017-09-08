@@ -19,5 +19,10 @@
         ///     User name
         /// </summary>
         public string UserName { get; set; }
+
+        /// <summary>
+        /// User can change system wide settings.
+        /// </summary>
+        public bool IsSysAdmin { get; set; }
     }
 }

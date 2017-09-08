@@ -42,6 +42,7 @@ namespace OneTrueError.Web.Areas.Installation.Controllers
             {
                 var account = new Account(model.UserName, model.Password);
                 account.Activate();
+                account.IsSysAdmin = true;
                 var con = SetupTools.DbTools.OpenConnection();
                 var uow = new AdoNetUnitOfWork(con);
                 var repos = new AccountRepository(uow);

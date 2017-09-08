@@ -8,6 +8,7 @@ using OneTrueError.Web.Areas.Admin.Models;
 
 namespace OneTrueError.Web.Areas.Admin.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         public ActionResult Basics()
