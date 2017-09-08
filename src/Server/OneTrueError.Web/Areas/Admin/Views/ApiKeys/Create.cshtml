@@ -26,7 +26,7 @@
                 <br/>
                 <span class="small">Select the applications that this ApiKey can access. (none selected = can access all)</span>
                 <br/>
-                @foreach (var app in Model.Applications)
+                @foreach (var app in Model.AvailableApplications)
                 {
                     <input type="checkbox" name="SelectedApplications" value="@app.Key"/>
                     @app.Value<br/>

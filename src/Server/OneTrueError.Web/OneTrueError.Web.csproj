@@ -271,6 +271,7 @@
     <Compile Include="Areas\Admin\Controllers\ReportingController.cs" />
     <Compile Include="Areas\Admin\MenuItem.cs" />
     <Compile Include="Areas\Admin\Models\AccountViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\ApiKeys\EditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ApiKeys\CreateViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ApiKeys\ListViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ApiKeys\ListViewModelItem.cs" />
@@ -535,6 +536,7 @@
     <Content Include="Content\bootstrap\bootstrap.less" />
     <Content Include="Content\bootstrap\badges.less" />
     <Content Include="Content\bootstrap\alerts.less" />
+    <Content Include="Areas\Admin\Views\ApiKeys\Edit.cshtml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

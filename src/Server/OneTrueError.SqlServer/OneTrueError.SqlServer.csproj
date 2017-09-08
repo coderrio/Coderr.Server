@@ -85,6 +85,7 @@
     <Compile Include="Core\Accounts\AccountRepository.cs" />
     <Compile Include="Core\Accounts\QueryHandlers\GetAccountEmailByIdHandler.cs" />
     <Compile Include="Core\ApiKeys\ApiKeyRepository.cs" />
+    <Compile Include="Core\ApiKeys\Commands\EditApiKeyHandler.cs" />
     <Compile Include="Core\ApiKeys\Commands\CreateApiKeyHandler.cs" />
     <Compile Include="Core\ApiKeys\Commands\DeleteApiKeyHandler.cs" />
     <Compile Include="Core\ApiKeys\Mappings\ApiKeyMapper.cs" />

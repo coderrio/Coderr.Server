@@ -1,0 +1,40 @@
+﻿@model OneTrueError.Web.Areas.Admin.Models.ApiKeys.EditViewModel
+@{
+    ViewBag.Title = "Edit api key";
+}
+<div class="container">
+    <div class="col-lg-6">
+        <h2>Edit API key</h2>
+        <p>
+
+        </p>
+        <form method="post" action="@Url.Action("Edit")" class="form">
+            @Html.ValidationSummary(false)
+            @Html.HiddenFor(x => x.Id)
+            <div class="form-group">
+                @Html.LabelFor(x => x.ApplicationName, new { @class = "control-label" })
+                @Html.TextBoxFor(x => x.ApplicationName, new { @class = "form-control", placeholder = "Application name" })
+
+            </div>
+            @*<div class="form-group">
+                    <label>
+                        @Html.CheckBoxFor(x => x.ReadOnly, new {@class = ""})
+                        May only invoke queries.
+                    </label>
+                </div>*@
+            <div class="form-group">
+                @Html.LabelFor(x => x.SelectedApplications, new { @class = "control-label" })
+                <br />
+                <span class="small">Select the applications that this ApiKey can access. (none selected = can access all)</span>
+                <br />
+                @foreach (var app in Model.AvailableApplications)
+                {
+                    <input type="checkbox" name="SelectedApplications" value="@app.Key" @(Model.SelectedApplications.Contains(app.Key) ? "checked" : "") />
+                    @app.Value<br />
+                }
+            </div>
+            <br />
+            <input type="submit" class="btn btn-primary" value="Save" />
+        </form>
+    </div>
+</div>
