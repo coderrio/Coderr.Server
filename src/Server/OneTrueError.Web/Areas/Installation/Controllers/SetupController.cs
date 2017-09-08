@@ -14,48 +14,17 @@ namespace OneTrueError.Web.Areas.Installation.Controllers
     [OutputCache(Duration = 0, NoStore = true)]
     public class SetupController : Controller
     {
-        [HttpPost, AllowAnonymous]
+        [HttpPost]
+        [AllowAnonymous]
         public ActionResult Activate()
         {
             ConfigurationManager.RefreshSection("appSettings");
             if (ConfigurationManager.AppSettings["Configured"] != "true")
-            {
                 return RedirectToAction("Completed", new
                 {
                     displayError = 1
                 });
-            }
             return Redirect("~/?#/welcome");
-        }
-
-        public ActionResult Support()
-        {
-            return View(new SupportViewModel());
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> Support(SupportViewModel model)
-        {
-            if (!ModelState.IsValid)
-                return View(model);
-
-            try
-            {
-                var client = new HttpClient();
-                var content =
-                    new FormUrlEncodedContent(new []
-                    {
-                        new KeyValuePair<string, string>("EmailAddress", model.Email),
-                        new KeyValuePair<string, string>("CompanyName", model.CompanyName)
-                    });
-                await client.PostAsync("https://onetrueerror.com/support/register/", content);
-                return Redirect(Url.GetNextWizardStep());
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", ex.Message);
-                return View(model);
-            }
         }
 
         public ActionResult Basics()
@@ -69,7 +38,8 @@ namespace OneTrueError.Web.Areas.Installation.Controllers
             }
             else
             {
-                model.BaseUrl = Request.Url.ToString().Replace("installation/setup/basics/", "").Replace("localhost", "yourServerName");
+                model.BaseUrl = Request.Url.ToString().Replace("installation/setup/basics/", "")
+                    .Replace("localhost", "yourServerName");
                 ViewBag.NextLink = "";
             }
 
@@ -86,7 +56,8 @@ namespace OneTrueError.Web.Areas.Installation.Controllers
 
             if (model.BaseUrl.IndexOf("localhost", StringComparison.OrdinalIgnoreCase) != -1)
             {
-                ModelState.AddModelError("BaseUrl", "Use the servers real DNS name instead of 'localhost'. If you don't the Ajax request wont work as CORS would be enforced by IIS.");
+                ModelState.AddModelError("BaseUrl",
+                    "Use the servers real DNS name instead of 'localhost'. If you don't the Ajax request wont work as CORS would be enforced by IIS.");
                 return View(model);
             }
             settings.BaseUrl = new Uri(model.BaseUrl);
@@ -113,7 +84,9 @@ namespace OneTrueError.Web.Areas.Installation.Controllers
                 model.InstallationId = config.InstallationId;
             }
             else
+            {
                 ViewBag.NextLink = "";
+            }
 
             return View("ErrorTracking", model);
         }
@@ -144,6 +117,56 @@ namespace OneTrueError.Web.Areas.Installation.Controllers
                 ViewBag.Ready = false;
             }
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult Index(string key)
+        {
+            if (key == "change_this_to_your_own_password_before_running_the_installer")
+            {
+                ModelState.AddModelError("",
+                    "Change the 'ConfigurationKey' appSetting in web.config and then try again.");
+                return View();
+            }
+
+            if (key != ConfigurationManager.AppSettings["ConfigurationKey"])
+            {
+                ModelState.AddModelError("",
+                    "Enter the value from the 'ConfigurationKey' appSetting in web.config and then try again.");
+                return View();
+            }
+
+            return Redirect(Url.GetNextWizardStep());
+        }
+
+        public ActionResult Support()
+        {
+            return View(new SupportViewModel());
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Support(SupportViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            try
+            {
+                var client = new HttpClient();
+                var content =
+                    new FormUrlEncodedContent(new[]
+                    {
+                        new KeyValuePair<string, string>("EmailAddress", model.Email),
+                        new KeyValuePair<string, string>("CompanyName", model.CompanyName)
+                    });
+                await client.PostAsync("https://onetrueerror.com/support/register/", content);
+                return Redirect(Url.GetNextWizardStep());
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+                return View(model);
+            }
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
