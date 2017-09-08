@@ -19,6 +19,7 @@ using OneTrueError.Web.Areas.Installation.Models;
 
 namespace OneTrueError.Web.Areas.Installation.Controllers
 {
+    [OutputCache(Duration = 0, NoStore = true)]
     public class AccountController : Controller
     {
         public ActionResult Admin()
