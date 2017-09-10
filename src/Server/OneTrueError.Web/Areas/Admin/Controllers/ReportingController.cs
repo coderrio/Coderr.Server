@@ -10,6 +10,7 @@ using OneTrueError.Web.Areas.Admin.Models;
 
 namespace OneTrueError.Web.Areas.Admin.Controllers
 {
+    [Authorize]
     public class ReportingController : Controller
     {
         private ILog _logger = LogManager.GetLogger(typeof(ReportingController));

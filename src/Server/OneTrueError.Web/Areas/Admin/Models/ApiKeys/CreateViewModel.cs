@@ -8,7 +8,7 @@ namespace OneTrueError.Web.Areas.Admin.Models.ApiKeys
         [Required, Display(Name = "Application name")]
         public string ApplicationName { get; set; }
 
-        public Dictionary<string, string> Applications { get; set; }
+        public Dictionary<string, string> AvailableApplications { get; set; }
 
         public bool ReadOnly { get; set; }
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
@@ -26,14 +27,21 @@ namespace OneTrueError.App.Core.Support
             var baseConfig = ConfigurationStore.Instance.Load<BaseConfiguration>();
             var errorConfig = ConfigurationStore.Instance.Load<OneTrueErrorConfigSection>();
 
+            string email = null;
+            var claim = ClaimsPrincipal.Current.FindFirst(ClaimTypes.Email);
+            if (claim != null)
+                email = claim.Value;
+
             string installationId = null;
-            var email = baseConfig.SupportEmail;
+            if (email == null)
+                email = baseConfig.SupportEmail;
+
             if (errorConfig != null)
             {
-                email = errorConfig.ContactEmail;
+                if (errorConfig.ContactEmail != null)
+                    email = errorConfig.ContactEmail;
                 installationId = errorConfig.InstallationId;
             }
-
 
             var items = new List<KeyValuePair<string, string>>();
             if (installationId != null)

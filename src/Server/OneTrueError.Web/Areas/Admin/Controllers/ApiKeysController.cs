@@ -12,6 +12,7 @@ using OneTrueError.Web.Areas.Admin.Models.ApiKeys;
 
 namespace OneTrueError.Web.Areas.Admin.Controllers
 {
+    [Authorize]
     public class ApiKeysController : Controller
     {
         private readonly ICommandBus _commandBus;
@@ -27,14 +28,14 @@ namespace OneTrueError.Web.Areas.Admin.Controllers
         {
             var applications = await GetMyApplications();
 
-            var model = new CreateViewModel {Applications = applications};
+            var model = new CreateViewModel { AvailableApplications = applications };
             return View(model);
         }
 
         [HttpPost]
         public async Task<ActionResult> Create(CreateViewModel model)
         {
-            model.Applications = await GetMyApplications();
+            model.AvailableApplications = await GetMyApplications();
             if (!ModelState.IsValid)
                 return View(model);
 
@@ -46,8 +47,44 @@ namespace OneTrueError.Web.Areas.Admin.Controllers
             var cmd = new CreateApiKey(model.ApplicationName, apiKey, sharedSecret, apps);
             await _commandBus.ExecuteAsync(cmd);
 
-            return RedirectToAction("Created", new {apiKey, sharedSecret});
+            return RedirectToAction("Created", new { apiKey, sharedSecret });
         }
+
+        public async Task<ActionResult> Edit(int id)
+        {
+            var applications = await GetMyApplications();
+            var key = await _queryBus.QueryAsync(new GetApiKey(id));
+            var model = new EditViewModel
+            {
+                Id = key.Id,
+                AvailableApplications = applications,
+                SelectedApplications = key.AllowedApplications.Select(x => x.ApplicationId.ToString()).ToArray(),
+                ApplicationName = key.ApplicationName
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Edit(EditViewModel model)
+        {
+            model.AvailableApplications = await GetMyApplications();
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var cmd = new EditApiKey(model.Id)
+            {
+                ApplicationIds = model.SelectedApplications == null
+                    ? new int[0]
+                    : model.SelectedApplications.Select(int.Parse).ToArray(),
+                ApplicationName = model.ApplicationName
+            };
+
+            await _commandBus.ExecuteAsync(cmd);
+
+            return RedirectToAction("Details", new { model.Id });
+        }
+
 
         public ActionResult Created(string apiKey, string sharedSecret)
         {
@@ -79,8 +116,8 @@ namespace OneTrueError.Web.Areas.Admin.Controllers
         {
             var query = new ListApiKeys();
             var result = await _queryBus.QueryAsync(query);
-            var vms = result.Keys.Select(x => new ListViewModelItem {Id = x.Id, Name = x.ApplicationName}).ToArray();
-            var model = new ListViewModel {Keys = vms};
+            var vms = result.Keys.Select(x => new ListViewModelItem { Id = x.Id, Name = x.ApplicationName }).ToArray();
+            var model = new ListViewModel { Keys = vms };
             return View(model);
         }
 

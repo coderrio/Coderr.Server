@@ -73,6 +73,7 @@ var OneTrueError;
                     this.sortAscending = true; //will be changed below
                 }
                 if (this.sortAscending) {
+                    //TODO: SORT
                 }
                 else {
                 }
@@ -85,6 +86,7 @@ var OneTrueError;
                     this.sortAscending = false; //will be changed below
                 }
                 if (this.sortAscending) {
+                    //TODO: SORT
                 }
                 else {
                 }
@@ -155,10 +157,10 @@ var OneTrueError;
                     window.scrollTo(0, 0);
                 });
             };
-            IndexViewModel.UP = "glyphicon-chevron-up";
-            IndexViewModel.DOWN = "glyphicon-chevron-down";
             return IndexViewModel;
         }());
+        IndexViewModel.UP = "glyphicon-chevron-up";
+        IndexViewModel.DOWN = "glyphicon-chevron-down";
         Incident.IndexViewModel = IndexViewModel;
     })(Incident = OneTrueError.Incident || (OneTrueError.Incident = {}));
 })(OneTrueError || (OneTrueError = {}));

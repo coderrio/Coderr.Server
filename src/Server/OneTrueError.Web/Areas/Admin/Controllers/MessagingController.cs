@@ -5,6 +5,7 @@ using OneTrueError.Web.Areas.Admin.Models;
 
 namespace OneTrueError.Web.Areas.Admin.Controllers
 {
+    [Authorize]
     public class MessagingController : Controller
     {
         public ActionResult Email()

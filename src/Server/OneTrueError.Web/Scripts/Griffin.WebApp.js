@@ -156,9 +156,9 @@ var Griffin;
                     });
                 }
             };
-            ViewModel.ENFORCE_MAPPINGS = false;
             return ViewModel;
         }());
+        ViewModel.ENFORCE_MAPPINGS = false;
         WebApp.ViewModel = ViewModel;
         var Carburator = (function () {
             function Carburator() {
@@ -356,10 +356,10 @@ var Griffin;
                     this.draw(this.parent);
                 }
             };
-            Pager.BTN_ACTIVE_CLASS = "btn btn-success";
-            Pager.BTN_CLASS = "btn";
             return Pager;
         }());
+        Pager.BTN_ACTIVE_CLASS = "btn btn-success";
+        Pager.BTN_CLASS = "btn";
         WebApp.Pager = Pager;
     })(WebApp = Griffin.WebApp || (Griffin.WebApp = {}));
 })(Griffin || (Griffin = {}));

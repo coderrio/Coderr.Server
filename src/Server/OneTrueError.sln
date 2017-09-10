@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneTrueError.Web", "OneTrueError.Web\OneTrueError.Web.csproj", "{0476895C-6A61-4DE1-B06B-E8BF496FB651}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneTrueError.App", "OneTrueError.App\OneTrueError.App.csproj", "{5EF42A74-9323-49FA-A1F6-974D6DE77202}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneTrueError.Api", "OneTrueError.Api\OneTrueError.Api.csproj", "{FC331A95-FCA4-4764-8004-0884665DD01F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OneTrueError.Api", "OneTrueError.Api\OneTrueError.Api.csproj", "{FC331A95-FCA4-4764-8004-0884665DD01F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneTrueError.SqlServer", "OneTrueError.SqlServer\OneTrueError.SqlServer.csproj", "{B967BEEA-CDDD-4A83-A4F2-1C946099ED51}"
 EndProject
@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneTrueError.App.Tests", "O
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneTrueError.Infrastructure", "OneTrueError.Data.Common\OneTrueError.Infrastructure.csproj", "{A78A50DA-C9D7-47F2-8528-D7EE39D91924}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneTrueError.Api.Client", "OneTrueError.Api.Client\OneTrueError.Api.Client.csproj", "{017F8863-3DE0-4AD2-9ED3-5ACB87BBBCD0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OneTrueError.Api.Client", "OneTrueError.Api.Client\OneTrueError.Api.Client.csproj", "{017F8863-3DE0-4AD2-9ED3-5ACB87BBBCD0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneTrueError.Api.Client.Tests", "OneTrueError.Api.Client.Tests\OneTrueError.Api.Client.Tests.csproj", "{62989500-31BC-44FA-97CA-84F484C6F1AA}"
 EndProject
@@ -78,5 +78,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {508BE8C5-ECAB-4876-8E3D-7935C53ACDEB}
 	EndGlobalSection
 EndGlobal

@@ -8,11 +8,19 @@
 
         <p>Welcome to the OneTrueError installation.</p>
         <p>
-            This guide will install everything neccesary to get started. Most of the settings are stored in the <code>Settings</code> table in the database.
+            This guide will install everything necessary to get started. Most of the settings are stored in the <code>Settings</code> table in the database.
         </p>
 
 
-        @Html.Raw(ViewBag.NextLink)
-        <br/>
+        <h3>Verification</h3>
+        <p>
+            To start, you must enter the password that is specified in <code>web.config</code> in the appSettings key named <code>ConfigurationKey</code>.
+        </p>
+        <form method="post" action="@Url.Action("Index")">
+            @Html.ValidationSummary()
+            <input type="text" name="key" class="form-control" placeholder="Enter value from web.config/appSettings/ConfigurationKey" style="width:100%" autofocus /><br/>
+            <input type="submit" value="Continue" class="btn btn-primary"/>
+        </form>
+        <br />
     </div>
 </div>

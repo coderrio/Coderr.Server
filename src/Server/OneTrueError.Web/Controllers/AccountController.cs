@@ -105,7 +105,7 @@ namespace OneTrueError.Web.Controllers
             var apps = await _queryBus.QueryAsync(getApps);
 
 
-            var identity = CreateIdentity(reply.AccountId, reply.UserName, apps);
+            var identity = CreateIdentity(reply.AccountId, reply.UserName, false, apps);
             SignIn(identity);
             return Redirect("~/#/account/accepted");
         }
@@ -118,7 +118,7 @@ namespace OneTrueError.Web.Controllers
                 var getApps = new GetApplicationList {AccountId = reply.AccountId};
                 var apps = await _queryBus.QueryAsync(getApps);
 
-                var identity = CreateIdentity(reply.AccountId, reply.UserName, apps);
+                var identity = CreateIdentity(reply.AccountId, reply.UserName, false, apps);
                 SignIn(identity);
 
 
@@ -187,7 +187,7 @@ namespace OneTrueError.Web.Controllers
 
                 var getApps = new GetApplicationList {AccountId = reply.AccountId};
                 var apps = await _queryBus.QueryAsync(getApps);
-                var identity = CreateIdentity(reply.AccountId, reply.UserName, apps);
+                var identity = CreateIdentity(reply.AccountId, reply.UserName, reply.IsSysAdmin, apps);
                 SignIn(identity);
 
                 return Redirect("~/#/");
@@ -322,7 +322,7 @@ namespace OneTrueError.Web.Controllers
             var ctx = Request.GetOwinContext();
             ctx.Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
 
-            var identity = CreateIdentity(User.GetAccountId(), User.Identity.Name, apps);
+            var identity = CreateIdentity(User.GetAccountId(), User.Identity.Name, User.IsSysAdmin(), apps);
             SignIn(identity);
 
             if (returnUrl != null)
@@ -331,7 +331,7 @@ namespace OneTrueError.Web.Controllers
             return new EmptyResult();
         }
 
-        private static ClaimsIdentity CreateIdentity(int accountId, string userName, ApplicationListItem[] apps)
+        private static ClaimsIdentity CreateIdentity(int accountId, string userName,bool isSysAdmin, ApplicationListItem[] apps)
         {
             var claims = new List<Claim>
             {
@@ -346,7 +346,8 @@ namespace OneTrueError.Web.Controllers
                     claims.Add(new Claim(OneTrueClaims.ApplicationAdmin, app.Id.ToString(), ClaimValueTypes.Integer32));
             }
 
-            var roles = accountId == 1 ? new[] {OneTrueClaims.RoleSysAdmin} : new string[0];
+            //accountId == 1 for backwards compatibility (with version 1.0)
+            var roles = isSysAdmin || accountId == 1 ? new[] {OneTrueClaims.RoleSysAdmin} : new string[0];
             var context = new PrincipalFactoryContext(accountId, userName, roles)
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,

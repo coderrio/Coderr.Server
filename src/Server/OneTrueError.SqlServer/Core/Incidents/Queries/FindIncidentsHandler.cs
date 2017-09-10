@@ -29,20 +29,38 @@ namespace OneTrueError.SqlServer.Core.Incidents.Queries
             {
                 var sqlQuery = @"SELECT {0}
                                     FROM Incidents 
-                                    JOIN Applications ON (Applications.Id = Incidents.ApplicationId)
-                                    JOIN ApplicationMembers atm ON (atm.ApplicationId = Applications.Id AND AccountId = @accountId)";
-                cmd.AddParameter("accountId", ClaimsPrincipal.Current.GetAccountId());
+                                    JOIN Applications ON (Applications.Id = Incidents.ApplicationId)";
 
                 if (query.ApplicationId > 0)
                 {
+                    if (!ClaimsPrincipal.Current.IsApplicationMember(query.ApplicationId)
+                        && !ClaimsPrincipal.Current.IsSysAdmin()
+                        && !ClaimsPrincipal.Current.IsApplicationAdmin(query.ApplicationId))
+                        throw new UnauthorizedAccessException(
+                            "You are not a member of application " + query.ApplicationId);
+
                     sqlQuery += " WHERE Applications.Id = @id";
                     cmd.AddParameter("id", query.ApplicationId);
                 }
+                else if (!ClaimsPrincipal.Current.IsSysAdmin())
+                {
+                    var appIds = ClaimsPrincipal.Current.Claims
+                        .Where(x => x.Type == OneTrueClaims.Application)
+                        .Select(x => x.Value)
+                        .ToArray();
+                    sqlQuery += $" WHERE Applications.Id IN({string.Join(",", appIds)})";
+                }
+
                 if (query.FreeText != null)
                 {
                     sqlQuery += @" AND (
-                                    Incidents.Id IN (SELECT Distinct IncidentId FROM ErrorReports WHERE StackTrace LIKE @FreeText
-                                    Or Incidents.Description LIKE @FreeText)
+                                    Incidents.Id IN 
+                                    (
+                                        SELECT Distinct IncidentId 
+                                        FROM ErrorReports 
+                                        WHERE StackTrace LIKE @FreeText 
+                                            OR ErrorReports.Title LIKE @FreeText
+                                            OR Incidents.Description LIKE @FreeText)
                                     )";
                     cmd.AddParameter("FreeText", $"%{query.FreeText}%");
                 }

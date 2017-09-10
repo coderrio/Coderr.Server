@@ -56,7 +56,7 @@ namespace OneTrueError.App.Tests.Core.Invitations.Commands
 
             var actual = await _sut.ExecuteAsync(request);
 
-            _eventBus.Received().PublishAsync(Arg.Any<InvitationAccepted>());
+            await _eventBus.Received().PublishAsync(Arg.Any<InvitationAccepted>());
             var evt = _eventBus.Method("PublishAsync").Arg<InvitationAccepted>();
             evt.AcceptedEmailAddress.Should().Be(request.AcceptedEmail);
             evt.AccountId.Should().Be(InvitedAccountId);
@@ -78,7 +78,7 @@ namespace OneTrueError.App.Tests.Core.Invitations.Commands
 
             var actual = await _sut.ExecuteAsync(request);
 
-            _accountRepository.Received().CreateAsync(Arg.Any<Account>());
+            await _accountRepository.Received().CreateAsync(Arg.Any<Account>());
             var evt = _eventBus.Method("PublishAsync").Arg<InvitationAccepted>();
             evt.AccountId.Should().Be(52);
         }
@@ -97,7 +97,7 @@ namespace OneTrueError.App.Tests.Core.Invitations.Commands
 
             await _sut.ExecuteAsync(request);
 
-            _eventBus.Received().PublishAsync(Arg.Any<AccountRegistered>());
+            await _eventBus.Received().PublishAsync(Arg.Any<AccountRegistered>());
             var evt = _eventBus.Method("PublishAsync").Arg<AccountRegistered>();
             evt.AccountId.Should().Be(52);
         }
@@ -116,7 +116,7 @@ namespace OneTrueError.App.Tests.Core.Invitations.Commands
 
             await _sut.ExecuteAsync(request);
 
-            _eventBus.Received().PublishAsync(Arg.Any<AccountActivated>());
+            await _eventBus.Received().PublishAsync(Arg.Any<AccountActivated>());
             var evt = _eventBus.Method("PublishAsync").Arg<AccountActivated>();
             evt.AccountId.Should().Be(52);
         }

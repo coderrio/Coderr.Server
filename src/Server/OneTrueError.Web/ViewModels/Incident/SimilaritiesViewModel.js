@@ -105,9 +105,9 @@ var OneTrueError;
                     }
                 });
             };
-            SimilaritiesViewModel.VIEW_NAME = "SimilaritiesView";
             return SimilaritiesViewModel;
         }());
+        SimilaritiesViewModel.VIEW_NAME = "SimilaritiesView";
         Incident.SimilaritiesViewModel = SimilaritiesViewModel;
     })(Incident = OneTrueError.Incident || (OneTrueError.Incident = {}));
 })(OneTrueError || (OneTrueError = {}));

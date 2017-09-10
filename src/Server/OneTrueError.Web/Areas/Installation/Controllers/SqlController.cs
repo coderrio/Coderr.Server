@@ -8,6 +8,7 @@ using OneTrueError.SqlServer.Core.Applications;
 
 namespace OneTrueError.Web.Areas.Installation.Controllers
 {
+    [OutputCache(Duration = 0, NoStore = true)]
     public class SqlController : Controller
     {
         [HttpPost]

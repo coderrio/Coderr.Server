@@ -1,63 +1,39 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{017F8863-3DE0-4AD2-9ED3-5ACB87BBBCD0}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OneTrueError.Api.Client</RootNamespace>
-    <AssemblyName>OneTrueError.Api.Client</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <TargetFrameworks>net452;netstandard2.0</TargetFrameworks>
+    <Version>1.0.0.0</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <DocumentationFile>bin\$(Configuration)\net452\OneTrueError.Api.Client.xml</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\OneTrueError.Api.Client.XML</DocumentationFile>
+  <PropertyGroup>
+    <PackageId>OneTrueError.Server.Api.Client</PackageId>
+    <Authors>1TCompany AB</Authors>
+    <Description>API client for OneTrueError Server.</Description>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageReleaseNotes>Converted to vstudio 2017 csproj format</PackageReleaseNotes>
+    <Copyright>Copyright 2017 © 1TCompany AB. All rights reserved.</Copyright>
+    <PackageTags>logger exceptions analysis .net-core netstandard</PackageTags>
+    <PackageIconUrl>http://onetrueerror.com/images/nuget_icon.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/onetrueerror/onetrueerror.server</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/onetrueerror/OneTrueError.Server/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://onetrueerror.com</PackageProjectUrl>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetCqs, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetCqs.1.0.0\lib\net45\DotNetCqs.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="Microsoft.CSharp" />
+    <PackageReference Include="DotNetCqs" Version="1.0.1" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.4.0" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Json\IncludeNonPublicMembersContractResolver.cs" />
-    <Compile Include="OneTrueClient.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StringBuilderExtensions.cs" />
+    <ProjectReference Include="..\OneTrueError.Api\OneTrueError.Api.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <!--<ItemGroup>
+    <_PackageFiles Include="$(OutputPath)\net452\OneTrueError.Api.*">
+      <BuildAction>None</BuildAction>
+      <PackagePath>lib\net452\</PackagePath>
+    </_PackageFiles>
+    <_PackageFiles Include="$(OutputPath)\netstandard2.0\OneTrueError.Api.*">
+      <BuildAction>None</BuildAction>
+      <PackagePath>lib\netstandard2.0\</PackagePath>
+    </_PackageFiles>
+  </ItemGroup>-->
 </Project>

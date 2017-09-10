@@ -19,6 +19,7 @@ using OneTrueError.Web.Areas.Installation.Models;
 
 namespace OneTrueError.Web.Areas.Installation.Controllers
 {
+    [OutputCache(Duration = 0, NoStore = true)]
     public class AccountController : Controller
     {
         public ActionResult Admin()
@@ -41,6 +42,7 @@ namespace OneTrueError.Web.Areas.Installation.Controllers
             {
                 var account = new Account(model.UserName, model.Password);
                 account.Activate();
+                account.IsSysAdmin = true;
                 var con = SetupTools.DbTools.OpenConnection();
                 var uow = new AdoNetUnitOfWork(con);
                 var repos = new AccountRepository(uow);

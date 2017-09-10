@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Security;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using DotNetCqs;
 using FluentAssertions;
@@ -11,6 +14,7 @@ using OneTrueError.App.Core.Invitations;
 using OneTrueError.App.Core.Invitations.CommandHandlers;
 using OneTrueError.App.Core.Users;
 using OneTrueError.Infrastructure.Configuration;
+using OneTrueError.Infrastructure.Security;
 using Xunit;
 
 namespace OneTrueError.App.Tests.Core.Applications.Commands
@@ -41,16 +45,17 @@ namespace OneTrueError.App.Tests.Core.Applications.Commands
         [Fact]
         public async Task should_create_an_invite_for_a_new_user()
         {
-            var cmd = new InviteUser(1, "jonas@gauffin.com") {UserId = 1};
-            var members = new[] {new ApplicationTeamMember(1, 3)};
+            var cmd = new InviteUser(1, "jonas@gauffin.com") { UserId = 1 };
+            var members = new[] { new ApplicationTeamMember(1, 3) };
             ApplicationTeamMember actual = null;
             _applicationRepository.GetTeamMembersAsync(1).Returns(members);
             _applicationRepository.WhenForAnyArgs(x => x.CreateAsync(Arg.Any<ApplicationTeamMember>()))
                 .Do(x => actual = x.Arg<ApplicationTeamMember>());
+            _sut.PrincipalAccessor = CreateAdminPrincipal;
 
             await _sut.ExecuteAsync(cmd);
 
-            _applicationRepository.Received().CreateAsync(Arg.Any<ApplicationTeamMember>());
+            await _applicationRepository.Received().CreateAsync(Arg.Any<ApplicationTeamMember>());
             actual.EmailAddress.Should().Be(cmd.EmailAddress);
             actual.ApplicationId.Should().Be(cmd.ApplicationId);
             actual.AddedAtUtc.Should().BeCloseTo(DateTime.UtcNow, 1000);
@@ -58,12 +63,39 @@ namespace OneTrueError.App.Tests.Core.Applications.Commands
         }
 
         [Fact]
+        public void regular_user_should_not_be_able_to_invite()
+        {
+            var cmd = new InviteUser(1, "jonas@gauffin.com") { UserId = 1 };
+            var members = new[] { new ApplicationTeamMember(1, 3) };
+            _applicationRepository.GetTeamMembersAsync(1).Returns(members);
+            _sut.PrincipalAccessor = () => new ClaimsPrincipal(new ClaimsIdentity());
+
+            Func<Task> actual = async () => await _sut.ExecuteAsync(cmd);
+
+            actual.ShouldThrow<SecurityException>();
+        }
+
+        [Fact]
+        public void sysadmin_should_be_able_To_invite_users()
+        {
+            var cmd = new InviteUser(1, "jonas@gauffin.com") { UserId = 1 };
+            var members = new[] { new ApplicationTeamMember(3, 3) };
+            _applicationRepository.GetTeamMembersAsync(1).Returns(members);
+            _sut.PrincipalAccessor = () => new ClaimsPrincipal(new ClaimsIdentity());
+
+            Func<Task> actual = async () => await _sut.ExecuteAsync(cmd);
+
+            actual.ShouldThrow<SecurityException>();
+        }
+
+        [Fact]
         public async Task should_not_allow_invites_when_the_invited_user_already_have_an_account()
         {
-            var cmd = new InviteUser(1, "jonas@gauffin.com") {UserId = 2};
-            var members = new[] {new ApplicationTeamMember(1, 3)};
+            var cmd = new InviteUser(1, "jonas@gauffin.com") { UserId = 2 };
+            var members = new[] { new ApplicationTeamMember(1, 3) };
             _userRepository.FindByEmailAsync(cmd.EmailAddress).Returns(new User(3, "existing"));
             _applicationRepository.GetTeamMembersAsync(1).Returns(members);
+            _sut.PrincipalAccessor = CreateAdminPrincipal;
 
             await _sut.ExecuteAsync(cmd);
 
@@ -73,9 +105,10 @@ namespace OneTrueError.App.Tests.Core.Applications.Commands
         [Fact]
         public async Task should_not_allow_invites_when_the_invited_user_already_have_an_pending_invite()
         {
-            var cmd = new InviteUser(1, "jonas@gauffin.com") {UserId = 1};
-            var members = new[] {new ApplicationTeamMember(1, cmd.EmailAddress)};
+            var cmd = new InviteUser(1, "jonas@gauffin.com") { UserId = 1 };
+            var members = new[] { new ApplicationTeamMember(1, cmd.EmailAddress) };
             _applicationRepository.GetTeamMembersAsync(1).Returns(members);
+            _sut.PrincipalAccessor = CreateAdminPrincipal;
 
             await _sut.ExecuteAsync(cmd);
 
@@ -85,32 +118,45 @@ namespace OneTrueError.App.Tests.Core.Applications.Commands
         [Fact]
         public async Task should_notify_the_system_of_the_invite()
         {
-            var cmd = new InviteUser(1, "jonas@gauffin.com") {UserId = 1};
-            var members = new[] {new ApplicationTeamMember(1, 3)};
+            var cmd = new InviteUser(1, "jonas@gauffin.com") { UserId = 1 };
+            var members = new[] { new ApplicationTeamMember(1, 3) };
             ApplicationTeamMember actual = null;
             _applicationRepository.GetTeamMembersAsync(1).Returns(members);
             _applicationRepository.WhenForAnyArgs(x => x.CreateAsync(Arg.Any<ApplicationTeamMember>()))
                 .Do(x => actual = x.Arg<ApplicationTeamMember>());
+            _sut.PrincipalAccessor = CreateAdminPrincipal;
 
             await _sut.ExecuteAsync(cmd);
 
-            _applicationRepository.Received().CreateAsync(Arg.Any<ApplicationTeamMember>());
-            _eventBus.Received().PublishAsync(Arg.Any<UserInvitedToApplication>());
+            await _applicationRepository.Received().CreateAsync(Arg.Any<ApplicationTeamMember>());
+            await _eventBus.Received().PublishAsync(Arg.Any<UserInvitedToApplication>());
         }
 
         [Fact]
         public async Task should_send_an_invitation_email()
         {
-            var cmd = new InviteUser(1, "jonas@gauffin.com") {UserId = 1};
-            var members = new[] {new ApplicationTeamMember(1, 3)};
+            var cmd = new InviteUser(1, "jonas@gauffin.com") { UserId = 1 };
+            var members = new[] { new ApplicationTeamMember(1, 3) };
             ApplicationTeamMember actual = null;
             _applicationRepository.GetTeamMembersAsync(1).Returns(members);
             _applicationRepository.WhenForAnyArgs(x => x.CreateAsync(Arg.Any<ApplicationTeamMember>()))
                 .Do(x => actual = x.Arg<ApplicationTeamMember>());
+            _sut.PrincipalAccessor = CreateAdminPrincipal;
 
             await _sut.ExecuteAsync(cmd);
 
-            _commandBus.Received().ExecuteAsync(Arg.Any<SendEmail>());
+            await _commandBus.Received().ExecuteAsync(Arg.Any<SendEmail>());
+        }
+
+        private ClaimsPrincipal CreateAdminPrincipal()
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Role, OneTrueClaims.RoleSysAdmin),
+                new Claim(OneTrueClaims.ApplicationAdmin, "1")
+            };
+            var identity = new ClaimsIdentity(claims);
+            return new ClaimsPrincipal(identity);
         }
     }
 }

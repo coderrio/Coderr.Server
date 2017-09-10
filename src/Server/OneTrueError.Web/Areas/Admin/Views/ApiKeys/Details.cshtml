@@ -32,6 +32,10 @@
                     {
                         <li>@app.ApplicationName</li>
                     }
+                    @if (Model.AllowedApplications.Length == 0)
+                    {
+                        <li>ALL</li>
+                    }
                 </ul>
             </div>
 
@@ -42,7 +46,8 @@ var signature = Convert.ToBase64String(hash);
 </code></pre>
             <div>
                 <hr/>
-                <form action="@Url.Action("Delete", new {id = Model.Id})" id="delete-form">
+                <a href="@Url.Action("Edit", new{Model.Id})" class="btn btn-primary">Edit</a>
+                <form action="@Url.Action("Delete", new { Model.Id})" id="delete-form" style="display: inline-block">
                     <button class="btn btn-danger">DELETE</button>
                     <label>
                         <input type="checkbox" value="1" name="verification"/> Yes I'm sure<br/>
