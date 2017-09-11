@@ -9,15 +9,15 @@ namespace OneTrueError.Web.IoC
 {
     public sealed class GriffinContainerScopeAdapter : IContainerScope
     {
-        private static int CurrentScopes;
+        private static int _currentScopes;
         private readonly IChildContainer _container;
         private bool _disposed;
         private ILog _logger = LogManager.GetLogger(typeof(GriffinContainerScopeAdapter));
 
         public GriffinContainerScopeAdapter(IChildContainer container)
         {
-            _container = container;
-            Interlocked.Increment(ref CurrentScopes);
+            _container = container ?? throw new ArgumentNullException(nameof(container));
+            Interlocked.Increment(ref _currentScopes);
         }
 
         public void Dispose()
@@ -26,7 +26,7 @@ namespace OneTrueError.Web.IoC
                 return;
             _disposed = true;
 
-            Interlocked.Decrement(ref CurrentScopes);
+            Interlocked.Decrement(ref _currentScopes);
             _container.Dispose();
         }
 

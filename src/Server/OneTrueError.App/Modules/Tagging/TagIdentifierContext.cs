@@ -11,10 +11,10 @@ namespace OneTrueError.App.Modules.Tagging
     /// </summary>
     public class TagIdentifierContext
     {
+        private readonly IReadOnlyList<Tag> _existingTags;
+        private readonly List<Tag> _newTags = new List<Tag>();
         private readonly ReportDTO _reportToAnalyze;
         private readonly string[] _stacktrace;
-        private readonly List<Tag> _newTags = new List<Tag>();
-        private IReadOnlyList<Tag> _existingTags;
 
 
         /// <summary>
@@ -22,24 +22,22 @@ namespace OneTrueError.App.Modules.Tagging
         /// </summary>
         /// <param name="reportToAnalyze">rta</param>
         /// <param name="tags"></param>
-        /// <exception cref="ArgumentNullException">reportToAnalyze</exception>
+        /// <exception cref="ArgumentNullException">reportToAnalyze;tags</exception>
         public TagIdentifierContext(ReportDTO reportToAnalyze, IReadOnlyList<Tag> tags)
         {
-            if (reportToAnalyze == null) throw new ArgumentNullException("reportToAnalyze");
-
-            _existingTags = tags;
-            _reportToAnalyze = reportToAnalyze;
+            _reportToAnalyze = reportToAnalyze ?? throw new ArgumentNullException(nameof(reportToAnalyze));
+            _existingTags = tags ?? throw new ArgumentNullException(nameof(tags));
             var ex = reportToAnalyze.Exception;
-            if (ex != null && ex.StackTrace != null)
-                _stacktrace = ex.StackTrace.Split(new[] {"\r\n"}, StringSplitOptions.RemoveEmptyEntries);
-            else
-                _stacktrace = new string[0];
-
+            _stacktrace = ex?
+                              .StackTrace?
+                              .Split(new[] {"\r\n"}, StringSplitOptions.RemoveEmptyEntries)
+                          ?? new string[0];
         }
+
         /// <summary>
-        /// Application that the report is for
+        ///     Application that the report is for.
         /// </summary>
-        public int ApplicationId { get { return _reportToAnalyze.ApplicationId; } }
+        public int ApplicationId => _reportToAnalyze.ApplicationId;
 
         /// <summary>
         ///     Exception to find tags for.
@@ -51,10 +49,7 @@ namespace OneTrueError.App.Modules.Tagging
         /// <remarks>
         ///     <para>These tags are used directly to search for possible solutions.</para>
         /// </remarks>
-        public IReadOnlyList<Tag> NewTags
-        {
-            get { return _newTags; }
-        }
+        public IReadOnlyList<Tag> NewTags => _newTags;
 
         /// <summary>
         ///     Add tag if the specified text is found in the stack trace
@@ -62,18 +57,19 @@ namespace OneTrueError.App.Modules.Tagging
         /// <param name="libraryToFind">text to find</param>
         /// <param name="tagToAdd">tag to add</param>
         /// <returns>index in stacktrace if found; otherwise -1</returns>
+        /// <exception cref="ArgumentNullException">libraryToFind;tagToAdd</exception>
         public int AddIfFound(string libraryToFind, string tagToAdd)
         {
-            if (libraryToFind == null) throw new ArgumentNullException("libraryToFind");
-            if (tagToAdd == null) throw new ArgumentNullException("tagToAdd");
+            if (libraryToFind == null) throw new ArgumentNullException(nameof(libraryToFind));
+            if (tagToAdd == null) throw new ArgumentNullException(nameof(tagToAdd));
 
             for (var i = 0; i < _stacktrace.Length; i++)
             {
-                if (_stacktrace[i].IndexOf(libraryToFind, StringComparison.OrdinalIgnoreCase) != -1)
-                {
-                    AddTag(tagToAdd, i);
-                    return i;
-                }
+                if (_stacktrace[i].IndexOf(libraryToFind, StringComparison.OrdinalIgnoreCase) == -1)
+                    continue;
+
+                AddTag(tagToAdd, i);
+                return i;
             }
 
             return -1;
@@ -99,30 +95,30 @@ namespace OneTrueError.App.Modules.Tagging
         /// </summary>
         /// <param name="collectionName">context collection</param>
         /// <param name="propertyName">property in the collection</param>
+        /// <exception cref="ArgumentNullException">collectionName; propertyName</exception>
         /// <returns>value if found; otherwise <c>null</c>.</returns>
         public string GetPropertyValue(string collectionName, string propertyName)
         {
-            if (collectionName == null) throw new ArgumentNullException("collectionName");
-            if (propertyName == null) throw new ArgumentNullException("propertyName");
+            if (collectionName == null) throw new ArgumentNullException(nameof(collectionName));
+            if (propertyName == null) throw new ArgumentNullException(nameof(propertyName));
 
             var assemblies = _reportToAnalyze.ContextCollections.FirstOrDefault(x => x.Name == collectionName);
             if (assemblies == null)
                 return null;
 
-            string version;
-            return assemblies.Properties.TryGetValue(propertyName, out version) ? version : null;
+            return assemblies.Properties.TryGetValue(propertyName, out string version) ? version : null;
         }
 
         /// <summary>
         ///     Find a text in the stack trace
         /// </summary>
         /// <param name="libraryToFind">text to find</param>
+        /// <exception cref="ArgumentNullException">libraryToFind</exception>
         /// <returns><c>true</c> if found; otherwise <c>false</c>.</returns>
         public bool IsFound(string libraryToFind)
         {
-            if (libraryToFind == null) throw new ArgumentNullException("libraryToFind");
+            if (libraryToFind == null) throw new ArgumentNullException(nameof(libraryToFind));
             return _stacktrace.Any(t => t.IndexOf(libraryToFind, StringComparison.OrdinalIgnoreCase) != -1);
         }
-
     }
 }

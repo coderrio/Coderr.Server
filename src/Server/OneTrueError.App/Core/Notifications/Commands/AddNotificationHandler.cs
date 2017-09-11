@@ -6,12 +6,21 @@ using OneTrueError.Api.Core.Notifications;
 
 namespace OneTrueError.App.Core.Notifications.Commands
 {
+    /// <summary>
+    /// Handler for <see cref="AddNotification"/>.
+    /// </summary>
     [Component]
-    class AddNotificationHandler : ICommandHandler<AddNotification>
+    public class AddNotificationHandler : ICommandHandler<AddNotification>
     {
-        public async Task ExecuteAsync(AddNotification command)
+        /// <summary>
+        /// Not implemented yet.
+        /// </summary>
+        /// <param name="command">cmd</param>
+        /// <returns>task</returns>
+        public Task ExecuteAsync(AddNotification command)
         {
             //TODO: Implement
+            return Task.FromResult<object>(null);
         }
     }
 }

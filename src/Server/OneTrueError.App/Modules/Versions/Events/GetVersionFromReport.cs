@@ -56,7 +56,7 @@ namespace OneTrueError.App.Modules.Versions.Events
             }
 
             var isNewIncident = e.Incident.ReportCount <= 1;
-            var versionEntity = await _repository.GetVersionAsync(e.Incident.ApplicationId, version)
+            var versionEntity = await _repository.FindVersionAsync(e.Incident.ApplicationId, version)
                                 ?? new ApplicationVersion(e.Incident.ApplicationId, e.Incident.ApplicationName,
                                     version);
             if (versionEntity.Version != version)
@@ -80,7 +80,7 @@ namespace OneTrueError.App.Modules.Versions.Events
         private async Task IncreaseReportCounter(int versionId, bool isNewIncident)
         {
             var month =
-                await _repository.GetMonthForApplicationAsync(versionId, DateTime.Today.Year, DateTime.Today.Month) ??
+                await _repository.FindMonthForApplicationAsync(versionId, DateTime.Today.Year, DateTime.Today.Month) ??
                 new ApplicationVersionMonth(versionId, new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1));
 
             if (isNewIncident)

@@ -1,4 +1,5 @@
 ﻿using Griffin.Data.Mapper;
+using OneTrueError.App.Modules.Versions;
 using OneTrueError.App.Modules.Versions.Events;
 
 namespace OneTrueError.SqlServer.Modules.Versions

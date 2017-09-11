@@ -2,41 +2,45 @@
 using System.Data;
 using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.Serialization.Formatters;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 using Newtonsoft.Json;
 
 namespace OneTrueError.Infrastructure.Queueing.Ado
 {
+    /// <summary>
+    /// Message queue that uses tables in a DB through ADO.NET.
+    /// </summary>
     public class AdoNetMessageQueue : IMessageQueue
     {
         private readonly string _connectionString;
-
         private readonly AdoNetQueueEntryMapper _mapper;
         private readonly string _providerName;
         private readonly string _queueName;
-
         private readonly JsonSerializerSettings _settings = new JsonSerializerSettings
         {
             NullValueHandling = NullValueHandling.Ignore,
             TypeNameHandling = TypeNameHandling.Auto,
-            TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple,
+            TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple,
             ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
             ContractResolver = new IncludeNonPublicMembersContractResolver()
         };
 
+        /// <summary>
+        /// Creates a new instance of <see cref="AdoNetMessageQueue"/>.
+        /// </summary>
+        /// <param name="queueName">Queue name (should match a table named <c>$"Queue{queueName}"</c>. i.e. if you specify "Reports" here, the should be a table named "QueueReports".</param>
+        /// <param name="providerName">ADO.NET provider name, typically <c>System.Data.SqlClient</c></param>
+        /// <param name="connectionString">Connection string name in web.config</param>
         public AdoNetMessageQueue(string queueName, string providerName, string connectionString)
         {
             if (queueName == null) throw new ArgumentNullException(nameof(queueName));
-            if (providerName == null) throw new ArgumentNullException(nameof(providerName));
-            if (connectionString == null) throw new ArgumentNullException(nameof(connectionString));
             if (string.IsNullOrEmpty(queueName))
-                throw new ArgumentNullException("queueName");
+                throw new ArgumentNullException(nameof(queueName));
 
             _queueName = queueName;
-            _providerName = providerName;
-            _connectionString = connectionString;
+            _providerName = providerName ?? throw new ArgumentNullException(nameof(providerName));
+            _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
             _mapper = new AdoNetQueueEntryMapper();
         }
 

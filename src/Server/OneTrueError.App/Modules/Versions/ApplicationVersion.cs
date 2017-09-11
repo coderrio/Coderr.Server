@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OneTrueError.App.Modules.Versions.Events
+namespace OneTrueError.App.Modules.Versions
 {
     /// <summary>
     ///     An version that we track.

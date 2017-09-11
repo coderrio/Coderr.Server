@@ -23,7 +23,9 @@ namespace OneTrueError.App.Modules.Versions.Config
         /// </summary>
         public List<ApplicationVersionConfigItem> Items { get; private set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// "ApplicationVersions"
+        /// </summary>
         public string SectionName
         {
             get { return "ApplicationVersions"; }
@@ -34,8 +36,7 @@ namespace OneTrueError.App.Modules.Versions.Config
         {
             foreach (var setting in settings)
             {
-                int id;
-                if (!int.TryParse(setting.Key.Remove(0, 3), out id))
+                if (!int.TryParse(setting.Key.Remove(0, 3), out int id))
                     continue;
                 Items.Add(new ApplicationVersionConfigItem(id, setting.Value));
             }
@@ -55,8 +56,8 @@ namespace OneTrueError.App.Modules.Versions.Config
         /// <param name="assemblyName">assembly</param>
         public void AddOrUpdate(int applicationId, string assemblyName)
         {
-            if (assemblyName == null) throw new ArgumentNullException("assemblyName");
-            if (applicationId <= 0) throw new ArgumentOutOfRangeException("applicationId");
+            if (assemblyName == null) throw new ArgumentNullException(nameof(assemblyName));
+            if (applicationId <= 0) throw new ArgumentOutOfRangeException(nameof(applicationId));
 
             var item = Items.FirstOrDefault(x => x.ApplicationId == applicationId);
             if (item != null)
@@ -69,11 +70,14 @@ namespace OneTrueError.App.Modules.Versions.Config
         ///     Find if the specified application have been configured.
         /// </summary>
         /// <param name="applicationId">application to get config for</param>
+        /// <exception cref="ArgumentOutOfRangeException">applicationId</exception>
         /// <returns>name if found; otherwise <c>null</c>.</returns>
         public string GetAssemblyName(int applicationId)
         {
+            if (applicationId <= 0) throw new ArgumentOutOfRangeException(nameof(applicationId));
+
             var app = Items.FirstOrDefault(x => x.ApplicationId == applicationId);
-            return app != null ? app.AssemblyName : null;
+            return app?.AssemblyName;
         }
     }
 }
