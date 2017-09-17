@@ -7,6 +7,7 @@ using OneTrueError.Api.Core.Accounts.Events;
 using OneTrueError.Api.Core.Messaging.Commands;
 using OneTrueError.App.Core.Accounts;
 using OneTrueError.App.Core.Accounts.CommandHandlers;
+using OneTrueError.Infrastructure.Configuration;
 using Xunit;
 
 namespace OneTrueError.App.Tests.Core.Accounts.CommandHandlers
@@ -14,12 +15,13 @@ namespace OneTrueError.App.Tests.Core.Accounts.CommandHandlers
     public class RegisterAccountHandlerTests
     {
         [Fact]
-        public async Task should_create_a_new_account()
+        public async Task Should_create_a_new_account()
         {
+            ConfigurationStore.Instance = new TestStore();
             var repos = Substitute.For<IAccountRepository>();
             var cmdBus = Substitute.For<ICommandBus>();
             var eventBus = Substitute.For<IEventBus>();
-            var cmd = new RegisterAccount("rne", "yo", "someEmal");
+            var cmd = new RegisterAccount("rne", "yo", "some@Emal.com");
             repos.When(x => x.CreateAsync(Arg.Any<Account>()))
                 .Do(x => x.Arg<Account>().SetId(3));
 
@@ -30,12 +32,13 @@ namespace OneTrueError.App.Tests.Core.Accounts.CommandHandlers
         }
 
         [Fact]
-        public async Task should_inform_the_rest_of_the_system_about_the_new_account()
+        public async Task Should_inform_the_rest_of_the_system_about_the_new_account()
         {
+            ConfigurationStore.Instance = new TestStore();
             var repos = Substitute.For<IAccountRepository>();
             var cmdBus = Substitute.For<ICommandBus>();
             var eventBus = Substitute.For<IEventBus>();
-            var cmd = new RegisterAccount("rne", "yo", "someEmal");
+            var cmd = new RegisterAccount("rne", "yo", "some@Emal.com");
             repos.When(x => x.CreateAsync(Arg.Any<Account>()))
                 .Do(x => x.Arg<Account>().SetId(3));
 
@@ -48,12 +51,13 @@ namespace OneTrueError.App.Tests.Core.Accounts.CommandHandlers
         }
 
         [Fact]
-        public async Task should_send_activation_email()
+        public async Task Should_send_activation_email()
         {
+            ConfigurationStore.Instance = new TestStore();
             var repos = Substitute.For<IAccountRepository>();
             var cmdBus = Substitute.For<ICommandBus>();
             var eventBus = Substitute.For<IEventBus>();
-            var cmd = new RegisterAccount("rne", "yo", "someEmal");
+            var cmd = new RegisterAccount("rne", "yo", "some@Emal.com");
             repos.When(x => x.CreateAsync(Arg.Any<Account>()))
                 .Do(x => x.Arg<Account>().SetId(3));
 

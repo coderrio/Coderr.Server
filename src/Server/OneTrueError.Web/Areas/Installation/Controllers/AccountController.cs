@@ -66,9 +66,8 @@ namespace OneTrueError.Web.Areas.Installation.Controllers
                 };
                 await repos2.CreateAsync(app);
 
-                var tm = new ApplicationTeamMember(app.Id, account.Id)
+                var tm = new ApplicationTeamMember(app.Id, account.Id, "System")
                 {
-                    AddedByName = "System",
                     Roles = new[] {ApplicationRole.Admin, ApplicationRole.Member},
                     UserName = account.UserName
                 };

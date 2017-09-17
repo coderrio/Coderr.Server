@@ -22,7 +22,7 @@ namespace OneTrueError.App.Tests.Configuration
         }
 
         [Fact]
-        public void should_be_able_to_work_despite_local_culture_when_persisting_configuration()
+        public void Should_be_able_to_work_despite_local_culture_when_persisting_configuration()
         {
             var cat = new SoCultural();
             cat.Number = 43.32f;
@@ -37,7 +37,7 @@ namespace OneTrueError.App.Tests.Configuration
         }
 
         [Fact]
-        public void should_format_values_with_invariant_culture()
+        public void Should_format_values_with_invariant_culture()
         {
             var cat = new SoCultural();
             cat.Number = 43.32f;
@@ -50,7 +50,7 @@ namespace OneTrueError.App.Tests.Configuration
         }
 
         [Fact]
-        public void should_ignore_categoryName_when_generating_The_dictionary()
+        public void Should_ignore_categoryName_when_generating_The_dictionary()
         {
             var cat = new WriteTestSection();
 

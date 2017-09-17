@@ -12,6 +12,7 @@ using Xunit;
 
 namespace OneTrueError.SqlServer.Tests.Core.ApiKeys.Commands
 {
+    [Collection(MapperInit.NAME)]
     public class DeleteApiKeyHandlerTests : IDisposable
     {
         private int _applicationId;
@@ -43,7 +44,7 @@ namespace OneTrueError.SqlServer.Tests.Core.ApiKeys.Commands
         }
 
         [Fact]
-        public async Task should_be_able_to_delete_key_by_ApiKey()
+        public async Task Should_be_able_to_delete_key_by_ApiKey()
         {
             var cmd = new DeleteApiKey(_existingEntity.GeneratedKey);
 
@@ -56,7 +57,7 @@ namespace OneTrueError.SqlServer.Tests.Core.ApiKeys.Commands
         }
 
         [Fact]
-        public async Task should_be_able_to_delete_key_by_id()
+        public async Task Should_be_able_to_delete_key_by_id()
         {
             var cmd = new DeleteApiKey(_existingEntity.Id);
 

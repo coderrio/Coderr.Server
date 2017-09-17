@@ -123,8 +123,7 @@ namespace OneTrueError.Infrastructure.Queueing.Msmq
 
         public void Write(object message)
         {
-            var msg = new Message();
-            msg.UseAuthentication = _useAuthentication;
+            var msg = new Message {UseAuthentication = _useAuthentication};
             SerializeBody(message, msg);
 
             if (_useTransactions)

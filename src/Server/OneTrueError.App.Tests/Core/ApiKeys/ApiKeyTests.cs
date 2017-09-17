@@ -20,7 +20,7 @@ namespace OneTrueError.App.Tests.Core.ApiKeys
             sut.Add(1);
 
             var claim = sut.Claims.FirstOrDefault(x => x.Type == OneTrueClaims.Application && x.Value == "1");
-            claim.Should().NotBeNull("because applications should be represented as claims");
+            claim.Should().NotBeNull("because applications Should be represented as claims");
         }
 
     }

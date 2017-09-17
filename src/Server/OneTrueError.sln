@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneTrueError.ReportAnalyzer
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneTrueError.App.Tests", "OneTrueError.App.Tests\OneTrueError.App.Tests.csproj", "{9031CF08-2778-487B-8E11-2F45714875D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneTrueError.Infrastructure", "OneTrueError.Data.Common\OneTrueError.Infrastructure.csproj", "{A78A50DA-C9D7-47F2-8528-D7EE39D91924}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneTrueError.Infrastructure", "OneTrueError.Infrastructure\OneTrueError.Infrastructure.csproj", "{A78A50DA-C9D7-47F2-8528-D7EE39D91924}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OneTrueError.Api.Client", "OneTrueError.Api.Client\OneTrueError.Api.Client.csproj", "{017F8863-3DE0-4AD2-9ED3-5ACB87BBBCD0}"
 EndProject

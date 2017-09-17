@@ -37,7 +37,7 @@ namespace OneTrueError.App.Core.Users
         ///         this constructor is used when the user have an account.
         ///     </para>
         /// </remarks>
-        public ApplicationTeamMember(int applicationId, int accountId)
+        public ApplicationTeamMember(int applicationId, int accountId, string addedByName)
         {
             if (applicationId <= 0) throw new ArgumentNullException("applicationId");
             if (accountId <= 0) throw new ArgumentOutOfRangeException("accountId");
@@ -46,6 +46,8 @@ namespace OneTrueError.App.Core.Users
             AccountId = accountId;
             AddedAtUtc = DateTime.UtcNow;
             EmailAddress = "";
+            AddedByName = addedByName;
+            Roles = new[] {"Member"};
         }
 
         /// <summary>

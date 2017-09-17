@@ -24,10 +24,9 @@ namespace OneTrueError.App.Modules.Similarities.Domain
         /// <exception cref="ArgumentOutOfRangeException">incidentId</exception>
         public SimilarityCollection(int incidentId, string contextName)
         {
-            if (contextName == null) throw new ArgumentNullException("contextName");
-            if (incidentId <= 0) throw new ArgumentOutOfRangeException("incidentId");
+            if (incidentId <= 0) throw new ArgumentOutOfRangeException(nameof(incidentId));
             IncidentId = incidentId;
-            Name = contextName;
+            Name = contextName ?? throw new ArgumentNullException(nameof(contextName));
         }
 
         /// <summary>
@@ -103,15 +102,6 @@ namespace OneTrueError.App.Modules.Similarities.Domain
         public override string ToString()
         {
             return Name;
-        }
-
-        /// <summary>
-        ///     For weak dirty hacking data layer
-        /// </summary>
-        /// <param name="id">PK</param>
-        internal void SetId(int id)
-        {
-            Id = id;
         }
     }
 }

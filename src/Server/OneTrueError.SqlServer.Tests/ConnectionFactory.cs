@@ -9,16 +9,20 @@ namespace OneTrueError.SqlServer.Tests
     {
         public static IAdoNetUnitOfWork Create()
         {
-            var connection = new SqlConnection();
-            connection.ConnectionString = ConfigurationManager.ConnectionStrings["Db"].ConnectionString;
+            var connection = new SqlConnection
+            {
+                ConnectionString = ConfigurationManager.ConnectionStrings["Db"].ConnectionString
+            };
             connection.Open();
             return new AdoNetUnitOfWork(connection, true);
         }
 
-        public static IDbConnection CreateConnection()
+        public static IDbConnection OpenConnection()
         {
-            var connection = new SqlConnection();
-            connection.ConnectionString = ConfigurationManager.ConnectionStrings["Db"].ConnectionString;
+            var connection = new SqlConnection
+            {
+                ConnectionString = ConfigurationManager.ConnectionStrings["Db"].ConnectionString
+            };
             connection.Open();
             return connection;
         }

@@ -26,7 +26,7 @@ namespace OneTrueError.App.Modules.ReportSpikes
         /// <summary>
         ///     Creates a new instance of <see cref="CheckForReportPeak" />.
         /// </summary>
-        /// <param name="repository">To check if spikes should be analysed</param>
+        /// <param name="repository">To check if spikes should be analyzed</param>
         /// <param name="spikeRepository">store/fetch information of current spikes.</param>
         /// <param name="commandBus">used to send emails</param>
         public CheckForReportPeak(INotificationsRepository repository, IReportSpikeRepository spikeRepository,

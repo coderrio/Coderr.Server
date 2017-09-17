@@ -160,10 +160,21 @@ namespace OneTrueError.SqlServer.Core.Accounts
         {
             using (var cmd = _uow.CreateCommand())
             {
-                cmd.CommandText =
-                    "INSERT INTO Accounts (Id, Username, HashedPassword, Salt, CreatedAtUtc, AccountState, Email, UpdatedAtUtc, ActivationKey, LoginAttempts, LastLoginAtUtc) " +
-                    " VALUES(@Id, @Username, @HashedPassword, @Salt, @CreatedAtUtc, @AccountState, @Email, @UpdatedAtUtc, @ActivationKey, @LoginAttempts, @LastLoginAtUtc)";
-                cmd.AddParameter("@Id", account.Id);
+                //for systems where ID must be specified
+                if (account.Id > 0)
+                {
+                    cmd.CommandText =
+                        "INSERT INTO Accounts (Id, Username, HashedPassword, Salt, CreatedAtUtc, AccountState, Email, UpdatedAtUtc, ActivationKey, LoginAttempts, LastLoginAtUtc) " +
+                        " VALUES(@Id, @Username, @HashedPassword, @Salt, @CreatedAtUtc, @AccountState, @Email, @UpdatedAtUtc, @ActivationKey, @LoginAttempts, @LastLoginAtUtc); SELECT CAST(SCOPE_IDENTITY() AS INT);";
+                    cmd.AddParameter("id", account.Id);
+
+                }
+                else
+                {
+                    cmd.CommandText =
+                        "INSERT INTO Accounts (Username, HashedPassword, Salt, CreatedAtUtc, AccountState, Email, UpdatedAtUtc, ActivationKey, LoginAttempts, LastLoginAtUtc) " +
+                        " VALUES(@Username, @HashedPassword, @Salt, @CreatedAtUtc, @AccountState, @Email, @UpdatedAtUtc, @ActivationKey, @LoginAttempts, @LastLoginAtUtc); SELECT CAST(SCOPE_IDENTITY() AS INT);";
+                }
                 cmd.AddParameter("@Username", account.UserName);
                 cmd.AddParameter("@HashedPassword", account.HashedPassword);
                 cmd.AddParameter("@Salt", account.Salt);
@@ -176,7 +187,16 @@ namespace OneTrueError.SqlServer.Core.Accounts
                 cmd.AddParameter("@LoginAttempts", account.LoginAttempts);
                 cmd.AddParameter("@LastLoginAtUtc",
                     account.LastLoginAtUtc == DateTime.MinValue ? (object) null : account.LastLoginAtUtc);
-                cmd.ExecuteNonQuery();
+
+                if (account.Id > 0)
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                else
+                {
+                    var value = (int) cmd.ExecuteScalar();
+                    account.GetType().GetProperty("Id").SetValue(account, value);
+                }
             }
         }
 

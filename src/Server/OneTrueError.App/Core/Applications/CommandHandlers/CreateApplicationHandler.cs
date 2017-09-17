@@ -38,11 +38,10 @@ namespace OneTrueError.App.Core.Applications.CommandHandlers
             var creator = await _userRepository.GetUserAsync(command.UserId);
 
             await _repository.CreateAsync(app);
-            await _repository.CreateAsync(new ApplicationTeamMember(app.Id, creator.AccountId)
+            await _repository.CreateAsync(new ApplicationTeamMember(app.Id, creator.AccountId, creator.UserName)
             {
                 UserName = creator.UserName,
                 Roles = new[] {ApplicationRole.Admin, ApplicationRole.Member},
-                AddedByName = creator.UserName
             });
 
             var identity = ClaimsPrincipal.Current.Identities.First();

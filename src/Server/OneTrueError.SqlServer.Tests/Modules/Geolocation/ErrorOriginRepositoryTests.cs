@@ -1,22 +1,38 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using OneTrueError.App.Modules.Geolocation;
 using OneTrueError.SqlServer.Modules.Geolocation;
 using Xunit;
 
 namespace OneTrueError.SqlServer.Tests.Modules.Geolocation
 {
-    public class ErrorOriginRepositoryTests
+    [Collection(MapperInit.NAME)]
+    public class ErrorOriginRepositoryTests : IDisposable
     {
+        private readonly TestTools _testTools = new TestTools();
+
+        public ErrorOriginRepositoryTests()
+        {
+            _testTools.CreateDatabase();
+            _testTools.ToLatestVersion();
+        }
+
         [Fact]
         public async Task Can_store_origin()
         {
             var origin = new ErrorOrigin("127.0.0.1", 934.934, 28.282);
-            var uow = ConnectionFactory.Create();
+            var uow = _testTools.CreateUnitOfWork();
+            _testTools.CreateUserAndApp();
 
             var handler = new ErrorOriginRepository(uow);
-            await handler.CreateAsync(origin, 1, 2, 3);
+            await handler.CreateAsync(origin, 1, 1, 1);
 
             uow.Dispose();
+        }
+
+        public void Dispose()
+        {
+            _testTools?.Dispose();
         }
     }
 }

@@ -84,9 +84,8 @@ namespace OneTrueError.App.Core.Invitations.CommandHandlers
                     return;
                 }
 
-                var member = new ApplicationTeamMember(command.ApplicationId, invitedUser.AccountId)
+                var member = new ApplicationTeamMember(command.ApplicationId, invitedUser.AccountId, inviter.UserName)
                 {
-                    AddedByName = inviter.UserName,
                     Roles = new[] {ApplicationRole.Member}
                 };
 

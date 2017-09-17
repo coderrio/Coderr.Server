@@ -89,7 +89,7 @@
       <Name>OneTrueError.App</Name>
       <Project>{5EF42A74-9323-49FA-A1F6-974D6DE77202}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\OneTrueError.Data.Common\OneTrueError.Infrastructure.csproj">
+    <ProjectReference Include="..\OneTrueError.Infrastructure\OneTrueError.Infrastructure.csproj">
       <Name>OneTrueError.Infrastructure</Name>
       <Project>{A78A50DA-C9D7-47F2-8528-D7EE39D91924}</Project>
     </ProjectReference>

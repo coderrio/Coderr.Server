@@ -43,10 +43,10 @@ namespace OneTrueError.App.Tests.Core.Applications.Commands
         }
 
         [Fact]
-        public async Task should_create_an_invite_for_a_new_user()
+        public async Task Should_create_an_invite_for_a_new_user()
         {
             var cmd = new InviteUser(1, "jonas@gauffin.com") { UserId = 1 };
-            var members = new[] { new ApplicationTeamMember(1, 3) };
+            var members = new[] { new ApplicationTeamMember(1, 3, "karl") };
             ApplicationTeamMember actual = null;
             _applicationRepository.GetTeamMembersAsync(1).Returns(members);
             _applicationRepository.WhenForAnyArgs(x => x.CreateAsync(Arg.Any<ApplicationTeamMember>()))
@@ -63,10 +63,10 @@ namespace OneTrueError.App.Tests.Core.Applications.Commands
         }
 
         [Fact]
-        public void regular_user_should_not_be_able_to_invite()
+        public void Regular_user_should_not_be_able_to_invite()
         {
             var cmd = new InviteUser(1, "jonas@gauffin.com") { UserId = 1 };
-            var members = new[] { new ApplicationTeamMember(1, 3) };
+            var members = new[] { new ApplicationTeamMember(1, 3, "karl") };
             _applicationRepository.GetTeamMembersAsync(1).Returns(members);
             _sut.PrincipalAccessor = () => new ClaimsPrincipal(new ClaimsIdentity());
 
@@ -76,10 +76,10 @@ namespace OneTrueError.App.Tests.Core.Applications.Commands
         }
 
         [Fact]
-        public void sysadmin_should_be_able_To_invite_users()
+        public void Sysadmin_should_be_able_To_invite_users()
         {
             var cmd = new InviteUser(1, "jonas@gauffin.com") { UserId = 1 };
-            var members = new[] { new ApplicationTeamMember(3, 3) };
+            var members = new[] { new ApplicationTeamMember(3, 3, "karl") };
             _applicationRepository.GetTeamMembersAsync(1).Returns(members);
             _sut.PrincipalAccessor = () => new ClaimsPrincipal(new ClaimsIdentity());
 
@@ -89,10 +89,10 @@ namespace OneTrueError.App.Tests.Core.Applications.Commands
         }
 
         [Fact]
-        public async Task should_not_allow_invites_when_the_invited_user_already_have_an_account()
+        public async Task Should_not_allow_invites_when_the_invited_user_already_have_an_account()
         {
             var cmd = new InviteUser(1, "jonas@gauffin.com") { UserId = 2 };
-            var members = new[] { new ApplicationTeamMember(1, 3) };
+            var members = new[] { new ApplicationTeamMember(1, 3, "karl") };
             _userRepository.FindByEmailAsync(cmd.EmailAddress).Returns(new User(3, "existing"));
             _applicationRepository.GetTeamMembersAsync(1).Returns(members);
             _sut.PrincipalAccessor = CreateAdminPrincipal;
@@ -103,7 +103,7 @@ namespace OneTrueError.App.Tests.Core.Applications.Commands
         }
 
         [Fact]
-        public async Task should_not_allow_invites_when_the_invited_user_already_have_an_pending_invite()
+        public async Task Should_not_allow_invites_when_the_invited_user_already_have_an_pending_invite()
         {
             var cmd = new InviteUser(1, "jonas@gauffin.com") { UserId = 1 };
             var members = new[] { new ApplicationTeamMember(1, cmd.EmailAddress) };
@@ -116,10 +116,10 @@ namespace OneTrueError.App.Tests.Core.Applications.Commands
         }
 
         [Fact]
-        public async Task should_notify_the_system_of_the_invite()
+        public async Task Should_notify_the_system_of_the_invite()
         {
             var cmd = new InviteUser(1, "jonas@gauffin.com") { UserId = 1 };
-            var members = new[] { new ApplicationTeamMember(1, 3) };
+            var members = new[] { new ApplicationTeamMember(1, 3, "karl") };
             ApplicationTeamMember actual = null;
             _applicationRepository.GetTeamMembersAsync(1).Returns(members);
             _applicationRepository.WhenForAnyArgs(x => x.CreateAsync(Arg.Any<ApplicationTeamMember>()))
@@ -133,10 +133,10 @@ namespace OneTrueError.App.Tests.Core.Applications.Commands
         }
 
         [Fact]
-        public async Task should_send_an_invitation_email()
+        public async Task Should_send_an_invitation_email()
         {
             var cmd = new InviteUser(1, "jonas@gauffin.com") { UserId = 1 };
-            var members = new[] { new ApplicationTeamMember(1, 3) };
+            var members = new[] { new ApplicationTeamMember(1, 3, "karl") };
             ApplicationTeamMember actual = null;
             _applicationRepository.GetTeamMembersAsync(1).Returns(members);
             _applicationRepository.WhenForAnyArgs(x => x.CreateAsync(Arg.Any<ApplicationTeamMember>()))

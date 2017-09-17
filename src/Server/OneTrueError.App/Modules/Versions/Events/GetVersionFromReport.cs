@@ -32,9 +32,11 @@ namespace OneTrueError.App.Modules.Versions.Events
             {
                 var notice = new AddNotification(OneTrueClaims.RoleSysAdmin,
                     "There is no version assembly configured for " + e.Incident.ApplicationName +
-                    ". Go to 'System Settings'/Versions and configure one");
-                notice.HoldbackInterval = TimeSpan.FromDays(3);
-                notice.NotificationType = NotifyNoVersion;
+                    ". Go to 'System Settings'/Versions and configure one")
+                {
+                    HoldbackInterval = TimeSpan.FromDays(3),
+                    NotificationType = NotifyNoVersion
+                };
                 await _commandBus.ExecuteAsync(notice);
                 return;
             }
@@ -43,14 +45,15 @@ namespace OneTrueError.App.Modules.Versions.Events
             if (collection == null)
                 return;
 
-            string version;
-            if (!collection.Properties.TryGetValue(assemblyName, out version))
+            if (!collection.Properties.TryGetValue(assemblyName, out string version))
             {
                 var notice = new AddNotification(OneTrueClaims.RoleSysAdmin,
                     "Assembly " + assemblyName + " is configured for application " + e.Incident.ApplicationName +
-                    ". It do however not exist. Configure a new one at 'System Settings'/Versions.");
-                notice.HoldbackInterval = TimeSpan.FromDays(3);
-                notice.NotificationType = NotifyNotRecognizedVersion;
+                    ". It do however not exist. Configure a new one at 'System Settings'/Versions.")
+                {
+                    HoldbackInterval = TimeSpan.FromDays(3),
+                    NotificationType = NotifyNotRecognizedVersion
+                };
                 await _commandBus.ExecuteAsync(notice);
                 return;
             }
@@ -74,7 +77,7 @@ namespace OneTrueError.App.Modules.Versions.Events
         private string GetVersionAssemblyName(int applicationId)
         {
             var config = ConfigurationStore.Instance.Load<ApplicationVersionConfig>();
-            return config == null ? null : config.GetAssemblyName(applicationId);
+            return config?.GetAssemblyName(applicationId);
         }
 
         private async Task IncreaseReportCounter(int versionId, bool isNewIncident)

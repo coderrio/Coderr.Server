@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using DotNetCqs;
@@ -12,8 +13,10 @@ using OneTrueError.SqlServer.Core.ApiKeys.Commands;
 using OneTrueError.SqlServer.Core.Applications;
 using Xunit;
 
+
 namespace OneTrueError.SqlServer.Tests.Core.ApiKeys.Commands
 {
+    [Collection(MapperInit.NAME)]
     public class CreateApiKeyHandlerTests : IDisposable
     {
         private int _applicationId;
@@ -31,7 +34,7 @@ namespace OneTrueError.SqlServer.Tests.Core.ApiKeys.Commands
         }
 
         [Fact]
-        public async Task should_be_able_to_Create_a_key_without_applications_mapped()
+        public async Task Should_be_able_to_Create_a_key_without_applications_mapped()
         {
             var cmd = new CreateApiKey("Mofo", Guid.NewGuid().ToString("N"), Guid.NewGuid().ToString("N"));
             var bus = Substitute.For<IEventBus>();
@@ -42,11 +45,11 @@ namespace OneTrueError.SqlServer.Tests.Core.ApiKeys.Commands
             var repos = new ApiKeyRepository(_uow);
             var generated = await repos.GetByKeyAsync(cmd.ApiKey);
             generated.Should().NotBeNull();
-            generated.Claims.Should().BeEmpty();
+            generated.Claims.Should().NotBeEmpty("because keys without appIds are universal");
         }
 
         [Fact]
-        public async Task should_be_able_to_Create_key()
+        public async Task Should_be_able_to_Create_key()
         {
             var cmd = new CreateApiKey("Mofo", Guid.NewGuid().ToString("N"), Guid.NewGuid().ToString("N"),
                 new[] {_applicationId});

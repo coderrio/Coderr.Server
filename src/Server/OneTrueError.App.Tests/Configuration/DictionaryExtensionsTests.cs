@@ -35,7 +35,7 @@ namespace OneTrueError.App.Tests.Configuration
         #region boolean
 
         [Fact]
-        public void should_include_key_name_if_item_do_not_exist()
+        public void Should_include_key_name_if_item_do_not_exist()
         {
             var dict = new Dictionary<string, string> {{"Usable", "Vlue"}};
 
@@ -45,7 +45,7 @@ namespace OneTrueError.App.Tests.Configuration
         }
 
         [Fact]
-        public void should_convert_to_bolean_if_given_item_is_found()
+        public void Should_convert_to_bolean_if_given_item_is_found()
         {
             var dict = new Dictionary<string, string> {{"Usable", "True"}};
 
@@ -56,7 +56,7 @@ namespace OneTrueError.App.Tests.Configuration
 
 
         [Fact]
-        public void should_include_value_if_item_is_not_convertable_to_boolean()
+        public void Should_include_value_if_item_is_not_convertable_to_boolean()
         {
             var dict = new Dictionary<string, string> {{"Usable", "Vlue"}};
 
@@ -70,7 +70,7 @@ namespace OneTrueError.App.Tests.Configuration
         #region integer
 
         [Fact]
-        public void should_include_key_name_if_int_item_do_not_exist()
+        public void Should_include_key_name_if_int_item_do_not_exist()
         {
             var dict = new Dictionary<string, string> {{"Length", "Vlue"}};
 
@@ -80,7 +80,7 @@ namespace OneTrueError.App.Tests.Configuration
         }
 
         [Fact]
-        public void should_convert_to_integer_if_given_item_is_found()
+        public void Should_convert_to_integer_if_given_item_is_found()
         {
             var dict = new Dictionary<string, string> {{"Length", "1100"}};
 
@@ -91,7 +91,7 @@ namespace OneTrueError.App.Tests.Configuration
 
 
         [Fact]
-        public void should_include_value_if_item_is_not_convertable_to_integer()
+        public void Should_include_value_if_item_is_not_convertable_to_integer()
         {
             var dict = new Dictionary<string, string> {{"Usable", "Vlue"}};
 

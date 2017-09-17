@@ -44,7 +44,7 @@ namespace OneTrueError.App.Core.Accounts
         public AccountState AccountState { get; private set; }
 
         /// <summary>
-        ///     Used to verify the mail address (if verifiaction is activated)
+        ///     Used to verify the mail address (if verification is activated)
         /// </summary>
         public string ActivationKey { get; private set; }
 
@@ -81,7 +81,7 @@ namespace OneTrueError.App.Core.Accounts
         public DateTime LastLoginAtUtc { get; private set; }
 
         /// <summary>
-        ///     Number of failed login attempts (reseted on each successfull login attempt).
+        ///     Number of failed login attempts (reseted on each successful login attempt).
         /// </summary>
         public int LoginAttempts { get; private set; }
 
@@ -97,7 +97,7 @@ namespace OneTrueError.App.Core.Accounts
         public DateTime UpdatedAtUtc { get; private set; }
 
         /// <summary>
-        ///     Username
+        ///     User name / login name
         /// </summary>
         public string UserName { get; private set; }
 

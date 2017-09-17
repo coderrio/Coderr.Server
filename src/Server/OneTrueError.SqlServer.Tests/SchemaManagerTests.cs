@@ -1,62 +1,58 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FluentAssertions;
 using Griffin.Data.Mapper;
 using Xunit;
 
 namespace OneTrueError.SqlServer.Tests
 {
-    public class SchemaManagerTests
+    public class SchemaManagerTests : IDisposable
     {
         public const int LatestVersion = 3;
+        readonly TestTools _testTools = new TestTools();
 
         public SchemaManagerTests()
         {
-            var sut = new SchemaManager(ConnectionFactory.CreateConnection);
-            EnsureSchemaTable();
+            _testTools.CreateDatabase();
         }
 
+     
         [Fact]
-        public void should_report_upgradable_if_schema_version_is_less()
+        public void Should_report_upgradable_if_schema_version_is_less()
         {
             SetVersion(1);
         
-            var sut = new SchemaManager(ConnectionFactory.CreateConnection);
+            var sut = new SchemaManager(() => _testTools.OpenConnection());
             var actual = sut.CanSchemaBeUpgraded();
 
             actual.Should().BeTrue();
         }
 
         [Fact]
-        public void should_not_report_upgradable_if_schema_version_is_same()
+        public void Should_not_report_upgradable_if_schema_version_is_same()
         {
-            SetVersion(3);
+            _testTools.ToLatestVersion();
 
-            var sut = new SchemaManager(ConnectionFactory.CreateConnection);
+            var sut = new SchemaManager(() => _testTools.OpenConnection());
             var actual = sut.CanSchemaBeUpgraded();
 
             actual.Should().BeFalse();
         }
 
         [Fact]
-        public void should_report_upgradable_if_schema_table_is_missing()
+        public void Should_report_upgradable_if_schema_table_is_missing()
         {
-            DropSchemaTable();
 
-            var sut = new SchemaManager(ConnectionFactory.CreateConnection);
+            var sut = new SchemaManager(() => _testTools.OpenConnection());
             var actual = sut.CanSchemaBeUpgraded();
 
             actual.Should().BeTrue();
         }
 
         [Fact]
-        public void should_be_able_to_upgrade_schema()
+        public void Should_be_able_to_upgrade_schema()
         {
 
-            var sut = new SchemaManager(ConnectionFactory.CreateConnection);
+            var sut = new SchemaManager(() => _testTools.OpenConnection());
             sut.UpgradeDatabaseSchema();
 
 
@@ -64,13 +60,13 @@ namespace OneTrueError.SqlServer.Tests
 
 
         [Fact]
-        public void should_be_able_to_upgrade_database()
+        public void Should_be_able_to_upgrade_database()
         {
             using (var tools = new TestTools())
             {
                 tools.CreateDatabase();
 
-                var sut = new SchemaManager(tools.CreateConnection);
+                var sut = new SchemaManager(tools.OpenConnection);
                 sut.UpgradeDatabaseSchema();
             }
         }
@@ -102,10 +98,15 @@ END
 
         private void DropSchemaTable()
         {
-            using (var con = SqlServerTools.OpenConnection())
+            using (var con = _testTools.OpenConnection())
             {
                 con.ExecuteNonQuery(@"DROP TABLE [dbo].[DatabaseSchema]");
             }
+        }
+
+        public void Dispose()
+        {
+            _testTools?.Dispose();
         }
     }
 }

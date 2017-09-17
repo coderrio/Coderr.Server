@@ -14,9 +14,11 @@ namespace OneTrueError.Infrastructure
             {
                 var queue = new MessageQueue(queuePath);
 
-                var msg = new Message("Hello", new BinaryMessageFormatter());
-                msg.UseAuthentication = useAuthentication;
-                msg.UseDeadLetterQueue = true;
+                var msg = new Message("Hello", new BinaryMessageFormatter())
+                {
+                    UseAuthentication = useAuthentication,
+                    UseDeadLetterQueue = true
+                };
                 if (useTransactions)
                 {
                     queue.Send(msg, MessageQueueTransactionType.Single);

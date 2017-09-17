@@ -22,7 +22,7 @@ namespace OneTrueError.App.Tests.Web.Overview.Queries
         }
 
         [Fact]
-        public void should_allow_dates_within_the_given_interval()
+        public void Should_allow_dates_within_the_given_interval()
         {
 
             var sut = new GetOverviewApplicationResult("hello", DateTime.Today.AddDays(-30), 31);

@@ -9,7 +9,7 @@ namespace OneTrueError.App.Tests.Core.Accounts
     public class AccountTests
     {
         [Fact]
-        public void should_be_able_to_activate_the_account()
+        public void Should_be_able_to_activate_the_account()
         {
             var sut = new Account("arne", "kalle");
 
@@ -20,7 +20,7 @@ namespace OneTrueError.App.Tests.Core.Accounts
         }
 
         [Fact]
-        public void should_be_able_to_change_password()
+        public void Should_be_able_to_change_password()
         {
             var sut = new Account("arne", "kalle");
 
@@ -31,7 +31,7 @@ namespace OneTrueError.App.Tests.Core.Accounts
         }
 
         [Fact]
-        public void should_be_able_to_validate_the_current_password_so_that_We_know_that_its_safe_to_change_it()
+        public void Should_be_able_to_validate_the_current_password_so_that_We_know_that_its_safe_to_change_it()
         {
             var sut = new Account("arne", "kalle");
 
@@ -41,7 +41,7 @@ namespace OneTrueError.App.Tests.Core.Accounts
         }
 
         [Fact]
-        public void should_fail_if_account_have_not_been_activated()
+        public void Should_fail_if_account_have_not_been_activated()
         {
             var sut = new Account("arne", "kalle");
 
@@ -52,7 +52,7 @@ namespace OneTrueError.App.Tests.Core.Accounts
 
         [Fact]
         public void
-            should_generate_activation_key_when_reset_is_requested_so_that_the_user_can_activate_its_account_user_the_emailed_link
+            Should_generate_activation_key_when_reset_is_requested_so_that_the_user_can_activate_its_account_user_the_emailed_link
             ()
         {
             var sut = new Account("arne", "kalle");

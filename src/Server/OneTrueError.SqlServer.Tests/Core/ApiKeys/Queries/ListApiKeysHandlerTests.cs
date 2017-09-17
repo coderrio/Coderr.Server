@@ -9,6 +9,7 @@ using Xunit;
 
 namespace OneTrueError.SqlServer.Tests.Core.ApiKeys.Queries
 {
+    [Collection(MapperInit.NAME)]
     public class ListApiKeysHandlerTests : IDisposable
     {
         private readonly ApiKey _existingEntity;

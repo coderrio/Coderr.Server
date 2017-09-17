@@ -195,8 +195,7 @@ AND DATALENGTH(Description) > 0;";
                         throw new InvalidOperationException("Expected to be able to read.");
                     }
 
-                    var data = new OverviewStatSummary();
-                    data.Incidents = reader.GetInt32(0);
+                    var data = new OverviewStatSummary {Incidents = reader.GetInt32(0)};
                     await reader.NextResultAsync();
                     await reader.ReadAsync();
                     data.Reports = reader.GetInt32(0);

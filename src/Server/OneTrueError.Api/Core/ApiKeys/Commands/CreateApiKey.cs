@@ -4,8 +4,11 @@ using DotNetCqs;
 namespace OneTrueError.Api.Core.ApiKeys.Commands
 {
     /// <summary>
-    ///     Create a new api key
+    ///     Create a new API key
     /// </summary>
+    /// <remarks>
+    ///     <para>API keys are used to be able to communicate with the OneTrueError server through the HTTP API.</para>
+    /// </remarks>
     [AuthorizeRoles("SysAdmin")]
     public class CreateApiKey : Command
     {
@@ -24,17 +27,13 @@ namespace OneTrueError.Api.Core.ApiKeys.Commands
         /// <param name="applicationIds">
         ///     <see cref="ApplicationIds" />
         /// </param>
+        /// <exception cref="ArgumentNullException">applicationName;apiKey;sharedSecret;applicationIds</exception>
         public CreateApiKey(string applicationName, string apiKey, string sharedSecret, int[] applicationIds)
         {
-            if (applicationName == null) throw new ArgumentNullException("applicationName");
-            if (apiKey == null) throw new ArgumentNullException("apiKey");
-            if (sharedSecret == null) throw new ArgumentNullException("sharedSecret");
-            if (applicationIds == null) throw new ArgumentNullException("applicationIds");
-
-            ApplicationName = applicationName;
-            ApiKey = apiKey;
-            SharedSecret = sharedSecret;
-            ApplicationIds = applicationIds;
+            ApplicationName = applicationName ?? throw new ArgumentNullException("applicationName");
+            ApiKey = apiKey ?? throw new ArgumentNullException("apiKey");
+            SharedSecret = sharedSecret ?? throw new ArgumentNullException("sharedSecret");
+            ApplicationIds = applicationIds ?? throw new ArgumentNullException("applicationIds");
         }
 
         /// <summary>
@@ -51,13 +50,9 @@ namespace OneTrueError.Api.Core.ApiKeys.Commands
         /// </param>
         public CreateApiKey(string applicationName, string apiKey, string sharedSecret)
         {
-            if (applicationName == null) throw new ArgumentNullException("applicationName");
-            if (apiKey == null) throw new ArgumentNullException("apiKey");
-            if (sharedSecret == null) throw new ArgumentNullException("sharedSecret");
-
-            ApplicationName = applicationName;
-            ApiKey = apiKey;
-            SharedSecret = sharedSecret;
+            ApplicationName = applicationName ?? throw new ArgumentNullException("applicationName");
+            ApiKey = apiKey ?? throw new ArgumentNullException("apiKey");
+            SharedSecret = sharedSecret ?? throw new ArgumentNullException("sharedSecret");
             ApplicationIds = new int[0];
         }
 
@@ -75,7 +70,7 @@ namespace OneTrueError.Api.Core.ApiKeys.Commands
         public int AccountId { get; set; }
 
         /// <summary>
-        ///     Generated api key
+        ///     Generated API key
         /// </summary>
         public string ApiKey { get; set; }
 
@@ -85,7 +80,7 @@ namespace OneTrueError.Api.Core.ApiKeys.Commands
         public int[] ApplicationIds { get; set; }
 
         /// <summary>
-        ///     Application that uses this api key
+        ///     Application that uses this API key
         /// </summary>
         public string ApplicationName { get; set; }
 

@@ -20,8 +20,7 @@ namespace OneTrueError.SqlServer.Modules.Similarities
 
         public SimilarityRepository(IAdoNetUnitOfWork uow)
         {
-            if (uow == null) throw new ArgumentNullException("uow");
-            _uow = uow;
+            _uow = uow ?? throw new ArgumentNullException(nameof(uow));
         }
 
         public async Task CreateAsync(SimilaritiesReport similarity)
@@ -75,7 +74,7 @@ namespace OneTrueError.SqlServer.Modules.Similarities
                         var json = (string) reader["Properties"];
                         var properties = OneTrueSerializer.Deserialize<ContextCollectionPropertyDbEntity[]>(json);
                         var col = new SimilarityCollection(incidentId, reader.GetString(1));
-                        col.SetId(reader.GetInt32(0));
+                        col.GetType().GetProperty("Id").SetValue(col, reader.GetInt32(0));
                         foreach (var entity in properties)
                         {
                             var prop = new Similarity(entity.Name);

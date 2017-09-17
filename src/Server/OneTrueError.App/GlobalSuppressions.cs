@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 
+[assembly:InternalsVisibleTo("OneTrueError.App.Tests")]
 [assembly: SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope = "member", Target = "*")]
 [assembly:
     SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope = "member",

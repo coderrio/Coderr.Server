@@ -34,7 +34,7 @@ namespace OneTrueError.App.Tests.Core.Invitations.Commands
         }
 
         [Fact]
-        public async Task should_delete_invitation_when_its_accepted_to_prevent_creating_multiple_accounts_with_the_same_invitation_key()
+        public async Task Should_delete_invitation_when_its_accepted_to_prevent_creating_multiple_accounts_with_the_same_invitation_key()
         {
             var invitation = new Invitation("invited@test.com", "inviter");
             var request = new AcceptInvitation(InvitedAccountId, invitation.InvitationKey) {AcceptedEmail = "arne@gauffin.com"};
@@ -47,7 +47,7 @@ namespace OneTrueError.App.Tests.Core.Invitations.Commands
         }
 
         [Fact]
-        public async Task should_notify_system_of_the_accepted_invitation()
+        public async Task Should_notify_system_of_the_accepted_invitation()
         {
             var invitation = new Invitation("invited@test.com", "inviter");
             var request = new AcceptInvitation(InvitedAccountId, invitation.InvitationKey) { AcceptedEmail = "arne@gauffin.com" };
@@ -65,7 +65,7 @@ namespace OneTrueError.App.Tests.Core.Invitations.Commands
         }
 
         [Fact]
-        public async Task should_create_an_Account_for_invites_to_new_users()
+        public async Task Should_create_an_Account_for_invites_to_new_users()
         {
             var invitation = new Invitation("invited@test.com", "inviter");
             var request = new AcceptInvitation("arne", "pass", invitation.InvitationKey) { AcceptedEmail = "arne@gauffin.com" };
@@ -84,7 +84,7 @@ namespace OneTrueError.App.Tests.Core.Invitations.Commands
         }
 
         [Fact]
-        public async Task should_publish_AccountRegistered_if_a_new_account_is_created_as_we_bypass_the_regular_account_registration_flow()
+        public async Task Should_publish_AccountRegistered_if_a_new_account_is_created_as_we_bypass_the_regular_account_registration_flow()
         {
             var invitation = new Invitation("invited@test.com", "inviter");
             var request = new AcceptInvitation("arne", "pass", invitation.InvitationKey) { AcceptedEmail = "arne@gauffin.com" };
@@ -103,7 +103,7 @@ namespace OneTrueError.App.Tests.Core.Invitations.Commands
         }
 
         [Fact]
-        public async Task should_publish_AccountActivated_if_a_new_account_is_created_as_we_bypass_the_regular_account_registration_flow()
+        public async Task Should_publish_AccountActivated_if_a_new_account_is_created_as_we_bypass_the_regular_account_registration_flow()
         {
             var invitation = new Invitation("invited@test.com", "inviter");
             var request = new AcceptInvitation("arne", "pass", invitation.InvitationKey) { AcceptedEmail = "arne@gauffin.com" };
@@ -123,7 +123,7 @@ namespace OneTrueError.App.Tests.Core.Invitations.Commands
 
 
         [Fact]
-        public async Task should_ignore_invitations_where_the_key_is_not_registered_in_the_db()
+        public async Task Should_ignore_invitations_where_the_key_is_not_registered_in_the_db()
         {
             var request = new AcceptInvitation(InvitedAccountId, "invalid") { AcceptedEmail = "arne@gauffin.com" };
 
