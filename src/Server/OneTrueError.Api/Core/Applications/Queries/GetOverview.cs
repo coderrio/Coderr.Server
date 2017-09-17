@@ -38,5 +38,10 @@ namespace OneTrueError.Api.Core.Applications.Queries
         ///     1 = switch to hours
         /// </remarks>
         public int NumberOfDays { get; set; }
+
+        /// <summary>
+        /// Filter on a specific version ("1.1.0")
+        /// </summary>
+        public string Version { get; set; }
     }
 }

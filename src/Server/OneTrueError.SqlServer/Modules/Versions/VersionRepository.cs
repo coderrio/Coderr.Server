@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Threading.Tasks;
 using Griffin.Container;
 using Griffin.Data;
@@ -71,11 +73,33 @@ namespace OneTrueError.SqlServer.Modules.Versions
             await _uow.UpdateAsync(entity);
         }
 
+        public async Task<IEnumerable<string>> FindVersionsAsync(int appId)
+        {
+            return await _uow.ToListAsync<string>(new StringMapper(), "SELECT Version FROM ApplicationVersions WHERE ApplicationId = @id",
+                new {id = appId});
+        }
+
 
         public async Task<string> GetVersionAssemblyNameAsync(int applicationId)
         {
             var item = await _uow.FirstOrDefaultAsync<ApplicationVersionConfig>(new {ApplicationId = applicationId});
             return item?.AssemblyName;
+        }
+    }
+
+    public class StringMapper : IEntityMapper<string>
+    {
+        public void Map(IDataRecord source, string destination)
+        {
+        }
+
+        public object Create(IDataRecord record)
+        {
+            return record[0];
+        }
+
+        public void Map(IDataRecord source, object destination)
+        {
         }
     }
 }

@@ -163,6 +163,8 @@ namespace OneTrueError.App.Core.Incidents
             IsSolved = false;
             ReopenedAtUtc = DateTime.UtcNow;
             IsReopened = true;
+            IgnoreReports = false;
+            IgnoringReportsSinceUtc = DateTime.MinValue;
         }
 
         /// <summary>

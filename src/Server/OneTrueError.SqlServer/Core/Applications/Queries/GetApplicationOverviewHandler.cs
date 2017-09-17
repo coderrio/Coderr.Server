@@ -40,15 +40,32 @@ namespace OneTrueError.SqlServer.Core.Applications.Queries
             var result = new GetApplicationOverviewResult();
             using (var cmd = _unitOfWork.CreateDbCommand())
             {
+                string filter1;
+                string filter2;
+                if (query.Version != null)
+                {
+                    var id = _unitOfWork.ExecuteScalar("SELECT Id FROM ApplicationVersions WHERE Version = @version",
+                        new { version = query.Version });
+                    filter1 = @"JOIN IncidentVersions On (Incidents.Id = IncidentVersions.IncidentId)
+                            WHERE IncidentVersions.VersionId = @versionId AND ";
+                    filter2 = @"JOIN IncidentVersions On (ErrorReports.IncidentId = IncidentVersions.IncidentId)
+                            WHERE IncidentVersions.VersionId = @versionId AND ";
+                    cmd.AddParameter("versionId", id);
+                }
+                else
+                {
+                    filter1 = "WHERE ";
+                    filter2 = "WHERE ";
+                }
                 var sql = @"select cast(Incidents.CreatedAtUtc as date), count(Id)
 from Incidents
-where Incidents.CreatedAtUtc >= @minDate
+{2} Incidents.CreatedAtUtc >= @minDate
 AND Incidents.CreatedAtUtc <= GetUtcDate()
 {0}
 group by cast(Incidents.CreatedAtUtc as date);
 select cast(ErrorReports.CreatedAtUtc as date), count(Id)
 from ErrorReports
-where ErrorReports.CreatedAtUtc >= @minDate
+{3} ErrorReports.CreatedAtUtc >= @minDate
 AND ErrorReports.CreatedAtUtc <= GetUtcDate()
 {1}
 group by cast(ErrorReports.CreatedAtUtc as date);";
@@ -57,12 +74,13 @@ group by cast(ErrorReports.CreatedAtUtc as date);";
                 {
                     cmd.CommandText = string.Format(sql,
                         " AND Incidents.ApplicationId = @appId",
-                        " AND ErrorReports.ApplicationId = @appId");
+                        " AND ErrorReports.ApplicationId = @appId",
+                        filter1, filter2);
                     cmd.AddParameter("appId", query.ApplicationId);
                 }
                 else
                 {
-                    cmd.CommandText = string.Format(sql, "", "");
+                    cmd.CommandText = string.Format(sql, "", "", filter1, filter2);
                 }
 
                 cmd.AddParameter("minDate", DateTime.Today.AddDays(-query.NumberOfDays));
@@ -70,12 +88,12 @@ group by cast(ErrorReports.CreatedAtUtc as date);";
                 {
                     while (await reader.ReadAsync())
                     {
-                        incidents[(DateTime) reader[0]] = (int) reader[1];
+                        incidents[(DateTime)reader[0]] = (int)reader[1];
                     }
                     await reader.NextResultAsync();
                     while (await reader.ReadAsync())
                     {
-                        errorReports[(DateTime) reader[0]] = (int) reader[1];
+                        errorReports[(DateTime)reader[0]] = (int)reader[1];
                     }
 
                     result.ErrorReports = errorReports.Select(x => x.Value).ToArray();
@@ -94,14 +112,57 @@ group by cast(ErrorReports.CreatedAtUtc as date);";
         {
             using (var cmd = _unitOfWork.CreateDbCommand())
             {
-                cmd.CommandText = @"select count(id) from incidents 
+                if (!string.IsNullOrEmpty(query.Version))
+                {
+                    var versionId =
+                        _unitOfWork.ExecuteScalar("SELECT Id FROM ApplicationVersions WHERE Version=@version",
+                            new {version = query.Version});
+                    cmd.CommandText = @"select count(id) 
+from incidents 
+JOIN IncidentVersions ON (Incidents.Id = IncidentVersions.IncidentId)
+WHERE IncidentVersions.VersionId = @versionId
+AND CreatedAtUtc >= @minDate
+AND CreatedAtUtc <= GetUtcDate()
+AND ApplicationId = @appId 
+AND Incidents.IgnoreReports = 0 
+AND Incidents.IsSolved = 0;
+
+SELECT count(id) from ErrorReports 
+JOIN IncidentVersions ON (ErrorReports.IncidentId = IncidentVersions.IncidentId)
+WHERE IncidentVersions.VersionId = @versionId
+AND CreatedAtUtc >= @minDate
+AND CreatedAtUtc <= GetUtcDate()
+AND ApplicationId = @appId;
+
+SELECT count(distinct emailaddress) from IncidentFeedback
+JOIN IncidentVersions ON (IncidentFeedback.IncidentId = IncidentVersions.IncidentId)
+WHERE IncidentVersions.VersionId = @versionId
+AND CreatedAtUtc >= @minDate
+AND CreatedAtUtc <= GetUtcDate()
+AND ApplicationId = @appId
+AND emailaddress is not null
+AND DATALENGTH(emailaddress) > 0;
+
+select count(*) from IncidentFeedback 
+JOIN IncidentVersions ON (IncidentFeedback.IncidentId = IncidentVersions.IncidentId)
+WHERE IncidentVersions.VersionId = @versionId
+AND CreatedAtUtc >= @minDate
+AND CreatedAtUtc <= GetUtcDate()
+AND ApplicationId = @appId
+AND Description is not null
+AND DATALENGTH(Description) > 0;";
+                    cmd.AddParameter("versionId", versionId);
+                }
+                else
+                {
+                    cmd.CommandText = @"select count(id) from incidents 
 where CreatedAtUtc >= @minDate
 AND CreatedAtUtc <= GetUtcDate()
 AND ApplicationId = @appId 
 AND Incidents.IgnoreReports = 0 
 AND Incidents.IsSolved = 0;
 
-select count(id) from errorreports 
+select count(id) from ErrorReports 
 where CreatedAtUtc >= @minDate
 AND CreatedAtUtc <= GetUtcDate()
 AND ApplicationId = @appId;
@@ -119,6 +180,8 @@ AND CreatedAtUtc <= GetUtcDate()
 AND ApplicationId = @appId
 AND Description is not null
 AND DATALENGTH(Description) > 0;";
+
+                }
                 cmd.AddParameter("appId", query.ApplicationId);
                 var minDate = query.NumberOfDays == 1
                     ? DateTime.Today.AddHours(DateTime.Now.Hour).AddHours(-23)
@@ -164,25 +227,40 @@ AND DATALENGTH(Description) > 0;";
                 incidentValues[startDate.AddHours(i)] = 0;
                 reportValues[startDate.AddHours(i)] = 0;
             }
-
+            var filter1 = "";
+            var filter2 = "";
             using (var cmd = _unitOfWork.CreateDbCommand())
             {
-                var sql = @"SELECT DATEPART(HOUR, Incidents.CreatedAtUtc), cast(count(Id) as int)
-from Incidents
-where Incidents.CreatedAtUtc >= @minDate
-AND Incidents.CreatedAtUtc <= GetUtcDate()
-{0}
-group by DATEPART(HOUR, Incidents.CreatedAtUtc);
-select DATEPART(HOUR, ErrorReports.CreatedAtUtc), cast(count(Id) as int)
-from ErrorReports
-where ErrorReports.CreatedAtUtc >= @minDate
-AND ErrorReports.CreatedAtUtc <= GetUtcDate()
-{1}
-group by DATEPART(HOUR, ErrorReports.CreatedAtUtc);";
+                if (query.Version != null)
+                {
+                    var id = _unitOfWork.ExecuteScalar("SELECT Id FROM ApplicationVersions WHERE Version = @version",
+                        new { version = query.Version });
+                    filter1 = @"JOIN IncidentVersions On (Incidents.Id = IncidentVersions.IncidentId)
+                            WHERE IncidentVersions.VersionId = @versionId AND ";
+                    filter2 = @"JOIN IncidentVersions On (ErrorReports.IncidentId = IncidentVersions.IncidentId)
+                            WHERE IncidentVersions.VersionId = @versionId AND ";
+                    cmd.AddParameter("versionId", id);
+                }
+                else
+                {
+                    filter1 = "WHERE ";
+                    filter2 = "WHERE ";
+                }
 
-                cmd.CommandText = string.Format(sql,
-                    " AND Incidents.ApplicationId = @appId",
-                    " AND ErrorReports.ApplicationId = @appId");
+                var sql = @"SELECT DATEPART(HOUR, Incidents.CreatedAtUtc), cast(count(Id) as int)
+ from Incidents
+ {0} Incidents.CreatedAtUtc >= @minDate
+ AND Incidents.CreatedAtUtc <= GetUtcDate()
+ AND Incidents.ApplicationId = @appId
+ group by DATEPART(HOUR, Incidents.CreatedAtUtc);
+ select DATEPART(HOUR, ErrorReports.CreatedAtUtc), cast(count(Id) as int)
+ from ErrorReports
+ {1} ErrorReports.CreatedAtUtc >= @minDate
+ AND ErrorReports.CreatedAtUtc <= GetUtcDate()
+ AND ErrorReports.ApplicationId = @appId
+ group by DATEPART(HOUR, ErrorReports.CreatedAtUtc);";
+
+                cmd.CommandText = string.Format(sql, filter1, filter2);
                 cmd.AddParameter("appId", query.ApplicationId);
                 cmd.AddParameter("minDate", startDate);
                 using (var reader = await cmd.ExecuteReaderAsync())

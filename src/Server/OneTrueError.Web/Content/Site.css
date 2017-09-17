@@ -1,113 +1,33 @@
-﻿body {
-    padding-bottom: 20px;
-    padding-top: 50px;
-}
-
-/* Set padding to keep content from hitting the edges */
-
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
-}
-
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
-*/
-
-.dl-horizontal dt { white-space: normal; }
-
-/* Set width on the form input elements since they're 100% wide by default */
-
-input,
-select,
-textarea { max-width: 280px; }
-
-/* Custom container */
-
-.full-width .container {
-    margin: 0 auto;
+﻿.ViewContainer {
     width: 100%;
 }
-
-.full-width .body-content { margin-top: 50px; }
-
-.full-width .navbar-brand,
-.full-width .navbar-nav > li > a {
-    padding-bottom: 20px;
-    padding-left: 30px;
-    padding-right: 30px;
-    padding-top: 20px;
+.morris-hover {
+    position: absolute;
+    z-index: 1000
 }
 
-.full-width .navbar-brand,
-.full-width .navbar-nav.settings > li > a {
-    padding-bottom: 20px;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-top: 20px;
-}
-
-.full-width .navbar-nav > .active > a { opacity: .6; }
-
-.tile h3,
-.tile h4,
-.tile h2 { margin-top: 5px !important; }
-
-.sub-menu.navbar {
-    background-color: #337ab7;
-    color: #fff;
-    msargin-top: 10px;
-    padding-left: 20px;
-    padding-top: 10px;
-}
-
-.sub-menu.navbar .navbar-nav .navbar-brand {
-    font-family: Arial, Helvetica, sans-serif;
+.morris-hover.morris-default-style {
+    border-radius: 10px;
+    padding: 6px;
+    color: #666;
+    background: rgba(255,255,255,0.8);
+    border: solid 2px rgba(230,230,230,0.8);
+    font-family: sans-serif;
     font-size: 12px;
+    text-align: center
 }
 
-.sub-menu.navbar .navbar-nav > li > a { color: #fff; }
-
-.sub-menu.navbar .navbar-nav > li > a:hover,
-.sub-menu.navbar .navbar-nav > li > a:focus {
-    background-color: #2d6da3;
-    color: #f2f2f2;
+.morris-hover.morris-default-style .morris-hover-row-label {
+    font-weight: bold;
+    margin: 0.25em 0
 }
 
-.sub-menu.navbar .navbar-nav > .active > a,
-.sub-menu.navbar .navbar-nav > .active > a:hover,
-.sub-menu.navbar .navbar-nav > .active > a:focus {
-    background-color: #285f8f;
-    color: #fff;
+.morris-hover.morris-default-style .morris-hover-point {
+    white-space: nowrap;
+    margin: 0.1em 0
 }
 
-.sub-menu.navbar .navbar-nav > .disabled > a,
-.sub-menu.navbar .navbar-nav > .disabled > a:hover,
-.sub-menu.navbar .navbar-nav > .disabled > a:focus {
-    background-color: #000000;
-    color: #999999;
+#pageMenu {
+    display: inline-block;
+    margin-left: 10px;
 }
-
-.vertical-spacer { margin-top: 30px; }
-
-.tile.tile-wide,
-.tile.tile-double {
-    height: auto;
-    min-height: 150;
-}
-
-.tag {
-    color: white;
-    opacity: 0.75;
-    padding: 0 4px;
-}
-
-.tag:hover {
-    color: #eee;
-    opacity: 1;
-    text-decoration: none;
-}
-
-.tag.nephritis { background: #27ae60; }
-
-#chart-legend span { font-family: sans-serif; }

@@ -46,6 +46,8 @@ var OneTrueError;
             SettingsViewModel.prototype.getTitle = function () { return "Personal settings"; };
             SettingsViewModel.prototype.activate = function (context) {
                 var _this = this;
+                OneTrueError.Applications.Navigation.breadcrumbs([{ href: "/settings/personal", title: "Account settings" }]);
+                OneTrueError.Applications.Navigation.pageTitle = 'Account settings';
                 this.context = context;
                 context.handle.click("[name=\"saveSettings\"]", function (ev) { return _this.saveSettings_click(ev); });
                 context.handle.click("[name='changePassword']", function (ev) { return _this.changePassword_click(ev); });

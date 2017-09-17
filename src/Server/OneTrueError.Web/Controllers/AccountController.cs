@@ -302,8 +302,8 @@ namespace OneTrueError.Web.Controllers
                 return View(model);
             }
 
-            var drDictionary = new RouteValueDictionary();
-            drDictionary.Add("usernote", "Password have been changed, you may now login.");
+            var drDictionary =
+                new RouteValueDictionary {{"usernote", "Password have been changed, you may now login."}};
             return RedirectToAction("Login", drDictionary);
         }
 

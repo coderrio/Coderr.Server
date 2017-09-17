@@ -5,6 +5,7 @@
 module OneTrueError.Report {
     import CqsClient = Griffin.Cqs.CqsClient;
     import ReportResult = Core.Reports.Queries.GetReportResult;
+    import ApplicationService = OneTrueError.Applications.ApplicationService;
 
     export class ReportViewModel implements Griffin.Yo.Spa.ViewModels.IViewModel {
         private context: Griffin.Yo.Spa.ViewModels.IActivationContext;
@@ -14,7 +15,7 @@ module OneTrueError.Report {
             const directives = {
                 CreatedAtUtc: {
                     text(value) {
-                        return new Date(value).toLocaleString();
+                        return moment(value).fromNow();
                     }
                 },
                 ContextCollections: {
@@ -36,6 +37,21 @@ module OneTrueError.Report {
 
         }
 
+        private updateNaviation() {
+            var appId = this.context.routeData['applicationId'];
+            var app = new ApplicationService();
+            app.get(appId)
+                .then(result => {
+                    var bc: Applications.IBreadcrumb[] = [
+                        { href: `/application/${appId}/`, title: result.Name },
+                        { href: `/application/${appId}/incident/${this.dto.IncidentId}/`, title: 'Incident' },
+                        { href: `/application/${appId}/incident/${this.dto.IncidentId}/report/${this.dto.Id}/`, title: 'Report' }
+                    ];
+                    Applications.Navigation.breadcrumbs(bc);
+                    Applications.Navigation.pageTitle = 'Report';
+                });
+        }
+
         activate(context: Griffin.Yo.Spa.ViewModels.IActivationContext): void {
             this.context = context;
             const reportId = context.routeData["reportId"];
@@ -43,6 +59,7 @@ module OneTrueError.Report {
             CqsClient.query<ReportResult>(query)
                 .done(dto => {
                     this.dto = dto;
+                    this.updateNaviation();
                     this.renderView();
                     context.resolve();
                 });
@@ -94,6 +111,6 @@ module OneTrueError.Report {
         }
 
 
-        deactivate() {}
+        deactivate() { }
     }
 }

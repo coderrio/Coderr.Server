@@ -1,5 +1,4 @@
 /// <reference path="../../Scripts/Models/AllModels.ts" />
-/// <reference path="../../Scripts/Promise.ts" />
 /// <reference path="../../Scripts/CqsClient.ts" />
 /// <reference path="../ChartViewModel.ts" />
 var OneTrueError;
@@ -39,7 +38,7 @@ var OneTrueError;
                 var ignoreCmd = new IgnoreIncident(this.incidentId);
                 CqsClient.command(ignoreCmd);
                 humane.log("Incident have been marked as ignored.");
-                window.location.hash = "#/application/" + this.context.routeData["applicationId"];
+                window.location.hash = "#/application/" + this.context.routeData["applicationId"] + "/";
             };
             return IgnoreViewModel;
         }());

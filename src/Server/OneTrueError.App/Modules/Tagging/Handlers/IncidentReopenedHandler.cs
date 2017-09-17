@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
@@ -29,6 +30,10 @@ namespace OneTrueError.App.Modules.Tagging.Handlers
         /// <inheritdoc />
         public async Task HandleAsync(IncidentReOpened e)
         {
+            var tags = await _repository.GetTagsAsync(e.IncidentId);
+            if (tags.Any(x => x.Name == "incident-reopened"))
+                return;
+
             await _repository.AddAsync(e.IncidentId, new[] {new Tag("incident-reopened", 1)});
         }
     }

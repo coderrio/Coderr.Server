@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
@@ -6,6 +7,7 @@ using OneTrueError.Api.Core;
 using OneTrueError.Api.Core.Applications;
 using OneTrueError.Api.Core.Applications.Queries;
 using OneTrueError.App.Core.Incidents;
+using OneTrueError.App.Modules.Versions;
 
 namespace OneTrueError.App.Core.Applications.QueryHandlers
 {
@@ -17,18 +19,19 @@ namespace OneTrueError.App.Core.Applications.QueryHandlers
     {
         private readonly IIncidentRepository _incidentRepository;
         private readonly IApplicationRepository _repository;
+        private IVersionRepository _versionRepository;
 
         /// <summary>
         ///     Creates a new instance of <see cref="GetApplicationInfoHandler" />.
         /// </summary>
         /// <param name="repository">repos</param>
         /// <param name="incidentRepository">used to count the number of incidents</param>
-        public GetApplicationInfoHandler(IApplicationRepository repository, IIncidentRepository incidentRepository)
+        /// <param name="versionRepository">to fetch versions</param>
+        public GetApplicationInfoHandler(IApplicationRepository repository, IIncidentRepository incidentRepository, IVersionRepository versionRepository)
         {
-            if (repository == null) throw new ArgumentNullException("repository");
-            if (incidentRepository == null) throw new ArgumentNullException("incidentRepository");
-            _repository = repository;
-            _incidentRepository = incidentRepository;
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _incidentRepository = incidentRepository ?? throw new ArgumentNullException(nameof(incidentRepository));
+            _versionRepository = versionRepository ?? throw new ArgumentNullException(nameof(versionRepository));
         }
 
         /// <summary>
@@ -51,7 +54,7 @@ namespace OneTrueError.App.Core.Applications.QueryHandlers
             }
 
             var totalCount = await _incidentRepository.GetTotalCountForAppInfoAsync(app.Id);
-
+            var versions = await _versionRepository.FindVersionsAsync(app.Id);
             return new GetApplicationInfoResult
             {
                 AppKey = app.AppKey,
@@ -59,7 +62,8 @@ namespace OneTrueError.App.Core.Applications.QueryHandlers
                 Id = app.Id,
                 Name = app.Name,
                 SharedSecret = app.SharedSecret,
-                TotalIncidentCount = totalCount
+                TotalIncidentCount = totalCount,
+                Versions = versions.ToArray()
             };
         }
     }

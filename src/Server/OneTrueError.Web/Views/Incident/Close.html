@@ -1,182 +1,53 @@
-﻿<style type="text/css">
-    .editor {
-        float: left;
-        width: 50%;
-    }
-
-    .editor .area {
-        height: 400px;
-        margin-right: 10px;
-        max-width: 100%;
-        width: 100%;
-    }
-
-    .editor .toolbar { padding: 0; }
-
-    .editor-preview {
-        background-color: aliceblue;
-        float: left;
-        height: 100%;
-        margin-left: 10px;
-        margin-top: 20px;
-        max-width: 60%;
-        padding-left: 10px;
-        text-align: left;
-        width: 45%;
-    }
-</style>
-<div class="row">
+﻿<div class="row">
     <div class="col-lg-12">
-        <h2>
-            Close incident '<span data-name="Description"></span>'
-        </h2>
-        <p>
-            <em>.. which means that this incident has been corrected and should not generate any more reports.</em>
-        </p>
-    </div>
-</div>
-<div class="row">
-    <div class="col-lg-12">
-        <h2>Solution</h2>
-        <p>
-            Write a few lines about how you solved the issue. This text will appear if this error occurs again or if we detect that this error is
-            similar to another one in the future. i.e. the text is just for your own benefit.
-        </p>
-        <div id="editor" class="editor">
-            <div class="toolbar">
-                <span class="button-h1" accesskey="1" title="Heading 1"><img src="content/editor/h1.png" /></span>
-                <span class="button-h2" accesskey="2" title="Heading 2"><img src="content/editor/h2.png" /></span>
-                <span class="button-h3" accesskey="3" title="Heading 3"><img src="content/editor/h3.png" /></span>
-                <span class="button-bold" accesskey="b" title="Bold text"><img src="content/editor/bold.png" /></span>
-                <span class="button-italic" accesskey="i" title="Italic text"><img src="content/editor/italic.png" /></span>
-                <span class="divider">&nbsp;</span>
-                <span class="button-bullets" accesskey="l" title="Bullet List"><img src="content/editor/bullets.png" /></span>
-                <span class="button-numbers" accesskey="n" title="Ordered list"><img src="content/editor/numbers.png" /></span>
-                <span class="divider">&nbsp;</span>
-                <span class="button-sourcecode" accesskey="k" title="Source code"><img src="content/editor/source_code.png" /></span>
-                <span class="button-quote" accesskey="q" title="Quotation"><img src="content/editor/document_quote.png" /></span>
-                <span class="divider">&nbsp;</span>
-                <span class="button-link" accesskey="l" title="Insert link"><img src="content/editor/link.png" /></span>
-                <span class="button-image" accesskey="p" title="Insert picture/image"><img src="content/editor/picture.png" /></span>
-            </div>
-            <textarea class="area" name="solution" placeholder="The error occurred because of ....&#10;&#10;We solved it by ..."></textarea><br/>
-        </div>
-        <div id="editor-preview" class="editor-preview">
-            PREVIEW!
-        </div>
-    </div>
-</div>
-<hr/>
-<div class="row">
-    <div class="col-lg-12">
-        <h2>Customer message</h2>
-        <p>
-            <label>
-                <input type="checkbox" name="sendCustomerMessage"/> Send status message
-            </label>
-        </p>
-        <div id="status-panel" style="display: none">
+        <div class="card-box">
+            <h2>
+                Close incident '<span data-name="Description"></span>'
+            </h2>
             <p>
-                This text will go out to all users that have subscribed on status updates for this error. (Currently <span data-name="WaitingUserCount">0</span> people).
+                <em>.. which means that this incident has been corrected and should not generate any more reports.</em>
             </p>
+
+            <h3>Solution</h3>
             <p>
-                The text typically informs them about that the error is corrected and will be pushed out in the next release.
+                Write a few lines about how you solved the issue. This text will appear if this error occurs again or if we detect that this error is
+                similar to another one in the future. 
             </p>
-            <h3>Subject</h3>
-            <input type="text" name="UserSubject" style="width: 100%"/><br/>
-            <h3>Body</h3>
-            <div id="status-update" class="editor">
-                <div class="toolbar">
-                    <span class="button-h1" accesskey="1" title="Heading 1"><img src="content/editor/h1.png" /></span>
-                    <span class="button-h2" accesskey="2" title="Heading 2"><img src="content/editor/h2.png" /></span>
-                    <span class="button-h3" accesskey="3" title="Heading 3"><img src="content/editor/h3.png" /></span>
-                    <span class="button-bold" accesskey="b" title="Bold text"><img src="content/editor/bold.png" /></span>
-                    <span class="button-italic" accesskey="i" title="Italic text"><img src="content/editor/italic.png" /></span>
-                    <span class="divider">&nbsp;</span>
-                    <span class="button-bullets" accesskey="l" title="Bullet List"><img src="content/editor/bullets.png" /></span>
-                    <span class="button-numbers" accesskey="n" title="Ordered list"><img src="content/editor/numbers.png" /></span>
-                    <span class="divider">&nbsp;</span>
-                    <span class="button-sourcecode" accesskey="k" title="Source code"><img src="content/editor/source_code.png" /></span>
-                    <span class="button-quote" accesskey="q" title="Quotation"><img src="content/editor/document_quote.png" /></span>
-                    <span class="divider">&nbsp;</span>
-                    <span class="button-link" accesskey="l" title="Insert link"><img src="content/editor/link.png" /></span>
-                </div>
-                <textarea class="area" name="UserText" placeholder="# Hello dear users,&#10;&#10;We have corrected the error that ....&#10;&#10;A new version will be pushed out in the next two weeks.&#10;&#10;Thank you for your patience,&#10;&#10;  The team"></textarea><br/>
-            </div>
-
-            <div id="status-update-preview" class="editor-preview">
-                PREVIEW!
-            </div>
+            <p><em>i.e. the text is just for your own benefit.</em></p>
+            <textarea class="area" name="solution" id="solution" placeholder="The error occurred because of ....&#10;&#10;We solved it by ..."></textarea><br/>
         </div>
     </div>
 </div>
-<hr/>
-<button id="saveSolution">Save solution</button>
-<div class="modal fade" id="editor-linkDialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Link dialog</h4>
-            </div>
-            <div class="modal-body">
-                <div>
-                    URL<br/>
-                    <input type="text" name="linkUrl"/><br/>
-                </div>
-                <div>
-                    Link text<br/>
-                    <input type="text" name="linkText"/><br/>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" data-success="true">Add</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!--<script src="@Url.Content("~/Scripts/prism.js")" data-manual></script>
-<script src="@Url.Content("~/Scripts/marked.min.js")"></script>
--->
-<script src="../../Scripts/Griffin.Editor.js" type="text/javascript"></script>
-<script type="text/javascript">
-    marked.setOptions({
-        renderer: new marked.Renderer(),
-        gfm: true,
-        tables: true,
-        breaks: false,
-        pedantic: false,
-        sanitize: true,
-        smartLists: true,
-        smartypants: false
-    });
-    var textParser = {
-        parse: function(text) {
-            return marked(text);
-        }
-    };
-    var prismHighlighter = {
-        highlight: function(blockElements, inlineElements) {
-            blockElements.forEach(function(item) {
-                Prism.highlightElement(item);
-            });
-
-        }
-    };
-    var editor = new Griffin.Editor('editor', textParser);
-    editor.syntaxHighlighter = prismHighlighter;
-    editor.preview();
-
-    var editor2 = new Griffin.Editor('status-update', textParser);
-    editor2.syntaxHighlighter = prismHighlighter;
-    editor2.preview();
-    //});
+<script>
+    var simplemde = new SimpleMDE({ element: $("#solution")[0] });
 </script>
-<ul data-navigation="main-navigation">
-    <li>
-        <a href="#/application/:applicationId/incident/:incidentId">Back..</a>
-    </li>
-</ul>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card-box">
+            <h2>Customer message</h2>
+            <p>
+                <label>
+                    <input type="checkbox" name="sendCustomerMessage"/> Send status message
+                </label>
+            </p>
+            <div id="status-panel" style="display: none">
+                <p>
+                    This text will go out to all users that have subscribed on status updates for this error. (Currently <span data-name="WaitingUserCount">0</span> people).
+                </p>
+                <p>
+                    The text typically informs them about that the error is corrected and will be pushed out in the next release.
+                </p>
+                <h3>Subject</h3>
+                <input type="text" name="UserSubject" style="width: 100%"/><br/>
+                <h3>Body</h3>
+
+                <textarea class="area" name="UserText" id="UserText" placeholder="# Hello dear users,&#10;&#10;We have corrected the error that ....&#10;&#10;A new version will be pushed out in the next two weeks.&#10;&#10;Thank you for your patience,&#10;&#10;  The team"></textarea><br/>
+            </div>
+        </div>
+    </div>
+</div>
+<button id="saveSolution" class="btn btn-primary btn-lg">Save solution</button>
+<script>
+    var simplemde = new SimpleMDE({ element: $("#UserText")[0] });
+</script>

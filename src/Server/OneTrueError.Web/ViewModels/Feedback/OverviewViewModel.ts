@@ -13,13 +13,11 @@ module OneTrueError.Feedback {
     import OverviewFeedback = Web.Feedback.Queries.GetFeedbackForDashboardPage;
     import OverviewFeedbackResult = Web.Feedback.Queries.GetFeedbackForDashboardPageResult;
     import Yo = Griffin.Yo;
-    import FeedbackForDashboardPageResultItem = OneTrueError.Web.Feedback.Queries.GetFeedbackForDashboardPageResultItem;
-//import Yo = Griffin.Yo;
 
     export class OverviewViewModel implements Yo.Spa.ViewModels.IViewModel {
         private applicationTitle: string;
         private ctx: Yo.Spa.ViewModels.IActivationContext;
-        private feedbackDirectives = {
+        private static renderDirectives = {
             Items: {
                 Message: {
                     html(value) {
@@ -28,11 +26,12 @@ module OneTrueError.Feedback {
                 },
                 Title: {
                     style() {
-                        return "color:#ccc";
+                        return '';
                     },
                     html(value, dto) {
-                        return `Reported for <a style="color: #ee99ee" href="#/application/${dto.ApplicationId}">${
-                            dto.ApplicationName}</a> at ${new Date(dto.WrittenAtUtc).toLocaleString()}`;
+                        console.log(dto);
+                        return `Reported for <a href="#/application/${dto.ApplicationId}/feedback">${
+                            dto.ApplicationName}</a> ${moment(dto.WrittenAtUtc).fromNow()}`;
                     }
                 },
                 EmailAddress: {
@@ -41,12 +40,6 @@ module OneTrueError.Feedback {
                     },
                     href(value) {
                         return `mailto:${value}`;
-                    },
-                    style(value) {
-                        if (!value) {
-                            return "display:none";
-                        }
-                        return "color: #ee99ee";
                     }
                 }
             }
@@ -59,6 +52,8 @@ module OneTrueError.Feedback {
 
 
         getTitle(): string {
+            Applications.Navigation.breadcrumbs([{ href: `/feedback`, title: 'Feedback' }]);
+            Applications.Navigation.pageTitle = 'All feedback for all applications';
             return "All feedback";
         }
 
@@ -73,7 +68,7 @@ module OneTrueError.Feedback {
             CqsClient.query<OverviewFeedbackResult>(query)
                 .done(result => {
                     this.empty = result.TotalCount === 0;
-                    context.render(result, this.feedbackDirectives);
+                    context.render(result, OverviewViewModel.renderDirectives);
                     context.resolve();
                 });
 

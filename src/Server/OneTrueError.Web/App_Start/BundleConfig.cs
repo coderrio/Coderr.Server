@@ -9,12 +9,14 @@ namespace OneTrueError.Web
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                 "~/Scripts/jquery-{version}.js",
+                "~/Scripts/dashboard/jquery.app.js",
+                "~/Scripts/dashboard/fastclick.js",
                 "~/Scripts/humane.js",
+                "~/Scripts/popper.min.js",
+                "~/Scripts/bootstrap.js",
                 "~/Scripts/application.js",
-                "~/Scripts/prism.js",
                 "~/Scripts/marked.min.js",
-                "~/Scripts/Base64.js",
-                "~/Scripts/transparency.min.js")
+                "~/Scripts/moment.min.js")
                 );
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
@@ -25,10 +27,6 @@ namespace OneTrueError.Web
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                 "~/Scripts/modernizr-*"));
-
-            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                "~/Scripts/bootstrap.js",
-                "~/Scripts/respond.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/app")
                 .Include(
@@ -44,7 +42,8 @@ namespace OneTrueError.Web
 
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                "~/Content/ote_bootstrap.min.css",
+                "~/Content/complete.css",
+                "~/Content/font-awesome.min.css",
                 "~/Content/humane.flatty.css",
                 "~/Content/site.css"));
         }

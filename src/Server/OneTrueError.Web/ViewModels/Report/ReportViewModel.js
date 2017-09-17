@@ -7,6 +7,7 @@ var OneTrueError;
     var Report;
     (function (Report) {
         var CqsClient = Griffin.Cqs.CqsClient;
+        var ApplicationService = OneTrueError.Applications.ApplicationService;
         var ReportViewModel = (function () {
             function ReportViewModel() {
             }
@@ -14,7 +15,7 @@ var OneTrueError;
                 var directives = {
                     CreatedAtUtc: {
                         text: function (value) {
-                            return new Date(value).toLocaleString();
+                            return moment(value).fromNow();
                         }
                     },
                     ContextCollections: {
@@ -33,6 +34,21 @@ var OneTrueError;
             ReportViewModel.prototype.getTitle = function () {
                 return "Report";
             };
+            ReportViewModel.prototype.updateNaviation = function () {
+                var _this = this;
+                var appId = this.context.routeData['applicationId'];
+                var app = new ApplicationService();
+                app.get(appId)
+                    .then(function (result) {
+                    var bc = [
+                        { href: "/application/" + appId + "/", title: result.Name },
+                        { href: "/application/" + appId + "/incident/" + _this.dto.IncidentId + "/", title: 'Incident' },
+                        { href: "/application/" + appId + "/incident/" + _this.dto.IncidentId + "/report/" + _this.dto.Id + "/", title: 'Report' }
+                    ];
+                    OneTrueError.Applications.Navigation.breadcrumbs(bc);
+                    OneTrueError.Applications.Navigation.pageTitle = 'Report';
+                });
+            };
             ReportViewModel.prototype.activate = function (context) {
                 var _this = this;
                 this.context = context;
@@ -41,6 +57,7 @@ var OneTrueError;
                 CqsClient.query(query)
                     .done(function (dto) {
                     _this.dto = dto;
+                    _this.updateNaviation();
                     _this.renderView();
                     context.resolve();
                 });

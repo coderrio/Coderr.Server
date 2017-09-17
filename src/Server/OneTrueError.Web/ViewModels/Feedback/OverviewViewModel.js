@@ -10,42 +10,12 @@ var OneTrueError;
     (function (Feedback) {
         var CqsClient = Griffin.Cqs.CqsClient;
         var OverviewFeedback = OneTrueError.Web.Feedback.Queries.GetFeedbackForDashboardPage;
-        //import Yo = Griffin.Yo;
         var OverviewViewModel = (function () {
             function OverviewViewModel() {
-                this.feedbackDirectives = {
-                    Items: {
-                        Message: {
-                            html: function (value) {
-                                return nl2br(value);
-                            }
-                        },
-                        Title: {
-                            style: function () {
-                                return "color:#ccc";
-                            },
-                            html: function (value, dto) {
-                                return "Reported for <a style=\"color: #ee99ee\" href=\"#/application/" + dto.ApplicationId + "\">" + dto.ApplicationName + "</a> at " + new Date(dto.WrittenAtUtc).toLocaleString();
-                            }
-                        },
-                        EmailAddress: {
-                            text: function (value) {
-                                return value;
-                            },
-                            href: function (value) {
-                                return "mailto:" + value;
-                            },
-                            style: function (value) {
-                                if (!value) {
-                                    return "display:none";
-                                }
-                                return "color: #ee99ee";
-                            }
-                        }
-                    }
-                };
             }
             OverviewViewModel.prototype.getTitle = function () {
+                OneTrueError.Applications.Navigation.breadcrumbs([{ href: "/feedback", title: 'Feedback' }]);
+                OneTrueError.Applications.Navigation.pageTitle = 'All feedback for all applications';
                 return "All feedback";
             };
             OverviewViewModel.prototype.isEmpty = function () {
@@ -57,7 +27,7 @@ var OneTrueError;
                 CqsClient.query(query)
                     .done(function (result) {
                     _this.empty = result.TotalCount === 0;
-                    context.render(result, _this.feedbackDirectives);
+                    context.render(result, OverviewViewModel.renderDirectives);
                     context.resolve();
                 });
             };
@@ -65,6 +35,32 @@ var OneTrueError;
             };
             return OverviewViewModel;
         }());
+        OverviewViewModel.renderDirectives = {
+            Items: {
+                Message: {
+                    html: function (value) {
+                        return nl2br(value);
+                    }
+                },
+                Title: {
+                    style: function () {
+                        return '';
+                    },
+                    html: function (value, dto) {
+                        console.log(dto);
+                        return "Reported for <a href=\"#/application/" + dto.ApplicationId + "/feedback\">" + dto.ApplicationName + "</a> " + moment(dto.WrittenAtUtc).fromNow();
+                    }
+                },
+                EmailAddress: {
+                    text: function (value) {
+                        return value;
+                    },
+                    href: function (value) {
+                        return "mailto:" + value;
+                    }
+                }
+            }
+        };
         Feedback.OverviewViewModel = OverviewViewModel;
     })(Feedback = OneTrueError.Feedback || (OneTrueError.Feedback = {}));
 })(OneTrueError || (OneTrueError = {}));

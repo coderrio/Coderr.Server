@@ -1,36 +1,64 @@
-﻿<h2>Team</h2>
-<table class="table table-striped">
-    <thead>
-    <th>Name</th>
-    </thead>
-    <tbody data-collection="Members">
-    <tr>
-        <td data-name="UserName"></td>
-        <td>
-            <input type="hidden" name="UserId" />
-            <button class="btn btn-danger" data-name="RemoveUser">Remove</button>
-        </td>
-    </tr>
-    </tbody>
-</table>
-<p data-unless="Members">
-    No team members have been specified for this project.
-</p>
-<hr/>
-<h3>Pending invites</h3>
-<div data-collection="Invited">
-    <div data-name="EmailAddress"></div>
+﻿<div class="row">
+    <div class="col-lg-12">
+        <div class="card-box">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h3>Team members</h3>
+                    <p>Below is all members which can see and work with the application.</p>
+                    <table class="table table-striped">
+                        <thead class="thead-inverse">
+                            <tr>
+                                <th>Name</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody data-collection="Members">
+                            <tr>
+                                <td data-name="UserName"></td>
+                                <td>
+                                    <input type="hidden" name="UserId" />
+                                    <a href="#" data-name="RemoveUser"><i class="zmdi zmdi-delete text-danger zmdi-hc-2x"></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p data-unless="Members">
+                        No team members have been specified for this project.
+                    </p>
+                </div>
+                <div class="col-lg-6">
+                    <h3>Pending invites</h3>
+                    <p>Below is all users that have been invited but not yet accepted the invitation.</p>
+                    <div data-collection="Invited">
+                        <div data-name="EmailAddress"></div>
+                    </div>
+                    <p data-unless="Invited">
+                        <em>No pending invitations.</em>
+                    </p>
+                    <div class="pull-right">
+                        <button id="ShowInviteDlg" class="btn btn-primary">Invite</button>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="push-lg-6 col-lg-6 col-md-12">
+
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<hr/>
-<button id="ShowInviteDlg" class="btn btn-primary">Invite</button>
+
 <div class="modal fade" id="inviteUserDlg">
     <form method="POST" action="">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">Invite user</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
@@ -50,24 +78,11 @@
         </div>
     </form>
 </div>
+
 <script type="text/javascript">
     $('#ShowInviteDlg')
         .on('click',
-            function() {
-                $('#inviteUserDlg').modal('show');
-            })
+        function () {
+            $('#inviteUserDlg').modal('show');
+        })
 </script>
-<ul data-navigation="main-navigation">
-    <li>
-        <a href="#/application/:applicationId/">Appinfo</a>
-    </li>
-    <li>
-        <a href="#/application/:applicationId/incidents">Incidents</a>
-    </li>
-    <li>
-        <a href="#/application/:applicationId/feedback">Feedback</a>
-    </li>
-    <li>
-        <a href="#/application/:applicationId/versions">Versions</a>
-    </li>
-</ul>

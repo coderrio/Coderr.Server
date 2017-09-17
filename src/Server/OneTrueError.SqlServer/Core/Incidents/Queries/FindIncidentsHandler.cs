@@ -31,6 +31,19 @@ namespace OneTrueError.SqlServer.Core.Incidents.Queries
                                     FROM Incidents 
                                     JOIN Applications ON (Applications.Id = Incidents.ApplicationId)";
 
+                var startWord = " WHERE ";
+                if (!string.IsNullOrEmpty(query.Version))
+                {
+                    var versionId =
+                        _uow.ExecuteScalar("SELECT Id FROM ApplicationVersions WHERE Version = @version",
+                            new {version = query.Version});
+
+                    sqlQuery += " JOIN IncidentVersions ON (Incidents.Id = IncidentVersions.IncidentId)" +
+                                " WHERE IncidentVersions.VersionId = @versionId";
+                    cmd.AddParameter("versionId", versionId);
+                    startWord = " AND ";
+                }
+
                 if (query.ApplicationId > 0)
                 {
                     if (!ClaimsPrincipal.Current.IsApplicationMember(query.ApplicationId)
@@ -39,7 +52,7 @@ namespace OneTrueError.SqlServer.Core.Incidents.Queries
                         throw new UnauthorizedAccessException(
                             "You are not a member of application " + query.ApplicationId);
 
-                    sqlQuery += " WHERE Applications.Id = @id";
+                    sqlQuery += $" {startWord} Applications.Id = @id";
                     cmd.AddParameter("id", query.ApplicationId);
                 }
                 else if (!ClaimsPrincipal.Current.IsSysAdmin())
@@ -48,7 +61,7 @@ namespace OneTrueError.SqlServer.Core.Incidents.Queries
                         .Where(x => x.Type == OneTrueClaims.Application)
                         .Select(x => x.Value)
                         .ToArray();
-                    sqlQuery += $" WHERE Applications.Id IN({string.Join(",", appIds)})";
+                    sqlQuery += $" {startWord} Applications.Id IN({string.Join(",", appIds)})";
                 }
 
                 if (query.FreeText != null)
@@ -64,6 +77,8 @@ namespace OneTrueError.SqlServer.Core.Incidents.Queries
                                     )";
                     cmd.AddParameter("FreeText", $"%{query.FreeText}%");
                 }
+
+                
 
                 sqlQuery += " AND (";
                 if (query.Ignored)

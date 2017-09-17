@@ -1,129 +1,142 @@
-﻿<div id="ApplicationView">
-    <h1 data-name="Name">(loading)</h1>
+﻿<style>
+    .alert-info {
+        color: #006D90
+    }
+</style>
+<div id="ApplicationView">
+    <div class="row" data-if="vm.totalIncidentCount == 0" style="display: none">
+        <div class="col-xl-12">
+            <div class="alert alert-info" role="alert">
+                <strong>Configuration trouble?</strong>
+                <a href="#/onboarding/application/:applicationId" class="btn btn-success btn-sm">Start the configuration wizard</a>
+                or
+                <a href="#support-form-view" data-toggle="modal" data-target="#support-form-view" title="Contact support" id="SupportLink" class="btn btn-info btn-sm">
+                    Ask for help
+                </a>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="row m-b-10">
+        <div class="col-md-6">
+            <div class="dropdown filters">
+                <button data-name="ActiveVersion" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Filter: All versions
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" data-collection="Versions">
+                    <a class="version dropdown-item" href="javascript:void(0)" data-name="[]"></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="pull-right" data-if="vm.totalIncidentCount > 0">
+                <a class="btn btn-info" href="#/onboarding/application/:applicationId/nuget">
+                    <i class="fa fa-upload"></i> Client configuration
+                </a>
+            </div>
+        </div>
+    </div>
     <div class="row">
-        <div class="col-lg-8" style="background-color: rgb(29, 137, 207) !important;">
-            <div style="margin-bottom: 20px;">
-                <div class="pull-right">
-                    <form id="refresh-chart" style="background: rgba(220, 230, 250, 0.5); padding: 5px">
-                        <input type="radio" name="range" value="30" /> month
+        <div class="col-lg-8 col-md-12">
+            <div class="card-box">
+                <div id="legend" class="text-center">
+                    <h4 class="header-title m-b-20">Incident trend</h4>
+                    <ul class="list-inline chart-detail-list" data-collection="labels">
+                        <li class="list-inline-item">
+                            <h6>
+                                <i data-name="color" class="zmdi zmdi-circle m-r-5"></i>
+                                <span data-name="name"></span>
+                            </h6>
+
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <div id="myChart" style="height: 200px"></div>
+                </div>
+                <div class="text-center">
+                    <form id="refresh-chart" style="display: inline">
+                        <input type="radio" name="range" value="30" checked="checked" /> month
                         <input type="radio" name="range" value="7" /> week
                         <input type="radio" name="range" value="1" /> day
                     </form>
                 </div>
-                <div class="clearfix" style="clear: both"></div>
             </div>
-            <div class="clearfix" style="clear: both"></div>
-            <div>
-                <canvas id="myChart" height="90"></canvas>
-            </div>
+        </div>
+        <div class="col-lg-4 col-md-12" data-name="StatSummary">
+            <div class="row">
+                <div class="col-xs-12 col-md-6 col-lg-12 col-xl-6">
+                    <div class="card-box tilebox-one">
+                        <i class="fa fa-exclamation-triangle float-right text-muted"></i>
+                        <h6 class="text-muted text-uppercase m-b-20">Active incidents</h6>
+                        <h2 class="m-b-20" data-plugin="counterup" data-name="Incidents">0</h2>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-6 col-lg-12 col-xl-6">
+                    <div class="card-box tilebox-one">
+                        <i class="fa fa-bug float-right text-muted"></i>
+                        <h6 class="text-muted text-uppercase m-b-20">Report count</h6>
+                        <h2 class="m-b-20" data-plugin="counterup" data-name="Reports">0</h2>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-6 col-lg-12 col-xl-6">
 
-            <div class="text-center">
-                <div id="chart-legend">
-                    <div style="display: inline">
-                        <span style="" class="glyphicon glyphicon-stop glyphicon-th-large" data-name="color"></span>
-                        <span data-name="label" style="font-weight: bold;"></span>&nbsp;&nbsp;
+                    <div class="card-box tilebox-one">
+                        <i class="fa fa-users float-right text-muted"></i>
+                        <h6 class="text-muted text-uppercase m-b-20">Users subscribing</h6>
+                        <h2 class="m-b-20" data-plugin="counterup" data-name="Followers">0</h2>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-6 col-lg-12 col-xl-6">
+                    <div class="card-box tilebox-one">
+                        <i class="fa fa-comment float-right text-muted"></i>
+                        <h6 class="text-muted text-uppercase m-b-20"># of feedback</h6>
+                        <h2 class="m-b-20" data-plugin="counterup" data-name="UserFeedback">0</h2>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-4" data-name="StatSummary">
-            <div class="tile-nephritis tile tile-medium">
-                <h4>Active incidents</h4>
-                <h1 data-name="Incidents"></h1>
-            </div>
-            <div class="tile-nephritis tile tile-medium">
-                <h4>Report count</h4>
-                <h1 data-name="Reports"></h1>
-            </div>
-            <div class="tile-nephritis tile tile-medium">
-                <h4 title="Number of users waiting for a fix">Users waiting</h4>
-                <h1 data-name="Followers"></h1>
-            </div>
-            <div class="tile-nephritis tile tile-medium">
-                <a href="#/application/:applicationId/feedback">
-                    <h4 title="Number of users waiting for a fix">Feedback count</h4>
-                    <h1 data-name="UserFeedback"></h1>
-                </a>
-            </div>
-            <div class="clearfix">
-                <p>&nbsp;</p>
-            </div>
-            <h3>
-                Configuration
-                <small>
-                    <a class="glyphicon glyphicon-question-sign" href="#/application/:applicationId/installation"></a>
-                </small>
-            </h3>
-            <table class="table table-condensed">
-                <tbody>
-                    <tr>
-                        <th>AppKey</th>
-                        <td data-name="AppKey"></td>
-                    </tr>
-                    <tr>
-                        <th>SharedSecret</th>
-                        <td data-name="SharedSecret"></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
     </div>
-    <div class="vertical-spacer"></div>
     <div class="row">
         <div class="col-lg-12">
-            <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
-                <li class="active">
-                    <a href="#active" id="btnActive" data-toggle="tab">Active</a>
-                </li>
-                <li>
-                    <a href="#closed" id="btnClosed" data-toggle="tab">Closed</a>
-                </li>
-                <li>
-                    <a href="#ignored" id="btnIgnored" data-toggle="tab">Ignored</a>
-                </li>
-                <li role="presentation">
-                    <input type="text" data-name="freeText" placeholder="Search (min 3 chars)" class="form-control" style="margin-top: 0px" />
-                </li>
-            </ul>
-            <table id="incidentTable" class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th style="cursor: pointer; min-width: 150px" id="LastReportCol">Last report <span id="lastReport-sort" class="glyphicon glyphicon-chevron-down"></span></th>
-                        <th style="cursor: pointer; min-width: 120px" id="CountCol">Report count <span id="count-sort" class="glyphicon glyphicon-chevron-up" style="visibility: hidden"></span></th>
-                        <th>&nbsp;</th>
-                    </tr>
-                </thead>
-                <tbody data-collection="Items">
-                    <tr>
-                        <td>
-                            <a href="#/application/:applicationId/incident/:incidentId" data-name="IncidentName"></a>
-                        </td>
-                        <td data-name="LastUpdateAtUtc"></td>
-                        <td data-name="ReportCount"></td>
-                        <td></td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="4" class="text-right" id="pager"></td>
-                    </tr>
-                </tfoot>
-            </table>
+            <div class="card-box">
+                <div class="float-right">
+                    <input data-name="freeText" type="text" class="form-control" placeholder="search (at least 3 chars)" style="float: left; max-width: 200px; margin-right: 10px;" />
+                    <div class="btn-group">
+                        <label href="#active" id="btnActive" class="btn btn-primary active">Active</label>
+                        <label href="#closed" id="btnClosed" class="btn btn-primary">Closed</label>
+                        <label href="#ignored" id="btnIgnored" class="btn btn-primary">Ignored</label>
+                    </div>
+                </div>
+                <h4 class="header-title m-b-30">
+                    Incidents
+                </h4>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th style="cursor: pointer; min-width: 100px" id="LastReportCol">Last report <span id="lastReport-sort" class="fa fa-chevron-down"></span></th>
+                            <th style="cursor: pointer; min-width: 100px" id="CountCol">Report count <span id="count-sort" class="fa fa-chevron-up" style="visibility: hidden"></span></th>
+                        </tr>
+                    </thead>
+                    <tbody id="incidentTable">
+                        <tr data-collection="Items">
+                            <td>
+                                <a href="" data-name="Name"></a>
+                            </td>
+                            <td data-name="LastUpdateAtUtc"></td>
+                            <td data-name="ReportCount"></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" class="text-right" id="pager"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
         </div>
     </div>
 </div>
-<ul data-navigation="main-navigation">
-    <li>
-        <a href="#/application/:applicationId/incidents">Incidents</a>
-    </li>
-    <li>
-        <a href="#/application/:applicationId/feedback">Feedback</a>
-    </li>
-    <li>
-        <a href="#/application/:applicationId/team">Team members</a>
-    </li>
-    <li>
-        <a href="#/application/:applicationId/versions">Versions</a>
-    </li>
-</ul>

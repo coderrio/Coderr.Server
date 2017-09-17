@@ -7,6 +7,7 @@ module OneTrueError.Incident {
     import CqsClient = Griffin.Cqs.CqsClient;
     import ViewRenderer = Griffin.Yo.Views.ViewRenderer;
     import Similarities = Modules.ContextData;
+    import ApplicationService = OneTrueError.Applications.ApplicationService;
 
     export class SimilaritiesViewModel implements Griffin.Yo.Spa.ViewModels.IViewModel {
         private static VIEW_NAME = "SimilaritiesView";
@@ -18,6 +19,11 @@ module OneTrueError.Incident {
         activate(context: Griffin.Yo.Spa.ViewModels.IActivationContext) {
             this.incidentId = parseInt(context.routeData["incidentId"], 10);
             this.ctx = context;
+
+            //spans the navigation.
+            IncidentNavigation.set(context.routeData, 'Context data analysis <em class="small">(Presents what context data all reports had in common)</em>', 'contextdata');
+
+
             CqsClient
                 .query<Similarities.Queries.
                     GetSimilaritiesResult>(new Similarities.Queries.GetSimilarities(this.incidentId))
@@ -68,12 +74,14 @@ module OneTrueError.Incident {
         }
 
         getTitle(): string {
-            return "context data";
+            return "Similarities";
         }
 
         deactivate() {
 
         }
+        
+
 
         private selectCollection(collectionName: string) {
             this.dto.Collections.forEach(item => {

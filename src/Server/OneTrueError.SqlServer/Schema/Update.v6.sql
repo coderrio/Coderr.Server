@@ -18,4 +18,11 @@ create table ApplicationVersionMonths
 	LastUpdateAtUtc datetime not null
 );
 
+create table IncidentVersions
+(
+	IncidentId int not null constraint FK_IncidentVersions_Incidents references Incidents(Id),
+	VersionId int not null constraint FK_IncidentVersions_ApplicationVersions references ApplicationVersions(Id)
+);
+
+
 UPDATE DatabaseSchema SET Version = 6;

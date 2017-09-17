@@ -1,5 +1,4 @@
 ﻿/// <reference path="../../Scripts/Models/AllModels.ts" />
-/// <reference path="../../Scripts/Promise.ts" />
 /// <reference path="../../Scripts/CqsClient.ts" />
 /// <reference path="../ChartViewModel.ts" />
 module OneTrueError.Incident {
@@ -21,6 +20,9 @@ module OneTrueError.Incident {
 
         activate(context: Griffin.Yo.Spa.ViewModels.IActivationContext): void {
             this.context = context;
+
+            IncidentNavigation.set(context.routeData, 'Close incident', 'close');
+
 
             this.incidentId = parseInt(context.routeData["incidentId"]);
             const query = new GetIncident(parseInt(context.routeData["incidentId"], 10));
@@ -75,8 +77,14 @@ module OneTrueError.Incident {
             }
 
             CqsClient.command(closeCmd);
-            window.location.hash = `#/application/${this.context.routeData["applicationId"]}`;
-            humane.log("Incident has been closed.");
+
+            //seems like everything is not updated otherwise.
+            setTimeout(() => {
+                    window.location.hash = `#/application/${this.context.routeData["applicationId"]}/`;
+                    humane.log("Incident has been closed.");
+
+                },
+                500);
         }
 
         incidentId: number;

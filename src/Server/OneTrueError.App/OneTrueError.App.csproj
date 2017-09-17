@@ -122,6 +122,7 @@
     <Compile Include="Core\Feedback\InvalidErrorReport.cs" />
     <Compile Include="Core\Incidents\Commands\CloseIncidentHandler.cs" />
     <Compile Include="Core\Incidents\Commands\IgnoreIncidentHandler.cs" />
+    <Compile Include="Core\Incidents\Commands\ReOpenIncidentHandler.cs" />
     <Compile Include="Core\Incidents\IIncidentRepository.cs" />
     <Compile Include="Core\Incidents\Incident.cs" />
     <Compile Include="Core\Incidents\IncidentSolution.cs" />

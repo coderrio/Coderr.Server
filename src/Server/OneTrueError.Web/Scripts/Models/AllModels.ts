@@ -759,6 +759,7 @@ module OneTrueError.Core.Incidents.Queries {
         public SortAscending: boolean;
         public SortType: OneTrueError.Core.Incidents.IncidentOrder;
         public QueryId: string;
+        public Version: string;
     }
 
     export class GetIncident {
@@ -889,6 +890,14 @@ module OneTrueError.Core.Incidents.Commands {
             this.IncidentId = incidentId;
         }
     }
+    export class ReOpenIncident {
+        public static TYPE_NAME: string = 'ReOpenIncident';
+        public IncidentId: number;
+        public UserId: number;
+        public constructor(incidentId: number) {
+            this.IncidentId = incidentId;
+        }
+    }
 
     export class IgnoreIncident {
         public static TYPE_NAME: string = 'IgnoreIncident';
@@ -967,6 +976,7 @@ module OneTrueError.Core.Applications.Queries {
         public AppKey: string;
         public ApplicationId: number;
         public QueryId: string;
+        public Version:string;
     }
 
     export class GetApplicationInfoResult {
@@ -977,6 +987,7 @@ module OneTrueError.Core.Applications.Queries {
         public Name: string;
         public SharedSecret: string;
         public TotalIncidentCount: number;
+        public Versions: string[];
     }
 
     export class GetApplicationList {
@@ -1029,6 +1040,7 @@ module OneTrueError.Core.Applications.Queries {
         public ApplicationId: number;
         public NumberOfDays: number;
         public QueryId: string;
+        public Version: string;
         public constructor(applicationId: number) {
             this.ApplicationId = applicationId;
         }

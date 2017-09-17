@@ -1,44 +1,41 @@
-﻿/// <reference path="../../Scripts/Promise.ts" />
-/// <reference path="../../Scripts/Griffin.WebApp.ts" />
+﻿/// <reference path="../../Scripts/Griffin.WebApp.ts" />
 /// <reference path="../../Scripts/CqsClient.ts" />
-/// <reference path="../ChartViewModel.ts" />
+
 module OneTrueError.Application {
     import CqsClient = Griffin.Cqs.CqsClient;
-    import IncidentOrder = Core.Incidents.IncidentOrder;
-    import PagerSubscriber = Griffin.WebApp.IPagerSubscriber;
     import Pager = Griffin.WebApp.Pager;
-    import FindIncidents = Core.Incidents.Queries.FindIncidents;
     import ActivationContext = Griffin.Yo.Spa.ViewModels.IActivationContext;
     import Yo = Griffin.Yo;
-    import RemoveTeamMember = OneTrueError.Core.Applications.Commands.RemoveTeamMember;
 
-    export class DetailsViewModel implements Griffin.Yo.Spa.ViewModels.IViewModel, PagerSubscriber {
+    export class DetailsViewModel implements Griffin.Yo.Spa.ViewModels.IViewModel {
+        private incidentTable: IncidentTableViewModel;
         private pager: Pager;
         private applicationId: number;
         private applicationName: string;
-        private lineChart: LineChart;
-        private freeText: string = '';
-        private static UP = "glyphicon-chevron-up";
-        private static DOWN = "glyphicon-chevron-down";
-        private _sortType = IncidentOrder.Newest;
-        private _sortAscending = false;
-        private _incidentType = "active";
-        private _ctx: ActivationContext;
+        private ctx: ActivationContext;
+        private chartOptions: morris.ILineOptions;
+        private chart: morris.GridChart;
+        private chartDays = 30;
+        private filterVersion: string;
 
         constructor() {
         }
 
         getTitle(): string {
-            $("#appTitle").text(this.applicationName);
+            const bc: Applications.IBreadcrumb[] = [
+                { href: `/application/${this.applicationId}/`, title: this.applicationName }
+            ];
+            Applications.Navigation.breadcrumbs(bc);
+            Applications.Navigation.pageTitle = this.applicationName;
             return this.applicationName;
         }
 
+        totalIncidentCount = 0;
+
         activate(ctx: Griffin.Yo.Spa.ViewModels.IActivationContext) {
-            this._ctx = ctx;
+            this.incidentTable = new IncidentTableViewModel(ctx);
+            this.ctx = ctx;
             this.applicationId = ctx.routeData["applicationId"];
-            this.pager = new Griffin.WebApp.Pager(0, 0, 0);
-            this.pager.subscribe(this);
-            this.pager.draw(ctx.select.one("#pager"));
             var self = this;
 
             var firstIsRun = false;
@@ -46,24 +43,34 @@ module OneTrueError.Application {
             var chartRendering = (result: Core.Applications.Queries.GetApplicationOverviewResult) => {
                 //chart must be rendered after the element being attached and visible.
                 ctx.resolve();
-                self.lineChart = new LineChart(ctx.select.one("#myChart"));
                 self.renderChart(result);
             };
 
             const appQuery = new Core.Applications.Queries.GetApplicationInfo();
             appQuery.ApplicationId = ctx.routeData["applicationId"];
+            appQuery.Version = this.filterVersion;
             CqsClient.query<Core.Applications.Queries.GetApplicationInfoResult>(appQuery)
                 .done(info => {
-
                     Yo.GlobalConfig.applicationScope["application"] = info;
+
+                    this.totalIncidentCount = info.TotalIncidentCount;
                     this.applicationName = info.Name;
                     if (chartResult != null) {
                         chartRendering(chartResult);
                     }
                     firstIsRun = true;
                     this.renderInfo(info);
+                    ctx.handle.click(".version",
+                        e => {
+                            var version = (e.target as HTMLElement).getAttribute("data-value");
+                            this.filterVersion = version;
+                            ctx.render({ ActiveVersion: 'Filter: v' + version });
+                            this.updateAppInfo();
+                            this.incidentTable.load(this.applicationId, this.filterVersion);
+                        });
                 });
             const query = new Core.Applications.Queries.GetApplicationOverview(this.applicationId);
+            query.Version = this.filterVersion;
             CqsClient.query<Core.Applications.Queries.GetApplicationOverviewResult>(query)
                 .done(response => {
 
@@ -73,14 +80,9 @@ module OneTrueError.Application {
                         chartRendering(response);
                     }
                 });
-            this.getIncidentsFromServer(1);
-            ctx.handle.click("#btnClosed", e => this.onBtnClosed(e));
-            ctx.handle.click("#btnActive", e => this.onBtnActive(e));
-            ctx.handle.click("#btnActive", e => this.onBtnActive(e));
-            ctx.handle.click("#LastReportCol", e => this.onLastReportCol(e));
-            ctx.handle.click("#CountCol", e => this.onCountCol(e));
+
+            this.incidentTable.load(this.applicationId);
             ctx.handle.change('[name="range"]', e => this.onRange(e));
-            ctx.handle.keyUp('[data-name="freeText"]', e => this.onFreeText(e));
         }
 
         deactivate() {
@@ -90,246 +92,138 @@ module OneTrueError.Application {
         onRange(e: Event) {
             const elem = e.target as HTMLInputElement;
             const days = parseInt(elem.value, 10);
+            this.chartDays = days;
+            this.updateAppInfo();
+        }
+
+        private updateAppInfo() {
             const query = new Core.Applications.Queries.GetApplicationOverview(this.applicationId);
-            query.NumberOfDays = days;
+            query.NumberOfDays = this.chartDays;
+            query.Version = this.filterVersion;
             CqsClient.query<Core.Applications.Queries.GetApplicationOverviewResult>(query)
                 .done(response => {
-                    this.renderChart(response);
+                    console.log('overview', response);
+                    this.updateChart(response);
+                    this.ctx.render(response);
                 });
-        }
-
-        private onFreeText(e: Event): void {
-            var el = <HTMLInputElement>(e.target);
-            if (el.value.length >= 3) {
-                this.freeText = el.value;
-                this.getIncidentsFromServer(this.pager.currentPage);
-            } else if (el.value === '') {
-                this.freeText = el.value;
-                this.getIncidentsFromServer(this.pager.currentPage);
-            } else {
-                this.freeText = el.value;
-            }
-        }
-
-
-
-        private onBtnActive(e: Event): void {
-            e.preventDefault();
-            this._incidentType = "active";
-            this.pager.reset();
-            this.getIncidentsFromServer(-1);
-        }
-
-        private onBtnClosed(e: Event): void {
-            e.preventDefault();
-            this._incidentType = "closed";
-            this.pager.reset();
-            this.getIncidentsFromServer(-1);
-        }
-
-        private onBtnIgnored(e: Event): void {
-            e.preventDefault();
-            this._incidentType = "ignored";
-            this.pager.reset();
-            this.getIncidentsFromServer(-1);
-        }
-
-        onPager(pager: Pager): void {
-            this.getIncidentsFromServer(pager.currentPage);
-            const table = this._ctx.select.one("#incidentTable");
-            //.scrollIntoView(true);
-            const y = this.findYPosition(table);
-            window.scrollTo(null, y - 50); //navbar 
-        }
-
-        private findYPosition(element: HTMLElement): number {
-            if (element.offsetParent) {
-                let curtop = 0;
-                do {
-                    curtop += element.offsetTop;
-                    element = ((element.offsetParent) as HTMLElement);
-                } while (element);
-                return curtop;
-            }
-        }
-
-
-        onCountCol(args: MouseEvent): void {
-            if (this._sortType !== IncidentOrder.MostReports) {
-                this._sortType = IncidentOrder.MostReports;
-                this._sortAscending = true; //will be changed below
-            }
-            this.updateSortingUI(args.target);
-            this.getIncidentsFromServer(this.pager.currentPage);
-        }
-
-        onLastReportCol(args: MouseEvent): void {
-            if (this._sortType !== IncidentOrder.Newest) {
-                this._sortType = IncidentOrder.Newest;
-                this._sortAscending = true; //will be changed below
-            }
-            this.updateSortingUI(args.target);
-            this.getIncidentsFromServer(this.pager.currentPage);
-        }
-
-
-        private renderTable(pageNumber: number, data: Core.Incidents.Queries.FindIncidentResult) {
-            const directives = {
-                Items: {
-                    IncidentName: {
-                        text(data) {
-                            return data;
-                        },
-                        href(data, dto) {
-                            return `#/application/${dto.ApplicationId}/incident/${dto.Id}`;
-                        }
-                    },
-                    CreatedAtUtc: {
-                        text(value) {
-                            return new Date(value).toLocaleString();
-                        }
-                    },
-                    LastUpdateAtUtc: {
-                        text(value) {
-                            return new Date(value).toLocaleString();
-                        }
-                    },
-                    ApplicationName: {
-                        text(value) {
-                            return value;
-                        },
-                        href(value, dto) {
-                            return `#/application/${dto.ApplicationId}`;
-                        }
-                    }
-                }
-            };
-
-            //workaround for root dto name rendering over our collection name
-            data.Items.forEach(item => {
-                (item as any).IncidentName = item.Name;
-            });
-            this._ctx.renderPartial("#incidentTable", data, directives);
         }
 
         private renderInfo(dto: Core.Applications.Queries.GetApplicationInfoResult) {
             const directives = {
                 CreatedAtUtc: {
                     text(value) {
-                        return new Date(value).toLocaleString();
+                        const date = new Date(value);
+                        return moment(date).fromNow();
                     }
                 },
                 UpdatedAtUtc: {
                     text(value) {
-                        return new Date(value).toLocaleString();
+                        const date = new Date(value);
+                        return moment(date).fromNow();
                     }
                 },
                 SolvedAtUtc: {
                     text(value) {
-                        return new Date(value).toLocaleString();
-                    }
-                }
-
-            };
-            dto["StatSummary"] = {
-                AppKey: dto.AppKey,
-                SharedSecret: dto.SharedSecret
-            };
-            this._ctx.render(dto, directives);
-        }
-
-
-        private updateSortingUI(parentElement: any) {
-            this._sortAscending = !this._sortAscending;
-            let icon = DetailsViewModel.UP;
-            if (!this._sortAscending) {
-                icon = DetailsViewModel.DOWN;
-            }
-            $("#ApplicationView thead th span")
-                .removeClass("glyphicon-chevron-down")
-                .addClass(`glyphicon ${icon}`)
-                .css("visibility", "hidden");
-            $("span", parentElement)
-                .attr("class", `glyphicon ${icon}`)
-                .css("visibility", "inherit");
-        }
-
-        private getIncidentsFromServer(pageNumber: number): void {
-            if (pageNumber === -1) {
-                pageNumber = this.pager.currentPage;
-            }
-            const query = new FindIncidents();
-            query.SortType = this._sortType;
-            query.SortAscending = this._sortAscending;
-            query.PageNumber = pageNumber;
-            query.ItemsPerPage = 10;
-            query.ApplicationId = this.applicationId;
-            query.FreeText = this.freeText;
-            if (this._incidentType === "closed") {
-                query.Closed = true;
-                query.Open = false;
-            } else if (this._incidentType === "ignored") {
-                query.Closed = false;
-                query.Open = false;
-                query.ReOpened = false;
-                query.Ignored = true;
-            }
-
-
-            CqsClient.query<Core.Incidents.Queries.FindIncidentResult>(query)
-                .done(response => {
-                    if (this.pager.pageCount === 0) {
-                        this.pager.update(response.PageNumber, response.PageSize, response.TotalCount);
-                    }
-
-                    this.renderTable(pageNumber, response);
-                });
-        }
-
-        renderChart(result: Core.Applications.Queries.GetApplicationOverviewResult) {
-
-            const legend = [
-                {
-                    color: LineChart.LineThemes[0].strokeColor,
-                    label: "Incidents"
-                }, {
-                    color: LineChart.LineThemes[1].strokeColor,
-                    label: "Reports"
-                }
-            ];
-
-            const incidentsDataset = new Dataset();
-            incidentsDataset.label = "Incidents";
-            incidentsDataset.data = result.Incidents;
-
-            const reportDataset = new Dataset();
-            reportDataset.label = "Reports";
-            reportDataset.data = result.ErrorReports;
-
-
-            const directives = {
-                color: {
-                    text() {
-                        return "";
-                    },
-                    style(value, dto) {
-                        return `display: inline; font-weight: bold; color: ${dto.color}`;
+                        const date = new Date(value);
+                        return moment(date).fromNow();
                     }
                 },
-                label: {
-                    style(value, dto) {
-                        return `font-weight: bold; color: ${dto.color}`;
+                Versions: {
+                    text(value, dto) {
+                        return "v" +dto;
+                    },
+                    "data-value"(value, dto) {
+                        return dto;
                     }
                 }
             };
-            this._ctx.renderPartial("#chart-legend", legend, directives);
-            //$('#chart-legend').render(legend, directives);
-
-            const data = new LineData();
-            data.datasets = [incidentsDataset, reportDataset];
-            data.labels = result.TimeAxisLabels;
-            this.lineChart.render(data);
-            this._ctx.renderPartial('[data-name="StatSummary"]', result.StatSummary);
+            this.ctx.render(dto, directives);
         }
+
+
+        renderChart(result: Core.Applications.Queries.GetApplicationOverviewResult) {
+            console.log(result);
+            const data = [];
+            const labels = [{ name: "Reports", color: "#0094DA" }, { name: "Incidents", color: "#2B4141" }];
+            for (let i = 0; i < result.ErrorReports.length; ++i) {
+                const dataItem = {
+                    date: result.TimeAxisLabels[i],
+                    Reports: result.ErrorReports[i],
+                    Incidents: result.Incidents[i]
+                };
+                data.push(dataItem);
+            }
+
+            $("#myChart").html("");
+            this.chartOptions = {
+                element: "myChart",
+                data: data,
+                xkey: "date",
+                ykeys: ["Reports", "Incidents"],
+                xLabels: result.Days === 1 ? "hour" as morris.Interval : "day",
+                labels: ["Reports", "Incidents"],
+                lineColors: ["#0094DA", "#2B4141"]
+            };
+            this.chart = Morris.Line(this.chartOptions);
+            const directives = {
+                labels: {
+                    color: {
+                        style(value) {
+                            return `color: ${value}`;
+                        },
+                        html(value) {
+                            return "";
+                        }
+                    },
+                    name: {
+                        html(value) {
+                            return value;
+                        }
+                    }
+                }
+            };
+            this.ctx.renderPartial("legend", { labels: labels }, directives);
+            this.ctx.renderPartial('[data-name="StatSummary"]', result.StatSummary);
+        }
+
+        updateChart(result: Core.Applications.Queries.GetApplicationOverviewResult) {
+            const data = [];
+            let lastHour = -1;
+            let date = new Date();
+            date.setDate(date.getDate() - 1);
+            for (let i = 0; i < result.ErrorReports.length; ++i) {
+                const dataItem = {
+                    date: result.TimeAxisLabels[i],
+                    Reports: result.ErrorReports[i],
+                    Incidents: result.Incidents[i]
+                };
+
+                if (this.chartDays === 1) {
+                    const hour = parseInt(dataItem.date.substr(0, 2), 10);
+                    if (hour < lastHour && lastHour !== -1) {
+                        date = new Date();
+                    }
+                    lastHour = hour;
+                    const minute = parseInt(dataItem.date.substr(3, 2), 10);
+                    date.setHours(hour, minute);
+                    dataItem.date = date.toISOString();
+                }
+
+                data.push(dataItem);
+            }
+
+            this.chartOptions.xLabelFormat = null;
+            if (this.chartDays === 7) {
+                this.chartOptions.xLabelFormat = (xDate: Date): string => {
+                    return moment(xDate).format("dd");
+                };
+            } else if (this.chartDays === 1) {
+                this.chartOptions.xLabels = "hour";
+            } else {
+                this.chartOptions.xLabels = "day";
+            }
+            this.chart.setData(data, true);
+        }
+
     }
 }

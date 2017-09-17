@@ -66,7 +66,7 @@ namespace OneTrueError.Web
                 properties.Add("Body", data);
             properties.Add("OneTrueTags", "unhandled-exception");
             var collection = new ContextCollectionDTO("Request", properties);
-            OneTrue.Report(exception, collection);
+            //OneTrue.Report(exception, collection);
         }
 
         private static void OnSignalRaised(object sender, SignalRaisedEventArgs e)

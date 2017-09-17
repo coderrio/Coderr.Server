@@ -1,122 +1,121 @@
 ﻿<div id="OverviewView">
-    <h1 id="name">Overview</h1>
+    <div class="row" style="display: none" id="config-help-guru">
+        <div class="col-xl-12">
+            <div class="alert alert-info" role="alert">
+                <strong>Configuration trouble?</strong>
+                You have not created an application yet. Want help?
+                <a href="#/onboarding" class="">Start the configuration wizard</a>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+        </div>
+    </div>
     <div class="row">
-        <div class="col-lg-8" style="background-color: rgb(29, 137, 207) !important;">
-            <div style="margin-bottom: 20px;">
-                <div class="pull-right">
-                    <form id="refresh-chart" style="background: rgba(220, 230, 250, 0.5); padding: 5px">
-                        <input type="radio" name="range" value="30"/> month
+        <div class="col-lg-8 col-md-12">
+            <div class="card-box" id="chart-container">
+
+                <div id="legend" class="text-center">
+                    <h4 class="header-title m-b-20">Incident trend</h4>
+                    <ul class="list-inline chart-detail-list" data-collection="labels">
+                        <li class="list-inline-item">
+                            <h6>
+                                <i data-name="color" class="zmdi zmdi-circle m-r-5"></i>
+                                <span data-name="name"></span>
+                            </h6>
+
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <div id="myChart" style="height:200px"></div>
+                </div>
+                <div class="text-center">
+                    <form id="refresh-chart" style="display: inline">
+                        <input type="radio" name="range" value="30" checked="checked"/> month
                         <input type="radio" name="range" value="7"/> week
                         <input type="radio" name="range" value="1"/> day
                     </form>
                 </div>
-                <div class="clearfix" style="clear: both"></div>
             </div>
-            <div class="clearfix" style="clear: both"></div>
-            <div>
-                <canvas id="myChart" height="90"></canvas>
-            </div>
+        </div>
+        <div class="col-lg-4 col-md-12" data-name="StatSummary">
+            <div class="row">
+                <div class="col-xs-12 col-md-6 col-lg-12 col-xl-6">
+                    <div class="card-box tilebox-one">
+                        <i class="fa fa-exclamation-triangle float-right text-muted"></i>
+                        <h6 class="text-muted text-uppercase m-b-20">Active incidents</h6>
+                        <h2 class="m-b-20" data-plugin="counterup" data-name="Incidents">0</h2>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-6 col-lg-12 col-xl-6">
+                    <div class="card-box tilebox-one">
+                        <i class="fa fa-bug float-right text-muted"></i>
+                        <h6 class="text-muted text-uppercase m-b-20">Report count</h6>
+                        <h2 class="m-b-20" data-plugin="counterup" data-name="Reports">0</h2>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-6 col-lg-12 col-xl-6">
 
-            <div class="text-center">
-                <div id="chart-legend">
-                    <div style="display: inline">
-                        <span style="" class="glyphicon glyphicon-stop glyphicon-th-large" data-name="color"></span>
-                        <span data-name="label" style="font-weight: bold;"></span>&nbsp;&nbsp;
+                    <div class="card-box tilebox-one">
+                        <i class="fa fa-users float-right text-muted"></i>
+                        <h6 class="text-muted text-uppercase m-b-20">Users subscribing</h6>
+                        <h2 class="m-b-20" data-plugin="counterup" data-name="Followers">0</h2>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-6 col-lg-12 col-xl-6">
+                    <div class="card-box tilebox-one">
+                        <i class="fa fa-comment float-right text-muted"></i>
+                        <h6 class="text-muted text-uppercase m-b-20"># of feedback</h6>
+                        <h2 class="m-b-20" data-plugin="counterup" data-name="UserFeedback">0</h2>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-4" data-name="StatSummary">
-            <div class="tile-nephritis tile tile-medium">
-                <a href="#/incidents">
-                    <h4>Active incidents</h4>
-                    <h1 data-name="Incidents"></h1>
-                </a>
-            </div>
-            <div class="tile-nephritis tile tile-medium">
-                <a href="#incidentTable">
-                    <h4>Report count</h4>
-                    <h1 data-name="Reports"></h1>
-                </a>
-            </div>
-            <div class="tile-nephritis tile tile-medium">
-                <a href="#/feedback">
-                    <h4 title="Number of users waiting for a fix">Users waiting</h4>
-                    <h1 data-name="Followers"></h1>
-                </a>
-            </div>
-            <div class="tile-nephritis tile tile-medium">
-                <a href="#/feedback">
-                    <h4 title="Number of users waiting for a fix">Feedback count</h4>
-                    <h1 data-name="UserFeedback"></h1>
-                </a>
-            </div>
-            <div class="tile tile-large tile-sun-flower" data-name="getting-started" style="display: none; font-size: 2em; padding: 15px">
-                <p>
-                    Need help getting started? Click on the Help-icon top right.
-                </p>
-                <hr/>
-                <p>
-                    <a style="color: #fff; text-decoration: underline;" hreF="#/welcome">getting started</a>
-                </p>
-
-            </div>
-            <div class="clearfix">
-                <p>&nbsp;</p>
-            </div>
-        </div>
     </div>
-    <div class="vertical-spacer"></div>
     <div class="row">
         <div class="col-lg-12">
-            <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
-                <li class="active">
-                    <a href="#active" id="btnActive" data-toggle="tab">Active</a>
-                </li>
-                <li>
-                    <a href="#closed" id="btnClosed" data-toggle="tab">Closed</a>
-                </li>
-                <li>
-                    <a href="#ignored" id="btnIgnored" data-toggle="tab">Ignored</a>
-                </li>
-            </ul>
-            <table id="incidentTable" class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th style="min-width: 100px">Application</th>
-                    <th style="cursor: pointer; min-width: 100px" id="LastReportCol">Last report <span id="lastReport-sort" class="glyphicon glyphicon-chevron-down"></span></th>
-                    <th style="cursor: pointer; min-width: 100px" id="CountCol">Report count <span id="count-sort" class="glyphicon glyphicon-chevron-up" style="visibility: hidden"></span></th>
-                    <th>&nbsp;</th>
-                </tr>
-                </thead>
-                <tbody data-collection="Items">
-                <tr>
-                    <td>
-                        <a href="" data-name="Name"></a>
-                    </td>
-                    <td>
-                        <a data-name="ApplicationName" href="" data-url="#/application/:applicationId/"></a>
-                    </td>
-                    <td data-name="LastUpdateAtUtc"></td>
-                    <td data-name="ReportCount"></td>
-                    <td></td>
-                </tr>
-                </tbody>
-                <tfoot>
-                <tr>
-                    <td colspan="4" class="text-right" id="pager"></td>
-                </tr>
-                </tfoot>
-            </table>
+            <div class="card-box">
+                <div class="float-right">
+                    <input data-name="freeText" type="text" class="form-control" placeholder="search (at least 3 chars)" style="float: left; max-width: 200px; margin-right: 10px;"/>
+                    <div class="btn-group">
+                        <label href="#active" id="btnActive" class="btn btn-primary active">Active</label>
+                        <label href="#closed" id="btnClosed" class="btn btn-primary">Closed</label>
+                        <label href="#ignored" id="btnIgnored" class="btn btn-primary">Ignored</label>
+                    </div>
+                </div>
+                <h4 class="header-title m-b-30">Incidents
+                </h4>
+                <table id="incidentTable" class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th style="min-width: 100px">Application</th>
+                        <th style="cursor: pointer; min-width: 100px" id="LastReportCol">Last report <span id="lastReport-sort" class="glyphicon glyphicon-chevron-down"></span></th>
+                        <th style="cursor: pointer; min-width: 100px" id="CountCol">Report count <span id="count-sort" class="glyphicon glyphicon-chevron-up" style="visibility: hidden"></span></th>
+                        <th>&nbsp;</th>
+                    </tr>
+                    </thead>
+                    <tbody data-collection="Items">
+                    <tr>
+                        <td>
+                            <a href="" data-name="Name"></a>
+                        </td>
+                        <td>
+                            <a data-name="ApplicationName" href="" data-url="#/application/:applicationId/"></a>
+                        </td>
+                        <td data-name="LastUpdateAtUtc"></td>
+                        <td data-name="ReportCount"></td>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td colspan="4" class="text-right" id="pager"></td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
         </div>
     </div>
 </div>
-<ul data-navigation="main-navigation">
-    <li>
-        <a href="#/incidents">Incidents</a>
-    </li>
-    <li>
-        <a href="#/feedback">Feedback</a>
-    </li>
-</ul>

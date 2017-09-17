@@ -37,6 +37,11 @@ namespace OneTrueError.Api.Core.Incidents.Queries
         public bool Closed { get; set; }
 
         /// <summary>
+        ///     Will be searched in incident.message and report.stacktrace.
+        /// </summary>
+        public string FreeText { get; set; }
+
+        /// <summary>
         ///     Include ignored incidents
         /// </summary>
         public bool Ignored { get; set; }
@@ -72,11 +77,6 @@ namespace OneTrueError.Api.Core.Incidents.Queries
         public bool ReOpened { get; set; }
 
         /// <summary>
-        /// Will be searched in incident.message and report.stacktrace.
-        /// </summary>
-        public string FreeText { get; set; }
-
-        /// <summary>
         ///     Sort order
         /// </summary>
         public bool SortAscending { get; set; }
@@ -85,5 +85,10 @@ namespace OneTrueError.Api.Core.Incidents.Queries
         ///     Sort type
         /// </summary>
         public IncidentOrder SortType { get; set; }
+
+        /// <summary>
+        ///     Version (in the form of a version string i.e. "1.2.1")
+        /// </summary>
+        public string Version { get; set; }
     }
 }

@@ -1,0 +1,124 @@
+﻿@using OneTrueError.Infrastructure.Security
+<div class="sidebar-inner slimscrollleft">
+
+    <!--- Side menu -->
+    <div id="sidebar-menu">
+        <ul id="application-menu">
+            <li class="text-muted menu-title">Navigation</li>
+
+            <li class="has_sub" id="mnuDashboard">
+                <a href="javascript:void(0)" class="waves-effect"><i class="zmdi zmdi-view-dashboard"></i><span> Dashboard </span> </a>
+                <ul class="list-unstyled">
+                    <li><a href="/#/">Overview</a></li>
+                    <li><a href="/#/incidents">Incidents</a></li>
+                    <li><a href="/#/feedback">Feedback</a></li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="nav navbar-nav" id="main-navigation"></ul>
+        <div class="clearfix"></div>
+    </div>
+    <div class="clearfix"></div>
+</div>
+<div style="display: none">
+    <ul id="menu-template">
+        <li class="has_sub" data-menu-name="mnuApplication" data-application-id="{id}">
+            <a href="javascript:void(0);" class="">
+                <i class="zmdi zmdi-view-web"></i>
+                <span> {name} </span>
+                <span class="menu-arrow"></span>
+            </a>
+            <ul class="list-unstyled">
+                <li><a href="/#/application/{id}/">Summary</a></li>
+                <li><a href="/#/application/{id}/incidents">Incidents</a></li>
+                <li><a href="/#/application/{id}/feedback">Feedback</a></li>
+                <li data-if="IsAdmin"><a href="/#/application/{id}/team">Team members</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<ul style="display:none">
+    <li class="has_sub" id="mnuIncident">
+        <a href="javascript:void(0);" class="subdrop">
+            <span> Incident </span>
+            <span class="menu-arrow"></span>
+        </a>
+        <ul style="display:block">
+            <li class="active">
+                <a data-sub="">Overview</a>
+            </li>
+            <li>
+                <a data-sub="context/">Context data</a>
+            </li>
+            <li>
+                <a data-sub="origins/">Report origins</a>
+            </li>
+            <li>
+                <a data-sub="feedback/">Feedback</a>
+            </li>
+        </ul>
+    </li>
+</ul>
+
+<script>
+    function addApplication(applicationListItem) {
+        var html = $('#menu-template').clone();
+        html = $(html).html().replace(/{id}/g, applicationListItem.Id).replace(/{name}/, applicationListItem.Name);
+        var node = $(html);
+
+        if (!applicationListItem.IsAdmin) {
+            $("[data-if=\"IsAdmin\"]", node).remove();
+        }
+        $('#application-menu').append(node);
+    }
+
+    var isIncidentMenuActive=false;
+    function checkMenu() {
+        var re = /#\/application\/(\d+)\/incident\/(\d+).*/g;
+        var incidentMatch = re.exec(window.location.hash);
+        if (incidentMatch) {
+            $('#mnuIncident li a').each(function() {
+                var link = '/#/application/' +
+                    incidentMatch[1] +
+                    "/incident/" +
+                    incidentMatch[2] +
+                    "/" +
+                    $(this).attr('data-sub');
+                $(this).attr('href', link);
+            });
+            //$('#mnuIncident li a[href="' + window.location.hash + '"]').addClass('active');
+            if (!isIncidentMenuActive) {
+                isIncidentMenuActive = true;
+                var destination = $('[data-application-id="' + incidentMatch[1] + '"] ul');
+                if (destination.find('#mnuIncident').length === 0) {
+                    destination.append($('#mnuIncident'));
+                }
+                $('#mnuIncident').css('display', '');
+            }
+        } else {
+            $('#mnuIncident').css('display', 'none');
+            isIncidentMenuActive = false;
+        }
+        toggleMenuItem('/' + window.location.hash);
+
+
+
+    }
+    window.addEventListener("hashchange", function (e) {
+        checkMenu();
+    }, false);
+
+    window.bootScripts.push(function () {
+        var query = new OneTrueError.Core.Applications.Queries.GetApplicationList();
+        Griffin.Cqs.CqsClient.query(query)
+            .done(function (result) {
+                window.MyApplications = result;
+                result.forEach(function (app) {
+                    addApplication(app);
+                });
+                checkMenu();
+            });
+    });
+
+
+</script>

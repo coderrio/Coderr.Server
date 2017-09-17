@@ -9,11 +9,13 @@ declare function nl2br(text: string): string;
 module OneTrueError.Feedback {
     import CqsClient = Griffin.Cqs.CqsClient;
     import Yo = Griffin.Yo;
+    import ApplicationService = OneTrueError.Applications.ApplicationService;
 
     export class ApplicationViewModel implements Griffin.Yo.Spa.ViewModels.IViewModel {
         private dto: Web.Feedback.Queries.GetFeedbackForApplicationPageResult;
         private context: Griffin.Yo.Spa.ViewModels.IActivationContext;
-        private RenderDirectives = {
+        private applicationId: number;
+        private renderDirectives = {
             Items: {
                 Message: {
                     html(value) {
@@ -22,20 +24,12 @@ module OneTrueError.Feedback {
                 },
                 Title: {
                     style() {
-                        return "color:#ccc";
+                        return '';
                     },
                     html(value, dto) {
-                        return `Reported for <a style="color: #ee99ee" href="/application/${dto.ApplicationId}">${
-                            dto.ApplicationName}</a> at ${new Date(dto.WrittenAtUtc).toLocaleString()}`;
-                    }
-                },
-                EmailAddressVisible: {
-                    style(value, dto) {
-                        if (!dto.EmailAddress || dto.EmailAddress === "") {
-                            return "display:none";
-                        }
-
-                        return "";
+                        console.log(dto);
+                        return `Reported for <a href="#/application/${dto.applicationId}/incident/${dto.IncidentId}">${
+                            dto.IncidentName}</a> at ${moment(dto.WrittenAtUtc).fromNow()}`;
                     }
                 },
                 EmailAddress: {
@@ -44,20 +38,24 @@ module OneTrueError.Feedback {
                     },
                     href(value) {
                         return `mailto:${value}`;
-                    },
-                    style() {
-                        return "color: #ee99ee";
                     }
                 }
             }
         };
 
         getTitle(): string {
-            const app = Yo.GlobalConfig
-                .applicationScope["application"] as Core.Applications.Queries.GetApplicationInfoResult;
-            if (app) {
-                return app.Name;
-            }
+            var appId = this.context.routeData['applicationId'];
+            var app = new ApplicationService();
+            app.get(appId)
+                .then(result => {
+                    var bc: Applications.IBreadcrumb[] = [
+                        { href: `/application/${appId}/`, title: result.Name },
+                        { href: `/application/${appId}/feedback`, title: 'Feedback' }
+                    ];
+                    Applications.Navigation.breadcrumbs(bc);
+                    Applications.Navigation.pageTitle = 'Feedback';
+                });
+
             return "Feedback";
         }
 
@@ -67,7 +65,10 @@ module OneTrueError.Feedback {
             CqsClient.query<Web.Feedback.Queries.GetFeedbackForApplicationPageResult>(query)
                 .done(result => {
                     this.dto = result;
-                    context.render(result, this.RenderDirectives);
+                    this.dto.Items.forEach(item => {
+                        item['applicationId'] = context.routeData['applicationId'];
+                    });
+                    context.render(result, this.renderDirectives);
                     context.resolve();
                 });
         }

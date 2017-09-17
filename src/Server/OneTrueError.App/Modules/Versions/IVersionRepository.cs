@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Threading.Tasks;
 
@@ -55,7 +56,7 @@ namespace OneTrueError.App.Modules.Versions
         /// <param name="month">entity</param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException">month</exception>
-        /// <exception cref="DbException">Failed to execute sql</exception>
+        /// <exception cref="DbException">Failed to execute SQL</exception>
         Task UpdateAsync(ApplicationVersionMonth month);
 
         /// <summary>
@@ -63,8 +64,15 @@ namespace OneTrueError.App.Modules.Versions
         /// </summary>
         /// <param name="entity">version info</param>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException">enitty</exception>
+        /// <exception cref="ArgumentNullException">entity</exception>
         /// <exception cref="DbException">Failed to query DB</exception>
         Task UpdateAsync(ApplicationVersion entity);
+
+        /// <summary>
+        /// Find all versions that we've received error reports for.
+        /// </summary>
+        /// <param name="appId">application id</param>
+        /// <returns>versions</returns>
+        Task<IEnumerable<string>> FindVersionsAsync(int appId);
     }
 }

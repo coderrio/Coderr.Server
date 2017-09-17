@@ -6,7 +6,7 @@
     public class GetApplicationInfoResult
     {
         /// <summary>
-        ///     App key
+        ///     Application key
         /// </summary>
         public string AppKey { get; set; }
 
@@ -31,8 +31,13 @@
         public string SharedSecret { get; set; }
 
         /// <summary>
-        ///     Total nume rof incidents for this application.
+        ///     Total number of incidents for this application.
         /// </summary>
         public int TotalIncidentCount { get; set; }
+
+        /// <summary>
+        /// Versions that we have received error reports for.
+        /// </summary>
+        public string[] Versions { get; set; }
     }
 }

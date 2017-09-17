@@ -28,9 +28,14 @@ module OneTrueError.User {
             humane.log("Settings have been saved.");
         }
 
-        getTitle(): string { return "Notifications settings"; }
+        getTitle(): string {
+             return "Notifications settings";
+        }
 
         activate(context: Griffin.Yo.Spa.ViewModels.IActivationContext): void {
+            Applications.Navigation.breadcrumbs([{ href: "/settings/notifications", title: "Notification settings" }]);
+            Applications.Navigation.pageTitle = 'Notification settings';
+
             this.ctx = context;
 
             context.handle.click("#saveSettings", ev => this.saveSettings_click(ev));

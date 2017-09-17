@@ -7,16 +7,19 @@ module OneTrueError.Overview {
     import PagerSubscriber = Griffin.WebApp.IPagerSubscriber;
     import Pager = Griffin.WebApp.Pager;
     import FindIncidents = Core.Incidents.Queries.FindIncidents;
+    import GetApplicationList = OneTrueError.Core.Applications.Queries.GetApplicationList;
+    import ApplicationListItem = OneTrueError.Core.Applications.ApplicationListItem;
 
     export class OverviewViewModel implements PagerSubscriber, Griffin.Yo.Spa.ViewModels.IViewModel {
         private pager: Pager;
-        private lineChart: LineChart;
-        private static UP = "glyphicon-chevron-up";
-        private static DOWN = "glyphicon-chevron-down";
-        private _sortType = IncidentOrder.Newest;
+        private static UP = "fa-chevron-up";
+        private static DOWN = "fa-chevron-down";
+        private _sortType: IncidentOrder = IncidentOrder.Newest;
         private _sortAscending = false;
         private _incidentType = "active";
         private _ctx: Griffin.Yo.Spa.ViewModels.IActivationContext;
+        private chartOptions: morris.ILineOptions;
+        private chart: morris.GridChart;
 
         constructor() {
             this.pager = new Pager(0, 0, 0);
@@ -24,6 +27,8 @@ module OneTrueError.Overview {
         }
 
         getTitle(): string {
+            Applications.Navigation.breadcrumbs([]);
+            Applications.Navigation.pageTitle = 'Dashboard <em class="small">(summary for all applications)</em>';
             return "Overview";
         }
 
@@ -33,13 +38,19 @@ module OneTrueError.Overview {
             const query = new Web.Overview.Queries.GetOverview();
             CqsClient.query<Web.Overview.Queries.GetOverviewResult>(query)
                 .done(response => {
-                    this.renderInfo(response);
+                    ctx.render(response);
                     ctx.resolve();
-                    this.lineChart = new LineChart(ctx.select.one("#myChart"));
-                    this.renderChart(response);
+                    this.renderChart(response, 30);
 
                 });
+            var apps = new GetApplicationList();
+            CqsClient.query<ApplicationListItem[]>(apps)
+                .done(reply => {
+                    if (reply.length === 0) {
+                        ctx.select.one('config-help-guru').style.display = '';
+                    }
 
+                });
             const pagerElement = ctx.select.one("pager");
             this.pager.draw(pagerElement);
             this.getIncidentsFromServer(1);
@@ -81,7 +92,7 @@ module OneTrueError.Overview {
             query.NumberOfDays = parseInt(elem.value, 10);
             CqsClient.query<Web.Overview.Queries.GetOverviewResult>(query)
                 .done(response => {
-                    this.renderChart(response);
+                    this.updateChart(response, query.NumberOfDays);
                 });
         }
 
@@ -89,6 +100,8 @@ module OneTrueError.Overview {
             e.preventDefault();
             this._incidentType = "closed";
             this.pager.reset();
+            $(e.target).parent().find('label').removeClass('active');
+            $(e.target).addClass('active');
             this.getIncidentsFromServer(0);
         }
 
@@ -96,6 +109,8 @@ module OneTrueError.Overview {
             e.preventDefault();
             this._incidentType = "active";
             this.pager.reset();
+            $(e.target).parent().find('label').removeClass('active');
+            $(e.target).addClass('active');
             this.getIncidentsFromServer(0);
         }
 
@@ -103,12 +118,14 @@ module OneTrueError.Overview {
             e.preventDefault();
             this._incidentType = "ignored";
             this.pager.reset();
+            $(e.target).parent().find('label').removeClass('active');
+            $(e.target).addClass('active');
             this.getIncidentsFromServer(0);
         }
 
         onCountCol(e: Event): void {
             if (this._sortType !== IncidentOrder.MostReports) {
-                this._sortType = IncidentOrder.MostReports;
+                this._sortType = IncidentOrder.MostReports ;
                 this._sortAscending = true; //will be changed below
             }
             this.updateSortingUI(e.target);
@@ -125,7 +142,6 @@ module OneTrueError.Overview {
         }
 
         private renderTable(pageNumber: number, data: Core.Incidents.Queries.FindIncidentResult) {
-            const self = this;
             const directives = {
                 Items: {
                     Name: {
@@ -138,12 +154,12 @@ module OneTrueError.Overview {
                     },
                     CreatedAtUtc: {
                         text(value) {
-                            return new Date(value).toLocaleString();
+                            return moment(value).fromNow();
                         }
                     },
                     LastUpdateAtUtc: {
                         text(value) {
-                            return new Date(value).toLocaleString();
+                            return moment(value).fromNow();
                         }
                     },
                     ApplicationName: {
@@ -158,35 +174,10 @@ module OneTrueError.Overview {
             };
 
             if (data.TotalCount === 0) {
-                this._ctx.select.one("getting-started").style.display = "";
+                //this._ctx.select.one("getting-started").style.display = "";
             }
             this._ctx.renderPartial("#incidentTable", data, directives);
         }
-
-        private renderInfo(dto: any) {
-            const self = this;
-            const directives = {
-                CreatedAtUtc: {
-                    text: function(params) {
-                        return new Date(this.CreatedAtUtc).toLocaleString();
-                    }
-                },
-                UpdatedAtUtc: {
-                    text: function(params) {
-                        return new Date(this.UpdatedAtUtc).toLocaleString();
-                    }
-                },
-                SolvedAtUtc: {
-                    text: function(params) {
-                        return new Date(this.SolvedAtUtc).toLocaleString();
-                    }
-                },
-
-            };
-
-            this._ctx.render(dto, directives);
-        }
-
 
         private updateSortingUI(parentElement: any) {
             this._sortAscending = !this._sortAscending;
@@ -195,11 +186,11 @@ module OneTrueError.Overview {
                 icon = OverviewViewModel.DOWN;
             }
             $("#OverviewView thead th span")
-                .removeClass("glyphicon-chevron-down")
-                .addClass(`glyphicon ${icon}`)
+                .removeClass("fa-chevron-down")
+                .addClass(`fa ${icon}`)
                 .css("visibility", "hidden");
             $("span", parentElement)
-                .attr("class", `glyphicon ${icon}`)
+                .attr("class", `fa ${icon}`)
                 .css("visibility", "inherit");
         }
 
@@ -226,59 +217,112 @@ module OneTrueError.Overview {
                 });
         }
 
-        renderChart(result: Web.Overview.Queries.GetOverviewResult) {
-            var data = new LineData();
-            data.datasets = [];
+        renderChart(result: Web.Overview.Queries.GetOverviewResult, numberOfDays: number) {
+            //no applications man!
+            if (result.IncidentsPerApplication.length === 0) {
+                $('#chart-container').html('<h4 class="header-title m-t-0 m-b-20">Incident trend</h4><em>No applications have been created.</em>');
+                return;
+            }
 
-            var legend = [];
-            var found = false;
-            var index = 0;
-            result.IncidentsPerApplication.forEach(function (app) {
-                var sum = app.Values.reduce(function (a, b) { return a + b; }, 0);
-                if (sum === 0) {
-                    return;
-                }
+            var data = [];
+            var yKeys = [];
+            var legendLabels = [];
+            var availableColors = ['#0094DA', '#2B4141', '#34E4EA', '#8AB9B5', '#C8C2AE', '#84BCDA', '#ECC30B', '#F37748', '#D56062'];
+            var lineColors = availableColors.slice(0, result.IncidentsPerApplication.length);
+            for (let y = 0; y < result.IncidentsPerApplication.length; y++) {
+                const item = result.IncidentsPerApplication[y];
+                yKeys.push(item.Label);
+                legendLabels.push({
+                    color: availableColors[y],
+                    name: item.Label
+                });
+            }
 
-                const ds = new Dataset();
-                ds.label = app.Label;
-                ds.data = app.Values;
-                data.datasets.push(ds);
-
-                //not enough color themes to display all.
-                if (index > LineChart.LineThemes.length) {
-                    return;
-                }
-
-                const l = {
-                    label: app.Label,
-                    color: LineChart.LineThemes[index++].strokeColor
+            for (let i = 0; i < result.TimeAxisLabels.length; ++i) {
+                const dataItem = {
+                    date: result.TimeAxisLabels[i]
                 };
-                legend.push(l);
-                found = true;
-            });
-            const directives = {
-                color: {
-                    text() {
-                        return "";
+
+                for (let y = 0; y < result.IncidentsPerApplication.length; y++) {
+                    const item = result.IncidentsPerApplication[y];
+                    dataItem[item.Label] = item.Values[i];
+                }
+                data.push(dataItem);
+            }
+
+            $('#myChart').html('');
+            this.chartOptions = {
+                element: 'myChart',
+                data: data,
+                xkey: 'date',
+                ykeys: yKeys,
+                //xLabels: numberOfDays === 1 ? "hour" as morris.Interval : "day",
+                labels: yKeys,
+                lineColors: lineColors
+            };
+            this.chart = Morris.Line(this.chartOptions);
+
+            var directives = {
+                labels: {
+                    color: {
+                        style(value) {
+                            return 'color: ' + value;
+                        },
+                        html(value) {
+                            return '';
+                        }
                     },
-                    style(value, dto) {
-                        return `display: inline; font-weight: bold; color: ${dto.color}`;
-                    }
-                },
-                label: {
-                    style(value, dto) {
-                        return `font-weight: bold; color: ${dto.color}`;
+                    name: {
+                        html(value) {
+                            return value;
+                        }
                     }
                 }
             };
-            this._ctx.renderPartial("#chart-legend", legend, directives);
-            data.labels = result.TimeAxisLabels;
-            if (data.datasets.length === 0) {
-                data.datasets.push({ label: 'No data', data: [] });
-            }
-
-            this.lineChart.render(data);
+            this._ctx.renderPartial("legend", { labels: legendLabels }, directives);
             this._ctx.renderPartial("StatSummary", result.StatSummary);
+        }
+
+        updateChart(result: Web.Overview.Queries.GetOverviewResult, numberOfDays: number) {
+            var data = [];
+            var lastHour = -1;
+            var date: Date = new Date();
+            date.setDate(date.getDate() - 1);
+
+            for (let i = 0; i < result.TimeAxisLabels.length; ++i) {
+                const dataItem = {
+                    date: result.TimeAxisLabels[i]
+                };
+
+                if (numberOfDays === 1) {
+                    var hour = parseInt(dataItem.date.substr(0, 2), 10);
+                    if (hour < lastHour && lastHour !== -1) {
+                        date = new Date();
+                    }
+                    lastHour = hour;
+                    var minute = parseInt(dataItem.date.substr(3, 2), 10);
+                    date.setHours(hour, minute);
+                    dataItem.date = date.toISOString();
+                }
+
+                for (let y = 0; y < result.IncidentsPerApplication.length; y++) {
+                    const item = result.IncidentsPerApplication[y];
+                    dataItem[item.Label] = item.Values[i];
+                }
+                data.push(dataItem);
+            }
+            
+            this.chartOptions.xLabelFormat = null;
+            if (numberOfDays === 7) {
+                this.chartOptions.xLabelFormat = (xDate: Date): string => {
+                    return moment(xDate).format('dd');
+                }
+            } else if (numberOfDays === 1) {
+                this.chartOptions.xLabels = "hour";
+            } else {
+                this.chartOptions.xLabels = "day";
+            }
+            this.chart.setData(data, true);
         }
     }
 }

@@ -1,0 +1,454 @@
+﻿<div id="ApplicationModel" class="row">
+    <div class="col-lg-12">
+        <div class="card-box">
+            <header>
+                <h2>Project setup</h2>
+                <p>Great, an application have been created in OneTrueError. Now you need to configure your own visual studio project.</p>
+                <p>Click on your application type below to get detailed configuration instructions.</p>
+            </header>
+            <hr />
+            <div class="row">
+
+                <div class="col-lg-2 col-md-4">
+                    <div>&nbsp;</div>
+                    <ul class="nav nav-pills flex-column" id="install-tabs" data-toggle="tabs">
+                        <li class="active">
+                            <a href="#install-manual" data-toggle="pill">Manual error reporting</a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#install-aspnet" data-toggle="pill">ASP.NET</a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#install-aspnet-mvc" data-toggle="pill">ASP.NET MVC</a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#install-aspnet-webapi" data-toggle="pill">ASP.NET WebApi 2</a>
+                        </li>
+                        <li>
+                            <a href="#install-wpf" data-toggle="pill">WPF/WinForms</a>
+                        </li>
+                        <li>
+                            <a href="#install-wcf" data-toggle="pill">WCF</a>
+                        </li>
+                        <!--<li>
+                            <a href="#install-asmx" data-toggle="pill">ASMX</a>
+                        </li>-->
+                    </ul>
+                    <hr />
+                    <a style="width: 100%" href="#/onboarding/application/:applicationId/verify" class="btn btn-primary">I've completed this step &gt;&gt;</a><br />
+                </div>
+                <div class="col-lg-10 col-md-8">
+                    <div class="panel tab-pane active" id="install-manual">
+                        <h2>Manual error handling</h2>
+
+                        <p>Manual error handling means that you are yourself responsible of deciding which errors should be reported.</p>
+                        <h3>Package install</h3>
+                        <p>
+                            Install the following nuget package <a href="http://www.nuget.org/packages/OneTrueError.client/">onetrueerror.client</a>
+                        </p>
+                        <pre><code class="c#">install-package onetrueerror.client</code></pre>
+                        <h3>Configuration</h3>
+                        <div>
+                            <p>Copy/paste the code below to your application. The correct appkey/sharedSecret have been specified.</p>
+                            <pre><code data-lang="c#">var uri = new Uri("https://report.onetrueerror.com");
+OneTrue.Configuration.Credentials(uri,
+                                  "<span data-name="AppKey"></span>",
+                                  "<span data-name="SharedSecret"></span>");</code></pre>
+                        </div>
+                        <em>(add "using OneTrueError;" at the top of your code file)</em>
+
+
+                        <h3>Reporting errors</h3>
+                        <div>
+                            <p>To report errors you need to invoke the report method:</p>
+                            <pre><code class="c#">try
+{
+    SomeBusinessCode(userId);
+}
+catch (Exception ex)
+{
+    //adding optional error model.
+    OneTrue.Report(ex, new { UserId = userId});
+}</code></pre>
+                        </div>
+                        <p>
+                            The exception will be enqueued and uploaded to our service as soon as an internet connection is available. That also means that no error reports are lost even if
+                            the application crashes before the report has been uploaded. The library will continue it's upload attempts next time the application is started.
+                        </p>
+                        <p>
+                            You can read more about the different report alternatives in the <a target="_blank" href="https://onetrueerror.com/documentation/client/libraries/">documentation</a>
+                        </p>
+
+                        <h2>Proxy settings</h2>
+                        <p>OneTrueError will automatically discover any proxy and use it if required.</p>
+                        <h2>Production</h2>
+                        <p>When going to production it's recommended that you enable queued reports:</p>
+                        <pre><code class="c#">OneTrue.Configuration.QueueReports = true;</code></pre>
+                        <p>It means that OneTrueError will upload reports in the background without affecting user experience. Great option if there are connectivity problems.</p>
+                        <h2>Documentation</h2>
+                        <p>
+                            The complete documentation for the client libraries is <a target="_blank" href="https://onetrueerror.com/documentation/client/libraries">available here.</a>
+                        </p>
+                    </div>
+                    <div class="tab-pane panel" id="install-aspnet">
+                        <div>
+                            <h2>ASP.NET</h2>
+                            <p>
+                                This package will automatically catch all unhandled exceptions in ASP.NET applications. It will also adopt the HTTP response according to the HTTP accept header in the request. That means that OneTrueError
+                                will work well even with REST applications based on JSON or XML.
+                            </p>
+                            <p>
+                                The package also automatically includes information about the HTTP request, session etc.
+                            </p>
+                            <h3>Package install</h3>
+                            Install the following nuget package <a target="_blank" href="http://www.nuget.org/packages/OneTrueError.client.aspnet/">onetrueerror.client.aspnet</a>
+                            <pre><code class="c#">install-package onetrueerror.client.aspnet</code></pre>
+                            <h3>Configuration</h3>
+                            <div>
+                                <p>Copy/paste the code below to your application. The correct appkey/sharedSecret have been specified.</p>
+                                <pre><code data-lang="c#">public class WebApplication : System.Web.HttpApplication
+{
+    protected void Application_Start()
+    {
+        //copy the lines below
+        var uri = new Uri("https://report.onetrueerror.com");
+        OneTrue.Configuration.Credentials(uri,
+                                          "<span data-name="AppKey"></span>",
+                                          "<span data-name="SharedSecret"></span>");
+        OneTrue.Configuration.CatchAspNetExceptions();
+                            
+        //[..rest of the init code..]
+    }
+}
+</code></pre>
+
+
+                            </div>
+                            <p>That will automatically catch all uncaught exceptions and display an error page for the user.</p>
+                        </div>
+                        <h3>Reporting errors manually</h3>
+                        <div>
+                            <p>You can also report errors you need to invoke the report method:</p>
+                            <pre><code data-lang="c#">public ActionResult Activate(UserViewModel model)
+{
+    if (!ModelState.IsValid)
+        return View(model);
+    try
+    {
+        var user = _repos.GetUser(model.Id);
+        user.Activate(model.ActicationCode);
+        _repos.Save(user);
+        return RedirectToAction(Welcome);
+    }
+    catch (Exception ex)
+    {
+        OneTrue.Report(ex, model);
+        ModelState.AddModelError("", ex.Message);
+        return View(model);
+    }
+}</code></pre>
+                        </div>
+
+
+                        <p>
+                            You can find more information about reporting in the <a href="http://onetrueerror.com/documentation/client/libraries/aspnet/index.md">documentation</a>.
+                        </p>
+
+                    </div>
+                    <div class="tab-pane panel" id="install-aspnet-mvc">
+                        <div>
+                            <h2>ASP.NET MVC</h2>
+                            <p>
+                                This package will automatically catch all unhandled exceptions in ASP.NET applications. It will also adopt the HTTP response according to the HTTP accept header in the request. That means that OneTrueError
+                                will work well even with REST applications based on JSON or XML.
+                            </p>
+                            <p>
+                                The package also automatically includes information about the HTTP request, session etc.
+                            </p>
+                            <h3>Package install</h3>
+                            Install the following nuget package <a target="_blank" href="http://www.nuget.org/packages/OneTrueError.client.aspnet.mvc/">onetrueerror.client.aspnet.mvc</a>
+                            <pre><code class="c#">install-package onetrueerror.client.aspnet.mvc</code></pre>
+                            <h3>Configuration</h3>
+                            <div>
+                                <p>Copy/paste the code below to your application. The correct appkey/sharedSecret have been specified.</p>
+                                <pre><code data-lang="c#">public class MvcApplication : System.Web.HttpApplication
+{
+    protected void Application_Start()
+    {
+        // copy the lines below
+        var uri = new Uri("https://report.onetrueerror.com");
+        OneTrue.Configuration.Credentials(uri,
+                                          "<span data-name="AppKey"></span>",
+                                          "<span data-name="SharedSecret"></span>");
+        OneTrue.Configuration.CatchMvcExceptions();
+                            
+        //[..rest of the init code...]
+        AreaRegistration.RegisterAllAreas();
+        WebApiConfig.Register(GlobalConfiguration.Configuration);
+        FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+        RouteConfig.RegisterRoutes(RouteTable.Routes);
+        BundleConfig.RegisterBundles(BundleTable.Bundles);
+    }
+}</code></pre>
+                            </div>
+                            <p>That will automatically catch all uncaught exceptions and display an error page for the user.</p>
+                            <p>
+                                The exception(s) will be enqueued and uploaded to our service as soon as an Internet connection is available. That also means that no error reports are lost even if
+                                the application crashes before the report has been uploaded. The library will continue it's upload attempts next time the application is started.
+                            </p>
+                        </div>
+                        <h3>Reporting errors manually</h3>
+                        <div>
+                            <p>You can also report errors you need to invoke the report method:</p>
+                            <pre><code data-lang="c#">public ActionResult Activate(UserViewModel model)
+{
+    if (!ModelState.IsValid)
+        return View(model);
+    try
+    {
+        var user = _repos.GetUser(model.Id);
+        user.Activate(model.ActicationCode);
+        _repos.Save(user);
+        return RedirectToAction(Welcome);
+    }
+    catch (Exception ex)
+    {
+        OneTrue.Report(ex, model);
+        ModelState.AddModelError("", ex.Message);
+        return View(model);
+    }
+}</code></pre>
+                        </div>
+
+
+                        <p>
+                            You can find more information about reporting in the <a href="http://onetrueerror.com/documentation/client/libraries/aspnet/index.md">documentation</a>.
+                        </p>
+
+                    </div>
+                    <div class="tab-pane panel" id="install-aspnet-webapi">
+                        <div>
+                            <h2>ASP.NET WebApi2</h2>
+                            <p>
+                                This package will automatically catch all unhandled exceptions in ASP.NET WebApi 2 applications. It will also adopt the HTTP response according to the HTTP accept header in the request. That means that OneTrueError
+                                will work well even with REST applications based on JSON or XML.
+                            </p>
+                            <p>
+                                The package also automatically includes information about the <code class="c#">HttpMessage</code> details, routing, request body etc.
+                            </p>
+                            <h3>Package install</h3>
+                            Install the following nuget package <a target="_blank" href="http://www.nuget.org/packages/OneTrueError.client.aspnet.webapi2/">onetrueerror.client.aspnet.webapi2</a>
+                            <pre><code class="c#">install-package onetrueerror.client.aspnet.webapi2</code></pre>
+                            <h3>Configuration</h3>
+                            <div>
+                                <p>Copy/paste the code below to your application. The correct appkey/sharedSecret have been specified.</p>
+                                <pre><code data-lang="c#">public static class WebApiConfig
+{
+    public static void Register(HttpConfiguration config)
+    {
+        // copy the lines below
+        var uri = new Uri("https://report.onetrueerror.com");
+        OneTrue.Configuration.Credentials(uri,
+                                          "<span data-name="AppKey"></span>",
+                                          "<span data-name="SharedSecret"></span>");
+        OneTrue.Configuration.CatchWebApiExceptions();
+                            
+        // [..rest of the init code..]
+    }
+}</code></pre>
+                            </div>
+                            <p>That will automatically catch all uncaught exceptions.</p>
+                            <h2>Options</h2>
+                            <pre><code class="c#">//Report requests slower than 1 second
+OneTrue.Configuration.TrackSlowRequests(TimeSpan.FromSeconds(1));
+// report POSTs with invalid models
+OneTrue.Configuration.ReportInvalidModelStates();
+// Track 404 pages (including missing controllers and actions).
+OneTrue.Configuration.Report404();
+</code></pre>
+                        </div>
+                        <h3>Reporting errors manually</h3>
+                        <div>
+                            <p>You can also report errors you need to invoke the report method:</p>
+                            <pre><code data-lang="c#">public UserDTO[] Activate(int companyId)
+{
+    try
+    {
+        var users = _repos.GetUsersForCompany(companyId);
+        var dtos = Convert(users);
+        return dtos;
+    }
+    catch (Exception ex)
+    {
+        OneTrue.Report(ex, new { companyId });
+        throw;
+    }
+}</code></pre>
+                        </div>
+                        <p>
+                            You can find more information about reporting in the <a href="http://onetrueerror.com/documentation/client/libraries/aspnet/index.md">documentation</a>.
+                        </p>
+
+                    </div>
+                    <div class="tab-pane panel" id="install-wpf">
+
+                        <h2>WPF &amp; WinForms</h2>
+                        <p>
+                            This package will automatically catch all WPF/WinForms related exceptions. It will also show an error collection dialog (if configured to do so) where the user can write additional error information.
+                        </p>
+                        <h3>Package install</h3>
+                        <p>
+                            Install the following nuget package <a target="_blank" href="http://www.nuget.org/packages/OneTrueError.client.winforms/">onetrueerror.client.winforms</a>
+                        </p>
+                        <pre><code class="c#">install-package onetrueerror.client.winforms
+</code></pre>
+                        <h3>Configuration</h3>
+                        <div>
+                            <p>Copy/paste the code below to your application. The correct appkey/sharedSecret have been specified.</p>
+                            <pre><code data-lang="c#">internal static class Program
+{
+    /// &lt;summary>
+    ///     The main entry point for the application.
+    /// &lt;/summary>
+    [STAThread]
+    private static void Main()
+    {
+        //copy the lines below
+        var uri = new Uri("https://report.onetrueerror.com");
+        OneTrue.Configuration.Credentials(uri,
+                                         "<span data-name="AppKey"></span>",
+                                         "<span data-name="SharedSecret"></span>");
+        OneTrue.Configuration.CatchWinFormsExceptions();
+                        
+        // [..rest of the init code..]
+        Application.EnableVisualStyles();
+        Application.SetCompatibleTextRenderingDefault(false);
+        Application.Run(new CreateUserForm());
+    }
+}</code></pre>
+                        </div>
+
+                        <h2>Options</h2>
+                        <pre><code class="c#">// Take screen shots of active form
+OneTrue.Configuration.TakeScreenshotOfActiveFormOnly();
+                    
+// take screen shots of all open forms
+OneTrue.Configuration.TakeScreenshots();
+                    
+// Customization of error report dialog
+OneTrue.Configuration.UserInteraction.AskUserForDetails = true;
+OneTrue.Configuration.UserInteraction.AskUserForPermission = true;
+OneTrue.Configuration.UserInteraction.AskForEmailAddress = true;
+</code></pre>
+                        <h3>Reporting errors manually</h3>
+                        <div>
+                            <p>You can also report errors you need to invoke the report method:</p>
+                            <pre><code class="c#">private void btnSave_Click(object sender, EventArgs e)
+{
+    try
+    {
+        SomeOperation();
+    }
+    catch (Exception ex)
+    {
+        OneTrue.Report(ex);
+    }
+}</code></pre>
+                        </div>
+
+
+                        <h2>Documentation</h2>
+                        <p>
+                            The complete documentation for the WPF/WinForms library is <a target="_blank" href="https://onetrueerror.com/documentation/client/libraries/winforms/">available here.</a>
+                        </p>
+                    </div>
+                    <div class="tab-pane panel" id="install-wcf">
+                        <h2>WCF</h2>
+                        <p>
+                            This package will automatically catch all unhandled exceptions in WCF services and optionally return an error reference ID to the user.
+                        </p>
+                        <strong>This library have only been tested with the HTTP binding so far.</strong>
+                        <p>
+                            The package will attach WCF related information to the error report, for instance the WCF state, HTTP request info etc.
+                        </p>
+                        <h3>Package install</h3>
+                        <div>
+                            Install the following nuget package <a target="_blank" href="http://www.nuget.org/packages/OneTrueError.client.wcf/">onetrueerror.client.wcf</a>
+                            <pre><code class="c#">install-package onetrueerror.wcf
+</code></pre>
+                        </div>
+                        <h3>Configuration</h3>
+                        <div>
+                            <p>
+                                For WCF it's recommended that you use an <a href="http://stackoverflow.com/questions/329936/when-appinitialize-method-get-invoked-in-asp-net">AppInitialize()</a> method to configure the library.
+                            </p>
+                            <pre><code class="c#">public class InitialiseService
+{
+    public static void AppInitialize()
+    {
+         var uri = new uri("https://report.onetrueerror.com");
+        OneTrue.Configuration.Credentials(uri,
+                                          "<span data-name="AppKey"></span>",
+                                          "<span data-name="SharedSecret"></span>");
+        OneTrue.Configuration.CatchWcfExceptions();
+    }
+}</code></pre>
+                        </div>
+                        <p>That will automatically catch all uncaught exceptions and adopt the WCF response (or rather the SOAP Fault) when an exception is caught.</p>
+
+                        <h3>Reporting errors manually</h3>
+                        <div>
+                            <pre><code class="c#">[OneTrueErrorHandler(IncludeExceptionMessage = false)]
+public class OrderService : IOrderService
+{
+    private OrderRepository _orderRepository = new OrderRepository();
+    public Order Get(string orderId)
+    {
+        if (orderId == null) throw new ArgumentNullException("orderId");
+        return _orderRepository.Get(orderId);
+    }
+    public Order CreateOrder(OrderLine[] lines)
+    {
+        if (lines == null) throw new ArgumentNullException("lines");
+        if (lines.Sum(x => x.Amount) > 10000)
+            throw new CreditLimitExceededException(lines.Sum(x => x.Amount));
+        try
+        {
+            return _orderRepository.Create(Thread.CurrentPrincipal.Identity.Name, lines);
+        }
+        catch (Exception ex)
+        {
+            OneTrue.Report(ex, lines);
+            throw;
+        }
+    }
+}</code></pre>
+
+                        </div>
+                        <h2>Documentation</h2>
+                        <p>
+                            The complete documentation for the WCF library is <a target="_blank" href="https://onetrueerror.com/documentation/client/libraries/wcf/">available here.</a>
+                        </p>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.10.0/styles/arduino-light.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.10.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script type="text/javascript">
+    $('.nav-pills a').on('click',
+        function (e) {
+            e.preventDefault();
+            $('.tab-pane').hide();
+            var id = $(this).attr('href');
+            $(id).show();
+        });
+    $('.tab-pane').hide();
+    $('.tab-pane:first').show();
+        //  })
+</script>

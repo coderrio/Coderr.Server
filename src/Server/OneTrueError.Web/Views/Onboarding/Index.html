@@ -1,0 +1,14 @@
+﻿<div class="row">
+    <div class="col-lg-12">
+        <div class="card-box">
+            <h1>Welcome</h1>
+            <p data-unless="vm.hasApplicationId" class="lead">Congratulations on taking the first step to less painful exception handling.</p>
+            <p>To get started we will guide you through all steps required to be able to upload your first exception.</p>
+            <p>It should at most take a couple of minutes.</p>
+            <p>
+                <a data-if="vm.hasApplicationId" href="#/onboarding/application/:applicationId/nuget" class="btn btn-primary btn-lg">Start &gt;&gt;</a>
+                <a data-unless="vm.hasApplicationId" href="#/onboarding/create" class="btn btn-primary btn-lg">Start &gt;&gt;</a>
+            </p>
+        </div>
+    </div>
+</div>

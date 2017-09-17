@@ -53,6 +53,9 @@ module OneTrueError.User {
         getTitle(): string { return "Personal settings"; }
 
         activate(context: Griffin.Yo.Spa.ViewModels.IActivationContext): void {
+            Applications.Navigation.breadcrumbs([{ href: "/settings/personal", title: "Account settings" }]);
+            Applications.Navigation.pageTitle = 'Account settings';
+
             this.context = context;
 
             context.handle.click("[name=\"saveSettings\"]", ev => this.saveSettings_click(ev));

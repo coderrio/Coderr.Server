@@ -17,6 +17,8 @@ module OneTrueError.Incident {
         activate(context: Griffin.Yo.Spa.ViewModels.IActivationContext): void {
             this.context = context;
 
+            IncidentNavigation.set(context.routeData, 'Report origins', 'origins');
+
             context.resolve();
 
             const js = document.createElement("script");

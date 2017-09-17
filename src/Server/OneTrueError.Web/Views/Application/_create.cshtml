@@ -2,16 +2,16 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">Create application</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title">Create application</h4>
             </div>
             <div class="modal-body">
                 <form method="POST" action="@Url.Content("~/api/application/create")" id="CreateAppForm">
                     <div class="form-group">
                         <label for="appName">Name</label>
-                        <input type="appName" class="form-control" id="appName" placeholder="Enter application name">
+                        <input type="appName" class="form-control" id="appName" placeholder="Enter application name" autofocus>
                     </div>
                     <div class="form-group">
                         <label for="hostType">Host type</label>
@@ -48,7 +48,7 @@
                         Griffin.Cqs.CqsClient.query(query)
                             .done(function (result) {
                                 $('#appName').val('');
-                                var appUrl = '#/application/' + result.Id;
+                                var appUrl = '#/application/' + result.Id + '/';
                                 window.location = window.WEB_SITE + '/account/UpdateSession?returnUrl=' + encodeURIComponent(window.WEB_ROOT + appUrl);
                             });
 

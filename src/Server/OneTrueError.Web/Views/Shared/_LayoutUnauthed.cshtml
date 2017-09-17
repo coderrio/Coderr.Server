@@ -1,0 +1,20 @@
+﻿@using Newtonsoft.Json
+@using OneTrueError.Infrastructure.Security
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - OneTrueError</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("Styles", false)
+    <meta name="description" content="OneTrueError - Automated exception handling" />
+</head>
+<body class="fixed-left">
+
+    @RenderBody()
+    @RenderSection("scripts", false)
+</body>
+</html>

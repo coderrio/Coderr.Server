@@ -1,5 +1,4 @@
 /// <reference path="../../Scripts/Models/AllModels.ts" />
-/// <reference path="../../Scripts/Promise.ts" />
 /// <reference path="../../Scripts/CqsClient.ts" />
 /// <reference path="../ChartViewModel.ts" />
 var OneTrueError;
@@ -19,6 +18,7 @@ var OneTrueError;
             CloseViewModel.prototype.activate = function (context) {
                 var _this = this;
                 this.context = context;
+                IncidentNavigation.set(context.routeData, 'Close incident', 'close');
                 this.incidentId = parseInt(context.routeData["incidentId"]);
                 var query = new GetIncident(parseInt(context.routeData["incidentId"], 10));
                 var incidentPromise = CqsClient.query(query);
@@ -46,6 +46,7 @@ var OneTrueError;
                 }
             };
             CloseViewModel.prototype.onCloseIncident = function () {
+                var _this = this;
                 var solution = this.context.select.one('[name="solution"]');
                 var closeCmd = new CloseIncident(solution.value, this.incidentId);
                 var sendMessage = this.context.select.one("sendCustomerMessage");
@@ -62,8 +63,11 @@ var OneTrueError;
                     closeCmd.NotificationTitle = subject.value;
                 }
                 CqsClient.command(closeCmd);
-                window.location.hash = "#/application/" + this.context.routeData["applicationId"];
-                humane.log("Incident has been closed.");
+                //seems like everything is not updated otherwise.
+                setTimeout(function () {
+                    window.location.hash = "#/application/" + _this.context.routeData["applicationId"] + "/";
+                    humane.log("Incident has been closed.");
+                }, 500);
             };
             return CloseViewModel;
         }());

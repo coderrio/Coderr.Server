@@ -15,6 +15,7 @@ var OneTrueError;
             };
             OriginsViewModel.prototype.activate = function (context) {
                 this.context = context;
+                IncidentNavigation.set(context.routeData, 'Report origins', 'origins');
                 context.resolve();
                 var js = document.createElement("script");
                 js.type = "text/javascript";

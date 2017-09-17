@@ -1,22 +1,20 @@
-﻿<div id="View">
+﻿<div id="View row" style="width:100%">
     <div data-collection="Items">
-        <div style="background-color: #9b59b6; color: white; cursor: inherit; display: inline-block; float: left; margin: 0 20px 20px 0; max-width: 800px; min-height: 150px; min-width: 400px; overflow-x: auto; padding: 10px; text-align: center;">
-            <div data-name="Title"></div>
-            <div class="tile-content" data-name="Message" style="padding-bottom: 10px; padding-top: 20px; text-align: left;">
-
+        <div class="col-xl-2 col-lg-4 col-md-6 col-sm-12">
+            <div class="card-box tilebox-one">
+                <h6 class="text-muted m-b-20" data-name="Title"></h6>
+                <div data-name="Message" style="padding-bottom: 10px; padding-top: 20px; text-align: left;">
+                </div>
+                <a href="" data-name="EmailAddress"></a>
             </div>
-            <a href="" data-name="EmailAddress"></a>
         </div>
     </div>
-    <div data-unless="Items">
-        <p>
+    <div data-unless="Items" class="text-center">
+        <h1 style="font-size: 4.0em"><span class="zmdi zmdi-airline-seat-flat"></span></h1>
+        <h2>
             There is currently no user feedback.
-        </p>
+        </h2>
     </div>
+
 </div>
 <div class="clearfix"></div>
-<ul data-navigation="main-navigation">
-    <li>
-        <a href="#/">Back..</a>
-    </li>
-</ul>

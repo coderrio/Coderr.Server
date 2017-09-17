@@ -38,53 +38,72 @@
 <div id="ReportView">
     <div class="row">
         <div class="col-lg-10">
-            <h2>Error report</h2>
-            <blockquote data-name="Message"></blockquote>
-            <pre><code data-name="StackTrace"></code></pre>
+            <div class="card-box">
+                <h2>Error report</h2>
+                <blockquote data-name="Message"></blockquote>
+                <pre style="padding: 20px 10px 20px 10px; text-wrap: normal; max-width: 100%; background-color: #f0f0f0;"><code data-name="StackTrace"></code></pre>
+            </div>
         </div>
         <div class="col-lg-2">
-            <div class="tile-nephritis tile tile-wide">
+            <div class="card-box">
                 <h4>Reported</h4>
                 <h1 data-name="CreatedAtUtc"></h1>
             </div>
         </div>
     </div>
-
-    <h3>Context information</h3>
+    
     <div class="row">
-        <div class="col-md-2">
-            <ul data-collection="ContextCollections" class="propertyList">
-                <li class="context-name">
-                    <a data-name="ContextCollectionName"></a>
-                </li>
-            </ul>
+        <div class="col-lg-12">
+            <div class="card-box">
+            <h3>Context information</h3>
+                <div class="row">
+                    <div class="col-md-2">
+                        <ul data-collection="ContextCollections" class="propertyList">
+                            <li class="context-name">
+                                <a data-name="ContextCollectionName"></a>
+                            </li>
+                        </ul>
 
-        </div>
-        <div class="col-md-10">
-            <table class="table-striped properties" id="propertyTable">
-                <thead>
-                </thead>
-                <tbody data-collection="Properties">
-                <tr>
-                    <th data-name="Key" style="text-align: right"></th>
-                    <td data-name="Value"></td>
-                </tr>
-                </tbody>
-            </table>
+                    </div>
+                    <div class="col-md-10">
+                        <table class="table-striped properties" id="propertyTable">
+                            <thead>
+                            </thead>
+                            <tbody data-collection="Properties">
+                                <tr>
+                                    <th data-name="Key" style="text-align: right"></th>
+                                    <td data-name="Value"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
-
 </div>
-
 <ul data-navigation="main-navigation">
-    <li>
-        <a href="#/application/:applicationId/incident/:incidentId">Back..</a>
+    <!--data-if="ctx.routeData['applicationId'] != null"-->
+    <li class="has_sub">
+        <a href="javascript:void(0);" class="subdrop">
+            <i class="zmdi zmdi-tv-list"></i>
+            <span> Incident </span>
+            <span class="menu-arrow"></span>
+        </a>
+        <ul class="list-unstyled" style="display:block">
+            <li class="active">
+                <a href="#/">Overview</a>
+            </li>
+            <li>
+                <a href="#/application/:applicationId/incident/:incidentId/context">Context data</a>
+            </li>
+            <li>
+                <a href="#/application/:applicationId/incident/:incidentId/origins">Report origins</a>
+            </li>
+            <li>
+                <a href="#/application/:applicationId/incident/:incidentId/feedback">Feedback</a>
+            </li>
+        </ul>
     </li>
-    <li>
-        <a href="#/application/:applicationId/incident/:incidentId/context">Context data</a>
-    </li>
-    <li>
-        <a href="#/application/:applicationId/incident/:incidentId/feedback">Feedback</a>
-    </li>
+
 </ul>

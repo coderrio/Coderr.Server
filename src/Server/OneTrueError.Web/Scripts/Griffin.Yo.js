@@ -624,8 +624,8 @@ var Griffin;
                             '\r\n' +
                             '    <div class="modal-content">\r\n' +
                             '      <div class="modal-header">\r\n' +
-                            '        <button type="button" class="close" data-dismiss="modal">&times;</button>\r\n' +
                             '        <h4 class="modal-title"></h4>\r\n' +
+                            '        <button type="button" class="close" data-dismiss="modal">&times;</button>\r\n' +
                             '      </div>\r\n' +
                             '      <div class="modal-body">\r\n' +
                             '        \r\n' +
@@ -689,7 +689,7 @@ var Griffin;
                                 var button = buttons[i];
                                 button.className += ' btn';
                                 button.addEventListener('click', function (button, e) {
-                                    this.modal('hide');
+                                    m.modal('hide');
                                     if ((button.tagName === "input" && button.type !== "submit") || button.hasAttribute("data-dismiss")) {
                                         window.history.go(-1);
                                     }
@@ -1264,11 +1264,61 @@ var Griffin;
                         this.renderElement(this.container, data, directives);
                     }
                 };
+                ViewRenderer.prototype.getIfUnlessValue = function (name, data, directives) {
+                    if (directives === void 0) { directives = {}; }
+
+                    // control statements for arrays can't be anything else than if the array is empty or not
+                    if (data instanceof Array) {
+                        return data;
+                    }
+                    // when we are on an unknown node (as data-unless/data-if is not counted when traversing structure)
+                    if (directives.hasOwnProperty(name)) {
+                        directives = directives[name];
+                    }
+                    if (directives.hasOwnProperty("value")) {
+                        data = directives["value"].apply(element, [data, this.dtoStack[this.dtoStack.length - 2]]);
+                    }
+                    
+                    if (data == null) {
+                        return null;
+                    }
+                    if (data.hasOwnProperty(name)) {
+                        data = data[name];
+                    }
+                    if (data instanceof Array && data.length == 0)
+                        return null;
+
+                    return data;
+                }
                 ViewRenderer.prototype.renderElement = function (element, data, directives) {
                     if (directives === void 0) { directives = {}; }
                     var elementName = this.getName(element);
                     if (elementName) {
                         this.log('renderElement', this.getName(element));
+                    } else {
+                        var unless = element.getAttribute('data-unless');
+                        var self = this;
+                        if (unless != null) {
+                            var names = unless.split(',');
+                            var gotValue = false;
+                            names.forEach(function (name) {
+                                var childValue = self.getIfUnlessValue(name, data, directives);
+                                if (childValue)
+                                    gotValue = true;
+                            });
+                            element.style.display = gotValue ? "none" : "";
+                        }
+
+                        var ifValue = element.getAttribute('data-if');
+                        if (ifValue != null) {
+                            var names = ifValue.split(',');
+                            var gotValue = false;
+                            names.forEach(function (name) {
+                                if (self.getIfUnlessValue(name, data, directives))
+                                    gotValue = true;
+                            });
+                            element.style.display = !gotValue ? "none" : "";
+                        }
                     }
                     if (elementName && element.tagName === "SELECT") {
                         var sel = element;
@@ -1352,7 +1402,7 @@ var Griffin;
                         }
                         else {
                             if (item.getAttribute("data-unless") === name) {
-                                if (childData && childData.length > 0) {
+                                if (!childData || childData.length == 0) {
                                     item.style.display = "none";
                                 }
                             }
@@ -1379,6 +1429,7 @@ var Griffin;
                     if (directive === void 0) { directive = null; }
                     var container = element;
                     this.log('renderCollection');
+
                     if (element.hasAttribute("data-unless")) {
                         var value = element.getAttribute("data-unless");
                         var name = this.getName(element);
@@ -1390,6 +1441,7 @@ var Griffin;
                             var ctx = { element: element, data: data, dto: this.dtoStack[this.dtoStack.length - 2] };
                             result = this.evalInContext(value, ctx);
                         }
+                        console('show?', result)
                         if (result) {
                             this.log('unless(show)');
                             element.style.display = "";

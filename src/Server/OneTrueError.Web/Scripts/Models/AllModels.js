@@ -935,6 +935,14 @@ var OneTrueError;
                 }());
                 CloseIncident.TYPE_NAME = 'CloseIncident';
                 Commands.CloseIncident = CloseIncident;
+                var ReOpenIncident = (function () {
+                    function ReOpenIncident(incidentId) {
+                        this.IncidentId = incidentId;
+                    }
+                    return ReOpenIncident;
+                }());
+                ReOpenIncident.TYPE_NAME = 'ReOpenIncident';
+                Commands.ReOpenIncident = ReOpenIncident;
                 var IgnoreIncident = (function () {
                     function IgnoreIncident(incidentId) {
                         this.IncidentId = incidentId;

@@ -22,9 +22,13 @@ var OneTrueError;
                 CqsClient.command(cmd);
                 humane.log("Settings have been saved.");
             };
-            NotificationsViewModel.prototype.getTitle = function () { return "Notifications settings"; };
+            NotificationsViewModel.prototype.getTitle = function () {
+                return "Notifications settings";
+            };
             NotificationsViewModel.prototype.activate = function (context) {
                 var _this = this;
+                OneTrueError.Applications.Navigation.breadcrumbs([{ href: "/settings/notifications", title: "Notification settings" }]);
+                OneTrueError.Applications.Navigation.pageTitle = 'Notification settings';
                 this.ctx = context;
                 context.handle.click("#saveSettings", function (ev) { return _this.saveSettings_click(ev); });
                 var query = new GetUserSettings();
