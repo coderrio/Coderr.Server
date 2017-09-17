@@ -5,7 +5,7 @@ OneTrueError Community Server
 
 OneTrueError discovers and analyzes all exceptions in all of your installations for every version of your .NET application.
 
-![OSS screenshot](screenshot.png)
+![OSS screenshot](docs/screenshot.png)
 
 .. don't want to host/maintain your own server? Try [OneTrueError Live](https://onetrueerror.com/live/)
 
