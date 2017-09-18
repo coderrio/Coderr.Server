@@ -299,10 +299,7 @@
     <Compile Include="Areas\Receiver\Controllers\FeedbackController.cs" />
     <Compile Include="Areas\Receiver\Controllers\ReportController.cs" />
     <Compile Include="Areas\Receiver\Helpers\HttpRequestMessageExtensions.cs" />
-    <Compile Include="Areas\Receiver\Helpers\IncludeNonPublicMembersContractResolver.cs" />
-    <Compile Include="Areas\Receiver\Helpers\ReportDecompressor.cs" />
     <Compile Include="Areas\Receiver\Helpers\SamplingSettings.cs" />
-    <Compile Include="Areas\Receiver\Helpers\SaveReportHandler.cs" />
     <Compile Include="Areas\Receiver\Models\FeedbackModel.cs" />
     <Compile Include="Areas\Receiver\Models\ReportValidator.cs" />
     <Compile Include="Areas\Receiver\Models\SamplingCounter.cs" />

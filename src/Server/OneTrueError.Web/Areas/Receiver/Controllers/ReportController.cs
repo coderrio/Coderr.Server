@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
+using System.Security.Authentication;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using log4net;
 using OneTrueError.Infrastructure.Queueing;
+using OneTrueError.ReportAnalyzer.Inbound;
 using OneTrueError.Web.Areas.Receiver.Helpers;
 using OneTrueError.Web.Areas.Receiver.Models;
 
@@ -59,6 +61,15 @@ namespace OneTrueError.Web.Areas.Receiver.Controllers
                 var handler = new SaveReportHandler(_queueProvider);
                 await handler.BuildReportAsync(appKey, sig, Request.GetClientIpAddress(), buffer);
                 return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            catch (InvalidCredentialException ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "INVALID_APP_KEY", ex);
+            }
+            catch (HttpException ex)
+            {
+                _logger.InfoFormat(ex.Message);
+                return Request.CreateErrorResponse((HttpStatusCode)ex.GetHttpCode(), ex.Message);
             }
             catch (Exception exception)
             {

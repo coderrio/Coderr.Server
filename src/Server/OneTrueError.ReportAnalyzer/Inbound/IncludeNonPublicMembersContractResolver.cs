@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace OneTrueError.Web.Areas.Receiver.Helpers
+namespace OneTrueError.ReportAnalyzer.Inbound
 {
     public class IncludeNonPublicMembersContractResolver : DefaultContractResolver
     {

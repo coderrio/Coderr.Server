@@ -8,6 +8,8 @@ namespace OneTrueError.SqlServer.Core.Feedback
         public FeedbackEntityMapper() : base("IncidentFeedback")
         {
             Property(x => x.ErrorId).ColumnName("ErrorReportId");
+            Property(x => x.CanRemove).Ignore();
+            Property(x => x.CanUpdate).Ignore();
         }
     }
 }

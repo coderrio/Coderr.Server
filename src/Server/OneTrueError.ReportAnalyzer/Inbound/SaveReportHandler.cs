@@ -1,21 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Security.Authentication;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 using log4net;
 using Newtonsoft.Json;
 using OneTrueError.Infrastructure;
 using OneTrueError.Infrastructure.Queueing;
+using OneTrueError.ReportAnalyzer.Inbound.Models;
 using OneTrueError.ReportAnalyzer.LibContracts;
-using OneTrueError.Web.Areas.Receiver.Models;
-using OneTrueError.Web.Areas.Receiver.ReportingApi;
 
-namespace OneTrueError.Web.Areas.Receiver.Helpers
+namespace OneTrueError.ReportAnalyzer.Inbound
 {
     /// <summary>
     ///     Validates inbound report and store it in our internal queue for analysis.
@@ -24,6 +24,7 @@ namespace OneTrueError.Web.Areas.Receiver.Helpers
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(SaveReportHandler));
         private readonly IMessageQueue _queue;
+        private List<Func<NewReportDTO, bool>> _filters = new List<Func<NewReportDTO, bool>>();
 
         /// <summary>
         ///     Creates a new instance of <see cref="SaveReportHandler" />.
@@ -35,27 +36,32 @@ namespace OneTrueError.Web.Areas.Receiver.Helpers
             _queue = queueProvider.Open("ReportQueue");
         }
 
+        public void AddFilter(Func<NewReportDTO, bool> filter)
+        {
+            if (filter == null) throw new ArgumentNullException(nameof(filter));
+            _filters.Add(filter);
+        }
+
         public async Task BuildReportAsync(string appKey, string signatureProvidedByTheClient, string remoteAddress,
             byte[] reportBody)
         {
-            Guid tempKey;
-            if (!Guid.TryParse(appKey, out tempKey))
+            if (!Guid.TryParse(appKey, out var tempKey))
             {
                 _logger.Warn("Incorrect appKeyFormat: " + appKey + " from " + remoteAddress);
-                throw new HttpException(400, "AppKey must be a valid GUID which '" + appKey + "' is not.");
+                throw new InvalidCredentialException("AppKey must be a valid GUID which '" + appKey + "' is not.");
             }
 
             var application = await GetAppAsync(appKey);
             if (application == null)
             {
                 _logger.Warn("Unknown appKey: " + appKey + " from " + remoteAddress);
-                throw new HttpException(400, "AppKey was not found in the database. Key '" + appKey + "'.");
+                throw new InvalidCredentialException("AppKey was not found in the database. Key '" + appKey + "'.");
             }
 
             if (!ReportValidator.ValidateBody(application.SharedSecret, signatureProvidedByTheClient, reportBody))
             {
                 await StoreInvalidReportAsync(appKey, signatureProvidedByTheClient, remoteAddress, reportBody);
-                throw new HttpException(403,
+                throw new AuthenticationException(
                     "You either specified the wrong SharedSecret, or someone tampered with the data.");
             }
 
@@ -64,6 +70,9 @@ namespace OneTrueError.Web.Areas.Receiver.Helpers
             //fix malconfigured clients
             if (report.CreatedAtUtc > DateTime.UtcNow)
                 report.CreatedAtUtc = DateTime.UtcNow;
+
+            if (_filters.Any(x => !x(report)))
+                return;
 
             var internalDto = new ReceivedReportDTO
             {
@@ -106,8 +115,16 @@ namespace OneTrueError.Web.Areas.Receiver.Helpers
 
         private NewReportDTO DeserializeBody(byte[] body)
         {
-            var decompressor = new ReportDecompressor();
-            var json = decompressor.Deflate(body);
+            string json;
+            if (body[0] == 0x1f && body[1] == 0x8b)
+            {
+                var decompressor = new ReportDecompressor();
+                json = decompressor.Deflate(body);
+            }
+            else
+            {
+                json = Encoding.UTF8.GetString(body);
+            }
 
             return JsonConvert.DeserializeObject<NewReportDTO>(json,
                 new JsonSerializerSettings
@@ -148,7 +165,7 @@ namespace OneTrueError.Web.Areas.Receiver.Helpers
                 using (var connection = ConnectionFactory.Create())
                 {
                     //TODO: Make something generic.
-                    using (var cmd = (SqlCommand) connection.CreateCommand())
+                    using (var cmd = (SqlCommand)connection.CreateCommand())
                     {
                         cmd.CommandText =
                             @"INSERT INTO InvalidReports(appkey, signature, reportbody, errormessage, createdatutc)
@@ -156,8 +173,7 @@ namespace OneTrueError.Web.Areas.Receiver.Helpers
                         cmd.AddParameter("appKey", appKey);
                         cmd.AddParameter("signature", sig);
                         var p = cmd.CreateParameter();
-                        var json = Encoding.UTF8.GetString(reportBody);
-                        p.SqlDbType = SqlDbType.Binary;
+                        p.SqlDbType = SqlDbType.Image;
                         p.ParameterName = "reportbody";
                         p.Value = reportBody;
                         cmd.Parameters.Add(p);
@@ -168,9 +184,9 @@ namespace OneTrueError.Web.Areas.Receiver.Helpers
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                //TODO: LOG
+                _logger.Error("Failed to save invalid report.", ex);
             }
         }
 
@@ -184,8 +200,8 @@ namespace OneTrueError.Web.Areas.Receiver.Helpers
             }
             catch (Exception ex)
             {
-                _logger.Warn(
-                    "Failed to StoreReport: " + JsonConvert.SerializeObject(new {model = report}), ex);
+                _logger.Error(
+                    "Failed to StoreReport: " + JsonConvert.SerializeObject(new { model = report }), ex);
             }
         }
 

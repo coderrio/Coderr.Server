@@ -2,7 +2,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Text;
 
-namespace OneTrueError.Web.Areas.Receiver.Helpers
+namespace OneTrueError.ReportAnalyzer.Inbound
 {
     public class ReportDecompressor
     {
