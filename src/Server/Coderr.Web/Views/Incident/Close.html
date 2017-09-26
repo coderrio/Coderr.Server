@@ -1,0 +1,53 @@
+﻿<div class="row">
+    <div class="col-lg-12">
+        <div class="card-box">
+            <h2>
+                Close incident '<span data-name="Description"></span>'
+            </h2>
+            <p>
+                <em>.. which means that this incident has been corrected and should not generate any more reports.</em>
+            </p>
+
+            <h3>Solution</h3>
+            <p>
+                Write a few lines about how you solved the issue. This text will appear if this error occurs again or if we detect that this error is
+                similar to another one in the future. 
+            </p>
+            <p><em>i.e. the text is just for your own benefit.</em></p>
+            <textarea class="area" name="solution" id="solution" placeholder="The error occurred because of ....&#10;&#10;We solved it by ..."></textarea><br/>
+        </div>
+    </div>
+</div>
+<script>
+    var simplemde = new SimpleMDE({ element: $("#solution")[0] });
+</script>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card-box">
+            <h2>Customer message</h2>
+            <p>
+                <label>
+                    <input type="checkbox" name="sendCustomerMessage"/> Send status message
+                </label>
+            </p>
+            <div id="status-panel" style="display: none">
+                <p>
+                    This text will go out to all users that have subscribed on status updates for this error. (Currently <span data-name="WaitingUserCount">0</span> people).
+                </p>
+                <p>
+                    The text typically informs them about that the error is corrected and will be pushed out in the next release.
+                </p>
+                <h3>Subject</h3>
+                <input type="text" name="UserSubject" style="width: 100%"/><br/>
+                <h3>Body</h3>
+
+                <textarea class="area" name="UserText" id="UserText" placeholder="# Hello dear users,&#10;&#10;We have corrected the error that ....&#10;&#10;A new version will be pushed out in the next two weeks.&#10;&#10;Thank you for your patience,&#10;&#10;  The team"></textarea><br/>
+            </div>
+        </div>
+    </div>
+</div>
+<button id="saveSolution" class="btn btn-primary btn-lg">Save solution</button>
+<script>
+    var simplemde = new SimpleMDE({ element: $("#UserText")[0] });
+</script>

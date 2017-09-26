@@ -1,0 +1,109 @@
+﻿<style type="text/css">
+    table.properties th {
+        padding: 5px;
+        text-align: right;
+        vertical-align: top;
+    }
+
+
+    table.properties td { padding: 5px; }
+
+    .propertyList {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .propertyList li {
+        display: block;
+        padding: 10px;
+    }
+
+    .propertyList li.active {
+        background-color: #00A2EE;
+        color: white !important;
+    }
+
+    .propertyList li.active a { color: white !important; }
+
+
+    .propertyList li:hover {
+        background-color: #60D2FE;
+        color: white;
+    }
+
+    .propertyList li:hover a { color: black; }
+</style>
+
+<div id="ReportView">
+    <div class="row">
+        <div class="col-lg-10">
+            <div class="card-box">
+                <h2>Error report</h2>
+                <blockquote data-name="Message"></blockquote>
+                <pre style="padding: 20px 10px 20px 10px; text-wrap: normal; max-width: 100%; background-color: #f0f0f0;"><code data-name="StackTrace"></code></pre>
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="card-box">
+                <h4>Reported</h4>
+                <h1 data-name="CreatedAtUtc"></h1>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card-box">
+            <h3>Context information</h3>
+                <div class="row">
+                    <div class="col-md-2">
+                        <ul data-collection="ContextCollections" class="propertyList">
+                            <li class="context-name">
+                                <a data-name="ContextCollectionName"></a>
+                            </li>
+                        </ul>
+
+                    </div>
+                    <div class="col-md-10">
+                        <table class="table-striped properties" id="propertyTable">
+                            <thead>
+                            </thead>
+                            <tbody data-collection="Properties">
+                                <tr>
+                                    <th data-name="Key" style="text-align: right"></th>
+                                    <td data-name="Value"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ul data-navigation="main-navigation">
+    <!--data-if="ctx.routeData['applicationId'] != null"-->
+    <li class="has_sub">
+        <a href="javascript:void(0);" class="subdrop">
+            <i class="zmdi zmdi-tv-list"></i>
+            <span> Incident </span>
+            <span class="menu-arrow"></span>
+        </a>
+        <ul class="list-unstyled" style="display:block">
+            <li class="active">
+                <a href="#/">Overview</a>
+            </li>
+            <li>
+                <a href="#/application/:applicationId/incident/:incidentId/context">Context data</a>
+            </li>
+            <li>
+                <a href="#/application/:applicationId/incident/:incidentId/origins">Report origins</a>
+            </li>
+            <li>
+                <a href="#/application/:applicationId/incident/:incidentId/feedback">Feedback</a>
+            </li>
+        </ul>
+    </li>
+
+</ul>

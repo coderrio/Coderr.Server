@@ -1,0 +1,75 @@
+﻿<style type="text/css">
+    #NotificationsView label {
+        display: block;
+    }
+
+    #NotificationsView select {
+        margin-bottom: 20px;
+    }
+</style>
+<div id="NotificationsView" class="row">
+    <div class="col-lg-12">
+        <div class="card-box">
+            <div class="form-group">
+                <label>
+                    New unique errors (incidents)
+                </label>
+                <select name="NotifyOnNewIncidents" class="form-control">
+                    <option value="Disabled">Disable</option>
+                    <option value="Email">Notify by email</option>
+                    <option value="Cellphone">Notify by Cellphone</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>
+                    New error report (no matter if it's new or not)
+                </label>
+                <select name="NotifyOnNewReport" class="form-control">
+                    <option value="Disabled">Disable</option>
+                    <option value="Email">Notify by email</option>
+                    <option value="Cellphone">Notify by Cellphone</option>
+                </select>
+            </div>
+            <div class="form-group">
+
+                <label>
+                    New report on a closed incident (you have marked it as closed and a new report was received after that)
+                </label>
+                <select name="NotifyOnReOpenedIncident" class="form-control">
+                    <option value="Disabled">Disable</option>
+                    <option value="Email">Notify by email</option>
+                    <option value="Cellphone">Notify by Cellphone</option>
+                </select>
+            </div>
+            <div class="form-group">
+
+                <label>
+                    Peak detected (received much more exceptions for an application than on an average day)
+                </label>
+                <select name="NotifyOnPeaks" class="form-control">
+                    <option value="Disabled">Disable</option>
+                    <option value="Email">Notify by email</option>
+                    <option value="Cellphone">Notify by Cellphone</option>
+                </select>
+            </div>
+            <div class="form-group">
+
+                <label>
+                    An user have written a description for an error.
+                </label>
+                <select name="NotifyOnUserFeedback" class="form-control">
+                    <option value="Disabled">Disable</option>
+                    <option value="Email">Notify by email</option>
+                    <option value="Cellphone">Notify by Cellphone</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" id="saveSettings">Update notifications</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+            </div>
+        </div>
+    </div>
+</div>

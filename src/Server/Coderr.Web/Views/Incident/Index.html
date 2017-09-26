@@ -1,0 +1,47 @@
+﻿<div class="row">
+    <div class="col-lg-12">
+        <div class="card-box">
+            <h4 class="m-t-0">Incidents</h4>
+            <div id="IndexView">
+                <div class="float-right">
+                    <input data-name="freeText" type="text" class="form-control" placeholder="search (at least 3 chars)" style="float: left; max-width: 200px; margin-right: 10px;"/>
+                    <div class="btn-group" style="float:right">
+                        <label href="#active" id="btnActive" class="btn btn-primary active">Active</label>
+                        <label href="#closed" id="btnClosed" class="btn btn-primary">Closed</label>
+                        <label href="#ignored" id="btnIgnored" class="btn btn-primary">Ignored</label>
+                    </div>
+                </div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th style="min-width: 150px;">Application</th>
+                            <th style="cursor: pointer; min-width: 150px;" id="LastReportCol">Last report <span id="lastReport-sort" class="fa fa-chevron-down"></span></th>
+                            <th style="cursor: pointer; min-width: 150px;" id="CountCol">Report count <span id="count-sort" class="fa fa-chevron-down" style="visibility: hidden"></span></th>
+                            <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody id="incidentTable">
+                        <tr data-collection="Items">
+                            <td>
+                                <a href="" data-name="Name"></a>
+                            </td>
+                            <td>
+                                <a data-name="ApplicationName"></a>
+                            </td>
+                            <td data-name="LastUpdateAtUtc"></td>
+                            <td data-name="ReportCount"></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4" class="text-right" id="pager"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

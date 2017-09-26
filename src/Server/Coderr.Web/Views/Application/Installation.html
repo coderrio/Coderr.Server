@@ -1,0 +1,538 @@
+﻿<div id="ApplicationModel">
+<header>
+    <h1>Installation instructions for <span data-name="Name"></span></h1>
+</header>
+<hr/>
+<div class="row">
+
+<div class="col-lg-2 col-md-4">
+    <div>&nbsp;</div>
+    <ul class="nav nav-pills nav-stacked" id="install-tabs" data-toggle="tabs">
+        <li class="active">
+            <a href="#install-manual" data-toggle="pill">Manual error handling</a>
+        </li>
+        <li role="presentation">
+            <a href="#install-aspnet" data-toggle="pill">ASP.NET (WebForms/MVC/WebApi)</a>
+        </li>
+        <li>
+            <a href="#install-wpf" data-toggle="pill">WPF/WinForms</a>
+        </li>
+        <li>
+            <a href="#install-wcf" data-toggle="pill">WCF</a>
+        </li>
+        <!--<li>
+            <a href="#install-asmx" data-toggle="pill">ASMX</a>
+        </li>-->
+    </ul>
+</div>
+<div class="col-lg-10 col-md-8">
+<div class="panel tab-pane active" id="install-manual">
+    <h1>Manual error handling</h1>
+
+    <div class="panel-body">
+        <p>Manual error handling means that you are yourself responsible of deciding which errors should be reported.</p>
+        <h3>Package install</h3>
+        <p>
+            Install the following nuget package <a href="http://www.nuget.org/packages/OneTrueError.client/">onetrueerror.client</a>
+        </p>
+        <pre><code>install-package onetrueerror</code></pre>
+        <h3>Configuration</h3>
+        <div>
+            <p>Copy/paste the code below to your application. The correct appkey/sharedSecret have been specified.</p>
+            <!-- HTML generated using hilite.me -->
+            <div style="background: #ffffff; overflow: auto; padding: .2em .6em; width: auto;">
+                <pre style="line-height: 125%; margin: 0;"><span style="color: #008800; font-style: italic">// To send to our service</span>
+var uri = new Uri(<span style="color: #0000FF">&quot;<span data-name="AppUrl"></span>&quot;</span>);
+OneTrue.Configuration.Credentials(uri,
+                                  <span style="color: #0000FF">&quot;<span data-name="AppKey"></span>&quot;</span>, 
+                                  <span style="color: #0000FF">&quot;<span data-name="SharedSecret"></span>&quot;</span>);
+</pre>
+            </div>
+            <em>(add "using OneTrueError;" in your code file)</em>
+        </div>
+
+    </div>
+    <h3>Reporting errors</h3>
+    <div>
+        <p>To report errors you need to invoke the report method:</p>
+        <!-- HTML generated using hilite.me -->
+        <div style="background: #ffffff; overflow: auto; padding: .2em .6em; width: auto;">
+            <pre style="line-height: 125%; margin: 0;"><span style="color: #000080; font-weight: bold">public</span> ActionResult Activate(UserViewModel model)
+{
+    <span style="color: #000080; font-weight: bold">if</span> (!ModelState.IsValid)
+        <span style="color: #000080; font-weight: bold">return</span> View(model);
+    <span style="color: #000080; font-weight: bold">try</span>
+    {
+        <span style="color: #000080; font-weight: bold">var</span> user = _repos.GetUser(model.Id);
+        user.Activate(model.ActicationCode);
+        _repos.Save(user);
+        <span style="color: #000080; font-weight: bold">return</span> RedirectToAction(<span style="color: #0000FF">&quot;Welcome&quot;</span>);
+    }
+    <span style="color: #000080; font-weight: bold">catch</span> (Exception exception)
+    {
+        OneTrue.Report(exception);
+    }
+}
+</pre>
+        </div>
+        <p>
+            The exception will be enqueued and uploaded to our service as soon as an internet connection is available. That also means that no error reports are lost even if
+            the application crashes before the report has been uploaded. The library will continue it's upload attempts next time the application is started.
+        </p>
+        <p>
+            You can read more about the different report alternatives in the <a target="_blank" href="http://onetrueerror.com/documentation/client/libraries/">documentation</a>
+        </p>
+
+    </div>
+    <h2>Proxy settings</h2>
+    <p>OneTrueError will automatically discover any proxy and use it if required.</p>
+    <h2>No reports being uploaded?</h2>
+    <p>
+        It's usually due to some configuration error. Listen on the report event to get any client errors:
+    </p>
+    <!-- HTML generated using hilite.me -->
+    <div style="background: #ffffff; overflow: auto; padding: .2em .6em; width: auto;">
+        <pre style="line-height: 125%; margin: 0;"><span style="color: #008800; font-weight: bold">using</span> <span style="color: #0e84b5; font-weight: bold">System</span>;
+<span style="color: #008800; font-weight: bold">using</span> <span style="color: #0e84b5; font-weight: bold">OneTrueError.Reporting</span>;
+<span style="color: #008800; font-weight: bold">namespace</span> <span style="color: #0e84b5; font-weight: bold">SampleApplication</span>
+{
+    <span style="color: #008800; font-weight: bold">class</span> <span style="color: #BB0066; font-weight: bold">Program</span>
+    {
+        <span style="color: #008800; font-weight: bold">static</span> <span style="color: #008800; font-weight: bold">void</span> <span style="color: #0066BB; font-weight: bold">Main</span>(<span style="color: #333399; font-weight: bold">string</span>[] args)
+        {
+            var uri = new Uri(<span style="color: #0000FF">&quot;<span data-name="AppUrl"></span>&quot;</span>);
+            OneTrue.Configuration.Credentials(uri,
+                                              <span style="color: #0000FF">&quot;<span data-name="AppKey"></span>&quot;</span>, 
+                                              <span style="color: #0000FF">&quot;<span data-name="SharedSecret"></span>&quot;</span>);
+            OneTrue.Configuration.Advanced.UploadReportFailed += OnReportfailed;
+
+            <span style="color: #888888">//[.. Your code here ..]</span>
+
+            <span style="color: #888888">// always pause execution in console apps so that</span>
+            <span style="color: #888888">// our background thread have a chance to upload reports</span>
+            Console.ReadLine();
+        }
+        <span style="color: #008800; font-weight: bold">private</span> <span style="color: #008800; font-weight: bold">static</span> <span style="color: #008800; font-weight: bold">void</span> <span style="color: #0066BB; font-weight: bold">OnReportfailed</span>(<span style="color: #333399; font-weight: bold">object</span> sender, UploadReportFailedEventArgs e)
+        {
+            <span style="color: #888888">// error that OneTrueError got</span>
+            Console.WriteLine(e.Exception);
+        }
+    }
+}
+</pre>
+    </div>
+
+    <h2>Documentation</h2>
+    <p>
+        The complete documentation for the client libraries is <a target="_blank" href="http://onetrueerror.com/documentation/client/libraries">available here.</a>
+    </p>
+</div>
+<div class="tab-pane panel" id="install-aspnet">
+    <div>
+        <h1>ASP.NET</h1>
+        <p>
+            This package will automatically catch all unhandled exceptions in ASP.NET applications. It will also adopt the HTTP response according to the HTTP accept header in the request. That means that OneTrueError
+            will work well even with REST applications based on JSON or XML.
+        </p>
+        <p>
+            The package also automatically includes information about the HTTP request, session etc.
+        </p>
+        <h3>Package install</h3>
+        Install the following nuget package <a target="_blank" href="http://www.nuget.org/packages/OneTrueError.client.aspnet/">onetrueerror.aspnet</a>
+        <pre><code>install-package onetrueerror.aspnet</code></pre>
+        <h3>Configuration</h3>
+        <div>
+            <p>Copy/paste the code below to your application. The correct appkey/sharedSecret have been specified.</p>
+            <!-- HTML generated using hilite.me -->
+            <div style="background: #ffffff; overflow: auto; padding: .2em .6em; width: auto;">
+                <pre style="line-height: 125%; margin: 0;"><span style="color: #000080; font-weight: bold">public</span> <span style="color: #000080; font-weight: bold">class</span> MvcApplication : System.Web.HttpApplication
+{
+    <span style="color: #000080; font-weight: bold">protected</span> <span style="color: #000080; font-weight: bold">void</span> Application_Start()
+    {
+        <span style="color: #008800; font-style: italic">// The appkey and shared key can be found in onetrueeror.com</span>
+        var uri = new Uri(<span style="color: #0000FF">&quot;<span data-name="AppUrl"></span>&quot;</span>);
+        OneTrue.Configuration.Credentials(uri,
+                                          <span style="color: #0000FF">&quot;<span data-name="AppKey"></span>&quot;</span>, 
+                                          <span style="color: #0000FF">&quot;<span data-name="SharedSecret"></span>&quot;</span>);
+        OneTrue.Configuration.CatchAspNetExceptions();
+    }
+}
+</pre>
+            </div>
+            <p>That will automatically catch all uncaught exceptions and display an error page for the user.</p>
+            <p>
+                The exception(s) will be enqueued and uploaded to our service as soon as an internet connection is available. That also means that no error reports are lost even if
+                the application crashes before the report has been uploaded. The library will continue it's upload attempts next time the application is started.
+            </p>
+        </div>
+        <h3>Reporting errors manually</h3>
+        <div>
+            <p>You can also report errors you need to invoke the report method:</p>
+            <!-- HTML generated using hilite.me -->
+            <div style="background: #ffffff; overflow: auto; padding: .2em .6em; width: auto;">
+                <pre style="line-height: 125%; margin: 0;"><span style="color: #000080; font-weight: bold">public</span> ActionResult Activate(UserViewModel model)
+{
+    <span style="color: #000080; font-weight: bold">if</span> (!ModelState.IsValid)
+        <span style="color: #000080; font-weight: bold">return</span> View(model);
+
+    <span style="color: #000080; font-weight: bold">try</span>
+    {
+        <span style="color: #000080; font-weight: bold">var</span> user = _repos.GetUser(model.Id);
+        user.Activate(model.ActicationCode);
+        _repos.Save(user);
+        <span style="color: #000080; font-weight: bold">return</span> RedirectToAction(<span style="color: #0000FF">&quot;Welcome&quot;</span>);
+    }
+    <span style="color: #000080; font-weight: bold">catch</span> (Exception exception)
+    {
+        OneTrue.Report(exception);
+    }
+}
+</pre>
+            </div>
+
+
+            <p>
+                All report methods are documented <a target="_blank" href="http://onetrueerror.com/doc/client/?topic=html/Methods_T_OneTrueError_Reporting_OneTrue.htm">here</a>. Do note the support
+                for two-step-reporting which work well with stateless protocols like HTTP.
+            </p>
+
+        </div>
+        <h3>Error pages</h3>
+        <div>
+            <p>
+                Unlike <code>&lt;customErrors&gt;</code> in ASP.NET we do not use redirection or similar. You do instead point on a ASPX page which will be used to show an error page (and collect additional information). A default page
+                will be used if none is configured.
+            </p>
+            <p>
+                Sample configuration:
+                <!-- HTML generated using hilite.me -->
+                <div style="background: #ffffff; overflow: auto; padding: .2em .6em; width: auto;">
+                    <pre style="line-height: 125%; margin: 0;">OneTrue.Configuration.SetErrorPage(<span style="color: #0000FF">&quot;~/views/error.aspx&quot;</span>);
+</pre>
+                </div>
+
+            </p>
+            <p>As an alternative you can configure a factory to produce different error pages for different errors. Refer to the documentation which is listed below for further information.</p>
+        </div>
+        <h3>Documentation</h3>
+        <p>
+            The complete documentation for the ASP.NET library is <a target="_blank" href="http://onetrueerror.com/documentation/client/libraries/aspnet/">available here.</a>
+        </p>
+    </div>
+
+</div>
+<div class="tab-pane panel" id="install-wpf">
+    <div class="panel-body">
+
+        <h2>WPF &amp; WinForms</h2>
+        <p>
+            This package will automatically catch all WPF/WinForms related exceptions. It will also show an error collection dialog (if configured to do so) where the user can write additional error information.
+        </p>
+        <h3>Package install</h3>
+        <p>
+            Install the following nuget package <a target="_blank" href="http://www.nuget.org/packages/OneTrueError.client.winforms/">onetrueerror.winforms</a>
+        </p>
+        <pre><code>install-package onetrueerror.winforms
+</code></pre>
+        <h3>Configuration</h3>
+        <div>
+            <p>Copy/paste the code below to your application. The correct appkey/sharedSecret have been specified.</p>
+            <!-- HTML generated using hilite.me -->
+            <div style="background: #ffffff; overflow: auto; padding: .2em .6em; width: auto;">
+                <pre style="line-height: 125%; margin: 0;"><span style="color: #000080; font-weight: bold">public</span> <span style="color: #000080; font-weight: bold">class</span> WebApiApplication : System.Web.HttpApplication
+{
+    <span style="color: #000080; font-weight: bold">protected</span> <span style="color: #000080; font-weight: bold">void</span> Application_Start()
+    {
+        <span style="color: #008800; font-style: italic">// The appkey and shared key can be found in onetrueeror.com</span>
+        var uri = new Uri(<span style="color: #0000FF">&quot;<span data-name="AppUrl"></span>&quot;</span>);
+        OneTrue.Configuration.Credentials(uri,
+                                          <span style="color: #0000FF">&quot;<span data-name="AppKey"></span>&quot;</span>, 
+                                          <span style="color: #0000FF">&quot;<span data-name="SharedSecret"></span>&quot;</span>);
+        OneTrue.Configuration.CatchWinFormsExceptions();
+    }
+}
+</pre>
+            </div>
+            <p>That will automatically catch all uncaught exceptions and display an error page for the user.</p>
+            <p>
+                The exception(s) will be enqueued and uploaded to our service as soon as an internet connection is available. That also means that no error reports are lost even if
+                the application crashes before the report has been uploaded. The library will continue it's upload attempts next time the application is started.
+            </p>
+        </div>
+    </div>
+    <h3>Reporting errors manually</h3>
+    <div>
+        <p>You can also report errors you need to invoke the report method:</p>
+        <!-- HTML generated using hilite.me -->
+        <div style="background: #ffffff; overflow: auto; padding: .2em .6em; width: auto;">
+            <pre style="line-height: 125%; margin: 0;"><span style="color: #000080; font-weight: bold">public</span> void OnButtonClicked(object source, EventArgs e)
+{
+    <span style="color: #000080; font-weight: bold">try</span>
+    {
+        <span style="color: #000080; font-weight: bold">var</span> user = _repos.GetUser(Id.Text);
+        user.Activate(ActicationCode.Text);
+        _repos.Save(user);
+    }
+    <span style="color: #000080; font-weight: bold">catch</span> (Exception exception)
+    {
+        OneTrue.Report(exception);
+    }
+}
+</pre>
+        </div>
+
+
+        <p>
+            All report methods are documented <a target="_blank" href="http://onetrueerror.com/doc/client/?topic=html/Methods_T_OneTrueError_Reporting_OneTrue.htm">here</a>.
+        </p>
+
+    </div>
+    <h2>Error pages</h2>
+    <div>
+        <p>
+            If configured, our default error collection form is used if nothing else have been configured. You can change that dialog to your own by invoking:
+        </p>
+        <!-- HTML generated using hilite.me -->
+        <div style="background: #ffffff; overflow: auto; padding: .2em .6em; width: auto;">
+            <pre style="line-height: 125%; margin: 0;">OneTrue.Configuration.SetErrorForm(context =&gt; <span style="color: #000080; font-weight: bold">new</span> CustomReportForm() { ReportId = context.ReportId });
+</pre>
+        </div>
+        <p>The context contains the information that we've collected about the exception. Read the documentation to see a sample form.</p>
+    </div>
+    <h2>Documentation</h2>
+    <p>
+        The complete documentation for the WPF/WinForms library is <a target="_blank" href="http://onetrueerror.com/documentation/client/libraries/winforms/">available here.</a>
+    </p>
+</div>
+<div class="tab-pane panel" id="install-wcf">
+    <div class="panel-body">
+        <h1>WCF</h1>
+        <p>
+            This package will automatically catch all unhandled exceptions in WCF services and optionally return an error reference ID to the user.
+        </p>
+        <strong>This library have only been tested with the HTTP binding so far.</strong>
+        <p>
+            The package will attach WCF related information to the error report, for instance the WCF state, HTTP request info etc.
+        </p>
+        <h3>Package install</h3>
+        <div>
+            Install the following nuget package <a target="_blank" href="http://www.nuget.org/packages/OneTrueError.client.wcf/">onetrueerror.client.wcf</a>
+            <pre><code>install-package onetrueerror.wcf
+</code></pre>
+        </div>
+        <h3>Configuration</h3>
+        <div>
+            <p>
+                For WCF it's recommended that you use an <code>AppInitialize()</code> method to configure the library.
+            </p>
+            <!-- HTML generated using hilite.me -->
+            <div style="background: #ffffff; overflow: auto; padding: .2em .6em; width: auto;">
+                <pre style="line-height: 125%; margin: 0;"><span style="color: #000080; font-weight: bold">public</span> <span style="color: #000080; font-weight: bold">class</span> InitializeService
+{
+    <span style="color: #000080; font-weight: bold">public</span> <span style="color: #000080; font-weight: bold">static</span> <span style="color: #000080; font-weight: bold">void</span> AppInitialize()
+    {
+        var uri = new Uri(<span style="color: #0000FF">&quot;<span data-name="AppUrl"></span>&quot;</span>);
+        OneTrue.Configuration.Credentials(uri,
+                                          <span style="color: #0000FF">&quot;<span data-name="AppKey"></span>&quot;</span>, 
+                                          <span style="color: #0000FF">&quot;<span data-name="SharedSecret"></span>&quot;</span>);
+        <span style="color: #008800; font-style: italic">//add the WCF context providers.</span>
+        OneTrue.Configuration.CatchWcfExceptions();
+     }
+ }
+ 
+</pre>
+            </div>
+            <p>That will automatically catch all uncaught exceptions and adopt the WCF response (or rather the SOAP Fault) when an exception is caught.</p>
+            <p>
+                The exception(s) will be enqueued and uploaded to our service as soon as an internet connection is available. That also means that no error reports are lost even if
+                the application crashes before the report has been uploaded. The library will continue it's upload attempts next time the application is started.
+            </p>
+        </div>
+        <h3>Reporting errors manually</h3>
+        <div>
+            <p>You can also report errors you need to invoke the report method:</p>
+            <!-- HTML generated using hilite.me -->
+            <div style="background: #ffffff; overflow: auto; padding: .2em .6em; width: auto;">
+                <pre style="line-height: 125%; margin: 0;"><span style="color: #000080; font-weight: bold">public</span> void Activate(UserViewModel model)
+{
+     <span style="color: #000080; font-weight: bold">try</span>
+    {
+        <span style="color: #000080; font-weight: bold">var</span> user = _repos.GetUser(model.Id);
+        user.Activate(model.ActicationCode);
+        _repos.Save(user);
+    }
+    <span style="color: #000080; font-weight: bold">catch</span> (Exception exception)
+    {
+        OneTrue.Report(exception);
+    }
+}
+</pre>
+            </div>
+
+
+            <p>
+                All report methods are documented <a target="_blank" href="http://onetrueerror.com/doc/client/?topic=html/Methods_T_OneTrueError_Reporting_OneTrue.htm">here</a>.
+            </p>
+
+        </div>
+        <h2>Error pages</h2>
+        <div>
+            <div>
+                Sample configuration:
+                <!-- HTML generated using hilite.me -->
+                <div style="background: #ffffff; overflow: auto; padding: .2em .6em; width: auto;">
+                    <pre style="line-height: 125%; margin: 0;">OneTrue.Configuration.SetErrorPage(<span style="color: #0000FF">&quot;~/views/error.aspx&quot;</span>);
+</pre>
+                </div>
+
+            </div>
+            <p>As an alternative you can configure a factory to produce different error pages for different errors. Refer to the documentation which is listed below for further information.</p>
+        </div>
+        <h2>Documentation</h2>
+        <p>
+            The complete documentation for the WCF library is <a target="_blank" href="http://onetrueerror.com/documentation/client/libraries/wcf/">available here.</a>
+        </p>
+
+    </div>
+</div>
+<div class="tab-pane panel" id="install-asmx">
+    <div class="panel-body">
+        <h1>ASMX</h1>
+        <p>
+            This package will automatically catch all unhandled exceptions in ASMX services (i.e. old school web services).
+        </p>
+        <p>
+            The SOAP response is modified with contact information and a link to our website so that the client can track the error progress.
+        </p>
+        <p>
+            The package also automatically includes information about the ASMX state, HTTP request, session etc.
+        </p>
+        <h3>Package install</h3>
+        <div>
+            Install the following nuget package <a target="_blank" href="http://www.nuget.org/packages/OneTrueError.asmx/">onetrueerror.asmx</a>
+            <pre><code>install-package onetrueerror.asmx
+</code></pre>
+        </div>
+        <h3>Configuration</h3>
+        <div>
+            <p>
+                For ASMX it's recommended that you use <code>Global.asax</code> to configure the library.
+            </p>
+            <!-- HTML generated using hilite.me -->
+            <div style="background: #ffffff; overflow: auto; padding: .2em .6em; width: auto;">
+                <pre style="line-height: 125%; margin: 0;"><span style="color: #000080; font-weight: bold">public</span> <span style="color: #000080; font-weight: bold">class</span> Global : System.Web.HttpApplication
+{
+    <span style="color: #000080; font-weight: bold">protected</span> <span style="color: #000080; font-weight: bold">void</span> Application_Start(<span style="color: #000080; font-weight: bold">object</span> sender, EventArgs e)
+    {
+        var uri = new Uri(<span style="color: #0000FF">&quot;<span data-name="AppUrl"></span>&quot;</span>);
+        OneTrue.Configuration.Credentials(uri,
+                                          <span style="color: #0000FF">&quot;<span data-name="AppKey"></span>&quot;</span>, 
+                                          <span style="color: #0000FF">&quot;<span data-name="SharedSecret"></span>&quot;</span>);
+        OneTrue.Configuration.CatchAsmxExceptions();
+    }
+}
+</pre>
+            </div>
+            <p>That will automatically catch all uncaught exceptions and adopt the ASMX response (or rather the SOAP Fault) when an exception is caught.</p>
+            <p>
+                The exception(s) will be enqueued and uploaded to our service as soon as an internet connection is available. That also means that no error reports are lost even if
+                the application crashes before the report has been uploaded. The library will continue it's upload attempts next time the application is started.
+            </p>
+        </div>
+        <h3>Reporting errors manually</h3>
+        <div>
+            <p>You can also report errors you need to invoke the report method:</p>
+            <!-- HTML generated using hilite.me -->
+            <div style="background: #ffffff; overflow: auto; padding: .2em .6em; width: auto;">
+                <pre style="line-height: 125%; margin: 0;"><span style="color: #000080; font-weight: bold">public</span> void Activate(string authenticationCode, string id)
+{
+    <span style="color: #000080; font-weight: bold">try</span>
+    {
+        <span style="color: #000080; font-weight: bold">var</span> user = _repos.GetUser(id);
+        user.Activate(authenticationCode);
+        _repos.Save(user);
+    }
+    <span style="color: #000080; font-weight: bold">catch</span> (Exception exception)
+    {
+        OneTrue.Report(exception);
+    }
+}
+</pre>
+            </div>
+
+
+            <p>
+                All report methods are documented <a target="_blank" href="http://onetrueerror.com/doc/client/?topic=html/Methods_T_OneTrueError_Reporting_OneTrue.htm">here</a>.
+            </p>
+
+        </div>
+        <h2>Error pages</h2>
+        <div>
+            <p>
+                You can customize the error message which is included in the SOAP fault by implementing a <a target="_blank" href="http://onetrueerror.com/doc/client/?topic=html/T_OneTrueError_Reporting_ASMX_IErrorMessageFactory.htm">IErrorMessageFactory</a>
+            </p>
+            <!-- HTML generated using hilite.me -->
+            <div style="background: #ffffff; overflow: auto; padding: .2em .6em; width: auto;">
+                <pre style="line-height: 125%; margin: 0;"><span style="color: #000080; font-weight: bold">public</span> <span style="color: #000080; font-weight: bold">class</span> SampleErrorMessageFactory : IErrorMessageFactory
+{
+    <span style="color: #000080; font-weight: bold">public</span> <span style="color: #000080; font-weight: bold">string</span> Create(AsmxErrorReporterContext context, <span style="color: #000080; font-weight: bold">string</span> incidentId)
+    {
+        <span style="color: #000080; font-weight: bold">if</span> (context == <span style="color: #000080; font-weight: bold">null</span>) <span style="color: #000080; font-weight: bold">throw</span> <span style="color: #000080; font-weight: bold">new</span> ArgumentNullException(<span style="color: #0000FF">&quot;context&quot;</span>);
+        <span style="color: #000080; font-weight: bold">if</span> (incidentId == <span style="color: #000080; font-weight: bold">null</span>) <span style="color: #000080; font-weight: bold">throw</span> <span style="color: #000080; font-weight: bold">new</span> ArgumentNullException(<span style="color: #0000FF">&quot;incidentId&quot;</span>);
+        <span style="color: #000080; font-weight: bold">var</span> messsage =
+        <span style="color: #000080; font-weight: bold">string</span>.Format(<span style="color: #0000FF">@@&quot;We failed to process your request.{0}</span>
+<span style="color: #0000FF">You can use http://onetrueerror.com/feedback/{1}/ to provide details about what you did.{0}</span>
+<span style="color: #0000FF">Use incident id &#39;{1}&#39; in any further contact with us.&quot;</span>, Environment.NewLine, incidentId);
+                            <span style="color: #000080; font-weight: bold">return</span> messsage;
+    }
+}
+</pre>
+            </div>
+            <p>
+                Then you just configure it using <code>OneTrue.Configuration.SetErrorMessageFactory(new SampleErrorMessageFactory());</code>
+            </p>
+
+            <p>
+                If you would like to generate the SOAP fault from scratch you can instead implement <a target="_blank" href="http://onetrueerror.com/doc/client/?topic=html/T_OneTrueError_Reporting_ASMX_IFaultFactory.htm">IFaultFactory</a>.
+            </p>
+
+        </div>
+        <h2>Documentation</h2>
+        <p>
+            The complete documentation for the ASMX library is <a target="_blank" href="http://onetrueerror.com/doc/client/?topic=html/N_OneTrueError_Reporting_Asmx.htm">available here.</a>
+        </p>
+
+    </div>
+</div>
+</div>
+</div>
+</div>
+
+<script type="text/javascript">
+    $('.nav-pills a')
+        .on('click',
+            function(e) {
+                e.preventDefault();
+                $('.tab-pane').hide();
+                var id = $(this).attr('href');
+                $(id).show();
+            });
+    $('.tab-pane').hide();
+    $('.tab-pane:first').show();
+    //  })
+</script>
+
+<ul data-navigation="main-navigation">
+    <li>
+        <a href="#/application/:applicationId/">Back..</a>
+    </li>
+    <li>
+        <a href="#/application/:applicationId/incidents">Incidents</a>
+    </li>
+    <li>
+        <a href="#/application/:applicationId/feedback">Feedback</a>
+    </li>
+    <li>
+        <a href="#/application/:applicationId/team">Team members</a>
+    </li>
+</ul>

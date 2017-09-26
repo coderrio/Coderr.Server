@@ -1,0 +1,90 @@
+﻿<style type="text/css">
+    table.properties th {
+        padding: 5px;
+        text-align: right;
+        vertical-align: top;
+    }
+
+
+    table.properties td { padding: 5px; }
+
+    .Values {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .Values li {
+        display: block;
+        padding: 10px;
+    }
+
+
+    .Collections {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .Collections li {
+        cursor: pointer;
+        display: block;
+        padding: 10px;
+    }
+
+    .Collections li.active {
+        background-color: #00A2EE;
+        color: white !important;
+    }
+
+    .Collections li.active a {
+        color: white !important;
+        text-decoration: none;
+    }
+
+    .Collections li a:active { font-weight: bold; }
+
+    .Collections li:hover {
+        background-color: #60D2FE;
+        color: white;
+    }
+
+    .Collections li:hover a {
+        color: black;
+        text-decoration: none;
+    }
+</style>
+<div id="SimilaritiesView" class="row">
+    <div class="col-lg-12">
+        <div class="card-box">
+            <h2>Context data</h2>
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul data-collection="Collections" id="ContextCollections" class="Collections" style="float: left">
+                        <li class="context-name">
+                            <a data-name="Name"></a>
+                        </li>
+                    </ul>
+                    <ul data-collection="Similarities" id="ContextProperty" class="Collections" style="display: none; float: left;">
+                        <li class="context-name">
+                            <a data-name="SimilarityName"></a>
+                        </li>
+                    </ul>
+                    <div style="float: left">
+                        <ul data-collection="Values" id="ContextValues" class="Values" style="display: none; position: fixed;">
+                            <li class="context-name">
+                                <span data-name="Value"></span>
+                                <span style="color: #999">(<span data-name="Percentage"></span>% of the reports got this value)</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div data-unless="Collections">
+                        Haven't received any context collections ;(
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
