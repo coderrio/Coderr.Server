@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using codeRR.Server.Web.Areas.Receiver.Helpers;
 using Newtonsoft.Json;
-using codeRR.Web.Areas.Receiver.Helpers;
 
-namespace codeRR.Web.Areas.Receiver.Models
+namespace codeRR.Server.Web.Areas.Receiver.Models
 {
     public class SamplingCounter
     {

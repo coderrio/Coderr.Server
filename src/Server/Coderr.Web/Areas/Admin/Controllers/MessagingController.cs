@@ -1,9 +1,9 @@
 ﻿using System.Web.Mvc;
-using codeRR.App.Modules.Messaging.Commands;
-using codeRR.Infrastructure.Configuration;
-using codeRR.Web.Areas.Admin.Models;
+using codeRR.Server.App.Modules.Messaging.Commands;
+using codeRR.Server.Infrastructure.Configuration;
+using codeRR.Server.Web.Areas.Admin.Models;
 
-namespace codeRR.Web.Areas.Admin.Controllers
+namespace codeRR.Server.Web.Areas.Admin.Controllers
 {
     [Authorize]
     public class MessagingController : Controller

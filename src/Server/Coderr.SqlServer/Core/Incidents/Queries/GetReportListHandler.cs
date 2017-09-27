@@ -1,13 +1,13 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Reports.Queries;
+using codeRR.Server.SqlServer.Tools;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
-using codeRR.Api.Core.Reports.Queries;
-using codeRR.SqlServer.Tools;
 
-namespace codeRR.SqlServer.Core.Incidents.Queries
+namespace codeRR.Server.SqlServer.Core.Incidents.Queries
 {
     [Component]
     internal class GetReportListHandler : IQueryHandler<GetReportList, GetReportListResult>

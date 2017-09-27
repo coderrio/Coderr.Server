@@ -1,13 +1,13 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Messaging;
+using codeRR.Server.Api.Core.Messaging.Commands;
+using codeRR.Server.App.Modules.Messaging.Templating;
 using DotNetCqs;
 using Griffin.Container;
-using codeRR.Api.Core.Messaging;
-using codeRR.Api.Core.Messaging.Commands;
-using codeRR.App.Modules.Messaging.Templating;
 
-namespace codeRR.App.Modules.Messaging.Commands
+namespace codeRR.Server.App.Modules.Messaging.Commands
 {
     /// <summary>
     ///     Send an email using a template.

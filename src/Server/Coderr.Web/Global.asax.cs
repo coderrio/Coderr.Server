@@ -4,16 +4,15 @@ using System.IO;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
+using codeRR.Server.Infrastructure;
+using codeRR.Server.SqlServer;
+using codeRR.Server.Web.Infrastructure.Logging;
 using Griffin.Signals;
 using log4net;
 using log4net.Config;
-using OneTrueError.Client;
 using OneTrueError.Client.Contracts;
-using codeRR.Infrastructure;
-using codeRR.SqlServer;
-using codeRR.Web.Infrastructure.Logging;
 
-namespace codeRR.Web
+namespace codeRR.Server.Web
 {
     public class WebApiApplication : HttpApplication
     {

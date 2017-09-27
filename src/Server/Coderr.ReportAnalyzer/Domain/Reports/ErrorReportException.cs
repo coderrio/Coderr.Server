@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.ReportAnalyzer.Domain.Reports
+namespace codeRR.Server.ReportAnalyzer.Domain.Reports
 {
     /// <summary>
     ///     Exception for <see cref="ErrorReportEntity" />.

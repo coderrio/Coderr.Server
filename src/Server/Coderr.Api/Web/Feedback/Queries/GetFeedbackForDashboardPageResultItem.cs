@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.Api.Web.Feedback.Queries
+namespace codeRR.Server.Api.Web.Feedback.Queries
 {
     /// <summary>
     ///     Result item for <see cref="GetFeedbackForDashboardPageResult" />

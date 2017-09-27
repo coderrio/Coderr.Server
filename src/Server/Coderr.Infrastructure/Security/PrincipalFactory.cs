@@ -4,7 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace codeRR.Infrastructure.Security
+namespace codeRR.Server.Infrastructure.Security
 {
     /// <summary>
     ///     Creates the security principal that is used by the system

@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace codeRR.Api.Modules.ContextData.Queries
+namespace codeRR.Server.Api.Modules.ContextData.Queries
 {
     /// <summary>
     ///     Get similarities (i.e. analyzed context collections where we have normalized values and checked which values are

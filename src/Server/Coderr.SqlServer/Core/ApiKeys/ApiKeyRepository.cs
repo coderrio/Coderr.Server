@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using codeRR.Server.App.Core.ApiKeys;
+using codeRR.Server.Infrastructure.Security;
+using codeRR.Server.SqlServer.Core.ApiKeys.Mappings;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
-using codeRR.App.Core.ApiKeys;
-using codeRR.Infrastructure.Security;
-using codeRR.SqlServer.Core.ApiKeys.Mappings;
 
-namespace codeRR.SqlServer.Core.ApiKeys
+namespace codeRR.Server.SqlServer.Core.ApiKeys
 {
     /// <summary>
     ///     SQL Server implementation of <see cref="IApiKeyRepository" />.

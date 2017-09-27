@@ -4,14 +4,14 @@ using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Reports;
+using codeRR.Server.App.Core.Reports;
+using codeRR.Server.App.Core.Reports.Invalid;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
-using codeRR.Api.Core.Reports;
-using codeRR.App.Core.Reports;
-using codeRR.App.Core.Reports.Invalid;
 
-namespace codeRR.SqlServer.Core.Reports
+namespace codeRR.Server.SqlServer.Core.Reports
 {
     [Component]
     internal class ErrorReportRepository : IReportsRepository

@@ -1,4 +1,4 @@
-﻿namespace codeRR.Web.Areas.Receiver.Models
+﻿namespace codeRR.Server.Web.Areas.Receiver.Models
 {
     public class FeedbackModel
     {

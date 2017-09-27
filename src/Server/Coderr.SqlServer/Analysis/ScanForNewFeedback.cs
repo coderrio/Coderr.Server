@@ -1,14 +1,14 @@
 ﻿using System;
+using codeRR.Server.Api.Core.Feedback.Commands;
+using codeRR.Server.Infrastructure.Queueing;
+using codeRR.Server.ReportAnalyzer.LibContracts;
 using DotNetCqs;
 using Griffin.ApplicationServices;
 using Griffin.Container;
 using log4net;
 using Newtonsoft.Json;
-using codeRR.Api.Core.Feedback.Commands;
-using codeRR.Infrastructure.Queueing;
-using codeRR.ReportAnalyzer.LibContracts;
 
-namespace codeRR.SqlServer.Analysis
+namespace codeRR.Server.SqlServer.Analysis
 {
     /// <summary>
     ///     TODO: In a perfect world, the BL should be moved to BL and the data should remain in the data. But let's not

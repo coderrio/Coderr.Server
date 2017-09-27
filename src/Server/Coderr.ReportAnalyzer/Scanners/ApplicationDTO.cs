@@ -1,4 +1,4 @@
-﻿namespace codeRR.ReportAnalyzer.Scanners
+﻿namespace codeRR.Server.ReportAnalyzer.Scanners
 {
     /// <summary>
     ///     Application

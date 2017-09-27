@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Security.Authentication;
+using codeRR.Server.App.Core.Accounts;
 using FluentAssertions;
-using codeRR.App.Core.Accounts;
 using Xunit;
 
-namespace codeRR.App.Tests.Core.Accounts
+namespace codeRR.Server.App.Tests.Core.Accounts
 {
     public class AccountTests
     {

@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.ApiKeys.Commands;
+using codeRR.Server.App.Core.ApiKeys;
+using codeRR.Server.App.Core.Applications;
+using codeRR.Server.SqlServer.Core.ApiKeys;
+using codeRR.Server.SqlServer.Core.ApiKeys.Commands;
+using codeRR.Server.SqlServer.Core.Applications;
 using FluentAssertions;
 using Griffin.Data;
-using codeRR.Api.Core.ApiKeys.Commands;
-using codeRR.App.Core.ApiKeys;
-using codeRR.App.Core.Applications;
-using codeRR.SqlServer.Core.ApiKeys;
-using codeRR.SqlServer.Core.ApiKeys.Commands;
-using codeRR.SqlServer.Core.Applications;
 using Xunit;
 
-namespace codeRR.SqlServer.Tests.Core.ApiKeys.Commands
+namespace codeRR.Server.SqlServer.Tests.Core.ApiKeys.Commands
 {
     [Collection(MapperInit.NAME)]
     public class DeleteApiKeyHandlerTests : IDisposable

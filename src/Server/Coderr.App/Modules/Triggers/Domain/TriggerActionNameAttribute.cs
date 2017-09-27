@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.App.Modules.Triggers.Domain
+namespace codeRR.Server.App.Modules.Triggers.Domain
 {
     /// <summary>
     ///     Used to be able to create instances of trigger actions (from when we load configuration data from the data source)

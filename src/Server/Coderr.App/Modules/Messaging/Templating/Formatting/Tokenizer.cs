@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace codeRR.App.Modules.Messaging.Templating.Formatting
+namespace codeRR.Server.App.Modules.Messaging.Templating.Formatting
 {
     /// <summary>
     ///     Converts a string with named arguments to a string

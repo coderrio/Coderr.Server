@@ -1,4 +1,4 @@
-﻿namespace codeRR.Web.Areas.Admin.Models.ApiKeys
+﻿namespace codeRR.Server.Web.Areas.Admin.Models.ApiKeys
 {
     public class ListViewModel
     {

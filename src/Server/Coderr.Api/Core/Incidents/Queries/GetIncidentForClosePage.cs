@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace codeRR.Api.Core.Incidents.Queries
+namespace codeRR.Server.Api.Core.Incidents.Queries
 {
     /// <summary>
     ///     Get incident information tailored for the close page.

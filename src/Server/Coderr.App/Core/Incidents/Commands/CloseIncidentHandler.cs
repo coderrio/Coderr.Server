@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Incidents.Commands;
+using codeRR.Server.Api.Core.Messaging;
+using codeRR.Server.Api.Core.Messaging.Commands;
+using codeRR.Server.App.Core.Feedback;
 using DotNetCqs;
 using Griffin.Container;
-using codeRR.Api.Core.Incidents.Commands;
-using codeRR.Api.Core.Messaging;
-using codeRR.Api.Core.Messaging.Commands;
-using codeRR.App.Core.Feedback;
 
-namespace codeRR.App.Core.Incidents.Commands
+namespace codeRR.Server.App.Core.Incidents.Commands
 {
     /// <summary>
     ///     Handler of <see cref="CloseIncident" />.

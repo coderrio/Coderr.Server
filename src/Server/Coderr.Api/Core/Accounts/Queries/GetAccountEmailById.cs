@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace codeRR.Api.Core.Accounts.Queries
+namespace codeRR.Server.Api.Core.Accounts.Queries
 {
     /// <summary>
     ///     Get email for a specific account

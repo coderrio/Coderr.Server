@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.Api.Core.Accounts.Queries
+namespace codeRR.Server.Api.Core.Accounts.Queries
 {
     /// <summary>
     ///     Account entity subset.

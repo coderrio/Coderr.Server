@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace codeRR.App.Core.Feedback
+namespace codeRR.Server.App.Core.Feedback
 {
     /// <summary>
     ///     We've failed to save this report.

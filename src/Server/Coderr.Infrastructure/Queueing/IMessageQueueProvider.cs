@@ -1,4 +1,4 @@
-namespace codeRR.Infrastructure.Queueing
+namespace codeRR.Server.Infrastructure.Queueing
 {
     /// <summary>
     ///     Used to create an abstraction between the queue implementation and the usage

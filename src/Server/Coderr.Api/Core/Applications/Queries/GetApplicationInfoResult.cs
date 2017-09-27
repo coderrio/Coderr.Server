@@ -1,4 +1,4 @@
-﻿namespace codeRR.Api.Core.Applications.Queries
+﻿namespace codeRR.Server.Api.Core.Applications.Queries
 {
     /// <summary>
     ///     Result for <see cref="GetApplicationInfo" />.

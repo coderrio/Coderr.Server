@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using codeRR.Server.Api.Core.ApiKeys.Commands;
+using codeRR.Server.Api.Core.ApiKeys.Queries;
+using codeRR.Server.Api.Core.Applications.Queries;
+using codeRR.Server.Infrastructure.Security;
+using codeRR.Server.Web.Areas.Admin.Models.ApiKeys;
 using DotNetCqs;
-using codeRR.Api.Core.ApiKeys.Commands;
-using codeRR.Api.Core.ApiKeys.Queries;
-using codeRR.Api.Core.Applications.Queries;
-using codeRR.Infrastructure.Security;
-using codeRR.Web.Areas.Admin.Models.ApiKeys;
 
-namespace codeRR.Web.Areas.Admin.Controllers
+namespace codeRR.Server.Web.Areas.Admin.Controllers
 {
     [Authorize]
     public class ApiKeysController : Controller
@@ -58,7 +58,7 @@ namespace codeRR.Web.Areas.Admin.Controllers
             {
                 Id = key.Id,
                 AvailableApplications = applications,
-                SelectedApplications = key.AllowedApplications.Select(x => x.ApplicationId.ToString()).ToArray(),
+                SelectedApplications = Enumerable.Select(key.AllowedApplications, x => x.ApplicationId.ToString()).ToArray<string>(),
                 ApplicationName = key.ApplicationName
             };
 
@@ -116,7 +116,7 @@ namespace codeRR.Web.Areas.Admin.Controllers
         {
             var query = new ListApiKeys();
             var result = await _queryBus.QueryAsync(query);
-            var vms = result.Keys.Select(x => new ListViewModelItem { Id = x.Id, Name = x.ApplicationName }).ToArray();
+            var vms = Enumerable.Select(result.Keys, x => new ListViewModelItem { Id = x.Id, Name = x.ApplicationName }).ToArray<ListViewModelItem>();
             var model = new ListViewModel { Keys = vms };
             return View(model);
         }
@@ -129,7 +129,7 @@ namespace codeRR.Web.Areas.Admin.Controllers
                 FilterAsAdmin = true
             };
             var items = await _queryBus.QueryAsync(query);
-            var applications = items.ToDictionary(x => x.Id.ToString(), x => x.Name);
+            var applications = Enumerable.ToDictionary(items, x => x.Id.ToString(), x => x.Name);
             return applications;
         }
     }

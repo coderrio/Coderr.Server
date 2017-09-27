@@ -1,7 +1,7 @@
-﻿using Griffin.Data.Mapper;
-using codeRR.Api.Web.Feedback.Queries;
+﻿using codeRR.Server.Api.Web.Feedback.Queries;
+using Griffin.Data.Mapper;
 
-namespace codeRR.SqlServer.Web.Feedback.Queries
+namespace codeRR.Server.SqlServer.Web.Feedback.Queries
 {
     public class GetOverviewFeedbackResultItemMapper : EntityMapper<GetFeedbackForDashboardPageResultItem>
     {

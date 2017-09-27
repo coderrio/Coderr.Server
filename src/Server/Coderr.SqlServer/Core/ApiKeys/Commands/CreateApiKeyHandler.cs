@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.ApiKeys.Commands;
+using codeRR.Server.Api.Core.ApiKeys.Events;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
-using codeRR.Api.Core.ApiKeys.Commands;
-using codeRR.Api.Core.ApiKeys.Events;
 
-namespace codeRR.SqlServer.Core.ApiKeys.Commands
+namespace codeRR.Server.SqlServer.Core.ApiKeys.Commands
 {
     [Component(RegisterAsSelf = true)]
     public class CreateApiKeyHandler : ICommandHandler<CreateApiKey>

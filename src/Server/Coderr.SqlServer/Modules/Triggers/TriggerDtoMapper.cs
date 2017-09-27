@@ -1,7 +1,7 @@
-﻿using Griffin.Data.Mapper;
-using codeRR.Api.Modules.Triggers;
+﻿using codeRR.Server.Api.Modules.Triggers;
+using Griffin.Data.Mapper;
 
-namespace codeRR.SqlServer.Modules.Triggers
+namespace codeRR.Server.SqlServer.Modules.Triggers
 {
     public class TriggerDtoMapper : EntityMapper<TriggerDTO>
     {

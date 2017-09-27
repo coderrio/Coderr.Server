@@ -2,13 +2,13 @@ using System;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using codeRR.Api.Core.Incidents;
-using codeRR.Api.Core.Reports;
-using codeRR.App.Configuration;
-using codeRR.App.Core.Users;
-using codeRR.Infrastructure.Configuration;
+using codeRR.Server.Api.Core.Incidents;
+using codeRR.Server.Api.Core.Reports;
+using codeRR.Server.App.Configuration;
+using codeRR.Server.App.Core.Users;
+using codeRR.Server.Infrastructure.Configuration;
 
-namespace codeRR.App.Core.Notifications.Tasks
+namespace codeRR.Server.App.Core.Notifications.Tasks
 {
     /// <summary>
     ///     Send SMS regarding an incident

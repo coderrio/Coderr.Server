@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Configuration;
 using System.Web.Mvc;
-using Griffin.Data;
-using codeRR.App.Core.Applications;
-using codeRR.Infrastructure;
-using codeRR.SqlServer.Core.Applications;
+using codeRR.Server.Infrastructure;
 
-namespace codeRR.Web.Areas.Installation.Controllers
+namespace codeRR.Server.Web.Areas.Installation.Controllers
 {
     [OutputCache(Duration = 0, NoStore = true)]
     public class SqlController : Controller

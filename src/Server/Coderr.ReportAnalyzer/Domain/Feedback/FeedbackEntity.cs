@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.ReportAnalyzer.Domain.Feedback
+namespace codeRR.Server.ReportAnalyzer.Domain.Feedback
 {
     /// <summary>
     ///     Our feedback entity

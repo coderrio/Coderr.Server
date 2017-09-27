@@ -5,7 +5,7 @@ using System.Threading;
 using Griffin.Container;
 using log4net;
 
-namespace codeRR.Web.IoC
+namespace codeRR.Server.Web.IoC
 {
     public sealed class GriffinContainerScopeAdapter : IContainerScope
     {

@@ -1,12 +1,12 @@
 using System;
 using System.Linq;
+using codeRR.Server.Infrastructure.Queueing;
+using codeRR.Server.ReportAnalyzer.Domain.Reports;
+using codeRR.Server.ReportAnalyzer.LibContracts;
 using Griffin.Container;
 using log4net;
-using codeRR.Infrastructure.Queueing;
-using codeRR.ReportAnalyzer.Domain.Reports;
-using codeRR.ReportAnalyzer.LibContracts;
 
-namespace codeRR.ReportAnalyzer.Scanners
+namespace codeRR.Server.ReportAnalyzer.Scanners
 {
     /// <summary>
     ///     Loads a set of reports that should be analyzed and then cast some wizardry on them.

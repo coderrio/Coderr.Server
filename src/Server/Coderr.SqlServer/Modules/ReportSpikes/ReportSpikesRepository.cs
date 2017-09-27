@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
+using codeRR.Server.App.Modules.ReportSpikes;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
-using codeRR.App.Modules.ReportSpikes;
 
-namespace codeRR.SqlServer.Modules.ReportSpikes
+namespace codeRR.Server.SqlServer.Modules.ReportSpikes
 {
     [Component]
     public class ReportSpikesRepository : IReportSpikeRepository

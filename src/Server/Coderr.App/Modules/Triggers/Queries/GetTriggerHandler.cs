@@ -1,12 +1,12 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Modules.Triggers.Queries;
+using codeRR.Server.App.Modules.Triggers.Domain;
 using DotNetCqs;
 using Griffin.Container;
-using codeRR.Api.Modules.Triggers.Queries;
-using codeRR.App.Modules.Triggers.Domain;
 
-namespace codeRR.App.Modules.Triggers.Queries
+namespace codeRR.Server.App.Modules.Triggers.Queries
 {
     /// <summary>
     ///     Handler for <see cref="GetTrigger" />.

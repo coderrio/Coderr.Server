@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace codeRR.Api.Modules.Triggers
+namespace codeRR.Server.Api.Modules.Triggers
 {
     /// <summary>
     ///     Filter condition

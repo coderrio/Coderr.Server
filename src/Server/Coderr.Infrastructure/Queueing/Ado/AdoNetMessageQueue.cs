@@ -6,7 +6,7 @@ using Griffin.Data;
 using Griffin.Data.Mapper;
 using Newtonsoft.Json;
 
-namespace codeRR.Infrastructure.Queueing.Ado
+namespace codeRR.Server.Infrastructure.Queueing.Ado
 {
     /// <summary>
     /// Message queue that uses tables in a DB through ADO.NET.

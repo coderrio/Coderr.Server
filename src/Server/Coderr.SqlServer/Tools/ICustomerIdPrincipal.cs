@@ -1,6 +1,6 @@
 ﻿using System.Security.Principal;
 
-namespace codeRR.SqlServer.Tools
+namespace codeRR.Server.SqlServer.Tools
 {
     public interface ICustomerIdPrincipal : IPrincipal
     {

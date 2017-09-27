@@ -1,6 +1,6 @@
 using System;
 
-namespace codeRR.App.Modules.Messaging.Templating
+namespace codeRR.Server.App.Modules.Messaging.Templating
 {
     /// <summary>
     ///     Used to format dates into different representations like duration from now.

@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace codeRR.App.Core.Users
+namespace codeRR.Server.App.Core.Users
 {
     /// <summary>
     ///     Used to control access to a specific application.

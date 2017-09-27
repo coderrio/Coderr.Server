@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace codeRR.ReportAnalyzer.Inbound.Models
+namespace codeRR.Server.ReportAnalyzer.Inbound.Models
 {
     /// <summary>
     ///     Model used to wrap all information from an exception.

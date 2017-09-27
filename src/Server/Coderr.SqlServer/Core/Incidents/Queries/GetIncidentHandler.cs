@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Incidents.Queries;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
-using codeRR.Api.Core.Incidents.Queries;
 
-namespace codeRR.SqlServer.Core.Incidents.Queries
+namespace codeRR.Server.SqlServer.Core.Incidents.Queries
 {
     [Component]
     public class GetIncidentHandler : IQueryHandler<GetIncident, GetIncidentResult>

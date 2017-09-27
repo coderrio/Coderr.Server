@@ -3,7 +3,7 @@ using System.Linq;
 using Griffin.Container;
 using log4net;
 
-namespace codeRR.ReportAnalyzer.Domain.Reports.HashcodeGenerators
+namespace codeRR.Server.ReportAnalyzer.Domain.Reports.HashcodeGenerators
 {
     /// <summary>
     ///     Generates a hash code based on URLs and status code.

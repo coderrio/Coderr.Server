@@ -1,6 +1,6 @@
 ﻿using DotNetCqs;
 
-namespace codeRR.Api.Core.ApiKeys.Queries
+namespace codeRR.Server.Api.Core.ApiKeys.Queries
 {
     /// <summary>
     ///     List all created keys

@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace codeRR.Api.Core.Applications.Queries
+namespace codeRR.Server.Api.Core.Applications.Queries
 {
     /// <summary>
     ///     Get an application by using the AppKey.

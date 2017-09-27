@@ -1,16 +1,16 @@
 ﻿using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Accounts.Commands;
+using codeRR.Server.Api.Core.Accounts.Events;
+using codeRR.Server.Api.Core.Messaging.Commands;
+using codeRR.Server.App.Core.Accounts;
+using codeRR.Server.App.Core.Accounts.CommandHandlers;
+using codeRR.Server.Infrastructure.Configuration;
 using DotNetCqs;
 using FluentAssertions;
 using NSubstitute;
-using codeRR.Api.Core.Accounts.Commands;
-using codeRR.Api.Core.Accounts.Events;
-using codeRR.Api.Core.Messaging.Commands;
-using codeRR.App.Core.Accounts;
-using codeRR.App.Core.Accounts.CommandHandlers;
-using codeRR.Infrastructure.Configuration;
 using Xunit;
 
-namespace codeRR.App.Tests.Core.Accounts.CommandHandlers
+namespace codeRR.Server.App.Tests.Core.Accounts.CommandHandlers
 {
     public class RegisterAccountHandlerTests
     {
@@ -47,7 +47,7 @@ namespace codeRR.App.Tests.Core.Accounts.CommandHandlers
             await sut.ExecuteAsync(cmd);
 
             await eventBus.Received().PublishAsync(Arg.Any<AccountRegistered>());
-            eventBus.Method("PublishAsync").Arg<AccountRegistered>().AccountId.Should().Be(3);
+            AssertionExtensions.Should((int) eventBus.Method("PublishAsync").Arg<AccountRegistered>().AccountId).Be(3);
         }
 
         [Fact]

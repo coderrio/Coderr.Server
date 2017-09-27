@@ -1,7 +1,7 @@
 ﻿using System;
-using codeRR.App.Core.Accounts;
+using codeRR.Server.App.Core.Accounts;
 
-namespace codeRR.App.Core.Users
+namespace codeRR.Server.App.Core.Users
 {
     /// <summary>
     ///     User information associated to an <see cref="Account" />.

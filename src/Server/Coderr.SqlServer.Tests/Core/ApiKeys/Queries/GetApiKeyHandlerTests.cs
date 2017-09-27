@@ -1,15 +1,15 @@
 ﻿using System;
+using codeRR.Server.Api.Core.ApiKeys.Queries;
+using codeRR.Server.App.Core.ApiKeys;
+using codeRR.Server.App.Core.Applications;
+using codeRR.Server.SqlServer.Core.ApiKeys;
+using codeRR.Server.SqlServer.Core.ApiKeys.Queries;
+using codeRR.Server.SqlServer.Core.Applications;
 using FluentAssertions;
 using Griffin.Data;
-using codeRR.Api.Core.ApiKeys.Queries;
-using codeRR.App.Core.ApiKeys;
-using codeRR.App.Core.Applications;
-using codeRR.SqlServer.Core.ApiKeys;
-using codeRR.SqlServer.Core.ApiKeys.Queries;
-using codeRR.SqlServer.Core.Applications;
 using Xunit;
 
-namespace codeRR.SqlServer.Tests.Core.ApiKeys.Queries
+namespace codeRR.Server.SqlServer.Tests.Core.ApiKeys.Queries
 {
     [Collection(MapperInit.NAME)]
     public class GetApiKeyHandlerTests : IDisposable
@@ -51,11 +51,11 @@ namespace codeRR.SqlServer.Tests.Core.ApiKeys.Queries
             var sut = new GetApiKeyHandler(_uow);
             var result = await sut.ExecuteAsync(query);
 
-            result.Should().NotBeNull();
-            result.GeneratedKey.Should().Be(_existingEntity.GeneratedKey);
-            result.ApplicationName.Should().Be(_existingEntity.ApplicationName);
-            result.AllowedApplications[0].ApplicationId.Should().Be(_application.Id);
-            result.AllowedApplications[0].ApplicationName.Should().Be(_application.Name);
+            AssertionExtensions.Should((object) result).NotBeNull();
+            AssertionExtensions.Should((string) result.GeneratedKey).Be(_existingEntity.GeneratedKey);
+            AssertionExtensions.Should((string) result.ApplicationName).Be(_existingEntity.ApplicationName);
+            AssertionExtensions.Should((int) result.AllowedApplications[0].ApplicationId).Be(_application.Id);
+            AssertionExtensions.Should((string) result.AllowedApplications[0].ApplicationName).Be(_application.Name);
         }
 
         private void GetApplication()

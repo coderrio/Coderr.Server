@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace codeRR.Infrastructure.Net
+namespace codeRR.Server.Infrastructure.Net
 {
     /// <summary>
     ///     Mappings between file extensions and mime types

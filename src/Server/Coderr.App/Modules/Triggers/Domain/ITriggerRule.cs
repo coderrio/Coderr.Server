@@ -1,4 +1,4 @@
-﻿namespace codeRR.App.Modules.Triggers.Domain
+﻿namespace codeRR.Server.App.Modules.Triggers.Domain
 {
     /// <summary>
     ///     Decides if an error report can be passed on

@@ -1,8 +1,8 @@
-﻿using Griffin.Data.Mapper;
-using codeRR.Api.Core.Reports;
-using codeRR.SqlServer.Tools;
+﻿using codeRR.Server.Api.Core.Reports;
+using codeRR.Server.SqlServer.Tools;
+using Griffin.Data.Mapper;
 
-namespace codeRR.SqlServer.Core.Reports
+namespace codeRR.Server.SqlServer.Core.Reports
 {
     public class ErrorReportDtoMapper : CrudEntityMapper<ReportDTO>
     {

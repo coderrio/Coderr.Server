@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Griffin.Data;
 
-namespace codeRR.App.Core.Accounts
+namespace codeRR.Server.App.Core.Accounts
 {
     /// <summary>
     ///     Repository for accounts

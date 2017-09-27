@@ -1,7 +1,7 @@
-﻿using Griffin.Data.Mapper;
-using codeRR.App.Core.Feedback;
+﻿using codeRR.Server.App.Core.Feedback;
+using Griffin.Data.Mapper;
 
-namespace codeRR.SqlServer.Core.Feedback
+namespace codeRR.Server.SqlServer.Core.Feedback
 {
     public class FeedbackEntityMapper : CrudEntityMapper<FeedbackEntity>
     {

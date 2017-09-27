@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Accounts.Queries;
+using codeRR.Server.App.Core.Accounts;
 using DotNetCqs;
 using Griffin.Container;
-using codeRR.Api.Core.Accounts.Queries;
-using codeRR.App.Core.Accounts;
 
-namespace codeRR.SqlServer.Core.Accounts.QueryHandlers
+namespace codeRR.Server.SqlServer.Core.Accounts.QueryHandlers
 {
     [Component]
     public class GetAccountEmailByIdHandler : IQueryHandler<GetAccountEmailById, string>
@@ -20,7 +20,7 @@ namespace codeRR.SqlServer.Core.Accounts.QueryHandlers
 
         public async Task<string> ExecuteAsync(GetAccountEmailById query)
         {
-            var usr = await _accountRepository.GetByIdAsync(query.AccountId);
+            var usr = await _accountRepository.GetByIdAsync((int) query.AccountId);
             return usr.Email;
         }
     }

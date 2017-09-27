@@ -5,13 +5,13 @@ using System.Security.Authentication;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using codeRR.Server.Infrastructure.Queueing;
+using codeRR.Server.ReportAnalyzer.Inbound;
+using codeRR.Server.Web.Areas.Receiver.Helpers;
+using codeRR.Server.Web.Areas.Receiver.Models;
 using log4net;
-using codeRR.Infrastructure.Queueing;
-using codeRR.ReportAnalyzer.Inbound;
-using codeRR.Web.Areas.Receiver.Helpers;
-using codeRR.Web.Areas.Receiver.Models;
 
-namespace codeRR.Web.Areas.Receiver.Controllers
+namespace codeRR.Server.Web.Areas.Receiver.Controllers
 {
     [AllowAnonymous]
     public class ReportController : ApiController

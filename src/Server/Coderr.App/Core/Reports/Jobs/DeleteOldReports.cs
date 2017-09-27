@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
+using codeRR.Server.App.Core.Reports.Config;
+using codeRR.Server.Infrastructure.Configuration;
 using Griffin.ApplicationServices;
 using Griffin.Container;
 using Griffin.Data;
 using log4net;
-using codeRR.App.Core.Reports.Config;
-using codeRR.Infrastructure.Configuration;
 
-namespace codeRR.App.Core.Reports.Jobs
+namespace codeRR.Server.App.Core.Reports.Jobs
 {
     /// <summary>
     ///     Will delete all reports which is older than the configured (<see cref="ReportConfig.RetentionDays" />) retention

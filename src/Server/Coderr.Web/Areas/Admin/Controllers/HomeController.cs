@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Web.Mvc;
-using codeRR.App.Configuration;
-using OneTrueError.Client;
-using codeRR.Infrastructure;
-using codeRR.Infrastructure.Configuration;
-using codeRR.Web.Areas.Admin.Models;
+using codeRR.Server.App.Configuration;
+using codeRR.Server.Infrastructure;
+using codeRR.Server.Infrastructure.Configuration;
+using codeRR.Server.Web.Areas.Admin.Models;
 
-namespace codeRR.Web.Areas.Admin.Controllers
+namespace codeRR.Server.Web.Areas.Admin.Controllers
 {
     [Authorize]
     public class HomeController : Controller

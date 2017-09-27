@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace codeRR.Api
+namespace codeRR.Server.Api
 {
     /// <summary>
     ///     The handler requires the current identity to make sure that the user can perform the actions

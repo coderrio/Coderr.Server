@@ -1,6 +1,6 @@
 ﻿using DotNetCqs;
 
-namespace codeRR.Api.Core.Applications.Events
+namespace codeRR.Server.Api.Core.Applications.Events
 {
     namespace codeRR.Api.Core.Accounts.Events
     {

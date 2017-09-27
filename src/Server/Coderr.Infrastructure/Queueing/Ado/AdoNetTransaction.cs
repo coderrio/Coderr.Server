@@ -1,6 +1,6 @@
 using System.Data;
 
-namespace codeRR.Infrastructure.Queueing.Ado
+namespace codeRR.Server.Infrastructure.Queueing.Ado
 {
     public sealed class AdoNetTransaction : IQueueTransaction
     {

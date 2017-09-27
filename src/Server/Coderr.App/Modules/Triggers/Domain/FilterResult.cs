@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace codeRR.App.Modules.Triggers.Domain
+namespace codeRR.Server.App.Modules.Triggers.Domain
 {
     /// <summary>
     ///     Result for <see cref="ITriggerRule" />.

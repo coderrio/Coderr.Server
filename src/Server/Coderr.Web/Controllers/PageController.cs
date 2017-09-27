@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 
-namespace codeRR.Web.Controllers
+namespace codeRR.Server.Web.Controllers
 {
     /// <summary>
     ///     Used to be able to load views by using ajax requests.

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace codeRR.Web.Models
+namespace codeRR.Server.Web.Models
 {
     // Models returned by AccountController actions.
 

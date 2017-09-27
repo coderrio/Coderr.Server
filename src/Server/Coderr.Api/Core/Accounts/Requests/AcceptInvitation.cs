@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using DotNetCqs;
 
-namespace codeRR.Api.Core.Accounts.Requests
+namespace codeRR.Server.Api.Core.Accounts.Requests
 {
     /// <summary>
     ///     You must create an account before accepting the invitation

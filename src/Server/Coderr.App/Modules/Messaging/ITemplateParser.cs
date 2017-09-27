@@ -1,4 +1,4 @@
-﻿namespace codeRR.App.Modules.Messaging
+﻿namespace codeRR.Server.App.Modules.Messaging
 {
     /// <summary>
     ///     Generates HTML from a text template.

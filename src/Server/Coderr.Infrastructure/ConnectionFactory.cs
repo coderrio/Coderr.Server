@@ -2,7 +2,7 @@
 using System.Data;
 using System.Data.Common;
 
-namespace codeRR.Infrastructure
+namespace codeRR.Server.Infrastructure
 {
     /// <summary>
     ///     Generates SQL connections

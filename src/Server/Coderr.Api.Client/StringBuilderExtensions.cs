@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace codeRR.Api.Client
+namespace codeRR.Server.Api.Client
 {
     internal static class StringBuilderExtensions
     {

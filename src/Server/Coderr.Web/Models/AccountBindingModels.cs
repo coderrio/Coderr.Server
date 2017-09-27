@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace codeRR.Web.Models
+namespace codeRR.Server.Web.Models
 {
     // Models used as parameters to AccountController actions.
 

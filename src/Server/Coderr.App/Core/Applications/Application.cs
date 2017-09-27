@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using codeRR.Api.Core.Applications;
+using codeRR.Server.Api.Core.Applications;
 
-namespace codeRR.App.Core.Applications
+namespace codeRR.Server.App.Core.Applications
 {
     /// <summary>
     ///     An application which we can receive exceptions from.

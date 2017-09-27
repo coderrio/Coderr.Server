@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.App.Modules.Triggers.Domain.Actions
+namespace codeRR.Server.App.Modules.Triggers.Domain.Actions
 {
     /// <summary>
     ///     used to create trigger actions by using their name

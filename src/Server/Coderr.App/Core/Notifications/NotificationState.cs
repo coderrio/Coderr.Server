@@ -1,4 +1,4 @@
-﻿namespace codeRR.App.Core.Notifications
+﻿namespace codeRR.Server.App.Core.Notifications
 {
     /// <summary>
     ///     Type of notification to use

@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace codeRR.Api.Core.Incidents.Events
+namespace codeRR.Server.Api.Core.Incidents.Events
 {
     /// <summary>
     ///     Our user have configured that all new reports for this incident should be ignored

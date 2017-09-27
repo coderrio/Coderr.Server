@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Reports;
+using codeRR.Server.Api.Core.Reports.Queries;
 using DotNetCqs;
 using Griffin.Container;
-using codeRR.Api.Core.Reports;
-using codeRR.Api.Core.Reports.Queries;
 
-namespace codeRR.App.Core.Reports.Queries
+namespace codeRR.Server.App.Core.Reports.Queries
 {
     /// <summary>
     ///     Get report.
@@ -33,12 +33,12 @@ namespace codeRR.App.Core.Reports.Queries
         public async Task<GetReportResult> ExecuteAsync(GetReport query)
         {
             var report = await _repository.GetAsync(query.ReportId);
-            var collections = (
+            var collections = Enumerable.ToList((
                 from x in report.ContextCollections
                 where x.Properties.Count > 0
-                let properties = x.Properties.Select(y => new KeyValuePair(y.Key, y.Value))
-                select new GetReportResultContextCollection(x.Name, properties.ToArray())
-                ).ToList();
+                let properties = Enumerable.Select(x.Properties, y => new KeyValuePair(y.Key, y.Value))
+                select new GetReportResultContextCollection(x.Name, Enumerable.ToArray(properties))
+            ));
 
             //TODO: Fix feedback
             //var feedbackQuery = new GetReportFeedback(query.ReportId, query.);//TODO: Fix customerId

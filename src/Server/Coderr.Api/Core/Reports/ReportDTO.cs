@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.Api.Core.Reports
+namespace codeRR.Server.Api.Core.Reports
 {
     /// <summary>
     ///     Report representation.

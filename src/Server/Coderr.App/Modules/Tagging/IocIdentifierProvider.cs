@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Griffin.Container;
 
-namespace codeRR.App.Modules.Tagging
+namespace codeRR.Server.App.Modules.Tagging
 {
     /// <summary>
     ///     Uses the Container to find all tag identifiers.

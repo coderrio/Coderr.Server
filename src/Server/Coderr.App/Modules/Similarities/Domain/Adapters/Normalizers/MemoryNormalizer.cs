@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.App.Modules.Similarities.Domain.Adapters.Normalizers
+namespace codeRR.Server.App.Modules.Similarities.Domain.Adapters.Normalizers
 {
     /// <summary>
     ///     Divides memory usage into ranges,

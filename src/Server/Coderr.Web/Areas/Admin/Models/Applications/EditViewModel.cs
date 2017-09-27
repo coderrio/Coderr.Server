@@ -1,4 +1,4 @@
-﻿namespace codeRR.Web.Areas.Admin.Models.Applications
+﻿namespace codeRR.Server.Web.Areas.Admin.Models.Applications
 {
     public class EditViewModel
     {

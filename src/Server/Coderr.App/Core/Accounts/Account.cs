@@ -2,7 +2,7 @@
 using System.Security.Authentication;
 using System.Security.Cryptography;
 
-namespace codeRR.App.Core.Accounts
+namespace codeRR.Server.App.Core.Accounts
 {
     /// <summary>
     ///     An account (i.e. just allows a user to login, but do not give access to teams etc).
@@ -172,7 +172,7 @@ namespace codeRR.App.Core.Accounts
         /// </summary>
         /// <remarks>
         ///     <para>
-        ///         Changes user state to <see cref="Accounts.AccountState.ResetPassword" /> and generates a new
+        ///         Changes user state to <see cref="codeRR.App.Core.Accounts.AccountState.ResetPassword" /> and generates a new
         ///         <see cref="ActivationKey" />.
         ///     </para>
         /// </remarks>

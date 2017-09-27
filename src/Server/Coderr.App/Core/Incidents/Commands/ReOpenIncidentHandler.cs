@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Incidents.Commands;
+using codeRR.Server.Api.Core.Incidents.Events;
 using DotNetCqs;
 using Griffin.Container;
-using codeRR.Api.Core.Incidents.Commands;
-using codeRR.Api.Core.Incidents.Events;
 
-namespace codeRR.App.Core.Incidents.Commands
+namespace codeRR.Server.App.Core.Incidents.Commands
 {
     /// <summary>
     /// Uses the incident repository and the domain entity to apply the change.

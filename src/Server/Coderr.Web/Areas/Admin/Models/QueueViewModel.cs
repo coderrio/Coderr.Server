@@ -1,4 +1,4 @@
-﻿namespace codeRR.Web.Areas.Admin.Models
+﻿namespace codeRR.Server.Web.Areas.Admin.Models
 {
     public class QueueViewModel
     {

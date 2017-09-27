@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace codeRR.Api.Core.Messaging
+namespace codeRR.Server.Api.Core.Messaging
 {
     /// <summary>
     ///     Used to send emails.

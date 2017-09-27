@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Accounts.Queries;
 using DotNetCqs;
 using Griffin.Container;
-using codeRR.Api.Core.Accounts.Queries;
 
-namespace codeRR.App.Core.Accounts.Queries
+namespace codeRR.Server.App.Core.Accounts.Queries
 {
     /// <summary>
     ///     Handler of <see cref="FindAccountByUserName" />.

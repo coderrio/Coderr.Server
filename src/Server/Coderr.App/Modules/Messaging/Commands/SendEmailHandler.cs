@@ -4,15 +4,15 @@ using System.Net;
 using System.Net.Mail;
 using System.Net.Mime;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Accounts.Queries;
+using codeRR.Server.Api.Core.Messaging.Commands;
+using codeRR.Server.App.Configuration;
+using codeRR.Server.Infrastructure.Configuration;
+using codeRR.Server.Infrastructure.Net;
 using DotNetCqs;
 using Griffin.Container;
-using codeRR.Api.Core.Accounts.Queries;
-using codeRR.Api.Core.Messaging.Commands;
-using codeRR.App.Configuration;
-using codeRR.Infrastructure.Configuration;
-using codeRR.Infrastructure.Net;
 
-namespace codeRR.App.Modules.Messaging.Commands
+namespace codeRR.Server.App.Modules.Messaging.Commands
 {
     [Component]
     internal class SendEmailHandler : ICommandHandler<SendEmail>
@@ -25,9 +25,7 @@ namespace codeRR.App.Modules.Messaging.Commands
             _queryBus = queryBus;
         }
 
-#pragma warning disable 1998
         public async Task ExecuteAsync(SendEmail command)
-#pragma warning restore 1998
         {
             var client = CreateSmtpClient();
             if (client == null)
@@ -46,7 +44,7 @@ namespace codeRR.App.Modules.Messaging.Commands
                 if (int.TryParse(recipient.Address, out accountId))
                 {
                     var query = new GetAccountEmailById(accountId);
-                    var emailAddress = await _queryBus.QueryAsync(query);
+                    var emailAddress = await _queryBus.QueryAsync<string>(query);
                     email.To.Add(new MailAddress(emailAddress, recipient.Name));
                 }
                 else

@@ -1,4 +1,4 @@
-﻿namespace codeRR.Api.Core.Invitations.Queries
+﻿namespace codeRR.Server.Api.Core.Invitations.Queries
 {
     /// <summary>
     ///     Result for <see cref="GetInvitationByKey" />.

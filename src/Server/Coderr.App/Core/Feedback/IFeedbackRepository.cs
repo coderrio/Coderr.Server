@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
-namespace codeRR.App.Core.Feedback
+namespace codeRR.Server.App.Core.Feedback
 {
     /// <summary>
     ///     Feedback

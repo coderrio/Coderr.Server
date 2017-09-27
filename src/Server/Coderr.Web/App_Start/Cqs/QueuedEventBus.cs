@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using codeRR.Server.Infrastructure.Queueing;
 using DotNetCqs;
 using Griffin.ApplicationServices;
 using log4net;
 using Newtonsoft.Json;
-using codeRR.Infrastructure.Queueing;
 
-namespace codeRR.Web.Cqs
+namespace codeRR.Server.Web.Cqs
 {
     public class QueuedEventBus : ApplicationServiceThread, IEventBus, IDisposable
     {

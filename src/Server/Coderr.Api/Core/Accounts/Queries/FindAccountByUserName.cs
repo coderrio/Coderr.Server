@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace codeRR.Api.Core.Accounts.Queries
+namespace codeRR.Server.Api.Core.Accounts.Queries
 {
     /// <summary>
     ///     Find an account by the given user name

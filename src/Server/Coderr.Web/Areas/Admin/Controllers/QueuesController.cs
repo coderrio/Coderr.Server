@@ -1,10 +1,10 @@
 ﻿using System.Web.Mvc;
-using codeRR.Infrastructure;
-using codeRR.Infrastructure.Configuration;
-using codeRR.Infrastructure.Queueing;
-using codeRR.Web.Areas.Admin.Models;
+using codeRR.Server.Infrastructure;
+using codeRR.Server.Infrastructure.Configuration;
+using codeRR.Server.Infrastructure.Queueing;
+using codeRR.Server.Web.Areas.Admin.Models;
 
-namespace codeRR.Web.Areas.Admin.Controllers
+namespace codeRR.Server.Web.Areas.Admin.Controllers
 {
     [Authorize]
     public class QueuesController : Controller

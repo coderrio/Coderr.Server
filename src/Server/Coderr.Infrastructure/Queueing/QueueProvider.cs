@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Configuration;
+using codeRR.Server.Infrastructure.Configuration;
+using codeRR.Server.Infrastructure.Queueing.Ado;
+using codeRR.Server.Infrastructure.Queueing.Msmq;
 using Griffin.Container;
-using codeRR.Infrastructure.Configuration;
-using codeRR.Infrastructure.Queueing.Ado;
-using codeRR.Infrastructure.Queueing.Msmq;
 
-namespace codeRR.Infrastructure.Queueing
+namespace codeRR.Server.Infrastructure.Queueing
 {
     /// <summary>
     ///     Purpose of this class is to abstract away the queue creation and coupling to specific implementations (and their

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using codeRR.Server.Infrastructure.Configuration;
 using FluentAssertions;
-using codeRR.Infrastructure.Configuration;
 using Xunit;
 
-namespace codeRR.App.Tests.Configuration
+namespace codeRR.Server.App.Tests.Configuration
 {
     public class DictionaryExtensionsTests
     {

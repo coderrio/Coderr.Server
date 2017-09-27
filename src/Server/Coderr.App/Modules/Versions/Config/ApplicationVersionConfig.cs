@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using codeRR.Infrastructure.Configuration;
+using codeRR.Server.Infrastructure.Configuration;
 
-namespace codeRR.App.Modules.Versions.Config
+namespace codeRR.Server.App.Modules.Versions.Config
 {
     /// <summary>
     ///     Configuration for assembly versions

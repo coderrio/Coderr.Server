@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using codeRR.Infrastructure.Security;
+using codeRR.Server.Infrastructure.Security;
 
-namespace codeRR.App.Core.ApiKeys
+namespace codeRR.Server.App.Core.ApiKeys
 {
     /// <summary>
     ///     A generated API key which can be used to call codeRR´s HTTP api.

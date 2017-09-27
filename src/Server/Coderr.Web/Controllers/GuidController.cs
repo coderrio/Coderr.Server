@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 
-namespace codeRR.Web.Controllers
+namespace codeRR.Server.Web.Controllers
 {
     [Authorize]
     public class GuidController : Controller

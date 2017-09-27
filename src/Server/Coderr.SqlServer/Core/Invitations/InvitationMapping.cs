@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
+using codeRR.Server.App.Core.Invitations;
+using codeRR.Server.SqlServer.Tools;
 using Griffin.Data.Mapper;
-using codeRR.App.Core.Invitations;
-using codeRR.SqlServer.Tools;
 
-namespace codeRR.SqlServer.Core.Invitations
+namespace codeRR.Server.SqlServer.Core.Invitations
 {
     public class InvitationMapping : CrudEntityMapper<Invitation>
     {

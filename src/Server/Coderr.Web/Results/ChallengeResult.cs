@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 
-namespace codeRR.Web.Results
+namespace codeRR.Server.Web.Results
 {
     public class ChallengeResult : IHttpActionResult
     {

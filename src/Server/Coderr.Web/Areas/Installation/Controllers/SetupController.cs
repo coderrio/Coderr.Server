@@ -4,12 +4,12 @@ using System.Configuration;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using codeRR.App.Configuration;
-using codeRR.Infrastructure;
-using codeRR.Infrastructure.Configuration;
-using codeRR.Web.Areas.Installation.Models;
+using codeRR.Server.App.Configuration;
+using codeRR.Server.Infrastructure;
+using codeRR.Server.Infrastructure.Configuration;
+using codeRR.Server.Web.Areas.Installation.Models;
 
-namespace codeRR.Web.Areas.Installation.Controllers
+namespace codeRR.Server.Web.Areas.Installation.Controllers
 {
     [OutputCache(Duration = 0, NoStore = true)]
     public class SetupController : Controller

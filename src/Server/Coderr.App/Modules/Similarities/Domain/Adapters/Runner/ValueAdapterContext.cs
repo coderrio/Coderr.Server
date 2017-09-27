@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using codeRR.Api.Core.Reports;
+using codeRR.Server.Api.Core.Reports;
 
-namespace codeRR.App.Modules.Similarities.Domain.Adapters.Runner
+namespace codeRR.Server.App.Modules.Similarities.Domain.Adapters.Runner
 {
     /// <summary>
     ///     Context for <see cref="IValueAdapter" />.

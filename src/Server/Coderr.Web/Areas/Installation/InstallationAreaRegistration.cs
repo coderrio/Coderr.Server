@@ -1,7 +1,7 @@
 ﻿using System.Configuration;
 using System.Web.Mvc;
 
-namespace codeRR.Web.Areas.Installation
+namespace codeRR.Server.Web.Areas.Installation
 {
     public class InstallationAreaRegistration : AreaRegistration
     {

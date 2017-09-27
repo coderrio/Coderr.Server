@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace codeRR.App.Modules.Messaging.Templating.Formatting
+namespace codeRR.Server.App.Modules.Messaging.Templating.Formatting
 {
     /// <summary>
     ///     Converts an object into a dictionary (to be able to process it in the template)

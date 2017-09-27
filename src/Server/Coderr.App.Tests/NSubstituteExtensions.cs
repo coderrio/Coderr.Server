@@ -4,7 +4,7 @@ using System.Linq;
 using NSubstitute;
 using NSubstitute.Core;
 
-namespace codeRR.App.Tests
+namespace codeRR.Server.App.Tests
 {
     internal static class NSubstituteExtensions
     {

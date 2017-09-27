@@ -2,7 +2,7 @@ using System;
 using Griffin.Logging;
 using log4net;
 
-namespace codeRR.Web.Infrastructure.Logging
+namespace codeRR.Server.Web.Infrastructure.Logging
 {
     internal class LogAdapter : ILogger
     {

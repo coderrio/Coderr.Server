@@ -1,7 +1,7 @@
 using System.Linq;
-using codeRR.App.Modules.Similarities.Domain;
+using codeRR.Server.App.Modules.Similarities.Domain;
 
-namespace codeRR.SqlServer.Modules.Similarities.Entities
+namespace codeRR.Server.SqlServer.Modules.Similarities.Entities
 {
     public class ContextCollectionPropertyDbEntity
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace codeRR.Api.Modules.Triggers.Commands
+namespace codeRR.Server.Api.Modules.Triggers.Commands
 {
     /// <summary>
     ///     Create a new trigger

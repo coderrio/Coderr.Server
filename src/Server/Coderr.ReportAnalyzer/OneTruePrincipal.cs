@@ -2,7 +2,7 @@
 using System.Security.Principal;
 using System.Threading;
 
-namespace codeRR.ReportAnalyzer
+namespace codeRR.Server.ReportAnalyzer
 {
     /// <summary>
     ///     codeRR principal

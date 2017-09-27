@@ -1,11 +1,11 @@
 ﻿using System.Data.Common;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Modules.Triggers.Commands;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
-using codeRR.Api.Modules.Triggers.Commands;
 
-namespace codeRR.SqlServer.Modules.Triggers
+namespace codeRR.Server.SqlServer.Modules.Triggers
 {
     [Component]
     public class DeleteTriggerHandler : ICommandHandler<DeleteTrigger>

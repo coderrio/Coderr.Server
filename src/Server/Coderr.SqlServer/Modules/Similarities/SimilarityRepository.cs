@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using codeRR.Server.App.Modules.Similarities.Domain;
+using codeRR.Server.Infrastructure;
+using codeRR.Server.SqlServer.Modules.Similarities.Entities;
+using codeRR.Server.SqlServer.Tools;
 using Griffin.Container;
 using Griffin.Data;
 using log4net;
-using codeRR.App.Modules.Similarities.Domain;
-using codeRR.Infrastructure;
-using codeRR.SqlServer.Modules.Similarities.Entities;
-using codeRR.SqlServer.Tools;
 
-namespace codeRR.SqlServer.Modules.Similarities
+namespace codeRR.Server.SqlServer.Modules.Similarities
 {
     [Component]
     public class SimilarityRepository : ISimilarityRepository

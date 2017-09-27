@@ -4,7 +4,7 @@ using System.Security.Authentication;
 using System.Security.Claims;
 using System.Security.Principal;
 
-namespace codeRR.Infrastructure.Security
+namespace codeRR.Server.Infrastructure.Security
 {
     /// <summary>
     ///     Our codeRR specific extensions for claims handling.

@@ -1,4 +1,4 @@
-namespace codeRR.App.Modules.ReportSpikes
+namespace codeRR.Server.App.Modules.ReportSpikes
 {
     /// <summary>
     ///     Detected a new spike

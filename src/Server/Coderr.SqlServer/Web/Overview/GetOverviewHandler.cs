@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Web.Overview.Queries;
+using codeRR.Server.Infrastructure.Security;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
-using codeRR.Api.Web.Overview.Queries;
-using codeRR.Infrastructure.Security;
 
-namespace codeRR.SqlServer.Web.Overview
+namespace codeRR.Server.SqlServer.Web.Overview
 {
     [Component]
     internal class GetOverviewHandler : IQueryHandler<GetOverview, GetOverviewResult>

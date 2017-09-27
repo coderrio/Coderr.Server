@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core;
+using codeRR.Server.Api.Core.Users.Commands;
+using codeRR.Server.App.Core.Notifications;
 using DotNetCqs;
 using Griffin.Container;
-using codeRR.Api.Core;
-using codeRR.Api.Core.Users.Commands;
-using codeRR.App.Core.Notifications;
 
-namespace codeRR.App.Core.Users.WebApi
+namespace codeRR.Server.App.Core.Users.WebApi
 {
     /// <summary>
     ///     Handler for <see cref="UpdateNotifications" />.

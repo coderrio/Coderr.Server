@@ -1,7 +1,7 @@
 ﻿using System;
 using Griffin.Container;
 
-namespace codeRR.App.Modules.Tagging.Identifiers
+namespace codeRR.Server.App.Modules.Tagging.Identifiers
 {
     /// <summary>
     ///     Adds the "ADO.NET" tag if "System.Data" assembly have been loaded.

@@ -3,13 +3,13 @@ using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Incidents.Events;
 using DotNetCqs;
 using Griffin.Container;
 using log4net;
 using Newtonsoft.Json.Linq;
-using codeRR.Api.Core.Incidents.Events;
 
-namespace codeRR.App.Modules.Geolocation.EventHandlers
+namespace codeRR.Server.App.Modules.Geolocation.EventHandlers
 {
     /// <summary>
     ///     Responsible of looking up geographic position of the IP address that delivered the report.

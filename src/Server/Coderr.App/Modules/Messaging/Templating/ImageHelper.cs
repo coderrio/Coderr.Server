@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace codeRR.App.Modules.Messaging.Templating
+namespace codeRR.Server.App.Modules.Messaging.Templating
 {
     /// <summary>
     ///     http://stackoverflow.com/questions/111345/getting-image-dimensions-without-reading-the-entire-file

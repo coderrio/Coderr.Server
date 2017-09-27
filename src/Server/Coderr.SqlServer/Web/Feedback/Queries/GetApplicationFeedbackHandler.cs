@@ -1,12 +1,12 @@
 using System.Linq;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Web.Feedback.Queries;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
-using codeRR.Api.Web.Feedback.Queries;
 
-namespace codeRR.SqlServer.Web.Feedback.Queries
+namespace codeRR.Server.SqlServer.Web.Feedback.Queries
 {
     [Component]
     public class GetApplicationFeedbackHandler :
@@ -36,7 +36,7 @@ WHERE IncidentFeedback.ApplicationId = @appId
                 {
                     Items = items.Where(x => !string.IsNullOrEmpty(x.Message)).ToArray(),
                     Emails =
-                        items.Where(x => !string.IsNullOrEmpty(x.EmailAddress)).Select(x => x.EmailAddress).ToList()
+                        items.Where(x => !string.IsNullOrEmpty(x.EmailAddress)).Select(x => x.EmailAddress).ToList<string>()
                 };
             }
         }

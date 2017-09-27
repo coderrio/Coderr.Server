@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace codeRR.Api
+namespace codeRR.Server.Api
 {
     /// <summary>
     ///     The handler modifies the permissions for the current user.

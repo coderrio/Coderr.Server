@@ -1,24 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using codeRR.Server.App.Core.Accounts;
+using codeRR.Server.App.Core.Applications;
+using codeRR.Server.App.Core.Users;
+using codeRR.Server.ReportAnalyzer.Domain.Reports;
+using codeRR.Server.SqlServer.Analysis;
+using codeRR.Server.SqlServer.Core.Accounts;
+using codeRR.Server.SqlServer.Core.Applications;
+using codeRR.Server.SqlServer.Core.Users;
 using Griffin.Data;
 using Griffin.Data.Mapper;
-using codeRR.App.Core.Accounts;
-using codeRR.App.Core.Applications;
-using codeRR.App.Core.Incidents;
-using codeRR.App.Core.Users;
-using codeRR.Infrastructure;
-using codeRR.ReportAnalyzer.Domain.Reports;
-using codeRR.SqlServer.Analysis;
-using codeRR.SqlServer.Core.Accounts;
-using codeRR.SqlServer.Core.Applications;
-using codeRR.SqlServer.Core.Incidents;
-using codeRR.SqlServer.Core.Users;
 
-namespace codeRR.SqlServer.Tests
+namespace codeRR.Server.SqlServer.Tests
 {
     public class TestTools : IDisposable
     {

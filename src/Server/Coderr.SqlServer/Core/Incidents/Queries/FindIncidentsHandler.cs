@@ -3,15 +3,15 @@ using System.Data.Common;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Incidents;
+using codeRR.Server.Api.Core.Incidents.Queries;
+using codeRR.Server.Infrastructure.Security;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
-using codeRR.Api.Core.Incidents;
-using codeRR.Api.Core.Incidents.Queries;
-using codeRR.Infrastructure.Security;
 
-namespace codeRR.SqlServer.Core.Incidents.Queries
+namespace codeRR.Server.SqlServer.Core.Incidents.Queries
 {
     [Component]
     public class FindIncidentsHandler : IQueryHandler<FindIncidents, FindIncidentResult>

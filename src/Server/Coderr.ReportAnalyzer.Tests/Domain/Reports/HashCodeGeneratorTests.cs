@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using codeRR.Server.ReportAnalyzer.Domain.Reports;
 using FluentAssertions;
 using Griffin.Container;
 using NSubstitute;
-using codeRR.ReportAnalyzer.Domain.Reports;
 using Xunit;
 
-namespace codeRR.ReportAnalyzer.Tests.Domain.Reports
+namespace codeRR.Server.ReportAnalyzer.Tests.Domain.Reports
 {
     public class HashCodeGeneratorTests
     {

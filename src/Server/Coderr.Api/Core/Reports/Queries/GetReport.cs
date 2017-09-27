@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace codeRR.Api.Core.Reports.Queries
+namespace codeRR.Server.Api.Core.Reports.Queries
 {
     /// <summary>
     ///     Get report (i.e. exception and context collections)

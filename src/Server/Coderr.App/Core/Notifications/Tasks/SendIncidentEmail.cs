@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Incidents;
+using codeRR.Server.Api.Core.Messaging;
+using codeRR.Server.Api.Core.Messaging.Commands;
+using codeRR.Server.Api.Core.Reports;
+using codeRR.Server.App.Configuration;
+using codeRR.Server.Infrastructure.Configuration;
 using DotNetCqs;
-using codeRR.Api.Core.Incidents;
-using codeRR.Api.Core.Messaging;
-using codeRR.Api.Core.Messaging.Commands;
-using codeRR.Api.Core.Reports;
-using codeRR.App.Configuration;
-using codeRR.Infrastructure.Configuration;
 
-namespace codeRR.App.Core.Notifications.Tasks
+namespace codeRR.Server.App.Core.Notifications.Tasks
 {
     /// <summary>
     ///     Send incident email

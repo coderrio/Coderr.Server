@@ -1,4 +1,4 @@
-﻿namespace codeRR.Api.Modules.Triggers
+﻿namespace codeRR.Server.Api.Modules.Triggers
 {
     /// <summary>
     ///     Make a decision based on exception information

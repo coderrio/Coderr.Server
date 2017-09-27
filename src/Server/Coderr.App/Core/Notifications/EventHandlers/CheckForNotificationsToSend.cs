@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Incidents.Events;
+using codeRR.Server.App.Core.Notifications.Tasks;
+using codeRR.Server.App.Core.Users;
 using DotNetCqs;
 using Griffin.Container;
-using codeRR.Api.Core.Incidents.Events;
-using codeRR.App.Core.Notifications.Tasks;
-using codeRR.App.Core.Users;
 
-namespace codeRR.App.Core.Notifications.EventHandlers
+namespace codeRR.Server.App.Core.Notifications.EventHandlers
 {
     /// <summary>
     ///     Responsible of sending notifications when a new report have been analyzed.

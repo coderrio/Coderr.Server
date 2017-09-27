@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
+using codeRR.Server.App.Core.Reports.Config;
+using codeRR.Server.Infrastructure.Configuration;
 using Griffin.ApplicationServices;
 using Griffin.Container;
 using Griffin.Data;
 using log4net;
-using codeRR.App.Core.Reports.Config;
-using codeRR.Infrastructure.Configuration;
 
-namespace codeRR.App.Core.Reports.Jobs
+namespace codeRR.Server.App.Core.Reports.Jobs
 {
     /// <summary>
     ///     Delete oldest reports for incidents with report count cap.

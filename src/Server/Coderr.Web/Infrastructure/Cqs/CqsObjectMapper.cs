@@ -4,7 +4,7 @@ using System.Reflection;
 using DotNetCqs;
 using Newtonsoft.Json;
 
-namespace codeRR.Web.Infrastructure.Cqs
+namespace codeRR.Server.Web.Infrastructure.Cqs
 {
     /// <summary>
     ///     Used to map objects that is received from other languages (i.e. using different techniques to identify the .NET

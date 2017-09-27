@@ -1,13 +1,13 @@
 ﻿using System;
+using codeRR.Server.Api.Core.ApiKeys.Queries;
+using codeRR.Server.App.Core.ApiKeys;
+using codeRR.Server.SqlServer.Core.ApiKeys.Queries;
 using FluentAssertions;
 using Griffin.Data;
 using Griffin.Data.Mapper;
-using codeRR.Api.Core.ApiKeys.Queries;
-using codeRR.App.Core.ApiKeys;
-using codeRR.SqlServer.Core.ApiKeys.Queries;
 using Xunit;
 
-namespace codeRR.SqlServer.Tests.Core.ApiKeys.Queries
+namespace codeRR.Server.SqlServer.Tests.Core.ApiKeys.Queries
 {
     [Collection(MapperInit.NAME)]
     public class ListApiKeysHandlerTests : IDisposable
@@ -44,8 +44,8 @@ namespace codeRR.SqlServer.Tests.Core.ApiKeys.Queries
             var result = await sut.ExecuteAsync(query);
 
             result.Keys.Should().NotBeEmpty();
-            result.Keys[0].ApiKey.Should().Be(_existingEntity.GeneratedKey);
-            result.Keys[0].ApplicationName.Should().Be(_existingEntity.ApplicationName);
+            AssertionExtensions.Should((string) result.Keys[0].ApiKey).Be(_existingEntity.GeneratedKey);
+            AssertionExtensions.Should((string) result.Keys[0].ApplicationName).Be(_existingEntity.ApplicationName);
         }
     }
 }

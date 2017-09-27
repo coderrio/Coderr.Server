@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 
-namespace codeRR.Web.Areas.Receiver.Helpers
+namespace codeRR.Server.Web.Areas.Receiver.Helpers
 {
     public class SamplingSetting
     {

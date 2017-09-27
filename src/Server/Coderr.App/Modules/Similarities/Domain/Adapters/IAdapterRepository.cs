@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace codeRR.App.Modules.Similarities.Domain.Adapters
+namespace codeRR.Server.App.Modules.Similarities.Domain.Adapters
 {
     /// <summary>
     ///     Keeps track of all adapters which are used to normalize the incoming values to be able to find similarities.

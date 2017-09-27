@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.ReportAnalyzer.Inbound.Models
+namespace codeRR.Server.ReportAnalyzer.Inbound.Models
 {
     /// <summary>
     ///     Report as uploaded by the client API.

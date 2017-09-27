@@ -5,10 +5,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Filters;
-using codeRR.App.Core.ApiKeys;
-using codeRR.Infrastructure.Security;
+using codeRR.Server.App.Core.ApiKeys;
+using codeRR.Server.Infrastructure.Security;
 
-namespace codeRR.Web.Infrastructure.Auth
+namespace codeRR.Server.Web.Infrastructure.Auth
 {
     public class ApiKeyAuthenticator : IAuthenticationFilter
     {

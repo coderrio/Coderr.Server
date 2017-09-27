@@ -1,8 +1,8 @@
-﻿using Griffin.Data.Mapper;
-using codeRR.App.Core.Incidents;
-using codeRR.SqlServer.Tools;
+﻿using codeRR.Server.App.Core.Incidents;
+using codeRR.Server.SqlServer.Tools;
+using Griffin.Data.Mapper;
 
-namespace codeRR.SqlServer.Core.Incidents
+namespace codeRR.Server.SqlServer.Core.Incidents
 {
     public class IncidentMapper : CrudEntityMapper<Incident>
     {

@@ -2,12 +2,12 @@
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using codeRR.Server.App.Configuration;
+using codeRR.Server.Infrastructure.Configuration;
 using log4net;
 using Newtonsoft.Json;
-using codeRR.App.Configuration;
-using codeRR.Infrastructure.Configuration;
 
-namespace codeRR.App.Modules.Triggers.Domain.Actions
+namespace codeRR.Server.App.Modules.Triggers.Domain.Actions
 {
     /// <summary>
     ///     Send SMS (through Gauffin Interactive)

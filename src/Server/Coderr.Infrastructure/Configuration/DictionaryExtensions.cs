@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace codeRR.Infrastructure.Configuration
+namespace codeRR.Server.Infrastructure.Configuration
 {
     /// <summary>
     ///     Moves otherwise repeated conversions to a single place.

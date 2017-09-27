@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Accounts.Events;
 using DotNetCqs;
 using Griffin.Container;
-using codeRR.Api.Core.Accounts.Events;
 
-namespace codeRR.App.Core.Users.EventHandlers
+namespace codeRR.Server.App.Core.Users.EventHandlers
 {
     /// <summary>
     ///     Responsible of creating an user entity when a new account is created.

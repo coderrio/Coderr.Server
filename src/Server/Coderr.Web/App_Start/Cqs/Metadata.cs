@@ -3,7 +3,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace codeRR.Web.Cqs
+namespace codeRR.Server.Web.Cqs
 {
     [Serializable]
     public class Metadata

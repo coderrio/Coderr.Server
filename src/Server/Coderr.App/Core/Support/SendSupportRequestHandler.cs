@@ -2,13 +2,13 @@
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Support;
+using codeRR.Server.App.Configuration;
+using codeRR.Server.Infrastructure.Configuration;
 using DotNetCqs;
 using Griffin.Container;
-using codeRR.Api.Core.Support;
-using codeRR.App.Configuration;
-using codeRR.Infrastructure.Configuration;
 
-namespace codeRR.App.Core.Support
+namespace codeRR.Server.App.Core.Support
 {
     /// <summary>
     ///     Sends a support request to the codeRR Team.

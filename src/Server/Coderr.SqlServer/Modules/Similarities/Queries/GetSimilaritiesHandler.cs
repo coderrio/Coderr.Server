@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Modules.ContextData.Queries;
+using codeRR.Server.Infrastructure;
+using codeRR.Server.SqlServer.Modules.Similarities.Entities;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
 using log4net;
-using codeRR.Api.Modules.ContextData.Queries;
-using codeRR.Infrastructure;
-using codeRR.SqlServer.Modules.Similarities.Entities;
 
-namespace codeRR.SqlServer.Modules.Similarities.Queries
+namespace codeRR.Server.SqlServer.Modules.Similarities.Queries
 {
     [Component]
     public class GetSimilaritiesHandler : IQueryHandler<GetSimilarities, GetSimilaritiesResult>
@@ -42,7 +42,7 @@ namespace codeRR.SqlServer.Modules.Similarities.Queries
                         col.Similarities = (from prop in properties
                             let values =
                                 prop.Values.Select(x => new GetSimilaritiesValue(x.Value, x.Percentage, x.Count))
-                            select new GetSimilaritiesSimilarity(prop.Name) {Values = values.ToArray()}
+                            select new GetSimilaritiesSimilarity(prop.Name) {Values = Enumerable.ToArray(values)}
                             ).ToArray();
                         collections.Add(col);
                     }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.App.Modules.Triggers.Domain.Rules
+namespace codeRR.Server.App.Modules.Triggers.Domain.Rules
 {
     /// <summary>
     ///     Base for trigger rules

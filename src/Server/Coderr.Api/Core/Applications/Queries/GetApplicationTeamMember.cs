@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.Api.Core.Applications.Queries
+namespace codeRR.Server.Api.Core.Applications.Queries
 {
     /// <summary>
     ///     Item for <see cref="GetApplicationTeamResult" />.

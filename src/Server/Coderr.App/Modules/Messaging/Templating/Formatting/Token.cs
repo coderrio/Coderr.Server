@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.App.Modules.Messaging.Templating.Formatting
+namespace codeRR.Server.App.Modules.Messaging.Templating.Formatting
 {
     /// <summary>
     ///     A token when parsing the template text

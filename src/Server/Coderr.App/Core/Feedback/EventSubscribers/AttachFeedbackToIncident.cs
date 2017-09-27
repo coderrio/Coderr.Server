@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Feedback.Events;
+using codeRR.Server.Api.Core.Incidents.Events;
 using DotNetCqs;
 using Griffin.Container;
-using codeRR.Api.Core.Feedback.Events;
-using codeRR.Api.Core.Incidents.Events;
 
-namespace codeRR.App.Core.Feedback.EventSubscribers
+namespace codeRR.Server.App.Core.Feedback.EventSubscribers
 {
     /// <summary>
     ///     Responsible of attaching feedback to incidents when the feedback was uploaded before the actual incident.

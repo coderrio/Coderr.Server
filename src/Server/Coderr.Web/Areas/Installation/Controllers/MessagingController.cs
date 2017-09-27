@@ -1,9 +1,9 @@
 ﻿using System.Web.Mvc;
-using codeRR.App.Modules.Messaging.Commands;
-using codeRR.Infrastructure.Configuration;
-using codeRR.Web.Areas.Installation.Models;
+using codeRR.Server.App.Modules.Messaging.Commands;
+using codeRR.Server.Infrastructure.Configuration;
+using codeRR.Server.Web.Areas.Installation.Models;
 
-namespace codeRR.Web.Areas.Installation.Controllers
+namespace codeRR.Server.Web.Areas.Installation.Controllers
 {
     [OutputCache(Duration = 0, NoStore = true)]
     public class MessagingController : Controller

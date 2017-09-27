@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace codeRR.App.Modules.Triggers
+namespace codeRR.Server.App.Modules.Triggers
 {
     /// <summary>
     ///     Base class for custom JSON serializers.

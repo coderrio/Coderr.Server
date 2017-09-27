@@ -1,10 +1,10 @@
 ﻿using System;
+using codeRR.Server.App.Modules.Triggers.Domain;
+using codeRR.Server.App.Modules.Triggers.Domain.Rules;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using codeRR.App.Modules.Triggers.Domain;
-using codeRR.App.Modules.Triggers.Domain.Rules;
 
-namespace codeRR.App.Modules.Triggers
+namespace codeRR.Server.App.Modules.Triggers
 {
     /// <summary>
     ///     Handles our rule inheritance in a more elegant way

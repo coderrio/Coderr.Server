@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Griffin.Data;
 
-namespace codeRR.App.Core.Users
+namespace codeRR.Server.App.Core.Users
 {
     /// <summary>
     ///     User repository

@@ -1,8 +1,8 @@
 using System;
-using codeRR.App.Configuration;
-using codeRR.Infrastructure.Configuration;
+using codeRR.Server.App.Configuration;
+using codeRR.Server.Infrastructure.Configuration;
 
-namespace codeRR.App.Tests
+namespace codeRR.Server.App.Tests
 {
     public class TestStore : ConfigurationStore
     {

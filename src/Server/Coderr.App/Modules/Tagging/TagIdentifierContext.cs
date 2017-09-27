@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using codeRR.Api.Core.Reports;
-using codeRR.App.Modules.Tagging.Domain;
+using codeRR.Server.Api.Core.Reports;
+using codeRR.Server.App.Modules.Tagging.Domain;
 
-namespace codeRR.App.Modules.Tagging
+namespace codeRR.Server.App.Modules.Tagging
 {
     /// <summary>
     ///     Context used when trying to identify StackOverflow.com tags
@@ -102,7 +102,7 @@ namespace codeRR.App.Modules.Tagging
             if (collectionName == null) throw new ArgumentNullException(nameof(collectionName));
             if (propertyName == null) throw new ArgumentNullException(nameof(propertyName));
 
-            var assemblies = _reportToAnalyze.ContextCollections.FirstOrDefault(x => x.Name == collectionName);
+            var assemblies = Enumerable.FirstOrDefault(_reportToAnalyze.ContextCollections, x => x.Name == collectionName);
             if (assemblies == null)
                 return null;
 

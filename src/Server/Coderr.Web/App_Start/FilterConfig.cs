@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace codeRR.Web
+namespace codeRR.Server.Web
 {
     public class FilterConfig
     {

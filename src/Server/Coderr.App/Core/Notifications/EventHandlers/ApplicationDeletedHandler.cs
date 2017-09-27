@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Applications.Events;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
-using codeRR.Api.Core.Applications.Events;
 
-namespace codeRR.App.Core.Notifications.EventHandlers
+namespace codeRR.Server.App.Core.Notifications.EventHandlers
 {
     /// <summary>
     ///     Will delete all reports for the given application

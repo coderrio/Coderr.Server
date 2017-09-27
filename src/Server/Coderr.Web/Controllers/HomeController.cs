@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Configuration;
 using System.Web.Mvc;
-using codeRR.Api.Core.Applications;
-using codeRR.Api.Core.Applications.Commands;
 
-namespace codeRR.Web.Controllers
+namespace codeRR.Server.Web.Controllers
 {
     [Authorize]
     public class HomeController : Controller

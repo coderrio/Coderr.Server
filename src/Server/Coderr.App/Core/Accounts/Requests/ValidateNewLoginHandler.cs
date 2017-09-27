@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Accounts.Requests;
 using DotNetCqs;
 using Griffin.Container;
-using codeRR.Api.Core.Accounts.Requests;
 
-namespace codeRR.App.Core.Accounts.Requests
+namespace codeRR.Server.App.Core.Accounts.Requests
 {
     /// <summary>
     ///     Handler for <see cref="ValidateNewLogin" />.

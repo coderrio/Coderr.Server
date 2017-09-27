@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 using Griffin.Container;
 
-namespace codeRR.ReportAnalyzer.Domain.Reports
+namespace codeRR.Server.ReportAnalyzer.Domain.Reports
 {
     /// <summary>
     ///     Used to generate hash codes for incoming error reports

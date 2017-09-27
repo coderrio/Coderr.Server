@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using codeRR.Server.Api.Web.Overview.Queries;
 using FluentAssertions;
-using codeRR.Api.Web.Overview.Queries;
 using Xunit;
 
-namespace codeRR.App.Tests.Web.Overview.Queries
+namespace codeRR.Server.App.Tests.Web.Overview.Queries
 {
    public  class GetOverviewApplicationResultTests
     {
@@ -28,7 +24,7 @@ namespace codeRR.App.Tests.Web.Overview.Queries
             var sut = new GetOverviewApplicationResult("hello", DateTime.Today.AddDays(-30), 31);
             sut.AddValue(DateTime.Today, 10);
 
-            sut.Values[sut.Values.Length - 1].Should().Be(10);
+            AssertionExtensions.Should((int) sut.Values[sut.Values.Length - 1]).Be(10);
         }
     }
 }

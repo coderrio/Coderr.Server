@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace codeRR.App.Core.Accounts.CommandHandlers.Entities
+namespace codeRR.Server.App.Core.Accounts.CommandHandlers.Entities
 {
     /// <summary>
     ///     "private" entities which should not be exposed to the rest of the system.

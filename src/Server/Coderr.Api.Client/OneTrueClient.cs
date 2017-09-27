@@ -3,11 +3,11 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Client.Json;
 using DotNetCqs;
 using Newtonsoft.Json;
-using codeRR.Api.Client.Json;
 
-namespace codeRR.Api.Client
+namespace codeRR.Server.Api.Client
 {
     /// <summary>
     ///     Client for the codeRR server API

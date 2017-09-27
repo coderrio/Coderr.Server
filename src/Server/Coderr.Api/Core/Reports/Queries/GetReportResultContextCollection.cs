@@ -1,6 +1,6 @@
 using System;
 
-namespace codeRR.Api.Core.Reports.Queries
+namespace codeRR.Server.Api.Core.Reports.Queries
 {
     /// <summary>
     ///     Context collection for <see cref="GetReportResultContextCollection" />.

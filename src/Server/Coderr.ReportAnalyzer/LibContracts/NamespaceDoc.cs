@@ -1,4 +1,4 @@
-﻿namespace codeRR.ReportAnalyzer.LibContracts
+﻿namespace codeRR.Server.ReportAnalyzer.LibContracts
 {
     /// <summary>
     ///     These classes are created by the "Receiver" area when new reports are being received.

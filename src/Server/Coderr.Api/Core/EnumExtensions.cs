@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.Api.Core
+namespace codeRR.Server.Api.Core
 {
     /// <summary>
     ///     Extensions making it easier to work with enums

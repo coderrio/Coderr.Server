@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace codeRR.App.Modules.Triggers.Domain.Actions
+namespace codeRR.Server.App.Modules.Triggers.Domain.Actions
 {
     /// <summary>
     ///     Settings

@@ -4,20 +4,20 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using codeRR.Server.Api.Core.Applications;
+using codeRR.Server.App.Core.Accounts;
+using codeRR.Server.App.Core.Applications;
+using codeRR.Server.App.Core.Users;
+using codeRR.Server.Infrastructure;
+using codeRR.Server.Infrastructure.Security;
+using codeRR.Server.SqlServer.Core.Accounts;
+using codeRR.Server.SqlServer.Core.Applications;
+using codeRR.Server.SqlServer.Core.Users;
+using codeRR.Server.Web.Areas.Installation.Models;
 using Griffin.Data;
 using Microsoft.Owin.Security;
-using codeRR.Api.Core.Applications;
-using codeRR.App.Core.Accounts;
-using codeRR.App.Core.Applications;
-using codeRR.App.Core.Users;
-using codeRR.Infrastructure;
-using codeRR.Infrastructure.Security;
-using codeRR.SqlServer.Core.Accounts;
-using codeRR.SqlServer.Core.Applications;
-using codeRR.SqlServer.Core.Users;
-using codeRR.Web.Areas.Installation.Models;
 
-namespace codeRR.Web.Areas.Installation.Controllers
+namespace codeRR.Server.Web.Areas.Installation.Controllers
 {
     [OutputCache(Duration = 0, NoStore = true)]
     public class AccountController : Controller

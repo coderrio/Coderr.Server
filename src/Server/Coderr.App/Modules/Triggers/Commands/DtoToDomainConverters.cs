@@ -1,10 +1,10 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
-using codeRR.Api.Modules.Triggers;
-using codeRR.App.Modules.Triggers.Domain;
-using codeRR.App.Modules.Triggers.Domain.Rules;
+using codeRR.Server.Api.Modules.Triggers;
+using codeRR.Server.App.Modules.Triggers.Domain;
+using codeRR.Server.App.Modules.Triggers.Domain.Rules;
 
-namespace codeRR.App.Modules.Triggers.Commands
+namespace codeRR.Server.App.Modules.Triggers.Commands
 {
     /// <summary>
     ///     Convert DTOs to Entities.
@@ -53,8 +53,8 @@ namespace codeRR.App.Modules.Triggers.Commands
                 case TriggerFilterCondition.StartsWith:
                     return FilterCondition.StartsWith;
                 default:
-                    throw new FormatException(string.Format("Value '{0}' do not exist in the {1} enum.",
-                        filter, typeof(FilterCondition).Name));
+                    throw new FormatException(string.Format((string) "Value '{0}' do not exist in the {1} enum.",
+                        (object) filter, typeof(FilterCondition).Name));
             }
         }
 
@@ -77,8 +77,8 @@ namespace codeRR.App.Modules.Triggers.Commands
                 case TriggerRuleAction.ExecuteActions:
                     return FilterResult.Grant;
                 default:
-                    throw new FormatException(string.Format("Value '{0}' do not exist in the {1} enum.",
-                        ruleAction, typeof(FilterResult).Name));
+                    throw new FormatException(string.Format((string) "Value '{0}' do not exist in the {1} enum.",
+                        (object) ruleAction, typeof(FilterResult).Name));
             }
         }
 
@@ -97,8 +97,8 @@ namespace codeRR.App.Modules.Triggers.Commands
                 case LastTriggerActionDTO.ExecuteActions:
                     return LastTriggerAction.Grant;
                 default:
-                    throw new FormatException(string.Format("Value '{0}' do not exist in the {1} enum.",
-                        lastTriggerAction, typeof(LastTriggerAction).Name));
+                    throw new FormatException(string.Format((string) "Value '{0}' do not exist in the {1} enum.",
+                        (object) lastTriggerAction, typeof(LastTriggerAction).Name));
             }
         }
 

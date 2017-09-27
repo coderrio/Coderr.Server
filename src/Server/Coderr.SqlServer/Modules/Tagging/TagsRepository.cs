@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using codeRR.Server.App.Modules.Tagging;
+using codeRR.Server.App.Modules.Tagging.Domain;
 using Griffin.Container;
 using Griffin.Data;
-using codeRR.App.Modules.Tagging;
-using codeRR.App.Modules.Tagging.Domain;
 
-namespace codeRR.SqlServer.Modules.Tagging
+namespace codeRR.Server.SqlServer.Modules.Tagging
 {
     [Component]
     public class TagsRepository : ITagsRepository

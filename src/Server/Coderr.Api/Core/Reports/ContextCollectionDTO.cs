@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace codeRR.Api.Core.Reports
+namespace codeRR.Server.Api.Core.Reports
 {
     /// <summary>
     ///     Context collection DTO.

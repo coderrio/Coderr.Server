@@ -5,11 +5,12 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace codeRR.SqlServer
+namespace codeRR.Server.SqlServer
 {
     public class SchemaManager
     {
         private readonly Func<IDbConnection> _connectionFactory;
+        private const string SchemaNamespace = "codeRR.Server.SqlServer.Schema";
 
         public SchemaManager(Func<IDbConnection> connectionFactory)
         {
@@ -31,7 +32,7 @@ namespace codeRR.SqlServer
         {
             using (var con = _connectionFactory())
             {
-                var resourceName = "codeRR.SqlServer.Schema.Database.sql";
+                var resourceName = $"{SchemaNamespace}.Database.sql";
                 var res = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
                 var sql = new StreamReader(res).ReadToEnd();
                 using (var transaction = con.BeginTransaction())
@@ -57,7 +58,7 @@ namespace codeRR.SqlServer
                         var sql = "SELECT Version FROM DatabaseSchema";
                         cmd.CommandText = sql;
                         var result = cmd.ExecuteScalar();
-                        version = (int) result;
+                        version = (int)result;
                     }
                     catch (SqlException ex)
                     {
@@ -75,11 +76,10 @@ namespace codeRR.SqlServer
         public int GetLatestSchemaVersion()
         {
             var highestVersion = 0;
-            var ns = "codeRR.SqlServer.Schema";
             var names =
                 Assembly.GetExecutingAssembly()
                     .GetManifestResourceNames()
-                    .Where(x => x.StartsWith(ns) && x.Contains(".Update."));
+                    .Where(x => x.StartsWith(SchemaNamespace) && x.Contains(".Update."));
             foreach (var name in names)
             {
                 var pos = name.IndexOf("Update") + 8; //2 extra for ".v"
@@ -118,7 +118,7 @@ namespace codeRR.SqlServer
 
         private string GetSchema(int version)
         {
-            var resourceName = "codeRR.SqlServer.Schema.Update.v" + version + ".sql";
+            var resourceName = $"{SchemaNamespace}.Update.v{version}.sql";
             var res = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
             if (res == null)
                 throw new InvalidOperationException("Failed to find schema " + resourceName);

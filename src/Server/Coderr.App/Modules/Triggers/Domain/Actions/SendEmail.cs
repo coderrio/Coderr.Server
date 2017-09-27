@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace codeRR.App.Modules.Triggers.Domain.Actions
+namespace codeRR.Server.App.Modules.Triggers.Domain.Actions
 {
     [TriggerActionName("Email")]
     internal class SendEmailTask : ITriggerAction

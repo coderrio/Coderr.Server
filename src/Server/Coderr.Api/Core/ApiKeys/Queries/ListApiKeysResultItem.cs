@@ -1,4 +1,4 @@
-﻿namespace codeRR.Api.Core.ApiKeys.Queries
+﻿namespace codeRR.Server.Api.Core.ApiKeys.Queries
 {
     /// <summary>
     ///     Item for <see cref="ListApiKeysResult" />.

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Incidents.Events;
+using codeRR.Server.App.Modules.Triggers.Domain;
 using DotNetCqs;
 using Griffin.Container;
 using log4net;
-using codeRR.Api.Core.Incidents.Events;
-using codeRR.App.Modules.Triggers.Domain;
 
-namespace codeRR.App.Modules.Triggers.EventHandlers
+namespace codeRR.Server.App.Modules.Triggers.EventHandlers
 {
     /// <summary>
     ///     Responsible of creating context collection metadata for all reports that have been added to an incident.
@@ -21,12 +21,11 @@ namespace codeRR.App.Modules.Triggers.EventHandlers
         /// <summary>
         ///     Creates a new instance of <see cref="UpdateCollectionsOnReportAdded" />.
         /// </summary>
-        /// <param name="repository">repos</param>
+        /// <param name="repository">repository</param>
         /// <exception cref="ArgumentNullException">repository</exception>
         public UpdateCollectionsOnReportAdded(ITriggerRepository repository)
         {
-            if (repository == null) throw new ArgumentNullException("repository");
-            _repository = repository;
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
         /// <summary>

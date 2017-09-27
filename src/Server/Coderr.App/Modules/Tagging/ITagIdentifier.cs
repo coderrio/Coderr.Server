@@ -1,4 +1,4 @@
-﻿namespace codeRR.App.Modules.Tagging
+﻿namespace codeRR.Server.App.Modules.Tagging
 {
     /// <summary>
     ///     Purpose of this interface is to provide a way to be able to search through the error report context to be able to

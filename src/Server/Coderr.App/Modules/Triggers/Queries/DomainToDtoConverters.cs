@@ -1,10 +1,10 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
-using codeRR.Api.Modules.Triggers;
-using codeRR.App.Modules.Triggers.Domain;
-using codeRR.App.Modules.Triggers.Domain.Rules;
+using codeRR.Server.Api.Modules.Triggers;
+using codeRR.Server.App.Modules.Triggers.Domain;
+using codeRR.Server.App.Modules.Triggers.Domain.Rules;
 
-namespace codeRR.App.Modules.Triggers.Queries
+namespace codeRR.Server.App.Modules.Triggers.Queries
 {
     /// <summary>
     ///     Converts triggers into DTOs which are transferred to the UI
@@ -21,10 +21,10 @@ namespace codeRR.App.Modules.Triggers.Queries
         ///     Convert action to a DTO
         /// </summary>
         /// <param name="action">entity</param>
-        /// <returns>dto</returns>
+        /// <returns>DTO</returns>
         public static TriggerActionDataDTO ConvertAction(ActionConfigurationData action)
         {
-            if (action == null) throw new ArgumentNullException("action");
+            if (action == null) throw new ArgumentNullException(nameof(action));
             return new TriggerActionDataDTO
             {
                 ActionContext = action.Data,
@@ -33,10 +33,10 @@ namespace codeRR.App.Modules.Triggers.Queries
         }
 
         /// <summary>
-        ///     Convert entity to dto
+        ///     Convert entity to DTO
         /// </summary>
         /// <param name="filter">entity</param>
-        /// <returns>dto</returns>
+        /// <returns>DTO</returns>
         /// <exception cref="FormatException">Unknown enum value in entity</exception>
         public static TriggerFilterCondition ConvertFilterCondition(FilterCondition filter)
         {
@@ -53,8 +53,8 @@ namespace codeRR.App.Modules.Triggers.Queries
                 case FilterCondition.StartsWith:
                     return TriggerFilterCondition.StartsWith;
                 default:
-                    throw new FormatException(string.Format("Value '{0}' do not exist in the {1} enum.",
-                        filter, typeof(TriggerFilterCondition).Name));
+                    throw new FormatException(
+                        $"Value '{filter}' do not exist in the {typeof(TriggerFilterCondition).Name} enum.");
             }
         }
 
@@ -63,7 +63,7 @@ namespace codeRR.App.Modules.Triggers.Queries
         ///     Convert filter
         /// </summary>
         /// <param name="ruleAction">entity</param>
-        /// <returns>dto</returns>
+        /// <returns>DTO</returns>
         /// <exception cref="FormatException">Entity enum contains a value that is currently not handled.</exception>
         [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "FilterResult")]
         public static TriggerRuleAction ConvertFilterResult(FilterResult ruleAction)
@@ -77,8 +77,8 @@ namespace codeRR.App.Modules.Triggers.Queries
                 case FilterResult.Grant:
                     return TriggerRuleAction.ExecuteActions;
                 default:
-                    throw new FormatException(string.Format("Value '{0}' do not exist in the {1} enum.",
-                        ruleAction, typeof(TriggerRuleAction).Name));
+                    throw new FormatException(
+                        $"Value '{ruleAction}' do not exist in the {typeof(TriggerRuleAction).Name} enum.");
             }
         }
 
@@ -86,7 +86,7 @@ namespace codeRR.App.Modules.Triggers.Queries
         ///     Convert last action
         /// </summary>
         /// <param name="lastTriggerAction">entity</param>
-        /// <returns>dto</returns>
+        /// <returns>DTO</returns>
         /// <exception cref="FormatException">Entity enum value is not recognized.</exception>
         public static LastTriggerActionDTO ConvertLastAction(LastTriggerAction lastTriggerAction)
         {
@@ -97,8 +97,8 @@ namespace codeRR.App.Modules.Triggers.Queries
                 case LastTriggerAction.Grant:
                     return LastTriggerActionDTO.ExecuteActions;
                 default:
-                    throw new FormatException(string.Format("Value '{0}' do not exist in the {1} enum.",
-                        lastTriggerAction, typeof(LastTriggerAction).Name));
+                    throw new FormatException(
+                        $"Value '{lastTriggerAction}' do not exist in the {typeof(LastTriggerAction).Name} enum.");
             }
         }
 
@@ -106,33 +106,29 @@ namespace codeRR.App.Modules.Triggers.Queries
         ///     Convert all different types of rules to DTOs
         /// </summary>
         /// <param name="rule">entity</param>
-        /// <returns>dto</returns>
+        /// <returns>DTO</returns>
         /// <exception cref="FormatException">Subclass is not recognized.</exception>
         public static TriggerRuleBase ConvertRule(ITriggerRule rule)
         {
-            if (rule is ContextCollectionRule)
+            switch (rule)
             {
-                var dto = (ContextCollectionRule) rule;
-                return new TriggerContextRule
-                {
-                    ContextName = dto.ContextName,
-                    Filter = ConvertFilterCondition(dto.Condition),
-                    PropertyName = dto.PropertyName,
-                    PropertyValue = dto.PropertyValue,
-                    ResultToUse = ConvertFilterResult(dto.ResultToUse)
-                };
-            }
-
-            if (rule is ExceptionRule)
-            {
-                var dto = (ExceptionRule) rule;
-                return new TriggerExceptionRule
-                {
-                    FieldName = dto.FieldName,
-                    Filter = ConvertFilterCondition(dto.Condition),
-                    ResultToUse = ConvertFilterResult(dto.ResultToUse),
-                    Value = dto.Value
-                };
+                case ContextCollectionRule dto:
+                    return new TriggerContextRule
+                    {
+                        ContextName = dto.ContextName,
+                        Filter = ConvertFilterCondition(dto.Condition),
+                        PropertyName = dto.PropertyName,
+                        PropertyValue = dto.PropertyValue,
+                        ResultToUse = ConvertFilterResult(dto.ResultToUse)
+                    };
+                case ExceptionRule dto1:
+                    return new TriggerExceptionRule
+                    {
+                        FieldName = dto1.FieldName,
+                        Filter = ConvertFilterCondition(dto1.Condition),
+                        ResultToUse = ConvertFilterResult(dto1.ResultToUse),
+                        Value = dto1.Value
+                    };
             }
 
             throw new FormatException("Failed to convert " + rule);

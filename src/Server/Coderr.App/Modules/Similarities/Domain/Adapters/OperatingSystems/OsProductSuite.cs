@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace codeRR.App.Modules.Similarities.Domain.Adapters.OperatingSystems
+namespace codeRR.Server.App.Modules.Similarities.Domain.Adapters.OperatingSystems
 {
     /// <summary>
     ///     Translates the WMI collection "OS_PRODUCT_SUITE"

@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Incidents.Events;
+using codeRR.Server.App.Modules.Similarities.Domain;
+using codeRR.Server.App.Modules.Similarities.Domain.Adapters.Runner;
 using DotNetCqs;
 using Griffin.Container;
 using log4net;
-using codeRR.Api.Core.Incidents.Events;
-using codeRR.App.Modules.Similarities.Domain;
-using codeRR.App.Modules.Similarities.Domain.Adapters.Runner;
 
-namespace codeRR.App.Modules.Similarities.EventHandlers
+namespace codeRR.Server.App.Modules.Similarities.EventHandlers
 {
     /// <summary>
     ///     Responsible of analyzing the reports Context Data to find similarities from all reports in an incident.

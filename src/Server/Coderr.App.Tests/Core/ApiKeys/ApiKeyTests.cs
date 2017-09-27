@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
+using codeRR.Server.App.Core.ApiKeys;
+using codeRR.Server.Infrastructure.Security;
 using FluentAssertions;
-using codeRR.App.Core.ApiKeys;
-using codeRR.Infrastructure.Security;
 using Xunit;
 
-namespace codeRR.App.Tests.Core.ApiKeys
+namespace codeRR.Server.App.Tests.Core.ApiKeys
 {
     public class ApiKeyTests
     {

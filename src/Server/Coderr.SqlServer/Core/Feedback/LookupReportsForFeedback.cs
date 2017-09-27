@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Threading.Tasks;
+using codeRR.Server.App.Core.Feedback;
 using Griffin.ApplicationServices;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 using log4net;
-using codeRR.App.Core.Feedback;
 
-namespace codeRR.SqlServer.Core.Feedback
+namespace codeRR.Server.SqlServer.Core.Feedback
 {
     //TODO: invent some way to execute jobs for all customer databases.
     //[Component(RegisterAsSelf = true)]

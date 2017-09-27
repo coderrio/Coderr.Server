@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
-namespace codeRR.Web.Areas.Admin.Models.Applications
+namespace codeRR.Server.Web.Areas.Admin.Models.Applications
 {
     public class ApplicationVersionViewModel
     {

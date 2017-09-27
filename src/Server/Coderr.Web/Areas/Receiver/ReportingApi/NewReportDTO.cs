@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.Web.Areas.Receiver.ReportingApi
+namespace codeRR.Server.Web.Areas.Receiver.ReportingApi
 {
     /// <summary>
     ///     Report as uploaded by the client API.

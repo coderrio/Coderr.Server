@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
+using codeRR.Server.App.Core.Invitations;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
-using codeRR.App.Core.Invitations;
 
-namespace codeRR.SqlServer.Core.Invitations
+namespace codeRR.Server.SqlServer.Core.Invitations
 {
     [Component]
     internal class InvitationRepository : IInvitationRepository

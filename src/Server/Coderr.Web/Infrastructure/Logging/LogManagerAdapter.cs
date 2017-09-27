@@ -2,7 +2,7 @@
 using Griffin.Logging;
 using LogManager = log4net.LogManager;
 
-namespace codeRR.Web.Infrastructure.Logging
+namespace codeRR.Server.Web.Infrastructure.Logging
 {
     internal class LogManagerAdapter : ILogProvider
     {

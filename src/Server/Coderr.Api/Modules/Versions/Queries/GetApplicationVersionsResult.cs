@@ -1,4 +1,4 @@
-﻿namespace codeRR.Api.Modules.Versions.Queries
+﻿namespace codeRR.Server.Api.Modules.Versions.Queries
 {
     /// <summary>
     ///     Result for <see cref="GetApplicationVersions" />

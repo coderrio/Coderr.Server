@@ -3,7 +3,7 @@ using System.Configuration;
 using System.IO;
 using log4net.Config;
 
-namespace codeRR.Web
+namespace codeRR.Server.Web
 {
     public class LogConfigurator
     {

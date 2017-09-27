@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 
-namespace codeRR.App.Modules.Triggers.Domain
+namespace codeRR.Server.App.Modules.Triggers.Domain
 {
     /// <summary>
     ///     Contains information about a collection in a specific application

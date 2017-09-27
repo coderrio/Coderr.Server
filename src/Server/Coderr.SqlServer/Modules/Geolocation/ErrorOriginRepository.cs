@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Threading.Tasks;
+using codeRR.Server.App.Modules.Geolocation;
 using Griffin.Container;
 using Griffin.Data;
-using codeRR.App.Modules.Geolocation;
 
-namespace codeRR.SqlServer.Modules.Geolocation
+namespace codeRR.Server.SqlServer.Modules.Geolocation
 {
     [Component]
     public class ErrorOriginRepository : IErrorOriginRepository

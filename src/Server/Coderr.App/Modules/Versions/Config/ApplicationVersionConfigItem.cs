@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.App.Modules.Versions.Config
+namespace codeRR.Server.App.Modules.Versions.Config
 {
     /// <summary>
     /// Configuration for a specific application

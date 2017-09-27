@@ -1,12 +1,12 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using codeRR.Server.App.Modules.Messaging.Templating.Formatting;
 using ColorCode;
 using Griffin.Container;
 using MarkdownSharp;
-using codeRR.App.Modules.Messaging.Templating.Formatting;
 
-namespace codeRR.App.Modules.Messaging.Templating
+namespace codeRR.Server.App.Modules.Messaging.Templating
 {
     /// <summary>
     ///     Used to parse texts (convert markdown and extras to HTML)

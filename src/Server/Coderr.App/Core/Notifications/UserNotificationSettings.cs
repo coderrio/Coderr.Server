@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.App.Core.Notifications
+namespace codeRR.Server.App.Core.Notifications
 {
     /// <summary>
     ///     Account settings for notifications

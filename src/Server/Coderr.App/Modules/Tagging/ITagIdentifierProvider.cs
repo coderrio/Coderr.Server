@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace codeRR.App.Modules.Tagging
+namespace codeRR.Server.App.Modules.Tagging
 {
     /// <summary>
     ///     A tag identifier is run on every inbound report with the task to find a set of tags that tells what kind of

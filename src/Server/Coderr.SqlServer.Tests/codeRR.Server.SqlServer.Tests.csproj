@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>net452</TargetFramework>
-		<RootNamespace>codeRR.SqlServer.Tests</RootNamespace>
+		<RootNamespace>codeRR.Server.SqlServer.Tests</RootNamespace>
+		<AssemblyName>Coderr.Server.SqlServer.Tests</AssemblyName>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
@@ -9,10 +10,8 @@
 	  <PackageReference Include="FluentAssertions" Version="4.19.4" />
 		<PackageReference Include="NSubstitute" Version="2.0.3" />
 	</ItemGroup>
-
 	<ItemGroup>
-		<ProjectReference Include="..\codeRR.SqlServer\codeRR.SqlServer.csproj" />
-	  <!--<DotNetCliToolReference Include="dotnet-xunit" Version="2.3.0-beta4-build3742" />-->
+	  <ProjectReference Include="..\Coderr.SqlServer\codeRR.Server.SqlServer.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -49,7 +49,8 @@
                 e.preventDefault();
                 var conStr = encodeURIComponent($('[name="connectionString"]').val());
                 $
-                    .getJSON('@Url.RouteUrl(new {Area = "Installation", Controller = "Sql", Action = "Validate"})/?connectionString=' + conStr)
+                    .getJSON(
+                        '@Url.RouteUrl(new {Area = "Installation", Controller = "Sql", Action = "Validate"})/?connectionString=' + conStr)
                     .done(function(data) {
                         if (data.result == "fail") {
                             $('#error').text(data.reason).show();

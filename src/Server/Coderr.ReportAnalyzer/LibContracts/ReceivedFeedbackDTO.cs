@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.ReportAnalyzer.LibContracts
+namespace codeRR.Server.ReportAnalyzer.LibContracts
 {
     /// <summary>
     ///     Feedback item as recieved by the client library

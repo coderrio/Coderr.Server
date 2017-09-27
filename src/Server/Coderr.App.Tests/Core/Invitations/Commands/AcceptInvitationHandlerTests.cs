@@ -1,15 +1,15 @@
 ﻿using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Accounts.Events;
+using codeRR.Server.Api.Core.Accounts.Requests;
+using codeRR.Server.App.Core.Accounts;
+using codeRR.Server.App.Core.Invitations;
+using codeRR.Server.App.Core.Invitations.CommandHandlers;
 using DotNetCqs;
 using FluentAssertions;
 using NSubstitute;
-using codeRR.Api.Core.Accounts.Events;
-using codeRR.Api.Core.Accounts.Requests;
-using codeRR.App.Core.Accounts;
-using codeRR.App.Core.Invitations;
-using codeRR.App.Core.Invitations.CommandHandlers;
 using Xunit;
 
-namespace codeRR.App.Tests.Core.Invitations.Commands
+namespace codeRR.Server.App.Tests.Core.Invitations.Commands
 {
     public class AcceptInvitationHandlerTests
     {
@@ -44,7 +44,7 @@ namespace codeRR.App.Tests.Core.Invitations.Commands
 
             var actual = await _sut.ExecuteAsync(request);
 
-            actual.Should().NotBeNull();
+            AssertionExtensions.Should((object) actual).NotBeNull();
         }
 
         [Fact]
@@ -60,10 +60,10 @@ namespace codeRR.App.Tests.Core.Invitations.Commands
 
             await _eventBus.Received().PublishAsync(Arg.Any<InvitationAccepted>());
             var evt = _eventBus.Method("PublishAsync").Arg<InvitationAccepted>();
-            evt.AcceptedEmailAddress.Should().Be(request.AcceptedEmail);
-            evt.AccountId.Should().Be(InvitedAccountId);
-            evt.ApplicationIds[0].Should().Be(1);
-            evt.UserName.Should().Be(_invitedAccount.UserName);
+            AssertionExtensions.Should((string) evt.AcceptedEmailAddress).Be(request.AcceptedEmail);
+            AssertionExtensions.Should((int) evt.AccountId).Be(InvitedAccountId);
+            AssertionExtensions.Should((int) evt.ApplicationIds[0]).Be(1);
+            AssertionExtensions.Should((string) evt.UserName).Be(_invitedAccount.UserName);
         }
 
         [Fact]
@@ -83,7 +83,7 @@ namespace codeRR.App.Tests.Core.Invitations.Commands
 
             await _accountRepository.Received().CreateAsync(Arg.Any<Account>());
             var evt = _eventBus.Method("PublishAsync").Arg<InvitationAccepted>();
-            evt.AccountId.Should().Be(52);
+            AssertionExtensions.Should((int) evt.AccountId).Be(52);
         }
 
         [Fact]
@@ -103,7 +103,7 @@ namespace codeRR.App.Tests.Core.Invitations.Commands
 
             await _eventBus.Received().PublishAsync(Arg.Any<AccountRegistered>());
             var evt = _eventBus.Method("PublishAsync").Arg<AccountRegistered>();
-            evt.AccountId.Should().Be(52);
+            AssertionExtensions.Should((int) evt.AccountId).Be(52);
         }
 
         [Fact]
@@ -123,7 +123,7 @@ namespace codeRR.App.Tests.Core.Invitations.Commands
 
             await _eventBus.Received().PublishAsync(Arg.Any<AccountActivated>());
             var evt = _eventBus.Method("PublishAsync").Arg<AccountActivated>();
-            evt.AccountId.Should().Be(52);
+            AssertionExtensions.Should((int) evt.AccountId).Be(52);
         }
 
 
@@ -135,7 +135,7 @@ namespace codeRR.App.Tests.Core.Invitations.Commands
 
             var actual = await _sut.ExecuteAsync(request);
 
-            actual.Should().BeNull();
+            AssertionExtensions.Should((object) actual).BeNull();
         }
     }
 }

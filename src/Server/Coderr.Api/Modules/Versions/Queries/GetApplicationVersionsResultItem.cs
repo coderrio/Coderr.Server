@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.Api.Modules.Versions.Queries
+namespace codeRR.Server.Api.Modules.Versions.Queries
 {
     /// <summary>
     ///     Version information

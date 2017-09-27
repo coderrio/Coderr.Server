@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using codeRR.Infrastructure.Configuration;
+using codeRR.Server.Infrastructure.Configuration;
 
-namespace codeRR.App.Configuration
+namespace codeRR.Server.App.Configuration
 {
     /// <summary>
     ///     Base configuration for the codeRR service.

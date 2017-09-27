@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.ApiKeys.Commands;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
-using codeRR.Api.Core.ApiKeys.Commands;
 
-namespace codeRR.SqlServer.Core.ApiKeys.Commands
+namespace codeRR.Server.SqlServer.Core.ApiKeys.Commands
 {
     [Component(RegisterAsSelf = true)]
     public class DeleteApiKeyHandler : ICommandHandler<DeleteApiKey>

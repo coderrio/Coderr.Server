@@ -1,4 +1,4 @@
-﻿namespace codeRR.Api.Core.ApiKeys.Events
+﻿namespace codeRR.Server.Api.Core.ApiKeys.Events
 {
     internal class ApiKeyRemoved
     {

@@ -3,14 +3,14 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Accounts.Events;
+using codeRR.Server.Api.Core.Accounts.Requests;
+using codeRR.Server.Api.Core.Applications.Queries;
+using codeRR.Server.Infrastructure.Security;
 using DotNetCqs;
 using Griffin.Container;
-using codeRR.Api.Core.Accounts.Events;
-using codeRR.Api.Core.Accounts.Requests;
-using codeRR.Api.Core.Applications.Queries;
-using codeRR.Infrastructure.Security;
 
-namespace codeRR.App.Core.Accounts.Requests
+namespace codeRR.Server.App.Core.Accounts.Requests
 {
     /// <summary>
     ///     Handler for <see cref="ActivateAccount" />.
@@ -55,8 +55,8 @@ namespace codeRR.App.Core.Accounts.Requests
             var query = new GetApplicationList {AccountId = account.Id};
             var apps = await _queryBus.QueryAsync(query);
             var claims =
-                apps.Select(x => new Claim(OneTrueClaims.Application, x.Id.ToString(), ClaimValueTypes.Integer32))
-                    .ToArray();
+                Enumerable.Select(apps, x => new Claim(OneTrueClaims.Application, x.Id.ToString(), ClaimValueTypes.Integer32))
+                    .ToArray<Claim>();
 
             if (ClaimsPrincipal.Current.IsAccount(account.Id))
             {

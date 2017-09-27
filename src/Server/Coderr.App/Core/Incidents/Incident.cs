@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace codeRR.App.Core.Incidents
+namespace codeRR.Server.App.Core.Incidents
 {
     /// <summary>
     ///     Keeps track of all occurrences of a single incident (i.e. error reports which generates the same hash code)

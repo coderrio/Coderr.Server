@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using codeRR.Infrastructure.Configuration;
+using codeRR.Server.Infrastructure.Configuration;
 
-namespace codeRR.App.Configuration
+namespace codeRR.Server.App.Configuration
 {
     /// <summary>
     ///     We'll want to track all exceptions for all OTE users so that we can correct bugs in OTE.

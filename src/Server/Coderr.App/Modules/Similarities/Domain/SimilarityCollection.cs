@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using codeRR.Api.Core.Reports;
 
-namespace codeRR.App.Modules.Similarities.Domain
+namespace codeRR.Server.App.Modules.Similarities.Domain
 {
     /// <summary>
     ///     A collection corresponding to <see cref="ContextCollectionDTO" />, but where value usage have been analysed.

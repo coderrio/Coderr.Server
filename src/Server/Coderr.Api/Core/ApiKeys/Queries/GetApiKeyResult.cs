@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.Api.Core.ApiKeys.Queries
+namespace codeRR.Server.Api.Core.ApiKeys.Queries
 {
     /// <summary>
     ///     Result for <see cref="GetApiKey" />.

@@ -1,7 +1,7 @@
-﻿using codeRR.Api.Core.Incidents;
-using codeRR.Api.Core.Reports;
+﻿using codeRR.Server.Api.Core.Incidents;
+using codeRR.Server.Api.Core.Reports;
 
-namespace codeRR.App.Modules.Triggers.Domain
+namespace codeRR.Server.App.Modules.Triggers.Domain
 {
     /// <summary>
     ///     Execution information for a trigger action.

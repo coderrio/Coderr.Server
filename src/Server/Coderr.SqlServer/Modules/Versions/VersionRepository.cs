@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
+using codeRR.Server.App.Modules.Versions;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
-using codeRR.App.Modules.Versions;
 
-namespace codeRR.SqlServer.Modules.Versions
+namespace codeRR.Server.SqlServer.Modules.Versions
 {
     /// <summary>
     ///     ADO.NET based implementation of <see cref="IVersionRepository" />.

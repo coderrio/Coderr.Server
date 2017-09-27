@@ -1,10 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Notifications;
 using DotNetCqs;
 using Griffin.Container;
-using codeRR.Api.Core.Notifications;
 
-namespace codeRR.App.Core.Notifications.Commands
+namespace codeRR.Server.App.Core.Notifications.Commands
 {
     /// <summary>
     /// Handler for <see cref="AddNotification"/>.

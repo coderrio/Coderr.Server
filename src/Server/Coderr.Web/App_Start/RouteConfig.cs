@@ -1,7 +1,7 @@
 ﻿using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace codeRR.Web
+namespace codeRR.Server.Web
 {
     public class RouteConfig
     {

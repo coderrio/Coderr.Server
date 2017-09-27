@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.Api.Core.Accounts.Requests
+namespace codeRR.Server.Api.Core.Accounts.Requests
 {
     /// <summary>
     ///     Reply for <see cref="ActivateAccount" />.

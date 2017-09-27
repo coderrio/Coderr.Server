@@ -2,16 +2,16 @@
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
-using codeRR.Api;
+using codeRR.Server.Api;
+using codeRR.Server.Api.Core.Accounts.Events;
+using codeRR.Server.Api.Core.Accounts.Requests;
+using codeRR.Server.App.Core.Accounts;
+using codeRR.Server.Infrastructure.Security;
 using DotNetCqs;
 using Griffin.Container;
 using log4net;
-using codeRR.Api.Core.Accounts.Events;
-using codeRR.Api.Core.Accounts.Requests;
-using codeRR.App.Core.Accounts;
-using codeRR.Infrastructure.Security;
 
-namespace codeRR.App.Core.Invitations.CommandHandlers
+namespace codeRR.Server.App.Core.Invitations.CommandHandlers
 {
     /// <summary>
     ///     Accepts and deletes the invitation. Sends an event which is picked up by the application domain (which transforms
@@ -76,7 +76,7 @@ namespace codeRR.App.Core.Invitations.CommandHandlers
             }
             else
             {
-                account = await _accountRepository.GetByIdAsync(request.AccountId);
+                account = await _accountRepository.GetByIdAsync((int) request.AccountId);
                 account.SetVerifiedEmail(request.AcceptedEmail);
             }
 

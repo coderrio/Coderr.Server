@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using codeRR.Server.Api.Core.Incidents;
+using codeRR.Server.Api.Core.Incidents.Events;
+using codeRR.Server.Api.Core.Reports;
+using codeRR.Server.ReportAnalyzer.Domain.Incidents;
+using codeRR.Server.ReportAnalyzer.Domain.Reports;
 using DotNetCqs;
 using Griffin.Container;
 using log4net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using codeRR.Api.Core.Incidents;
-using codeRR.Api.Core.Incidents.Events;
-using codeRR.Api.Core.Reports;
-using codeRR.ReportAnalyzer.Domain.Incidents;
-using codeRR.ReportAnalyzer.Domain.Reports;
 
-namespace codeRR.ReportAnalyzer.Services
+namespace codeRR.Server.ReportAnalyzer.Services
 {
     /// <summary>
     ///     Runs analysis for the report.

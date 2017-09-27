@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.App.Modules.Tagging.Identifiers
+namespace codeRR.Server.App.Modules.Tagging.Identifiers
 {
     /// <summary>
     ///     Identifies the MarkdownSharp library

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.ReportAnalyzer.LibContracts
+namespace codeRR.Server.ReportAnalyzer.LibContracts
 {
     /// <summary>
     ///     Failed to identify an incoming report. Stored for debugging purposes.

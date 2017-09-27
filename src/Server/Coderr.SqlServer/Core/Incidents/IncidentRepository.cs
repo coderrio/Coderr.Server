@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Incidents;
+using codeRR.Server.App.Core.Incidents;
+using codeRR.Server.SqlServer.Tools;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
-using codeRR.Api.Core.Incidents;
-using codeRR.App.Core.Incidents;
-using codeRR.SqlServer.Tools;
 
-namespace codeRR.SqlServer.Core.Incidents
+namespace codeRR.Server.SqlServer.Core.Incidents
 {
     [Component]
     public class IncidentRepository : IIncidentRepository

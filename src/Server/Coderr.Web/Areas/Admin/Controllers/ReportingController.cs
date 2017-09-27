@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
+using codeRR.Server.App.Core.Reports.Config;
+using codeRR.Server.Infrastructure.Configuration;
+using codeRR.Server.Web.Areas.Admin.Models;
 using log4net;
-using codeRR.App.Core.Reports.Config;
-using codeRR.Infrastructure.Configuration;
-using codeRR.Web.Areas.Admin.Models;
 
-namespace codeRR.Web.Areas.Admin.Controllers
+namespace codeRR.Server.Web.Areas.Admin.Controllers
 {
     [Authorize]
     public class ReportingController : Controller

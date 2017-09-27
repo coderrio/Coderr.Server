@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net452</TargetFramework>
-    <RootNamespace>codeRR.Infrastructure</RootNamespace>
+    <RootNamespace>codeRR.Server.Infrastructure</RootNamespace>
+    <AssemblyName>Coderr.Server.Infrastructure</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
   <PackageReference Include="Griffin.Container" Version="1.1.4" />
@@ -9,7 +10,7 @@
   <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Coderr.Api\codeRR.Api.csproj" />
+    <ProjectReference Include="..\Coderr.Api\codeRR.Server.Api.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Configuration" />

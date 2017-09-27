@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
+using codeRR.Server.App.Core.Accounts;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
-using codeRR.App.Core.Accounts;
 
-namespace codeRR.SqlServer.Core.Accounts
+namespace codeRR.Server.SqlServer.Core.Accounts
 {
     [Component]
     public class AccountRepository : IAccountRepository

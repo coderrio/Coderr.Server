@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
-namespace codeRR.App.Modules.ReportSpikes
+namespace codeRR.Server.App.Modules.ReportSpikes
 {
     /// <summary>
     ///     A spike is when we receive an unusual amount of reports during a short period of time for an application.

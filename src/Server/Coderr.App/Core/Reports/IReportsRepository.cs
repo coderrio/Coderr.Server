@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Reports;
+using codeRR.Server.App.Core.Reports.Invalid;
 using Griffin.Data;
-using codeRR.Api.Core.Reports;
-using codeRR.App.Core.Reports.Invalid;
 
-namespace codeRR.App.Core.Reports
+namespace codeRR.Server.App.Core.Reports
 {
     /// <summary>
     ///     Repository for received error reports.

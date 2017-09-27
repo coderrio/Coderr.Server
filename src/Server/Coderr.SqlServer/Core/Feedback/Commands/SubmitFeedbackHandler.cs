@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Data.Common;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Feedback.Commands;
+using codeRR.Server.Api.Core.Feedback.Events;
+using codeRR.Server.Api.Core.Reports;
+using codeRR.Server.App.Core.Reports;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
 using log4net;
-using codeRR.Api.Core.Feedback.Commands;
-using codeRR.Api.Core.Feedback.Events;
-using codeRR.Api.Core.Reports;
-using codeRR.App.Core.Reports;
 
-namespace codeRR.SqlServer.Core.Feedback.Commands
+namespace codeRR.Server.SqlServer.Core.Feedback.Commands
 {
     [Component]
     public class SubmitFeedbackHandler : ICommandHandler<SubmitFeedback>

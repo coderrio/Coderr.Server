@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace codeRR.Api.Core.Applications.Queries
+namespace codeRR.Server.Api.Core.Applications.Queries
 {
     /// <summary>
     ///     Get stats etc that can be presented as an overview for an application.

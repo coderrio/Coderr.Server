@@ -1,4 +1,4 @@
-﻿namespace codeRR.App.Core.Applications
+﻿namespace codeRR.Server.App.Core.Applications
 {
     /// <summary>
     ///     Roles for <see cref="Application" />.

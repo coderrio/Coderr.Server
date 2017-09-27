@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using codeRR.App.Modules.Similarities.Domain.Adapters.Runner;
+using codeRR.Server.App.Modules.Similarities.Domain.Adapters.Runner;
 
-namespace codeRR.App.Modules.Similarities.Domain.Adapters
+namespace codeRR.Server.App.Modules.Similarities.Domain.Adapters
 {
     internal class ExceptionPropertiesAdapter : IValueAdapter
     {

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Incidents.Events;
 using DotNetCqs;
 using Griffin.Container;
 using log4net;
-using codeRR.Api.Core.Incidents.Events;
 
-namespace codeRR.App.Modules.Tagging.Handlers
+namespace codeRR.Server.App.Modules.Tagging.Handlers
 {
     /// <summary>
     ///     Scan through the error report to identify which libraries were used when the exception was thrown.

@@ -6,22 +6,22 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using codeRR.Server.Api.Core.Accounts;
+using codeRR.Server.Api.Core.Accounts.Commands;
+using codeRR.Server.Api.Core.Accounts.Requests;
+using codeRR.Server.Api.Core.Applications;
+using codeRR.Server.Api.Core.Applications.Queries;
+using codeRR.Server.Api.Core.Invitations.Queries;
+using codeRR.Server.App.Configuration;
+using codeRR.Server.Infrastructure.Configuration;
+using codeRR.Server.Infrastructure.Security;
+using codeRR.Server.Web.Models.Account;
 using DotNetCqs;
 using log4net;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
-using codeRR.Api.Core.Accounts;
-using codeRR.Api.Core.Accounts.Commands;
-using codeRR.Api.Core.Accounts.Requests;
-using codeRR.Api.Core.Applications;
-using codeRR.Api.Core.Applications.Queries;
-using codeRR.Api.Core.Invitations.Queries;
-using codeRR.App.Configuration;
-using codeRR.Infrastructure.Configuration;
-using codeRR.Infrastructure.Security;
-using codeRR.Web.Models.Account;
 
-namespace codeRR.Web.Controllers
+namespace codeRR.Server.Web.Controllers
 {
     /// <summary>
     ///     TODO: Break out logic

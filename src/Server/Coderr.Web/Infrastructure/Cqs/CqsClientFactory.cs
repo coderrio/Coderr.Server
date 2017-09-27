@@ -2,10 +2,10 @@
 using System.Diagnostics;
 using System.Security.Claims;
 using System.Web;
+using codeRR.Server.Infrastructure.Security;
 using Griffin.Cqs.Http;
-using codeRR.Infrastructure.Security;
 
-namespace codeRR.Web.Infrastructure.Cqs
+namespace codeRR.Server.Web.Infrastructure.Cqs
 {
     public class CqsClientFactory
     {

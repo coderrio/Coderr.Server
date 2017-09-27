@@ -1,7 +1,7 @@
-﻿using Griffin.Data.Mapper;
-using codeRR.Api.Core.Incidents.Queries;
+﻿using codeRR.Server.Api.Core.Incidents.Queries;
+using Griffin.Data.Mapper;
 
-namespace codeRR.SqlServer.Core.Incidents
+namespace codeRR.Server.SqlServer.Core.Incidents
 {
     internal class ReportDayMapper : EntityMapper<ReportDay>
     {

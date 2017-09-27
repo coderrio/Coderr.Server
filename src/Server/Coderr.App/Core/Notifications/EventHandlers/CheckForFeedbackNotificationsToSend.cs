@@ -1,15 +1,15 @@
 ﻿using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Accounts.Queries;
+using codeRR.Server.Api.Core.Feedback.Events;
+using codeRR.Server.Api.Core.Incidents.Queries;
+using codeRR.Server.Api.Core.Messaging;
+using codeRR.Server.Api.Core.Messaging.Commands;
+using codeRR.Server.App.Configuration;
+using codeRR.Server.Infrastructure.Configuration;
 using DotNetCqs;
 using Griffin.Container;
-using codeRR.Api.Core.Accounts.Queries;
-using codeRR.Api.Core.Feedback.Events;
-using codeRR.Api.Core.Incidents.Queries;
-using codeRR.Api.Core.Messaging;
-using codeRR.Api.Core.Messaging.Commands;
-using codeRR.App.Configuration;
-using codeRR.Infrastructure.Configuration;
 
-namespace codeRR.App.Core.Notifications.EventHandlers
+namespace codeRR.Server.App.Core.Notifications.EventHandlers
 {
     /// <summary>
     ///     Responsible of sending notifications when a new report have been analyzed.
@@ -47,7 +47,7 @@ namespace codeRR.App.Core.Notifications.EventHandlers
                 if (setting.UserFeedback == NotificationState.Disabled)
                     continue;
 
-                var notificationEmail = await _queryBus.QueryAsync(new GetAccountEmailById(setting.AccountId));
+                var notificationEmail = await _queryBus.QueryAsync<string>(new GetAccountEmailById(setting.AccountId));
                 var config = ConfigurationStore.Instance.Load<BaseConfiguration>();
 
                 var shortName = incident.Description.Length > 40

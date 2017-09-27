@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.Api.Core.Incidents.Queries
+namespace codeRR.Server.Api.Core.Incidents.Queries
 {
     /// <summary>
     ///     Keeps track of all occurrences of a single incident (i.e. error reports which generates the same hash code)

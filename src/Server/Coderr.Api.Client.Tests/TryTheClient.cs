@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Accounts.Queries;
 using FluentAssertions;
-using codeRR.Api.Core.Accounts.Queries;
-using Xunit;
 
-namespace codeRR.Api.Client.Tests
+namespace codeRR.Server.Api.Client.Tests
 {
 #if DEBUG
     public class TryTheClient

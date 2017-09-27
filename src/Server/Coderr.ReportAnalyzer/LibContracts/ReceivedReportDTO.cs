@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.ReportAnalyzer.LibContracts
+namespace codeRR.Server.ReportAnalyzer.LibContracts
 {
     /// <summary>
     ///     DTO for a client library report. Should always look exactly as the report in the codeRR.Client assembly

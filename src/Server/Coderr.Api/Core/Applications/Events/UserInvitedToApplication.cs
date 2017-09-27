@@ -1,8 +1,8 @@
 ﻿using System;
+using codeRR.Server.Api.Core.Invitations.Commands;
 using DotNetCqs;
-using codeRR.Api.Core.Invitations.Commands;
 
-namespace codeRR.Api.Core.Applications.Events
+namespace codeRR.Server.Api.Core.Applications.Events
 {
     /// <summary>
     ///     Event published when the <see cref="InviteUser" /> command is done.

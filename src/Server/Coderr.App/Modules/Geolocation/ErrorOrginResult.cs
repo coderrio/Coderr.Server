@@ -1,4 +1,4 @@
-﻿namespace codeRR.App.Modules.Geolocation
+﻿namespace codeRR.Server.App.Modules.Geolocation
 {
     /// <summary>
     ///     List result item for repository queries

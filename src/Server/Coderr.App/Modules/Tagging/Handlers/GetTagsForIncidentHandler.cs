@@ -1,12 +1,12 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Modules.Tagging;
+using codeRR.Server.Api.Modules.Tagging.Queries;
+using codeRR.Server.App.Modules.Tagging.Domain;
 using DotNetCqs;
 using Griffin.Container;
-using codeRR.Api.Modules.Tagging;
-using codeRR.Api.Modules.Tagging.Queries;
-using codeRR.App.Modules.Tagging.Domain;
 
-namespace codeRR.App.Modules.Tagging.Handlers
+namespace codeRR.Server.App.Modules.Tagging.Handlers
 {
     [Component]
     internal class GetTagsForIncidentHandler : IQueryHandler<GetTagsForIncident, TagDTO[]>

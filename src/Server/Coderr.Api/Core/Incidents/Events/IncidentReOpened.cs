@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace codeRR.Api.Core.Incidents.Events
+namespace codeRR.Server.Api.Core.Incidents.Events
 {
     /// <summary>
     ///     Our user had closed the incident and we just got a new report despite that.

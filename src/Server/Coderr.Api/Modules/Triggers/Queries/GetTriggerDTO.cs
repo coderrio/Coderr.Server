@@ -1,4 +1,4 @@
-﻿namespace codeRR.Api.Modules.Triggers.Queries
+﻿namespace codeRR.Server.Api.Modules.Triggers.Queries
 {
     /// <summary>
     ///     Result for <see cref="GetTrigger" />

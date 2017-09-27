@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Griffin.Data;
 
-namespace codeRR.App.Core.ApiKeys
+namespace codeRR.Server.App.Core.ApiKeys
 {
     /// <summary>
     ///     Repository for <see cref="ApiKey" />.

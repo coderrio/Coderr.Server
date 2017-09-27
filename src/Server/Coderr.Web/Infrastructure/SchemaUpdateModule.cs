@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
-using System.Linq;
 using System.Web;
+using codeRR.Server.Infrastructure;
+using codeRR.Server.Web.Infrastructure;
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
-using codeRR.Infrastructure;
-using codeRR.Web.Infrastructure;
 
 [assembly: PreApplicationStartMethod(typeof(SchemaUpdateModule), "Register")]
-namespace codeRR.Web.Infrastructure
+namespace codeRR.Server.Web.Infrastructure
 {
     public class SchemaUpdateModule : IHttpModule
     {

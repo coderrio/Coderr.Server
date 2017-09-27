@@ -1,8 +1,8 @@
 ﻿using System;
+using codeRR.Server.App.Core.Users;
 using Griffin.Data.Mapper;
-using codeRR.App.Core.Users;
 
-namespace codeRR.SqlServer.Core.Users
+namespace codeRR.Server.SqlServer.Core.Users
 {
     public class ApplicationTeamMemberMapper : CrudEntityMapper<ApplicationTeamMember>
     {

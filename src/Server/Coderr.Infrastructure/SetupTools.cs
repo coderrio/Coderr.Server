@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Messaging;
 
-namespace codeRR.Infrastructure
+namespace codeRR.Server.Infrastructure
 {
     public static class SetupTools
     {

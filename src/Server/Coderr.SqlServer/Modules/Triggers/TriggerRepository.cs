@@ -2,13 +2,13 @@
 using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
+using codeRR.Server.App.Modules.Triggers.Domain;
+using codeRR.Server.SqlServer.Tools;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
-using codeRR.App.Modules.Triggers.Domain;
-using codeRR.SqlServer.Tools;
 
-namespace codeRR.SqlServer.Modules.Triggers
+namespace codeRR.Server.SqlServer.Modules.Triggers
 {
     [Component]
     public class TriggerRepository : ITriggerRepository

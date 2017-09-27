@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core;
+using codeRR.Server.Api.Core.Applications;
+using codeRR.Server.Api.Core.Applications.Queries;
+using codeRR.Server.App.Core.Incidents;
+using codeRR.Server.App.Modules.Versions;
 using DotNetCqs;
 using Griffin.Container;
-using codeRR.Api.Core;
-using codeRR.Api.Core.Applications;
-using codeRR.Api.Core.Applications.Queries;
-using codeRR.App.Core.Incidents;
-using codeRR.App.Modules.Versions;
 
-namespace codeRR.App.Core.Applications.QueryHandlers
+namespace codeRR.Server.App.Core.Applications.QueryHandlers
 {
     /// <summary>
     ///     Handler for <see cref="GetApplicationInfo" />.

@@ -1,7 +1,7 @@
 ﻿using System;
-using codeRR.ReportAnalyzer.Domain.Reports;
+using codeRR.Server.ReportAnalyzer.Domain.Reports;
 
-namespace codeRR.ReportAnalyzer.Domain.Incidents
+namespace codeRR.Server.ReportAnalyzer.Domain.Incidents
 {
     /// <summary>
     ///     Keeps track of all report occurrences for a single incident (i.e. error reports which generates the same hash code)

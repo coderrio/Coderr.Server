@@ -1,6 +1,6 @@
 ﻿using System.Net.Http;
 
-namespace codeRR.Web.Areas.Receiver.Helpers
+namespace codeRR.Server.Web.Areas.Receiver.Helpers
 {
     public static class HttpRequestMessageExtensions
     {

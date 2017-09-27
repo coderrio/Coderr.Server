@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.Infrastructure.Queueing.Ado
+namespace codeRR.Server.Infrastructure.Queueing.Ado
 {
     public class AdoNetQueueEntry
     {

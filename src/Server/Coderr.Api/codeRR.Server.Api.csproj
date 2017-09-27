@@ -2,8 +2,8 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net452</TargetFrameworks>
     <Version>1.0.4.0</Version>
-    <RootNamespace>codeRR.Api</RootNamespace>
-    <AssemblyName>Coderr.Api</AssemblyName>
+    <RootNamespace>codeRR.Server.Api</RootNamespace>
+    <AssemblyName>Coderr.Server.Api</AssemblyName>
     <!--<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <DocumentationFile>bin\$(Configuration)\net452\codeRR.Api.Client.xml</DocumentationFile>-->
   </PropertyGroup>

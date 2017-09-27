@@ -1,8 +1,8 @@
 ﻿using System;
+using codeRR.Server.ReportAnalyzer.Domain.Incidents;
 using Griffin.Data.Mapper;
-using codeRR.ReportAnalyzer.Domain.Incidents;
 
-namespace codeRR.SqlServer.Analysis
+namespace codeRR.Server.SqlServer.Analysis
 {
     public class Incident2Mapper : CrudEntityMapper<IncidentBeingAnalyzed>
     {

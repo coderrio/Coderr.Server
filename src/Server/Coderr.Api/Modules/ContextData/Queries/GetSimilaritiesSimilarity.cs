@@ -1,6 +1,6 @@
 using System;
 
-namespace codeRR.Api.Modules.ContextData.Queries
+namespace codeRR.Server.Api.Modules.ContextData.Queries
 {
     /// <summary>
     ///     A property in <see cref="GetSimilaritiesCollection" />.

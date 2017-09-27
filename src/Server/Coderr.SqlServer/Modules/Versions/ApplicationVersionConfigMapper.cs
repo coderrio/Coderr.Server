@@ -1,6 +1,6 @@
 ﻿using Griffin.Data.Mapper;
 
-namespace codeRR.SqlServer.Modules.Versions
+namespace codeRR.Server.SqlServer.Modules.Versions
 {
     public class ApplicationVersionConfigMapper : CrudEntityMapper<ApplicationVersionConfig>
     {

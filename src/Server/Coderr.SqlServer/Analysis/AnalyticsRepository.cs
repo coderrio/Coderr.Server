@@ -2,20 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using codeRR.Server.Infrastructure.Configuration;
+using codeRR.Server.Infrastructure.Queueing;
+using codeRR.Server.Infrastructure.Queueing.Msmq;
+using codeRR.Server.ReportAnalyzer;
+using codeRR.Server.ReportAnalyzer.Domain.Incidents;
+using codeRR.Server.ReportAnalyzer.Domain.Reports;
+using codeRR.Server.ReportAnalyzer.Scanners;
+using codeRR.Server.SqlServer.Tools;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 using log4net;
-using codeRR.Infrastructure.Configuration;
-using codeRR.Infrastructure.Queueing;
-using codeRR.Infrastructure.Queueing.Msmq;
-using codeRR.ReportAnalyzer;
-using codeRR.ReportAnalyzer.Domain.Incidents;
-using codeRR.ReportAnalyzer.Domain.Reports;
-using codeRR.ReportAnalyzer.Scanners;
-using codeRR.SqlServer.Tools;
 
-namespace codeRR.SqlServer.Analysis
+namespace codeRR.Server.SqlServer.Analysis
 {
     [Component]
     public class AnalyticsRepository : IAnalyticsRepository, IDisposable

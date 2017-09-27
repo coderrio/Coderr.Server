@@ -2,7 +2,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Text;
 
-namespace codeRR.ReportAnalyzer.Inbound
+namespace codeRR.Server.ReportAnalyzer.Inbound
 {
     public class ReportDecompressor
     {

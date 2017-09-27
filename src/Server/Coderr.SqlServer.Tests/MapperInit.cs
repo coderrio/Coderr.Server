@@ -1,7 +1,6 @@
-﻿using codeRR.SqlServer.Tests.Core.ApiKeys.Commands;
-using Xunit;
+﻿using Xunit;
 
-namespace codeRR.SqlServer.Tests
+namespace codeRR.Server.SqlServer.Tests
 {
     [CollectionDefinition(NAME)]
     public class MapperInit : ICollectionFixture<ScanForMappings>

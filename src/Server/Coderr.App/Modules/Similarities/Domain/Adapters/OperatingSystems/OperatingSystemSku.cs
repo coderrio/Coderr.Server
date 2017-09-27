@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace codeRR.App.Modules.Similarities.Domain.Adapters.OperatingSystems
+namespace codeRR.Server.App.Modules.Similarities.Domain.Adapters.OperatingSystems
 {
     /// <summary>
     ///     Translates the WMI collection named "OperatingSystemSKU"

@@ -1,4 +1,4 @@
-﻿namespace codeRR.App.Modules.Triggers.Domain
+﻿namespace codeRR.Server.App.Modules.Triggers.Domain
 {
     /// <summary>
     ///     Defines information for a specific action in a trigger.

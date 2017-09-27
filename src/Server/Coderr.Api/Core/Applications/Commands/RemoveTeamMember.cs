@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace codeRR.Api.Core.Applications.Commands
+namespace codeRR.Server.Api.Core.Applications.Commands
 {
     /// <summary>
     ///     Remove a team member from the

@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace codeRR.Infrastructure
+namespace codeRR.Server.Infrastructure
 {
     /// <summary>
     ///     Internal serializer, used only to store stuff that aren´t exposed outside the App/data namespace.

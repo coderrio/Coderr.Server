@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace codeRR.ReportAnalyzer.Inbound
+namespace codeRR.Server.ReportAnalyzer.Inbound
 {
     public class IncludeNonPublicMembersContractResolver : DefaultContractResolver
     {

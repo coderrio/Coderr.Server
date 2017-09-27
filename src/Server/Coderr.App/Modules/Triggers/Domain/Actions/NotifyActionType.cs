@@ -1,4 +1,4 @@
-﻿namespace codeRR.App.Modules.Triggers.Domain.Actions
+﻿namespace codeRR.Server.App.Modules.Triggers.Domain.Actions
 {
     /// <summary>
     ///     When to notify users

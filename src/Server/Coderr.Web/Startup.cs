@@ -8,26 +8,26 @@ using System.Web.Http.ExceptionHandling;
 using System.Web.Http.Filters;
 using System.Web.Mvc;
 using System.Web.Routing;
+using codeRR.Server.App.Configuration;
+using codeRR.Server.Infrastructure;
+using codeRR.Server.Infrastructure.Configuration;
+using codeRR.Server.SqlServer.Core.Users;
+using codeRR.Server.Web;
+using codeRR.Server.Web.Infrastructure;
+using codeRR.Server.Web.Infrastructure.Auth;
+using codeRR.Server.Web.Infrastructure.Logging;
+using codeRR.Server.Web.Services;
+using codeRR.Server.Web.Views;
 using Griffin.Data.Mapper;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
-using codeRR.App.Configuration;
 using OneTrueError.Client;
-using codeRR.Infrastructure;
-using codeRR.Infrastructure.Configuration;
-using codeRR.SqlServer.Core.Users;
-using codeRR.Web;
-using codeRR.Web.Infrastructure;
-using codeRR.Web.Infrastructure.Auth;
-using codeRR.Web.Infrastructure.Logging;
-using codeRR.Web.Services;
-using codeRR.Web.Views;
 using Owin;
 
 [assembly: OwinStartup(typeof(Startup))]
 
-namespace codeRR.Web
+namespace codeRR.Server.Web
 {
     public class Startup
     {

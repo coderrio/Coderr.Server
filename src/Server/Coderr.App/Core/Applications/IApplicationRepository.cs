@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
+using codeRR.Server.App.Core.Users;
 using Griffin.Data;
-using codeRR.App.Core.Users;
 
-namespace codeRR.App.Core.Applications
+namespace codeRR.Server.App.Core.Applications
 {
     /// <summary>
     ///     Repository for application management.

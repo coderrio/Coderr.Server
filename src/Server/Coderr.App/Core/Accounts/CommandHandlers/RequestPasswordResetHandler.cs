@@ -1,13 +1,13 @@
 ﻿using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Accounts.Commands;
+using codeRR.Server.Api.Core.Messaging.Commands;
+using codeRR.Server.App.Configuration;
+using codeRR.Server.Infrastructure.Configuration;
 using DotNetCqs;
 using Griffin.Container;
 using log4net;
-using codeRR.Api.Core.Accounts.Commands;
-using codeRR.Api.Core.Messaging.Commands;
-using codeRR.App.Configuration;
-using codeRR.Infrastructure.Configuration;
 
-namespace codeRR.App.Core.Accounts.CommandHandlers
+namespace codeRR.Server.App.Core.Accounts.CommandHandlers
 {
     /// <summary>
     ///     Handler for <see cref="RequestPasswordReset" />.

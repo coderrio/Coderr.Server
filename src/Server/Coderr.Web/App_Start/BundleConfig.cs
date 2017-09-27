@@ -1,6 +1,6 @@
 ﻿using System.Web.Optimization;
 
-namespace codeRR.Web
+namespace codeRR.Server.Web
 {
     public class BundleConfig
     {

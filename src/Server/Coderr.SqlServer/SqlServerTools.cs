@@ -4,9 +4,9 @@ using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
-using codeRR.Infrastructure;
+using codeRR.Server.Infrastructure;
 
-namespace codeRR.SqlServer
+namespace codeRR.Server.SqlServer
 {
     /// <summary>
     ///     MS Sql Server specific implementation of the database tools.

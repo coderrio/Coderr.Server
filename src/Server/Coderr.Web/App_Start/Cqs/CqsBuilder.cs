@@ -1,15 +1,15 @@
 ﻿using System;
+using codeRR.Server.App.Core.Accounts.Requests;
+using codeRR.Server.Infrastructure.Queueing;
+using codeRR.Server.ReportAnalyzer.Scanners;
+using codeRR.Server.SqlServer.Core.Users;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Cqs.InversionOfControl;
 using Griffin.Data;
 using log4net;
-using codeRR.App.Core.Accounts.Requests;
-using codeRR.Infrastructure.Queueing;
-using codeRR.ReportAnalyzer.Scanners;
-using codeRR.SqlServer.Core.Users;
 
-namespace codeRR.Web.Cqs
+namespace codeRR.Server.Web.Cqs
 {
     public class CqsBuilder
     {

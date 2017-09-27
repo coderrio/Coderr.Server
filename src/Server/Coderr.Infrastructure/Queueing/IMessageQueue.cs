@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.Infrastructure.Queueing
+namespace codeRR.Server.Infrastructure.Queueing
 {
     /// <summary>
     ///     Purpose of this class is to allow different queue technologies within OTE.

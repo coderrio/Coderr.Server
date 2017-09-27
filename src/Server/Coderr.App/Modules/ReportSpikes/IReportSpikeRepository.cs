@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Griffin.Data;
 
-namespace codeRR.App.Modules.ReportSpikes
+namespace codeRR.Server.App.Modules.ReportSpikes
 {
     /// <summary>
     ///     Repostory for spikes.

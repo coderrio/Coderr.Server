@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace codeRR.Web.Areas.Receiver.Models
+namespace codeRR.Server.Web.Areas.Receiver.Models
 {
     /// <summary>
     ///     Used to make sure that the uploaded report was signed with the correct shared secret.

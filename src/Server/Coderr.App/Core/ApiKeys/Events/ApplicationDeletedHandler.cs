@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Applications.Events;
 using DotNetCqs;
 using Griffin.Container;
-using codeRR.Api.Core.Applications.Events;
 
-namespace codeRR.App.Core.ApiKeys.Events
+namespace codeRR.Server.App.Core.ApiKeys.Events
 {
     /// <summary>
     ///     Will either delete an entire apikey (if the only association is with the given application) or just remove the

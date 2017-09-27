@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace codeRR.Infrastructure
+namespace codeRR.Server.Infrastructure
 {
     public interface ISetupDatabaseTools
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Griffin.Data;
 
-namespace codeRR.Infrastructure.Configuration.Database
+namespace codeRR.Server.Infrastructure.Configuration.Database
 {
     /// <summary>
     ///     Uses a DB to store configuration.

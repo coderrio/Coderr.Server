@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace codeRR.App.Modules.Geolocation
+namespace codeRR.Server.App.Modules.Geolocation
 {
     /// <summary>
     ///     Stores error origins

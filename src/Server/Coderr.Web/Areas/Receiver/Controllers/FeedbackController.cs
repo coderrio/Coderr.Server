@@ -4,16 +4,16 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using codeRR.Server.Infrastructure;
+using codeRR.Server.Infrastructure.Queueing;
+using codeRR.Server.ReportAnalyzer.LibContracts;
+using codeRR.Server.Web.Areas.Receiver.Helpers;
+using codeRR.Server.Web.Areas.Receiver.Models;
 using Griffin.Data;
 using log4net;
 using Newtonsoft.Json;
-using codeRR.Infrastructure;
-using codeRR.Infrastructure.Queueing;
-using codeRR.ReportAnalyzer.LibContracts;
-using codeRR.Web.Areas.Receiver.Helpers;
-using codeRR.Web.Areas.Receiver.Models;
 
-namespace codeRR.Web.Areas.Receiver.Controllers
+namespace codeRR.Server.Web.Areas.Receiver.Controllers
 {
     [AllowAnonymous]
     public class FeedbackController : ApiController

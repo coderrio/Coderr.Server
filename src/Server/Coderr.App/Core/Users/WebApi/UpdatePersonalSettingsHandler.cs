@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Users.Commands;
 using DotNetCqs;
 using Griffin.Container;
-using codeRR.Api.Core.Users.Commands;
 
-namespace codeRR.App.Core.Users.WebApi
+namespace codeRR.Server.App.Core.Users.WebApi
 {
     /// <summary>
     ///     Handler for <see cref="UpdatePersonalSettings" />.

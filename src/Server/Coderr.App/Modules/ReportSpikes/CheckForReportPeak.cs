@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Incidents.Events;
+using codeRR.Server.Api.Core.Messaging;
+using codeRR.Server.Api.Core.Messaging.Commands;
+using codeRR.Server.App.Configuration;
+using codeRR.Server.App.Core.Notifications;
+using codeRR.Server.Infrastructure.Configuration;
 using DotNetCqs;
 using Griffin.Container;
-using codeRR.Api.Core.Incidents.Events;
-using codeRR.Api.Core.Messaging;
-using codeRR.Api.Core.Messaging.Commands;
-using codeRR.App.Configuration;
-using codeRR.App.Core.Notifications;
-using codeRR.Infrastructure.Configuration;
 
-namespace codeRR.App.Modules.ReportSpikes
+namespace codeRR.Server.App.Modules.ReportSpikes
 {
     /// <summary>
     /// </summary>

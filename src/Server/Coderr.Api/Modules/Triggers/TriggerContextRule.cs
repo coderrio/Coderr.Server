@@ -1,4 +1,4 @@
-﻿namespace codeRR.Api.Modules.Triggers
+﻿namespace codeRR.Server.Api.Modules.Triggers
 {
     /// <summary>
     ///     Context when doing the filtering

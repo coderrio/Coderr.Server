@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Accounts;
+using codeRR.Server.Api.Core.Accounts.Commands;
+using codeRR.Server.Api.Core.Accounts.Events;
+using codeRR.Server.Api.Core.Messaging;
+using codeRR.Server.Api.Core.Messaging.Commands;
+using codeRR.Server.App.Configuration;
+using codeRR.Server.Infrastructure.Configuration;
 using DotNetCqs;
 using Griffin.Container;
 using log4net;
-using codeRR.Api.Core.Accounts;
-using codeRR.Api.Core.Accounts.Commands;
-using codeRR.Api.Core.Accounts.Events;
-using codeRR.Api.Core.Messaging;
-using codeRR.Api.Core.Messaging.Commands;
-using codeRR.App.Configuration;
-using codeRR.Infrastructure.Configuration;
 
-namespace codeRR.App.Core.Accounts.CommandHandlers
+namespace codeRR.Server.App.Core.Accounts.CommandHandlers
 {
     /// <summary>
     ///     Handler for <see cref="RegisterSimple" />.
@@ -50,7 +50,7 @@ namespace codeRR.App.Core.Accounts.CommandHandlers
             var userName = await TryCreateUsernameAsync(command, pos);
             if (userName == null)
             {
-                _logger.Error("Failed to generate username for " + command.EmailAddress);
+                _logger.Error("Failed to generate user name for " + command.EmailAddress);
                 return;
             }
 

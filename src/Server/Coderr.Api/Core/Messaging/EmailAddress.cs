@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace codeRR.Api.Core.Messaging
+namespace codeRR.Server.Api.Core.Messaging
 {
     /// <summary>
     ///     Email address

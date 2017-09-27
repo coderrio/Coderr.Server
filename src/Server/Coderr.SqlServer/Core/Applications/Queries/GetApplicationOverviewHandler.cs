@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Applications.Queries;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
-using codeRR.Api.Core.Applications.Queries;
 
-namespace codeRR.SqlServer.Core.Applications.Queries
+namespace codeRR.Server.SqlServer.Core.Applications.Queries
 {
     [Component]
     internal class GetApplicationOverviewHandler : IQueryHandler<GetApplicationOverview, GetApplicationOverviewResult>

@@ -1,10 +1,10 @@
 ﻿using System;
+using codeRR.Server.App.Modules.Tagging;
+using codeRR.Server.App.Modules.Versions.Config;
+using codeRR.Server.Infrastructure.Configuration;
 using Griffin.Container;
-using codeRR.App.Modules.Tagging;
-using codeRR.App.Modules.Versions.Config;
-using codeRR.Infrastructure.Configuration;
 
-namespace codeRR.App.Modules.Versions.Events
+namespace codeRR.Server.App.Modules.Versions.Events
 {
     /// <summary>
     /// attaches a version tag to the incident

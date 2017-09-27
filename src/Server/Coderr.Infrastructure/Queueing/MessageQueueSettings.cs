@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using codeRR.Infrastructure.Configuration;
+using codeRR.Server.Infrastructure.Configuration;
 
-namespace codeRR.Infrastructure.Queueing
+namespace codeRR.Server.Infrastructure.Queueing
 {
     public sealed class MessageQueueSettings : IConfigurationSection
     {

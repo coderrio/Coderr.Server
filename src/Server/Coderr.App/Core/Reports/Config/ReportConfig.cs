@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using codeRR.Infrastructure.Configuration;
+using codeRR.Server.Infrastructure.Configuration;
 
-namespace codeRR.App.Core.Reports.Config
+namespace codeRR.Server.App.Core.Reports.Config
 {
     /// <summary>
     ///     Configuration settings for reports.

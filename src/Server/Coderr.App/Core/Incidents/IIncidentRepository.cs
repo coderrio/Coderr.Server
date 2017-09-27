@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Griffin.Data;
 
-namespace codeRR.App.Core.Incidents
+namespace codeRR.Server.App.Core.Incidents
 {
     /// <summary>
     ///     Incident repository

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using codeRR.Api.Core.Reports;
-using codeRR.App.Modules.Similarities.Domain.Adapters;
-using codeRR.App.Modules.Similarities.Domain.Adapters.Runner;
+using codeRR.Server.Api.Core.Reports;
+using codeRR.Server.App.Modules.Similarities.Domain.Adapters;
+using codeRR.Server.App.Modules.Similarities.Domain.Adapters.Runner;
 
-namespace codeRR.App.Modules.Similarities.Domain
+namespace codeRR.Server.App.Modules.Similarities.Domain
 {
     /// <summary>
     ///     Stores information about all context collection properties and how often their different values are the same.

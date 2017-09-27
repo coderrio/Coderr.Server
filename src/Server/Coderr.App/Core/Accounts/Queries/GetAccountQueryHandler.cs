@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Accounts.Queries;
 using DotNetCqs;
 using Griffin.Container;
-using codeRR.Api.Core.Accounts.Queries;
 
-namespace codeRR.App.Core.Accounts.Queries
+namespace codeRR.Server.App.Core.Accounts.Queries
 {
     /// <summary>
     ///     Handler for <see cref="GetAccountQueryHandler" />
@@ -35,7 +35,7 @@ namespace codeRR.App.Core.Accounts.Queries
         {
             if (query == null) throw new ArgumentNullException("query");
 
-            var account = await _repository.GetByIdAsync(query.AccountId);
+            var account = await _repository.GetByIdAsync((int) query.AccountId);
             if (account == null)
                 return null;
 

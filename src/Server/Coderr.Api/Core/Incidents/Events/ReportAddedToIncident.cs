@@ -1,8 +1,8 @@
 ﻿using System;
+using codeRR.Server.Api.Core.Reports;
 using DotNetCqs;
-using codeRR.Api.Core.Reports;
 
-namespace codeRR.Api.Core.Incidents.Events
+namespace codeRR.Server.Api.Core.Incidents.Events
 {
     /// <summary>
     ///     We just received a new report and attached it to the given incident.

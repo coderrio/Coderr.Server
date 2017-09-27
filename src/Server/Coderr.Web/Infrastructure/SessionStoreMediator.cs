@@ -5,7 +5,7 @@ using System.Web.Mvc;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 
-namespace codeRR.Web.Infrastructure
+namespace codeRR.Server.Web.Infrastructure
 {
     /// <summary>
     ///     Mediator to allow a custom implementation

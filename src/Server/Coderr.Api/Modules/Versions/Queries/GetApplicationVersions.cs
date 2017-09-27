@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace codeRR.Api.Modules.Versions.Queries
+namespace codeRR.Server.Api.Modules.Versions.Queries
 {
     /// <summary>
     ///     Get all application versions that we've received incidents for

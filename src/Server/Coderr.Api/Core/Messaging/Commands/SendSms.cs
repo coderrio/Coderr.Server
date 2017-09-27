@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace codeRR.Api.Core.Messaging.Commands
+namespace codeRR.Server.Api.Core.Messaging.Commands
 {
     /// <summary>
     ///     Send a cell phone text.

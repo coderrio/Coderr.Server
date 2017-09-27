@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace codeRR.App.Modules.Similarities.Domain
+namespace codeRR.Server.App.Modules.Similarities.Domain
 {
     /// <summary>
     ///     Holds the similarity value, its percentage and total count of similarities

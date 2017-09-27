@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
+using codeRR.Server.App.Core.Applications;
+using codeRR.Server.App.Core.Users;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
-using codeRR.App.Core.Applications;
-using codeRR.App.Core.Users;
 
-namespace codeRR.SqlServer.Core.Applications
+namespace codeRR.Server.SqlServer.Core.Applications
 {
     [Component]
     public class ApplicationRepository : IApplicationRepository

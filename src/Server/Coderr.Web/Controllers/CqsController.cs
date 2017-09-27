@@ -2,12 +2,14 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Security;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using codeRR.Server.Api.Core.Applications.Commands;
+using codeRR.Server.Infrastructure.Security;
+using codeRR.Server.Web.Infrastructure.Cqs;
 using DotNetCqs;
 using Griffin;
 using Griffin.Cqs;
@@ -16,11 +18,8 @@ using Griffin.Cqs.Net;
 using log4net;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
-using codeRR.Api.Core.Applications.Commands;
-using codeRR.Infrastructure.Security;
-using codeRR.Web.Infrastructure.Cqs;
 
-namespace codeRR.Web.Controllers
+namespace codeRR.Server.Web.Controllers
 {
     [System.Web.Http.Authorize]
     public class CqsController : ApiController

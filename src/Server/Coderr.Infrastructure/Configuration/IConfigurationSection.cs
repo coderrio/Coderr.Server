@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace codeRR.Infrastructure.Configuration
+namespace codeRR.Server.Infrastructure.Configuration
 {
     /// <summary>
     ///     Purpose of this interface is to allow strongly types settings to be stored in a configuration store without

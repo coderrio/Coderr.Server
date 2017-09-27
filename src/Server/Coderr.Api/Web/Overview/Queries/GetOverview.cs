@@ -1,6 +1,6 @@
 ﻿using DotNetCqs;
 
-namespace codeRR.Api.Web.Overview.Queries
+namespace codeRR.Server.Api.Web.Overview.Queries
 {
     /// <summary>
     ///     Get an codeRR summary (typically shown in the chart and right panel summary)

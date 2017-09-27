@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using codeRR.Server.Web.Cqs;
 using DotNetCqs;
 using Griffin.ApplicationServices;
 using Griffin.Container;
 using Griffin.Data;
 using log4net;
-using codeRR.Web.Cqs;
 using Owin;
 
-namespace codeRR.Web.Services
+namespace codeRR.Server.Web.Services
 {
     /// <summary>
     ///     Used to configure the back-end. It's a mess, but a limited mess.

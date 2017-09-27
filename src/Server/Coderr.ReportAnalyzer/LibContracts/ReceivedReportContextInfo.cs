@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace codeRR.ReportAnalyzer.LibContracts
+namespace codeRR.Server.ReportAnalyzer.LibContracts
 {
     /// <summary>
     ///     Context collection

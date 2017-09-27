@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using System.Security;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Applications.Events;
+using codeRR.Server.Api.Core.Invitations.Commands;
+using codeRR.Server.Api.Core.Messaging.Commands;
+using codeRR.Server.App.Core.Applications;
+using codeRR.Server.App.Core.Invitations;
+using codeRR.Server.App.Core.Invitations.CommandHandlers;
+using codeRR.Server.App.Core.Users;
+using codeRR.Server.Infrastructure.Configuration;
+using codeRR.Server.Infrastructure.Security;
 using DotNetCqs;
 using FluentAssertions;
 using NSubstitute;
-using codeRR.Api.Core.Applications.Events;
-using codeRR.Api.Core.Invitations.Commands;
-using codeRR.Api.Core.Messaging.Commands;
-using codeRR.App.Core.Applications;
-using codeRR.App.Core.Invitations;
-using codeRR.App.Core.Invitations.CommandHandlers;
-using codeRR.App.Core.Users;
-using codeRR.Infrastructure.Configuration;
-using codeRR.Infrastructure.Security;
 using Xunit;
 
-namespace codeRR.App.Tests.Core.Applications.Commands
+namespace codeRR.Server.App.Tests.Core.Applications.Commands
 {
     public class InviteUserHandlerTests
     {

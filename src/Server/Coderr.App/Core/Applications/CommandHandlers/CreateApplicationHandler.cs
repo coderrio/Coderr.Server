@@ -2,15 +2,15 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Applications;
+using codeRR.Server.Api.Core.Applications.Commands;
+using codeRR.Server.Api.Core.Applications.Events;
+using codeRR.Server.App.Core.Users;
+using codeRR.Server.Infrastructure.Security;
 using DotNetCqs;
 using Griffin.Container;
-using codeRR.Api.Core.Applications;
-using codeRR.Api.Core.Applications.Commands;
-using codeRR.Api.Core.Applications.Events;
-using codeRR.App.Core.Users;
-using codeRR.Infrastructure.Security;
 
-namespace codeRR.App.Core.Applications.CommandHandlers
+namespace codeRR.Server.App.Core.Applications.CommandHandlers
 {
     [Component]
     internal class CreateApplicationHandler : ICommandHandler<CreateApplication>

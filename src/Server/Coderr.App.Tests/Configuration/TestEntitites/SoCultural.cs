@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using codeRR.Infrastructure.Configuration;
+using codeRR.Server.Infrastructure.Configuration;
 
-namespace codeRR.App.Tests.Configuration.TestEntitites
+namespace codeRR.Server.App.Tests.Configuration.TestEntitites
 {
     internal class SoCultural : IConfigurationSection
     {

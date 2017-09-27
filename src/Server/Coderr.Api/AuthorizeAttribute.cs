@@ -1,7 +1,7 @@
 ﻿using System;
-using codeRR.Api.Core;
+using codeRR.Server.Api.Core;
 
-namespace codeRR.Api
+namespace codeRR.Server.Api
 {
     /// <summary>
     ///     Authorize on specific roles.

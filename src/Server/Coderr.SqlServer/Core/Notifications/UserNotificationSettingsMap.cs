@@ -1,8 +1,8 @@
 ﻿using System;
+using codeRR.Server.App.Core.Notifications;
 using Griffin.Data.Mapper;
-using codeRR.App.Core.Notifications;
 
-namespace codeRR.SqlServer.Core.Notifications
+namespace codeRR.Server.SqlServer.Core.Notifications
 {
     internal class UserNotificationSettingsMap : CrudEntityMapper<UserNotificationSettings>
     {

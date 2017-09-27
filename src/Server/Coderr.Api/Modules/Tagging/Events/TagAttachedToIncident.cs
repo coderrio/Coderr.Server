@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace codeRR.Api.Modules.Tagging.Events
+namespace codeRR.Server.Api.Modules.Tagging.Events
 {
     /// <summary>
     ///     New tag(s) have been identified for the processed incident.

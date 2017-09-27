@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Modules.Triggers.Commands;
+using codeRR.Server.App.Modules.Triggers.Domain;
 using DotNetCqs;
 using Griffin.Container;
-using codeRR.Api.Modules.Triggers.Commands;
-using codeRR.App.Modules.Triggers.Domain;
 
-namespace codeRR.App.Modules.Triggers.Commands
+namespace codeRR.Server.App.Modules.Triggers.Commands
 {
     /// <summary>
     ///     Handler for <see cref="CreateTrigger" />.

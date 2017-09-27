@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Applications;
+using codeRR.Server.Api.Core.Applications.Queries;
+using codeRR.Server.App.Core.Accounts;
 using DotNetCqs;
 using Griffin.Container;
-using codeRR.Api.Core.Applications;
-using codeRR.Api.Core.Applications.Queries;
-using codeRR.App.Core.Accounts;
 
-namespace codeRR.App.Core.Applications.QueryHandlers
+namespace codeRR.Server.App.Core.Applications.QueryHandlers
 {
     /// <summary>
     ///     Handler for <see cref="GetApplicationInfo" />.
@@ -46,7 +46,7 @@ namespace codeRR.App.Core.Applications.QueryHandlers
             var isSysAdmin = false;
             if (query.AccountId > 0)
             {
-                var account = await _accountRepository.GetByIdAsync(query.AccountId);
+                var account = await _accountRepository.GetByIdAsync((int) query.AccountId);
                 if (account.IsSysAdmin)
                 {
                     query.AccountId = 0;

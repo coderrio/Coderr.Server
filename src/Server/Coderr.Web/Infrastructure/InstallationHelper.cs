@@ -1,7 +1,7 @@
 ﻿using System.Configuration;
 using System.Web.Configuration;
 
-namespace codeRR.Web.Infrastructure
+namespace codeRR.Server.Web.Infrastructure
 {
     public class InstallationHelper
     {

@@ -4,7 +4,7 @@ using log4net;
 using OneTrueError.Client;
 using OneTrueError.Client.Contracts;
 
-namespace codeRR.Web.Infrastructure.Logging
+namespace codeRR.Server.Web.Infrastructure.Logging
 {
     internal class WebApiLogger : ExceptionLogger
     {

@@ -1,8 +1,8 @@
 ﻿using System;
+using codeRR.Server.SqlServer.Core.Users;
 using Griffin.Data.Mapper;
-using codeRR.SqlServer.Core.Users;
 
-namespace codeRR.SqlServer.Tests
+namespace codeRR.Server.SqlServer.Tests
 {
     public class ScanForMappings : IDisposable
     {

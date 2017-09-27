@@ -1,6 +1,6 @@
 ﻿using DotNetCqs;
 
-namespace codeRR.Api.Core.Support
+namespace codeRR.Server.Api.Core.Support
 {
     /// <summary>
     ///     Send a support request to Gauffin Interactive AB

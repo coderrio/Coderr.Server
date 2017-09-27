@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Modules.Versions.Queries;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
-using codeRR.Api.Modules.Versions.Queries;
 
-namespace codeRR.SqlServer.Modules.Versions.Queries
+namespace codeRR.Server.SqlServer.Modules.Versions.Queries
 {
     [Component]
     internal class GetApplicationVersionsHandler : IQueryHandler<GetApplicationVersions, GetApplicationVersionsResult>

@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace codeRR.Infrastructure.Security
+namespace codeRR.Server.Infrastructure.Security
 {
     public class OneTrueClaims
     {

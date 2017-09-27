@@ -3,7 +3,7 @@ using System.Messaging;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace codeRR.Web.Cqs
+namespace codeRR.Server.Web.Cqs
 {
     public class JsonFormatter : IMessageFormatter
     {

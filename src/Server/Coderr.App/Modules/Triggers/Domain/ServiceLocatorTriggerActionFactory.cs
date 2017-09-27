@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
+using codeRR.Server.App.Modules.Triggers.Domain.Actions;
 using Griffin.Container;
-using codeRR.App.Modules.Triggers.Domain.Actions;
 
-namespace codeRR.App.Modules.Triggers.Domain
+namespace codeRR.Server.App.Modules.Triggers.Domain
 {
     /// <summary>
     ///     Uses the IoC container to identify trigger actions

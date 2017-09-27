@@ -1,6 +1,6 @@
 ﻿using DotNetCqs;
 
-namespace codeRR.Api.Core.Accounts.Requests
+namespace codeRR.Server.Api.Core.Accounts.Requests
 {
     /// <summary>
     ///     Check if the user name or email address are taken

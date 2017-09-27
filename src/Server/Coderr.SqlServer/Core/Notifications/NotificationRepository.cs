@@ -2,12 +2,12 @@
 using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
+using codeRR.Server.App.Core.Notifications;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
-using codeRR.App.Core.Notifications;
 
-namespace codeRR.SqlServer.Core.Notifications
+namespace codeRR.Server.SqlServer.Core.Notifications
 {
     [Component]
     public class NotificationRepository : INotificationsRepository

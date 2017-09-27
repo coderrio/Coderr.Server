@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
+using codeRR.Server.Infrastructure.Configuration;
 using FluentAssertions.Execution;
-using codeRR.Infrastructure.Configuration;
 
-namespace codeRR.App.Tests.Configuration.TestEntitites
+namespace codeRR.Server.App.Tests.Configuration.TestEntitites
 {
     internal class MySection : IConfigurationSection
     {

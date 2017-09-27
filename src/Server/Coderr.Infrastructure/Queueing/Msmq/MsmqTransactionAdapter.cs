@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Messaging;
 
-namespace codeRR.Infrastructure.Queueing.Msmq
+namespace codeRR.Server.Infrastructure.Queueing.Msmq
 {
     public class MsmqTransactionAdapter : IQueueTransaction
     {

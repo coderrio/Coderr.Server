@@ -4,16 +4,16 @@ using System.Data.SqlClient;
 using System.Reflection;
 using System.Web.Http;
 using System.Web.Mvc;
+using codeRR.Server.App.Core.Accounts.Requests;
+using codeRR.Server.Infrastructure.Queueing;
+using codeRR.Server.ReportAnalyzer.Scanners;
+using codeRR.Server.SqlServer.Core.Users;
+using codeRR.Server.Web.IoC;
 using Griffin.Container;
 using Griffin.Container.Mvc5;
 using Griffin.Data;
-using codeRR.App.Core.Accounts.Requests;
-using codeRR.Infrastructure.Queueing;
-using codeRR.ReportAnalyzer.Scanners;
-using codeRR.SqlServer.Core.Users;
-using codeRR.Web.IoC;
 
-namespace codeRR.Web
+namespace codeRR.Server.Web
 {
     public class CompositionRoot
     {

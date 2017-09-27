@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.ApiKeys.Queries;
+using codeRR.Server.App.Core.ApiKeys;
+using codeRR.Server.SqlServer.Core.ApiKeys.Mappings;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
-using codeRR.Api.Core.ApiKeys.Queries;
-using codeRR.App.Core.ApiKeys;
-using codeRR.SqlServer.Core.ApiKeys.Mappings;
 
-namespace codeRR.SqlServer.Core.ApiKeys.Queries
+namespace codeRR.Server.SqlServer.Core.ApiKeys.Queries
 {
     /// <summary>
     ///     Handler for <see cref="GetApiKey" />.

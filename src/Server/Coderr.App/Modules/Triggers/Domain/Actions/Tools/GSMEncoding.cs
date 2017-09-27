@@ -18,7 +18,7 @@ using System.Text;
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-namespace codeRR.App.Modules.Triggers.Domain.Actions.Tools
+namespace codeRR.Server.App.Modules.Triggers.Domain.Actions.Tools
 {
     /// <summary>
     ///     Text encoding class for the GSM 03.38 alphabet.

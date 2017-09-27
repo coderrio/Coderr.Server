@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace codeRR.App.Modules.Messaging
+namespace codeRR.Server.App.Modules.Messaging
 {
     /// <summary>
     ///     Message template (contains markdown, view model instructions etc).

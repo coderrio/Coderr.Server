@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using codeRR.Server.App.Core.Feedback;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
-using codeRR.App.Core.Feedback;
 
-namespace codeRR.SqlServer.Core.Feedback
+namespace codeRR.Server.SqlServer.Core.Feedback
 {
     [Component]
     public class FeedbackRepository : IFeedbackRepository

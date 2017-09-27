@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace codeRR.Web.Areas.Installation.Models
+namespace codeRR.Server.Web.Areas.Installation.Models
 {
     public class BasicsViewModel
     {

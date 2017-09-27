@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Accounts.Requests;
 using DotNetCqs;
 using Griffin.Container;
-using codeRR.Api.Core.Accounts.Requests;
 
-namespace codeRR.App.Core.Accounts.Requests
+namespace codeRR.Server.App.Core.Accounts.Requests
 {
     /// <summary>
     ///     Handler for <see cref="ChangePassword" />.
@@ -36,7 +36,7 @@ namespace codeRR.App.Core.Accounts.Requests
         {
             if (request == null) throw new ArgumentNullException("request");
 
-            var user = await _repository.GetByIdAsync(request.UserId);
+            var user = await _repository.GetByIdAsync((int) request.UserId);
             if (!user.ValidatePassword(request.CurrentPassword))
                 return new ChangePasswordReply {Success = false};
 

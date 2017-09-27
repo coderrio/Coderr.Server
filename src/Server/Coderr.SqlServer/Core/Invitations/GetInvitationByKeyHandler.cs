@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Invitations.Queries;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
-using codeRR.Api.Core.Invitations.Queries;
 
-namespace codeRR.SqlServer.Core.Invitations
+namespace codeRR.Server.SqlServer.Core.Invitations
 {
     [Component]
     internal class GetInvitationByKeyHandler : IQueryHandler<GetInvitationByKey, GetInvitationByKeyResult>

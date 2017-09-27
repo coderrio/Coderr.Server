@@ -1,9 +1,9 @@
 using System.Linq;
+using codeRR.Server.ReportAnalyzer.Domain.Reports;
+using codeRR.Server.ReportAnalyzer.LibContracts;
 using Newtonsoft.Json;
-using codeRR.ReportAnalyzer.Domain.Reports;
-using codeRR.ReportAnalyzer.LibContracts;
 
-namespace codeRR.ReportAnalyzer.Scanners
+namespace codeRR.Server.ReportAnalyzer.Scanners
 {
     /// <summary>
     ///     Converts DTOs from the client library format to our internal DTO.

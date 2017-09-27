@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Data;
+using codeRR.Server.Api.Core.Incidents.Queries;
 using Griffin.Data.Mapper;
-using codeRR.Api.Core.Incidents.Queries;
 
-namespace codeRR.SqlServer.Core.Incidents.Queries
+namespace codeRR.Server.SqlServer.Core.Incidents.Queries
 {
     public class FindIncidentResultItemMapper : IEntityMapper<FindIncidentResultItem>
     {

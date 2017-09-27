@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.Api.Core.Incidents
+namespace codeRR.Server.Api.Core.Incidents
 {
     /// <summary>
     ///     A small summary of an incident, typically used to list incidents.

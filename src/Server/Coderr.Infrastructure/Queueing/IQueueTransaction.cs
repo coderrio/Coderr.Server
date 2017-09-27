@@ -1,6 +1,6 @@
 using System;
 
-namespace codeRR.Infrastructure.Queueing
+namespace codeRR.Server.Infrastructure.Queueing
 {
     public interface IQueueTransaction : IDisposable
     {

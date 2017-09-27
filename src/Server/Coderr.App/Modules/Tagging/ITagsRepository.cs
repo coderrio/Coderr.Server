@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
-using codeRR.App.Modules.Tagging.Domain;
+using codeRR.Server.App.Modules.Tagging.Domain;
 
-namespace codeRR.App.Modules.Tagging
+namespace codeRR.Server.App.Modules.Tagging
 {
     /// <summary>
     ///     Repository for tags

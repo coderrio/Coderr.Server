@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace codeRR.ReportAnalyzer
+namespace codeRR.Server.ReportAnalyzer
 {
     /// <summary>
     ///     Allows us to serialize properties with private setters.

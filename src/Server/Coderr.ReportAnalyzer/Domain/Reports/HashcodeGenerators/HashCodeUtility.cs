@@ -1,4 +1,4 @@
-﻿namespace codeRR.ReportAnalyzer.Domain.Reports.HashcodeGenerators
+﻿namespace codeRR.Server.ReportAnalyzer.Domain.Reports.HashcodeGenerators
 {
     /// <summary>
     ///     Provides methods for manipulating and creating hash codes.

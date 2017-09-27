@@ -7,7 +7,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace codeRR.Infrastructure.Queueing.Msmq
+namespace codeRR.Server.Infrastructure.Queueing.Msmq
 {
     public class MsmqMessageQueue : IMessageQueue, IDisposable
     {

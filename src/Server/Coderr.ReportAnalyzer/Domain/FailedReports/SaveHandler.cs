@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Data.Common;
 using System.Threading.Tasks;
+using codeRR.Server.Infrastructure;
+using codeRR.Server.ReportAnalyzer.Domain.Reports;
+using codeRR.Server.ReportAnalyzer.LibContracts;
 using Griffin.Data;
 using log4net;
 using Newtonsoft.Json;
-using codeRR.Infrastructure;
-using codeRR.ReportAnalyzer.Domain.Reports;
-using codeRR.ReportAnalyzer.LibContracts;
 
-namespace codeRR.ReportAnalyzer.Domain.FailedReports
+namespace codeRR.Server.ReportAnalyzer.Domain.FailedReports
 {
     /// <summary>
     ///     TODO: Remove or refactor?

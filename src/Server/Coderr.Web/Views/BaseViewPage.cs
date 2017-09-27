@@ -4,9 +4,9 @@ using System.Linq;
 using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
-using codeRR.Infrastructure.Security;
+using codeRR.Server.Infrastructure.Security;
 
-namespace codeRR.Web.Views
+namespace codeRR.Server.Web.Views
 {
     /// <summary>
     ///     moves some of the logic from the layout to this class instead.

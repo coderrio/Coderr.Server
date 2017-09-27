@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace codeRR.Web.Areas.Admin.Models.Applications
+﻿namespace codeRR.Server.Web.Areas.Admin.Models.Applications
 {
     public class ApplicationViewModel
     {

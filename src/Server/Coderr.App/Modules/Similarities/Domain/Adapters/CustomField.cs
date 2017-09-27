@@ -1,6 +1,6 @@
 using System;
 
-namespace codeRR.App.Modules.Similarities.Domain.Adapters
+namespace codeRR.Server.App.Modules.Similarities.Domain.Adapters
 {
     /// <summary>
     ///     Custom fields are added by the value adapters.

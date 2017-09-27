@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 
-namespace codeRR.Web.Areas.Admin
+namespace codeRR.Server.Web.Areas.Admin
 {
     public class MenuItem
     {

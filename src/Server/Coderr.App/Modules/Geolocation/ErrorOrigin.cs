@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace codeRR.App.Modules.Geolocation
+namespace codeRR.Server.App.Modules.Geolocation
 {
     /// <summary>
     ///     Geographic location of where an error report originated from.

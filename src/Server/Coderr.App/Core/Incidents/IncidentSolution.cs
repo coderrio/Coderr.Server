@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.App.Core.Incidents
+namespace codeRR.Server.App.Core.Incidents
 {
     /// <summary>
     ///     How the development team solved the incident.

@@ -3,15 +3,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Routing;
+using codeRR.Server.Api.Core.Applications.Commands;
+using codeRR.Server.Api.Core.Applications.Queries;
+using codeRR.Server.Api.Modules.Triggers.Queries;
+using codeRR.Server.App.Modules.Versions.Config;
+using codeRR.Server.Infrastructure.Configuration;
+using codeRR.Server.Web.Areas.Admin.Models.Applications;
 using DotNetCqs;
-using codeRR.Api.Core.Applications.Commands;
-using codeRR.Api.Core.Applications.Queries;
-using codeRR.Api.Modules.Triggers.Queries;
-using codeRR.App.Modules.Versions.Config;
-using codeRR.Infrastructure.Configuration;
-using codeRR.Web.Areas.Admin.Models.Applications;
 
-namespace codeRR.Web.Areas.Admin.Controllers
+namespace codeRR.Server.Web.Areas.Admin.Controllers
 {
     [Authorize]
     public class ApplicationController : Controller
@@ -74,7 +74,7 @@ namespace codeRR.Web.Areas.Admin.Controllers
         public async Task<ActionResult> Index()
         {
             var apps = await _queryBus.QueryAsync(new GetApplicationList());
-            var model = apps.Select(x => new ApplicationViewModel {Id = x.Id, Name = x.Name}).ToList();
+            var model = Enumerable.Select(apps, x => new ApplicationViewModel {Id = x.Id, Name = x.Name}).ToList<ApplicationViewModel>();
             return View(model);
         }
 
@@ -114,16 +114,16 @@ namespace codeRR.Web.Areas.Admin.Controllers
         {
             var query = new GetContextCollectionMetadata(id);
             var assemblyReslt = await _queryBus.QueryAsync(query);
-            var assemblyCollection = assemblyReslt.FirstOrDefault(x => x.Name == "Assemblies");
+            var assemblyCollection = Enumerable.FirstOrDefault(assemblyReslt, x => x.Name == "Assemblies");
             var items = new SelectListItem[0];
             if (assemblyCollection != null)
             {
-                items = (
+                items = Enumerable.ToArray<SelectListItem>((
                     from x in assemblyCollection.Properties
                     where !x.StartsWith("System.", StringComparison.OrdinalIgnoreCase)
                           && !x.StartsWith("Microsoft", StringComparison.OrdinalIgnoreCase)
                     select new SelectListItem {Value = x, Text = x}
-                ).ToArray();
+                ));
             }
             return items;
         }

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using codeRR.Infrastructure.Configuration.Database;
+using codeRR.Server.Infrastructure.Configuration.Database;
 
-namespace codeRR.Infrastructure.Configuration
+namespace codeRR.Server.Infrastructure.Configuration
 {
     /// <summary>
     ///     Defines how settings should be persisted and loaded.

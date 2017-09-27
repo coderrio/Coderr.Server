@@ -1,13 +1,13 @@
 ﻿using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Modules.Triggers.Queries;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
-using codeRR.Api.Modules.Triggers.Queries;
 
-namespace codeRR.SqlServer.Modules.Triggers
+namespace codeRR.Server.SqlServer.Modules.Triggers
 {
     [Component]
     internal class GetContextCollectionMetadataHandler :

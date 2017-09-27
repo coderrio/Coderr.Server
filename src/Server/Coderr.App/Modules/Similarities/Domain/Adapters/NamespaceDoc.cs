@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace codeRR.App.Modules.Similarities.Domain.Adapters
+namespace codeRR.Server.App.Modules.Similarities.Domain.Adapters
 {
     /// <summary>
     ///     För att kunna identifiera likheter behöver absoluta värden att normaliseras. Exempelvis säger inte "483 handles"

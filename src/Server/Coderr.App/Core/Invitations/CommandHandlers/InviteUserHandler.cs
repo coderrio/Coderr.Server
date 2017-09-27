@@ -3,21 +3,21 @@ using System.Linq;
 using System.Security;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Applications.Events;
+using codeRR.Server.Api.Core.Applications.Events.codeRR.Api.Core.Accounts.Events;
+using codeRR.Server.Api.Core.Invitations.Commands;
+using codeRR.Server.Api.Core.Messaging;
+using codeRR.Server.Api.Core.Messaging.Commands;
+using codeRR.Server.App.Configuration;
+using codeRR.Server.App.Core.Applications;
+using codeRR.Server.App.Core.Users;
+using codeRR.Server.Infrastructure.Configuration;
+using codeRR.Server.Infrastructure.Security;
 using DotNetCqs;
 using Griffin.Container;
 using log4net;
-using codeRR.Api.Core.Applications.Events;
-using codeRR.Api.Core.Applications.Events.codeRR.Api.Core.Accounts.Events;
-using codeRR.Api.Core.Invitations.Commands;
-using codeRR.Api.Core.Messaging;
-using codeRR.Api.Core.Messaging.Commands;
-using codeRR.App.Configuration;
-using codeRR.App.Core.Applications;
-using codeRR.App.Core.Users;
-using codeRR.Infrastructure.Configuration;
-using codeRR.Infrastructure.Security;
 
-namespace codeRR.App.Core.Invitations.CommandHandlers
+namespace codeRR.Server.App.Core.Invitations.CommandHandlers
 {
     /// <summary>
     ///     Handler for <see cref="InviteUser" />

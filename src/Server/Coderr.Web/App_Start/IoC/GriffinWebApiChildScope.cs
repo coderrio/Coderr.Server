@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web.Http.Dependencies;
 using Griffin.Container;
 
-namespace codeRR.Web.IoC
+namespace codeRR.Server.Web.IoC
 {
     public sealed class GriffinWebApiChildScope : IDependencyScope
     {

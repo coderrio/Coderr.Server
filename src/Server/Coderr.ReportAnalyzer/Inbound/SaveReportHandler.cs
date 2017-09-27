@@ -6,16 +6,16 @@ using System.Linq;
 using System.Security.Authentication;
 using System.Text;
 using System.Threading.Tasks;
+using codeRR.Server.Infrastructure;
+using codeRR.Server.Infrastructure.Queueing;
+using codeRR.Server.ReportAnalyzer.Inbound.Models;
+using codeRR.Server.ReportAnalyzer.LibContracts;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 using log4net;
 using Newtonsoft.Json;
-using codeRR.Infrastructure;
-using codeRR.Infrastructure.Queueing;
-using codeRR.ReportAnalyzer.Inbound.Models;
-using codeRR.ReportAnalyzer.LibContracts;
 
-namespace codeRR.ReportAnalyzer.Inbound
+namespace codeRR.Server.ReportAnalyzer.Inbound
 {
     /// <summary>
     ///     Validates inbound report and store it in our internal queue for analysis.

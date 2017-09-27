@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
-namespace codeRR.App.Modules.Triggers.Domain.Rules
+namespace codeRR.Server.App.Modules.Triggers.Domain.Rules
 {
     /// <summary>
     ///     Check a context collection in the trigger
@@ -38,7 +39,7 @@ namespace codeRR.App.Modules.Triggers.Domain.Rules
             {
                 foreach (var ctx in context.ErrorReport.ContextCollections)
                 {
-                    if (ctx.Properties.Any(property => Matches(PropertyValue, property.Value)))
+                    if (Enumerable.Any<KeyValuePair<string, string>>(ctx.Properties, property => Matches(PropertyValue, property.Value)))
                     {
                         return ResultToUse;
                     }
@@ -48,13 +49,11 @@ namespace codeRR.App.Modules.Triggers.Domain.Rules
             }
 
             var errContext =
-                context.ErrorReport.ContextCollections.FirstOrDefault(
-                    x => x.Name.Equals(ContextName, StringComparison.CurrentCultureIgnoreCase));
+                Enumerable.FirstOrDefault(context.ErrorReport.ContextCollections, x => x.Name.Equals(ContextName, StringComparison.CurrentCultureIgnoreCase));
             if (errContext == null)
                 return FilterResult.NotMatched;
 
-            var prop = errContext.Properties.Where(
-                x => x.Key.Equals(PropertyName, StringComparison.CurrentCultureIgnoreCase))
+            var prop = Enumerable.Where<KeyValuePair<string, string>>(errContext.Properties, x => x.Key.Equals(PropertyName, StringComparison.CurrentCultureIgnoreCase))
                 .Select(x => x.Value)
                 .FirstOrDefault();
 

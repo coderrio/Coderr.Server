@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Accounts.Commands;
+using codeRR.Server.Api.Core.Accounts.Events;
+using codeRR.Server.Api.Core.Messaging;
+using codeRR.Server.Api.Core.Messaging.Commands;
+using codeRR.Server.App.Configuration;
+using codeRR.Server.Infrastructure.Configuration;
 using DotNetCqs;
 using Griffin.Container;
-using codeRR.Api.Core.Accounts.Commands;
-using codeRR.Api.Core.Accounts.Events;
-using codeRR.Api.Core.Messaging;
-using codeRR.Api.Core.Messaging.Commands;
-using codeRR.App.Configuration;
-using codeRR.Infrastructure.Configuration;
 
-namespace codeRR.App.Core.Accounts.CommandHandlers
+namespace codeRR.Server.App.Core.Accounts.CommandHandlers
 {
     /// <summary>
     ///     Register a new account.
@@ -59,12 +59,11 @@ namespace codeRR.App.Core.Accounts.CommandHandlers
             await _eventBus.PublishAsync(evt);
         }
 
-#pragma warning disable 1998
-        private async Task SendAccountInfo(string userName)
-#pragma warning restore 1998
+        private Task SendAccountInfo(string userName)
         {
             //TODO: Send information that states
             //that an account already exist, with instructions on how to reset the account.
+            return Task.FromResult<object>(null);
         }
 
         private Task SendVerificationEmail(Account account)
@@ -82,9 +81,9 @@ You can activate your account by clicking on: {1}/account/activate/{0}
 
 Good luck,
   codeRR Team", account.ActivationKey, config.BaseUrl),
-                Subject = "codeRR activation"
+                Subject = "codeRR activation",
+                Recipients = new[] {new EmailAddress(account.Email)}
             };
-            msg.Recipients = new[] {new EmailAddress(account.Email)};
 
             return _commandBus.ExecuteAsync(new SendEmail(msg));
         }

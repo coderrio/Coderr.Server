@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Incidents.Events;
+using codeRR.Server.Api.Core.Notifications;
+using codeRR.Server.App.Modules.Versions.Config;
+using codeRR.Server.Infrastructure.Configuration;
+using codeRR.Server.Infrastructure.Security;
 using DotNetCqs;
 using Griffin.Container;
-using codeRR.Api.Core.Incidents.Events;
-using codeRR.Api.Core.Notifications;
-using codeRR.App.Modules.Versions.Config;
-using codeRR.Infrastructure.Configuration;
-using codeRR.Infrastructure.Security;
 
-namespace codeRR.App.Modules.Versions.Events
+namespace codeRR.Server.App.Modules.Versions.Events
 {
     [Component]
     internal class GetVersionFromReport : IApplicationEventSubscriber<ReportAddedToIncident>
@@ -41,7 +41,7 @@ namespace codeRR.App.Modules.Versions.Events
                 return;
             }
 
-            var collection = e.Report.ContextCollections.FirstOrDefault(x => x.Name == "Assemblies");
+            var collection = Enumerable.FirstOrDefault(e.Report.ContextCollections, x => x.Name == "Assemblies");
             if (collection == null)
                 return;
 

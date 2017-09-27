@@ -1,6 +1,6 @@
 ﻿using DotNetCqs;
 
-namespace codeRR.Api.Core.Feedback.Events
+namespace codeRR.Server.Api.Core.Feedback.Events
 {
     /// <summary>
     ///     Feedback was attached to incident.

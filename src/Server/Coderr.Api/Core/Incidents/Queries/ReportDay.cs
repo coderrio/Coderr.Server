@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.Api.Core.Incidents.Queries
+namespace codeRR.Server.Api.Core.Incidents.Queries
 {
     /// <summary>
     ///     A day in our statistics

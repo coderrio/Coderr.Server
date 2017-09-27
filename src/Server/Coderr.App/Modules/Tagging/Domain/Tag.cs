@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.App.Modules.Tagging.Domain
+namespace codeRR.Server.App.Modules.Tagging.Domain
 {
     /// <summary>
     ///     Stack overflow tag

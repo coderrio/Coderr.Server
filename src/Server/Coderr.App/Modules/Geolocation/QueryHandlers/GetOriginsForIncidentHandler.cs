@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Modules.ErrorOrigins.Queries;
 using DotNetCqs;
 using Griffin.Container;
-using codeRR.Api.Modules.ErrorOrigins.Queries;
 
-namespace codeRR.App.Modules.Geolocation.QueryHandlers
+namespace codeRR.Server.App.Modules.Geolocation.QueryHandlers
 {
     /// <summary>
     ///     Handler for <see cref="GetOriginsForIncident" />.

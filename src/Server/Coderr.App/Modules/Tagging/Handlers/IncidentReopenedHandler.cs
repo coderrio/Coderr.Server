@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Incidents.Events;
+using codeRR.Server.App.Modules.Tagging.Domain;
 using DotNetCqs;
 using Griffin.Container;
-using codeRR.Api.Core.Incidents.Events;
-using codeRR.App.Modules.Tagging.Domain;
 
-namespace codeRR.App.Modules.Tagging.Handlers
+namespace codeRR.Server.App.Modules.Tagging.Handlers
 {
     /// <summary>
     ///     Adds a "incident-reopened" tag

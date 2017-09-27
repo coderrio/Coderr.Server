@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Incidents.Events;
+using codeRR.Server.App.Modules.Triggers.Domain;
+using codeRR.Server.App.Modules.Triggers.Domain.Actions;
 using DotNetCqs;
 using Griffin.Container;
 using log4net;
-using codeRR.Api.Core.Incidents.Events;
-using codeRR.App.Modules.Triggers.Domain;
-using codeRR.App.Modules.Triggers.Domain.Actions;
 
-namespace codeRR.App.Modules.Triggers.EventHandlers
+namespace codeRR.Server.App.Modules.Triggers.EventHandlers
 {
     /// <summary>
     ///     Waits on the ReportAdded and then loads all notifications for the application that the report belongs to.

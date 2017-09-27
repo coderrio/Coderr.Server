@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Applications.Commands;
 using DotNetCqs;
 using Griffin.Container;
-using codeRR.Api.Core.Applications.Commands;
 
-namespace codeRR.App.Core.Applications.CommandHandlers
+namespace codeRR.Server.App.Core.Applications.CommandHandlers
 {
     /// <summary>
     ///     Used to update application name and applicationType.

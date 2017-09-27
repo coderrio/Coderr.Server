@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.Api.Core
+namespace codeRR.Server.Api.Core
 {
     /// <summary>
     ///     Used to tell the typescript generator to not generate the field.

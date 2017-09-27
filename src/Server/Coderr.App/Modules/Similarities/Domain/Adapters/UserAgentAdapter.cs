@@ -1,8 +1,8 @@
 ﻿using System;
-using codeRR.App.Modules.Similarities.Domain.Adapters.Runner;
+using codeRR.Server.App.Modules.Similarities.Domain.Adapters.Runner;
 using UAParser;
 
-namespace codeRR.App.Modules.Similarities.Domain.Adapters
+namespace codeRR.Server.App.Modules.Similarities.Domain.Adapters
 {
     /// <summary>
     ///     Splits a user agent string into multiple context properties.

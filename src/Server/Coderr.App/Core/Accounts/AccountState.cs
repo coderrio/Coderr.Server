@@ -1,4 +1,4 @@
-﻿namespace codeRR.App.Core.Accounts
+﻿namespace codeRR.Server.App.Core.Accounts
 {
     /// <summary>
     ///     Account state

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace codeRR.ReportAnalyzer.LibContracts
+namespace codeRR.Server.ReportAnalyzer.LibContracts
 {
     /// <summary>
     ///     Model used to wrap all information from an exception.

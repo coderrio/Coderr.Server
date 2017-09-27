@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace codeRR.App.Modules.Triggers.Domain.Filters
+namespace codeRR.Server.App.Modules.Triggers.Domain.Filters
 {
     /// <summary>
     ///     Innehåller våra fördefinierade filter.

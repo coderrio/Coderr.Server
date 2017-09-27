@@ -3,7 +3,7 @@ using System.Data;
 using System.Data.SqlClient;
 using Griffin.Data;
 
-namespace codeRR.SqlServer.Tests
+namespace codeRR.Server.SqlServer.Tests
 {
     internal class ConnectionFactory
     {

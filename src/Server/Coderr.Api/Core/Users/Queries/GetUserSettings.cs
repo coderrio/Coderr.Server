@@ -1,6 +1,6 @@
 ﻿using DotNetCqs;
 
-namespace codeRR.Api.Core.Users.Queries
+namespace codeRR.Server.Api.Core.Users.Queries
 {
     /// <summary>
     ///     Get settings for an user.
