@@ -4,13 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using DotNetCqs;
-using OneTrueError.Api.Core.ApiKeys.Commands;
-using OneTrueError.Api.Core.ApiKeys.Queries;
-using OneTrueError.Api.Core.Applications.Queries;
-using OneTrueError.Infrastructure.Security;
-using OneTrueError.Web.Areas.Admin.Models.ApiKeys;
+using codeRR.Api.Core.ApiKeys.Commands;
+using codeRR.Api.Core.ApiKeys.Queries;
+using codeRR.Api.Core.Applications.Queries;
+using codeRR.Infrastructure.Security;
+using codeRR.Web.Areas.Admin.Models.ApiKeys;
 
-namespace OneTrueError.Web.Areas.Admin.Controllers
+namespace codeRR.Web.Areas.Admin.Controllers
 {
     [Authorize]
     public class ApiKeysController : Controller

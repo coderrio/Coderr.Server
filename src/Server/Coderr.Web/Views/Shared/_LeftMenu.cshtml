@@ -1,4 +1,4 @@
-﻿@using OneTrueError.Infrastructure.Security
+﻿@using codeRR.Infrastructure.Security
 <div class="sidebar-inner slimscrollleft">
 
     <!--- Side menu -->
@@ -109,7 +109,7 @@
     }, false);
 
     window.bootScripts.push(function () {
-        var query = new OneTrueError.Core.Applications.Queries.GetApplicationList();
+        var query = new codeRR.Core.Applications.Queries.GetApplicationList();
         Griffin.Cqs.CqsClient.query(query)
             .done(function (result) {
                 window.MyApplications = result;

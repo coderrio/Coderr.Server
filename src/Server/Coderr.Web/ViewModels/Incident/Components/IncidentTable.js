@@ -2,7 +2,7 @@
 var CqsClient = Griffin.Cqs.CqsClient;
 var Yo = Griffin.Yo;
 var Pager = Griffin.WebApp.Pager;
-var IncidentOrder = OneTrueError.Core.Incidents.IncidentOrder;
+var IncidentOrder = codeRR.Core.Incidents.IncidentOrder;
 var IncidentTableViewModel = (function () {
     function IncidentTableViewModel(ctx) {
         this.sortType = IncidentOrder.Newest;
@@ -11,7 +11,7 @@ var IncidentTableViewModel = (function () {
     }
     IncidentTableViewModel.prototype.load = function (applicationId, applicationVersion) {
         var _this = this;
-        var query = new OneTrueError.Core.Incidents.Queries.FindIncidents();
+        var query = new codeRR.Core.Incidents.Queries.FindIncidents();
         query.PageNumber = 1;
         query.ItemsPerPage = 20;
         if (applicationId != null) {
@@ -155,7 +155,7 @@ var IncidentTableViewModel = (function () {
     IncidentTableViewModel.prototype.loadItems = function (pageNumber) {
         var _this = this;
         if (pageNumber === void 0) { pageNumber = 0; }
-        var query = new OneTrueError.Core.Incidents.Queries.FindIncidents();
+        var query = new codeRR.Core.Incidents.Queries.FindIncidents();
         query.SortType = this.sortType;
         query.SortAscending = this.sortAscending;
         query.Open = false;

@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace OneTrueError.Api.Core.ApiKeys.Commands
+namespace codeRR.Api.Core.ApiKeys.Commands
 {
     /// <summary>
     ///     Delete an API key.

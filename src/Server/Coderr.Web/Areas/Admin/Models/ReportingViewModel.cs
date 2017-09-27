@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace OneTrueError.Web.Areas.Admin.Models
+namespace codeRR.Web.Areas.Admin.Models
 {
     public class ReportingViewModel
     {

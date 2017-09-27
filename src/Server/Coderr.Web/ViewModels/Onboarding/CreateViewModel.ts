@@ -1,5 +1,5 @@
 ﻿/// <reference path="../../app/Application.ts" />
-module OneTrueError.Onboarding {
+module codeRR.Onboarding {
     import GetApplicationList = Core.Applications.Queries.GetApplicationList;
     import ApplicationListItem = Core.Applications.ApplicationListItem;
     import CreateApplication = Core.Applications.Commands.CreateApplication;

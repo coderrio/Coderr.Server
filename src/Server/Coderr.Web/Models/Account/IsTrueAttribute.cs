@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace OneTrueError.Web.Models.Account
+namespace codeRR.Web.Models.Account
 {
     public class IsTrueAttribute : ValidationAttribute
     {

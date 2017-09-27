@@ -1,8 +1,8 @@
 ﻿/// <reference path="../../Scripts/Griffin.Yo.d.ts" />
 
-module OneTrueError.Application {
+module codeRR.Application {
     import CqsClient = Griffin.Cqs.CqsClient;
-    import RemoveTeamMember = OneTrueError.Core.Applications.Commands.RemoveTeamMember;
+    import RemoveTeamMember = codeRR.Core.Applications.Commands.RemoveTeamMember;
 
     export class TeamViewModel implements Griffin.Yo.Spa.ViewModels.IViewModel {
         private context: Griffin.Yo.Spa.ViewModels.IActivationContext;

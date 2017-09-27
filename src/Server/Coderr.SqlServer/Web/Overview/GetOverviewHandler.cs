@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
-using OneTrueError.Api.Web.Overview.Queries;
-using OneTrueError.Infrastructure.Security;
+using codeRR.Api.Web.Overview.Queries;
+using codeRR.Infrastructure.Security;
 
-namespace OneTrueError.SqlServer.Web.Overview
+namespace codeRR.SqlServer.Web.Overview
 {
     [Component]
     internal class GetOverviewHandler : IQueryHandler<GetOverview, GetOverviewResult>

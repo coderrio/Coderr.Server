@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
-using OneTrueError.Api.Web.Overview.Queries;
+using codeRR.Api.Web.Overview.Queries;
 using Xunit;
 
-namespace OneTrueError.App.Tests.Web.Overview.Queries
+namespace codeRR.App.Tests.Web.Overview.Queries
 {
    public  class GetOverviewApplicationResultTests
     {

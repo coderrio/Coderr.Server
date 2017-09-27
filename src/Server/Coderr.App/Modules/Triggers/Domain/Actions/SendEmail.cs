@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace OneTrueError.App.Modules.Triggers.Domain.Actions
+namespace codeRR.App.Modules.Triggers.Domain.Actions
 {
     [TriggerActionName("Email")]
     internal class SendEmailTask : ITriggerAction

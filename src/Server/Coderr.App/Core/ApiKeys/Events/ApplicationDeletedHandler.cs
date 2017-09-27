@@ -3,9 +3,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
-using OneTrueError.Api.Core.Applications.Events;
+using codeRR.Api.Core.Applications.Events;
 
-namespace OneTrueError.App.Core.ApiKeys.Events
+namespace codeRR.App.Core.ApiKeys.Events
 {
     /// <summary>
     ///     Will either delete an entire apikey (if the only association is with the given application) or just remove the

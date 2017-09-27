@@ -1,8 +1,8 @@
 ﻿using System;
 using Griffin.Data.Mapper;
-using OneTrueError.App.Core.Users;
+using codeRR.App.Core.Users;
 
-namespace OneTrueError.SqlServer.Core.Users
+namespace codeRR.SqlServer.Core.Users
 {
     public class ApplicationTeamMemberMapper : CrudEntityMapper<ApplicationTeamMember>
     {

@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 
-namespace OneTrueError.Web.Infrastructure.Auth
+namespace codeRR.Web.Infrastructure.Auth
 {
     public class AuthenticationFailureResult : IHttpActionResult
     {

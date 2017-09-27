@@ -1,14 +1,14 @@
 /// <reference path="../../Scripts/Models/AllModels.ts" />
 /// <reference path="../../Scripts/CqsClient.ts" />
 /// <reference path="../ChartViewModel.ts" />
-var OneTrueError;
-(function (OneTrueError) {
+var codeRR;
+(function (codeRR) {
     var Incident;
     (function (Incident) {
         var CqsClient = Griffin.Cqs.CqsClient;
-        var ApplicationService = OneTrueError.Applications.ApplicationService;
-        var GetIncident = OneTrueError.Core.Incidents.Queries.GetIncident;
-        var CloseIncident = OneTrueError.Core.Incidents.Commands.CloseIncident;
+        var ApplicationService = codeRR.Applications.ApplicationService;
+        var GetIncident = codeRR.Core.Incidents.Queries.GetIncident;
+        var CloseIncident = codeRR.Core.Incidents.Commands.CloseIncident;
         var CloseViewModel = (function () {
             function CloseViewModel() {
             }
@@ -72,6 +72,6 @@ var OneTrueError;
             return CloseViewModel;
         }());
         Incident.CloseViewModel = CloseViewModel;
-    })(Incident = OneTrueError.Incident || (OneTrueError.Incident = {}));
-})(OneTrueError || (OneTrueError = {}));
+    })(Incident = codeRR.Incident || (codeRR.Incident = {}));
+})(codeRR || (codeRR = {}));
 //# sourceMappingURL=CloseViewModel.js.map

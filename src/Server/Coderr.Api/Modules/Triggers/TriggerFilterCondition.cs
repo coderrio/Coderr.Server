@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace OneTrueError.Api.Modules.Triggers
+namespace codeRR.Api.Modules.Triggers
 {
     /// <summary>
     ///     Filter condition

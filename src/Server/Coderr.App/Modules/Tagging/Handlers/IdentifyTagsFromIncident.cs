@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
 using log4net;
-using OneTrueError.Api.Core.Incidents.Events;
+using codeRR.Api.Core.Incidents.Events;
 
-namespace OneTrueError.App.Modules.Tagging.Handlers
+namespace codeRR.App.Modules.Tagging.Handlers
 {
     /// <summary>
     ///     Scan through the error report to identify which libraries were used when the exception was thrown.

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace OneTrueError.Api.Core.Messaging
+namespace codeRR.Api.Core.Messaging
 {
     /// <summary>
     ///     A resource attached to an email (typically an image)

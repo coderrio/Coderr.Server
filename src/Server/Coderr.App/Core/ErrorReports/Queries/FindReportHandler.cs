@@ -4,11 +4,11 @@
 //using DotNetCqs;
 //using Griffin.Container;
 //using log4net;
-//using OneTrueError.Core.Api.Reports;
-//using OneTrueError.Core.Api.Reports.Queries;
-//using OneTrueError.Core.Reports;
+//using codeRR.Core.Api.Reports;
+//using codeRR.Core.Api.Reports.Queries;
+//using codeRR.Core.Reports;
 
-//namespace OneTrueError.Core.ErrorReports.Queries
+//namespace codeRR.Core.ErrorReports.Queries
 //{
 //    [Component]
 //    internal class FindReportHandler : IQueryHandler<GetReport, GetReportResult>

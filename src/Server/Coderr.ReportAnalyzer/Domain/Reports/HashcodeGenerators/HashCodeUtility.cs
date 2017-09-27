@@ -1,4 +1,4 @@
-﻿namespace OneTrueError.ReportAnalyzer.Domain.Reports.HashcodeGenerators
+﻿namespace codeRR.ReportAnalyzer.Domain.Reports.HashcodeGenerators
 {
     /// <summary>
     ///     Provides methods for manipulating and creating hash codes.

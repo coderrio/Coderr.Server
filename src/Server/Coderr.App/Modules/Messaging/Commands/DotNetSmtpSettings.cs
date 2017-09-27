@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
-using OneTrueError.Infrastructure.Configuration;
+using codeRR.Infrastructure.Configuration;
 
-namespace OneTrueError.App.Modules.Messaging.Commands
+namespace codeRR.App.Modules.Messaging.Commands
 {
     /// <summary>
     ///     Used to configure the <c>SmtpClient</c> which is part of .NET

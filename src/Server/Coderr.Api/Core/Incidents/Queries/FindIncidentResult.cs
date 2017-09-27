@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace OneTrueError.Api.Core.Incidents.Queries
+namespace codeRR.Api.Core.Incidents.Queries
 {
     /// <summary>
     ///     Result for <see cref="FindIncidentResult" />.

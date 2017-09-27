@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using System.Diagnostics.CodeAnalysis;
 
-namespace OneTrueError.SqlServer.Tools
+namespace codeRR.SqlServer.Tools
 {
     [SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities",
         Justification = "Invoker have control over the CommandText.")]

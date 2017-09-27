@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace OneTrueError.App.Modules.Triggers.Domain.Rules
+namespace codeRR.App.Modules.Triggers.Domain.Rules
 {
     /// <summary>
     ///     Check a context collection in the trigger

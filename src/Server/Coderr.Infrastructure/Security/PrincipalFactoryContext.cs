@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Claims;
 
-namespace OneTrueError.Infrastructure.Security
+namespace codeRR.Infrastructure.Security
 {
     /// <summary>
     ///     Context for the factory method in <see cref="PrincipalFactory" />.

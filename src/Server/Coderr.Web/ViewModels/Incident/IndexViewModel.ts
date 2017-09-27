@@ -1,12 +1,12 @@
 ﻿/// <reference path="../../app/Application.ts" />
 /// <reference path="../../Scripts/Promise.ts" />
 /// <reference path="../../Scripts/CqsClient.ts" />
-module OneTrueError.Incident {
+module codeRR.Incident {
     import CqsClient = Griffin.Cqs.CqsClient;
     import IncidentOrder = Core.Incidents.IncidentOrder;
     import Yo = Griffin.Yo;
     import Pager = Griffin.WebApp.Pager;
-    import ApplicationService = OneTrueError.Applications.ApplicationService;
+    import ApplicationService = codeRR.Applications.ApplicationService;
 
     export class IndexViewModel implements Griffin.Yo.Spa.ViewModels.IViewModel {
         private ctx: Griffin.Yo.Spa.ViewModels.IActivationContext;

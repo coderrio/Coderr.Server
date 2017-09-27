@@ -2,12 +2,12 @@
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
-using OneTrueError.Api.Core.Incidents.Commands;
-using OneTrueError.Api.Core.Messaging;
-using OneTrueError.Api.Core.Messaging.Commands;
-using OneTrueError.App.Core.Feedback;
+using codeRR.Api.Core.Incidents.Commands;
+using codeRR.Api.Core.Messaging;
+using codeRR.Api.Core.Messaging.Commands;
+using codeRR.App.Core.Feedback;
 
-namespace OneTrueError.App.Core.Incidents.Commands
+namespace codeRR.App.Core.Incidents.Commands
 {
     /// <summary>
     ///     Handler of <see cref="CloseIncident" />.

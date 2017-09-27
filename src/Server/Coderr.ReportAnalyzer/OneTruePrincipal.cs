@@ -2,10 +2,10 @@
 using System.Security.Principal;
 using System.Threading;
 
-namespace OneTrueError.ReportAnalyzer
+namespace codeRR.ReportAnalyzer
 {
     /// <summary>
-    ///     OneTrueError principal
+    ///     codeRR principal
     /// </summary>
     public class OneTruePrincipal : IPrincipal
     {

@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Griffin.Data;
 
-namespace OneTrueError.App.Modules.Triggers.Domain
+namespace codeRR.App.Modules.Triggers.Domain
 {
     /// <summary>
     ///     Repository to load information for the Trigger root aggregate.

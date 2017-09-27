@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
-using OneTrueError.Api.Core.Accounts.Events;
+using codeRR.Api.Core.Accounts.Events;
 
-namespace OneTrueError.App.Core.Users.EventHandlers
+namespace codeRR.App.Core.Users.EventHandlers
 {
     /// <summary>
     ///     Responsible of creating an user entity when a new account is created.

@@ -4,10 +4,10 @@ using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
-using OneTrueError.Api.Core.Reports.Queries;
-using OneTrueError.SqlServer.Tools;
+using codeRR.Api.Core.Reports.Queries;
+using codeRR.SqlServer.Tools;
 
-namespace OneTrueError.SqlServer.Core.Incidents.Queries
+namespace codeRR.SqlServer.Core.Incidents.Queries
 {
     [Component]
     internal class GetReportListHandler : IQueryHandler<GetReportList, GetReportListResult>

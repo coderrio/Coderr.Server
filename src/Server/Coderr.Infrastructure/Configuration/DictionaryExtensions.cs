@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace OneTrueError.Infrastructure.Configuration
+namespace codeRR.Infrastructure.Configuration
 {
     /// <summary>
     ///     Moves otherwise repeated conversions to a single place.

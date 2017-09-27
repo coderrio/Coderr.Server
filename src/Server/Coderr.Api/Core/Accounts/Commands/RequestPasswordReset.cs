@@ -1,8 +1,8 @@
 ﻿using System;
 using DotNetCqs;
-using OneTrueError.Api.Core.Accounts.Requests;
+using codeRR.Api.Core.Accounts.Requests;
 
-namespace OneTrueError.Api.Core.Accounts.Commands
+namespace codeRR.Api.Core.Accounts.Commands
 {
     /// <summary>
     ///     Request a password reset (i.e. lock account, email an activation link to the user and wait for activation).

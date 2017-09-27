@@ -1,14 +1,14 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace OneTrueError.Api.Core.Messaging.Commands
+namespace codeRR.Api.Core.Messaging.Commands
 {
     /// <summary>
     ///     Send a cell phone text.
     /// </summary>
     /// <remarks>
     ///     <para>
-    ///         Requires a prepaid account at http://onetrueerror.com/services/sms. Add your SMS Api key and the shared
+    ///         Requires a prepaid account at http://coderrapp.com/services/sms. Add your SMS Api key and the shared
     ///         secret in your web.config.
     ///     </para>
     ///     <example>

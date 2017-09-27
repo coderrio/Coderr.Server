@@ -1,10 +1,10 @@
 /// <reference path="../../app/Application.ts" />
-var OneTrueError;
-(function (OneTrueError) {
+var codeRR;
+(function (codeRR) {
     var Onboarding;
     (function (Onboarding) {
-        var GetApplicationList = OneTrueError.Core.Applications.Queries.GetApplicationList;
-        var CreateApplication = OneTrueError.Core.Applications.Commands.CreateApplication;
+        var GetApplicationList = codeRR.Core.Applications.Queries.GetApplicationList;
+        var CreateApplication = codeRR.Core.Applications.Commands.CreateApplication;
         var CreateViewModel = (function () {
             function CreateViewModel() {
             }
@@ -12,10 +12,10 @@ var OneTrueError;
             CreateViewModel.prototype.activate = function (context) {
                 var _this = this;
                 this.context = context;
-                OneTrueError.Applications.Navigation.breadcrumbs([
+                codeRR.Applications.Navigation.breadcrumbs([
                     { href: "#/onboarding", title: "Onboarding" }
                 ]);
-                OneTrueError.Applications.Navigation.pageTitle = "Onboarding - Create application";
+                codeRR.Applications.Navigation.pageTitle = "Onboarding - Create application";
                 context.handle.click("#create-onboarding-application button", function (evt) { return _this.onSubmit(evt); });
                 var apps = new GetApplicationList();
                 CqsClient.query(apps)
@@ -46,6 +46,6 @@ var OneTrueError;
             return CreateViewModel;
         }());
         Onboarding.CreateViewModel = CreateViewModel;
-    })(Onboarding = OneTrueError.Onboarding || (OneTrueError.Onboarding = {}));
-})(OneTrueError || (OneTrueError = {}));
+    })(Onboarding = codeRR.Onboarding || (codeRR.Onboarding = {}));
+})(codeRR || (codeRR = {}));
 //# sourceMappingURL=CreateViewModel.js.map

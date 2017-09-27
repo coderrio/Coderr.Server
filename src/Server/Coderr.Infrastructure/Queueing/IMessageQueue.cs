@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OneTrueError.Infrastructure.Queueing
+namespace codeRR.Infrastructure.Queueing
 {
     /// <summary>
     ///     Purpose of this class is to allow different queue technologies within OTE.

@@ -1,7 +1,7 @@
 /// <reference path="../../Scripts/Griffin.Yo.d.ts" />
 /// <reference path="../../app/Application.ts" />
-var OneTrueError;
-(function (OneTrueError) {
+var codeRR;
+(function (codeRR) {
     var Onboarding;
     (function (Onboarding) {
         var IndexViewModel = (function () {
@@ -11,14 +11,14 @@ var OneTrueError;
             IndexViewModel.prototype.activate = function (context) {
                 this.hasApplicationId = context.routeData["applicationId"] != null;
                 console.log(this.hasApplicationId, context.routeData["applicationId"]);
-                OneTrueError.Applications.Navigation.breadcrumbs([{ href: "#/onboarding", title: "Onboarding" }]);
-                OneTrueError.Applications.Navigation.pageTitle = 'Onboarding';
+                codeRR.Applications.Navigation.breadcrumbs([{ href: "#/onboarding", title: "Onboarding" }]);
+                codeRR.Applications.Navigation.pageTitle = 'Onboarding';
                 context.resolve();
             };
             IndexViewModel.prototype.deactivate = function () { };
             return IndexViewModel;
         }());
         Onboarding.IndexViewModel = IndexViewModel;
-    })(Onboarding = OneTrueError.Onboarding || (OneTrueError.Onboarding = {}));
-})(OneTrueError || (OneTrueError = {}));
+    })(Onboarding = codeRR.Onboarding || (codeRR.Onboarding = {}));
+})(codeRR || (codeRR = {}));
 //# sourceMappingURL=IndexViewModel.js.map

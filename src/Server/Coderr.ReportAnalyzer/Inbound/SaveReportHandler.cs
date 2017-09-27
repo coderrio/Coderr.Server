@@ -10,12 +10,12 @@ using Griffin.Data;
 using Griffin.Data.Mapper;
 using log4net;
 using Newtonsoft.Json;
-using OneTrueError.Infrastructure;
-using OneTrueError.Infrastructure.Queueing;
-using OneTrueError.ReportAnalyzer.Inbound.Models;
-using OneTrueError.ReportAnalyzer.LibContracts;
+using codeRR.Infrastructure;
+using codeRR.Infrastructure.Queueing;
+using codeRR.ReportAnalyzer.Inbound.Models;
+using codeRR.ReportAnalyzer.LibContracts;
 
-namespace OneTrueError.ReportAnalyzer.Inbound
+namespace codeRR.ReportAnalyzer.Inbound
 {
     /// <summary>
     ///     Validates inbound report and store it in our internal queue for analysis.

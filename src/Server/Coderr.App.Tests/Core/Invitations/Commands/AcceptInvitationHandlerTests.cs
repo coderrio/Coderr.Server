@@ -2,14 +2,14 @@
 using DotNetCqs;
 using FluentAssertions;
 using NSubstitute;
-using OneTrueError.Api.Core.Accounts.Events;
-using OneTrueError.Api.Core.Accounts.Requests;
-using OneTrueError.App.Core.Accounts;
-using OneTrueError.App.Core.Invitations;
-using OneTrueError.App.Core.Invitations.CommandHandlers;
+using codeRR.Api.Core.Accounts.Events;
+using codeRR.Api.Core.Accounts.Requests;
+using codeRR.App.Core.Accounts;
+using codeRR.App.Core.Invitations;
+using codeRR.App.Core.Invitations.CommandHandlers;
 using Xunit;
 
-namespace OneTrueError.App.Tests.Core.Invitations.Commands
+namespace codeRR.App.Tests.Core.Invitations.Commands
 {
     public class AcceptInvitationHandlerTests
     {
@@ -40,6 +40,7 @@ namespace OneTrueError.App.Tests.Core.Invitations.Commands
             var request = new AcceptInvitation(InvitedAccountId, invitation.InvitationKey) {AcceptedEmail = "arne@gauffin.com"};
             invitation.Add(1, "arne");
             _repository.GetByInvitationKeyAsync(request.InvitationKey).Returns(invitation);
+            _sut.Principal = PrincipalHelper.Create(52, "arne");
 
             var actual = await _sut.ExecuteAsync(request);
 
@@ -53,6 +54,7 @@ namespace OneTrueError.App.Tests.Core.Invitations.Commands
             var request = new AcceptInvitation(InvitedAccountId, invitation.InvitationKey) { AcceptedEmail = "arne@gauffin.com" };
             invitation.Add(1, "arne");
             _repository.GetByInvitationKeyAsync(request.InvitationKey).Returns(invitation);
+            _sut.Principal = PrincipalHelper.Create(52, "arne");
 
             var actual = await _sut.ExecuteAsync(request);
 
@@ -74,6 +76,7 @@ namespace OneTrueError.App.Tests.Core.Invitations.Commands
             _accountRepository
                 .WhenForAnyArgs(x => x.CreateAsync(null))
                 .Do(x => x.Arg<Account>().SetId(52));
+            _sut.Principal = PrincipalHelper.Create(52, "arne");
 
 
             var actual = await _sut.ExecuteAsync(request);
@@ -93,6 +96,7 @@ namespace OneTrueError.App.Tests.Core.Invitations.Commands
             _accountRepository
                 .WhenForAnyArgs(x => x.CreateAsync(null))
                 .Do(x => x.Arg<Account>().SetId(52));
+            _sut.Principal = PrincipalHelper.Create(52, "arne");
 
 
             await _sut.ExecuteAsync(request);
@@ -112,6 +116,7 @@ namespace OneTrueError.App.Tests.Core.Invitations.Commands
             _accountRepository
                 .WhenForAnyArgs(x => x.CreateAsync(null))
                 .Do(x => x.Arg<Account>().SetId(52));
+            _sut.Principal = PrincipalHelper.Create(52, "arne");
 
 
             await _sut.ExecuteAsync(request);
@@ -126,6 +131,7 @@ namespace OneTrueError.App.Tests.Core.Invitations.Commands
         public async Task Should_ignore_invitations_where_the_key_is_not_registered_in_the_db()
         {
             var request = new AcceptInvitation(InvitedAccountId, "invalid") { AcceptedEmail = "arne@gauffin.com" };
+            _sut.Principal = PrincipalHelper.Create(52, "arne");
 
             var actual = await _sut.ExecuteAsync(request);
 

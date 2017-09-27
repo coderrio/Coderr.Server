@@ -3,7 +3,7 @@ using DotNetCqs;
 
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
 
-namespace OneTrueError.Api.Core.Notifications
+namespace codeRR.Api.Core.Notifications
 {
     /// <summary>
     ///     Add a user notification

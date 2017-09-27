@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Data;
 using Griffin.Data.Mapper;
-using OneTrueError.Api.Core.Incidents;
+using codeRR.Api.Core.Incidents;
 
-namespace OneTrueError.SqlServer.Core.Incidents
+namespace codeRR.SqlServer.Core.Incidents
 {
     public class IncidentSummaryMapper : IEntityMapper<IncidentSummaryDTO>
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OneTrueError.Api.Core.Accounts.Queries
+namespace codeRR.Api.Core.Accounts.Queries
 {
     /// <summary>
     ///     Account entity subset.

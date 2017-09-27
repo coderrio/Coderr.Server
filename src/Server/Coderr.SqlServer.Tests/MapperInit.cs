@@ -1,7 +1,7 @@
-﻿using OneTrueError.SqlServer.Tests.Core.ApiKeys.Commands;
+﻿using codeRR.SqlServer.Tests.Core.ApiKeys.Commands;
 using Xunit;
 
-namespace OneTrueError.SqlServer.Tests
+namespace codeRR.SqlServer.Tests
 {
     [CollectionDefinition(NAME)]
     public class MapperInit : ICollectionFixture<ScanForMappings>

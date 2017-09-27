@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OneTrueError.Api.Core
+namespace codeRR.Api.Core
 {
     /// <summary>
     ///     Extensions making it easier to work with enums

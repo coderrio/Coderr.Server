@@ -2,10 +2,10 @@
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
-using OneTrueError.Api.Core.Accounts.Queries;
-using OneTrueError.App.Core.Accounts;
+using codeRR.Api.Core.Accounts.Queries;
+using codeRR.App.Core.Accounts;
 
-namespace OneTrueError.SqlServer.Core.Accounts.QueryHandlers
+namespace codeRR.SqlServer.Core.Accounts.QueryHandlers
 {
     [Component]
     public class GetAccountEmailByIdHandler : IQueryHandler<GetAccountEmailById, string>

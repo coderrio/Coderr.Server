@@ -1,6 +1,6 @@
 ﻿using Griffin.Data.Mapper;
 
-namespace OneTrueError.SqlServer.Modules.Versions
+namespace codeRR.SqlServer.Modules.Versions
 {
     public class ApplicationVersionConfigMapper : CrudEntityMapper<ApplicationVersionConfig>
     {

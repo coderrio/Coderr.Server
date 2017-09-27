@@ -1,10 +1,10 @@
 ﻿using System.Web.Mvc;
-using OneTrueError.Infrastructure;
-using OneTrueError.Infrastructure.Configuration;
-using OneTrueError.Infrastructure.Queueing;
-using OneTrueError.Web.Areas.Admin.Models;
+using codeRR.Infrastructure;
+using codeRR.Infrastructure.Configuration;
+using codeRR.Infrastructure.Queueing;
+using codeRR.Web.Areas.Admin.Models;
 
-namespace OneTrueError.Web.Areas.Admin.Controllers
+namespace codeRR.Web.Areas.Admin.Controllers
 {
     [Authorize]
     public class QueuesController : Controller

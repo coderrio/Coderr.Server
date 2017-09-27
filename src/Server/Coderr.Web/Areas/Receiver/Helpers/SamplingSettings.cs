@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 
-namespace OneTrueError.Web.Areas.Receiver.Helpers
+namespace codeRR.Web.Areas.Receiver.Helpers
 {
     public class SamplingSetting
     {

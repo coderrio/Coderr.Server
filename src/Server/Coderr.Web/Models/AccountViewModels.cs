@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace OneTrueError.Web.Models
+namespace codeRR.Web.Models
 {
     // Models returned by AccountController actions.
 

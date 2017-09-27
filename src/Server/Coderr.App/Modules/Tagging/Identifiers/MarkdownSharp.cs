@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OneTrueError.App.Modules.Tagging.Identifiers
+namespace codeRR.App.Modules.Tagging.Identifiers
 {
     /// <summary>
     ///     Identifies the MarkdownSharp library

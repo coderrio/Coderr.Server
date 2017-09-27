@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using OneTrueError.Api.Core.Applications;
+using codeRR.Api.Core.Applications;
 
-namespace OneTrueError.App.Core.Applications
+namespace codeRR.App.Core.Applications
 {
     /// <summary>
     ///     An application which we can receive exceptions from.

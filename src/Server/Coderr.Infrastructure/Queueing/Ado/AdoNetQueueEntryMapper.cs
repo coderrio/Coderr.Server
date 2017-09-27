@@ -1,6 +1,6 @@
 ﻿using Griffin.Data.Mapper;
 
-namespace OneTrueError.Infrastructure.Queueing.Ado
+namespace codeRR.Infrastructure.Queueing.Ado
 {
     internal class AdoNetQueueEntryMapper : EntityMapper<AdoNetQueueEntry>
     {

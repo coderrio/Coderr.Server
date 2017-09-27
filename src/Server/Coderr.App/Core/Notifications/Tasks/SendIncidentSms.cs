@@ -2,13 +2,13 @@ using System;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using OneTrueError.Api.Core.Incidents;
-using OneTrueError.Api.Core.Reports;
-using OneTrueError.App.Configuration;
-using OneTrueError.App.Core.Users;
-using OneTrueError.Infrastructure.Configuration;
+using codeRR.Api.Core.Incidents;
+using codeRR.Api.Core.Reports;
+using codeRR.App.Configuration;
+using codeRR.App.Core.Users;
+using codeRR.Infrastructure.Configuration;
 
-namespace OneTrueError.App.Core.Notifications.Tasks
+namespace codeRR.App.Core.Notifications.Tasks
 {
     /// <summary>
     ///     Send SMS regarding an incident
@@ -89,7 +89,7 @@ ReportCount: {4}
             var request =
                 WebRequest.CreateHttp("https://web.smscom.se/sendsms.aspx?acc=ip1-755&pass=z35llww4&msg=" +
                                       Uri.EscapeDataString(msg) + "&to=" + settings.MobileNumber +
-                                      "&from=OneTrueError&prio=2");
+                                      "&from=codeRR&prio=2");
             request.ContentType = "application/json";
             request.Method = "GET";
             await request.GetResponseAsync();

@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace OneTrueError.Api.Core.Messaging.Commands
+namespace codeRR.Api.Core.Messaging.Commands
 {
     /// <summary>
     ///     Send an email.

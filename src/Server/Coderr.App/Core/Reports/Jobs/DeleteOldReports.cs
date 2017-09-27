@@ -4,10 +4,10 @@ using Griffin.ApplicationServices;
 using Griffin.Container;
 using Griffin.Data;
 using log4net;
-using OneTrueError.App.Core.Reports.Config;
-using OneTrueError.Infrastructure.Configuration;
+using codeRR.App.Core.Reports.Config;
+using codeRR.Infrastructure.Configuration;
 
-namespace OneTrueError.App.Core.Reports.Jobs
+namespace codeRR.App.Core.Reports.Jobs
 {
     /// <summary>
     ///     Will delete all reports which is older than the configured (<see cref="ReportConfig.RetentionDays" />) retention

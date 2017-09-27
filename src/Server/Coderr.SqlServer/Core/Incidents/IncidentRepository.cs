@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
-using OneTrueError.Api.Core.Incidents;
-using OneTrueError.App.Core.Incidents;
-using OneTrueError.SqlServer.Tools;
+using codeRR.Api.Core.Incidents;
+using codeRR.App.Core.Incidents;
+using codeRR.SqlServer.Tools;
 
-namespace OneTrueError.SqlServer.Core.Incidents
+namespace codeRR.SqlServer.Core.Incidents
 {
     [Component]
     public class IncidentRepository : IIncidentRepository

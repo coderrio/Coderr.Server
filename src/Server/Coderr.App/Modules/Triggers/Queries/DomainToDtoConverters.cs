@@ -1,10 +1,10 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
-using OneTrueError.Api.Modules.Triggers;
-using OneTrueError.App.Modules.Triggers.Domain;
-using OneTrueError.App.Modules.Triggers.Domain.Rules;
+using codeRR.Api.Modules.Triggers;
+using codeRR.App.Modules.Triggers.Domain;
+using codeRR.App.Modules.Triggers.Domain.Rules;
 
-namespace OneTrueError.App.Modules.Triggers.Queries
+namespace codeRR.App.Modules.Triggers.Queries
 {
     /// <summary>
     ///     Converts triggers into DTOs which are transferred to the UI

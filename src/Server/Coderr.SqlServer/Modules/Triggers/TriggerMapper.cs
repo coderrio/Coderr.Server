@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Griffin.Data.Mapper;
-using OneTrueError.App.Modules.Triggers.Domain;
-using OneTrueError.SqlServer.Tools;
+using codeRR.App.Modules.Triggers.Domain;
+using codeRR.SqlServer.Tools;
 
-namespace OneTrueError.SqlServer.Modules.Triggers
+namespace codeRR.SqlServer.Modules.Triggers
 {
     public class TriggerMapper : CrudEntityMapper<Trigger>
     {

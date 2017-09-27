@@ -33,9 +33,9 @@
         <p>Manual error handling means that you are yourself responsible of deciding which errors should be reported.</p>
         <h3>Package install</h3>
         <p>
-            Install the following nuget package <a href="http://www.nuget.org/packages/OneTrueError.client/">onetrueerror.client</a>
+            Install the following nuget package <a href="http://www.nuget.org/packages/codeRR.client/">coderr.client</a>
         </p>
-        <pre><code>install-package onetrueerror</code></pre>
+        <pre><code>install-package coderr</code></pre>
         <h3>Configuration</h3>
         <div>
             <p>Copy/paste the code below to your application. The correct appkey/sharedSecret have been specified.</p>
@@ -48,7 +48,7 @@ OneTrue.Configuration.Credentials(uri,
                                   <span style="color: #0000FF">&quot;<span data-name="SharedSecret"></span>&quot;</span>);
 </pre>
             </div>
-            <em>(add "using OneTrueError;" in your code file)</em>
+            <em>(add "using codeRR;" in your code file)</em>
         </div>
 
     </div>
@@ -80,12 +80,12 @@ OneTrue.Configuration.Credentials(uri,
             the application crashes before the report has been uploaded. The library will continue it's upload attempts next time the application is started.
         </p>
         <p>
-            You can read more about the different report alternatives in the <a target="_blank" href="http://onetrueerror.com/documentation/client/libraries/">documentation</a>
+            You can read more about the different report alternatives in the <a target="_blank" href="http://coderrapp.com/documentation/client/libraries/">documentation</a>
         </p>
 
     </div>
     <h2>Proxy settings</h2>
-    <p>OneTrueError will automatically discover any proxy and use it if required.</p>
+    <p>codeRR will automatically discover any proxy and use it if required.</p>
     <h2>No reports being uploaded?</h2>
     <p>
         It's usually due to some configuration error. Listen on the report event to get any client errors:
@@ -93,7 +93,7 @@ OneTrue.Configuration.Credentials(uri,
     <!-- HTML generated using hilite.me -->
     <div style="background: #ffffff; overflow: auto; padding: .2em .6em; width: auto;">
         <pre style="line-height: 125%; margin: 0;"><span style="color: #008800; font-weight: bold">using</span> <span style="color: #0e84b5; font-weight: bold">System</span>;
-<span style="color: #008800; font-weight: bold">using</span> <span style="color: #0e84b5; font-weight: bold">OneTrueError.Reporting</span>;
+<span style="color: #008800; font-weight: bold">using</span> <span style="color: #0e84b5; font-weight: bold">codeRR.Reporting</span>;
 <span style="color: #008800; font-weight: bold">namespace</span> <span style="color: #0e84b5; font-weight: bold">SampleApplication</span>
 {
     <span style="color: #008800; font-weight: bold">class</span> <span style="color: #BB0066; font-weight: bold">Program</span>
@@ -114,7 +114,7 @@ OneTrue.Configuration.Credentials(uri,
         }
         <span style="color: #008800; font-weight: bold">private</span> <span style="color: #008800; font-weight: bold">static</span> <span style="color: #008800; font-weight: bold">void</span> <span style="color: #0066BB; font-weight: bold">OnReportfailed</span>(<span style="color: #333399; font-weight: bold">object</span> sender, UploadReportFailedEventArgs e)
         {
-            <span style="color: #888888">// error that OneTrueError got</span>
+            <span style="color: #888888">// error that codeRR got</span>
             Console.WriteLine(e.Exception);
         }
     }
@@ -124,22 +124,22 @@ OneTrue.Configuration.Credentials(uri,
 
     <h2>Documentation</h2>
     <p>
-        The complete documentation for the client libraries is <a target="_blank" href="http://onetrueerror.com/documentation/client/libraries">available here.</a>
+        The complete documentation for the client libraries is <a target="_blank" href="http://coderrapp.com/documentation/client/libraries">available here.</a>
     </p>
 </div>
 <div class="tab-pane panel" id="install-aspnet">
     <div>
         <h1>ASP.NET</h1>
         <p>
-            This package will automatically catch all unhandled exceptions in ASP.NET applications. It will also adopt the HTTP response according to the HTTP accept header in the request. That means that OneTrueError
+            This package will automatically catch all unhandled exceptions in ASP.NET applications. It will also adopt the HTTP response according to the HTTP accept header in the request. That means that codeRR
             will work well even with REST applications based on JSON or XML.
         </p>
         <p>
             The package also automatically includes information about the HTTP request, session etc.
         </p>
         <h3>Package install</h3>
-        Install the following nuget package <a target="_blank" href="http://www.nuget.org/packages/OneTrueError.client.aspnet/">onetrueerror.aspnet</a>
-        <pre><code>install-package onetrueerror.aspnet</code></pre>
+        Install the following nuget package <a target="_blank" href="http://www.nuget.org/packages/codeRR.client.aspnet/">coderr.aspnet</a>
+        <pre><code>install-package coderr.aspnet</code></pre>
         <h3>Configuration</h3>
         <div>
             <p>Copy/paste the code below to your application. The correct appkey/sharedSecret have been specified.</p>
@@ -192,7 +192,7 @@ OneTrue.Configuration.Credentials(uri,
 
 
             <p>
-                All report methods are documented <a target="_blank" href="http://onetrueerror.com/doc/client/?topic=html/Methods_T_OneTrueError_Reporting_OneTrue.htm">here</a>. Do note the support
+                All report methods are documented <a target="_blank" href="http://coderrapp.com/doc/client/?topic=html/Methods_T_codeRR_Reporting_OneTrue.htm">here</a>. Do note the support
                 for two-step-reporting which work well with stateless protocols like HTTP.
             </p>
 
@@ -216,7 +216,7 @@ OneTrue.Configuration.Credentials(uri,
         </div>
         <h3>Documentation</h3>
         <p>
-            The complete documentation for the ASP.NET library is <a target="_blank" href="http://onetrueerror.com/documentation/client/libraries/aspnet/">available here.</a>
+            The complete documentation for the ASP.NET library is <a target="_blank" href="http://coderrapp.com/documentation/client/libraries/aspnet/">available here.</a>
         </p>
     </div>
 
@@ -230,9 +230,9 @@ OneTrue.Configuration.Credentials(uri,
         </p>
         <h3>Package install</h3>
         <p>
-            Install the following nuget package <a target="_blank" href="http://www.nuget.org/packages/OneTrueError.client.winforms/">onetrueerror.winforms</a>
+            Install the following nuget package <a target="_blank" href="http://www.nuget.org/packages/codeRR.client.winforms/">coderr.winforms</a>
         </p>
-        <pre><code>install-package onetrueerror.winforms
+        <pre><code>install-package coderr.winforms
 </code></pre>
         <h3>Configuration</h3>
         <div>
@@ -283,7 +283,7 @@ OneTrue.Configuration.Credentials(uri,
 
 
         <p>
-            All report methods are documented <a target="_blank" href="http://onetrueerror.com/doc/client/?topic=html/Methods_T_OneTrueError_Reporting_OneTrue.htm">here</a>.
+            All report methods are documented <a target="_blank" href="http://coderrapp.com/doc/client/?topic=html/Methods_T_codeRR_Reporting_OneTrue.htm">here</a>.
         </p>
 
     </div>
@@ -301,7 +301,7 @@ OneTrue.Configuration.Credentials(uri,
     </div>
     <h2>Documentation</h2>
     <p>
-        The complete documentation for the WPF/WinForms library is <a target="_blank" href="http://onetrueerror.com/documentation/client/libraries/winforms/">available here.</a>
+        The complete documentation for the WPF/WinForms library is <a target="_blank" href="http://coderrapp.com/documentation/client/libraries/winforms/">available here.</a>
     </p>
 </div>
 <div class="tab-pane panel" id="install-wcf">
@@ -316,8 +316,8 @@ OneTrue.Configuration.Credentials(uri,
         </p>
         <h3>Package install</h3>
         <div>
-            Install the following nuget package <a target="_blank" href="http://www.nuget.org/packages/OneTrueError.client.wcf/">onetrueerror.client.wcf</a>
-            <pre><code>install-package onetrueerror.wcf
+            Install the following nuget package <a target="_blank" href="http://www.nuget.org/packages/codeRR.client.wcf/">coderr.client.wcf</a>
+            <pre><code>install-package coderr.wcf
 </code></pre>
         </div>
         <h3>Configuration</h3>
@@ -371,7 +371,7 @@ OneTrue.Configuration.Credentials(uri,
 
 
             <p>
-                All report methods are documented <a target="_blank" href="http://onetrueerror.com/doc/client/?topic=html/Methods_T_OneTrueError_Reporting_OneTrue.htm">here</a>.
+                All report methods are documented <a target="_blank" href="http://coderrapp.com/doc/client/?topic=html/Methods_T_codeRR_Reporting_OneTrue.htm">here</a>.
             </p>
 
         </div>
@@ -390,7 +390,7 @@ OneTrue.Configuration.Credentials(uri,
         </div>
         <h2>Documentation</h2>
         <p>
-            The complete documentation for the WCF library is <a target="_blank" href="http://onetrueerror.com/documentation/client/libraries/wcf/">available here.</a>
+            The complete documentation for the WCF library is <a target="_blank" href="http://coderrapp.com/documentation/client/libraries/wcf/">available here.</a>
         </p>
 
     </div>
@@ -409,8 +409,8 @@ OneTrue.Configuration.Credentials(uri,
         </p>
         <h3>Package install</h3>
         <div>
-            Install the following nuget package <a target="_blank" href="http://www.nuget.org/packages/OneTrueError.asmx/">onetrueerror.asmx</a>
-            <pre><code>install-package onetrueerror.asmx
+            Install the following nuget package <a target="_blank" href="http://www.nuget.org/packages/codeRR.asmx/">coderr.asmx</a>
+            <pre><code>install-package coderr.asmx
 </code></pre>
         </div>
         <h3>Configuration</h3>
@@ -462,14 +462,14 @@ OneTrue.Configuration.Credentials(uri,
 
 
             <p>
-                All report methods are documented <a target="_blank" href="http://onetrueerror.com/doc/client/?topic=html/Methods_T_OneTrueError_Reporting_OneTrue.htm">here</a>.
+                All report methods are documented <a target="_blank" href="http://coderrapp.com/doc/client/?topic=html/Methods_T_codeRR_Reporting_OneTrue.htm">here</a>.
             </p>
 
         </div>
         <h2>Error pages</h2>
         <div>
             <p>
-                You can customize the error message which is included in the SOAP fault by implementing a <a target="_blank" href="http://onetrueerror.com/doc/client/?topic=html/T_OneTrueError_Reporting_ASMX_IErrorMessageFactory.htm">IErrorMessageFactory</a>
+                You can customize the error message which is included in the SOAP fault by implementing a <a target="_blank" href="http://coderrapp.com/doc/client/?topic=html/T_codeRR_Reporting_ASMX_IErrorMessageFactory.htm">IErrorMessageFactory</a>
             </p>
             <!-- HTML generated using hilite.me -->
             <div style="background: #ffffff; overflow: auto; padding: .2em .6em; width: auto;">
@@ -481,7 +481,7 @@ OneTrue.Configuration.Credentials(uri,
         <span style="color: #000080; font-weight: bold">if</span> (incidentId == <span style="color: #000080; font-weight: bold">null</span>) <span style="color: #000080; font-weight: bold">throw</span> <span style="color: #000080; font-weight: bold">new</span> ArgumentNullException(<span style="color: #0000FF">&quot;incidentId&quot;</span>);
         <span style="color: #000080; font-weight: bold">var</span> messsage =
         <span style="color: #000080; font-weight: bold">string</span>.Format(<span style="color: #0000FF">@@&quot;We failed to process your request.{0}</span>
-<span style="color: #0000FF">You can use http://onetrueerror.com/feedback/{1}/ to provide details about what you did.{0}</span>
+<span style="color: #0000FF">You can use http://coderrapp.com/feedback/{1}/ to provide details about what you did.{0}</span>
 <span style="color: #0000FF">Use incident id &#39;{1}&#39; in any further contact with us.&quot;</span>, Environment.NewLine, incidentId);
                             <span style="color: #000080; font-weight: bold">return</span> messsage;
     }
@@ -493,13 +493,13 @@ OneTrue.Configuration.Credentials(uri,
             </p>
 
             <p>
-                If you would like to generate the SOAP fault from scratch you can instead implement <a target="_blank" href="http://onetrueerror.com/doc/client/?topic=html/T_OneTrueError_Reporting_ASMX_IFaultFactory.htm">IFaultFactory</a>.
+                If you would like to generate the SOAP fault from scratch you can instead implement <a target="_blank" href="http://coderrapp.com/doc/client/?topic=html/T_codeRR_Reporting_ASMX_IFaultFactory.htm">IFaultFactory</a>.
             </p>
 
         </div>
         <h2>Documentation</h2>
         <p>
-            The complete documentation for the ASMX library is <a target="_blank" href="http://onetrueerror.com/doc/client/?topic=html/N_OneTrueError_Reporting_Asmx.htm">available here.</a>
+            The complete documentation for the ASMX library is <a target="_blank" href="http://coderrapp.com/doc/client/?topic=html/N_codeRR_Reporting_Asmx.htm">available here.</a>
         </p>
 
     </div>

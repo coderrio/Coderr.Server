@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OneTrueError.App.Core.Feedback
+namespace codeRR.App.Core.Feedback
 {
     /// <summary>
     ///     Feedback written by the user when an exception was thrown

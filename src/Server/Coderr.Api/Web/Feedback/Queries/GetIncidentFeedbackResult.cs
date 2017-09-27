@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace OneTrueError.Api.Web.Feedback.Queries
+namespace codeRR.Api.Web.Feedback.Queries
 {
     /// <summary>
     ///     Result for <see cref="GetIncidentFeedback" />.

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OneTrueError.ReportAnalyzer.Domain.Feedback
+namespace codeRR.ReportAnalyzer.Domain.Feedback
 {
     /// <summary>
     ///     Our feedback entity

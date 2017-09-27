@@ -1,8 +1,8 @@
 ﻿using Griffin.Data.Mapper;
-using OneTrueError.ReportAnalyzer.Domain.Reports;
-using OneTrueError.SqlServer.Tools;
+using codeRR.ReportAnalyzer.Domain.Reports;
+using codeRR.SqlServer.Tools;
 
-namespace OneTrueError.SqlServer.Analysis
+namespace codeRR.SqlServer.Analysis
 {
     public class ErrorReportEntityMapper : CrudEntityMapper<ErrorReportEntity>
     {

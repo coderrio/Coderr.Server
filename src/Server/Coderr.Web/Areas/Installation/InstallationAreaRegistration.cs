@@ -1,7 +1,7 @@
 ﻿using System.Configuration;
 using System.Web.Mvc;
 
-namespace OneTrueError.Web.Areas.Installation
+namespace codeRR.Web.Areas.Installation
 {
     public class InstallationAreaRegistration : AreaRegistration
     {

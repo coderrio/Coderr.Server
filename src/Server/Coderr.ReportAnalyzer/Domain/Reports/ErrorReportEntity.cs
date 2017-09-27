@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using OneTrueError.ReportAnalyzer.Domain.Incidents;
+using codeRR.ReportAnalyzer.Domain.Incidents;
 
-namespace OneTrueError.ReportAnalyzer.Domain.Reports
+namespace codeRR.ReportAnalyzer.Domain.Reports
 {
     /// <summary>
     ///     Represents the incoming error report, unmodified (to allow us to do further processing in the future)

@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace OneTrueError.Api.Core.Invitations.Commands
+namespace codeRR.Api.Core.Invitations.Commands
 {
     /// <summary>
     ///     Invite a user to participate in an application.

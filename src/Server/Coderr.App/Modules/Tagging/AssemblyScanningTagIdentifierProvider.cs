@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
-namespace OneTrueError.App.Modules.Tagging
+namespace codeRR.App.Modules.Tagging
 {
     /// <summary>
     ///     Used to provide tag identifiers (i.e. classes which can identify StackOverflow.com tags by using the report

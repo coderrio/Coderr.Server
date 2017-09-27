@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace OneTrueError.Api.Modules.Triggers.Queries
+namespace codeRR.Api.Modules.Triggers.Queries
 {
     /// <summary>
     ///     Get metadata (context collection information)

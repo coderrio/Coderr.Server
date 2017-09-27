@@ -1,6 +1,6 @@
 using System;
 
-namespace OneTrueError.Api.Core.Accounts.Requests
+namespace codeRR.Api.Core.Accounts.Requests
 {
     /// <summary>
     ///     Used to make the typescript compiler ignore certain properties and types.

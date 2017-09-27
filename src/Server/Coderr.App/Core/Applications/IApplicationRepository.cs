@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Griffin.Data;
-using OneTrueError.App.Core.Users;
+using codeRR.App.Core.Users;
 
-namespace OneTrueError.App.Core.Applications
+namespace codeRR.App.Core.Applications
 {
     /// <summary>
     ///     Repository for application management.

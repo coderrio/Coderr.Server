@@ -5,7 +5,7 @@ using Griffin.Container;
 using Griffin.Data;
 using log4net;
 
-namespace OneTrueError.App.Core.Incidents.Jobs
+namespace codeRR.App.Core.Incidents.Jobs
 {
     /// <summary>
     ///     Delete incidents where all reports have been deleted (due to retention days).

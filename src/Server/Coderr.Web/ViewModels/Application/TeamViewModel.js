@@ -1,10 +1,10 @@
 /// <reference path="../../Scripts/Griffin.Yo.d.ts" />
-var OneTrueError;
-(function (OneTrueError) {
+var codeRR;
+(function (codeRR) {
     var Application;
     (function (Application) {
         var CqsClient = Griffin.Cqs.CqsClient;
-        var RemoveTeamMember = OneTrueError.Core.Applications.Commands.RemoveTeamMember;
+        var RemoveTeamMember = codeRR.Core.Applications.Commands.RemoveTeamMember;
         var TeamViewModel = (function () {
             function TeamViewModel() {
             }
@@ -16,7 +16,7 @@ var OneTrueError;
                 this.context = context;
                 this.applicationId = parseInt(context.routeData["applicationId"], 10);
                 context.render({ Members: [], Invited: [] });
-                var query = new OneTrueError.Core.Applications.Queries.GetApplicationTeam(this.applicationId);
+                var query = new codeRR.Core.Applications.Queries.GetApplicationTeam(this.applicationId);
                 CqsClient.query(query)
                     .done(function (result) {
                     context.render(result);
@@ -50,10 +50,10 @@ var OneTrueError;
                 var email = inputElement.value;
                 var el = this.context.select.one("reason");
                 var reason = el.value;
-                var cmd = new OneTrueError.Core.Invitations.Commands.InviteUser(this.applicationId, email);
+                var cmd = new codeRR.Core.Invitations.Commands.InviteUser(this.applicationId, email);
                 cmd.Text = reason;
                 CqsClient.command(cmd);
-                var newItem = new OneTrueError.Core.Applications.Queries.GetApplicationTeamResultInvitation();
+                var newItem = new codeRR.Core.Applications.Queries.GetApplicationTeamResultInvitation();
                 newItem.EmailAddress = email;
                 this.data.Invited.push(newItem);
                 this.context.render(this.data);
@@ -62,6 +62,6 @@ var OneTrueError;
             return TeamViewModel;
         }());
         Application.TeamViewModel = TeamViewModel;
-    })(Application = OneTrueError.Application || (OneTrueError.Application = {}));
-})(OneTrueError || (OneTrueError = {}));
+    })(Application = codeRR.Application || (codeRR.Application = {}));
+})(codeRR || (codeRR = {}));
 //# sourceMappingURL=TeamViewModel.js.map

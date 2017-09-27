@@ -1,7 +1,7 @@
 ﻿using Griffin.Data.Mapper;
-using OneTrueError.App.Core.ApiKeys;
+using codeRR.App.Core.ApiKeys;
 
-namespace OneTrueError.SqlServer.Core.ApiKeys.Mappings
+namespace codeRR.SqlServer.Core.ApiKeys.Mappings
 {
     public class ApiKeyMapper : CrudEntityMapper<ApiKey>
     {

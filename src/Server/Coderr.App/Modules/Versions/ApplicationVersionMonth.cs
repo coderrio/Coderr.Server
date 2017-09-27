@@ -1,7 +1,7 @@
 ﻿using System;
-using OneTrueError.App.Modules.Versions.Events;
+using codeRR.App.Modules.Versions.Events;
 
-namespace OneTrueError.App.Modules.Versions
+namespace codeRR.App.Modules.Versions
 {
     /// <summary>
     ///     Tracks number of incidents/reports for a specific year/month

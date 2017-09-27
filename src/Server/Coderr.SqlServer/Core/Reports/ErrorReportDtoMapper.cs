@@ -1,8 +1,8 @@
 ﻿using Griffin.Data.Mapper;
-using OneTrueError.Api.Core.Reports;
-using OneTrueError.SqlServer.Tools;
+using codeRR.Api.Core.Reports;
+using codeRR.SqlServer.Tools;
 
-namespace OneTrueError.SqlServer.Core.Reports
+namespace codeRR.SqlServer.Core.Reports
 {
     public class ErrorReportDtoMapper : CrudEntityMapper<ReportDTO>
     {

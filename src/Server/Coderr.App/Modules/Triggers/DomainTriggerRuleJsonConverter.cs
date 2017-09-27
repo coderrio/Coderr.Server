@@ -1,10 +1,10 @@
 ﻿using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using OneTrueError.App.Modules.Triggers.Domain;
-using OneTrueError.App.Modules.Triggers.Domain.Rules;
+using codeRR.App.Modules.Triggers.Domain;
+using codeRR.App.Modules.Triggers.Domain.Rules;
 
-namespace OneTrueError.App.Modules.Triggers
+namespace codeRR.App.Modules.Triggers
 {
     /// <summary>
     ///     Handles our rule inheritance in a more elegant way

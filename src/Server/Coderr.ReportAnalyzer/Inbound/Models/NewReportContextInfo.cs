@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OneTrueError.ReportAnalyzer.Inbound.Models
+namespace codeRR.ReportAnalyzer.Inbound.Models
 {
     public class NewReportContextInfo
     {

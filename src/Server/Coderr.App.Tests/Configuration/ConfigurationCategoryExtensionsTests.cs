@@ -1,11 +1,11 @@
 ﻿using System.Globalization;
 using System.Threading;
 using FluentAssertions;
-using OneTrueError.App.Tests.Configuration.TestEntitites;
-using OneTrueError.Infrastructure.Configuration;
+using codeRR.App.Tests.Configuration.TestEntitites;
+using codeRR.Infrastructure.Configuration;
 using Xunit;
 
-namespace OneTrueError.App.Tests.Configuration
+namespace codeRR.App.Tests.Configuration
 {
     public class ConfigurationCategoryExtensionsTests
     {

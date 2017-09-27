@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
-using OneTrueError.Api.Modules.Versions.Queries;
+using codeRR.Api.Modules.Versions.Queries;
 
-namespace OneTrueError.SqlServer.Modules.Versions.Queries
+namespace codeRR.SqlServer.Modules.Versions.Queries
 {
     [Component]
     internal class GetApplicationVersionsHandler : IQueryHandler<GetApplicationVersions, GetApplicationVersionsResult>
@@ -23,7 +23,7 @@ namespace OneTrueError.SqlServer.Modules.Versions.Queries
             var sql =
                 @"SELECT version, sum(incidentcount) incidentcount, sum(reportcount) reportcount, min(FirstReportDate) as FirstReportDate, max(LastReportDate)as LastReportDate
   FROM ApplicationVersions
-  join [OneTrueError].[dbo].ApplicationVersionMonths on (versionid=applicationversions.id)
+  join [codeRR].[dbo].ApplicationVersionMonths on (versionid=applicationversions.id)
   where applicationid=@appId
   group by version
   order by version

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace OneTrueError.Api.Web.Overview.Queries
+namespace codeRR.Api.Web.Overview.Queries
 {
     /// <summary>
     ///     Application specific result for <see cref="GetOverview" />

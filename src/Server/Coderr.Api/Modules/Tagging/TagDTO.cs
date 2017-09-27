@@ -1,4 +1,4 @@
-﻿namespace OneTrueError.Api.Modules.Tagging
+﻿namespace codeRR.Api.Modules.Tagging
 {
     /// <summary>
     ///     A stack overflow tag

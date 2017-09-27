@@ -1,7 +1,7 @@
 /// <reference path="../../Scripts/CqsClient.ts" />
 /// <reference path="../../Scripts/Griffin.Yo.d.ts" />
-var OneTrueError;
-(function (OneTrueError) {
+var codeRR;
+(function (codeRR) {
     var User;
     (function (User) {
         var cqs = Griffin.Cqs.CqsClient;
@@ -21,7 +21,7 @@ var OneTrueError;
                     humane.error("You must enter the current password.");
                     return;
                 }
-                var cmd = new OneTrueError.Core.Accounts.Requests.ChangePassword(dto.CurrentPassword, dto.NewPassword);
+                var cmd = new codeRR.Core.Accounts.Requests.ChangePassword(dto.CurrentPassword, dto.NewPassword);
                 CqsClient.request(cmd)
                     .done(function (result) {
                     if (result.Success) {
@@ -36,7 +36,7 @@ var OneTrueError;
             SettingsViewModel.prototype.saveSettings_click = function (e) {
                 e.isHandled = true;
                 var dto = this.context.readForm("PersonalSettings");
-                var cmd = new OneTrueError.Core.Users.Commands.UpdatePersonalSettings();
+                var cmd = new codeRR.Core.Users.Commands.UpdatePersonalSettings();
                 cmd.FirstName = dto.FirstName;
                 cmd.LastName = dto.LastName;
                 cmd.MobileNumber = dto.MobileNumber;
@@ -46,12 +46,12 @@ var OneTrueError;
             SettingsViewModel.prototype.getTitle = function () { return "Personal settings"; };
             SettingsViewModel.prototype.activate = function (context) {
                 var _this = this;
-                OneTrueError.Applications.Navigation.breadcrumbs([{ href: "/settings/personal", title: "Account settings" }]);
-                OneTrueError.Applications.Navigation.pageTitle = 'Account settings';
+                codeRR.Applications.Navigation.breadcrumbs([{ href: "/settings/personal", title: "Account settings" }]);
+                codeRR.Applications.Navigation.pageTitle = 'Account settings';
                 this.context = context;
                 context.handle.click("[name=\"saveSettings\"]", function (ev) { return _this.saveSettings_click(ev); });
                 context.handle.click("[name='changePassword']", function (ev) { return _this.changePassword_click(ev); });
-                var query = new OneTrueError.Core.Users.Queries.GetUserSettings();
+                var query = new codeRR.Core.Users.Queries.GetUserSettings();
                 cqs.query(query)
                     .done(function (result) {
                     context.render(result);
@@ -63,6 +63,6 @@ var OneTrueError;
             return SettingsViewModel;
         }());
         User.SettingsViewModel = SettingsViewModel;
-    })(User = OneTrueError.User || (OneTrueError.User = {}));
-})(OneTrueError || (OneTrueError = {}));
+    })(User = codeRR.User || (codeRR.User = {}));
+})(codeRR || (codeRR = {}));
 //# sourceMappingURL=SettingsViewModel.js.map

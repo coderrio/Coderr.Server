@@ -6,15 +6,15 @@ using DotNetCqs;
 using FluentAssertions;
 using Griffin.Data;
 using NSubstitute;
-using OneTrueError.Api.Core.ApiKeys.Commands;
-using OneTrueError.App.Core.Applications;
-using OneTrueError.SqlServer.Core.ApiKeys;
-using OneTrueError.SqlServer.Core.ApiKeys.Commands;
-using OneTrueError.SqlServer.Core.Applications;
+using codeRR.Api.Core.ApiKeys.Commands;
+using codeRR.App.Core.Applications;
+using codeRR.SqlServer.Core.ApiKeys;
+using codeRR.SqlServer.Core.ApiKeys.Commands;
+using codeRR.SqlServer.Core.Applications;
 using Xunit;
 
 
-namespace OneTrueError.SqlServer.Tests.Core.ApiKeys.Commands
+namespace codeRR.SqlServer.Tests.Core.ApiKeys.Commands
 {
     [Collection(MapperInit.NAME)]
     public class CreateApiKeyHandlerTests : IDisposable
@@ -68,7 +68,7 @@ namespace OneTrueError.SqlServer.Tests.Core.ApiKeys.Commands
         {
             var repos = new ApplicationRepository(_uow);
             var id = _uow.ExecuteScalar("SELECT TOP 1 Id FROM Applications");
-            if (id is DBNull)
+            if (id is DBNull || id is null)
             {
                 repos.CreateAsync(new Application(10, "AppTen")).Wait();
                 _applicationId = (int) _uow.ExecuteScalar("SELECT TOP 1 Id FROM Applications");

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using FluentAssertions;
-using OneTrueError.Infrastructure.Configuration;
+using codeRR.Infrastructure.Configuration;
 using Xunit;
 
-namespace OneTrueError.App.Tests.Configuration
+namespace codeRR.App.Tests.Configuration
 {
     public class DictionaryExtensionsTests
     {

@@ -1,6 +1,6 @@
 ﻿using DotNetCqs;
 
-namespace OneTrueError.Api.Core.Applications.Events
+namespace codeRR.Api.Core.Applications.Events
 {
     /// <summary>
     ///     An application have been deleted.

@@ -2,10 +2,10 @@
 using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
-using OneTrueError.Api.Core.Accounts.Queries;
+using codeRR.Api.Core.Accounts.Queries;
 using Xunit;
 
-namespace OneTrueError.Api.Client.Tests
+namespace codeRR.Api.Client.Tests
 {
 #if DEBUG
     public class TryTheClient
@@ -14,7 +14,7 @@ namespace OneTrueError.Api.Client.Tests
         public async Task Test()
         {
             var client = new OneTrueApiClient();
-            client.Open(new Uri("http://localhost/onetrueerror/"), "", "");
+            client.Open(new Uri("http://localhost/coderr/"), "", "");
             FindAccountByUserNameResult result = null;
             try
             {

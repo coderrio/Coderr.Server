@@ -1,4 +1,4 @@
-﻿namespace OneTrueError.App.Modules.Geolocation
+﻿namespace codeRR.App.Modules.Geolocation
 {
     /// <summary>
     ///     List result item for repository queries

@@ -1,16 +1,16 @@
 ﻿ApiKeys
 ========
 
-Used to allow external applications to talk with OneTrueError.
+Used to allow external applications to talk with codeRR.
 
 
 ## Example usage
 
-The following example calls a local OneTrueError server to retreive applications.
+The following example calls a local codeRR server to retreive applications.
 
 ```csharp
 var client = new OneTrueApiClient();
-var uri = new Uri("http://yourServer/onetrueerror/");
+var uri = new Uri("http://yourServer/coderr/");
 client.Open(uri, "theApiKey", "sharedSecret");
 var apps = await client.QueryAsync(new GetApplicationList());
 ```

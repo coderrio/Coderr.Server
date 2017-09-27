@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
 using DotNetCqs;
-using OneTrueError.Api.Core.Incidents;
-using OneTrueError.Api.Core.Messaging;
-using OneTrueError.Api.Core.Messaging.Commands;
-using OneTrueError.Api.Core.Reports;
-using OneTrueError.App.Configuration;
-using OneTrueError.Infrastructure.Configuration;
+using codeRR.Api.Core.Incidents;
+using codeRR.Api.Core.Messaging;
+using codeRR.Api.Core.Messaging.Commands;
+using codeRR.Api.Core.Reports;
+using codeRR.App.Configuration;
+using codeRR.Infrastructure.Configuration;
 
-namespace OneTrueError.App.Core.Notifications.Tasks
+namespace codeRR.App.Core.Notifications.Tasks
 {
     /// <summary>
     ///     Send incident email

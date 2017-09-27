@@ -7,11 +7,11 @@ using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
-using OneTrueError.Api.Core.Incidents;
-using OneTrueError.Api.Core.Incidents.Queries;
-using OneTrueError.Infrastructure.Security;
+using codeRR.Api.Core.Incidents;
+using codeRR.Api.Core.Incidents.Queries;
+using codeRR.Infrastructure.Security;
 
-namespace OneTrueError.SqlServer.Core.Incidents.Queries
+namespace codeRR.SqlServer.Core.Incidents.Queries
 {
     [Component]
     public class FindIncidentsHandler : IQueryHandler<FindIncidents, FindIncidentResult>

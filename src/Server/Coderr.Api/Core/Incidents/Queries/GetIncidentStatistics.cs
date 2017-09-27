@@ -1,6 +1,6 @@
 ﻿using DotNetCqs;
 
-namespace OneTrueError.Api.Core.Incidents.Queries
+namespace codeRR.Api.Core.Incidents.Queries
 {
     /// <summary>
     ///     Get statistics (i.e. history for a certain period of time)

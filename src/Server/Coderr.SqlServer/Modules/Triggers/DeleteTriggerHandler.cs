@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
-using OneTrueError.Api.Modules.Triggers.Commands;
+using codeRR.Api.Modules.Triggers.Commands;
 
-namespace OneTrueError.SqlServer.Modules.Triggers
+namespace codeRR.SqlServer.Modules.Triggers
 {
     [Component]
     public class DeleteTriggerHandler : ICommandHandler<DeleteTrigger>

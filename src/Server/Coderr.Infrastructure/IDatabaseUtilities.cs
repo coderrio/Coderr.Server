@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace OneTrueError.Infrastructure
+namespace codeRR.Infrastructure
 {
     public interface ISetupDatabaseTools
     {

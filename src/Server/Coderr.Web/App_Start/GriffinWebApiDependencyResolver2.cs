@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http.Dependencies;
 using Griffin.Container;
-using OneTrueError.GlobalCore.App.Setup;
+using codeRR.GlobalCore.App.Setup;
 
-namespace OneTrueError.Web
+namespace codeRR.Web
 {
     public class GriffinWebApiDependencyResolver2 : IDependencyResolver
     {

@@ -1,4 +1,4 @@
-﻿module OneTrueError.Web.Overview.Queries {
+﻿module codeRR.Web.Overview.Queries {
     export class GetOverview {
         public static TYPE_NAME: string = 'GetOverview';
         public NumberOfDays: number;
@@ -17,8 +17,8 @@
     export class GetOverviewResult {
         public static TYPE_NAME: string = 'GetOverviewResult';
         public Days: number;
-        public IncidentsPerApplication: OneTrueError.Web.Overview.Queries.GetOverviewApplicationResult[];
-        public StatSummary: OneTrueError.Web.Overview.Queries.OverviewStatSummary;
+        public IncidentsPerApplication: codeRR.Web.Overview.Queries.GetOverviewApplicationResult[];
+        public StatSummary: codeRR.Web.Overview.Queries.OverviewStatSummary;
         public TimeAxisLabels: string[];
     }
 
@@ -31,7 +31,7 @@
     }
 
 }
-module OneTrueError.Web.Feedback.Queries {
+module codeRR.Web.Feedback.Queries {
     export class GetFeedbackForApplicationPage {
         public static TYPE_NAME: string = 'GetFeedbackForApplicationPage';
         public ApplicationId: number;
@@ -44,7 +44,7 @@ module OneTrueError.Web.Feedback.Queries {
     export class GetFeedbackForApplicationPageResult {
         public static TYPE_NAME: string = 'GetFeedbackForApplicationPageResult';
         public Emails: string[];
-        public Items: OneTrueError.Web.Feedback.Queries.GetFeedbackForApplicationPageResultItem[];
+        public Items: codeRR.Web.Feedback.Queries.GetFeedbackForApplicationPageResultItem[];
         public TotalCount: number;
     }
 
@@ -65,7 +65,7 @@ module OneTrueError.Web.Feedback.Queries {
     export class GetFeedbackForDashboardPageResult {
         public static TYPE_NAME: string = 'GetFeedbackForDashboardPageResult';
         public Emails: string[];
-        public Items: OneTrueError.Web.Feedback.Queries.GetFeedbackForDashboardPageResultItem[];
+        public Items: codeRR.Web.Feedback.Queries.GetFeedbackForDashboardPageResultItem[];
         public TotalCount: number;
     }
 
@@ -90,8 +90,8 @@ module OneTrueError.Web.Feedback.Queries {
     export class GetIncidentFeedbackResult {
         public static TYPE_NAME: string = 'GetIncidentFeedbackResult';
         public Emails: string[];
-        public Items: OneTrueError.Web.Feedback.Queries.GetIncidentFeedbackResultItem[];
-        public constructor(items: OneTrueError.Web.Feedback.Queries.GetIncidentFeedbackResultItem[], emails: string[]) {
+        public Items: codeRR.Web.Feedback.Queries.GetIncidentFeedbackResultItem[];
+        public constructor(items: codeRR.Web.Feedback.Queries.GetIncidentFeedbackResultItem[], emails: string[]) {
             this.Items = items;
             this.Emails = emails;
         }
@@ -105,7 +105,7 @@ module OneTrueError.Web.Feedback.Queries {
     }
 
 }
-module OneTrueError.Modules.Versions.Queries {
+module codeRR.Modules.Versions.Queries {
     export class GetApplicationVersions {
         public static TYPE_NAME: string = 'GetApplicationVersions';
         public ApplicationId: number;
@@ -117,7 +117,7 @@ module OneTrueError.Modules.Versions.Queries {
 
     export class GetApplicationVersionsResult {
         public static TYPE_NAME: string = 'GetApplicationVersionsResult';
-        public Items: OneTrueError.Modules.Versions.Queries.GetApplicationVersionsResultItem[];
+        public Items: codeRR.Modules.Versions.Queries.GetApplicationVersionsResultItem[];
     }
 
     export class GetApplicationVersionsResultItem {
@@ -130,7 +130,7 @@ module OneTrueError.Modules.Versions.Queries {
     }
 
 }
-module OneTrueError.Modules.Triggers {
+module codeRR.Modules.Triggers {
     export enum LastTriggerActionDTO {
         ExecuteActions = 0,
         AbortTrigger = 1,
@@ -188,7 +188,7 @@ module OneTrueError.Modules.Triggers {
     }
 
 }
-module OneTrueError.Modules.Triggers.Queries {
+module codeRR.Modules.Triggers.Queries {
     export class GetContextCollectionMetadata {
         public static TYPE_NAME: string = 'GetContextCollectionMetadata';
         public ApplicationId: number;
@@ -215,13 +215,13 @@ module OneTrueError.Modules.Triggers.Queries {
 
     export class GetTriggerDTO {
         public static TYPE_NAME: string = 'GetTriggerDTO';
-        public Actions: OneTrueError.Modules.Triggers.TriggerActionDataDTO[];
+        public Actions: codeRR.Modules.Triggers.TriggerActionDataDTO[];
         public ApplicationId: number;
         public Description: string;
         public Id: number;
-        public LastTriggerAction: OneTrueError.Modules.Triggers.LastTriggerActionDTO;
+        public LastTriggerAction: codeRR.Modules.Triggers.LastTriggerActionDTO;
         public Name: string;
-        public Rules: OneTrueError.Modules.Triggers.TriggerRuleBase[];
+        public Rules: codeRR.Modules.Triggers.TriggerRuleBase[];
         public RunForExistingIncidents: boolean;
         public RunForNewIncidents: boolean;
         public RunForReOpenedIncidents: boolean;
@@ -237,16 +237,16 @@ module OneTrueError.Modules.Triggers.Queries {
     }
 
 }
-module OneTrueError.Modules.Triggers.Commands {
+module codeRR.Modules.Triggers.Commands {
     export class CreateTrigger {
         public static TYPE_NAME: string = 'CreateTrigger';
-        public Actions: OneTrueError.Modules.Triggers.TriggerActionDataDTO[];
+        public Actions: codeRR.Modules.Triggers.TriggerActionDataDTO[];
         public ApplicationId: number;
         public Description: string;
         public Id: number;
-        public LastTriggerAction: OneTrueError.Modules.Triggers.LastTriggerActionDTO;
+        public LastTriggerAction: codeRR.Modules.Triggers.LastTriggerActionDTO;
         public Name: string;
-        public Rules: OneTrueError.Modules.Triggers.TriggerRuleBase[];
+        public Rules: codeRR.Modules.Triggers.TriggerRuleBase[];
         public RunForExistingIncidents: boolean;
         public RunForNewIncidents: boolean;
         public RunForReOpenedIncidents: boolean;
@@ -268,12 +268,12 @@ module OneTrueError.Modules.Triggers.Commands {
 
     export class UpdateTrigger {
         public static TYPE_NAME: string = 'UpdateTrigger';
-        public Actions: OneTrueError.Modules.Triggers.TriggerActionDataDTO[];
+        public Actions: codeRR.Modules.Triggers.TriggerActionDataDTO[];
         public Description: string;
         public Id: number;
-        public LastTriggerAction: OneTrueError.Modules.Triggers.LastTriggerActionDTO;
+        public LastTriggerAction: codeRR.Modules.Triggers.LastTriggerActionDTO;
         public Name: string;
-        public Rules: OneTrueError.Modules.Triggers.TriggerRuleBase[];
+        public Rules: codeRR.Modules.Triggers.TriggerRuleBase[];
         public RunForExistingIncidents: boolean;
         public RunForNewIncidents: boolean;
         public RunForReOpenedIncidents: boolean;
@@ -285,7 +285,7 @@ module OneTrueError.Modules.Triggers.Commands {
     }
 
 }
-module OneTrueError.Modules.Tagging {
+module codeRR.Modules.Tagging {
     export class TagDTO {
         public static TYPE_NAME: string = 'TagDTO';
         public Name: string;
@@ -293,7 +293,7 @@ module OneTrueError.Modules.Tagging {
     }
 
 }
-module OneTrueError.Modules.Tagging.Queries {
+module codeRR.Modules.Tagging.Queries {
     export class GetTagsForIncident {
         public static TYPE_NAME: string = 'GetTagsForIncident';
         public IncidentId: number;
@@ -304,20 +304,20 @@ module OneTrueError.Modules.Tagging.Queries {
     }
 
 }
-module OneTrueError.Modules.Tagging.Events {
+module codeRR.Modules.Tagging.Events {
     export class TagAttachedToIncident {
         public static TYPE_NAME: string = 'TagAttachedToIncident';
         public IncidentId: number;
-        public Tags: OneTrueError.Modules.Tagging.TagDTO[];
+        public Tags: codeRR.Modules.Tagging.TagDTO[];
         public EventId: string;
-        public constructor(incidentId: number, tags: OneTrueError.Modules.Tagging.TagDTO[]) {
+        public constructor(incidentId: number, tags: codeRR.Modules.Tagging.TagDTO[]) {
             this.IncidentId = incidentId;
             this.Tags = tags;
         }
     }
 
 }
-module OneTrueError.Modules.ErrorOrigins.Queries {
+module codeRR.Modules.ErrorOrigins.Queries {
     export class GetOriginsForIncident {
         public static TYPE_NAME: string = 'GetOriginsForIncident';
         public IncidentId: number;
@@ -329,7 +329,7 @@ module OneTrueError.Modules.ErrorOrigins.Queries {
 
     export class GetOriginsForIncidentResult {
         public static TYPE_NAME: string = 'GetOriginsForIncidentResult';
-        public Items: OneTrueError.Modules.ErrorOrigins.Queries.GetOriginsForIncidentResultItem[];
+        public Items: codeRR.Modules.ErrorOrigins.Queries.GetOriginsForIncidentResultItem[];
     }
 
     export class GetOriginsForIncidentResultItem {
@@ -340,7 +340,7 @@ module OneTrueError.Modules.ErrorOrigins.Queries {
     }
 
 }
-module OneTrueError.Modules.ContextData.Queries {
+module codeRR.Modules.ContextData.Queries {
     export class GetSimilarities {
         public static TYPE_NAME: string = 'GetSimilarities';
         public IncidentId: number;
@@ -353,18 +353,18 @@ module OneTrueError.Modules.ContextData.Queries {
     export class GetSimilaritiesCollection {
         public static TYPE_NAME: string = 'GetSimilaritiesCollection';
         public Name: string;
-        public Similarities: OneTrueError.Modules.ContextData.Queries.GetSimilaritiesSimilarity[];
+        public Similarities: codeRR.Modules.ContextData.Queries.GetSimilaritiesSimilarity[];
     }
 
     export class GetSimilaritiesResult {
         public static TYPE_NAME: string = 'GetSimilaritiesResult';
-        public Collections: OneTrueError.Modules.ContextData.Queries.GetSimilaritiesCollection[];
+        public Collections: codeRR.Modules.ContextData.Queries.GetSimilaritiesCollection[];
     }
 
     export class GetSimilaritiesSimilarity {
         public static TYPE_NAME: string = 'GetSimilaritiesSimilarity';
         public Name: string;
-        public Values: OneTrueError.Modules.ContextData.Queries.GetSimilaritiesValue[];
+        public Values: codeRR.Modules.ContextData.Queries.GetSimilaritiesValue[];
         public constructor(name: string) {
             this.Name = name;
         }
@@ -383,14 +383,14 @@ module OneTrueError.Modules.ContextData.Queries {
     }
 
 }
-module OneTrueError.Core {
+module codeRR.Core {
     export class IgnoreFieldAttribute {
         public static TYPE_NAME: string = 'IgnoreFieldAttribute';
         public TypeId: any;
     }
 
 }
-module OneTrueError.Core.Users {
+module codeRR.Core.Users {
     export class NotificationSettings {
         public static TYPE_NAME: string = 'NotificationSettings';
         public NotifyOnNewIncidents: NotificationState;
@@ -408,7 +408,7 @@ module OneTrueError.Core.Users {
     }
 
 }
-module OneTrueError.Core.Users.Queries {
+module codeRR.Core.Users.Queries {
     export class GetUserSettings {
         public static TYPE_NAME: string = 'GetUserSettings';
         public ApplicationId: number;
@@ -421,19 +421,19 @@ module OneTrueError.Core.Users.Queries {
         public FirstName: string;
         public LastName: string;
         public MobileNumber: string;
-        public Notifications: OneTrueError.Core.Users.NotificationSettings;
+        public Notifications: codeRR.Core.Users.NotificationSettings;
     }
 
 }
-module OneTrueError.Core.Users.Commands {
+module codeRR.Core.Users.Commands {
     export class UpdateNotifications {
         public static TYPE_NAME: string = 'UpdateNotifications';
         public ApplicationId: number;
-        public NotifyOnNewIncidents: OneTrueError.Core.Users.NotificationState;
-        public NotifyOnNewReport: OneTrueError.Core.Users.NotificationState;
-        public NotifyOnPeaks: OneTrueError.Core.Users.NotificationState;
-        public NotifyOnReOpenedIncident: OneTrueError.Core.Users.NotificationState;
-        public NotifyOnUserFeedback: OneTrueError.Core.Users.NotificationState;
+        public NotifyOnNewIncidents: codeRR.Core.Users.NotificationState;
+        public NotifyOnNewReport: codeRR.Core.Users.NotificationState;
+        public NotifyOnPeaks: codeRR.Core.Users.NotificationState;
+        public NotifyOnReOpenedIncident: codeRR.Core.Users.NotificationState;
+        public NotifyOnUserFeedback: codeRR.Core.Users.NotificationState;
         public UserId: number;
         public CommandId: string;
     }
@@ -448,7 +448,7 @@ module OneTrueError.Core.Users.Commands {
     }
 
 }
-module OneTrueError.Core.Support {
+module codeRR.Core.Support {
     export class SendSupportRequest {
         public static TYPE_NAME: string = 'SendSupportRequest';
         public Message: string;
@@ -458,7 +458,7 @@ module OneTrueError.Core.Support {
     }
 
 }
-module OneTrueError.Core.Reports {
+module codeRR.Core.Reports {
     export class ContextCollectionDTO {
         public static TYPE_NAME: string = 'ContextCollectionDTO';
         public Name: string;
@@ -471,9 +471,9 @@ module OneTrueError.Core.Reports {
     export class ReportDTO {
         public static TYPE_NAME: string = 'ReportDTO';
         public ApplicationId: number;
-        public ContextCollections: OneTrueError.Core.Reports.ContextCollectionDTO[];
+        public ContextCollections: codeRR.Core.Reports.ContextCollectionDTO[];
         public CreatedAtUtc: any;
-        public Exception: OneTrueError.Core.Reports.ReportExeptionDTO;
+        public Exception: codeRR.Core.Reports.ReportExeptionDTO;
         public Id: number;
         public IncidentId: number;
         public RemoteAddress: string;
@@ -487,7 +487,7 @@ module OneTrueError.Core.Reports {
         public BaseClasses: string[];
         public Everything: string;
         public FullName: string;
-        public InnerException: OneTrueError.Core.Reports.ReportExeptionDTO;
+        public InnerException: codeRR.Core.Reports.ReportExeptionDTO;
         public Message: string;
         public Name: string;
         public Namespace: string;
@@ -496,7 +496,7 @@ module OneTrueError.Core.Reports {
     }
 
 }
-module OneTrueError.Core.Reports.Queries {
+module codeRR.Core.Reports.Queries {
     export class GetReport {
         public static TYPE_NAME: string = 'GetReport';
         public ReportId: number;
@@ -512,7 +512,7 @@ module OneTrueError.Core.Reports.Queries {
         public BaseClasses: string[];
         public Everything: string;
         public FullName: string;
-        public InnerException: OneTrueError.Core.Reports.Queries.GetReportException;
+        public InnerException: codeRR.Core.Reports.Queries.GetReportException;
         public Message: string;
         public Name: string;
         public Namespace: string;
@@ -532,11 +532,11 @@ module OneTrueError.Core.Reports.Queries {
 
     export class GetReportListResult {
         public static TYPE_NAME: string = 'GetReportListResult';
-        public Items: OneTrueError.Core.Reports.Queries.GetReportListResultItem[];
+        public Items: codeRR.Core.Reports.Queries.GetReportListResultItem[];
         public PageNumber: number;
         public PageSize: number;
         public TotalCount: number;
-        public constructor(items: OneTrueError.Core.Reports.Queries.GetReportListResultItem[]) {
+        public constructor(items: codeRR.Core.Reports.Queries.GetReportListResultItem[]) {
             this.Items = items;
         }
     }
@@ -551,11 +551,11 @@ module OneTrueError.Core.Reports.Queries {
 
     export class GetReportResult {
         public static TYPE_NAME: string = 'GetReportResult';
-        public ContextCollections: OneTrueError.Core.Reports.Queries.GetReportResultContextCollection[];
+        public ContextCollections: codeRR.Core.Reports.Queries.GetReportResultContextCollection[];
         public CreatedAtUtc: any;
         public EmailAddress: string;
         public ErrorId: string;
-        public Exception: OneTrueError.Core.Reports.Queries.GetReportException;
+        public Exception: codeRR.Core.Reports.Queries.GetReportException;
         public Id: string;
         public IncidentId: string;
         public Message: string;
@@ -566,8 +566,8 @@ module OneTrueError.Core.Reports.Queries {
     export class GetReportResultContextCollection {
         public static TYPE_NAME: string = 'GetReportResultContextCollection';
         public Name: string;
-        public Properties: OneTrueError.Core.Reports.Queries.KeyValuePair[];
-        public constructor(name: string, properties: OneTrueError.Core.Reports.Queries.KeyValuePair[]) {
+        public Properties: codeRR.Core.Reports.Queries.KeyValuePair[];
+        public constructor(name: string, properties: codeRR.Core.Reports.Queries.KeyValuePair[]) {
             this.Name = name;
             this.Properties = properties;
         }
@@ -584,7 +584,7 @@ module OneTrueError.Core.Reports.Queries {
     }
 
 }
-module OneTrueError.Core.Notifications {
+module codeRR.Core.Notifications {
     export class AddNotification {
         public static TYPE_NAME: string = 'AddNotification';
         public NotificationType: string;
@@ -600,7 +600,7 @@ module OneTrueError.Core.Notifications {
     }
 
 }
-module OneTrueError.Core.Messaging {
+module codeRR.Core.Messaging {
     export class EmailAddress {
         public static TYPE_NAME: string = 'EmailAddress';
         public Address: string;
@@ -613,8 +613,8 @@ module OneTrueError.Core.Messaging {
     export class EmailMessage {
         public static TYPE_NAME: string = 'EmailMessage';
         public HtmlBody: string;
-        public Recipients: OneTrueError.Core.Messaging.EmailAddress[];
-        public Resources: OneTrueError.Core.Messaging.EmailResource[];
+        public Recipients: codeRR.Core.Messaging.EmailAddress[];
+        public Resources: codeRR.Core.Messaging.EmailResource[];
         public Subject: string;
         public TextBody: string;
     }
@@ -630,10 +630,10 @@ module OneTrueError.Core.Messaging {
     }
 
 }
-module OneTrueError.Core.Messaging.Commands {
+module codeRR.Core.Messaging.Commands {
     export class SendEmail {
         public static TYPE_NAME: string = 'SendEmail';
-        public EmailMessage: OneTrueError.Core.Messaging.EmailMessage;
+        public EmailMessage: codeRR.Core.Messaging.EmailMessage;
         public CommandId: string;
     }
 
@@ -652,7 +652,7 @@ module OneTrueError.Core.Messaging.Commands {
         public static TYPE_NAME: string = 'SendTemplateEmail';
         public MailTitle: string;
         public Model: any;
-        public Resources: OneTrueError.Core.Messaging.EmailResource[];
+        public Resources: codeRR.Core.Messaging.EmailResource[];
         public Subject: string;
         public TemplateName: string;
         public To: string;
@@ -664,7 +664,7 @@ module OneTrueError.Core.Messaging.Commands {
     }
 
 }
-module OneTrueError.Core.Invitations.Queries {
+module codeRR.Core.Invitations.Queries {
     export class GetInvitationByKey {
         public static TYPE_NAME: string = 'GetInvitationByKey';
         public InvitationKey: string;
@@ -680,7 +680,7 @@ module OneTrueError.Core.Invitations.Queries {
     }
 
 }
-module OneTrueError.Core.Invitations.Commands {
+module codeRR.Core.Invitations.Commands {
     export class InviteUser {
         public static TYPE_NAME: string = 'InviteUser';
         public ApplicationId: number;
@@ -695,7 +695,7 @@ module OneTrueError.Core.Invitations.Commands {
     }
 
 }
-module OneTrueError.Core.Incidents {
+module codeRR.Core.Incidents {
     export enum IncidentOrder {
         Newest = 0,
         MostReports = 1,
@@ -719,10 +719,10 @@ module OneTrueError.Core.Incidents {
     }
 
 }
-module OneTrueError.Core.Incidents.Queries {
+module codeRR.Core.Incidents.Queries {
     export class FindIncidentResult {
         public static TYPE_NAME: string = 'FindIncidentResult';
-        public Items: OneTrueError.Core.Incidents.Queries.FindIncidentResultItem[];
+        public Items: codeRR.Core.Incidents.Queries.FindIncidentResultItem[];
         public PageNumber: number;
         public PageSize: number;
         public TotalCount: number;
@@ -757,7 +757,7 @@ module OneTrueError.Core.Incidents.Queries {
         public ReOpened: boolean;
         public FreeText: string;
         public SortAscending: boolean;
-        public SortType: OneTrueError.Core.Incidents.IncidentOrder;
+        public SortType: codeRR.Core.Incidents.IncidentOrder;
         public QueryId: string;
         public Version: string;
     }
@@ -791,7 +791,7 @@ module OneTrueError.Core.Incidents.Queries {
         public ApplicationId: number;
         public ContextCollections: string[];
         public CreatedAtUtc: any;
-        public DayStatistics: OneTrueError.Core.Incidents.Queries.ReportDay[];
+        public DayStatistics: codeRR.Core.Incidents.Queries.ReportDay[];
         public Description: string;
         public FeedbackCount: number;
         public FullName: string;
@@ -833,7 +833,7 @@ module OneTrueError.Core.Incidents.Queries {
     }
 
 }
-module OneTrueError.Core.Incidents.Events {
+module codeRR.Core.Incidents.Events {
     export class IncidentIgnored {
         public static TYPE_NAME: string = 'IncidentIgnored';
         public AccountId: number;
@@ -862,11 +862,11 @@ module OneTrueError.Core.Incidents.Events {
 
     export class ReportAddedToIncident {
         public static TYPE_NAME: string = 'ReportAddedToIncident';
-        public Incident: OneTrueError.Core.Incidents.IncidentSummaryDTO;
+        public Incident: codeRR.Core.Incidents.IncidentSummaryDTO;
         public IsReOpened: boolean;
-        public Report: OneTrueError.Core.Reports.ReportDTO;
+        public Report: codeRR.Core.Reports.ReportDTO;
         public EventId: string;
-        public constructor(incident: OneTrueError.Core.Incidents.IncidentSummaryDTO, report: OneTrueError.Core.Reports.ReportDTO, isReOpened: boolean) {
+        public constructor(incident: codeRR.Core.Incidents.IncidentSummaryDTO, report: codeRR.Core.Reports.ReportDTO, isReOpened: boolean) {
             this.Incident = incident;
             this.Report = report;
             this.IsReOpened = isReOpened;
@@ -874,7 +874,7 @@ module OneTrueError.Core.Incidents.Events {
     }
 
 }
-module OneTrueError.Core.Incidents.Commands {
+module codeRR.Core.Incidents.Commands {
     export class CloseIncident {
         public static TYPE_NAME: string = 'CloseIncident';
         public CanSendNotification: boolean;
@@ -910,7 +910,7 @@ module OneTrueError.Core.Incidents.Commands {
     }
 
 }
-module OneTrueError.Core.Feedback.Events {
+module codeRR.Core.Feedback.Events {
     export class FeedbackAttachedToIncident {
         public static TYPE_NAME: string = 'FeedbackAttachedToIncident';
         public IncidentId: number;
@@ -920,7 +920,7 @@ module OneTrueError.Core.Feedback.Events {
     }
 
 }
-module OneTrueError.Core.Feedback.Commands {
+module codeRR.Core.Feedback.Commands {
     export class SubmitFeedback {
         public static TYPE_NAME: string = 'SubmitFeedback';
         public CreatedAtUtc: any;
@@ -937,7 +937,7 @@ module OneTrueError.Core.Feedback.Commands {
     }
 
 }
-module OneTrueError.Core.Applications {
+module codeRR.Core.Applications {
     export class ApplicationListItem {
         public static TYPE_NAME: string = 'ApplicationListItem';
         public Id: number;
@@ -956,7 +956,7 @@ module OneTrueError.Core.Applications {
     }
 
 }
-module OneTrueError.Core.Applications.Queries {
+module codeRR.Core.Applications.Queries {
     export class GetApplicationIdByKey {
         public static TYPE_NAME: string = 'GetApplicationIdByKey';
         public ApplicationKey: string;
@@ -982,7 +982,7 @@ module OneTrueError.Core.Applications.Queries {
     export class GetApplicationInfoResult {
         public static TYPE_NAME: string = 'GetApplicationInfoResult';
         public AppKey: string;
-        public ApplicationType: OneTrueError.Core.Applications.TypeOfApplication;
+        public ApplicationType: codeRR.Core.Applications.TypeOfApplication;
         public Id: number;
         public Name: string;
         public SharedSecret: string;
@@ -1002,7 +1002,7 @@ module OneTrueError.Core.Applications.Queries {
         public Days: number;
         public ErrorReports: number[];
         public Incidents: number[];
-        public StatSummary: OneTrueError.Core.Applications.Queries.OverviewStatSummary;
+        public StatSummary: codeRR.Core.Applications.Queries.OverviewStatSummary;
         public TimeAxisLabels: string[];
     }
 
@@ -1024,8 +1024,8 @@ module OneTrueError.Core.Applications.Queries {
 
     export class GetApplicationTeamResult {
         public static TYPE_NAME: string = 'GetApplicationTeamResult';
-        public Invited: OneTrueError.Core.Applications.Queries.GetApplicationTeamResultInvitation[];
-        public Members: OneTrueError.Core.Applications.Queries.GetApplicationTeamMember[];
+        public Invited: codeRR.Core.Applications.Queries.GetApplicationTeamResultInvitation[];
+        public Members: codeRR.Core.Applications.Queries.GetApplicationTeamMember[];
     }
 
     export class GetApplicationTeamResultInvitation {
@@ -1055,7 +1055,7 @@ module OneTrueError.Core.Applications.Queries {
     }
 
 }
-module OneTrueError.Core.Applications.Events {
+module codeRR.Core.Applications.Events {
     export class ApplicationCreated {
         public static TYPE_NAME: string = 'ApplicationCreated';
         public AppKey: string;
@@ -1097,7 +1097,7 @@ module OneTrueError.Core.Applications.Events {
     }
 
 }
-module OneTrueError.Core.Applications.Events.OneTrueError.Api.Core.Accounts.Events {
+module codeRR.Core.Applications.Events.codeRR.Api.Core.Accounts.Events {
     export class UserAddedToApplication {
         public static TYPE_NAME: string = 'UserAddedToApplication';
         public AccountId: number;
@@ -1110,15 +1110,15 @@ module OneTrueError.Core.Applications.Events.OneTrueError.Api.Core.Accounts.Even
     }
 
 }
-module OneTrueError.Core.Applications.Commands {
+module codeRR.Core.Applications.Commands {
     export class CreateApplication {
         public static TYPE_NAME: string = 'CreateApplication';
         public ApplicationKey: string;
         public Name: string;
-        public TypeOfApplication: OneTrueError.Core.Applications.TypeOfApplication;
+        public TypeOfApplication: codeRR.Core.Applications.TypeOfApplication;
         public UserId: number;
         public CommandId: string;
-        public constructor(name: string, typeOfApplication: OneTrueError.Core.Applications.TypeOfApplication) {
+        public constructor(name: string, typeOfApplication: codeRR.Core.Applications.TypeOfApplication) {
             this.Name = name;
             this.TypeOfApplication = typeOfApplication;
         }
@@ -1148,7 +1148,7 @@ module OneTrueError.Core.Applications.Commands {
         public static TYPE_NAME: string = 'UpdateApplication';
         public ApplicationId: number;
         public Name: string;
-        public TypeOfApplication: OneTrueError.Core.Applications.TypeOfApplication;
+        public TypeOfApplication: codeRR.Core.Applications.TypeOfApplication;
         public CommandId: string;
         public constructor(applicationId: number, name: string) {
             this.ApplicationId = applicationId;
@@ -1157,7 +1157,7 @@ module OneTrueError.Core.Applications.Commands {
     }
 
 }
-module OneTrueError.Core.ApiKeys.Queries {
+module codeRR.Core.ApiKeys.Queries {
     export class GetApiKey {
         public static TYPE_NAME: string = 'GetApiKey';
         public ApiKey: string;
@@ -1170,7 +1170,7 @@ module OneTrueError.Core.ApiKeys.Queries {
 
     export class GetApiKeyResult {
         public static TYPE_NAME: string = 'GetApiKeyResult';
-        public AllowedApplications: OneTrueError.Core.ApiKeys.Queries.GetApiKeyResultApplication[];
+        public AllowedApplications: codeRR.Core.ApiKeys.Queries.GetApiKeyResultApplication[];
         public ApplicationName: string;
         public CreatedAtUtc: any;
         public CreatedById: number;
@@ -1192,7 +1192,7 @@ module OneTrueError.Core.ApiKeys.Queries {
 
     export class ListApiKeysResult {
         public static TYPE_NAME: string = 'ListApiKeysResult';
-        public Keys: OneTrueError.Core.ApiKeys.Queries.ListApiKeysResultItem[];
+        public Keys: codeRR.Core.ApiKeys.Queries.ListApiKeysResultItem[];
     }
 
     export class ListApiKeysResultItem {
@@ -1203,7 +1203,7 @@ module OneTrueError.Core.ApiKeys.Queries {
     }
 
 }
-module OneTrueError.Core.ApiKeys.Events {
+module codeRR.Core.ApiKeys.Events {
     export class ApiKeyCreated {
         public static TYPE_NAME: string = 'ApiKeyCreated';
         public ApiKey: string;
@@ -1222,7 +1222,7 @@ module OneTrueError.Core.ApiKeys.Events {
     }
 
 }
-module OneTrueError.Core.ApiKeys.Commands {
+module codeRR.Core.ApiKeys.Commands {
     export class CreateApiKey {
         public static TYPE_NAME: string = 'CreateApiKey';
         public AccountId: number;
@@ -1250,7 +1250,7 @@ module OneTrueError.Core.ApiKeys.Commands {
     }
 
 }
-module OneTrueError.Core.Accounts {
+module codeRR.Core.Accounts {
     export class RegisterSimple {
         public static TYPE_NAME: string = 'RegisterSimple';
         public EmailAddress: string;
@@ -1261,7 +1261,7 @@ module OneTrueError.Core.Accounts {
     }
 
 }
-module OneTrueError.Core.Accounts.Requests {
+module codeRR.Core.Accounts.Requests {
     export class AcceptInvitation {
         public static TYPE_NAME: string = 'AcceptInvitation';
         public AcceptedEmail: string;
@@ -1385,7 +1385,7 @@ module OneTrueError.Core.Accounts.Requests {
     }
 
 }
-module OneTrueError.Core.Accounts.Queries {
+module codeRR.Core.Accounts.Queries {
     export class AccountDTO {
         public static TYPE_NAME: string = 'AccountDTO';
         public CreatedAtUtc: any;
@@ -1442,7 +1442,7 @@ module OneTrueError.Core.Accounts.Queries {
     }
 
 }
-module OneTrueError.Core.Accounts.Events {
+module codeRR.Core.Accounts.Events {
     export class AccountActivated {
         public static TYPE_NAME: string = 'AccountActivated';
         public AccountId: number;
@@ -1495,7 +1495,7 @@ module OneTrueError.Core.Accounts.Events {
     }
 
 }
-module OneTrueError.Core.Accounts.Commands {
+module codeRR.Core.Accounts.Commands {
     export class DeclineInvitation {
         public static TYPE_NAME: string = 'DeclineInvitation';
         public InvitationId: string;

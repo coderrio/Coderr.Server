@@ -4,13 +4,13 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
-using OneTrueError.Api.Core.Applications;
-using OneTrueError.Api.Core.Applications.Commands;
-using OneTrueError.Api.Core.Applications.Events;
-using OneTrueError.App.Core.Users;
-using OneTrueError.Infrastructure.Security;
+using codeRR.Api.Core.Applications;
+using codeRR.Api.Core.Applications.Commands;
+using codeRR.Api.Core.Applications.Events;
+using codeRR.App.Core.Users;
+using codeRR.Infrastructure.Security;
 
-namespace OneTrueError.App.Core.Applications.CommandHandlers
+namespace codeRR.App.Core.Applications.CommandHandlers
 {
     [Component]
     internal class CreateApplicationHandler : ICommandHandler<CreateApplication>

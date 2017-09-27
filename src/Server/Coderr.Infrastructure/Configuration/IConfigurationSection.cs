@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace OneTrueError.Infrastructure.Configuration
+namespace codeRR.Infrastructure.Configuration
 {
     /// <summary>
     ///     Purpose of this interface is to allow strongly types settings to be stored in a configuration store without

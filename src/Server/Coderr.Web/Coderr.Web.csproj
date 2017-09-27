@@ -6,7 +6,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <AssemblyName>OneTrueError.Web</AssemblyName>
+    <AssemblyName>codeRR.Web</AssemblyName>
     <IISExpressAnonymousAuthentication />
     <IISExpressSSLPort />
     <IISExpressUseClassicPipelineMode />
@@ -18,7 +18,7 @@
     <ProductVersion />
     <ProjectGuid>{0476895C-6A61-4DE1-B06B-E8BF496FB651}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
-    <RootNamespace>OneTrueError.Web</RootNamespace>
+    <RootNamespace>codeRR.Web</RootNamespace>
     <SchemaVersion>2.0</SchemaVersion>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <TypeScriptToolsVersion>2.3</TypeScriptToolsVersion>
@@ -77,28 +77,28 @@
     </DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OneTrueError.Api.Client\OneTrueError.Api.Client.csproj">
-      <Name>OneTrueError.Api.Client</Name>
+    <ProjectReference Include="..\Coderr.Api.Client\codeRR.Api.Client.csproj">
+      <Name>codeRR.Api.Client</Name>
       <Project>{017F8863-3DE0-4AD2-9ED3-5ACB87BBBCD0}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\OneTrueError.Api\OneTrueError.Api.csproj">
-      <Name>OneTrueError.Api</Name>
+    <ProjectReference Include="..\Coderr.Api\Coderr.Api.csproj">
+      <Name>codeRR.Api</Name>
       <Project>{FC331A95-FCA4-4764-8004-0884665DD01F}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\OneTrueError.App\OneTrueError.App.csproj">
-      <Name>OneTrueError.App</Name>
+    <ProjectReference Include="..\Coderr.App\codeRR.App.csproj">
+      <Name>codeRR.App</Name>
       <Project>{5EF42A74-9323-49FA-A1F6-974D6DE77202}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\OneTrueError.Infrastructure\OneTrueError.Infrastructure.csproj">
-      <Name>OneTrueError.Infrastructure</Name>
+    <ProjectReference Include="..\Coderr.Infrastructure\Coderr.Infrastructure.csproj">
+      <Name>Coderr.Infrastructure</Name>
       <Project>{A78A50DA-C9D7-47F2-8528-D7EE39D91924}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\OneTrueError.ReportAnalyzer\OneTrueError.ReportAnalyzer.csproj">
-      <Name>OneTrueError.ReportAnalyzer</Name>
+    <ProjectReference Include="..\Coderr.ReportAnalyzer\Coderr.ReportAnalyzer.csproj">
+      <Name>Coderr.ReportAnalyzer</Name>
       <Project>{29FBF805-CAFD-426A-A576-9756D375BF18}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\OneTrueError.SqlServer\OneTrueError.SqlServer.csproj">
-      <Name>OneTrueError.SqlServer</Name>
+    <ProjectReference Include="..\Coderr.SqlServer\Coderr.SqlServer.csproj">
+      <Name>Coderr.SqlServer</Name>
       <Project>{B967BEEA-CDDD-4A83-A4F2-1C946099ED51}</Project>
     </ProjectReference>
   </ItemGroup>

@@ -1,9 +1,9 @@
 ﻿using System.Web.Mvc;
-using OneTrueError.App.Modules.Messaging.Commands;
-using OneTrueError.Infrastructure.Configuration;
-using OneTrueError.Web.Areas.Admin.Models;
+using codeRR.App.Modules.Messaging.Commands;
+using codeRR.Infrastructure.Configuration;
+using codeRR.Web.Areas.Admin.Models;
 
-namespace OneTrueError.Web.Areas.Admin.Controllers
+namespace codeRR.Web.Areas.Admin.Controllers
 {
     [Authorize]
     public class MessagingController : Controller

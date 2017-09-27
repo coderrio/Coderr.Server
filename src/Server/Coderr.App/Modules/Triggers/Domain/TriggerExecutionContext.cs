@@ -1,7 +1,7 @@
-﻿using OneTrueError.Api.Core.Incidents;
-using OneTrueError.Api.Core.Reports;
+﻿using codeRR.Api.Core.Incidents;
+using codeRR.Api.Core.Reports;
 
-namespace OneTrueError.App.Modules.Triggers.Domain
+namespace codeRR.App.Modules.Triggers.Domain
 {
     /// <summary>
     ///     Context providing when the trigger should execute

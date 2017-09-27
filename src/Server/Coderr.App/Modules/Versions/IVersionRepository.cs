@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Threading.Tasks;
 
-namespace OneTrueError.App.Modules.Versions
+namespace codeRR.App.Modules.Versions
 {
     /// <summary>
     ///     Repository definition to be able to persist information about application versions

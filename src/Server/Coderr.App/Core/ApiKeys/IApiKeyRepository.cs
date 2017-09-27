@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Griffin.Data;
 
-namespace OneTrueError.App.Core.ApiKeys
+namespace codeRR.App.Core.ApiKeys
 {
     /// <summary>
     ///     Repository for <see cref="ApiKey" />.

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using OneTrueError.Infrastructure.Configuration;
+using codeRR.Infrastructure.Configuration;
 
-namespace OneTrueError.App.Core.Reports.Config
+namespace codeRR.App.Core.Reports.Config
 {
     /// <summary>
     ///     Configuration settings for reports.

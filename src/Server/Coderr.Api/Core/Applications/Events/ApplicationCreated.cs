@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace OneTrueError.Api.Core.Applications.Events
+namespace codeRR.Api.Core.Applications.Events
 {
     /// <summary>
     ///     Published when a new application have been created by a user.

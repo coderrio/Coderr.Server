@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
-using OneTrueError.App.Core.Applications;
-using OneTrueError.App.Core.Users;
+using codeRR.App.Core.Applications;
+using codeRR.App.Core.Users;
 
-namespace OneTrueError.SqlServer.Core.Applications
+namespace codeRR.SqlServer.Core.Applications
 {
     [Component]
     public class ApplicationRepository : IApplicationRepository

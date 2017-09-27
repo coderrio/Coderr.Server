@@ -2,10 +2,10 @@
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
-using OneTrueError.Api.Core.Accounts.Events;
-using OneTrueError.Api.Core.Applications.Events.OneTrueError.Api.Core.Accounts.Events;
+using codeRR.Api.Core.Accounts.Events;
+using codeRR.Api.Core.Applications.Events.codeRR.Api.Core.Accounts.Events;
 
-namespace OneTrueError.App.Core.Applications.EventHandlers
+namespace codeRR.App.Core.Applications.EventHandlers
 {
     [Component(RegisterAsSelf = true)]
     internal class UpdateTeamOnInvitationAccepted : IApplicationEventSubscriber<InvitationAccepted>

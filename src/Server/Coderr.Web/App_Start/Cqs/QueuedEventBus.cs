@@ -5,9 +5,9 @@ using DotNetCqs;
 using Griffin.ApplicationServices;
 using log4net;
 using Newtonsoft.Json;
-using OneTrueError.Infrastructure.Queueing;
+using codeRR.Infrastructure.Queueing;
 
-namespace OneTrueError.Web.Cqs
+namespace codeRR.Web.Cqs
 {
     public class QueuedEventBus : ApplicationServiceThread, IEventBus, IDisposable
     {

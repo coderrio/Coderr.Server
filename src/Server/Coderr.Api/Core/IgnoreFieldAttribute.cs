@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OneTrueError.Api.Core
+namespace codeRR.Api.Core
 {
     /// <summary>
     ///     Used to tell the typescript generator to not generate the field.

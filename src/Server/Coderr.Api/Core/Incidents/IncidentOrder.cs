@@ -1,4 +1,4 @@
-namespace OneTrueError.Api.Core.Incidents
+namespace codeRR.Api.Core.Incidents
 {
     /// <summary>
     ///     How incidents should be ordered in a list

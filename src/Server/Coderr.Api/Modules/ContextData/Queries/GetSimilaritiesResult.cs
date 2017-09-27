@@ -1,4 +1,4 @@
-﻿namespace OneTrueError.Api.Modules.ContextData.Queries
+﻿namespace codeRR.Api.Modules.ContextData.Queries
 {
     /// <summary>
     ///     Result for <see cref="GetSimilarities" />.

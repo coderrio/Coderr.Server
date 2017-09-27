@@ -4,12 +4,12 @@ using System.Configuration;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using OneTrueError.App.Configuration;
-using OneTrueError.Infrastructure;
-using OneTrueError.Infrastructure.Configuration;
-using OneTrueError.Web.Areas.Installation.Models;
+using codeRR.App.Configuration;
+using codeRR.Infrastructure;
+using codeRR.Infrastructure.Configuration;
+using codeRR.Web.Areas.Installation.Models;
 
-namespace OneTrueError.Web.Areas.Installation.Controllers
+namespace codeRR.Web.Areas.Installation.Controllers
 {
     [OutputCache(Duration = 0, NoStore = true)]
     public class SetupController : Controller
@@ -76,7 +76,7 @@ namespace OneTrueError.Web.Areas.Installation.Controllers
         public ActionResult Errors()
         {
             var model = new ErrorTrackingViewModel();
-            var config = ConfigurationStore.Instance.Load<OneTrueErrorConfigSection>();
+            var config = ConfigurationStore.Instance.Load<codeRRConfigSection>();
             if (config != null)
             {
                 model.ActivateTracking = config.ActivateTracking;
@@ -97,7 +97,7 @@ namespace OneTrueError.Web.Areas.Installation.Controllers
             if (!ModelState.IsValid)
                 return View("ErrorTracking", model);
 
-            var settings = new OneTrueErrorConfigSection();
+            var settings = new codeRRConfigSection();
             settings.ActivateTracking = model.ActivateTracking;
             settings.ContactEmail = model.ContactEmail;
             settings.InstallationId = model.InstallationId;
@@ -159,7 +159,7 @@ namespace OneTrueError.Web.Areas.Installation.Controllers
                         new KeyValuePair<string, string>("EmailAddress", model.Email),
                         new KeyValuePair<string, string>("CompanyName", model.CompanyName)
                     });
-                await client.PostAsync("https://onetrueerror.com/support/register/", content);
+                await client.PostAsync("https://coderrapp.com/support/register/", content);
                 return Redirect(Url.GetNextWizardStep());
             }
             catch (Exception ex)

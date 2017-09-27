@@ -1,4 +1,4 @@
-﻿namespace OneTrueError.Api.Core.Applications.Queries
+﻿namespace codeRR.Api.Core.Applications.Queries
 {
     /// <summary>
     ///     Result for <see cref="GetApplicationInfo" />.

@@ -2,13 +2,13 @@
 /// <reference path="../../Scripts/CqsClient.ts" />
 /// <reference path="../../Scripts/Griffin.Yo.d.ts" />
 /// <reference path="../ChartViewModel.ts" />
-var OneTrueError;
-(function (OneTrueError) {
+var codeRR;
+(function (codeRR) {
     var Feedback;
     (function (Feedback) {
         var CqsClient = Griffin.Cqs.CqsClient;
-        var GetIncidentFeedback = OneTrueError.Web.Feedback.Queries.GetIncidentFeedback;
-        var ApplicationService = OneTrueError.Applications.ApplicationService;
+        var GetIncidentFeedback = codeRR.Web.Feedback.Queries.GetIncidentFeedback;
+        var ApplicationService = codeRR.Applications.ApplicationService;
         var IncidentViewModel = (function () {
             function IncidentViewModel() {
             }
@@ -37,8 +37,8 @@ var OneTrueError;
                             { href: "/application/" + appId + "/incident/" + _this.incidentId + "/", title: 'Incident' },
                             { href: "/application/" + appId + "/incident/" + _this.incidentId + "/feedback", title: 'Feedback' }
                         ];
-                        OneTrueError.Applications.Navigation.breadcrumbs(bc);
-                        OneTrueError.Applications.Navigation.pageTitle = 'Feedback';
+                        codeRR.Applications.Navigation.breadcrumbs(bc);
+                        codeRR.Applications.Navigation.pageTitle = 'Feedback';
                     });
                 }
             };
@@ -81,6 +81,6 @@ var OneTrueError;
             }
         };
         Feedback.IncidentViewModel = IncidentViewModel;
-    })(Feedback = OneTrueError.Feedback || (OneTrueError.Feedback = {}));
-})(OneTrueError || (OneTrueError = {}));
+    })(Feedback = codeRR.Feedback || (codeRR.Feedback = {}));
+})(codeRR || (codeRR = {}));
 //# sourceMappingURL=IncidentViewModel.js.map

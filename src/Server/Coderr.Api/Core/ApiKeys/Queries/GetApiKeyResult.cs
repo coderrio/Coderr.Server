@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OneTrueError.Api.Core.ApiKeys.Queries
+namespace codeRR.Api.Core.ApiKeys.Queries
 {
     /// <summary>
     ///     Result for <see cref="GetApiKey" />.

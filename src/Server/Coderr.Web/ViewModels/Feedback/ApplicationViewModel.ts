@@ -6,10 +6,10 @@ declare function htmlentities(text: string): string;
 
 declare function nl2br(text: string): string;
 
-module OneTrueError.Feedback {
+module codeRR.Feedback {
     import CqsClient = Griffin.Cqs.CqsClient;
     import Yo = Griffin.Yo;
-    import ApplicationService = OneTrueError.Applications.ApplicationService;
+    import ApplicationService = codeRR.Applications.ApplicationService;
 
     export class ApplicationViewModel implements Griffin.Yo.Spa.ViewModels.IViewModel {
         private dto: Web.Feedback.Queries.GetFeedbackForApplicationPageResult;

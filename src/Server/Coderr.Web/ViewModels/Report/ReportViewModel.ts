@@ -2,10 +2,10 @@
 /// <reference path="../../Scripts/Griffin.WebApp.ts" />
 /// <reference path="../../Scripts/CqsClient.ts" />
 /// <reference path="../../Scripts/Griffin.Yo.d.ts" />
-module OneTrueError.Report {
+module codeRR.Report {
     import CqsClient = Griffin.Cqs.CqsClient;
     import ReportResult = Core.Reports.Queries.GetReportResult;
-    import ApplicationService = OneTrueError.Applications.ApplicationService;
+    import ApplicationService = codeRR.Applications.ApplicationService;
 
     export class ReportViewModel implements Griffin.Yo.Spa.ViewModels.IViewModel {
         private context: Griffin.Yo.Spa.ViewModels.IActivationContext;

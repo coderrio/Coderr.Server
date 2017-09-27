@@ -1,4 +1,4 @@
-﻿namespace OneTrueError.Api.Modules.ErrorOrigins.Queries
+﻿namespace codeRR.Api.Modules.ErrorOrigins.Queries
 {
     /// <summary>
     ///     Item for <see cref="GetOriginsForIncidentResult" />.

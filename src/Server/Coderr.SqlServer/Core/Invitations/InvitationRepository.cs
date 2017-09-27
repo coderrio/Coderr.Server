@@ -2,9 +2,9 @@
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
-using OneTrueError.App.Core.Invitations;
+using codeRR.App.Core.Invitations;
 
-namespace OneTrueError.SqlServer.Core.Invitations
+namespace codeRR.SqlServer.Core.Invitations
 {
     [Component]
     internal class InvitationRepository : IInvitationRepository

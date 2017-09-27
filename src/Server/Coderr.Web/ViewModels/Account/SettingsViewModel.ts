@@ -1,5 +1,5 @@
 ﻿/// <reference path="../../Scripts/CqsClient.ts" />
-module OneTrueError.Account {
+module codeRR.Account {
     import CqsClient = Griffin.Cqs.CqsClient;
     import GetUserSettings = Core.Users.Queries.GetUserSettings;
     import UserSettingsResult = Core.Users.Queries.GetUserSettingsResult;

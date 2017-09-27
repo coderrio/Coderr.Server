@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace OneTrueError.Api.Core.Accounts.Events
+namespace codeRR.Api.Core.Accounts.Events
 {
     /// <summary>
     ///     Published when the user have clicked on the activation link in the registration email.

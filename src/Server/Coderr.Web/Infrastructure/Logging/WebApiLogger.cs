@@ -4,13 +4,13 @@ using log4net;
 using OneTrueError.Client;
 using OneTrueError.Client.Contracts;
 
-namespace OneTrueError.Web.Infrastructure.Logging
+namespace codeRR.Web.Infrastructure.Logging
 {
     internal class WebApiLogger : ExceptionLogger
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(WebApiLogger));
 
-        public string ReportToOneTrueError { get; set; }
+        public string ReportTocodeRR { get; set; }
 
         public override void Log(ExceptionLoggerContext context)
         {
@@ -23,7 +23,7 @@ namespace OneTrueError.Web.Infrastructure.Logging
             _logger.Error("Request + " + context.Request.RequestUri + ", data" + data, context.Exception);
             _logger.Error(context.Exception);
 
-            if (!WebApiApplication.ReportToOneTrueError)
+            if (!WebApiApplication.ReportTocodeRR)
                 return;
 
             var properties = new Dictionary<string, string>

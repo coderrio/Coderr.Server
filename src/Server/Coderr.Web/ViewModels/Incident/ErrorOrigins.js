@@ -2,8 +2,8 @@
 /// <reference path="../../Scripts/Promise.ts" />
 /// <reference path="../../Scripts/CqsClient.ts" />
 /// <reference path="../ChartViewModel.ts" />
-var OneTrueError;
-(function (OneTrueError) {
+var codeRR;
+(function (codeRR) {
     var Incident;
     (function (Incident) {
         var OriginsViewModel = (function () {
@@ -19,5 +19,5 @@ var OneTrueError;
             return OriginsViewModel;
         }());
         Incident.OriginsViewModel = OriginsViewModel;
-    })(Incident = OneTrueError.Incident || (OneTrueError.Incident = {}));
-})(OneTrueError || (OneTrueError = {}));
+    })(Incident = codeRR.Incident || (codeRR.Incident = {}));
+})(codeRR || (codeRR = {}));

@@ -1,5 +1,5 @@
-var OneTrueError;
-(function (OneTrueError) {
+var codeRR;
+(function (codeRR) {
     var Home;
     (function (Home) {
         var WelcomeViewModel = (function () {
@@ -13,6 +13,6 @@ var OneTrueError;
             return WelcomeViewModel;
         }());
         Home.WelcomeViewModel = WelcomeViewModel;
-    })(Home = OneTrueError.Home || (OneTrueError.Home = {}));
-})(OneTrueError || (OneTrueError = {}));
+    })(Home = codeRR.Home || (codeRR.Home = {}));
+})(codeRR || (codeRR = {}));
 //# sourceMappingURL=WelcomeViewModel.js.map

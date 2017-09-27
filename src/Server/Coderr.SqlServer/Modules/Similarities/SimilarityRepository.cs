@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 using Griffin.Container;
 using Griffin.Data;
 using log4net;
-using OneTrueError.App.Modules.Similarities.Domain;
-using OneTrueError.Infrastructure;
-using OneTrueError.SqlServer.Modules.Similarities.Entities;
-using OneTrueError.SqlServer.Tools;
+using codeRR.App.Modules.Similarities.Domain;
+using codeRR.Infrastructure;
+using codeRR.SqlServer.Modules.Similarities.Entities;
+using codeRR.SqlServer.Tools;
 
-namespace OneTrueError.SqlServer.Modules.Similarities
+namespace codeRR.SqlServer.Modules.Similarities
 {
     [Component]
     public class SimilarityRepository : ISimilarityRepository

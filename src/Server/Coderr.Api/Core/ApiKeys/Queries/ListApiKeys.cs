@@ -1,6 +1,6 @@
 ﻿using DotNetCqs;
 
-namespace OneTrueError.Api.Core.ApiKeys.Queries
+namespace codeRR.Api.Core.ApiKeys.Queries
 {
     /// <summary>
     ///     List all created keys

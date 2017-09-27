@@ -3,9 +3,9 @@ using System.Diagnostics;
 using System.Security.Claims;
 using System.Web;
 using Griffin.Cqs.Http;
-using OneTrueError.Infrastructure.Security;
+using codeRR.Infrastructure.Security;
 
-namespace OneTrueError.Web.Infrastructure.Cqs
+namespace codeRR.Web.Infrastructure.Cqs
 {
     public class CqsClientFactory
     {

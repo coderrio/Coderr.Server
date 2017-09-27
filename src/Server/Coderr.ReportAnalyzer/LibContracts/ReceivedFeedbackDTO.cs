@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OneTrueError.ReportAnalyzer.LibContracts
+namespace codeRR.ReportAnalyzer.LibContracts
 {
     /// <summary>
     ///     Feedback item as recieved by the client library
@@ -51,7 +51,7 @@ namespace OneTrueError.ReportAnalyzer.LibContracts
         public string ReportId { get; set; }
 
         /// <summary>
-        ///     Version of the report (version of the OneTrueError.Reporting API contract)
+        ///     Version of the report (version of the codeRR.Reporting API contract)
         /// </summary>
         public string ReportVersion { get; set; }
     }

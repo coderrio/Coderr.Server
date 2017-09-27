@@ -2,10 +2,10 @@
 using System.Threading.Tasks;
 using Griffin.Container;
 using Griffin.Data;
-using OneTrueError.App.Modules.Tagging;
-using OneTrueError.App.Modules.Tagging.Domain;
+using codeRR.App.Modules.Tagging;
+using codeRR.App.Modules.Tagging.Domain;
 
-namespace OneTrueError.SqlServer.Modules.Tagging
+namespace codeRR.SqlServer.Modules.Tagging
 {
     [Component]
     public class TagsRepository : ITagsRepository

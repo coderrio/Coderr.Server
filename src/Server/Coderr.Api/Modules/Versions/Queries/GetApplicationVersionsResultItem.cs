@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OneTrueError.Api.Modules.Versions.Queries
+namespace codeRR.Api.Modules.Versions.Queries
 {
     /// <summary>
     ///     Version information

@@ -6,19 +6,19 @@ using System.Text;
 using System.Threading.Tasks;
 using Griffin.Data;
 using Griffin.Data.Mapper;
-using OneTrueError.App.Core.Accounts;
-using OneTrueError.App.Core.Applications;
-using OneTrueError.App.Core.Incidents;
-using OneTrueError.App.Core.Users;
-using OneTrueError.Infrastructure;
-using OneTrueError.ReportAnalyzer.Domain.Reports;
-using OneTrueError.SqlServer.Analysis;
-using OneTrueError.SqlServer.Core.Accounts;
-using OneTrueError.SqlServer.Core.Applications;
-using OneTrueError.SqlServer.Core.Incidents;
-using OneTrueError.SqlServer.Core.Users;
+using codeRR.App.Core.Accounts;
+using codeRR.App.Core.Applications;
+using codeRR.App.Core.Incidents;
+using codeRR.App.Core.Users;
+using codeRR.Infrastructure;
+using codeRR.ReportAnalyzer.Domain.Reports;
+using codeRR.SqlServer.Analysis;
+using codeRR.SqlServer.Core.Accounts;
+using codeRR.SqlServer.Core.Applications;
+using codeRR.SqlServer.Core.Incidents;
+using codeRR.SqlServer.Core.Users;
 
-namespace OneTrueError.SqlServer.Tests
+namespace codeRR.SqlServer.Tests
 {
     public class TestTools : IDisposable
     {

@@ -10,10 +10,10 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using DotNetCqs;
-using OneTrueError.Api.Core.Accounts.Requests;
-using OneTrueError.Web.Models;
+using codeRR.Api.Core.Accounts.Requests;
+using codeRR.Web.Models;
 
-namespace OneTrueError.Web.Infrastructure
+namespace codeRR.Web.Infrastructure
 {
     public class WebApiAuthenticationFilter : IAuthenticationFilter
     {
@@ -43,7 +43,7 @@ namespace OneTrueError.Web.Infrastructure
                 return;
             }
 
-            Thread.CurrentPrincipal = new OneTrueErrorPrincipal
+            Thread.CurrentPrincipal = new codeRRPrincipal
             {
                 AccountId = SessionUser.Current.AccountId,
                 ApplicationId = SessionUser.Current.ApplicationId,

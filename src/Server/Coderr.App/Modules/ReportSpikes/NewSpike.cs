@@ -1,4 +1,4 @@
-namespace OneTrueError.App.Modules.ReportSpikes
+namespace codeRR.App.Modules.ReportSpikes
 {
     /// <summary>
     ///     Detected a new spike

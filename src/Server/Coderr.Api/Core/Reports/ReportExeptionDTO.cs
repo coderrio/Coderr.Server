@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace OneTrueError.Api.Core.Reports
+namespace codeRR.Api.Core.Reports
 {
     /// <summary>
     ///     Model used to wrap all information from an exception.

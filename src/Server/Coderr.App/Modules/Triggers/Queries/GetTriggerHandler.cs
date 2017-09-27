@@ -3,10 +3,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
-using OneTrueError.Api.Modules.Triggers.Queries;
-using OneTrueError.App.Modules.Triggers.Domain;
+using codeRR.Api.Modules.Triggers.Queries;
+using codeRR.App.Modules.Triggers.Domain;
 
-namespace OneTrueError.App.Modules.Triggers.Queries
+namespace codeRR.App.Modules.Triggers.Queries
 {
     /// <summary>
     ///     Handler for <see cref="GetTrigger" />.

@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
-using OneTrueError.Api.Core.Applications.Queries;
+using codeRR.Api.Core.Applications.Queries;
 
-namespace OneTrueError.SqlServer.Core.Applications.Queries
+namespace codeRR.SqlServer.Core.Applications.Queries
 {
     [Component]
     internal class GetApplicationOverviewHandler : IQueryHandler<GetApplicationOverview, GetApplicationOverviewResult>

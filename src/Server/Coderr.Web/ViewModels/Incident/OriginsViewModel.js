@@ -2,8 +2,8 @@
 /// <reference path="../../Scripts/Promise.ts" />
 /// <reference path="../../Scripts/CqsClient.ts" />
 /// <reference path="../ChartViewModel.ts" />
-var OneTrueError;
-(function (OneTrueError) {
+var codeRR;
+(function (codeRR) {
     var Incident;
     (function (Incident) {
         var CqsClient = Griffin.Cqs.CqsClient;
@@ -40,7 +40,7 @@ var OneTrueError;
                         google.maps.event.trigger(map, "resize");
                         map.setCenter(center);
                     });
-                    var query = new OneTrueError.Modules.ErrorOrigins.Queries.GetOriginsForIncident(context.routeData["incidentId"]);
+                    var query = new codeRR.Modules.ErrorOrigins.Queries.GetOriginsForIncident(context.routeData["incidentId"]);
                     CqsClient.query(query)
                         .done(function (response) {
                         var points = [];
@@ -63,6 +63,6 @@ var OneTrueError;
             return OriginsViewModel;
         }());
         Incident.OriginsViewModel = OriginsViewModel;
-    })(Incident = OneTrueError.Incident || (OneTrueError.Incident = {}));
-})(OneTrueError || (OneTrueError = {}));
+    })(Incident = codeRR.Incident || (codeRR.Incident = {}));
+})(codeRR || (codeRR = {}));
 //# sourceMappingURL=OriginsViewModel.js.map

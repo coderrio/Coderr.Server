@@ -1,5 +1,5 @@
-var OneTrueError;
-(function (OneTrueError) {
+var codeRR;
+(function (codeRR) {
     var Account;
     (function (Account) {
         var AcceptedViewModel = (function () {
@@ -13,6 +13,6 @@ var OneTrueError;
             return AcceptedViewModel;
         }());
         Account.AcceptedViewModel = AcceptedViewModel;
-    })(Account = OneTrueError.Account || (OneTrueError.Account = {}));
-})(OneTrueError || (OneTrueError = {}));
+    })(Account = codeRR.Account || (codeRR.Account = {}));
+})(codeRR || (codeRR = {}));
 //# sourceMappingURL=AcceptedViewModel.js.map

@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 using DotNetCqs;
 using FluentAssertions;
 using NSubstitute;
-using OneTrueError.Api.Core.Applications.Events;
-using OneTrueError.Api.Core.Invitations.Commands;
-using OneTrueError.Api.Core.Messaging.Commands;
-using OneTrueError.App.Core.Applications;
-using OneTrueError.App.Core.Invitations;
-using OneTrueError.App.Core.Invitations.CommandHandlers;
-using OneTrueError.App.Core.Users;
-using OneTrueError.Infrastructure.Configuration;
-using OneTrueError.Infrastructure.Security;
+using codeRR.Api.Core.Applications.Events;
+using codeRR.Api.Core.Invitations.Commands;
+using codeRR.Api.Core.Messaging.Commands;
+using codeRR.App.Core.Applications;
+using codeRR.App.Core.Invitations;
+using codeRR.App.Core.Invitations.CommandHandlers;
+using codeRR.App.Core.Users;
+using codeRR.Infrastructure.Configuration;
+using codeRR.Infrastructure.Security;
 using Xunit;
 
-namespace OneTrueError.App.Tests.Core.Applications.Commands
+namespace codeRR.App.Tests.Core.Applications.Commands
 {
     public class InviteUserHandlerTests
     {

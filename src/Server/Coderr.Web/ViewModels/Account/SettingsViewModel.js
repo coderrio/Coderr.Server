@@ -1,11 +1,11 @@
 /// <reference path="../../Scripts/CqsClient.ts" />
-var OneTrueError;
-(function (OneTrueError) {
+var codeRR;
+(function (codeRR) {
     var Account;
     (function (Account) {
         var CqsClient = Griffin.Cqs.CqsClient;
-        var GetUserSettings = OneTrueError.Core.Users.Queries.GetUserSettings;
-        var ChangePassword = OneTrueError.Core.Accounts.Requests.ChangePassword;
+        var GetUserSettings = codeRR.Core.Users.Queries.GetUserSettings;
+        var ChangePassword = codeRR.Core.Accounts.Requests.ChangePassword;
         var AccountSettings = (function () {
             function AccountSettings() {
                 this.notifyNewIncident = true;
@@ -52,6 +52,6 @@ var OneTrueError;
             return SettingsViewModel;
         }());
         Account.SettingsViewModel = SettingsViewModel;
-    })(Account = OneTrueError.Account || (OneTrueError.Account = {}));
-})(OneTrueError || (OneTrueError = {}));
+    })(Account = codeRR.Account || (codeRR.Account = {}));
+})(codeRR || (codeRR = {}));
 //# sourceMappingURL=SettingsViewModel.js.map

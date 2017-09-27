@@ -1,7 +1,7 @@
 ﻿using Griffin.Data.Mapper;
-using OneTrueError.Api.Web.Feedback.Queries;
+using codeRR.Api.Web.Feedback.Queries;
 
-namespace OneTrueError.SqlServer.Web.Feedback.Queries
+namespace codeRR.SqlServer.Web.Feedback.Queries
 {
     public class GetApplicationFeedbackResultItemMapper : EntityMapper<GetFeedbackForApplicationPageResultItem>
     {

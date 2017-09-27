@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
-using OneTrueError.Infrastructure.Configuration;
+using codeRR.Infrastructure.Configuration;
 
-namespace OneTrueError.App.Configuration
+namespace codeRR.App.Configuration
 {
     /// <summary>
     ///     We'll want to track all exceptions for all OTE users so that we can correct bugs in OTE.
     /// </summary>
-    public sealed class OneTrueErrorConfigSection : IConfigurationSection
+    public sealed class codeRRConfigSection : IConfigurationSection
     {
         /// <summary>
         ///     Allow us to track exceptions in OTE.

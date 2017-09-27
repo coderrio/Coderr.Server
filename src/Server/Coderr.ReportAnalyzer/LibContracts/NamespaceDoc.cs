@@ -1,4 +1,4 @@
-﻿namespace OneTrueError.ReportAnalyzer.LibContracts
+﻿namespace codeRR.ReportAnalyzer.LibContracts
 {
     /// <summary>
     ///     These classes are created by the "Receiver" area when new reports are being received.

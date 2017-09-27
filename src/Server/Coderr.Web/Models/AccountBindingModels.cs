@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace OneTrueError.Web.Models
+namespace codeRR.Web.Models
 {
     // Models used as parameters to AccountController actions.
 

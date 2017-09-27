@@ -1,7 +1,7 @@
 ﻿/// <reference path="../../Scripts/Griffin.WebApp.ts" />
 /// <reference path="../../Scripts/CqsClient.ts" />
 
-module OneTrueError.Application {
+module codeRR.Application {
     import CqsClient = Griffin.Cqs.CqsClient;
     import Pager = Griffin.WebApp.Pager;
     import ActivationContext = Griffin.Yo.Spa.ViewModels.IActivationContext;

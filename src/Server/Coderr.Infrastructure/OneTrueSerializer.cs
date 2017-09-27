@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace OneTrueError.Infrastructure
+namespace codeRR.Infrastructure
 {
     /// <summary>
     ///     Internal serializer, used only to store stuff that aren´t exposed outside the App/data namespace.

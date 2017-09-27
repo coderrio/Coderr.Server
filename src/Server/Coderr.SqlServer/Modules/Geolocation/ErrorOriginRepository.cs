@@ -4,9 +4,9 @@ using System.Data.Common;
 using System.Threading.Tasks;
 using Griffin.Container;
 using Griffin.Data;
-using OneTrueError.App.Modules.Geolocation;
+using codeRR.App.Modules.Geolocation;
 
-namespace OneTrueError.SqlServer.Modules.Geolocation
+namespace codeRR.SqlServer.Modules.Geolocation
 {
     [Component]
     public class ErrorOriginRepository : IErrorOriginRepository

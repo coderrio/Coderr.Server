@@ -3,13 +3,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
-using OneTrueError.Api.Core.Incidents.Events;
-using OneTrueError.Api.Core.Notifications;
-using OneTrueError.App.Modules.Versions.Config;
-using OneTrueError.Infrastructure.Configuration;
-using OneTrueError.Infrastructure.Security;
+using codeRR.Api.Core.Incidents.Events;
+using codeRR.Api.Core.Notifications;
+using codeRR.App.Modules.Versions.Config;
+using codeRR.Infrastructure.Configuration;
+using codeRR.Infrastructure.Security;
 
-namespace OneTrueError.App.Modules.Versions.Events
+namespace codeRR.App.Modules.Versions.Events
 {
     [Component]
     internal class GetVersionFromReport : IApplicationEventSubscriber<ReportAddedToIncident>

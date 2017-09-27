@@ -2,9 +2,9 @@
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
-using OneTrueError.Api.Core.Invitations.Queries;
+using codeRR.Api.Core.Invitations.Queries;
 
-namespace OneTrueError.SqlServer.Core.Invitations
+namespace codeRR.SqlServer.Core.Invitations
 {
     [Component]
     internal class GetInvitationByKeyHandler : IQueryHandler<GetInvitationByKey, GetInvitationByKeyResult>

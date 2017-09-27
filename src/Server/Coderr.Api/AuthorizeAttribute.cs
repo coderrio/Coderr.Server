@@ -1,7 +1,7 @@
 ﻿using System;
-using OneTrueError.Api.Core;
+using codeRR.Api.Core;
 
-namespace OneTrueError.Api
+namespace codeRR.Api
 {
     /// <summary>
     ///     Authorize on specific roles.

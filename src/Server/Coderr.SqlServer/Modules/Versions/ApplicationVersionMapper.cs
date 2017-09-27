@@ -1,8 +1,8 @@
 ﻿using Griffin.Data.Mapper;
-using OneTrueError.App.Modules.Versions;
-using OneTrueError.App.Modules.Versions.Events;
+using codeRR.App.Modules.Versions;
+using codeRR.App.Modules.Versions.Events;
 
-namespace OneTrueError.SqlServer.Modules.Versions
+namespace codeRR.SqlServer.Modules.Versions
 {
     public class ApplicationVersionMapper : CrudEntityMapper<ApplicationVersion>
     {

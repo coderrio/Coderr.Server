@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
-using OneTrueError.App.Core.ApiKeys;
-using OneTrueError.Infrastructure.Security;
+using codeRR.App.Core.ApiKeys;
+using codeRR.Infrastructure.Security;
 using Xunit;
 
-namespace OneTrueError.App.Tests.Core.ApiKeys
+namespace codeRR.App.Tests.Core.ApiKeys
 {
     public class ApiKeyTests
     {

@@ -2,12 +2,12 @@
 using DotNetCqs;
 using Griffin.Container;
 using log4net;
-using OneTrueError.Api.Core.Accounts.Commands;
-using OneTrueError.Api.Core.Messaging.Commands;
-using OneTrueError.App.Configuration;
-using OneTrueError.Infrastructure.Configuration;
+using codeRR.Api.Core.Accounts.Commands;
+using codeRR.Api.Core.Messaging.Commands;
+using codeRR.App.Configuration;
+using codeRR.Infrastructure.Configuration;
 
-namespace OneTrueError.App.Core.Accounts.CommandHandlers
+namespace codeRR.App.Core.Accounts.CommandHandlers
 {
     /// <summary>
     ///     Handler for <see cref="RequestPasswordReset" />.

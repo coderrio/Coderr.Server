@@ -1,7 +1,7 @@
 ﻿using System;
-using OneTrueError.App.Core.Accounts;
+using codeRR.App.Core.Accounts;
 
-namespace OneTrueError.App.Core.Users
+namespace codeRR.App.Core.Users
 {
     /// <summary>
     ///     User information associated to an <see cref="Account" />.

@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace OneTrueError.App.Modules.Triggers
+namespace codeRR.App.Modules.Triggers
 {
     /// <summary>
     ///     Base class for custom JSON serializers.

@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
 using log4net;
-using OneTrueError.Api.Core.Accounts.Events;
-using OneTrueError.Api.Core.Accounts.Requests;
+using codeRR.Api.Core.Accounts.Events;
+using codeRR.Api.Core.Accounts.Requests;
 
-namespace OneTrueError.App.Core.Accounts.Requests
+namespace codeRR.App.Core.Accounts.Requests
 {
     /// <summary>
     ///     Handler for <see cref="Login" />.

@@ -3,9 +3,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
-using OneTrueError.Api.Modules.ErrorOrigins.Queries;
+using codeRR.Api.Modules.ErrorOrigins.Queries;
 
-namespace OneTrueError.App.Modules.Geolocation.QueryHandlers
+namespace codeRR.App.Modules.Geolocation.QueryHandlers
 {
     /// <summary>
     ///     Handler for <see cref="GetOriginsForIncident" />.

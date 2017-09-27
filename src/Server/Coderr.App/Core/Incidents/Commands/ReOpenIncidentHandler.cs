@@ -2,10 +2,10 @@
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
-using OneTrueError.Api.Core.Incidents.Commands;
-using OneTrueError.Api.Core.Incidents.Events;
+using codeRR.Api.Core.Incidents.Commands;
+using codeRR.Api.Core.Incidents.Events;
 
-namespace OneTrueError.App.Core.Incidents.Commands
+namespace codeRR.App.Core.Incidents.Commands
 {
     /// <summary>
     /// Uses the incident repository and the domain entity to apply the change.

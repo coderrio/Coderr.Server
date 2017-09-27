@@ -1,5 +1,5 @@
 ﻿
-module OneTrueError {
+module codeRR {
 
     declare var Chart: any;
 

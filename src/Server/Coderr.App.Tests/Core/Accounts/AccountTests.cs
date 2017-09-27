@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Security.Authentication;
 using FluentAssertions;
-using OneTrueError.App.Core.Accounts;
+using codeRR.App.Core.Accounts;
 using Xunit;
 
-namespace OneTrueError.App.Tests.Core.Accounts
+namespace codeRR.App.Tests.Core.Accounts
 {
     public class AccountTests
     {

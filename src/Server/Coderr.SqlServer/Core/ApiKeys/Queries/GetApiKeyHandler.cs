@@ -4,11 +4,11 @@ using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
-using OneTrueError.Api.Core.ApiKeys.Queries;
-using OneTrueError.App.Core.ApiKeys;
-using OneTrueError.SqlServer.Core.ApiKeys.Mappings;
+using codeRR.Api.Core.ApiKeys.Queries;
+using codeRR.App.Core.ApiKeys;
+using codeRR.SqlServer.Core.ApiKeys.Mappings;
 
-namespace OneTrueError.SqlServer.Core.ApiKeys.Queries
+namespace codeRR.SqlServer.Core.ApiKeys.Queries
 {
     /// <summary>
     ///     Handler for <see cref="GetApiKey" />.

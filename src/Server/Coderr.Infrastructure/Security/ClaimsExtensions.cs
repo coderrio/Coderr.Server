@@ -4,10 +4,10 @@ using System.Security.Authentication;
 using System.Security.Claims;
 using System.Security.Principal;
 
-namespace OneTrueError.Infrastructure.Security
+namespace codeRR.Infrastructure.Security
 {
     /// <summary>
-    ///     Our OneTrueError specific extensions for claims handling.
+    ///     Our codeRR specific extensions for claims handling.
     /// </summary>
     public static class ClaimsExtensions
     {

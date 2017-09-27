@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
-using OneTrueError.App.Modules.Versions;
+using codeRR.App.Modules.Versions;
 
-namespace OneTrueError.SqlServer.Modules.Versions
+namespace codeRR.SqlServer.Modules.Versions
 {
     /// <summary>
     ///     ADO.NET based implementation of <see cref="IVersionRepository" />.

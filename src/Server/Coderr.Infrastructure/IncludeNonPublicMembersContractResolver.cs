@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace OneTrueError.Infrastructure
+namespace codeRR.Infrastructure
 {
     /// <summary>
     ///     Used by JSON.NET to be able to deserialize properties with private setters.

@@ -8,7 +8,7 @@ declare function htmlentities(text: string): string;
 
 declare function nl2br(text: string): string;
 
-module OneTrueError.Feedback {
+module codeRR.Feedback {
     import CqsClient = Griffin.Cqs.CqsClient;
     import OverviewFeedback = Web.Feedback.Queries.GetFeedbackForDashboardPage;
     import OverviewFeedbackResult = Web.Feedback.Queries.GetFeedbackForDashboardPageResult;

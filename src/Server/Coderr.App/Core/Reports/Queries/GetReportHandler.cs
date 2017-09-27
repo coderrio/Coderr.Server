@@ -3,10 +3,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
-using OneTrueError.Api.Core.Reports;
-using OneTrueError.Api.Core.Reports.Queries;
+using codeRR.Api.Core.Reports;
+using codeRR.Api.Core.Reports.Queries;
 
-namespace OneTrueError.App.Core.Reports.Queries
+namespace codeRR.App.Core.Reports.Queries
 {
     /// <summary>
     ///     Get report.

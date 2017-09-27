@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Messaging;
 
-namespace OneTrueError.Infrastructure
+namespace codeRR.Infrastructure
 {
     public static class SetupTools
     {

@@ -1,4 +1,4 @@
-﻿namespace OneTrueError.App.Core.Notifications
+﻿namespace codeRR.App.Core.Notifications
 {
     /// <summary>
     ///     Type of notification to use

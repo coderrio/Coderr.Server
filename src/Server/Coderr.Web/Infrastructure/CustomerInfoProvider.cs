@@ -3,7 +3,7 @@ using OneTrueError.Client.ContextProviders;
 using OneTrueError.Client.Contracts;
 using OneTrueError.Client.Reporters;
 
-namespace OneTrueError.Web.Infrastructure
+namespace codeRR.Web.Infrastructure
 {
     public class CustomerInfoProvider : IContextInfoProvider
     {

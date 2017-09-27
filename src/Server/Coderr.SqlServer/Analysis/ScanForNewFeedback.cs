@@ -4,11 +4,11 @@ using Griffin.ApplicationServices;
 using Griffin.Container;
 using log4net;
 using Newtonsoft.Json;
-using OneTrueError.Api.Core.Feedback.Commands;
-using OneTrueError.Infrastructure.Queueing;
-using OneTrueError.ReportAnalyzer.LibContracts;
+using codeRR.Api.Core.Feedback.Commands;
+using codeRR.Infrastructure.Queueing;
+using codeRR.ReportAnalyzer.LibContracts;
 
-namespace OneTrueError.SqlServer.Analysis
+namespace codeRR.SqlServer.Analysis
 {
     /// <summary>
     ///     TODO: In a perfect world, the BL should be moved to BL and the data should remain in the data. But let's not

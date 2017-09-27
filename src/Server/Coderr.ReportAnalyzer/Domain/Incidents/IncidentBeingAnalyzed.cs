@@ -1,7 +1,7 @@
 ﻿using System;
-using OneTrueError.ReportAnalyzer.Domain.Reports;
+using codeRR.ReportAnalyzer.Domain.Reports;
 
-namespace OneTrueError.ReportAnalyzer.Domain.Incidents
+namespace codeRR.ReportAnalyzer.Domain.Incidents
 {
     /// <summary>
     ///     Keeps track of all report occurrences for a single incident (i.e. error reports which generates the same hash code)

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OneTrueError.SqlServer
+namespace codeRR.SqlServer
 {
     public static class DateTimeExtensions
     {

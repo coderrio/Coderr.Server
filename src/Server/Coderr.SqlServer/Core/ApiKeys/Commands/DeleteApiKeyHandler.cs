@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
-using OneTrueError.Api.Core.ApiKeys.Commands;
+using codeRR.Api.Core.ApiKeys.Commands;
 
-namespace OneTrueError.SqlServer.Core.ApiKeys.Commands
+namespace codeRR.SqlServer.Core.ApiKeys.Commands
 {
     [Component(RegisterAsSelf = true)]
     public class DeleteApiKeyHandler : ICommandHandler<DeleteApiKey>

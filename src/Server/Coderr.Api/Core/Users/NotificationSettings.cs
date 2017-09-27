@@ -1,6 +1,6 @@
-﻿using OneTrueError.Api.Core.Users.Queries;
+﻿using codeRR.Api.Core.Users.Queries;
 
-namespace OneTrueError.Api.Core.Users
+namespace codeRR.Api.Core.Users
 {
     /// <summary>
     ///     Notification settings for <see cref="GetUserSettingsResult" />.

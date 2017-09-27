@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OneTrueError.Api.Core.Incidents.Queries
+namespace codeRR.Api.Core.Incidents.Queries
 {
     /// <summary>
     ///     Keeps track of all occurrences of a single incident (i.e. error reports which generates the same hash code)
@@ -82,7 +82,7 @@ namespace OneTrueError.Api.Core.Incidents.Queries
         public bool IsReOpened { get; set; }
 
         /// <summary>
-        ///     Share solution with the OneTrueError community.
+        ///     Share solution with the codeRR community.
         /// </summary>
         public bool IsSolutionShared { get; set; }
 

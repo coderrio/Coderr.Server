@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 
-namespace OneTrueError.Web.Results
+namespace codeRR.Web.Results
 {
     public class ChallengeResult : IHttpActionResult
     {

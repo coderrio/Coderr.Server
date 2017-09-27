@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OneTrueError.Api.Core.Incidents.Queries
+namespace codeRR.Api.Core.Incidents.Queries
 {
     /// <summary>
     ///     A day in our statistics

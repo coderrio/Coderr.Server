@@ -1,4 +1,4 @@
-﻿module OneTrueError.Home {
+﻿module codeRR.Home {
     import ViewModel = Griffin.Yo.Spa.ViewModels.IViewModel;
 
     export class WelcomeSaasViewModel implements ViewModel {

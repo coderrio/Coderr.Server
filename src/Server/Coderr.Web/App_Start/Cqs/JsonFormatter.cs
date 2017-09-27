@@ -3,7 +3,7 @@ using System.Messaging;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace OneTrueError.Web.Cqs
+namespace codeRR.Web.Cqs
 {
     public class JsonFormatter : IMessageFormatter
     {

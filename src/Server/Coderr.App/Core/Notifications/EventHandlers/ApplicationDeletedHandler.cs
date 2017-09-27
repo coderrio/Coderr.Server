@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
-using OneTrueError.Api.Core.Applications.Events;
+using codeRR.Api.Core.Applications.Events;
 
-namespace OneTrueError.App.Core.Notifications.EventHandlers
+namespace codeRR.App.Core.Notifications.EventHandlers
 {
     /// <summary>
     ///     Will delete all reports for the given application

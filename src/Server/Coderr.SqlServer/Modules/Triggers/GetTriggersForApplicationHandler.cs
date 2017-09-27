@@ -5,10 +5,10 @@ using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
-using OneTrueError.Api.Modules.Triggers;
-using OneTrueError.Api.Modules.Triggers.Queries;
+using codeRR.Api.Modules.Triggers;
+using codeRR.Api.Modules.Triggers.Queries;
 
-namespace OneTrueError.SqlServer.Modules.Triggers
+namespace codeRR.SqlServer.Modules.Triggers
 {
     [Component]
     public class GetTriggersForApplicationHandler : IQueryHandler<GetTriggersForApplication, TriggerDTO[]>

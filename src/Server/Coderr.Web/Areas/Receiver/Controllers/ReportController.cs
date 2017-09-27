@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using log4net;
-using OneTrueError.Infrastructure.Queueing;
-using OneTrueError.ReportAnalyzer.Inbound;
-using OneTrueError.Web.Areas.Receiver.Helpers;
-using OneTrueError.Web.Areas.Receiver.Models;
+using codeRR.Infrastructure.Queueing;
+using codeRR.ReportAnalyzer.Inbound;
+using codeRR.Web.Areas.Receiver.Helpers;
+using codeRR.Web.Areas.Receiver.Models;
 
-namespace OneTrueError.Web.Areas.Receiver.Controllers
+namespace codeRR.Web.Areas.Receiver.Controllers
 {
     [AllowAnonymous]
     public class ReportController : ApiController

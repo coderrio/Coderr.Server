@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OneTrueError.App.Modules.Messaging.Templating
+namespace codeRR.App.Modules.Messaging.Templating
 {
     /// <summary>
     ///     Look at the size of that thing.

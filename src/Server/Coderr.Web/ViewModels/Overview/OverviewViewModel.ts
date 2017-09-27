@@ -1,14 +1,14 @@
 ﻿/// <reference path="../../Scripts/Promise.ts" />
 /// <reference path="../../Scripts/CqsClient.ts" />
 /// <reference path="../ChartViewModel.ts" />
-module OneTrueError.Overview {
+module codeRR.Overview {
     import CqsClient = Griffin.Cqs.CqsClient;
     import IncidentOrder = Core.Incidents.IncidentOrder;
     import PagerSubscriber = Griffin.WebApp.IPagerSubscriber;
     import Pager = Griffin.WebApp.Pager;
     import FindIncidents = Core.Incidents.Queries.FindIncidents;
-    import GetApplicationList = OneTrueError.Core.Applications.Queries.GetApplicationList;
-    import ApplicationListItem = OneTrueError.Core.Applications.ApplicationListItem;
+    import GetApplicationList = codeRR.Core.Applications.Queries.GetApplicationList;
+    import ApplicationListItem = codeRR.Core.Applications.ApplicationListItem;
 
     export class OverviewViewModel implements PagerSubscriber, Griffin.Yo.Spa.ViewModels.IViewModel {
         private pager: Pager;

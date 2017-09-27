@@ -4,10 +4,10 @@ using System.Text;
 using System.Threading.Tasks;
 using log4net;
 using Newtonsoft.Json;
-using OneTrueError.App.Configuration;
-using OneTrueError.Infrastructure.Configuration;
+using codeRR.App.Configuration;
+using codeRR.Infrastructure.Configuration;
 
-namespace OneTrueError.App.Modules.Triggers.Domain.Actions
+namespace codeRR.App.Modules.Triggers.Domain.Actions
 {
     /// <summary>
     ///     Send SMS (through Gauffin Interactive)
@@ -51,7 +51,7 @@ namespace OneTrueError.App.Modules.Triggers.Domain.Actions
                 var request =
                     WebRequest.CreateHttp("https://web.smscom.se/sendsms.aspx?acc=ip1-755&pass=z35llww4&msg=" +
                                           Uri.EscapeDataString(msg) + "&to=" + context.Config.Data +
-                                          "&from=OneTrueError&prio=2");
+                                          "&from=codeRR&prio=2");
                 request.ContentType = "application/json";
                 request.Method = "POST";
                 var stream = await request.GetRequestStreamAsync();

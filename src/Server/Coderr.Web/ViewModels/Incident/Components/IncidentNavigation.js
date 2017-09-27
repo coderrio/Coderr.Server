@@ -4,8 +4,8 @@ var IncidentNavigation = (function () {
     IncidentNavigation.set = function (routeData, subTitle, subAction) {
         var _this = this;
         var data = {
-            incident: OneTrueError.Core.Incidents.Queries.GetIncidentResult = null,
-            app: OneTrueError.Core.Applications.Queries.GetApplicationInfoResult = null,
+            incident: codeRR.Core.Incidents.Queries.GetIncidentResult = null,
+            app: codeRR.Core.Applications.Queries.GetApplicationInfoResult = null,
             subTitle: subTitle,
             subAction: subAction
         };
@@ -15,7 +15,7 @@ var IncidentNavigation = (function () {
         if (window['currentIncident'] == null) {
             data.incident = window['currentIncident'];
             if (data.incident == null || data.incident.Id !== incidentId) {
-                var query = new OneTrueError.Core.Incidents.Queries.GetIncident(incidentId);
+                var query = new codeRR.Core.Incidents.Queries.GetIncident(incidentId);
                 var p = CqsClient.query(query);
                 promises.push(p);
                 p.done(function (result) {
@@ -27,7 +27,7 @@ var IncidentNavigation = (function () {
         else {
             data.incident = window['currentIncident'];
         }
-        var app = new OneTrueError.Applications.ApplicationService();
+        var app = new codeRR.Applications.ApplicationService();
         var p2 = app.get(appId)
             .then(function (result) {
             data.app = result;
@@ -47,12 +47,12 @@ var IncidentNavigation = (function () {
                 href: "/application/" + data.app.Id + "/incident/" + data.incident.Id + "/" + data.subAction,
                 title: cleanTitle
             });
-            OneTrueError.Applications.Navigation.pageTitle = data.subTitle;
+            codeRR.Applications.Navigation.pageTitle = data.subTitle;
         }
         else {
-            OneTrueError.Applications.Navigation.pageTitle = data.incident.Description;
+            codeRR.Applications.Navigation.pageTitle = data.incident.Description;
         }
-        OneTrueError.Applications.Navigation.breadcrumbs(bc);
+        codeRR.Applications.Navigation.breadcrumbs(bc);
     };
     return IncidentNavigation;
 }());

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OneTrueError.App.Core.Notifications
+namespace codeRR.App.Core.Notifications
 {
     /// <summary>
     ///     Account settings for notifications

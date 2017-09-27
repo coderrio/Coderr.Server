@@ -6,16 +6,16 @@ using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 using log4net;
-using OneTrueError.Infrastructure.Configuration;
-using OneTrueError.Infrastructure.Queueing;
-using OneTrueError.Infrastructure.Queueing.Msmq;
-using OneTrueError.ReportAnalyzer;
-using OneTrueError.ReportAnalyzer.Domain.Incidents;
-using OneTrueError.ReportAnalyzer.Domain.Reports;
-using OneTrueError.ReportAnalyzer.Scanners;
-using OneTrueError.SqlServer.Tools;
+using codeRR.Infrastructure.Configuration;
+using codeRR.Infrastructure.Queueing;
+using codeRR.Infrastructure.Queueing.Msmq;
+using codeRR.ReportAnalyzer;
+using codeRR.ReportAnalyzer.Domain.Incidents;
+using codeRR.ReportAnalyzer.Domain.Reports;
+using codeRR.ReportAnalyzer.Scanners;
+using codeRR.SqlServer.Tools;
 
-namespace OneTrueError.SqlServer.Analysis
+namespace codeRR.SqlServer.Analysis
 {
     [Component]
     public class AnalyticsRepository : IAnalyticsRepository, IDisposable

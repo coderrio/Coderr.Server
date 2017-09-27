@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Griffin.Data;
 
-namespace OneTrueError.App.Core.Users
+namespace codeRR.App.Core.Users
 {
     /// <summary>
     ///     User repository

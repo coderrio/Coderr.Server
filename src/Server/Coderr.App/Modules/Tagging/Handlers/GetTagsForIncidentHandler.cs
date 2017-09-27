@@ -2,11 +2,11 @@
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
-using OneTrueError.Api.Modules.Tagging;
-using OneTrueError.Api.Modules.Tagging.Queries;
-using OneTrueError.App.Modules.Tagging.Domain;
+using codeRR.Api.Modules.Tagging;
+using codeRR.Api.Modules.Tagging.Queries;
+using codeRR.App.Modules.Tagging.Domain;
 
-namespace OneTrueError.App.Modules.Tagging.Handlers
+namespace codeRR.App.Modules.Tagging.Handlers
 {
     [Component]
     internal class GetTagsForIncidentHandler : IQueryHandler<GetTagsForIncident, TagDTO[]>

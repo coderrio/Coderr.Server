@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Configuration;
 using System.Web.Mvc;
-using OneTrueError.Api.Core.Applications;
-using OneTrueError.Api.Core.Applications.Commands;
+using codeRR.Api.Core.Applications;
+using codeRR.Api.Core.Applications.Commands;
 
-namespace OneTrueError.Web.Controllers
+namespace codeRR.Web.Controllers
 {
     [Authorize]
     public class HomeController : Controller

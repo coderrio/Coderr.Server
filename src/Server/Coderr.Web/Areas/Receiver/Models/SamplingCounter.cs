@@ -4,9 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
-using OneTrueError.Web.Areas.Receiver.Helpers;
+using codeRR.Web.Areas.Receiver.Helpers;
 
-namespace OneTrueError.Web.Areas.Receiver.Models
+namespace codeRR.Web.Areas.Receiver.Models
 {
     public class SamplingCounter
     {

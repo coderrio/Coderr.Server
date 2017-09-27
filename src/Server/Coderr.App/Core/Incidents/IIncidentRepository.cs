@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Griffin.Data;
 
-namespace OneTrueError.App.Core.Incidents
+namespace codeRR.App.Core.Incidents
 {
     /// <summary>
     ///     Incident repository

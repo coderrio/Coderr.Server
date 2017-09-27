@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OneTrueError.Infrastructure.Security
+namespace codeRR.Infrastructure.Security
 {
     /// <summary>
     ///     The handler that this attribute is placed on will update the currently logged in user, so the host need to update

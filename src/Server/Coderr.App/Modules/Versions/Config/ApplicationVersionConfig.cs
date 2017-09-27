@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using OneTrueError.Infrastructure.Configuration;
+using codeRR.Infrastructure.Configuration;
 
-namespace OneTrueError.App.Modules.Versions.Config
+namespace codeRR.App.Modules.Versions.Config
 {
     /// <summary>
     ///     Configuration for assembly versions

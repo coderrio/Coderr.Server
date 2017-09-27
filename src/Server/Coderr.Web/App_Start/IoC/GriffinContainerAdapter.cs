@@ -4,7 +4,7 @@ using System.Linq;
 using Griffin.Container;
 using log4net;
 
-namespace OneTrueError.Web.IoC
+namespace codeRR.Web.IoC
 {
     public class GriffinContainerAdapter : IContainer
     {

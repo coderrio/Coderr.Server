@@ -1,4 +1,4 @@
-﻿module OneTrueError.Account {
+﻿module codeRR.Account {
     import ViewModel = Griffin.Yo.Spa.ViewModels.IViewModel;
 
     export class WelcomeViewModel implements ViewModel {

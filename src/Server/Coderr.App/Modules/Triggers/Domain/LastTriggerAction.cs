@@ -1,4 +1,4 @@
-﻿namespace OneTrueError.App.Modules.Triggers.Domain
+﻿namespace codeRR.App.Modules.Triggers.Domain
 {
     /// <summary>
     ///     What to do if all filter rules have accepted the report.

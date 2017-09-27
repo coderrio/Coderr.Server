@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OneTrueError.Infrastructure.Queueing.Ado
+namespace codeRR.Infrastructure.Queueing.Ado
 {
     public class AdoNetQueueEntry
     {

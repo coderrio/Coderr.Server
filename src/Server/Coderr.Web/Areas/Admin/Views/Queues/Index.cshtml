@@ -1,4 +1,4 @@
-﻿@model OneTrueError.Web.Areas.Admin.Models.QueueViewModel
+﻿@model codeRR.Web.Areas.Admin.Models.QueueViewModel
 @{
     ViewBag.Title = "Installation - Queues";
 }
@@ -19,7 +19,7 @@
         </ul>
         <p>
             You currently have two alternatives for this. The first alternative is to use
-            MSMQ. In this case you need to configure three MSMQ (<a href="http://github.com/gauffininteractive/onetrueerror/wiki/msmq">a guide</a>) queues for this.
+            MSMQ. In this case you need to configure three MSMQ (<a href="http://github.com/gauffininteractive/coderr/wiki/msmq">a guide</a>) queues for this.
             The other alternative is to use tables in the SQL database, those can be created by this setup.
         </p>
         <p>
@@ -38,7 +38,7 @@
                     <label class="control-label">
                         Report queue
                     </label>
-                    @Html.TextBoxFor(x => x.ReportQueue, new {@class = "form-control", placeholder = ".\\private$\\OneTrueError.Reports"})
+                    @Html.TextBoxFor(x => x.ReportQueue, new {@class = "form-control", placeholder = ".\\private$\\codeRR.Reports"})
                     <label>
                         @Html.CheckBoxFor(x => x.ReportAuthentication)
                         Use MSMQ authentication
@@ -52,7 +52,7 @@
                     <label class="control-label">
                         Feedback queue
                     </label>
-                    @Html.TextBoxFor(x => x.FeedbackQueue, new {@class = "form-control", placeholder = ".\\private$\\OneTrueError.Feedback"})
+                    @Html.TextBoxFor(x => x.FeedbackQueue, new {@class = "form-control", placeholder = ".\\private$\\codeRR.Feedback"})
                     <label>
                         @Html.CheckBoxFor(x => x.FeedbackAuthentication)
                         Use MSMQ authentication
@@ -66,7 +66,7 @@
                     <label class="control-label">
                         Event queue
                     </label>
-                    @Html.TextBoxFor(x => x.EventQueue, new {@class = "form-control", placeholder = ".\\private$\\OneTrueError.Events"})
+                    @Html.TextBoxFor(x => x.EventQueue, new {@class = "form-control", placeholder = ".\\private$\\codeRR.Events"})
                     <label>
                         @Html.CheckBoxFor(x => x.EventAuthentication)
                         Use MSMQ authentication

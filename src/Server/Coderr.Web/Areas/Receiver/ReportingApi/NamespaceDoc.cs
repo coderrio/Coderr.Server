@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace OneTrueError.Web.Areas.Receiver.ReportingApi
+namespace codeRR.Web.Areas.Receiver.ReportingApi
 {
     /// <summary>
     ///     These classes is an exact match of the client library DTOs.

@@ -1,6 +1,6 @@
 ﻿using DotNetCqs;
 
-namespace OneTrueError.App.Modules.Versions
+namespace codeRR.App.Modules.Versions
 {
     /// <summary>
     ///     We received a report for a new version

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace OneTrueError.ReportAnalyzer.Inbound.Models
+namespace codeRR.ReportAnalyzer.Inbound.Models
 {
     /// <summary>
     ///     Model used to wrap all information from an exception.

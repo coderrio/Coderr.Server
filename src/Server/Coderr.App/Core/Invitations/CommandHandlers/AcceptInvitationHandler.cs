@@ -2,15 +2,16 @@
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
+using codeRR.Api;
 using DotNetCqs;
 using Griffin.Container;
 using log4net;
-using OneTrueError.Api.Core.Accounts.Events;
-using OneTrueError.Api.Core.Accounts.Requests;
-using OneTrueError.App.Core.Accounts;
-using OneTrueError.Infrastructure.Security;
+using codeRR.Api.Core.Accounts.Events;
+using codeRR.Api.Core.Accounts.Requests;
+using codeRR.App.Core.Accounts;
+using codeRR.Infrastructure.Security;
 
-namespace OneTrueError.App.Core.Invitations.CommandHandlers
+namespace codeRR.App.Core.Invitations.CommandHandlers
 {
     /// <summary>
     ///     Accepts and deletes the invitation. Sends an event which is picked up by the application domain (which transforms
@@ -25,12 +26,13 @@ namespace OneTrueError.App.Core.Invitations.CommandHandlers
     ///     </para>
     /// </remarks>
     [Component, UpdatesLoggedInAccount]
-    public class AcceptInvitationHandler : IRequestHandler<AcceptInvitation, AcceptInvitationReply>
+    public class AcceptInvitationHandler : IRequestHandler<AcceptInvitation, AcceptInvitationReply>, IRequiresPrincipal, IUpdatesPrincipal
     {
         private readonly IAccountRepository _accountRepository;
         private readonly IEventBus _eventBus;
         private readonly ILog _logger = LogManager.GetLogger(typeof(AcceptInvitationHandler));
         private readonly IInvitationRepository _repository;
+        private ClaimsPrincipal _principal;
 
         /// <summary>
         /// Creates a new instance of <see cref="AcceptInvitationHandler"/>.
@@ -44,6 +46,12 @@ namespace OneTrueError.App.Core.Invitations.CommandHandlers
             _repository = repository;
             _accountRepository = accountRepository;
             _eventBus = eventBus;
+        }
+
+        public ClaimsPrincipal Principal
+        {
+            get { return _principal ?? ClaimsPrincipal.Current; }
+            set { _principal = value; }
         }
 
         /// <inheritdoc />
@@ -74,7 +82,7 @@ namespace OneTrueError.App.Core.Invitations.CommandHandlers
 
             var inviter = await _accountRepository.FindByUserNameAsync(invitation.InvitedBy);
 
-            if (ClaimsPrincipal.Current.IsAccount(account.Id))
+            if (Principal.IsAccount(account.Id))
             {
                 var claims = invitation.Invitations
                     .Select(
@@ -89,6 +97,7 @@ namespace OneTrueError.App.Core.Invitations.CommandHandlers
                 var principal = await PrincipalFactory.CreateAsync(context);
                 principal.AddUpdateCredentialClaim();
                 Thread.CurrentPrincipal = principal;
+                Principal = principal;
             }
 
             // Account have not been created before the invitation was accepted.

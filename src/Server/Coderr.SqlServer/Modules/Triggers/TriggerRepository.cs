@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
-using OneTrueError.App.Modules.Triggers.Domain;
-using OneTrueError.SqlServer.Tools;
+using codeRR.App.Modules.Triggers.Domain;
+using codeRR.SqlServer.Tools;
 
-namespace OneTrueError.SqlServer.Modules.Triggers
+namespace codeRR.SqlServer.Modules.Triggers
 {
     [Component]
     public class TriggerRepository : ITriggerRepository

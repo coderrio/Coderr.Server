@@ -3,10 +3,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
-using OneTrueError.Api.Core.Incidents.Events;
-using OneTrueError.App.Modules.Tagging.Domain;
+using codeRR.Api.Core.Incidents.Events;
+using codeRR.App.Modules.Tagging.Domain;
 
-namespace OneTrueError.App.Modules.Tagging.Handlers
+namespace codeRR.App.Modules.Tagging.Handlers
 {
     /// <summary>
     ///     Adds a "incident-reopened" tag

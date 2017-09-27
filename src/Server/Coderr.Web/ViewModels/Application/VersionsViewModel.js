@@ -1,10 +1,10 @@
 /// <reference path="../../Scripts/Griffin.Yo.d.ts" />
 /// <reference path="../../app/Application.ts" />
-var OneTrueError;
-(function (OneTrueError) {
+var codeRR;
+(function (codeRR) {
     var Application;
     (function (Application) {
-        var ApplicationVersions = OneTrueError.Modules.Versions.Queries.GetApplicationVersions;
+        var ApplicationVersions = codeRR.Modules.Versions.Queries.GetApplicationVersions;
         var CqsClient = Griffin.Cqs.CqsClient;
         var VersionsViewModel = (function () {
             function VersionsViewModel() {
@@ -40,6 +40,6 @@ var OneTrueError;
             return VersionsViewModel;
         }());
         Application.VersionsViewModel = VersionsViewModel;
-    })(Application = OneTrueError.Application || (OneTrueError.Application = {}));
-})(OneTrueError || (OneTrueError = {}));
+    })(Application = codeRR.Application || (codeRR.Application = {}));
+})(codeRR || (codeRR = {}));
 //# sourceMappingURL=VersionsViewModel.js.map

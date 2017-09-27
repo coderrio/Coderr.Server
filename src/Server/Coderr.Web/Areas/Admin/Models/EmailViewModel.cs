@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace OneTrueError.Web.Areas.Admin.Models
+namespace codeRR.Web.Areas.Admin.Models
 {
     public class EmailViewModel
     {

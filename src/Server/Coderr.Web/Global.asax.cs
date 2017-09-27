@@ -9,16 +9,16 @@ using log4net;
 using log4net.Config;
 using OneTrueError.Client;
 using OneTrueError.Client.Contracts;
-using OneTrueError.Infrastructure;
-using OneTrueError.SqlServer;
-using OneTrueError.Web.Infrastructure.Logging;
+using codeRR.Infrastructure;
+using codeRR.SqlServer;
+using codeRR.Web.Infrastructure.Logging;
 
-namespace OneTrueError.Web
+namespace codeRR.Web
 {
     public class WebApiApplication : HttpApplication
     {
         private static readonly ILog _logger;
-        public static bool ReportToOneTrueError;
+        public static bool ReportTocodeRR;
 
         static WebApiApplication()
         {
@@ -52,7 +52,7 @@ namespace OneTrueError.Web
             }
             _logger.Error("Request + " + Request.Url + ", data" + data, exception);
 
-            if (!ReportToOneTrueError)
+            if (!ReportTocodeRR)
                 return;
 
             var properties = new Dictionary<string, string>

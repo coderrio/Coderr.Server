@@ -1,7 +1,7 @@
 ﻿using System;
 using Griffin.Container;
 
-namespace OneTrueError.App.Modules.Tagging.Identifiers
+namespace codeRR.App.Modules.Tagging.Identifiers
 {
     /// <summary>
     ///     Checks if the application was run as an console application.

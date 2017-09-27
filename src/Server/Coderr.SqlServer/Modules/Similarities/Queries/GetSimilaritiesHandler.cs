@@ -5,11 +5,11 @@ using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
 using log4net;
-using OneTrueError.Api.Modules.ContextData.Queries;
-using OneTrueError.Infrastructure;
-using OneTrueError.SqlServer.Modules.Similarities.Entities;
+using codeRR.Api.Modules.ContextData.Queries;
+using codeRR.Infrastructure;
+using codeRR.SqlServer.Modules.Similarities.Entities;
 
-namespace OneTrueError.SqlServer.Modules.Similarities.Queries
+namespace codeRR.SqlServer.Modules.Similarities.Queries
 {
     [Component]
     public class GetSimilaritiesHandler : IQueryHandler<GetSimilarities, GetSimilaritiesResult>

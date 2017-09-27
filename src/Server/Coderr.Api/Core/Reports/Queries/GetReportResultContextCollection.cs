@@ -1,6 +1,6 @@
 using System;
 
-namespace OneTrueError.Api.Core.Reports.Queries
+namespace codeRR.Api.Core.Reports.Queries
 {
     /// <summary>
     ///     Context collection for <see cref="GetReportResultContextCollection" />.

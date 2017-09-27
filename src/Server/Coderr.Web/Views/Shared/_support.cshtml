@@ -31,7 +31,7 @@
     function submitSupportRequest() {
         var reader = new Griffin.Yo.Dom.FormReader("support-form");
         var dto = reader.read();
-        var cmd = new OneTrueError.Core.Support.SendSupportRequest();
+        var cmd = new codeRR.Core.Support.SendSupportRequest();
         cmd.Subject = dto.Subject;
         cmd.Message = dto.Message;
         cmd.Url = window.location.toString();

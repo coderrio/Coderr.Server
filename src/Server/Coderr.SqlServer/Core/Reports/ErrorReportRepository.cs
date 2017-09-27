@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
-using OneTrueError.Api.Core.Reports;
-using OneTrueError.App.Core.Reports;
-using OneTrueError.App.Core.Reports.Invalid;
+using codeRR.Api.Core.Reports;
+using codeRR.App.Core.Reports;
+using codeRR.App.Core.Reports.Invalid;
 
-namespace OneTrueError.SqlServer.Core.Reports
+namespace codeRR.SqlServer.Core.Reports
 {
     [Component]
     internal class ErrorReportRepository : IReportsRepository

@@ -1,4 +1,4 @@
-﻿namespace OneTrueError.Api.Core.ApiKeys.Events
+﻿namespace codeRR.Api.Core.ApiKeys.Events
 {
     internal class ApiKeyRemoved
     {

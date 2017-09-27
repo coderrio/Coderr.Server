@@ -1,6 +1,6 @@
 using System;
 
-namespace OneTrueError.Infrastructure.Queueing
+namespace codeRR.Infrastructure.Queueing
 {
     public interface IQueueTransaction : IDisposable
     {

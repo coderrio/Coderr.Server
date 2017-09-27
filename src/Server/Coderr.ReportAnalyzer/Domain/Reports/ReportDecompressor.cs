@@ -2,7 +2,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Text;
 
-namespace OneTrueError.ReportAnalyzer.Domain.Reports
+namespace codeRR.ReportAnalyzer.Domain.Reports
 {
     /// <summary>
     ///     Decompresses report from GZIP compression

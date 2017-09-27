@@ -1,7 +1,7 @@
 ﻿/// <reference path="../Scripts/Models/AllModels.ts" />
 /// <reference path="../Scripts/Griffin.Yo.d.ts" />
 /// <reference path="../Scripts/CqsClient.ts" />
-module OneTrueError.Applications {
+module codeRR.Applications {
     import Yo = Griffin.Yo;
     import CqsClient = Griffin.Cqs.CqsClient;
 
@@ -91,7 +91,7 @@ module OneTrueError.Applications {
 
         constructor() {
             this.id = WindowCache.cacheCounter++;
-            //window["OneTrueErrorCache"+this.id] = 
+            //window["codeRRCache"+this.id] = 
         }
 
         get(key: string): any {

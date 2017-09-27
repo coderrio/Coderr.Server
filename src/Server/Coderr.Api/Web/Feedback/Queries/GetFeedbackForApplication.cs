@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace OneTrueError.Api.Web.Feedback.Queries
+namespace codeRR.Api.Web.Feedback.Queries
 {
     /// <summary>
     ///     Get all feedback that is for a specific application

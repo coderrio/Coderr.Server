@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OneTrueError.Web.Areas.Receiver.ReportingApi
+namespace codeRR.Web.Areas.Receiver.ReportingApi
 {
     public class NewReportContextInfo
     {

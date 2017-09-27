@@ -1,6 +1,6 @@
-﻿using OneTrueError.App.Modules.Similarities.Domain.Adapters.Runner;
+﻿using codeRR.App.Modules.Similarities.Domain.Adapters.Runner;
 
-namespace OneTrueError.App.Modules.Similarities.Domain.Adapters
+namespace codeRR.App.Modules.Similarities.Domain.Adapters
 {
     /// <summary>
     ///     Values might need to be normalized in some way before the similarities are calculated.

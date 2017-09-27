@@ -2,12 +2,12 @@
 /// <reference path="../../Scripts/Griffin.WebApp.ts" />
 /// <reference path="../../Scripts/CqsClient.ts" />
 /// <reference path="../../Scripts/Griffin.Yo.d.ts" />
-var OneTrueError;
-(function (OneTrueError) {
+var codeRR;
+(function (codeRR) {
     var Report;
     (function (Report) {
         var CqsClient = Griffin.Cqs.CqsClient;
-        var ApplicationService = OneTrueError.Applications.ApplicationService;
+        var ApplicationService = codeRR.Applications.ApplicationService;
         var ReportViewModel = (function () {
             function ReportViewModel() {
             }
@@ -45,15 +45,15 @@ var OneTrueError;
                         { href: "/application/" + appId + "/incident/" + _this.dto.IncidentId + "/", title: 'Incident' },
                         { href: "/application/" + appId + "/incident/" + _this.dto.IncidentId + "/report/" + _this.dto.Id + "/", title: 'Report' }
                     ];
-                    OneTrueError.Applications.Navigation.breadcrumbs(bc);
-                    OneTrueError.Applications.Navigation.pageTitle = 'Report';
+                    codeRR.Applications.Navigation.breadcrumbs(bc);
+                    codeRR.Applications.Navigation.pageTitle = 'Report';
                 });
             };
             ReportViewModel.prototype.activate = function (context) {
                 var _this = this;
                 this.context = context;
                 var reportId = context.routeData["reportId"];
-                var query = new OneTrueError.Core.Reports.Queries.GetReport(reportId);
+                var query = new codeRR.Core.Reports.Queries.GetReport(reportId);
                 CqsClient.query(query)
                     .done(function (dto) {
                     _this.dto = dto;
@@ -108,6 +108,6 @@ var OneTrueError;
             return ReportViewModel;
         }());
         Report.ReportViewModel = ReportViewModel;
-    })(Report = OneTrueError.Report || (OneTrueError.Report = {}));
-})(OneTrueError || (OneTrueError = {}));
+    })(Report = codeRR.Report || (codeRR.Report = {}));
+})(codeRR || (codeRR = {}));
 //# sourceMappingURL=ReportViewModel.js.map

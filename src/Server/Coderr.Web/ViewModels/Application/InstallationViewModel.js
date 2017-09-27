@@ -1,7 +1,7 @@
 /// <reference path="../../Scripts/Griffin.Yo.d.ts" />
 /// <reference path="../../app/Application.ts" />
-var OneTrueError;
-(function (OneTrueError) {
+var codeRR;
+(function (codeRR) {
     var Application;
     (function (Application) {
         var InstallationViewModel = (function () {
@@ -9,7 +9,7 @@ var OneTrueError;
             }
             InstallationViewModel.prototype.getTitle = function () { return "Installation instructions"; };
             InstallationViewModel.prototype.activate = function (context) {
-                var service = new OneTrueError.Applications.ApplicationService();
+                var service = new codeRR.Applications.ApplicationService();
                 service.get(context.routeData["applicationId"])
                     .done(function (app) {
                     app.AppUrl = window["API_URL"];
@@ -22,6 +22,6 @@ var OneTrueError;
             return InstallationViewModel;
         }());
         Application.InstallationViewModel = InstallationViewModel;
-    })(Application = OneTrueError.Application || (OneTrueError.Application = {}));
-})(OneTrueError || (OneTrueError = {}));
+    })(Application = codeRR.Application || (codeRR.Application = {}));
+})(codeRR || (codeRR = {}));
 //# sourceMappingURL=InstallationViewModel.js.map

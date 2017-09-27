@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Griffin.Data;
 
-namespace OneTrueError.App.Core.Accounts
+namespace codeRR.App.Core.Accounts
 {
     /// <summary>
     ///     Repository for accounts

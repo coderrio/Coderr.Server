@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
-using OneTrueError.Api.Web.Feedback.Queries;
+using codeRR.Api.Web.Feedback.Queries;
 
-namespace OneTrueError.SqlServer.Web.Feedback.Queries
+namespace codeRR.SqlServer.Web.Feedback.Queries
 {
     [Component]
     public class GetIncidentFeedbackHandler : IQueryHandler<GetIncidentFeedback, GetIncidentFeedbackResult>

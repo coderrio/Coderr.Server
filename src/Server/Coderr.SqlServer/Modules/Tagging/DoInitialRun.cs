@@ -5,12 +5,12 @@
 //using Griffin.ApplicationServices;
 //using Griffin.Container;
 //using Griffin.Data;
-//using OneTrueError.Core.Api.Reports;
-//using OneTrueError.Core.Api.Reports.Queries;
-//using OneTrueError.Core.IncidentTagging.Data;
-//using OneTrueError.Data;
+//using codeRR.Core.Api.Reports;
+//using codeRR.Core.Api.Reports.Queries;
+//using codeRR.Core.IncidentTagging.Data;
+//using codeRR.Data;
 
-//namespace OneTrueError.Core.IncidentTagging
+//namespace codeRR.Core.IncidentTagging
 //{
 //    [Component(RegisterAsSelf = true)]
 //    public class DoInitialRun : IBackgroundJobAsync

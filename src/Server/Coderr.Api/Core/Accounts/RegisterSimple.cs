@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace OneTrueError.Api.Core.Accounts
+namespace codeRR.Api.Core.Accounts
 {
     /// <summary>
     ///     Register using email address only.

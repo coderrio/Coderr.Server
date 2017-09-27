@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace OneTrueError.Api.Web.Feedback.Queries
+namespace codeRR.Api.Web.Feedback.Queries
 {
     /// <summary>
     ///     Lists all feedback which has been made for an incident

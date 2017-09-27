@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace OneTrueError.SqlServer
+namespace codeRR.SqlServer
 {
     public class SchemaManager
     {
@@ -31,7 +31,7 @@ namespace OneTrueError.SqlServer
         {
             using (var con = _connectionFactory())
             {
-                var resourceName = "OneTrueError.SqlServer.Schema.Database.sql";
+                var resourceName = "codeRR.SqlServer.Schema.Database.sql";
                 var res = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
                 var sql = new StreamReader(res).ReadToEnd();
                 using (var transaction = con.BeginTransaction())
@@ -75,7 +75,7 @@ namespace OneTrueError.SqlServer
         public int GetLatestSchemaVersion()
         {
             var highestVersion = 0;
-            var ns = "OneTrueError.SqlServer.Schema";
+            var ns = "codeRR.SqlServer.Schema";
             var names =
                 Assembly.GetExecutingAssembly()
                     .GetManifestResourceNames()
@@ -118,7 +118,7 @@ namespace OneTrueError.SqlServer
 
         private string GetSchema(int version)
         {
-            var resourceName = "OneTrueError.SqlServer.Schema.Update.v" + version + ".sql";
+            var resourceName = "codeRR.SqlServer.Schema.Update.v" + version + ".sql";
             var res = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
             if (res == null)
                 throw new InvalidOperationException("Failed to find schema " + resourceName);

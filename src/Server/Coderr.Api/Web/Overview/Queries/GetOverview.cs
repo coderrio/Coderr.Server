@@ -1,9 +1,9 @@
 ﻿using DotNetCqs;
 
-namespace OneTrueError.Api.Web.Overview.Queries
+namespace codeRR.Api.Web.Overview.Queries
 {
     /// <summary>
-    ///     Get an OneTrueError summary (typically shown in the chart and right panel summary)
+    ///     Get an codeRR summary (typically shown in the chart and right panel summary)
     /// </summary>
     public class GetOverview : Query<GetOverviewResult>
     {

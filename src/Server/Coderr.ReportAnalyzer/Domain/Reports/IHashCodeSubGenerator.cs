@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OneTrueError.ReportAnalyzer.Domain.Reports
+namespace codeRR.ReportAnalyzer.Domain.Reports
 {
     /// <summary>
     ///     Can be used to specialize the hash code generation which is used to tell if an exception is unique or not.

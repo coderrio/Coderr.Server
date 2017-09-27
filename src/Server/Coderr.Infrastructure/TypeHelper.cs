@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace OneTrueError.Infrastructure
+namespace codeRR.Infrastructure
 {
     /// <summary>
     ///     Reflection helper.

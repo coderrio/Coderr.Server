@@ -1,7 +1,7 @@
 ﻿/// <reference path="../../Scripts/Models/AllModels.ts" />
 /// <reference path="../../Scripts/CqsClient.ts" />
 /// <reference path="../ChartViewModel.ts" />
-module OneTrueError.Incident {
+module codeRR.Incident {
     import CqsClient = Griffin.Cqs.CqsClient;
     import ApplicationService = Applications.ApplicationService;
     import ApplicationInfoResult = Core.Applications.Queries.GetApplicationInfoResult;

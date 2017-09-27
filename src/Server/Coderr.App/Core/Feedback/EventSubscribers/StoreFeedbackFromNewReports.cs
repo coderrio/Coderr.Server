@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
 using log4net;
-using OneTrueError.Api.Core.Feedback.Commands;
-using OneTrueError.Api.Core.Incidents.Events;
+using codeRR.Api.Core.Feedback.Commands;
+using codeRR.Api.Core.Incidents.Events;
 
-namespace OneTrueError.App.Core.Feedback.EventSubscribers
+namespace codeRR.App.Core.Feedback.EventSubscribers
 {
     /// <summary>
     ///     Responsible of separating the feedback from the incident when it's uploaded as context data.

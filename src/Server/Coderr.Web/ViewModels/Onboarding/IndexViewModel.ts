@@ -1,6 +1,6 @@
 ﻿/// <reference path="../../Scripts/Griffin.Yo.d.ts" />
 /// <reference path="../../app/Application.ts" />
-module OneTrueError.Onboarding {
+module codeRR.Onboarding {
     export class IndexViewModel implements Griffin.Yo.Spa.ViewModels.IViewModel {
         public hasApplicationId: boolean;
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace OneTrueError.App.Core.Reports.Invalid
+namespace codeRR.App.Core.Reports.Invalid
 {
     /// <summary>
     ///     Invalid report are reports that we have received from the client library but failed to deserialize or identify.

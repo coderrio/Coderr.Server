@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OneTrueError.ReportAnalyzer.LibContracts
+namespace codeRR.ReportAnalyzer.LibContracts
 {
     /// <summary>
     ///     Failed to identify an incoming report. Stored for debugging purposes.

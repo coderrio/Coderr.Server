@@ -2,10 +2,10 @@
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
-using OneTrueError.Api.Modules.Triggers.Commands;
-using OneTrueError.App.Modules.Triggers.Domain;
+using codeRR.Api.Modules.Triggers.Commands;
+using codeRR.App.Modules.Triggers.Domain;
 
-namespace OneTrueError.App.Modules.Triggers.Commands
+namespace codeRR.App.Modules.Triggers.Commands
 {
     /// <summary>
     ///     Handler for <see cref="CreateTrigger" />.

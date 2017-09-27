@@ -4,14 +4,14 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Routing;
 using DotNetCqs;
-using OneTrueError.Api.Core.Applications.Commands;
-using OneTrueError.Api.Core.Applications.Queries;
-using OneTrueError.Api.Modules.Triggers.Queries;
-using OneTrueError.App.Modules.Versions.Config;
-using OneTrueError.Infrastructure.Configuration;
-using OneTrueError.Web.Areas.Admin.Models.Applications;
+using codeRR.Api.Core.Applications.Commands;
+using codeRR.Api.Core.Applications.Queries;
+using codeRR.Api.Modules.Triggers.Queries;
+using codeRR.App.Modules.Versions.Config;
+using codeRR.Infrastructure.Configuration;
+using codeRR.Web.Areas.Admin.Models.Applications;
 
-namespace OneTrueError.Web.Areas.Admin.Controllers
+namespace codeRR.Web.Areas.Admin.Controllers
 {
     [Authorize]
     public class ApplicationController : Controller

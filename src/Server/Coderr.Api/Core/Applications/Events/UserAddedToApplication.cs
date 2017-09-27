@@ -1,8 +1,8 @@
 ﻿using DotNetCqs;
 
-namespace OneTrueError.Api.Core.Applications.Events
+namespace codeRR.Api.Core.Applications.Events
 {
-    namespace OneTrueError.Api.Core.Accounts.Events
+    namespace codeRR.Api.Core.Accounts.Events
     {
         /// <summary>
         ///     A user have been added directly, or through an invitation

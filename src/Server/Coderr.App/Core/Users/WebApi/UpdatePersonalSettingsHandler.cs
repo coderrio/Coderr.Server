@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
-using OneTrueError.Api.Core.Users.Commands;
+using codeRR.Api.Core.Users.Commands;
 
-namespace OneTrueError.App.Core.Users.WebApi
+namespace codeRR.App.Core.Users.WebApi
 {
     /// <summary>
     ///     Handler for <see cref="UpdatePersonalSettings" />.

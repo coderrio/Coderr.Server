@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
-using OneTrueError.App.Modules.Geolocation;
-using OneTrueError.SqlServer.Modules.Geolocation;
+using codeRR.App.Modules.Geolocation;
+using codeRR.SqlServer.Modules.Geolocation;
 using Xunit;
 
-namespace OneTrueError.SqlServer.Tests.Modules.Geolocation
+namespace codeRR.SqlServer.Tests.Modules.Geolocation
 {
     [Collection(MapperInit.NAME)]
     public class ErrorOriginRepositoryTests : IDisposable

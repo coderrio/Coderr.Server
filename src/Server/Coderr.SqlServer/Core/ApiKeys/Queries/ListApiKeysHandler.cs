@@ -3,10 +3,10 @@ using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
-using OneTrueError.Api.Core.ApiKeys.Queries;
-using OneTrueError.SqlServer.Core.ApiKeys.Mappings;
+using codeRR.Api.Core.ApiKeys.Queries;
+using codeRR.SqlServer.Core.ApiKeys.Mappings;
 
-namespace OneTrueError.SqlServer.Core.ApiKeys.Queries
+namespace codeRR.SqlServer.Core.ApiKeys.Queries
 {
     [Component(RegisterAsSelf = true)]
     public class ListApiKeysHandler : IQueryHandler<ListApiKeys, ListApiKeysResult>

@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
-using OneTrueError.App.Core.ApiKeys;
-using OneTrueError.Infrastructure.Security;
-using OneTrueError.SqlServer.Core.ApiKeys.Mappings;
+using codeRR.App.Core.ApiKeys;
+using codeRR.Infrastructure.Security;
+using codeRR.SqlServer.Core.ApiKeys.Mappings;
 
-namespace OneTrueError.SqlServer.Core.ApiKeys
+namespace codeRR.SqlServer.Core.ApiKeys
 {
     /// <summary>
     ///     SQL Server implementation of <see cref="IApiKeyRepository" />.

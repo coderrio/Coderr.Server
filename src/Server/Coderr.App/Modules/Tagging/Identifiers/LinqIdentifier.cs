@@ -1,7 +1,7 @@
 ﻿using System;
 using Griffin.Container;
 
-namespace OneTrueError.App.Modules.Tagging.Identifiers
+namespace codeRR.App.Modules.Tagging.Identifiers
 {
     /// <summary>
     ///     Identifies if the exception had LINQ in the stack trace.

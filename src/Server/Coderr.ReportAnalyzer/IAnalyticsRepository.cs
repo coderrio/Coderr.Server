@@ -1,8 +1,8 @@
 ﻿using System;
-using OneTrueError.ReportAnalyzer.Domain.Incidents;
-using OneTrueError.ReportAnalyzer.Domain.Reports;
+using codeRR.ReportAnalyzer.Domain.Incidents;
+using codeRR.ReportAnalyzer.Domain.Reports;
 
-namespace OneTrueError.ReportAnalyzer
+namespace codeRR.ReportAnalyzer
 {
     /// <summary>
     ///     Repository (think CQRS write side in this case. yay!)

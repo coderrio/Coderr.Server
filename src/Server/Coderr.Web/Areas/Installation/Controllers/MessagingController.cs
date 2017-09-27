@@ -1,9 +1,9 @@
 ﻿using System.Web.Mvc;
-using OneTrueError.App.Modules.Messaging.Commands;
-using OneTrueError.Infrastructure.Configuration;
-using OneTrueError.Web.Areas.Installation.Models;
+using codeRR.App.Modules.Messaging.Commands;
+using codeRR.Infrastructure.Configuration;
+using codeRR.Web.Areas.Installation.Models;
 
-namespace OneTrueError.Web.Areas.Installation.Controllers
+namespace codeRR.Web.Areas.Installation.Controllers
 {
     [OutputCache(Duration = 0, NoStore = true)]
     public class MessagingController : Controller

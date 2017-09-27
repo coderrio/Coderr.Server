@@ -1,6 +1,6 @@
 using System;
 
-namespace OneTrueError.App.Core.Invitations
+namespace codeRR.App.Core.Invitations
 {
     /// <summary>
     ///     Invitation to a specific application.

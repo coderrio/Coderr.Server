@@ -1,9 +1,9 @@
 using Griffin.Data.Mapper;
-using OneTrueError.Api.Core.Incidents.Queries;
-using OneTrueError.App.Core.Incidents;
-using OneTrueError.SqlServer.Tools;
+using codeRR.Api.Core.Incidents.Queries;
+using codeRR.App.Core.Incidents;
+using codeRR.SqlServer.Tools;
 
-namespace OneTrueError.SqlServer.Core.Incidents.Queries
+namespace codeRR.SqlServer.Core.Incidents.Queries
 {
     public class GetIncidentResultMapper : CrudEntityMapper<GetIncidentResult>
     {

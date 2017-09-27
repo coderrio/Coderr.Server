@@ -1,6 +1,6 @@
 ﻿using System.Security.Principal;
 
-namespace OneTrueError.SqlServer.Tools
+namespace codeRR.SqlServer.Tools
 {
     public interface ICustomerIdPrincipal : IPrincipal
     {

@@ -6,18 +6,18 @@ using System.Web;
 using System.Web.Mvc;
 using Griffin.Data;
 using Microsoft.Owin.Security;
-using OneTrueError.Api.Core.Applications;
-using OneTrueError.App.Core.Accounts;
-using OneTrueError.App.Core.Applications;
-using OneTrueError.App.Core.Users;
-using OneTrueError.Infrastructure;
-using OneTrueError.Infrastructure.Security;
-using OneTrueError.SqlServer.Core.Accounts;
-using OneTrueError.SqlServer.Core.Applications;
-using OneTrueError.SqlServer.Core.Users;
-using OneTrueError.Web.Areas.Installation.Models;
+using codeRR.Api.Core.Applications;
+using codeRR.App.Core.Accounts;
+using codeRR.App.Core.Applications;
+using codeRR.App.Core.Users;
+using codeRR.Infrastructure;
+using codeRR.Infrastructure.Security;
+using codeRR.SqlServer.Core.Accounts;
+using codeRR.SqlServer.Core.Applications;
+using codeRR.SqlServer.Core.Users;
+using codeRR.Web.Areas.Installation.Models;
 
-namespace OneTrueError.Web.Areas.Installation.Controllers
+namespace codeRR.Web.Areas.Installation.Controllers
 {
     [OutputCache(Duration = 0, NoStore = true)]
     public class AccountController : Controller

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 
-namespace OneTrueError.Web.Controllers
+namespace codeRR.Web.Controllers
 {
     [Authorize]
     public class GuidController : Controller

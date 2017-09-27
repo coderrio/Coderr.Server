@@ -7,9 +7,9 @@ using DotNetCqs;
 using Griffin.Container;
 using log4net;
 using Newtonsoft.Json.Linq;
-using OneTrueError.Api.Core.Incidents.Events;
+using codeRR.Api.Core.Incidents.Events;
 
-namespace OneTrueError.App.Modules.Geolocation.EventHandlers
+namespace codeRR.App.Modules.Geolocation.EventHandlers
 {
     /// <summary>
     ///     Responsible of looking up geographic position of the IP address that delivered the report.

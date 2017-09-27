@@ -2,12 +2,12 @@
 /// <reference path="../../Scripts/CqsClient.ts" />
 /// <reference path="../ChartViewModel.ts" />
 /// <reference path="../../Scripts/Griffin.Yo.d.ts" />
-var OneTrueError;
-(function (OneTrueError) {
+var codeRR;
+(function (codeRR) {
     var Feedback;
     (function (Feedback) {
         var CqsClient = Griffin.Cqs.CqsClient;
-        var ApplicationService = OneTrueError.Applications.ApplicationService;
+        var ApplicationService = codeRR.Applications.ApplicationService;
         var ApplicationViewModel = (function () {
             function ApplicationViewModel() {
                 this.renderDirectives = {
@@ -46,15 +46,15 @@ var OneTrueError;
                         { href: "/application/" + appId + "/", title: result.Name },
                         { href: "/application/" + appId + "/feedback", title: 'Feedback' }
                     ];
-                    OneTrueError.Applications.Navigation.breadcrumbs(bc);
-                    OneTrueError.Applications.Navigation.pageTitle = 'Feedback';
+                    codeRR.Applications.Navigation.breadcrumbs(bc);
+                    codeRR.Applications.Navigation.pageTitle = 'Feedback';
                 });
                 return "Feedback";
             };
             ApplicationViewModel.prototype.activate = function (context) {
                 var _this = this;
                 this.context = context;
-                var query = new OneTrueError.Web.Feedback.Queries.GetFeedbackForApplicationPage(context.routeData["applicationId"]);
+                var query = new codeRR.Web.Feedback.Queries.GetFeedbackForApplicationPage(context.routeData["applicationId"]);
                 CqsClient.query(query)
                     .done(function (result) {
                     _this.dto = result;
@@ -70,6 +70,6 @@ var OneTrueError;
             return ApplicationViewModel;
         }());
         Feedback.ApplicationViewModel = ApplicationViewModel;
-    })(Feedback = OneTrueError.Feedback || (OneTrueError.Feedback = {}));
-})(OneTrueError || (OneTrueError = {}));
+    })(Feedback = codeRR.Feedback || (codeRR.Feedback = {}));
+})(codeRR || (codeRR = {}));
 //# sourceMappingURL=ApplicationViewModel.js.map

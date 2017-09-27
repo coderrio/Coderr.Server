@@ -1,6 +1,6 @@
 ﻿using System.Net.Http;
 
-namespace OneTrueError.Web.Areas.Receiver.Helpers
+namespace codeRR.Web.Areas.Receiver.Helpers
 {
     public static class HttpRequestMessageExtensions
     {

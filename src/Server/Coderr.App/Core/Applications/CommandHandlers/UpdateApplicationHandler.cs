@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
-using OneTrueError.Api.Core.Applications.Commands;
+using codeRR.Api.Core.Applications.Commands;
 
-namespace OneTrueError.App.Core.Applications.CommandHandlers
+namespace codeRR.App.Core.Applications.CommandHandlers
 {
     /// <summary>
     ///     Used to update application name and applicationType.

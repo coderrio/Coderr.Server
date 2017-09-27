@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace OneTrueError.Api.Core.Accounts.Events
+namespace codeRR.Api.Core.Accounts.Events
 {
     /// <summary>
     ///     A user have accepted an invitation.

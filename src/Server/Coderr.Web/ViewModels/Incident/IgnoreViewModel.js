@@ -1,14 +1,14 @@
 /// <reference path="../../Scripts/Models/AllModels.ts" />
 /// <reference path="../../Scripts/CqsClient.ts" />
 /// <reference path="../ChartViewModel.ts" />
-var OneTrueError;
-(function (OneTrueError) {
+var codeRR;
+(function (codeRR) {
     var Incident;
     (function (Incident) {
         var CqsClient = Griffin.Cqs.CqsClient;
-        var ApplicationService = OneTrueError.Applications.ApplicationService;
-        var GetIncident = OneTrueError.Core.Incidents.Queries.GetIncident;
-        var IgnoreIncident = OneTrueError.Core.Incidents.Commands.IgnoreIncident;
+        var ApplicationService = codeRR.Applications.ApplicationService;
+        var GetIncident = codeRR.Core.Incidents.Queries.GetIncident;
+        var IgnoreIncident = codeRR.Core.Incidents.Commands.IgnoreIncident;
         var IgnoreViewModel = (function () {
             function IgnoreViewModel() {
             }
@@ -43,6 +43,6 @@ var OneTrueError;
             return IgnoreViewModel;
         }());
         Incident.IgnoreViewModel = IgnoreViewModel;
-    })(Incident = OneTrueError.Incident || (OneTrueError.Incident = {}));
-})(OneTrueError || (OneTrueError = {}));
+    })(Incident = codeRR.Incident || (codeRR.Incident = {}));
+})(codeRR || (codeRR = {}));
 //# sourceMappingURL=IgnoreViewModel.js.map

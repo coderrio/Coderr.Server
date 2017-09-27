@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
-namespace OneTrueError.App.Modules.Similarities.Domain
+namespace codeRR.App.Modules.Similarities.Domain
 {
     /// <summary>
     ///     Information about a specific context collection property with all if it's values.

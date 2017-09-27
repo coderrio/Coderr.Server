@@ -1,7 +1,7 @@
 ﻿using Griffin.Data.Mapper;
-using OneTrueError.Api.Core.Incidents.Queries;
+using codeRR.Api.Core.Incidents.Queries;
 
-namespace OneTrueError.SqlServer.Core.Incidents
+namespace codeRR.SqlServer.Core.Incidents
 {
     internal class ReportDayMapper : EntityMapper<ReportDay>
     {

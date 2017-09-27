@@ -1,13 +1,13 @@
 ﻿using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
-using OneTrueError.Api.Core;
-using OneTrueError.Api.Core.Users;
-using OneTrueError.Api.Core.Users.Queries;
-using OneTrueError.App.Core.Notifications;
-using NotificationState = OneTrueError.Api.Core.Users.NotificationState;
+using codeRR.Api.Core;
+using codeRR.Api.Core.Users;
+using codeRR.Api.Core.Users.Queries;
+using codeRR.App.Core.Notifications;
+using NotificationState = codeRR.Api.Core.Users.NotificationState;
 
-namespace OneTrueError.App.Core.Users.WebApi
+namespace codeRR.App.Core.Users.WebApi
 {
     [Component]
     internal class GetUserSettingsHandler : IQueryHandler<GetUserSettings, GetUserSettingsResult>

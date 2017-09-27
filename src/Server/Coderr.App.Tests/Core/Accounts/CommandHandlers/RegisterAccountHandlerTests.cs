@@ -2,15 +2,15 @@
 using DotNetCqs;
 using FluentAssertions;
 using NSubstitute;
-using OneTrueError.Api.Core.Accounts.Commands;
-using OneTrueError.Api.Core.Accounts.Events;
-using OneTrueError.Api.Core.Messaging.Commands;
-using OneTrueError.App.Core.Accounts;
-using OneTrueError.App.Core.Accounts.CommandHandlers;
-using OneTrueError.Infrastructure.Configuration;
+using codeRR.Api.Core.Accounts.Commands;
+using codeRR.Api.Core.Accounts.Events;
+using codeRR.Api.Core.Messaging.Commands;
+using codeRR.App.Core.Accounts;
+using codeRR.App.Core.Accounts.CommandHandlers;
+using codeRR.Infrastructure.Configuration;
 using Xunit;
 
-namespace OneTrueError.App.Tests.Core.Accounts.CommandHandlers
+namespace codeRR.App.Tests.Core.Accounts.CommandHandlers
 {
     public class RegisterAccountHandlerTests
     {

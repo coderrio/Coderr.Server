@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using DotNetCqs;
 using Newtonsoft.Json;
-using OneTrueError.Api.Client.Json;
+using codeRR.Api.Client.Json;
 
-namespace OneTrueError.Api.Client
+namespace codeRR.Api.Client
 {
     /// <summary>
-    ///     Client for the OneTrueError server API
+    ///     Client for the codeRR server API
     /// </summary>
     public class OneTrueApiClient : IQueryBus, ICommandBus, IEventBus
     {
@@ -37,7 +37,7 @@ namespace OneTrueError.Api.Client
         /// <summary>
         ///     Execute a command
         /// </summary>
-        /// <typeparam name="T">type of query (from the <c>OneTrueError.Api</c> class library)</typeparam>
+        /// <typeparam name="T">type of query (from the <c>codeRR.Api</c> class library)</typeparam>
         /// <param name="command">command to execute</param>
         /// <returns>task</returns>
         public async Task ExecuteAsync<T>(T command) where T : Command
@@ -49,7 +49,7 @@ namespace OneTrueError.Api.Client
         /// <summary>
         ///     Publish an event
         /// </summary>
-        /// <typeparam name="TApplicationEvent">type of event (from the <c>OneTrueError.Api</c> class library)</typeparam>
+        /// <typeparam name="TApplicationEvent">type of event (from the <c>codeRR.Api</c> class library)</typeparam>
         /// <param name="e">event to publish</param>
         /// <returns>task</returns>
         public async Task PublishAsync<TApplicationEvent>(TApplicationEvent e)
@@ -62,7 +62,7 @@ namespace OneTrueError.Api.Client
         /// <summary>
         ///     Make a query
         /// </summary>
-        /// <typeparam name="TResult">Result from a query (a class from the <c>OneTrueError.Api</c> library)</typeparam>
+        /// <typeparam name="TResult">Result from a query (a class from the <c>codeRR.Api</c> library)</typeparam>
         /// <param name="query"></param>
         /// <returns></returns>
         public async Task<TResult> QueryAsync<TResult>(Query<TResult> query)
@@ -76,9 +76,9 @@ namespace OneTrueError.Api.Client
         /// <summary>
         ///     Open a channel
         /// </summary>
-        /// <param name="uri">Root URL to the OneTrueError web</param>
-        /// <param name="apiKey">Api key from the admin area in OneTrueError web</param>
-        /// <param name="sharedSecret">Shared secret from the admin area in OneTrueError web</param>
+        /// <param name="uri">Root URL to the codeRR web</param>
+        /// <param name="apiKey">Api key from the admin area in codeRR web</param>
+        /// <param name="sharedSecret">Shared secret from the admin area in codeRR web</param>
         public void Open(Uri uri, string apiKey, string sharedSecret)
         {
             if (apiKey == null) throw new ArgumentNullException(nameof(apiKey));

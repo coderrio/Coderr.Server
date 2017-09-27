@@ -4,18 +4,18 @@
 /// <reference path="../../Scripts/CqsClient.ts" />
 /// <reference path="../ChartViewModel.ts" />
 /// <reference path="../../Scripts/Griffin.Yo.d.ts" />
-var OneTrueError;
-(function (OneTrueError) {
+var codeRR;
+(function (codeRR) {
     var Feedback;
     (function (Feedback) {
         var CqsClient = Griffin.Cqs.CqsClient;
-        var OverviewFeedback = OneTrueError.Web.Feedback.Queries.GetFeedbackForDashboardPage;
+        var OverviewFeedback = codeRR.Web.Feedback.Queries.GetFeedbackForDashboardPage;
         var OverviewViewModel = (function () {
             function OverviewViewModel() {
             }
             OverviewViewModel.prototype.getTitle = function () {
-                OneTrueError.Applications.Navigation.breadcrumbs([{ href: "/feedback", title: 'Feedback' }]);
-                OneTrueError.Applications.Navigation.pageTitle = 'All feedback for all applications';
+                codeRR.Applications.Navigation.breadcrumbs([{ href: "/feedback", title: 'Feedback' }]);
+                codeRR.Applications.Navigation.pageTitle = 'All feedback for all applications';
                 return "All feedback";
             };
             OverviewViewModel.prototype.isEmpty = function () {
@@ -62,6 +62,6 @@ var OneTrueError;
             }
         };
         Feedback.OverviewViewModel = OverviewViewModel;
-    })(Feedback = OneTrueError.Feedback || (OneTrueError.Feedback = {}));
-})(OneTrueError || (OneTrueError = {}));
+    })(Feedback = codeRR.Feedback || (codeRR.Feedback = {}));
+})(codeRR || (codeRR = {}));
 //# sourceMappingURL=OverviewViewModel.js.map

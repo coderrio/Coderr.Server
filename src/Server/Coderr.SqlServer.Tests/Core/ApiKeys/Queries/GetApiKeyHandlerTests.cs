@@ -1,18 +1,18 @@
 ﻿using System;
 using FluentAssertions;
 using Griffin.Data;
-using OneTrueError.Api.Core.ApiKeys.Queries;
-using OneTrueError.App.Core.ApiKeys;
-using OneTrueError.App.Core.Applications;
-using OneTrueError.SqlServer.Core.ApiKeys;
-using OneTrueError.SqlServer.Core.ApiKeys.Queries;
-using OneTrueError.SqlServer.Core.Applications;
+using codeRR.Api.Core.ApiKeys.Queries;
+using codeRR.App.Core.ApiKeys;
+using codeRR.App.Core.Applications;
+using codeRR.SqlServer.Core.ApiKeys;
+using codeRR.SqlServer.Core.ApiKeys.Queries;
+using codeRR.SqlServer.Core.Applications;
 using Xunit;
 
-namespace OneTrueError.SqlServer.Tests.Core.ApiKeys.Queries
+namespace codeRR.SqlServer.Tests.Core.ApiKeys.Queries
 {
     [Collection(MapperInit.NAME)]
-    public class GetApiKeyHandlerTests
+    public class GetApiKeyHandlerTests : IDisposable
     {
         private Application _application;
         private readonly ApiKey _existingEntity;
@@ -62,7 +62,7 @@ namespace OneTrueError.SqlServer.Tests.Core.ApiKeys.Queries
         {
             var repos = new ApplicationRepository(_uow);
             var id = _uow.ExecuteScalar("SELECT TOP 1 Id FROM Applications");
-            if (id is DBNull)
+            if (id is DBNull || id is null)
             {
                 _application = new Application(10, "AppTen");
                 repos.CreateAsync(_application).Wait();

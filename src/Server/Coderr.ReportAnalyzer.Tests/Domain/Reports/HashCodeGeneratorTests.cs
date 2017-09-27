@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using FluentAssertions;
 using Griffin.Container;
 using NSubstitute;
-using OneTrueError.ReportAnalyzer.Domain.Reports;
+using codeRR.ReportAnalyzer.Domain.Reports;
 using Xunit;
 
-namespace OneTrueError.ReportAnalyzer.Tests.Domain.Reports
+namespace codeRR.ReportAnalyzer.Tests.Domain.Reports
 {
     public class HashCodeGeneratorTests
     {

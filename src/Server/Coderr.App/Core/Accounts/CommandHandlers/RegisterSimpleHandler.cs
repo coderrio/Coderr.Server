@@ -3,15 +3,15 @@ using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
 using log4net;
-using OneTrueError.Api.Core.Accounts;
-using OneTrueError.Api.Core.Accounts.Commands;
-using OneTrueError.Api.Core.Accounts.Events;
-using OneTrueError.Api.Core.Messaging;
-using OneTrueError.Api.Core.Messaging.Commands;
-using OneTrueError.App.Configuration;
-using OneTrueError.Infrastructure.Configuration;
+using codeRR.Api.Core.Accounts;
+using codeRR.Api.Core.Accounts.Commands;
+using codeRR.Api.Core.Accounts.Events;
+using codeRR.Api.Core.Messaging;
+using codeRR.Api.Core.Messaging.Commands;
+using codeRR.App.Configuration;
+using codeRR.Infrastructure.Configuration;
 
-namespace OneTrueError.App.Core.Accounts.CommandHandlers
+namespace codeRR.App.Core.Accounts.CommandHandlers
 {
     /// <summary>
     ///     Handler for <see cref="RegisterSimple" />.
@@ -86,8 +86,8 @@ You can login using {0}/account/activate/{3}.
 We recommend that you change your password before doing something useful.
 
 Thanks,
-  The OneTrueError Team", config.BaseUrl, account.UserName, password, account.ActivationKey),
-                Subject = "OneTrueError activation"
+  The codeRR Team", config.BaseUrl, account.UserName, password, account.ActivationKey),
+                Subject = "codeRR activation"
             };
             msg.Recipients = new[] {new EmailAddress(account.Email)};
 

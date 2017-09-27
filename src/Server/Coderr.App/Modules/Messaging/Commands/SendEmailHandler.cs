@@ -6,13 +6,13 @@ using System.Net.Mime;
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
-using OneTrueError.Api.Core.Accounts.Queries;
-using OneTrueError.Api.Core.Messaging.Commands;
-using OneTrueError.App.Configuration;
-using OneTrueError.Infrastructure.Configuration;
-using OneTrueError.Infrastructure.Net;
+using codeRR.Api.Core.Accounts.Queries;
+using codeRR.Api.Core.Messaging.Commands;
+using codeRR.App.Configuration;
+using codeRR.Infrastructure.Configuration;
+using codeRR.Infrastructure.Net;
 
-namespace OneTrueError.App.Modules.Messaging.Commands
+namespace codeRR.App.Modules.Messaging.Commands
 {
     [Component]
     internal class SendEmailHandler : ICommandHandler<SendEmail>

@@ -1,4 +1,4 @@
-﻿namespace OneTrueError.Api.Modules.Triggers.Queries
+﻿namespace codeRR.Api.Modules.Triggers.Queries
 {
     /// <summary>
     ///     Result for <see cref="GetTrigger" />

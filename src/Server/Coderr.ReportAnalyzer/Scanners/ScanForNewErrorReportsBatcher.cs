@@ -3,7 +3,7 @@ using Griffin.ApplicationServices;
 using Griffin.Container;
 using log4net;
 
-namespace OneTrueError.ReportAnalyzer.Scanners
+namespace codeRR.ReportAnalyzer.Scanners
 {
     /// <summary>
     ///     Executes <see cref="ScanForNewErrorReports" /> from a background thread.

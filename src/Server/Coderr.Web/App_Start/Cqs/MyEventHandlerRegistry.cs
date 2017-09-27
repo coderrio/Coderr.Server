@@ -2,7 +2,7 @@
 using System.Reflection;
 using Griffin.Cqs.InversionOfControl;
 
-namespace OneTrueError.Web.Cqs
+namespace codeRR.Web.Cqs
 {
     /// <summary>
     ///     This is a workaround, I KNOW! Fix the problem!

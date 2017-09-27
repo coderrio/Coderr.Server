@@ -1,7 +1,7 @@
 ﻿using System;
-using OneTrueError.Api.Core.Applications.Queries;
+using codeRR.Api.Core.Applications.Queries;
 
-namespace OneTrueError.Api.Core.Applications
+namespace codeRR.Api.Core.Applications
 {
     /// <summary>
     ///     Result item for <see cref="GetApplicationList" />

@@ -4,11 +4,11 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using log4net;
-using OneTrueError.App.Core.Reports.Config;
-using OneTrueError.Infrastructure.Configuration;
-using OneTrueError.Web.Areas.Admin.Models;
+using codeRR.App.Core.Reports.Config;
+using codeRR.Infrastructure.Configuration;
+using codeRR.Web.Areas.Admin.Models;
 
-namespace OneTrueError.Web.Areas.Admin.Controllers
+namespace codeRR.Web.Areas.Admin.Controllers
 {
     [Authorize]
     public class ReportingController : Controller

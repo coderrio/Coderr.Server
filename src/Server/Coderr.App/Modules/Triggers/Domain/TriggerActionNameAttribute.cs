@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OneTrueError.App.Modules.Triggers.Domain
+namespace codeRR.App.Modules.Triggers.Domain
 {
     /// <summary>
     ///     Used to be able to create instances of trigger actions (from when we load configuration data from the data source)

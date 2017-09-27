@@ -28,7 +28,7 @@
     <div class="col-md-12" style="display: none" id="appDetails">
         <h2>Configure your application</h2>
         <p>
-            The OneTrueError client is installed through <a href="https://www.nuget.org/packages?q=onetrueerror.client">nuget</a>. There is a core package that can be used to manually report exceptions no matter what kind of .NET application you have. The true power comes with the integration libraries, as they collect a rich set of context information which makes makes it a pure joy to figure out why the exception happened.
+            The codeRR client is installed through <a href="https://www.nuget.org/packages?q=coderr.client">nuget</a>. There is a core package that can be used to manually report exceptions no matter what kind of .NET application you have. The true power comes with the integration libraries, as they collect a rich set of context information which makes makes it a pure joy to figure out why the exception happened.
         </p>
         <p>
             Install one of the packages and then click on the correct one below to get configuration instructions.
@@ -45,7 +45,7 @@
 </div>
         <div style="display: none" data-instruction="wcf">
             <code><pre>// Configure credentials
-var uri = new Uri("https://report.onetrueerror.com");
+var uri = new Uri("https://report.coderrapp.com");
 OneTrue.Configuration.Credentials(uri,
                                   "<span data-name="appKey"></span>",
                                   "<span data-name="sharedSecret"></span>");
@@ -56,7 +56,7 @@ OneTrue.Configuration.CatchWcfExceptions();</pre></code>
         <div style="display: none" data-instruction="winforms">
             <code>
                 <pre>// Configure credentials
-var uri = new Uri("https://report.onetrueerror.com");
+var uri = new Uri("https://report.coderrapp.com");
                     OneTrue.Configuration.Credentials(uri,
                                   "<span data-name="appKey"></span>",
                                   "<span data-name="sharedSecret"></span>");
@@ -68,7 +68,7 @@ OneTrue.Configuration.CatchWinFormsExceptions();</pre>
         <div style="display: none" data-instruction="aspnet">
             <code>
                 <pre>// Configure credentials
-var uri = new Uri("https://report.onetrueerror.com");
+var uri = new Uri("https://report.coderrapp.com");
                     OneTrue.Configuration.Credentials(uri,
                                   "<span data-name="appKey"></span>",
                                   "<span data-name="sharedSecret"></span>");
@@ -79,7 +79,7 @@ OneTrue.Configuration.CatchAspNetExceptions();</pre>
         <div style="display: none" data-instruction="mvc4">
             <code>
                 <pre>// Configure credentials
-var uri = new Uri("https://report.onetrueerror.com");
+var uri = new Uri("https://report.coderrapp.com");
                     OneTrue.Configuration.Credentials(uri,
                                   "<span data-name="appKey"></span>",
                                   "<span data-name="sharedSecret"></span>");
@@ -90,7 +90,7 @@ OneTrue.Configuration.CatchMvcExceptions();</pre>
         <div style="display: none" data-instruction="webapi2">
             <code>
                 <pre>// Configure credentials
-var uri = new Uri("https://report.onetrueerror.com");
+var uri = new Uri("https://report.coderrapp.com");
                     OneTrue.Configuration.Credentials(uri,
                                   "<span data-name="appKey"></span>",
                                   "<span data-name="sharedSecret"></span>");

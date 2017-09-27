@@ -1,11 +1,11 @@
 /// <reference path="../../app/Application.ts" />
 /// <reference path="../../Scripts/Promise.ts" />
 /// <reference path="../../Scripts/CqsClient.ts" />
-var OneTrueError;
-(function (OneTrueError) {
+var codeRR;
+(function (codeRR) {
     var Incident;
     (function (Incident) {
-        var ApplicationService = OneTrueError.Applications.ApplicationService;
+        var ApplicationService = codeRR.Applications.ApplicationService;
         var IndexViewModel = (function () {
             function IndexViewModel(dto) {
                 console.log(dto);
@@ -20,13 +20,13 @@ var OneTrueError;
                             { href: "/application/" + appId + "/", title: result.Name },
                             { href: "/application/" + appId + "/incidents", title: 'Incidents' }
                         ];
-                        OneTrueError.Applications.Navigation.breadcrumbs(bc);
-                        OneTrueError.Applications.Navigation.pageTitle = 'Incidents';
+                        codeRR.Applications.Navigation.breadcrumbs(bc);
+                        codeRR.Applications.Navigation.pageTitle = 'Incidents';
                     });
                 }
                 else {
-                    OneTrueError.Applications.Navigation.breadcrumbs([{ href: "/incidents", title: 'Incidents' }]);
-                    OneTrueError.Applications.Navigation.pageTitle = 'Incidents for all applications';
+                    codeRR.Applications.Navigation.breadcrumbs([{ href: "/incidents", title: 'Incidents' }]);
+                    codeRR.Applications.Navigation.pageTitle = 'Incidents for all applications';
                 }
                 return "Incidents";
             };
@@ -40,6 +40,6 @@ var OneTrueError;
             return IndexViewModel;
         }());
         Incident.IndexViewModel = IndexViewModel;
-    })(Incident = OneTrueError.Incident || (OneTrueError.Incident = {}));
-})(OneTrueError || (OneTrueError = {}));
+    })(Incident = codeRR.Incident || (codeRR.Incident = {}));
+})(codeRR || (codeRR = {}));
 //# sourceMappingURL=IndexViewModel.js.map

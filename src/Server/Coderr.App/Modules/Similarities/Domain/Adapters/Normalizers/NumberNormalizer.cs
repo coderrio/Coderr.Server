@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OneTrueError.App.Modules.Similarities.Domain.Adapters.Normalizers
+namespace codeRR.App.Modules.Similarities.Domain.Adapters.Normalizers
 {
     internal class NumberNormalizer
     {

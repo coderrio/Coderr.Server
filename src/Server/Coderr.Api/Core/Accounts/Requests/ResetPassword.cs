@@ -1,8 +1,8 @@
 ﻿using System;
 using DotNetCqs;
-using OneTrueError.Api.Core.Accounts.Commands;
+using codeRR.Api.Core.Accounts.Commands;
 
-namespace OneTrueError.Api.Core.Accounts.Requests
+namespace codeRR.Api.Core.Accounts.Requests
 {
     /// <summary>
     ///     Reset password (i.e. the second step after <see cref="RequestPasswordReset" />).

@@ -1,10 +1,10 @@
 ﻿//using System;
 //using System.Threading.Tasks;
 //using Griffin.Container;
-//using OneTrueError.Core.Api.Applications;
+//using codeRR.Core.Api.Applications;
 //
 
-//namespace OneTrueError.Data.Applications
+//namespace codeRR.Data.Applications
 //{
 //    [Component]
 //    public class GetApplicationByAppKeyHandler : IQueryHandler<GetApplicationByAppKey, ApplicationResult>

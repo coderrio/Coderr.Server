@@ -2,11 +2,11 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
-using OneTrueError.App.Modules.Similarities.Domain.Adapters.Normalizers;
-using OneTrueError.App.Modules.Similarities.Domain.Adapters.OperatingSystems;
-using OneTrueError.App.Modules.Similarities.Domain.Adapters.Runner;
+using codeRR.App.Modules.Similarities.Domain.Adapters.Normalizers;
+using codeRR.App.Modules.Similarities.Domain.Adapters.OperatingSystems;
+using codeRR.App.Modules.Similarities.Domain.Adapters.Runner;
 
-namespace OneTrueError.App.Modules.Similarities.Domain.Adapters
+namespace codeRR.App.Modules.Similarities.Domain.Adapters
 {
     /// <summary>
     ///     Converts the Operating system WMI collection into more useful information.

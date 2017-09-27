@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
-using OneTrueError.App.Modules.Similarities.Domain.Adapters.Normalizers;
-using OneTrueError.App.Modules.Similarities.Domain.Adapters.Runner;
+using codeRR.App.Modules.Similarities.Domain.Adapters.Normalizers;
+using codeRR.App.Modules.Similarities.Domain.Adapters.Runner;
 
-namespace OneTrueError.App.Modules.Similarities.Domain.Adapters
+namespace codeRR.App.Modules.Similarities.Domain.Adapters
 {
     /// <summary>
     ///     Generates the "ApplicationInfo" context collection from information in different uploaded collections.

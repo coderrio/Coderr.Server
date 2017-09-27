@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web.Http.Dependencies;
 using Griffin.Container;
 
-namespace OneTrueError.Web.IoC
+namespace codeRR.Web.IoC
 {
     public sealed class GriffinWebApiChildScope : IDependencyScope
     {

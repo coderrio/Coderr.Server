@@ -2,26 +2,26 @@
 /// <reference path="../../Scripts/typings/moment/moment.d.ts" />
 /// <reference path="../../Scripts/CqsClient.ts" />
 /// <reference path="../ChartViewModel.ts" />
-var OneTrueError;
-(function (OneTrueError) {
+var codeRR;
+(function (codeRR) {
     var Incident;
     (function (Incident) {
         var CqsClient = Griffin.Cqs.CqsClient;
         var Pager = Griffin.WebApp.Pager;
-        var ReOpenIncident = OneTrueError.Core.Incidents.Commands.ReOpenIncident;
+        var ReOpenIncident = codeRR.Core.Incidents.Commands.ReOpenIncident;
         var IncidentViewModel = (function () {
             function IncidentViewModel(appScope) {
                 this.isIgnored = false;
                 console.log(appScope);
             }
             IncidentViewModel.prototype.getTitle = function () {
-                OneTrueError.Applications.Navigation.pageTitle = "Incident '" + this.name + "'";
+                codeRR.Applications.Navigation.pageTitle = "Incident '" + this.name + "'";
                 return "Incident " + this.name;
             };
             IncidentViewModel.prototype.activate = function (ctx) {
                 var _this = this;
                 this.ctx = ctx;
-                var query = new OneTrueError.Core.Incidents.Queries.GetIncident(ctx.routeData["incidentId"]);
+                var query = new codeRR.Core.Incidents.Queries.GetIncident(ctx.routeData["incidentId"]);
                 CqsClient.query(query)
                     .done(function (response) {
                     window['currentIncident'] = response;
@@ -39,7 +39,7 @@ var OneTrueError;
                     _this.pager.subscribe(_this);
                     _this.pager.draw(ctx.select.one("#pager"));
                     _this.renderInfo(response);
-                    var query = new OneTrueError.Core.Reports.Queries.GetReportList(_this.id);
+                    var query = new codeRR.Core.Reports.Queries.GetReportList(_this.id);
                     query.PageNumber = 1;
                     query.PageSize = 20;
                     CqsClient.query(query)
@@ -69,7 +69,7 @@ var OneTrueError;
             };
             IncidentViewModel.prototype.onPager = function (pager) {
                 var _this = this;
-                var query = new OneTrueError.Core.Reports.Queries.GetReportList(this.id);
+                var query = new codeRR.Core.Reports.Queries.GetReportList(this.id);
                 query.PageNumber = pager.currentPage;
                 query.PageSize = 20;
                 CqsClient.query(query)
@@ -168,7 +168,7 @@ var OneTrueError;
             };
             IncidentViewModel.prototype.loadChartInfo = function (days) {
                 var _this = this;
-                var query = new OneTrueError.Core.Incidents.Queries.GetIncidentStatistics();
+                var query = new codeRR.Core.Incidents.Queries.GetIncidentStatistics();
                 query.IncidentId = this.id;
                 query.NumberOfDays = days;
                 CqsClient.query(query)
@@ -215,6 +215,6 @@ var OneTrueError;
         IncidentViewModel.UP = "fa-chevron-up";
         IncidentViewModel.DOWN = "fa-chevron-down";
         Incident.IncidentViewModel = IncidentViewModel;
-    })(Incident = OneTrueError.Incident || (OneTrueError.Incident = {}));
-})(OneTrueError || (OneTrueError = {}));
+    })(Incident = codeRR.Incident || (codeRR.Incident = {}));
+})(codeRR || (codeRR = {}));
 //# sourceMappingURL=IncidentViewModel.js.map

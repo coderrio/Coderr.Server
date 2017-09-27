@@ -2,11 +2,11 @@
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
-using OneTrueError.Api.Core;
-using OneTrueError.Api.Core.Users.Commands;
-using OneTrueError.App.Core.Notifications;
+using codeRR.Api.Core;
+using codeRR.Api.Core.Users.Commands;
+using codeRR.App.Core.Notifications;
 
-namespace OneTrueError.App.Core.Users.WebApi
+namespace codeRR.App.Core.Users.WebApi
 {
     /// <summary>
     ///     Handler for <see cref="UpdateNotifications" />.

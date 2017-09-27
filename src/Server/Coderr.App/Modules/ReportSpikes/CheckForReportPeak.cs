@@ -4,14 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
-using OneTrueError.Api.Core.Incidents.Events;
-using OneTrueError.Api.Core.Messaging;
-using OneTrueError.Api.Core.Messaging.Commands;
-using OneTrueError.App.Configuration;
-using OneTrueError.App.Core.Notifications;
-using OneTrueError.Infrastructure.Configuration;
+using codeRR.Api.Core.Incidents.Events;
+using codeRR.Api.Core.Messaging;
+using codeRR.Api.Core.Messaging.Commands;
+using codeRR.App.Configuration;
+using codeRR.App.Core.Notifications;
+using codeRR.Infrastructure.Configuration;
 
-namespace OneTrueError.App.Modules.ReportSpikes
+namespace codeRR.App.Modules.ReportSpikes
 {
     /// <summary>
     /// </summary>

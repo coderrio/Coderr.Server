@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
-using OneTrueError.App.Modules.Tagging.Domain;
+using codeRR.App.Modules.Tagging.Domain;
 
-namespace OneTrueError.App.Modules.Tagging
+namespace codeRR.App.Modules.Tagging
 {
     /// <summary>
     ///     Repository for tags

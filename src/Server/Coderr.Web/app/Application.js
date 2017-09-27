@@ -1,8 +1,8 @@
 /// <reference path="../Scripts/Models/AllModels.ts" />
 /// <reference path="../Scripts/Griffin.Yo.d.ts" />
 /// <reference path="../Scripts/CqsClient.ts" />
-var OneTrueError;
-(function (OneTrueError) {
+var codeRR;
+(function (codeRR) {
     var Applications;
     (function (Applications) {
         var Yo = Griffin.Yo;
@@ -66,7 +66,7 @@ var OneTrueError;
                     def.resolve(cacheItem);
                     return def.promise();
                 }
-                var query = new OneTrueError.Core.Applications.Queries.GetApplicationInfo();
+                var query = new codeRR.Core.Applications.Queries.GetApplicationInfo();
                 query.ApplicationId = applicationId;
                 CqsClient.query(query)
                     .done(function (result) {
@@ -81,7 +81,7 @@ var OneTrueError;
         var WindowCache = (function () {
             function WindowCache() {
                 this.id = WindowCache.cacheCounter++;
-                //window["OneTrueErrorCache"+this.id] = 
+                //window["codeRRCache"+this.id] = 
             }
             WindowCache.prototype.get = function (key) {
                 return this.items[key];
@@ -96,7 +96,7 @@ var OneTrueError;
         }());
         WindowCache.cacheCounter = 0;
         Applications.WindowCache = WindowCache;
-    })(Applications = OneTrueError.Applications || (OneTrueError.Applications = {}));
-})(OneTrueError || (OneTrueError = {}));
+    })(Applications = codeRR.Applications || (codeRR.Applications = {}));
+})(codeRR || (codeRR = {}));
 ;
 //# sourceMappingURL=Application.js.map

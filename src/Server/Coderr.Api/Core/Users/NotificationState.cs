@@ -1,4 +1,4 @@
-﻿namespace OneTrueError.Api.Core.Users
+﻿namespace codeRR.Api.Core.Users
 {
     /// <summary>
     ///     Type of notification to use

@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
-using OneTrueError.App.Core.Feedback;
+using codeRR.App.Core.Feedback;
 
-namespace OneTrueError.SqlServer.Core.Feedback
+namespace codeRR.SqlServer.Core.Feedback
 {
     [Component]
     public class FeedbackRepository : IFeedbackRepository

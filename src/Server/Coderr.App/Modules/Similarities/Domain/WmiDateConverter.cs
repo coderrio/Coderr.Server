@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Management;
 using log4net;
 
-namespace OneTrueError.App.Modules.Similarities.Domain
+namespace codeRR.App.Modules.Similarities.Domain
 {
     /// <summary>
     ///     Translates WMI dates to .NETs DateTime.

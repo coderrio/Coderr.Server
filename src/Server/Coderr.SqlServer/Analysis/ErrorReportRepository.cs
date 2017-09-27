@@ -6,11 +6,11 @@
 //using Griffin.Container;
 //using Griffin.Data;
 //using Griffin.Data.Mapper;
-//using OneTrueError.Core;
-//using OneTrueError.ReportsAnalytics.Reports;
-//using OneTrueError.UnitOfWork;
+//using codeRR.Core;
+//using codeRR.ReportsAnalytics.Reports;
+//using codeRR.UnitOfWork;
 
-//namespace OneTrueError.ReportAnalytics.Data.SqlServer
+//namespace codeRR.ReportAnalytics.Data.SqlServer
 //{
 
 //    //    public interface IReportsRepository

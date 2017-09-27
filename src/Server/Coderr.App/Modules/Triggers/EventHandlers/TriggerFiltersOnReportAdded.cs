@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
 using log4net;
-using OneTrueError.Api.Core.Incidents.Events;
-using OneTrueError.App.Modules.Triggers.Domain;
-using OneTrueError.App.Modules.Triggers.Domain.Actions;
+using codeRR.Api.Core.Incidents.Events;
+using codeRR.App.Modules.Triggers.Domain;
+using codeRR.App.Modules.Triggers.Domain.Actions;
 
-namespace OneTrueError.App.Modules.Triggers.EventHandlers
+namespace codeRR.App.Modules.Triggers.EventHandlers
 {
     /// <summary>
     ///     Waits on the ReportAdded and then loads all notifications for the application that the report belongs to.

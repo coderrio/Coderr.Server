@@ -1,7 +1,7 @@
 ﻿/// <reference path="../../Scripts/Griffin.Yo.d.ts" />
 /// <reference path="../../app/Application.ts" />
-module OneTrueError.Onboarding {
-    import CreateApplication = OneTrueError.Core.Applications.Commands.CreateApplication;
+module codeRR.Onboarding {
+    import CreateApplication = codeRR.Core.Applications.Commands.CreateApplication;
 
     export class ClientViewModel implements Griffin.Yo.Spa.ViewModels.IViewModel {
         private context: Griffin.Yo.Spa.ViewModels.IActivationContext;

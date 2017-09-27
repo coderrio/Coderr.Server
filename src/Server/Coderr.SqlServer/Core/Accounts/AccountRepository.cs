@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
-using OneTrueError.App.Core.Accounts;
+using codeRR.App.Core.Accounts;
 
-namespace OneTrueError.SqlServer.Core.Accounts
+namespace codeRR.SqlServer.Core.Accounts
 {
     [Component]
     public class AccountRepository : IAccountRepository

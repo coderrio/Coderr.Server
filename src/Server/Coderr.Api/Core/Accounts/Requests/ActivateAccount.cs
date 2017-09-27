@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace OneTrueError.Api.Core.Accounts.Requests
+namespace codeRR.Api.Core.Accounts.Requests
 {
     /// <summary>
     ///     Activate a user account

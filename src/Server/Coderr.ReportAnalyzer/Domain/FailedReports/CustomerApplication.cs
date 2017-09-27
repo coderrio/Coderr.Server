@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace OneTrueError.ReportAnalyzer.Domain.FailedReports
+namespace codeRR.ReportAnalyzer.Domain.FailedReports
 {
     /// <summary>
     ///     Small wrapper around an application

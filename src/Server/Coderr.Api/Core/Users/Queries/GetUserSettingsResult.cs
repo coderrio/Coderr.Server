@@ -1,4 +1,4 @@
-namespace OneTrueError.Api.Core.Users.Queries
+namespace codeRR.Api.Core.Users.Queries
 {
     /// <summary>
     ///     Result for <see cref="GetUserSettings" />

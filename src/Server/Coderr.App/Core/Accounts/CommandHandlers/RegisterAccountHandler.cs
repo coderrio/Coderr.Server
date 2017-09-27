@@ -2,14 +2,14 @@
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
-using OneTrueError.Api.Core.Accounts.Commands;
-using OneTrueError.Api.Core.Accounts.Events;
-using OneTrueError.Api.Core.Messaging;
-using OneTrueError.Api.Core.Messaging.Commands;
-using OneTrueError.App.Configuration;
-using OneTrueError.Infrastructure.Configuration;
+using codeRR.Api.Core.Accounts.Commands;
+using codeRR.Api.Core.Accounts.Events;
+using codeRR.Api.Core.Messaging;
+using codeRR.Api.Core.Messaging.Commands;
+using codeRR.App.Configuration;
+using codeRR.Infrastructure.Configuration;
 
-namespace OneTrueError.App.Core.Accounts.CommandHandlers
+namespace codeRR.App.Core.Accounts.CommandHandlers
 {
     /// <summary>
     ///     Register a new account.
@@ -81,8 +81,8 @@ Your activation code is: {0}
 You can activate your account by clicking on: {1}/account/activate/{0}
 
 Good luck,
-  OneTrueError Team", account.ActivationKey, config.BaseUrl),
-                Subject = "OneTrueError activation"
+  codeRR Team", account.ActivationKey, config.BaseUrl),
+                Subject = "codeRR activation"
             };
             msg.Recipients = new[] {new EmailAddress(account.Email)};
 

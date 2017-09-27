@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using OneTrueError.Infrastructure.Configuration;
+using codeRR.Infrastructure.Configuration;
 
-namespace OneTrueError.Infrastructure.Queueing
+namespace codeRR.Infrastructure.Queueing
 {
     public sealed class MessageQueueSettings : IConfigurationSection
     {

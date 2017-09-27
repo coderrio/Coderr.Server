@@ -2,11 +2,11 @@
 using System.Configuration;
 using System.Web.Mvc;
 using Griffin.Data;
-using OneTrueError.App.Core.Applications;
-using OneTrueError.Infrastructure;
-using OneTrueError.SqlServer.Core.Applications;
+using codeRR.App.Core.Applications;
+using codeRR.Infrastructure;
+using codeRR.SqlServer.Core.Applications;
 
-namespace OneTrueError.Web.Areas.Installation.Controllers
+namespace codeRR.Web.Areas.Installation.Controllers
 {
     [OutputCache(Duration = 0, NoStore = true)]
     public class SqlController : Controller

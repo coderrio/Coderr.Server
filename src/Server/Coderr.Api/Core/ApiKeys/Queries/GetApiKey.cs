@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace OneTrueError.Api.Core.ApiKeys.Queries
+namespace codeRR.Api.Core.ApiKeys.Queries
 {
     /// <summary>
     ///     Get information about an API key

@@ -1,4 +1,4 @@
-﻿namespace OneTrueError.Api.Modules.Triggers
+﻿namespace codeRR.Api.Modules.Triggers
 {
     /// <summary>
     ///     Context when doing the filtering

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using OneTrueError.App.Modules.Similarities.Domain.Adapters.Runner;
+using codeRR.App.Modules.Similarities.Domain.Adapters.Runner;
 
-namespace OneTrueError.App.Modules.Similarities.Domain.Adapters.Old
+namespace codeRR.App.Modules.Similarities.Domain.Adapters.Old
 {
     internal class ProcessorTimeAdapter : IValueAdapter
     {

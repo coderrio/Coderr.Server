@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace OneTrueError.Api.Core.Accounts.Commands
+namespace codeRR.Api.Core.Accounts.Commands
 {
     /// <summary>
     ///     Register a new account and send out an activation email.

@@ -1,7 +1,7 @@
 ﻿using Griffin.Data.Mapper;
-using OneTrueError.Api.Core.Reports.Queries;
+using codeRR.Api.Core.Reports.Queries;
 
-namespace OneTrueError.SqlServer.Core.Incidents.Queries
+namespace codeRR.SqlServer.Core.Incidents.Queries
 {
     public class GetReportListResultItemMapper : EntityMapper<GetReportListResultItem>
     {

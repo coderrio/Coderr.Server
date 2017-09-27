@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace OneTrueError.Api.Core.Applications.Commands
+namespace codeRR.Api.Core.Applications.Commands
 {
     /// <summary>
     ///     Create a new application.

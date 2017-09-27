@@ -1,7 +1,7 @@
 ﻿using Griffin.Data.Mapper;
-using OneTrueError.App.Modules.Similarities.Domain;
+using codeRR.App.Modules.Similarities.Domain;
 
-namespace OneTrueError.SqlServer.Modules.Similarities.Mappers
+namespace codeRR.SqlServer.Modules.Similarities.Mappers
 {
     public class SimilarityMapper : CrudEntityMapper<Similarity>
     {

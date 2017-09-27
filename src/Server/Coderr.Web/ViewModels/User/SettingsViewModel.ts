@@ -1,6 +1,6 @@
 ﻿/// <reference path="../../Scripts/CqsClient.ts" />
 /// <reference path="../../Scripts/Griffin.Yo.d.ts" />
-module OneTrueError.User {
+module codeRR.User {
     var cqs = Griffin.Cqs.CqsClient;
     import CqsClient = Griffin.Cqs.CqsClient;
 

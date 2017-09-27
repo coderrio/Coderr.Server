@@ -3,7 +3,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace OneTrueError.Web.Cqs
+namespace codeRR.Web.Cqs
 {
     [Serializable]
     public class Metadata

@@ -1,8 +1,8 @@
 using System;
-using OneTrueError.App.Configuration;
-using OneTrueError.Infrastructure.Configuration;
+using codeRR.App.Configuration;
+using codeRR.Infrastructure.Configuration;
 
-namespace OneTrueError.App.Tests
+namespace codeRR.App.Tests
 {
     public class TestStore : ConfigurationStore
     {

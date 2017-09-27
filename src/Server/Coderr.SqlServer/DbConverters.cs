@@ -1,7 +1,7 @@
 using System;
-using OneTrueError.SqlServer.Tools;
+using codeRR.SqlServer.Tools;
 
-namespace OneTrueError.SqlServer
+namespace codeRR.SqlServer
 {
     public class DbConverters
     {

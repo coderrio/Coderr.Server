@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using DotNetCqs;
 
-namespace OneTrueError.Api.Core.Feedback.Commands
+namespace codeRR.Api.Core.Feedback.Commands
 {
     /// <summary>
     ///     A user that experienced an error have either followed the link to our website to submit an error or have entered it

@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace OneTrueError.Api.Core.Invitations.Queries
+namespace codeRR.Api.Core.Invitations.Queries
 {
     /// <summary>
     ///     Get invitation by using the emailed invitation key

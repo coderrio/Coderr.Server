@@ -4,9 +4,9 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using Griffin.Container;
-using OneTrueError.App.Modules.Triggers.Domain.Actions;
+using codeRR.App.Modules.Triggers.Domain.Actions;
 
-namespace OneTrueError.App.Modules.Triggers.Domain
+namespace codeRR.App.Modules.Triggers.Domain
 {
     /// <summary>
     ///     Uses the IoC container to identify trigger actions

@@ -1,4 +1,4 @@
-﻿namespace OneTrueError.Api.Web.Overview.Queries
+﻿namespace codeRR.Api.Web.Overview.Queries
 {
     /// <summary>
     ///     Result for <see cref="GetOverview" />.

@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
-using OneTrueError.Api.Core.Accounts.Requests;
+using codeRR.Api.Core.Accounts.Requests;
 
-namespace OneTrueError.App.Core.Accounts.Requests
+namespace codeRR.App.Core.Accounts.Requests
 {
     /// <summary>
     ///     Handler for <see cref="ResetPassword" />.

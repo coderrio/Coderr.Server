@@ -1,7 +1,7 @@
 ﻿using System;
 using Griffin.Container;
 
-namespace OneTrueError.App.Modules.Tagging.Identifiers
+namespace codeRR.App.Modules.Tagging.Identifiers
 {
     /// <summary>
     ///     Adds the "ADO.NET" tag if "System.Data" assembly have been loaded.

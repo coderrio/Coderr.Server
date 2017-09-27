@@ -4,9 +4,9 @@ using System.Text;
 using ColorCode;
 using Griffin.Container;
 using MarkdownSharp;
-using OneTrueError.App.Modules.Messaging.Templating.Formatting;
+using codeRR.App.Modules.Messaging.Templating.Formatting;
 
-namespace OneTrueError.App.Modules.Messaging.Templating
+namespace codeRR.App.Modules.Messaging.Templating
 {
     /// <summary>
     ///     Used to parse texts (convert markdown and extras to HTML)

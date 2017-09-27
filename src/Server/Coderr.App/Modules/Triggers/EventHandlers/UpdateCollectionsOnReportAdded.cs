@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
 using log4net;
-using OneTrueError.Api.Core.Incidents.Events;
-using OneTrueError.App.Modules.Triggers.Domain;
+using codeRR.Api.Core.Incidents.Events;
+using codeRR.App.Modules.Triggers.Domain;
 
-namespace OneTrueError.App.Modules.Triggers.EventHandlers
+namespace codeRR.App.Modules.Triggers.EventHandlers
 {
     /// <summary>
     ///     Responsible of creating context collection metadata for all reports that have been added to an incident.

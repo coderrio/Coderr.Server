@@ -12,22 +12,22 @@ using Griffin.Data.Mapper;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
-using OneTrueError.App.Configuration;
+using codeRR.App.Configuration;
 using OneTrueError.Client;
-using OneTrueError.Infrastructure;
-using OneTrueError.Infrastructure.Configuration;
-using OneTrueError.SqlServer.Core.Users;
-using OneTrueError.Web;
-using OneTrueError.Web.Infrastructure;
-using OneTrueError.Web.Infrastructure.Auth;
-using OneTrueError.Web.Infrastructure.Logging;
-using OneTrueError.Web.Services;
-using OneTrueError.Web.Views;
+using codeRR.Infrastructure;
+using codeRR.Infrastructure.Configuration;
+using codeRR.SqlServer.Core.Users;
+using codeRR.Web;
+using codeRR.Web.Infrastructure;
+using codeRR.Web.Infrastructure.Auth;
+using codeRR.Web.Infrastructure.Logging;
+using codeRR.Web.Services;
+using codeRR.Web.Views;
 using Owin;
 
 [assembly: OwinStartup(typeof(Startup))]
 
-namespace OneTrueError.Web
+namespace codeRR.Web
 {
     public class Startup
     {
@@ -106,10 +106,10 @@ namespace OneTrueError.Web
 
         private static void ConfigureErrorTracking()
         {
-            var errorTrackingConfig = ConfigurationStore.Instance.Load<OneTrueErrorConfigSection>();
+            var errorTrackingConfig = ConfigurationStore.Instance.Load<codeRRConfigSection>();
             if ((errorTrackingConfig != null) && errorTrackingConfig.ActivateTracking)
             {
-                var uri = new Uri("https://report.onetrueerror.com");
+                var uri = new Uri("https://report.coderrapp.com");
                 if (!string.IsNullOrEmpty(errorTrackingConfig.ContactEmail) ||
                     !string.IsNullOrEmpty(errorTrackingConfig.InstallationId))
                 {
@@ -118,7 +118,7 @@ namespace OneTrueError.Web
                         errorTrackingConfig.InstallationId));
                 }
                 OneTrue.Configuration.Credentials(uri, "2b3002d3ab3e4a57ad45cff2210221ab", "f381a5c9797f49bd8a3238b892d02806");
-                WebApiApplication.ReportToOneTrueError = true;
+                WebApiApplication.ReportTocodeRR = true;
                 GlobalConfiguration.Configuration.Services.Add(typeof(IExceptionLogger), new WebApiLogger());
             }
             else

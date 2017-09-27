@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace OneTrueError.Api.Core.Reports.Queries
+namespace codeRR.Api.Core.Reports.Queries
 {
     /// <summary>
     ///     Get reports

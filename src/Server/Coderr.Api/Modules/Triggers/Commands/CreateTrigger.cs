@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace OneTrueError.Api.Modules.Triggers.Commands
+namespace codeRR.Api.Modules.Triggers.Commands
 {
     /// <summary>
     ///     Create a new trigger

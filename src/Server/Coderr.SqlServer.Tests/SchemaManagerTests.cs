@@ -3,7 +3,7 @@ using FluentAssertions;
 using Griffin.Data.Mapper;
 using Xunit;
 
-namespace OneTrueError.SqlServer.Tests
+namespace codeRR.SqlServer.Tests
 {
     public class SchemaManagerTests : IDisposable
     {

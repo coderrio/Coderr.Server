@@ -1,7 +1,7 @@
 ﻿using Griffin.Data.Mapper;
-using OneTrueError.Api.Modules.Triggers;
+using codeRR.Api.Modules.Triggers;
 
-namespace OneTrueError.SqlServer.Modules.Triggers
+namespace codeRR.SqlServer.Modules.Triggers
 {
     public class TriggerDtoMapper : EntityMapper<TriggerDTO>
     {

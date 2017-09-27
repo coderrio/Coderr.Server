@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
-using OneTrueError.Api.Core.ApiKeys.Commands;
-using OneTrueError.Api.Core.ApiKeys.Events;
+using codeRR.Api.Core.ApiKeys.Commands;
+using codeRR.Api.Core.ApiKeys.Events;
 
-namespace OneTrueError.SqlServer.Core.ApiKeys.Commands
+namespace codeRR.SqlServer.Core.ApiKeys.Commands
 {
     [Component(RegisterAsSelf = true)]
     public class CreateApiKeyHandler : ICommandHandler<CreateApiKey>

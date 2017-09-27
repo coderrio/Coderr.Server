@@ -1,19 +1,19 @@
-var OneTrueError;
-(function (OneTrueError) {
+var codeRR;
+(function (codeRR) {
     ;
     var Dataset = (function () {
         function Dataset() {
         }
         return Dataset;
     }());
-    OneTrueError.Dataset = Dataset;
+    codeRR.Dataset = Dataset;
     ;
     var LineData = (function () {
         function LineData() {
         }
         return LineData;
     }());
-    OneTrueError.LineData = LineData;
+    codeRR.LineData = LineData;
     //export class LineChart {
     //    private chart: any = null;
     //    private lineChart: any = null;
@@ -166,5 +166,5 @@ var OneTrueError;
     //        };
     //    }
     //   }
-})(OneTrueError || (OneTrueError = {}));
+})(codeRR || (codeRR = {}));
 //# sourceMappingURL=ChartViewModel.js.map

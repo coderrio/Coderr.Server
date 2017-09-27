@@ -1,9 +1,9 @@
 using System.Linq;
 using Newtonsoft.Json;
-using OneTrueError.ReportAnalyzer.Domain.Reports;
-using OneTrueError.ReportAnalyzer.LibContracts;
+using codeRR.ReportAnalyzer.Domain.Reports;
+using codeRR.ReportAnalyzer.LibContracts;
 
-namespace OneTrueError.ReportAnalyzer.Scanners
+namespace codeRR.ReportAnalyzer.Scanners
 {
     /// <summary>
     ///     Converts DTOs from the client library format to our internal DTO.

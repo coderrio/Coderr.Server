@@ -3,11 +3,11 @@
 /// <reference path="../../Scripts/Griffin.Yo.d.ts" />
 /// <reference path="../../Scripts/typings/jquery/jquery.d.ts" />
 /// <reference path="../../Scripts/Models/AllModels.ts" />
-module OneTrueError.Incident {
+module codeRR.Incident {
     import CqsClient = Griffin.Cqs.CqsClient;
     import ViewRenderer = Griffin.Yo.Views.ViewRenderer;
     import Similarities = Modules.ContextData;
-    import ApplicationService = OneTrueError.Applications.ApplicationService;
+    import ApplicationService = codeRR.Applications.ApplicationService;
 
     export class SimilaritiesViewModel implements Griffin.Yo.Spa.ViewModels.IViewModel {
         private static VIEW_NAME = "SimilaritiesView";

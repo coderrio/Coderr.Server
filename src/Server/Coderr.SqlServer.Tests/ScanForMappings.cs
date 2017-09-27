@@ -1,8 +1,8 @@
 ﻿using System;
 using Griffin.Data.Mapper;
-using OneTrueError.SqlServer.Core.Users;
+using codeRR.SqlServer.Core.Users;
 
-namespace OneTrueError.SqlServer.Tests
+namespace codeRR.SqlServer.Tests
 {
     public class ScanForMappings : IDisposable
     {

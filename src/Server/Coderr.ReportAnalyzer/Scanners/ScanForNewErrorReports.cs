@@ -2,11 +2,11 @@ using System;
 using System.Linq;
 using Griffin.Container;
 using log4net;
-using OneTrueError.Infrastructure.Queueing;
-using OneTrueError.ReportAnalyzer.Domain.Reports;
-using OneTrueError.ReportAnalyzer.LibContracts;
+using codeRR.Infrastructure.Queueing;
+using codeRR.ReportAnalyzer.Domain.Reports;
+using codeRR.ReportAnalyzer.LibContracts;
 
-namespace OneTrueError.ReportAnalyzer.Scanners
+namespace codeRR.ReportAnalyzer.Scanners
 {
     /// <summary>
     ///     Loads a set of reports that should be analyzed and then cast some wizardry on them.

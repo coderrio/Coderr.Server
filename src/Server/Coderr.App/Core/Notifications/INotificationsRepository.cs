@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
-namespace OneTrueError.App.Core.Notifications
+namespace codeRR.App.Core.Notifications
 {
     /// <summary>
     ///     Repository for notification settings

@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
-namespace OneTrueError.App.Modules.Messaging.Templating.Formatting
+namespace codeRR.App.Modules.Messaging.Templating.Formatting
 {
     /// <summary>
     ///     Converts a string

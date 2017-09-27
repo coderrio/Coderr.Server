@@ -1,8 +1,8 @@
 ﻿using System;
 using DotNetCqs;
-using OneTrueError.Api.Core.Reports;
+using codeRR.Api.Core.Reports;
 
-namespace OneTrueError.Api.Core.Incidents.Events
+namespace codeRR.Api.Core.Incidents.Events
 {
     /// <summary>
     ///     We just received a new report and attached it to the given incident.

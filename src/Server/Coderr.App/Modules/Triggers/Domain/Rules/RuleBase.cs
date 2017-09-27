@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OneTrueError.App.Modules.Triggers.Domain.Rules
+namespace codeRR.App.Modules.Triggers.Domain.Rules
 {
     /// <summary>
     ///     Base for trigger rules

@@ -1,6 +1,6 @@
 ﻿using System.Configuration;
 
-namespace OneTrueError.SqlServer.Modules.Versions
+namespace codeRR.SqlServer.Modules.Versions
 {
     public class ApplicationVersionConfig
     {

@@ -3,7 +3,7 @@
 import CqsClient = Griffin.Cqs.CqsClient;
 import Yo = Griffin.Yo;
 import Pager = Griffin.WebApp.Pager;
-import IncidentOrder = OneTrueError.Core.Incidents.IncidentOrder;
+import IncidentOrder = codeRR.Core.Incidents.IncidentOrder;
 
 class IncidentTableViewModel implements Griffin.WebApp.IPagerSubscriber {
     private static UP = "fa fa-chevron-up";
@@ -22,7 +22,7 @@ class IncidentTableViewModel implements Griffin.WebApp.IPagerSubscriber {
 
     load(applicationId?: number, applicationVersion?: string) {
 
-        const query = new OneTrueError.Core.Incidents.Queries.FindIncidents();
+        const query = new codeRR.Core.Incidents.Queries.FindIncidents();
         query.PageNumber = 1;
         query.ItemsPerPage = 20;
         if (applicationId != null) {
@@ -31,7 +31,7 @@ class IncidentTableViewModel implements Griffin.WebApp.IPagerSubscriber {
         if (applicationVersion != null) {
             query.Version = applicationVersion;
         }
-        CqsClient.query<OneTrueError.Core.Incidents.Queries.FindIncidentResult>(query)
+        CqsClient.query<codeRR.Core.Incidents.Queries.FindIncidentResult>(query)
             .done(response => {
 
                 var itemsElem = this.ctx.viewContainer.querySelector("#incidentTable") as HTMLElement;
@@ -182,7 +182,7 @@ class IncidentTableViewModel implements Griffin.WebApp.IPagerSubscriber {
 
 
     private loadItems(pageNumber: number = 0): void {
-        const query = new OneTrueError.Core.Incidents.Queries.FindIncidents();
+        const query = new codeRR.Core.Incidents.Queries.FindIncidents();
         query.SortType = this.sortType;
         query.SortAscending = this.sortAscending;
         query.Open = false;
@@ -203,7 +203,7 @@ class IncidentTableViewModel implements Griffin.WebApp.IPagerSubscriber {
             query.FreeText = searchBox.value;
 
         query.ItemsPerPage = 20;
-        CqsClient.query<OneTrueError.Core.Incidents.Queries.FindIncidentResultItem>(query)
+        CqsClient.query<codeRR.Core.Incidents.Queries.FindIncidentResultItem>(query)
             .done(response => {
                 var table = document.getElementById("incidentTable");
                 this.renderTable(table, response);

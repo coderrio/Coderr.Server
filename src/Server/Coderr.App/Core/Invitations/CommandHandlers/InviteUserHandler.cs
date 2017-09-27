@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
 using log4net;
-using OneTrueError.Api.Core.Applications.Events;
-using OneTrueError.Api.Core.Applications.Events.OneTrueError.Api.Core.Accounts.Events;
-using OneTrueError.Api.Core.Invitations.Commands;
-using OneTrueError.Api.Core.Messaging;
-using OneTrueError.Api.Core.Messaging.Commands;
-using OneTrueError.App.Configuration;
-using OneTrueError.App.Core.Applications;
-using OneTrueError.App.Core.Users;
-using OneTrueError.Infrastructure.Configuration;
-using OneTrueError.Infrastructure.Security;
+using codeRR.Api.Core.Applications.Events;
+using codeRR.Api.Core.Applications.Events.codeRR.Api.Core.Accounts.Events;
+using codeRR.Api.Core.Invitations.Commands;
+using codeRR.Api.Core.Messaging;
+using codeRR.Api.Core.Messaging.Commands;
+using codeRR.App.Configuration;
+using codeRR.App.Core.Applications;
+using codeRR.App.Core.Users;
+using codeRR.Infrastructure.Configuration;
+using codeRR.Infrastructure.Security;
 
-namespace OneTrueError.App.Core.Invitations.CommandHandlers
+namespace codeRR.App.Core.Invitations.CommandHandlers
 {
     /// <summary>
     ///     Handler for <see cref="InviteUser" />
@@ -149,17 +149,17 @@ namespace OneTrueError.App.Core.Invitations.CommandHandlers
 
             var msg = new EmailMessage
             {
-                Subject = "You have been invited by " + invitation.InvitedBy + " to OneTrueError.",
+                Subject = "You have been invited by " + invitation.InvitedBy + " to codeRR.",
                 TextBody = string.Format(@"Hello,
 
-{0} has invited to you join their team at OneTrueError, a service used to keep track of exceptions in .NET applications.
+{0} has invited to you join their team at codeRR, a service used to keep track of exceptions in .NET applications.
 
 Click on the following link to accept the invitation:
 {2}/account/accept/{1}
 
 {3}
 Best regards,
-  The OneTrueError team
+  The codeRR team
 ", invitation.InvitedBy, invitation.InvitationKey, url, reason),
                 Recipients = new[] {new EmailAddress(invitation.EmailToInvitedUser)}
             };

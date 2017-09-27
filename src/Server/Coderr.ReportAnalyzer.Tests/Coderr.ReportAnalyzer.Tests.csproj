@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>net452</TargetFramework>
+		<RootNamespace>codeRR.ReportAnalyzer.Tests</RootNamespace>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
@@ -11,7 +12,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\OneTrueError.ReportAnalyzer\OneTrueError.ReportAnalyzer.csproj" />
+		<ProjectReference Include="..\codeRR.ReportAnalyzer\codeRR.ReportAnalyzer.csproj" />
 	</ItemGroup>
 
 </Project>

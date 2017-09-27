@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using log4net;
 using Newtonsoft.Json;
 
-namespace OneTrueError.App.Modules.Triggers.Domain.Actions
+namespace codeRR.App.Modules.Triggers.Domain.Actions
 {
     /// <summary>
     ///     Do a HTTP post in a trigger

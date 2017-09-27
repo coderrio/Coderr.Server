@@ -2,7 +2,7 @@
 /// <reference path="../../Scripts/Promise.ts" />
 /// <reference path="../../Scripts/CqsClient.ts" />
 /// <reference path="../ChartViewModel.ts" />
-module OneTrueError.Incident {
+module codeRR.Incident {
     import CqsClient = Griffin.Cqs.CqsClient;
     import ActivationContext = Griffin.Yo.Spa.ViewModels.IActivationContext;
     declare var google: any;

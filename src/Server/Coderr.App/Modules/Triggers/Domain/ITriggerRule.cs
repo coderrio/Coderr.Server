@@ -1,4 +1,4 @@
-﻿namespace OneTrueError.App.Modules.Triggers.Domain
+﻿namespace codeRR.App.Modules.Triggers.Domain
 {
     /// <summary>
     ///     Decides if an error report can be passed on

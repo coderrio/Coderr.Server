@@ -16,11 +16,11 @@ using Griffin.Cqs.Net;
 using log4net;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
-using OneTrueError.Api.Core.Applications.Commands;
-using OneTrueError.Infrastructure.Security;
-using OneTrueError.Web.Infrastructure.Cqs;
+using codeRR.Api.Core.Applications.Commands;
+using codeRR.Infrastructure.Security;
+using codeRR.Web.Infrastructure.Cqs;
 
-namespace OneTrueError.Web.Controllers
+namespace codeRR.Web.Controllers
 {
     [System.Web.Http.Authorize]
     public class CqsController : ApiController

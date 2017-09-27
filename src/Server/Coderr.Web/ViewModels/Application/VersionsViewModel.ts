@@ -1,7 +1,7 @@
 ﻿/// <reference path="../../Scripts/Griffin.Yo.d.ts" />
 /// <reference path="../../app/Application.ts" />
-module OneTrueError.Application {
-    import ApplicationVersions = OneTrueError.Modules.Versions.Queries.GetApplicationVersions;
+module codeRR.Application {
+    import ApplicationVersions = codeRR.Modules.Versions.Queries.GetApplicationVersions;
     import CqsClient = Griffin.Cqs.CqsClient;
     import Yo = Griffin.Yo;
 

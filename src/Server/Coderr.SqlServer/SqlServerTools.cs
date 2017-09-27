@@ -4,9 +4,9 @@ using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
-using OneTrueError.Infrastructure;
+using codeRR.Infrastructure;
 
-namespace OneTrueError.SqlServer
+namespace codeRR.SqlServer
 {
     /// <summary>
     ///     MS Sql Server specific implementation of the database tools.

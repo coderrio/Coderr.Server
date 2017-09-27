@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace OneTrueError.App.Modules.Similarities.Domain
+namespace codeRR.App.Modules.Similarities.Domain
 {
     /// <summary>
     ///     Store and fetch all similarities in the database

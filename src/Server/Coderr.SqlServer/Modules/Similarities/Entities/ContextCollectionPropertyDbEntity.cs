@@ -1,7 +1,7 @@
 using System.Linq;
-using OneTrueError.App.Modules.Similarities.Domain;
+using codeRR.App.Modules.Similarities.Domain;
 
-namespace OneTrueError.SqlServer.Modules.Similarities.Entities
+namespace codeRR.SqlServer.Modules.Similarities.Entities
 {
     public class ContextCollectionPropertyDbEntity
     {

@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
-using OneTrueError.Api.Core.Notifications;
+using codeRR.Api.Core.Notifications;
 
-namespace OneTrueError.App.Core.Notifications.Commands
+namespace codeRR.App.Core.Notifications.Commands
 {
     /// <summary>
     /// Handler for <see cref="AddNotification"/>.

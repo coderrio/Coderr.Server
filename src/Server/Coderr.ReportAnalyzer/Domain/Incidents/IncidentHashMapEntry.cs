@@ -1,9 +1,9 @@
 ﻿//using System;
 //using System.Collections.Generic;
 //using System.Linq;
-//using OneTrueError.ReportAnalyzer.Domain.Reports;
+//using codeRR.ReportAnalyzer.Domain.Reports;
 
-//namespace OneTrueError.ReportAnalyzer.Domain.Incidents
+//namespace codeRR.ReportAnalyzer.Domain.Incidents
 //{
 //    /// <summary>
 //    ///     Different error reports can get the same hash code.

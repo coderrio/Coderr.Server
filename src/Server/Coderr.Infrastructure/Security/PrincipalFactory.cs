@@ -4,7 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace OneTrueError.Infrastructure.Security
+namespace codeRR.Infrastructure.Security
 {
     /// <summary>
     ///     Creates the security principal that is used by the system

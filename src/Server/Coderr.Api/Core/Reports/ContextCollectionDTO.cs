@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OneTrueError.Api.Core.Reports
+namespace codeRR.Api.Core.Reports
 {
     /// <summary>
     ///     Context collection DTO.

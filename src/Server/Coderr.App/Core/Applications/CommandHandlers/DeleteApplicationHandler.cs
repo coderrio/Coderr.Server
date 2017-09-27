@@ -2,11 +2,11 @@
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
-using OneTrueError.Api.Core.Applications.Commands;
-using OneTrueError.Api.Core.Applications.Events;
-using OneTrueError.Infrastructure.Security;
+using codeRR.Api.Core.Applications.Commands;
+using codeRR.Api.Core.Applications.Events;
+using codeRR.Infrastructure.Security;
 
-namespace OneTrueError.App.Core.Applications.CommandHandlers
+namespace codeRR.App.Core.Applications.CommandHandlers
 {
     /// <summary>
     ///     Handler for <see cref="DeleteApplication" />.

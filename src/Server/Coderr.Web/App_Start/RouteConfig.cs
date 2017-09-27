@@ -1,7 +1,7 @@
 ﻿using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace OneTrueError.Web
+namespace codeRR.Web
 {
     public class RouteConfig
     {
@@ -11,7 +11,7 @@ namespace OneTrueError.Web
                 "Default",
                 "{controller}/{action}/{id}",
                 new {controller = "Home", action = "ToInstall", id = UrlParameter.Optional},
-                new[] {"OneTrueError.Web.Controllers"}
+                new[] {"codeRR.Web.Controllers"}
                 );
         }
 
@@ -27,7 +27,7 @@ namespace OneTrueError.Web
                 "Default",
                 "{controller}/{action}/{id}",
                 new {controller = "Home", action = "Index", id = UrlParameter.Optional},
-                new[] {"OneTrueError.Web.Controllers"}
+                new[] {"codeRR.Web.Controllers"}
                 );
         }
     }

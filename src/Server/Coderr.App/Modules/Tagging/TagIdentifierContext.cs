@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using OneTrueError.Api.Core.Reports;
-using OneTrueError.App.Modules.Tagging.Domain;
+using codeRR.Api.Core.Reports;
+using codeRR.App.Modules.Tagging.Domain;
 
-namespace OneTrueError.App.Modules.Tagging
+namespace codeRR.App.Modules.Tagging
 {
     /// <summary>
     ///     Context used when trying to identify StackOverflow.com tags

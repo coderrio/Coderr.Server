@@ -5,12 +5,12 @@ using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
 using log4net;
-using OneTrueError.Api.Core.Feedback.Commands;
-using OneTrueError.Api.Core.Feedback.Events;
-using OneTrueError.Api.Core.Reports;
-using OneTrueError.App.Core.Reports;
+using codeRR.Api.Core.Feedback.Commands;
+using codeRR.Api.Core.Feedback.Events;
+using codeRR.Api.Core.Reports;
+using codeRR.App.Core.Reports;
 
-namespace OneTrueError.SqlServer.Core.Feedback.Commands
+namespace codeRR.SqlServer.Core.Feedback.Commands
 {
     [Component]
     public class SubmitFeedbackHandler : ICommandHandler<SubmitFeedback>

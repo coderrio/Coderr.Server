@@ -10,11 +10,11 @@
 //using Griffin.ApplicationServices;
 //using Griffin.Container;
 //using Griffin.Data;
-//using OneTrueError.MicroService.Core.Authentication;
-//using OneTrueError.ReportAnalyzer.App.Services;
-//using OneTrueError.Reporting.Contracts;
+//using codeRR.MicroService.Core.Authentication;
+//using codeRR.ReportAnalyzer.App.Services;
+//using codeRR.Reporting.Contracts;
 
-//namespace OneTrueError.ReportAnalyzer.App.Scanners
+//namespace codeRR.ReportAnalyzer.App.Scanners
 //{
 //    [Component(Lifetime = Lifetime.Singleton)]
 //    internal class LoadReportsFromDiskQueueFolder : ApplicationServiceTimer

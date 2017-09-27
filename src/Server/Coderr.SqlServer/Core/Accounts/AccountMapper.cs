@@ -1,8 +1,8 @@
 ﻿using System;
 using Griffin.Data.Mapper;
-using OneTrueError.App.Core.Accounts;
+using codeRR.App.Core.Accounts;
 
-namespace OneTrueError.SqlServer.Core.Accounts
+namespace codeRR.SqlServer.Core.Accounts
 {
     public class AccountMapper : CrudEntityMapper<Account>
     {

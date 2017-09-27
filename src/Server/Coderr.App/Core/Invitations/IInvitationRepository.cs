@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace OneTrueError.App.Core.Invitations
+namespace codeRR.App.Core.Invitations
 {
     /// <summary>
     ///     Invitation repository

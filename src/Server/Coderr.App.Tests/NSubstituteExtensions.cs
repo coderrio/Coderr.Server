@@ -4,9 +4,9 @@ using System.Linq;
 using NSubstitute;
 using NSubstitute.Core;
 
-namespace OneTrueError.App.Tests
+namespace codeRR.App.Tests
 {
-    internal static class NSubstitueExtensions
+    internal static class NSubstituteExtensions
     {
         public static MethodListWrapper Method(this object instance, string methodName)
         {

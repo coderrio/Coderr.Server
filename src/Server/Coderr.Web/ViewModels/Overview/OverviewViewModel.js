@@ -1,15 +1,15 @@
 /// <reference path="../../Scripts/Promise.ts" />
 /// <reference path="../../Scripts/CqsClient.ts" />
 /// <reference path="../ChartViewModel.ts" />
-var OneTrueError;
-(function (OneTrueError) {
+var codeRR;
+(function (codeRR) {
     var Overview;
     (function (Overview) {
         var CqsClient = Griffin.Cqs.CqsClient;
-        var IncidentOrder = OneTrueError.Core.Incidents.IncidentOrder;
+        var IncidentOrder = codeRR.Core.Incidents.IncidentOrder;
         var Pager = Griffin.WebApp.Pager;
-        var FindIncidents = OneTrueError.Core.Incidents.Queries.FindIncidents;
-        var GetApplicationList = OneTrueError.Core.Applications.Queries.GetApplicationList;
+        var FindIncidents = codeRR.Core.Incidents.Queries.FindIncidents;
+        var GetApplicationList = codeRR.Core.Applications.Queries.GetApplicationList;
         var OverviewViewModel = (function () {
             function OverviewViewModel() {
                 this._sortType = IncidentOrder.Newest;
@@ -19,14 +19,14 @@ var OneTrueError;
                 this.pager.subscribe(this);
             }
             OverviewViewModel.prototype.getTitle = function () {
-                OneTrueError.Applications.Navigation.breadcrumbs([]);
-                OneTrueError.Applications.Navigation.pageTitle = 'Dashboard <em class="small">(summary for all applications)</em>';
+                codeRR.Applications.Navigation.breadcrumbs([]);
+                codeRR.Applications.Navigation.pageTitle = 'Dashboard <em class="small">(summary for all applications)</em>';
                 return "Overview";
             };
             OverviewViewModel.prototype.activate = function (ctx) {
                 var _this = this;
                 this._ctx = ctx;
-                var query = new OneTrueError.Web.Overview.Queries.GetOverview();
+                var query = new codeRR.Web.Overview.Queries.GetOverview();
                 CqsClient.query(query)
                     .done(function (response) {
                     ctx.render(response);
@@ -71,7 +71,7 @@ var OneTrueError;
             };
             OverviewViewModel.prototype.OnRange = function (e) {
                 var _this = this;
-                var query = new OneTrueError.Web.Overview.Queries.GetOverview();
+                var query = new codeRR.Web.Overview.Queries.GetOverview();
                 var elem = e.target;
                 query.NumberOfDays = parseInt(elem.value, 10);
                 CqsClient.query(query)
@@ -293,6 +293,6 @@ var OneTrueError;
         OverviewViewModel.UP = "fa-chevron-up";
         OverviewViewModel.DOWN = "fa-chevron-down";
         Overview.OverviewViewModel = OverviewViewModel;
-    })(Overview = OneTrueError.Overview || (OneTrueError.Overview = {}));
-})(OneTrueError || (OneTrueError = {}));
+    })(Overview = codeRR.Overview || (codeRR.Overview = {}));
+})(codeRR || (codeRR = {}));
 //# sourceMappingURL=OverviewViewModel.js.map

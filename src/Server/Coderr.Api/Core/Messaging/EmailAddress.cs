@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace OneTrueError.Api.Core.Messaging
+namespace codeRR.Api.Core.Messaging
 {
     /// <summary>
     ///     Email address

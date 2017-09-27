@@ -2,7 +2,7 @@
 using System.Security.Authentication;
 using System.Security.Cryptography;
 
-namespace OneTrueError.App.Core.Accounts
+namespace codeRR.App.Core.Accounts
 {
     /// <summary>
     ///     An account (i.e. just allows a user to login, but do not give access to teams etc).

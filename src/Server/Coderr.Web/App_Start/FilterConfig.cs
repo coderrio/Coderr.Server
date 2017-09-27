@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace OneTrueError.Web
+namespace codeRR.Web
 {
     public class FilterConfig
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 
-namespace OneTrueError.App.Modules.Triggers.Domain
+namespace codeRR.App.Modules.Triggers.Domain
 {
     /// <summary>
     ///     Contains information about a collection in a specific application

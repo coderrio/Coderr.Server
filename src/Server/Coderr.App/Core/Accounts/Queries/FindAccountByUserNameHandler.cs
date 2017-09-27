@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
-using OneTrueError.Api.Core.Accounts.Queries;
+using codeRR.Api.Core.Accounts.Queries;
 
-namespace OneTrueError.App.Core.Accounts.Queries
+namespace codeRR.App.Core.Accounts.Queries
 {
     /// <summary>
     ///     Handler of <see cref="FindAccountByUserName" />.

@@ -1,4 +1,4 @@
-﻿namespace OneTrueError.Web.Areas.Installation.Models
+﻿namespace codeRR.Web.Areas.Installation.Models
 {
     public class QueueViewModel
     {

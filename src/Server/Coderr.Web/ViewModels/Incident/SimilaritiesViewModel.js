@@ -3,13 +3,13 @@
 /// <reference path="../../Scripts/Griffin.Yo.d.ts" />
 /// <reference path="../../Scripts/typings/jquery/jquery.d.ts" />
 /// <reference path="../../Scripts/Models/AllModels.ts" />
-var OneTrueError;
-(function (OneTrueError) {
+var codeRR;
+(function (codeRR) {
     var Incident;
     (function (Incident) {
         var CqsClient = Griffin.Cqs.CqsClient;
         var ViewRenderer = Griffin.Yo.Views.ViewRenderer;
-        var Similarities = OneTrueError.Modules.ContextData;
+        var Similarities = codeRR.Modules.ContextData;
         var SimilaritiesViewModel = (function () {
             function SimilaritiesViewModel() {
             }
@@ -111,6 +111,6 @@ var OneTrueError;
         }());
         SimilaritiesViewModel.VIEW_NAME = "SimilaritiesView";
         Incident.SimilaritiesViewModel = SimilaritiesViewModel;
-    })(Incident = OneTrueError.Incident || (OneTrueError.Incident = {}));
-})(OneTrueError || (OneTrueError = {}));
+    })(Incident = codeRR.Incident || (codeRR.Incident = {}));
+})(codeRR || (codeRR = {}));
 //# sourceMappingURL=SimilaritiesViewModel.js.map

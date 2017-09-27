@@ -5,10 +5,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Filters;
-using OneTrueError.App.Core.ApiKeys;
-using OneTrueError.Infrastructure.Security;
+using codeRR.App.Core.ApiKeys;
+using codeRR.Infrastructure.Security;
 
-namespace OneTrueError.Web.Infrastructure.Auth
+namespace codeRR.Web.Infrastructure.Auth
 {
     public class ApiKeyAuthenticator : IAuthenticationFilter
     {

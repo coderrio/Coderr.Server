@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 using Griffin.Data;
 using log4net;
 using Newtonsoft.Json;
-using OneTrueError.Infrastructure;
-using OneTrueError.ReportAnalyzer.Domain.Reports;
-using OneTrueError.ReportAnalyzer.LibContracts;
+using codeRR.Infrastructure;
+using codeRR.ReportAnalyzer.Domain.Reports;
+using codeRR.ReportAnalyzer.LibContracts;
 
-namespace OneTrueError.ReportAnalyzer.Domain.FailedReports
+namespace codeRR.ReportAnalyzer.Domain.FailedReports
 {
     /// <summary>
     ///     TODO: Remove or refactor?

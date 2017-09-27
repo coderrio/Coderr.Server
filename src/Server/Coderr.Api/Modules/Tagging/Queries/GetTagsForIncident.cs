@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace OneTrueError.Api.Modules.Tagging.Queries
+namespace codeRR.Api.Modules.Tagging.Queries
 {
     /// <summary>
     ///     Get all tags that the system have identified for an incident.

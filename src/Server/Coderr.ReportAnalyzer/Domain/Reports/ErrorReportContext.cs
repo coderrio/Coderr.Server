@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace OneTrueError.ReportAnalyzer.Domain.Reports
+namespace codeRR.ReportAnalyzer.Domain.Reports
 {
     /// <summary>
     ///     Context used when analysing the report

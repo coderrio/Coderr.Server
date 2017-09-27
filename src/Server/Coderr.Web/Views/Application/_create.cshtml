@@ -40,11 +40,11 @@
         client.get(window.API_URL + '/guid')
             .done(function (response) {
                 var appKey = response.body;
-                var cmd = new OneTrueError.Core.Applications.Commands.CreateApplication(name, hostType);
+                var cmd = new codeRR.Core.Applications.Commands.CreateApplication(name, hostType);
                 cmd.ApplicationKey = appKey;
                 Griffin.Cqs.CqsClient.command(cmd)
                     .done(function () {
-                        var query = new OneTrueError.Core.Applications.Queries.GetApplicationIdByKey(appKey);
+                        var query = new codeRR.Core.Applications.Queries.GetApplicationIdByKey(appKey);
                         Griffin.Cqs.CqsClient.query(query)
                             .done(function (result) {
                                 $('#appName').val('');

@@ -1,6 +1,6 @@
 using System.Data;
 
-namespace OneTrueError.Infrastructure.Queueing.Ado
+namespace codeRR.Infrastructure.Queueing.Ado
 {
     public sealed class AdoNetTransaction : IQueueTransaction
     {

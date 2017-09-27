@@ -3,11 +3,11 @@ using System.IO;
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
-using OneTrueError.Api.Core.Messaging;
-using OneTrueError.Api.Core.Messaging.Commands;
-using OneTrueError.App.Modules.Messaging.Templating;
+using codeRR.Api.Core.Messaging;
+using codeRR.Api.Core.Messaging.Commands;
+using codeRR.App.Modules.Messaging.Templating;
 
-namespace OneTrueError.App.Modules.Messaging.Commands
+namespace codeRR.App.Modules.Messaging.Commands
 {
     /// <summary>
     ///     Send an email using a template.

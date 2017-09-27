@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OneTrueError.Api.Web.Feedback.Queries
+namespace codeRR.Api.Web.Feedback.Queries
 {
     /// <summary>
     ///     Result item for <see cref="GetFeedbackForApplicationPageResult" />.

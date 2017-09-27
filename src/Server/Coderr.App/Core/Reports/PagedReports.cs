@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using OneTrueError.Api.Core.Reports;
+using codeRR.Api.Core.Reports;
 
-namespace OneTrueError.App.Core.Reports
+namespace codeRR.App.Core.Reports
 {
     /// <summary>
     ///     Repository result

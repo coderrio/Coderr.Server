@@ -1,5 +1,5 @@
-var OneTrueError;
-(function (OneTrueError) {
+var codeRR;
+(function (codeRR) {
     var Web;
     (function (Web) {
         var Overview;
@@ -37,9 +37,9 @@ var OneTrueError;
                 Queries.OverviewStatSummary = OverviewStatSummary;
             })(Queries = Overview.Queries || (Overview.Queries = {}));
         })(Overview = Web.Overview || (Web.Overview = {}));
-    })(Web = OneTrueError.Web || (OneTrueError.Web = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Web = codeRR.Web || (codeRR.Web = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Web;
     (function (Web) {
         var Feedback;
@@ -115,9 +115,9 @@ var OneTrueError;
                 Queries.GetIncidentFeedbackResultItem = GetIncidentFeedbackResultItem;
             })(Queries = Feedback.Queries || (Feedback.Queries = {}));
         })(Feedback = Web.Feedback || (Web.Feedback = {}));
-    })(Web = OneTrueError.Web || (OneTrueError.Web = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Web = codeRR.Web || (codeRR.Web = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Modules;
     (function (Modules) {
         var Versions;
@@ -148,9 +148,9 @@ var OneTrueError;
                 Queries.GetApplicationVersionsResultItem = GetApplicationVersionsResultItem;
             })(Queries = Versions.Queries || (Versions.Queries = {}));
         })(Versions = Modules.Versions || (Modules.Versions = {}));
-    })(Modules = OneTrueError.Modules || (OneTrueError.Modules = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Modules = codeRR.Modules || (codeRR.Modules = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Modules;
     (function (Modules) {
         var Triggers;
@@ -210,9 +210,9 @@ var OneTrueError;
             TriggerRuleBase.TYPE_NAME = 'TriggerRuleBase';
             Triggers.TriggerRuleBase = TriggerRuleBase;
         })(Triggers = Modules.Triggers || (Modules.Triggers = {}));
-    })(Modules = OneTrueError.Modules || (OneTrueError.Modules = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Modules = codeRR.Modules || (codeRR.Modules = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Modules;
     (function (Modules) {
         var Triggers;
@@ -259,9 +259,9 @@ var OneTrueError;
                 Queries.GetTriggersForApplication = GetTriggersForApplication;
             })(Queries = Triggers.Queries || (Triggers.Queries = {}));
         })(Triggers = Modules.Triggers || (Modules.Triggers = {}));
-    })(Modules = OneTrueError.Modules || (OneTrueError.Modules = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Modules = codeRR.Modules || (codeRR.Modules = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Modules;
     (function (Modules) {
         var Triggers;
@@ -296,9 +296,9 @@ var OneTrueError;
                 Commands.UpdateTrigger = UpdateTrigger;
             })(Commands = Triggers.Commands || (Triggers.Commands = {}));
         })(Triggers = Modules.Triggers || (Modules.Triggers = {}));
-    })(Modules = OneTrueError.Modules || (OneTrueError.Modules = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Modules = codeRR.Modules || (codeRR.Modules = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Modules;
     (function (Modules) {
         var Tagging;
@@ -311,9 +311,9 @@ var OneTrueError;
             TagDTO.TYPE_NAME = 'TagDTO';
             Tagging.TagDTO = TagDTO;
         })(Tagging = Modules.Tagging || (Modules.Tagging = {}));
-    })(Modules = OneTrueError.Modules || (OneTrueError.Modules = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Modules = codeRR.Modules || (codeRR.Modules = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Modules;
     (function (Modules) {
         var Tagging;
@@ -330,9 +330,9 @@ var OneTrueError;
                 Queries.GetTagsForIncident = GetTagsForIncident;
             })(Queries = Tagging.Queries || (Tagging.Queries = {}));
         })(Tagging = Modules.Tagging || (Modules.Tagging = {}));
-    })(Modules = OneTrueError.Modules || (OneTrueError.Modules = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Modules = codeRR.Modules || (codeRR.Modules = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Modules;
     (function (Modules) {
         var Tagging;
@@ -350,9 +350,9 @@ var OneTrueError;
                 Events.TagAttachedToIncident = TagAttachedToIncident;
             })(Events = Tagging.Events || (Tagging.Events = {}));
         })(Tagging = Modules.Tagging || (Modules.Tagging = {}));
-    })(Modules = OneTrueError.Modules || (OneTrueError.Modules = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Modules = codeRR.Modules || (codeRR.Modules = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Modules;
     (function (Modules) {
         var ErrorOrigins;
@@ -383,9 +383,9 @@ var OneTrueError;
                 Queries.GetOriginsForIncidentResultItem = GetOriginsForIncidentResultItem;
             })(Queries = ErrorOrigins.Queries || (ErrorOrigins.Queries = {}));
         })(ErrorOrigins = Modules.ErrorOrigins || (Modules.ErrorOrigins = {}));
-    })(Modules = OneTrueError.Modules || (OneTrueError.Modules = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Modules = codeRR.Modules || (codeRR.Modules = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Modules;
     (function (Modules) {
         var ContextData;
@@ -434,9 +434,9 @@ var OneTrueError;
                 Queries.GetSimilaritiesValue = GetSimilaritiesValue;
             })(Queries = ContextData.Queries || (ContextData.Queries = {}));
         })(ContextData = Modules.ContextData || (Modules.ContextData = {}));
-    })(Modules = OneTrueError.Modules || (OneTrueError.Modules = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Modules = codeRR.Modules || (codeRR.Modules = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Core;
     (function (Core) {
         var IgnoreFieldAttribute = (function () {
@@ -446,9 +446,9 @@ var OneTrueError;
         }());
         IgnoreFieldAttribute.TYPE_NAME = 'IgnoreFieldAttribute';
         Core.IgnoreFieldAttribute = IgnoreFieldAttribute;
-    })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Core = codeRR.Core || (codeRR.Core = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Core;
     (function (Core) {
         var Users;
@@ -468,9 +468,9 @@ var OneTrueError;
                 NotificationState[NotificationState["Email"] = 3] = "Email";
             })(NotificationState = Users.NotificationState || (Users.NotificationState = {}));
         })(Users = Core.Users || (Core.Users = {}));
-    })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Core = codeRR.Core || (codeRR.Core = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Core;
     (function (Core) {
         var Users;
@@ -493,9 +493,9 @@ var OneTrueError;
                 Queries.GetUserSettingsResult = GetUserSettingsResult;
             })(Queries = Users.Queries || (Users.Queries = {}));
         })(Users = Core.Users || (Core.Users = {}));
-    })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Core = codeRR.Core || (codeRR.Core = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Core;
     (function (Core) {
         var Users;
@@ -518,9 +518,9 @@ var OneTrueError;
                 Commands.UpdatePersonalSettings = UpdatePersonalSettings;
             })(Commands = Users.Commands || (Users.Commands = {}));
         })(Users = Core.Users || (Core.Users = {}));
-    })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Core = codeRR.Core || (codeRR.Core = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Core;
     (function (Core) {
         var Support;
@@ -533,9 +533,9 @@ var OneTrueError;
             SendSupportRequest.TYPE_NAME = 'SendSupportRequest';
             Support.SendSupportRequest = SendSupportRequest;
         })(Support = Core.Support || (Core.Support = {}));
-    })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Core = codeRR.Core || (codeRR.Core = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Core;
     (function (Core) {
         var Reports;
@@ -563,9 +563,9 @@ var OneTrueError;
             ReportExeptionDTO.TYPE_NAME = 'ReportExeptionDTO';
             Reports.ReportExeptionDTO = ReportExeptionDTO;
         })(Reports = Core.Reports || (Core.Reports = {}));
-    })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Core = codeRR.Core || (codeRR.Core = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Core;
     (function (Core) {
         var Reports;
@@ -637,9 +637,9 @@ var OneTrueError;
                 Queries.KeyValuePair = KeyValuePair;
             })(Queries = Reports.Queries || (Reports.Queries = {}));
         })(Reports = Core.Reports || (Core.Reports = {}));
-    })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Core = codeRR.Core || (codeRR.Core = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Core;
     (function (Core) {
         var Notifications;
@@ -654,9 +654,9 @@ var OneTrueError;
             AddNotification.TYPE_NAME = 'AddNotification';
             Notifications.AddNotification = AddNotification;
         })(Notifications = Core.Notifications || (Core.Notifications = {}));
-    })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Core = codeRR.Core || (codeRR.Core = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Core;
     (function (Core) {
         var Messaging;
@@ -686,9 +686,9 @@ var OneTrueError;
             EmailResource.TYPE_NAME = 'EmailResource';
             Messaging.EmailResource = EmailResource;
         })(Messaging = Core.Messaging || (Core.Messaging = {}));
-    })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Core = codeRR.Core || (codeRR.Core = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Core;
     (function (Core) {
         var Messaging;
@@ -722,9 +722,9 @@ var OneTrueError;
                 Commands.SendTemplateEmail = SendTemplateEmail;
             })(Commands = Messaging.Commands || (Messaging.Commands = {}));
         })(Messaging = Core.Messaging || (Core.Messaging = {}));
-    })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Core = codeRR.Core || (codeRR.Core = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Core;
     (function (Core) {
         var Invitations;
@@ -748,9 +748,9 @@ var OneTrueError;
                 Queries.GetInvitationByKeyResult = GetInvitationByKeyResult;
             })(Queries = Invitations.Queries || (Invitations.Queries = {}));
         })(Invitations = Core.Invitations || (Core.Invitations = {}));
-    })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Core = codeRR.Core || (codeRR.Core = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Core;
     (function (Core) {
         var Invitations;
@@ -768,9 +768,9 @@ var OneTrueError;
                 Commands.InviteUser = InviteUser;
             })(Commands = Invitations.Commands || (Invitations.Commands = {}));
         })(Invitations = Core.Invitations || (Core.Invitations = {}));
-    })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Core = codeRR.Core || (codeRR.Core = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Core;
     (function (Core) {
         var Incidents;
@@ -791,9 +791,9 @@ var OneTrueError;
             IncidentSummaryDTO.TYPE_NAME = 'IncidentSummaryDTO';
             Incidents.IncidentSummaryDTO = IncidentSummaryDTO;
         })(Incidents = Core.Incidents || (Core.Incidents = {}));
-    })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Core = codeRR.Core || (codeRR.Core = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Core;
     (function (Core) {
         var Incidents;
@@ -876,9 +876,9 @@ var OneTrueError;
                 Queries.ReportDay = ReportDay;
             })(Queries = Incidents.Queries || (Incidents.Queries = {}));
         })(Incidents = Core.Incidents || (Core.Incidents = {}));
-    })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Core = codeRR.Core || (codeRR.Core = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Core;
     (function (Core) {
         var Incidents;
@@ -917,9 +917,9 @@ var OneTrueError;
                 Events.ReportAddedToIncident = ReportAddedToIncident;
             })(Events = Incidents.Events || (Incidents.Events = {}));
         })(Incidents = Core.Incidents || (Core.Incidents = {}));
-    })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Core = codeRR.Core || (codeRR.Core = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Core;
     (function (Core) {
         var Incidents;
@@ -953,9 +953,9 @@ var OneTrueError;
                 Commands.IgnoreIncident = IgnoreIncident;
             })(Commands = Incidents.Commands || (Incidents.Commands = {}));
         })(Incidents = Core.Incidents || (Core.Incidents = {}));
-    })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Core = codeRR.Core || (codeRR.Core = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Core;
     (function (Core) {
         var Feedback;
@@ -971,9 +971,9 @@ var OneTrueError;
                 Events.FeedbackAttachedToIncident = FeedbackAttachedToIncident;
             })(Events = Feedback.Events || (Feedback.Events = {}));
         })(Feedback = Core.Feedback || (Core.Feedback = {}));
-    })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Core = codeRR.Core || (codeRR.Core = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Core;
     (function (Core) {
         var Feedback;
@@ -991,9 +991,9 @@ var OneTrueError;
                 Commands.SubmitFeedback = SubmitFeedback;
             })(Commands = Feedback.Commands || (Feedback.Commands = {}));
         })(Feedback = Core.Feedback || (Core.Feedback = {}));
-    })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Core = codeRR.Core || (codeRR.Core = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Core;
     (function (Core) {
         var Applications;
@@ -1014,9 +1014,9 @@ var OneTrueError;
                 TypeOfApplication[TypeOfApplication["Server"] = 2] = "Server";
             })(TypeOfApplication = Applications.TypeOfApplication || (Applications.TypeOfApplication = {}));
         })(Applications = Core.Applications || (Core.Applications = {}));
-    })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Core = codeRR.Core || (codeRR.Core = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Core;
     (function (Core) {
         var Applications;
@@ -1112,9 +1112,9 @@ var OneTrueError;
                 Queries.OverviewStatSummary = OverviewStatSummary;
             })(Queries = Applications.Queries || (Applications.Queries = {}));
         })(Applications = Core.Applications || (Core.Applications = {}));
-    })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Core = codeRR.Core || (codeRR.Core = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Core;
     (function (Core) {
         var Applications;
@@ -1152,17 +1152,17 @@ var OneTrueError;
                 Events.UserInvitedToApplication = UserInvitedToApplication;
             })(Events = Applications.Events || (Applications.Events = {}));
         })(Applications = Core.Applications || (Core.Applications = {}));
-    })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError_1) {
+    })(Core = codeRR.Core || (codeRR.Core = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR_1) {
     var Core;
     (function (Core_1) {
         var Applications;
         (function (Applications) {
             var Events;
             (function (Events_1) {
-                var OneTrueError;
-                (function (OneTrueError) {
+                var codeRR;
+                (function (codeRR) {
                     var Api;
                     (function (Api) {
                         var Core;
@@ -1183,13 +1183,13 @@ var OneTrueError;
                                 })(Events = Accounts.Events || (Accounts.Events = {}));
                             })(Accounts = Core.Accounts || (Core.Accounts = {}));
                         })(Core = Api.Core || (Api.Core = {}));
-                    })(Api = OneTrueError.Api || (OneTrueError.Api = {}));
-                })(OneTrueError = Events_1.OneTrueError || (Events_1.OneTrueError = {}));
+                    })(Api = codeRR.Api || (codeRR.Api = {}));
+                })(codeRR = Events_1.codeRR || (Events_1.codeRR = {}));
             })(Events = Applications.Events || (Applications.Events = {}));
         })(Applications = Core_1.Applications || (Core_1.Applications = {}));
-    })(Core = OneTrueError_1.Core || (OneTrueError_1.Core = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Core = codeRR_1.Core || (codeRR_1.Core = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Core;
     (function (Core) {
         var Applications;
@@ -1233,9 +1233,9 @@ var OneTrueError;
                 Commands.UpdateApplication = UpdateApplication;
             })(Commands = Applications.Commands || (Applications.Commands = {}));
         })(Applications = Core.Applications || (Core.Applications = {}));
-    })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Core = codeRR.Core || (codeRR.Core = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Core;
     (function (Core) {
         var ApiKeys;
@@ -1287,9 +1287,9 @@ var OneTrueError;
                 Queries.ListApiKeysResultItem = ListApiKeysResultItem;
             })(Queries = ApiKeys.Queries || (ApiKeys.Queries = {}));
         })(ApiKeys = Core.ApiKeys || (Core.ApiKeys = {}));
-    })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Core = codeRR.Core || (codeRR.Core = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Core;
     (function (Core) {
         var ApiKeys;
@@ -1310,9 +1310,9 @@ var OneTrueError;
                 Events.ApiKeyCreated = ApiKeyCreated;
             })(Events = ApiKeys.Events || (ApiKeys.Events = {}));
         })(ApiKeys = Core.ApiKeys || (Core.ApiKeys = {}));
-    })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Core = codeRR.Core || (codeRR.Core = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Core;
     (function (Core) {
         var ApiKeys;
@@ -1340,9 +1340,9 @@ var OneTrueError;
                 Commands.DeleteApiKey = DeleteApiKey;
             })(Commands = ApiKeys.Commands || (ApiKeys.Commands = {}));
         })(ApiKeys = Core.ApiKeys || (Core.ApiKeys = {}));
-    })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Core = codeRR.Core || (codeRR.Core = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Core;
     (function (Core) {
         var Accounts;
@@ -1356,9 +1356,9 @@ var OneTrueError;
             RegisterSimple.TYPE_NAME = 'RegisterSimple';
             Accounts.RegisterSimple = RegisterSimple;
         })(Accounts = Core.Accounts || (Core.Accounts = {}));
-    })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Core = codeRR.Core || (codeRR.Core = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Core;
     (function (Core) {
         var Accounts;
@@ -1478,9 +1478,9 @@ var OneTrueError;
                 Requests.ValidateNewLoginReply = ValidateNewLoginReply;
             })(Requests = Accounts.Requests || (Accounts.Requests = {}));
         })(Accounts = Core.Accounts || (Core.Accounts = {}));
-    })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Core = codeRR.Core || (codeRR.Core = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Core;
     (function (Core) {
         var Accounts;
@@ -1536,9 +1536,9 @@ var OneTrueError;
                 Queries.GetAccountEmailById = GetAccountEmailById;
             })(Queries = Accounts.Queries || (Accounts.Queries = {}));
         })(Accounts = Core.Accounts || (Core.Accounts = {}));
-    })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Core = codeRR.Core || (codeRR.Core = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Core;
     (function (Core) {
         var Accounts;
@@ -1583,9 +1583,9 @@ var OneTrueError;
                 Events.LoginFailed = LoginFailed;
             })(Events = Accounts.Events || (Accounts.Events = {}));
         })(Accounts = Core.Accounts || (Core.Accounts = {}));
-    })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
-})(OneTrueError || (OneTrueError = {}));
-(function (OneTrueError) {
+    })(Core = codeRR.Core || (codeRR.Core = {}));
+})(codeRR || (codeRR = {}));
+(function (codeRR) {
     var Core;
     (function (Core) {
         var Accounts;
@@ -1620,6 +1620,6 @@ var OneTrueError;
                 Commands.RequestPasswordReset = RequestPasswordReset;
             })(Commands = Accounts.Commands || (Accounts.Commands = {}));
         })(Accounts = Core.Accounts || (Core.Accounts = {}));
-    })(Core = OneTrueError.Core || (OneTrueError.Core = {}));
-})(OneTrueError || (OneTrueError = {}));
+    })(Core = codeRR.Core || (codeRR.Core = {}));
+})(codeRR || (codeRR = {}));
 //# sourceMappingURL=AllModels.js.map

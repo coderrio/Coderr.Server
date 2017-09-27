@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 
-namespace OneTrueError.App.Modules.Similarities.Domain.Adapters.Runner
+namespace codeRR.App.Modules.Similarities.Domain.Adapters.Runner
 {
     /// <summary>
     ///     Loads similarity adapters by using reflection.

@@ -7,13 +7,13 @@ using System.Web.Mvc;
 using Griffin.Container;
 using Griffin.Container.Mvc5;
 using Griffin.Data;
-using OneTrueError.App.Core.Accounts.Requests;
-using OneTrueError.Infrastructure.Queueing;
-using OneTrueError.ReportAnalyzer.Scanners;
-using OneTrueError.SqlServer.Core.Users;
-using OneTrueError.Web.IoC;
+using codeRR.App.Core.Accounts.Requests;
+using codeRR.Infrastructure.Queueing;
+using codeRR.ReportAnalyzer.Scanners;
+using codeRR.SqlServer.Core.Users;
+using codeRR.Web.IoC;
 
-namespace OneTrueError.Web
+namespace codeRR.Web
 {
     public class CompositionRoot
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 
-namespace OneTrueError.Web.Areas.Admin
+namespace codeRR.Web.Areas.Admin
 {
     public class MenuItem
     {

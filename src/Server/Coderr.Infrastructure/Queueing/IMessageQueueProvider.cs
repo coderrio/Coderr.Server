@@ -1,4 +1,4 @@
-namespace OneTrueError.Infrastructure.Queueing
+namespace codeRR.Infrastructure.Queueing
 {
     /// <summary>
     ///     Used to create an abstraction between the queue implementation and the usage

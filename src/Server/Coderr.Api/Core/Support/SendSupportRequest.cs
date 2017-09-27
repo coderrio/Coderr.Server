@@ -1,6 +1,6 @@
 ﻿using DotNetCqs;
 
-namespace OneTrueError.Api.Core.Support
+namespace codeRR.Api.Core.Support
 {
     /// <summary>
     ///     Send a support request to Gauffin Interactive AB

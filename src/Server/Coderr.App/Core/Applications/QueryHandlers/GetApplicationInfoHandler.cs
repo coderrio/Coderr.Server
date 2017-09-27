@@ -3,13 +3,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
-using OneTrueError.Api.Core;
-using OneTrueError.Api.Core.Applications;
-using OneTrueError.Api.Core.Applications.Queries;
-using OneTrueError.App.Core.Incidents;
-using OneTrueError.App.Modules.Versions;
+using codeRR.Api.Core;
+using codeRR.Api.Core.Applications;
+using codeRR.Api.Core.Applications.Queries;
+using codeRR.App.Core.Incidents;
+using codeRR.App.Modules.Versions;
 
-namespace OneTrueError.App.Core.Applications.QueryHandlers
+namespace codeRR.App.Core.Applications.QueryHandlers
 {
     /// <summary>
     ///     Handler for <see cref="GetApplicationInfo" />.

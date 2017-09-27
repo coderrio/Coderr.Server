@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OneTrueError.Web.Areas.Receiver.ReportingApi
+namespace codeRR.Web.Areas.Receiver.ReportingApi
 {
     /// <summary>
     ///     Report as uploaded by the client API.

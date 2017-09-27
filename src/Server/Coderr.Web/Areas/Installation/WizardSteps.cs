@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace OneTrueError.Web.Areas.Installation
+namespace codeRR.Web.Areas.Installation
 {
     public static class WizardSteps
     {

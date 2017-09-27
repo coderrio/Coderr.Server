@@ -1,6 +1,6 @@
 ﻿//using System;
 
-//namespace OneTrueError.App.Core.Applications
+//namespace codeRR.App.Core.Applications
 //{
 //    /// <summary>
 //    ///     Someone that can see and work with all incidents for a specific application.

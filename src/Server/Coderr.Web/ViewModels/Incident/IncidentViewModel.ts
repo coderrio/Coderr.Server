@@ -2,13 +2,13 @@
 /// <reference path="../../Scripts/typings/moment/moment.d.ts" />
 /// <reference path="../../Scripts/CqsClient.ts" />
 /// <reference path="../ChartViewModel.ts" />
-module OneTrueError.Incident {
+module codeRR.Incident {
     import CqsClient = Griffin.Cqs.CqsClient;
     import PagerSubscriber = Griffin.WebApp.IPagerSubscriber;
     import Pager = Griffin.WebApp.Pager;
     import ReportDay = Core.Incidents.Queries.ReportDay;
-    import ApplicationService = OneTrueError.Applications.ApplicationService;
-    import ReOpenIncident = OneTrueError.Core.Incidents.Commands.ReOpenIncident;
+    import ApplicationService = codeRR.Applications.ApplicationService;
+    import ReOpenIncident = codeRR.Core.Incidents.Commands.ReOpenIncident;
 
     export class IncidentViewModel implements PagerSubscriber, Griffin.Yo.Spa.ViewModels.IViewModel {
         private static UP = "fa-chevron-up";

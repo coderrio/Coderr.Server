@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OneTrueError.ReportAnalyzer.LibContracts
+namespace codeRR.ReportAnalyzer.LibContracts
 {
     /// <summary>
     ///     Context collection

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OneTrueError.App.Modules.Tagging.Domain
+namespace codeRR.App.Modules.Tagging.Domain
 {
     /// <summary>
     ///     Stack overflow tag

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OneTrueError.App.Modules.Messaging.Templating.Formatting
+namespace codeRR.App.Modules.Messaging.Templating.Formatting
 {
     /// <summary>
     ///     A token when parsing the template text

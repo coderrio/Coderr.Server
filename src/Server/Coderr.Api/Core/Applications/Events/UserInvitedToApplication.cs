@@ -1,8 +1,8 @@
 ﻿using System;
 using DotNetCqs;
-using OneTrueError.Api.Core.Invitations.Commands;
+using codeRR.Api.Core.Invitations.Commands;
 
-namespace OneTrueError.Api.Core.Applications.Events
+namespace codeRR.Api.Core.Applications.Events
 {
     /// <summary>
     ///     Event published when the <see cref="InviteUser" /> command is done.

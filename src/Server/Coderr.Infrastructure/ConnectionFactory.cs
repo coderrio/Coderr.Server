@@ -2,7 +2,7 @@
 using System.Data;
 using System.Data.Common;
 
-namespace OneTrueError.Infrastructure
+namespace codeRR.Infrastructure
 {
     /// <summary>
     ///     Generates SQL connections

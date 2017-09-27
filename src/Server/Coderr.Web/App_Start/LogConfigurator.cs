@@ -3,7 +3,7 @@ using System.Configuration;
 using System.IO;
 using log4net.Config;
 
-namespace OneTrueError.Web
+namespace codeRR.Web
 {
     public class LogConfigurator
     {

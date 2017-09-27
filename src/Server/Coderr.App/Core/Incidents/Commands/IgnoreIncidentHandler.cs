@@ -2,11 +2,11 @@
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
-using OneTrueError.Api.Core.Incidents.Commands;
-using OneTrueError.Api.Core.Incidents.Events;
-using OneTrueError.App.Core.Users;
+using codeRR.Api.Core.Incidents.Commands;
+using codeRR.Api.Core.Incidents.Events;
+using codeRR.App.Core.Users;
 
-namespace OneTrueError.App.Core.Incidents.Commands
+namespace codeRR.App.Core.Incidents.Commands
 {
     /// <summary>
     ///     Handler for <see cref="IgnoreIncident" />.

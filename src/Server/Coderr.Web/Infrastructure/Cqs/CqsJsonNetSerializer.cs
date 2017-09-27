@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
-namespace OneTrueError.Web.Infrastructure.Cqs
+namespace codeRR.Web.Infrastructure.Cqs
 {
     internal class CqsJsonNetSerializer : ICqsDeserializer
     {

@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
-using OneTrueError.App.Core.Notifications;
+using codeRR.App.Core.Notifications;
 
-namespace OneTrueError.SqlServer.Core.Notifications
+namespace codeRR.SqlServer.Core.Notifications
 {
     [Component]
     public class NotificationRepository : INotificationsRepository

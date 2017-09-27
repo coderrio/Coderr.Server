@@ -1,6 +1,6 @@
 ﻿using DotNetCqs;
 
-namespace OneTrueError.Api.Core.Users.Commands
+namespace codeRR.Api.Core.Users.Commands
 {
     /// <summary>
     ///     Update user notifications

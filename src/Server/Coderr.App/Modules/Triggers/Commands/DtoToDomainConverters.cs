@@ -1,10 +1,10 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
-using OneTrueError.Api.Modules.Triggers;
-using OneTrueError.App.Modules.Triggers.Domain;
-using OneTrueError.App.Modules.Triggers.Domain.Rules;
+using codeRR.Api.Modules.Triggers;
+using codeRR.App.Modules.Triggers.Domain;
+using codeRR.App.Modules.Triggers.Domain.Rules;
 
-namespace OneTrueError.App.Modules.Triggers.Commands
+namespace codeRR.App.Modules.Triggers.Commands
 {
     /// <summary>
     ///     Convert DTOs to Entities.

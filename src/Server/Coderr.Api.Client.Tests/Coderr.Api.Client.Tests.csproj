@@ -7,8 +7,8 @@
     <ProjectGuid>{62989500-31BC-44FA-97CA-84F484C6F1AA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OneTrueError.Api.Client.Tests</RootNamespace>
-    <AssemblyName>OneTrueError.Api.Client.Tests</AssemblyName>
+    <RootNamespace>codeRR.Api.Client.Tests</RootNamespace>
+    <AssemblyName>codeRR.Api.Client.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -73,13 +73,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OneTrueError.Api.Client\OneTrueError.Api.Client.csproj">
+    <ProjectReference Include="..\Coderr.Api.Client\codeRR.Api.Client.csproj">
       <Project>{017F8863-3DE0-4AD2-9ED3-5ACB87BBBCD0}</Project>
-      <Name>OneTrueError.Api.Client</Name>
+      <Name>codeRR.Api.Client</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OneTrueError.Api\OneTrueError.Api.csproj">
+    <ProjectReference Include="..\Coderr.Api\Coderr.Api.csproj">
       <Project>{fc331a95-fca4-4764-8004-0884665dd01f}</Project>
-      <Name>OneTrueError.Api</Name>
+      <Name>codeRR.Api</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

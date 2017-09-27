@@ -1,4 +1,4 @@
-﻿namespace OneTrueError.Api.Core.Applications
+﻿namespace codeRR.Api.Core.Applications
 {
     /// <summary>
     ///     Kind of application that this is

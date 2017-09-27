@@ -1,10 +1,10 @@
 ﻿using System;
 using Griffin.Container;
-using OneTrueError.App.Modules.Tagging;
-using OneTrueError.App.Modules.Versions.Config;
-using OneTrueError.Infrastructure.Configuration;
+using codeRR.App.Modules.Tagging;
+using codeRR.App.Modules.Versions.Config;
+using codeRR.Infrastructure.Configuration;
 
-namespace OneTrueError.App.Modules.Versions.Events
+namespace codeRR.App.Modules.Versions.Events
 {
     /// <summary>
     /// attaches a version tag to the incident

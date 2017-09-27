@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OneTrueError.App.Tests
+namespace codeRR.App.Tests
 {
     internal static class ReposExtensions
     {

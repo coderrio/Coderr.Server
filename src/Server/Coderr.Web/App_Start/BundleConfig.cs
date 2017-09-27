@@ -1,6 +1,6 @@
 ﻿using System.Web.Optimization;
 
-namespace OneTrueError.Web
+namespace codeRR.Web
 {
     public class BundleConfig
     {

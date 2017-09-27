@@ -2,12 +2,12 @@
 using FluentAssertions;
 using Griffin.Data;
 using Griffin.Data.Mapper;
-using OneTrueError.Api.Core.ApiKeys.Queries;
-using OneTrueError.App.Core.ApiKeys;
-using OneTrueError.SqlServer.Core.ApiKeys.Queries;
+using codeRR.Api.Core.ApiKeys.Queries;
+using codeRR.App.Core.ApiKeys;
+using codeRR.SqlServer.Core.ApiKeys.Queries;
 using Xunit;
 
-namespace OneTrueError.SqlServer.Tests.Core.ApiKeys.Queries
+namespace codeRR.SqlServer.Tests.Core.ApiKeys.Queries
 {
     [Collection(MapperInit.NAME)]
     public class ListApiKeysHandlerTests : IDisposable

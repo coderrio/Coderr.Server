@@ -1,4 +1,4 @@
-﻿namespace OneTrueError.Api.Modules.Triggers
+﻿namespace codeRR.Api.Modules.Triggers
 {
     /// <summary>
     ///     What to do if all rules accepted the report.

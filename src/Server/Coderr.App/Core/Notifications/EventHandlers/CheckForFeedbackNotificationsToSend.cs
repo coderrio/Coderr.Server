@@ -1,15 +1,15 @@
 ﻿using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
-using OneTrueError.Api.Core.Accounts.Queries;
-using OneTrueError.Api.Core.Feedback.Events;
-using OneTrueError.Api.Core.Incidents.Queries;
-using OneTrueError.Api.Core.Messaging;
-using OneTrueError.Api.Core.Messaging.Commands;
-using OneTrueError.App.Configuration;
-using OneTrueError.Infrastructure.Configuration;
+using codeRR.Api.Core.Accounts.Queries;
+using codeRR.Api.Core.Feedback.Events;
+using codeRR.Api.Core.Incidents.Queries;
+using codeRR.Api.Core.Messaging;
+using codeRR.Api.Core.Messaging.Commands;
+using codeRR.App.Configuration;
+using codeRR.Infrastructure.Configuration;
 
-namespace OneTrueError.App.Core.Notifications.EventHandlers
+namespace codeRR.App.Core.Notifications.EventHandlers
 {
     /// <summary>
     ///     Responsible of sending notifications when a new report have been analyzed.

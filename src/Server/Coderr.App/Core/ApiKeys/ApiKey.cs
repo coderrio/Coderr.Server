@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using OneTrueError.Infrastructure.Security;
+using codeRR.Infrastructure.Security;
 
-namespace OneTrueError.App.Core.ApiKeys
+namespace codeRR.App.Core.ApiKeys
 {
     /// <summary>
-    ///     A generated API key which can be used to call OneTrueError´s HTTP api.
+    ///     A generated API key which can be used to call codeRR´s HTTP api.
     /// </summary>
     public class ApiKey
     {

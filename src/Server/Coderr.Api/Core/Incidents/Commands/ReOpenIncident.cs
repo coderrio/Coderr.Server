@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace OneTrueError.Api.Core.Incidents.Commands
+namespace codeRR.Api.Core.Incidents.Commands
 {
     /// <summary>
     ///     An incident which has either been closed or ignored is marked as active again

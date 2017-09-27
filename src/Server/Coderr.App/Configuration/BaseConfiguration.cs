@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using OneTrueError.Infrastructure.Configuration;
+using codeRR.Infrastructure.Configuration;
 
-namespace OneTrueError.App.Configuration
+namespace codeRR.App.Configuration
 {
     /// <summary>
-    ///     Base configuration for the OneTrueError service.
+    ///     Base configuration for the codeRR service.
     /// </summary>
     public sealed class BaseConfiguration : IConfigurationSection
     {
@@ -20,7 +20,7 @@ namespace OneTrueError.App.Configuration
         public string SenderEmail { get; set; }
 
         /// <summary>
-        ///     Address to contact when having trouble with OneTrueError (account issues etc).
+        ///     Address to contact when having trouble with codeRR (account issues etc).
         /// </summary>
         public string SupportEmail { get; set; }
 

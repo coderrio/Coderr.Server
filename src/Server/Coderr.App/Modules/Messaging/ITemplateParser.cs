@@ -1,4 +1,4 @@
-﻿namespace OneTrueError.App.Modules.Messaging
+﻿namespace codeRR.App.Modules.Messaging
 {
     /// <summary>
     ///     Generates HTML from a text template.

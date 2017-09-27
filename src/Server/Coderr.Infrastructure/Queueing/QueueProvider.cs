@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Configuration;
 using Griffin.Container;
-using OneTrueError.Infrastructure.Configuration;
-using OneTrueError.Infrastructure.Queueing.Ado;
-using OneTrueError.Infrastructure.Queueing.Msmq;
+using codeRR.Infrastructure.Configuration;
+using codeRR.Infrastructure.Queueing.Ado;
+using codeRR.Infrastructure.Queueing.Msmq;
 
-namespace OneTrueError.Infrastructure.Queueing
+namespace codeRR.Infrastructure.Queueing
 {
     /// <summary>
     ///     Purpose of this class is to abstract away the queue creation and coupling to specific implementations (and their

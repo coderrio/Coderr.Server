@@ -1,11 +1,11 @@
 ﻿@using Newtonsoft.Json
-@using OneTrueError.Infrastructure.Security
+@using codeRR.Infrastructure.Security
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - OneTrueError</title>
+    <title>@ViewBag.Title - codeRR</title>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="@Url.Content("~/Content/bootstrap.min.css")">
     @Styles.Render("~/Content/css")
@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/css/tether.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
     <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
-    <meta name="description" content="OneTrueError - Automated exception handling" />
+    <meta name="description" content="codeRR - Automated exception handling" />
     <style>
         /* marked*/
         .editor-toolbar.fullscreen, .CodeMirror-fullscreen, .editor-preview-active-side {
@@ -174,7 +174,7 @@
                         return '/ViewModels/' + section + "ViewModel.js";
                     }
                 };
-                var spa = new Griffin.Yo.Spa.SpaEngine('OneTrueError');
+                var spa = new Griffin.Yo.Spa.SpaEngine('codeRR');
                 spa.addTarget('BootstrapModal', new Griffin.Yo.Routing.ViewTargets.BootstrapModalViewTarget());
 
                 //Griffin.Yo.GlobalConfig.viewDirectives.add()

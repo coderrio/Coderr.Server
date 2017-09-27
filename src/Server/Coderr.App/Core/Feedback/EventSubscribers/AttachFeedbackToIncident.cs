@@ -2,10 +2,10 @@
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
-using OneTrueError.Api.Core.Feedback.Events;
-using OneTrueError.Api.Core.Incidents.Events;
+using codeRR.Api.Core.Feedback.Events;
+using codeRR.Api.Core.Incidents.Events;
 
-namespace OneTrueError.App.Core.Feedback.EventSubscribers
+namespace codeRR.App.Core.Feedback.EventSubscribers
 {
     /// <summary>
     ///     Responsible of attaching feedback to incidents when the feedback was uploaded before the actual incident.

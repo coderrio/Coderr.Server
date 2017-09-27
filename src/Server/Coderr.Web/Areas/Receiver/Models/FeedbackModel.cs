@@ -1,4 +1,4 @@
-﻿namespace OneTrueError.Web.Areas.Receiver.Models
+﻿namespace codeRR.Web.Areas.Receiver.Models
 {
     public class FeedbackModel
     {

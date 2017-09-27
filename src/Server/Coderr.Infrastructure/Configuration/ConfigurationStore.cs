@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using OneTrueError.Infrastructure.Configuration.Database;
+using codeRR.Infrastructure.Configuration.Database;
 
-namespace OneTrueError.Infrastructure.Configuration
+namespace codeRR.Infrastructure.Configuration
 {
     /// <summary>
     ///     Defines how settings should be persisted and loaded.

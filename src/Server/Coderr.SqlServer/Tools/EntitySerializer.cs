@@ -1,9 +1,9 @@
 using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using OneTrueError.Infrastructure;
+using codeRR.Infrastructure;
 
-namespace OneTrueError.SqlServer.Tools
+namespace codeRR.SqlServer.Tools
 {
     /// <summary>
     ///     Used for serialization of DB entities (typically value objects or child entities)v.

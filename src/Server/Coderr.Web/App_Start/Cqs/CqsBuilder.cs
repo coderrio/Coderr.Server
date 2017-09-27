@@ -4,12 +4,12 @@ using Griffin.Container;
 using Griffin.Cqs.InversionOfControl;
 using Griffin.Data;
 using log4net;
-using OneTrueError.App.Core.Accounts.Requests;
-using OneTrueError.Infrastructure.Queueing;
-using OneTrueError.ReportAnalyzer.Scanners;
-using OneTrueError.SqlServer.Core.Users;
+using codeRR.App.Core.Accounts.Requests;
+using codeRR.Infrastructure.Queueing;
+using codeRR.ReportAnalyzer.Scanners;
+using codeRR.SqlServer.Core.Users;
 
-namespace OneTrueError.Web.Cqs
+namespace codeRR.Web.Cqs
 {
     public class CqsBuilder
     {

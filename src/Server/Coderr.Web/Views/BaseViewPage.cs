@@ -4,9 +4,9 @@ using System.Linq;
 using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
-using OneTrueError.Infrastructure.Security;
+using codeRR.Infrastructure.Security;
 
-namespace OneTrueError.Web.Views
+namespace codeRR.Web.Views
 {
     /// <summary>
     ///     moves some of the logic from the layout to this class instead.

@@ -1,7 +1,7 @@
 /// <reference path="../../Scripts/Griffin.WebApp.ts" />
 /// <reference path="../../Scripts/CqsClient.ts" />
-var OneTrueError;
-(function (OneTrueError) {
+var codeRR;
+(function (codeRR) {
     var Application;
     (function (Application) {
         var CqsClient = Griffin.Cqs.CqsClient;
@@ -15,8 +15,8 @@ var OneTrueError;
                 var bc = [
                     { href: "/application/" + this.applicationId + "/", title: this.applicationName }
                 ];
-                OneTrueError.Applications.Navigation.breadcrumbs(bc);
-                OneTrueError.Applications.Navigation.pageTitle = this.applicationName;
+                codeRR.Applications.Navigation.breadcrumbs(bc);
+                codeRR.Applications.Navigation.pageTitle = this.applicationName;
                 return this.applicationName;
             };
             DetailsViewModel.prototype.activate = function (ctx) {
@@ -32,7 +32,7 @@ var OneTrueError;
                     ctx.resolve();
                     self.renderChart(result);
                 };
-                var appQuery = new OneTrueError.Core.Applications.Queries.GetApplicationInfo();
+                var appQuery = new codeRR.Core.Applications.Queries.GetApplicationInfo();
                 appQuery.ApplicationId = ctx.routeData["applicationId"];
                 appQuery.Version = this.filterVersion;
                 CqsClient.query(appQuery)
@@ -53,7 +53,7 @@ var OneTrueError;
                         _this.incidentTable.load(_this.applicationId, _this.filterVersion);
                     });
                 });
-                var query = new OneTrueError.Core.Applications.Queries.GetApplicationOverview(this.applicationId);
+                var query = new codeRR.Core.Applications.Queries.GetApplicationOverview(this.applicationId);
                 query.Version = this.filterVersion;
                 CqsClient.query(query)
                     .done(function (response) {
@@ -77,7 +77,7 @@ var OneTrueError;
             };
             DetailsViewModel.prototype.updateAppInfo = function () {
                 var _this = this;
-                var query = new OneTrueError.Core.Applications.Queries.GetApplicationOverview(this.applicationId);
+                var query = new codeRR.Core.Applications.Queries.GetApplicationOverview(this.applicationId);
                 query.NumberOfDays = this.chartDays;
                 query.Version = this.filterVersion;
                 CqsClient.query(query)
@@ -201,6 +201,6 @@ var OneTrueError;
             return DetailsViewModel;
         }());
         Application.DetailsViewModel = DetailsViewModel;
-    })(Application = OneTrueError.Application || (OneTrueError.Application = {}));
-})(OneTrueError || (OneTrueError = {}));
+    })(Application = codeRR.Application || (codeRR.Application = {}));
+})(codeRR || (codeRR = {}));
 //# sourceMappingURL=DetailsViewModel.js.map

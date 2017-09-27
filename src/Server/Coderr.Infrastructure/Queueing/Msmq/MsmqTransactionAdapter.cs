@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Messaging;
 
-namespace OneTrueError.Infrastructure.Queueing.Msmq
+namespace codeRR.Infrastructure.Queueing.Msmq
 {
     public class MsmqTransactionAdapter : IQueueTransaction
     {

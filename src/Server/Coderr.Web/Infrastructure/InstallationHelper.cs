@@ -1,7 +1,7 @@
 ﻿using System.Configuration;
 using System.Web.Configuration;
 
-namespace OneTrueError.Web.Infrastructure
+namespace codeRR.Web.Infrastructure
 {
     public class InstallationHelper
     {

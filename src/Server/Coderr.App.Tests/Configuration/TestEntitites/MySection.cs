@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using FluentAssertions.Execution;
-using OneTrueError.Infrastructure.Configuration;
+using codeRR.Infrastructure.Configuration;
 
-namespace OneTrueError.App.Tests.Configuration.TestEntitites
+namespace codeRR.App.Tests.Configuration.TestEntitites
 {
     internal class MySection : IConfigurationSection
     {

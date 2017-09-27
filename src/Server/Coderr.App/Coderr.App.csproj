@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net452</TargetFramework>
+    <RootNamespace>codeRR.App</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
   <PackageReference Include="ColorCode" Version="1.0.1" />
@@ -13,8 +14,8 @@
   <PackageReference Include="UAParser" Version="2.1.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OneTrueError.Api\OneTrueError.Api.csproj" />
-    <ProjectReference Include="..\OneTrueError.Infrastructure\OneTrueError.Infrastructure.csproj" />
+    <ProjectReference Include="..\Coderr.Api\codeRR.Api.csproj" />
+    <ProjectReference Include="..\codeRR.Infrastructure\codeRR.Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Management" />

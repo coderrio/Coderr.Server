@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace OneTrueError.Api.Client.Json
+namespace codeRR.Api.Client.Json
 {
     /// <summary>
     ///     Allows us to serialize properties with private setters.

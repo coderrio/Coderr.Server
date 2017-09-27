@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OneTrueError.Api.Core.Messaging
+namespace codeRR.Api.Core.Messaging
 {
     /// <summary>
     ///     Used to send emails.

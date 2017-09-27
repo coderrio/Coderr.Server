@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace OneTrueError.ReportAnalyzer.LibContracts
+namespace codeRR.ReportAnalyzer.LibContracts
 {
     /// <summary>
-    ///     DTO for a client library report. Should always look exactly as the report in the OneTrueError.Client assembly
+    ///     DTO for a client library report. Should always look exactly as the report in the codeRR.Client assembly
     /// </summary>
     [Serializable]
     public class ReceivedReportDTO
@@ -45,7 +45,7 @@ namespace OneTrueError.ReportAnalyzer.LibContracts
         public string ReportId { get; set; }
 
         /// <summary>
-        ///     Version of the report (version of the OneTrueError.Reporting API contract)
+        ///     Version of the report (version of the codeRR.Reporting API contract)
         /// </summary>
         public string ReportVersion { get; set; }
     }

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
-namespace OneTrueError.Web.Areas.Admin.Models.Applications
+namespace codeRR.Web.Areas.Admin.Models.Applications
 {
     public class ApplicationVersionViewModel
     {

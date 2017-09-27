@@ -2,26 +2,28 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net452</TargetFrameworks>
     <Version>1.0.4.0</Version>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <DocumentationFile>bin\$(Configuration)\net452\OneTrueError.Api.Client.xml</DocumentationFile>
+    <RootNamespace>codeRR.Api</RootNamespace>
+    <AssemblyName>Coderr.Api</AssemblyName>
+    <!--<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <DocumentationFile>bin\$(Configuration)\net452\codeRR.Api.Client.xml</DocumentationFile>-->
   </PropertyGroup>
-  <PropertyGroup>
-    <PackageId>OneTrueError.Server.Api</PackageId>
+  <!--  <PropertyGroup>
+    <PackageId>codeRR.Server.Api</PackageId>
     <Authors>1TCompany AB</Authors>
-    <Description>CQRS api definition for OneTrueError Server.</Description>
+    <Description>CQRS api definition for codeRR Server.</Description>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes>First release</PackageReleaseNotes>
     <Copyright>Copyright 2017 © 1TCompany AB. All rights reserved.</Copyright>
     <PackageTags>logger exceptions analysis .net-core netstandard</PackageTags>
-    <PackageIconUrl>http://onetrueerror.com/images/nuget_icon.png</PackageIconUrl>
-    <RepositoryUrl>https://github.com/onetrueerror/onetrueerror.server</RepositoryUrl>
+    <PackageIconUrl>http://coderrapp.com/images/nuget_icon.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/coderr/coderr.server</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/onetrueerror/OneTrueError.Server/master/LICENSE</PackageLicenseUrl>
-    <PackageProjectUrl>https://onetrueerror.com</PackageProjectUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/coderr/codeRR.Server/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://coderrapp.com</PackageProjectUrl>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
     <NoWarn>1701;1702;1705;1591</NoWarn>
-  </PropertyGroup>
+  </PropertyGroup>-->
   <ItemGroup>
     <PackageReference Include="DotNetCqs" Version="1.0.1" />
   </ItemGroup>

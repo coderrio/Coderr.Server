@@ -6,10 +6,10 @@ using Griffin.ApplicationServices;
 using Griffin.Container;
 using Griffin.Data;
 using log4net;
-using OneTrueError.Web.Cqs;
+using codeRR.Web.Cqs;
 using Owin;
 
-namespace OneTrueError.Web.Services
+namespace codeRR.Web.Services
 {
     /// <summary>
     ///     Used to configure the back-end. It's a mess, but a limited mess.

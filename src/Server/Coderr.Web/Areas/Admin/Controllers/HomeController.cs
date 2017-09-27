@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Web.Mvc;
-using OneTrueError.App.Configuration;
+using codeRR.App.Configuration;
 using OneTrueError.Client;
-using OneTrueError.Infrastructure;
-using OneTrueError.Infrastructure.Configuration;
-using OneTrueError.Web.Areas.Admin.Models;
+using codeRR.Infrastructure;
+using codeRR.Infrastructure.Configuration;
+using codeRR.Web.Areas.Admin.Models;
 
-namespace OneTrueError.Web.Areas.Admin.Controllers
+namespace codeRR.Web.Areas.Admin.Controllers
 {
     [Authorize]
     public class HomeController : Controller
@@ -43,7 +43,7 @@ namespace OneTrueError.Web.Areas.Admin.Controllers
         public ActionResult Errors()
         {
             var model = new ErrorTrackingViewModel();
-            var config = ConfigurationStore.Instance.Load<OneTrueErrorConfigSection>();
+            var config = ConfigurationStore.Instance.Load<codeRRConfigSection>();
             if (config != null)
             {
                 model.ActivateTracking = config.ActivateTracking;
@@ -62,12 +62,12 @@ namespace OneTrueError.Web.Areas.Admin.Controllers
             if (!ModelState.IsValid)
                 return View("ErrorTracking", model);
 
-            var settings = new OneTrueErrorConfigSection();
+            var settings = new codeRRConfigSection();
             settings.ActivateTracking = model.ActivateTracking;
             settings.ContactEmail = model.ContactEmail;
             settings.InstallationId = model.InstallationId;
             ConfigurationStore.Instance.Store(settings);
-            WebApiApplication.ReportToOneTrueError = model.ActivateTracking;
+            WebApiApplication.ReportTocodeRR = model.ActivateTracking;
             return Redirect(Url.GetNextWizardStep());
         }
 

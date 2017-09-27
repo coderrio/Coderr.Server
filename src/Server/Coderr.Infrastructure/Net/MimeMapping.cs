@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace OneTrueError.Infrastructure.Net
+namespace codeRR.Infrastructure.Net
 {
     /// <summary>
     ///     Mappings between file extensions and mime types

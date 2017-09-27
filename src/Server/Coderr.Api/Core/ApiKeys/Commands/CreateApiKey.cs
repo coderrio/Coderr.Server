@@ -1,13 +1,13 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace OneTrueError.Api.Core.ApiKeys.Commands
+namespace codeRR.Api.Core.ApiKeys.Commands
 {
     /// <summary>
     ///     Create a new API key
     /// </summary>
     /// <remarks>
-    ///     <para>API keys are used to be able to communicate with the OneTrueError server through the HTTP API.</para>
+    ///     <para>API keys are used to be able to communicate with the codeRR server through the HTTP API.</para>
     /// </remarks>
     [AuthorizeRoles("SysAdmin")]
     public class CreateApiKey : Command

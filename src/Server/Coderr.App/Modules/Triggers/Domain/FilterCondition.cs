@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace OneTrueError.App.Modules.Triggers.Domain
+namespace codeRR.App.Modules.Triggers.Domain
 {
     /// <summary>
     ///     Specifies how the filter value should be compared with the actual property data.

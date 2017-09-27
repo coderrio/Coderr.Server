@@ -1,4 +1,4 @@
-﻿namespace OneTrueError.App.Core.Applications
+﻿namespace codeRR.App.Core.Applications
 {
     /// <summary>
     /// Application that a specific user is a member of

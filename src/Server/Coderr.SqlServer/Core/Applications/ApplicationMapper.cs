@@ -1,9 +1,9 @@
 ﻿using System;
 using Griffin.Data.Mapper;
-using OneTrueError.Api.Core.Applications;
-using OneTrueError.App.Core.Applications;
+using codeRR.Api.Core.Applications;
+using codeRR.App.Core.Applications;
 
-namespace OneTrueError.SqlServer.Core.Applications
+namespace codeRR.SqlServer.Core.Applications
 {
     public class ApplicationMapper : CrudEntityMapper<Application>
     {

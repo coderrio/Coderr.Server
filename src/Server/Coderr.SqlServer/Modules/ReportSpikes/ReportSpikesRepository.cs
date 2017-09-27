@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
-using OneTrueError.App.Modules.ReportSpikes;
+using codeRR.App.Modules.ReportSpikes;
 
-namespace OneTrueError.SqlServer.Modules.ReportSpikes
+namespace codeRR.SqlServer.Modules.ReportSpikes
 {
     [Component]
     public class ReportSpikesRepository : IReportSpikeRepository

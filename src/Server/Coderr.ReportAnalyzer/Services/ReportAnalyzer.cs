@@ -6,13 +6,13 @@ using Griffin.Container;
 using log4net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using OneTrueError.Api.Core.Incidents;
-using OneTrueError.Api.Core.Incidents.Events;
-using OneTrueError.Api.Core.Reports;
-using OneTrueError.ReportAnalyzer.Domain.Incidents;
-using OneTrueError.ReportAnalyzer.Domain.Reports;
+using codeRR.Api.Core.Incidents;
+using codeRR.Api.Core.Incidents.Events;
+using codeRR.Api.Core.Reports;
+using codeRR.ReportAnalyzer.Domain.Incidents;
+using codeRR.ReportAnalyzer.Domain.Reports;
 
-namespace OneTrueError.ReportAnalyzer.Services
+namespace codeRR.ReportAnalyzer.Services
 {
     /// <summary>
     ///     Runs analysis for the report.

@@ -7,13 +7,13 @@ using System.Web.Http;
 using Griffin.Data;
 using log4net;
 using Newtonsoft.Json;
-using OneTrueError.Infrastructure;
-using OneTrueError.Infrastructure.Queueing;
-using OneTrueError.ReportAnalyzer.LibContracts;
-using OneTrueError.Web.Areas.Receiver.Helpers;
-using OneTrueError.Web.Areas.Receiver.Models;
+using codeRR.Infrastructure;
+using codeRR.Infrastructure.Queueing;
+using codeRR.ReportAnalyzer.LibContracts;
+using codeRR.Web.Areas.Receiver.Helpers;
+using codeRR.Web.Areas.Receiver.Models;
 
-namespace OneTrueError.Web.Areas.Receiver.Controllers
+namespace codeRR.Web.Areas.Receiver.Controllers
 {
     [AllowAnonymous]
     public class FeedbackController : ApiController

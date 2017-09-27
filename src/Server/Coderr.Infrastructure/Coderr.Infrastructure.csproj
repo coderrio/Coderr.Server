@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net452</TargetFramework>
+    <RootNamespace>codeRR.Infrastructure</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
   <PackageReference Include="Griffin.Container" Version="1.1.4" />
@@ -8,7 +9,7 @@
   <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OneTrueError.Api\OneTrueError.Api.csproj" />
+    <ProjectReference Include="..\Coderr.Api\codeRR.Api.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Configuration" />

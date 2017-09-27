@@ -10,18 +10,18 @@ using DotNetCqs;
 using log4net;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
-using OneTrueError.Api.Core.Accounts;
-using OneTrueError.Api.Core.Accounts.Commands;
-using OneTrueError.Api.Core.Accounts.Requests;
-using OneTrueError.Api.Core.Applications;
-using OneTrueError.Api.Core.Applications.Queries;
-using OneTrueError.Api.Core.Invitations.Queries;
-using OneTrueError.App.Configuration;
-using OneTrueError.Infrastructure.Configuration;
-using OneTrueError.Infrastructure.Security;
-using OneTrueError.Web.Models.Account;
+using codeRR.Api.Core.Accounts;
+using codeRR.Api.Core.Accounts.Commands;
+using codeRR.Api.Core.Accounts.Requests;
+using codeRR.Api.Core.Applications;
+using codeRR.Api.Core.Applications.Queries;
+using codeRR.Api.Core.Invitations.Queries;
+using codeRR.App.Configuration;
+using codeRR.Infrastructure.Configuration;
+using codeRR.Infrastructure.Security;
+using codeRR.Web.Models.Account;
 
-namespace OneTrueError.Web.Controllers
+namespace codeRR.Web.Controllers
 {
     /// <summary>
     ///     TODO: Break out logic
@@ -179,7 +179,7 @@ namespace OneTrueError.Web.Controllers
                         ModelState.AddModelError("", "Incorrect username or password.");
                     else
                         ModelState.AddModelError("",
-                            "Your account is locked or have not been activated (check your mailbox). Contact support@onetrueerror.com if you need assistance.");
+                            "Your account is locked or have not been activated (check your mailbox). Contact support@coderrapp.com if you need assistance.");
 
                     model.Password = "";
                     return View(model);

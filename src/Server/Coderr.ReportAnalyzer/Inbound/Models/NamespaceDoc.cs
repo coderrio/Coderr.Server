@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace OneTrueError.ReportAnalyzer.Inbound.Models
+namespace codeRR.ReportAnalyzer.Inbound.Models
 {
     /// <summary>
     ///     These classes is an exact match of the client library DTOs.

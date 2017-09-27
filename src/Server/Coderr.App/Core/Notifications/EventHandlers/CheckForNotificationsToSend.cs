@@ -2,11 +2,11 @@
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
-using OneTrueError.Api.Core.Incidents.Events;
-using OneTrueError.App.Core.Notifications.Tasks;
-using OneTrueError.App.Core.Users;
+using codeRR.Api.Core.Incidents.Events;
+using codeRR.App.Core.Notifications.Tasks;
+using codeRR.App.Core.Users;
 
-namespace OneTrueError.App.Core.Notifications.EventHandlers
+namespace codeRR.App.Core.Notifications.EventHandlers
 {
     /// <summary>
     ///     Responsible of sending notifications when a new report have been analyzed.

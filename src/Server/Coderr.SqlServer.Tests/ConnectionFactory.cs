@@ -3,7 +3,7 @@ using System.Data;
 using System.Data.SqlClient;
 using Griffin.Data;
 
-namespace OneTrueError.SqlServer.Tests
+namespace codeRR.SqlServer.Tests
 {
     internal class ConnectionFactory
     {

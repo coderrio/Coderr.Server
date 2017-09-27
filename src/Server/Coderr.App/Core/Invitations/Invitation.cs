@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace OneTrueError.App.Core.Invitations
+namespace codeRR.App.Core.Invitations
 {
     /// <summary>
     ///     Invitation to join this OTE installation

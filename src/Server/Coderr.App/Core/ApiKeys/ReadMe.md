@@ -1,5 +1,5 @@
 ﻿Api Keys
 =========
 
-Api keys are used to allow other applications to communicate with OneTrueError through the HTTP api.
+Api keys are used to allow other applications to communicate with codeRR through the HTTP api.
 

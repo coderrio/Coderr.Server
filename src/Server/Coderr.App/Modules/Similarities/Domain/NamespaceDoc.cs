@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace OneTrueError.App.Modules.Similarities.Domain
+namespace codeRR.App.Modules.Similarities.Domain
 {
     /// <summary>
     ///     Similarities are used to analyze every error report to detect what all reports for an incident have in common.

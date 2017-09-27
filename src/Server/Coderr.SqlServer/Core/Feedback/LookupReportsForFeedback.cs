@@ -5,9 +5,9 @@ using Griffin.ApplicationServices;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 using log4net;
-using OneTrueError.App.Core.Feedback;
+using codeRR.App.Core.Feedback;
 
-namespace OneTrueError.SqlServer.Core.Feedback
+namespace codeRR.SqlServer.Core.Feedback
 {
     //TODO: invent some way to execute jobs for all customer databases.
     //[Component(RegisterAsSelf = true)]

@@ -1,4 +1,4 @@
-﻿namespace OneTrueError.ReportAnalyzer.Scanners
+﻿namespace codeRR.ReportAnalyzer.Scanners
 {
     /// <summary>
     ///     Application

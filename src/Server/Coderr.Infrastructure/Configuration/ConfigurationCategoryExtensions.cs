@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace OneTrueError.Infrastructure.Configuration
+namespace codeRR.Infrastructure.Configuration
 {
     /// <summary>
     ///     Extensions used to convert between a flat object and a configuration dictionary

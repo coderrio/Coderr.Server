@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace OneTrueError.Api.Client
+namespace codeRR.Api.Client
 {
     internal static class StringBuilderExtensions
     {

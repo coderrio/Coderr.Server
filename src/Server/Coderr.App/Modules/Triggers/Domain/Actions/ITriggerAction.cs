@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace OneTrueError.App.Modules.Triggers.Domain.Actions
+namespace codeRR.App.Modules.Triggers.Domain.Actions
 {
     /// <summary>
     ///     Represents trigger actions, i.e. the work that should be done once all rules have accepted the report.

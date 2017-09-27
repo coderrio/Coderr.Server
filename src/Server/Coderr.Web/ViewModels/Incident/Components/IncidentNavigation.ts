@@ -2,8 +2,8 @@
     static set(routeData: any, subTitle?: string, subAction?: string) {
 
         var data = {
-            incident: OneTrueError.Core.Incidents.Queries.GetIncidentResult = null,
-            app: OneTrueError.Core.Applications.Queries.GetApplicationInfoResult = null,
+            incident: codeRR.Core.Incidents.Queries.GetIncidentResult = null,
+            app: codeRR.Core.Applications.Queries.GetApplicationInfoResult = null,
             subTitle: subTitle,
             subAction: subAction
         };
@@ -13,10 +13,10 @@
         var incidentId = routeData['incidentId'];
 
         if (window['currentIncident'] == null) {
-            data.incident = <OneTrueError.Core.Incidents.Queries.GetIncidentResult>window['currentIncident'];
+            data.incident = <codeRR.Core.Incidents.Queries.GetIncidentResult>window['currentIncident'];
             if (data.incident == null || data.incident.Id !== incidentId) {
-                var query = new OneTrueError.Core.Incidents.Queries.GetIncident(incidentId);
-                var p = CqsClient.query<OneTrueError.Core.Incidents.Queries.GetIncidentResult>(query);
+                var query = new codeRR.Core.Incidents.Queries.GetIncident(incidentId);
+                var p = CqsClient.query<codeRR.Core.Incidents.Queries.GetIncidentResult>(query);
                 promises.push(p);
                 p.done(result => {
                     window['currentIncident'] = result;
@@ -27,7 +27,7 @@
             data.incident = window['currentIncident'];
         }
 
-        var app = new OneTrueError.Applications.ApplicationService();
+        var app = new codeRR.Applications.ApplicationService();
         var p2 = app.get(appId)
             .then(result => {
                 data.app = result;
@@ -38,7 +38,7 @@
     }
 
     private static setData(data:any) {
-        var bc: OneTrueError.Applications.IBreadcrumb[] = [
+        var bc: codeRR.Applications.IBreadcrumb[] = [
             { href: `/application/${data.app.Id}/`, title: data.app.Name },
             { href: `/application/${data.app.Id}/incident/${data.incident.Id}/`, title: 'Incident' }
         ];
@@ -50,12 +50,12 @@
                 href: `/application/${data.app.Id}/incident/${data.incident.Id}/${data.subAction}`,
                 title: cleanTitle
             });
-            OneTrueError.Applications.Navigation.pageTitle = data.subTitle;
+            codeRR.Applications.Navigation.pageTitle = data.subTitle;
         } else {
-            OneTrueError.Applications.Navigation.pageTitle = data.incident.Description;
+            codeRR.Applications.Navigation.pageTitle = data.incident.Description;
         }
 
-        OneTrueError.Applications.Navigation.breadcrumbs(bc);
+        codeRR.Applications.Navigation.breadcrumbs(bc);
     }
 
 }

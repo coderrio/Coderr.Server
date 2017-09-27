@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OneTrueError.ReportAnalyzer.Inbound.Models
+namespace codeRR.ReportAnalyzer.Inbound.Models
 {
     /// <summary>
     ///     Report as uploaded by the client API.

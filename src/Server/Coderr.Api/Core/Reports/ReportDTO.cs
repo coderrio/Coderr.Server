@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OneTrueError.Api.Core.Reports
+namespace codeRR.Api.Core.Reports
 {
     /// <summary>
     ///     Report representation.

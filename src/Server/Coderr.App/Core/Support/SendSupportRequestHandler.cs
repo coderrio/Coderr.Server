@@ -4,14 +4,14 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using DotNetCqs;
 using Griffin.Container;
-using OneTrueError.Api.Core.Support;
-using OneTrueError.App.Configuration;
-using OneTrueError.Infrastructure.Configuration;
+using codeRR.Api.Core.Support;
+using codeRR.App.Configuration;
+using codeRR.Infrastructure.Configuration;
 
-namespace OneTrueError.App.Core.Support
+namespace codeRR.App.Core.Support
 {
     /// <summary>
-    ///     Sends a support request to the OneTrueError Team.
+    ///     Sends a support request to the codeRR Team.
     /// </summary>
     /// <remarks>
     ///     <para>
@@ -25,7 +25,7 @@ namespace OneTrueError.App.Core.Support
         public async Task ExecuteAsync(SendSupportRequest command)
         {
             var baseConfig = ConfigurationStore.Instance.Load<BaseConfiguration>();
-            var errorConfig = ConfigurationStore.Instance.Load<OneTrueErrorConfigSection>();
+            var errorConfig = ConfigurationStore.Instance.Load<codeRRConfigSection>();
 
             string email = null;
             var claim = ClaimsPrincipal.Current.FindFirst(ClaimTypes.Email);
@@ -55,7 +55,7 @@ namespace OneTrueError.App.Core.Support
 
             var content = new FormUrlEncodedContent(items);
             var client = new HttpClient();
-            await client.PostAsync("https://onetrueerror.com/support/request", content);
+            await client.PostAsync("https://coderrapp.com/support/request", content);
         }
     }
 }

@@ -11,10 +11,10 @@
 //using Griffin.Container;
 //using Griffin.Data;
 //using log4net;
-//using OneTrueError.MicroService.Core.Authentication;
-//using OneTrueError.ReportAnalyzer.App.Services;
+//using codeRR.MicroService.Core.Authentication;
+//using codeRR.ReportAnalyzer.App.Services;
 
-//namespace OneTrueError.ReportAnalyzer.App.Scanners
+//namespace codeRR.ReportAnalyzer.App.Scanners
 //{
 //    [Component(Lifetime = Lifetime.Singleton)]
 //    public class TryToAnalyzeInvalidReports : ApplicationServiceTimer

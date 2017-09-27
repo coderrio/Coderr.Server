@@ -1,4 +1,4 @@
-﻿namespace OneTrueError.App.Core.Accounts
+﻿namespace codeRR.App.Core.Accounts
 {
     /// <summary>
     ///     Account state

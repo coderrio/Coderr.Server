@@ -1,4 +1,4 @@
-﻿namespace OneTrueError.Api.Modules.Triggers
+﻿namespace codeRR.Api.Modules.Triggers
 {
     /// <summary>
     ///     Action to take when a filter is apssed

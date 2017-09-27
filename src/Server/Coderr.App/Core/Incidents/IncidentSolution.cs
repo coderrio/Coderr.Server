@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OneTrueError.App.Core.Incidents
+namespace codeRR.App.Core.Incidents
 {
     /// <summary>
     ///     How the development team solved the incident.
