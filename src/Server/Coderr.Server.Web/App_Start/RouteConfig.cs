@@ -11,7 +11,7 @@ namespace codeRR.Server.Web
                 "Default",
                 "{controller}/{action}/{id}",
                 new {controller = "Home", action = "ToInstall", id = UrlParameter.Optional},
-                new[] {"codeRR.Web.Controllers"}
+                new[] {"codeRR.Server.Web.Controllers"}
                 );
         }
 
@@ -27,7 +27,7 @@ namespace codeRR.Server.Web
                 "Default",
                 "{controller}/{action}/{id}",
                 new {controller = "Home", action = "Index", id = UrlParameter.Optional},
-                new[] {"codeRR.Web.Controllers"}
+                new[] { "codeRR.Server.Web.Controllers" }
                 );
         }
     }

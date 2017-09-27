@@ -126,6 +126,9 @@ namespace codeRR.Server.ReportAnalyzer.Inbound
                 json = Encoding.UTF8.GetString(body);
             }
 
+            //to support clients that still use the OneTrueError client library.
+            json = json.Replace("OneTrueError", "codeRR");
+
             return JsonConvert.DeserializeObject<NewReportDTO>(json,
                 new JsonSerializerSettings
                 {
