@@ -77,27 +77,27 @@
     </DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Coderr.Api.Client\codeRR.Server.Api.Client.csproj">
+    <ProjectReference Include="..\Coderr.Server.Api.Client\codeRR.Server.Api.Client.csproj">
       <Name>codeRR.Server.Api.Client</Name>
       <Project>{017F8863-3DE0-4AD2-9ED3-5ACB87BBBCD0}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\Coderr.Api\codeRR.Server.Api.csproj">
+    <ProjectReference Include="..\Coderr.Server.Api\codeRR.Server.Api.csproj">
       <Name>codeRR.Server.Api</Name>
       <Project>{FC331A95-FCA4-4764-8004-0884665DD01F}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\Coderr.App\codeRR.Server.App.csproj">
+    <ProjectReference Include="..\Coderr.Server.App\codeRR.Server.App.csproj">
       <Name>codeRR.Server.App</Name>
       <Project>{5EF42A74-9323-49FA-A1F6-974D6DE77202}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\Coderr.Infrastructure\codeRR.Server.Infrastructure.csproj">
+    <ProjectReference Include="..\Coderr.Server.Infrastructure\codeRR.Server.Infrastructure.csproj">
       <Name>codeRR.Server.Infrastructure</Name>
       <Project>{A78A50DA-C9D7-47F2-8528-D7EE39D91924}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\Coderr.ReportAnalyzer\codeRR.Server.ReportAnalyzer.csproj">
+    <ProjectReference Include="..\Coderr.Server.ReportAnalyzer\codeRR.Server.ReportAnalyzer.csproj">
       <Name>codeRR.Server.ReportAnalyzer</Name>
       <Project>{29FBF805-CAFD-426A-A576-9756D375BF18}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\Coderr.SqlServer\codeRR.Server.SqlServer.csproj">
+    <ProjectReference Include="..\Coderr.Server.SqlServer\codeRR.Server.SqlServer.csproj">
       <Name>codeRR.Server.SqlServer</Name>
       <Project>{B967BEEA-CDDD-4A83-A4F2-1C946099ED51}</Project>
     </ProjectReference>

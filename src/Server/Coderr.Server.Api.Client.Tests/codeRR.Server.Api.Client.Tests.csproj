@@ -73,11 +73,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Coderr.Api.Client\codeRR.Server.Api.Client.csproj">
+    <ProjectReference Include="..\Coderr.Server.Api.Client\codeRR.Server.Api.Client.csproj">
       <Project>{017F8863-3DE0-4AD2-9ED3-5ACB87BBBCD0}</Project>
       <Name>codeRR.Server.Api.Client</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Coderr.Api\codeRR.Server.Api.csproj">
+    <ProjectReference Include="..\Coderr.Server.Api\codeRR.Server.Api.csproj">
       <Project>{fc331a95-fca4-4764-8004-0884665dd01f}</Project>
       <Name>codeRR.Server.Api</Name>
     </ProjectReference>

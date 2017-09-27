@@ -26,14 +26,14 @@
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.4.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Coderr.Api\codeRR.Server.Api.csproj" />
+    <ProjectReference Include="..\Coderr.Server.Api\codeRR.Server.Api.csproj" />
   </ItemGroup>
   <!--<ItemGroup>
     <_PackageFiles Include="$(OutputPath)\net452\codeRR.Api.*">
       <BuildAction>None</BuildAction>
       <PackagePath>lib\net452\</PackagePath>
     </_PackageFiles>
-    <_PackageFiles Include="$(OutputPath)\netstandard2.0\codeRR.Api.*">
+    <_PackageFiles Include="$(OutputPath)\netstandard2.0\codeRR.Server.Api.*">
       <BuildAction>None</BuildAction>
       <PackagePath>lib\netstandard2.0\</PackagePath>
     </_PackageFiles>

@@ -11,7 +11,7 @@
 		<PackageReference Include="NSubstitute" Version="2.0.3" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\Coderr.SqlServer\codeRR.Server.SqlServer.csproj" />
+	  <ProjectReference Include="..\Coderr.Server.SqlServer\codeRR.Server.SqlServer.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -12,9 +12,9 @@
   <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Coderr.Api\codeRR.Server.Api.csproj" />
-    <ProjectReference Include="..\Coderr.App\codeRR.Server.App.csproj" />
-    <ProjectReference Include="..\Coderr.ReportAnalyzer\codeRR.Server.ReportAnalyzer.csproj" />
+    <ProjectReference Include="..\Coderr.Server.Api\codeRR.Server.Api.csproj" />
+    <ProjectReference Include="..\Coderr.Server.App\codeRR.Server.App.csproj" />
+    <ProjectReference Include="..\Coderr.Server.ReportAnalyzer\codeRR.Server.ReportAnalyzer.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Configuration" />

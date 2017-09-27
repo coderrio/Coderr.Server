@@ -13,7 +13,7 @@
 
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\Coderr.App\codeRR.Server.App.csproj" />
+	  <ProjectReference Include="..\Coderr.Server.App\codeRR.Server.App.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 		<Reference Include="System.Configuration" />

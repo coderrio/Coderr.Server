@@ -16,8 +16,8 @@
     <PackageReference Include="UAParser" Version="2.1.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Coderr.Api\codeRR.Server.Api.csproj" />
-    <ProjectReference Include="..\Coderr.Infrastructure\codeRR.Server.Infrastructure.csproj" />
+    <ProjectReference Include="..\Coderr.Server.Api\codeRR.Server.Api.csproj" />
+    <ProjectReference Include="..\Coderr.Server.Infrastructure\codeRR.Server.Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Management" />
