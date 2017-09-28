@@ -16,9 +16,8 @@ namespace codeRR.Server.Api.Core.Accounts.Events
         public AccountRegistered(int accountId, string userName)
         {
             if (accountId <= 0) throw new ArgumentNullException("accountId");
-            if (userName == null) throw new ArgumentNullException(nameof(userName));
             AccountId = accountId;
-            UserName = userName;
+            UserName = userName ?? throw new ArgumentNullException(nameof(userName));
         }
 
         /// <summary>
@@ -31,11 +30,22 @@ namespace codeRR.Server.Api.Core.Accounts.Events
         /// <summary>
         ///     Account id (primary key).
         /// </summary>
-        public int AccountId { get; private set; }
+        public int AccountId { get; }
+
+        /// <summary>
+        ///     The registered user is a system administrator
+        /// </summary>
+        /// <remarks>
+        ///     <para>
+        ///         System administrators can create new applications, decide who is application administrator
+        ///         and configure other system wide settings.
+        ///     </para>
+        /// </remarks>
+        public bool IsSysAdmin { get; set; }
 
         /// <summary>
         ///     User name as entered by the user.
         /// </summary>
-        public string UserName { get; private set; }
+        public string UserName { get; }
     }
 }

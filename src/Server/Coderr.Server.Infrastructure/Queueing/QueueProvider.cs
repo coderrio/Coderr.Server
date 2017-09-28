@@ -14,45 +14,61 @@ namespace codeRR.Server.Infrastructure.Queueing
     [Component(Lifetime = Lifetime.Singleton)]
     public class QueueProvider : IMessageQueueProvider
     {
+        /// <summary>
+        ///     To allow extensions (not the most fantastic way to do it, more of a hack). Got to be able to update the container
+        ///     service registry.
+        /// </summary>
+        public static Func<string, MessageQueueSettings, IMessageQueue> CreateQueueHandler;
+
         private IMessageQueue _eventQueue;
         private IMessageQueue _feedbackQueue;
         private IMessageQueue _reportQueue;
+
 
         public IMessageQueue Open(string queueName)
         {
             var config = ConfigurationStore.Instance.Load<MessageQueueSettings>()
                          ?? new MessageQueueSettings(); //isn't added by the installation guide.
-            var conString = ConfigurationManager.ConnectionStrings["Db"].ConnectionString;
-            var provider = ConfigurationManager.ConnectionStrings["Db"].ProviderName;
+
             switch (queueName)
             {
                 case "ReportQueue":
                     if (_reportQueue != null)
                         return _reportQueue;
-                    _reportQueue = config.UseSql
-                        ? (IMessageQueue) new AdoNetMessageQueue("Reports", provider, conString)
-                        : new MsmqMessageQueue(config.ReportQueue, config.ReportAuthentication,
-                            config.ReportTransactions);
+                    _reportQueue = CreateQueue("Reports", config);
                     return _reportQueue;
                 case "FeedbackQueue":
                     if (_feedbackQueue != null)
                         return _feedbackQueue;
-                    _feedbackQueue = config.UseSql
-                        ? (IMessageQueue) new AdoNetMessageQueue("Feedback", provider, conString)
-                        : new MsmqMessageQueue(config.FeedbackQueue, config.FeedbackAuthentication,
-                            config.FeedbackTransactions);
+                    _feedbackQueue = CreateQueue("Feedback", config);
                     return _feedbackQueue;
                 case "EventQueue":
                     if (_eventQueue != null)
                         return _eventQueue;
-                    _eventQueue = config.UseSql
-                        ? (IMessageQueue) new AdoNetMessageQueue("Events", provider, conString)
-                        : new MsmqMessageQueue(config.EventQueue, config.EventAuthentication,
-                            config.EventTransactions);
+                    _eventQueue = CreateQueue("Events", config);
                     return _eventQueue;
                 default:
                     throw new NotSupportedException("Queue is not found: " + queueName);
             }
+        }
+
+        protected virtual IMessageQueue CreateQueue(string queueName, MessageQueueSettings config)
+        {
+            if (CreateQueueHandler != null)
+                return CreateQueueHandler(queueName, config);
+
+
+            if (!config.UseSql)
+                return new MsmqMessageQueue(config.ReportQueue, config.ReportAuthentication,
+                    config.ReportTransactions);
+
+
+            var conStr = ConfigurationManager.ConnectionStrings["Queue"]
+                         ?? ConfigurationManager.ConnectionStrings["Db"];
+            var conString = conStr.ConnectionString;
+            var provider = conStr.ProviderName;
+
+            return new AdoNetMessageQueue(queueName, provider, conString);
         }
     }
 }
