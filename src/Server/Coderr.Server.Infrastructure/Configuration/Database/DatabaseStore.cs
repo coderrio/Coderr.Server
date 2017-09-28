@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using Griffin.Data;
 
 namespace codeRR.Server.Infrastructure.Configuration.Database
@@ -33,7 +34,7 @@ namespace codeRR.Server.Infrastructure.Configuration.Database
             }
 
             var section = new T();
-            using (var connection = ConnectionFactory.Create())
+            using (var connection = OpenConnectionFor<T>())
             {
                 using (var cmd = connection.CreateCommand())
                 {
@@ -62,7 +63,7 @@ namespace codeRR.Server.Infrastructure.Configuration.Database
         public override void Store(IConfigurationSection section)
         {
             SetCache(section);
-            using (var connection = ConnectionFactory.Create())
+            using (var connection = OpenConnectionFor(section.GetType()))
             {
                 using (var cmd = connection.CreateCommand())
                 {
@@ -87,6 +88,27 @@ namespace codeRR.Server.Infrastructure.Configuration.Database
                     cmd.ExecuteNonQuery();
                 }
             }
+        }
+
+        /// <summary>
+        /// Allow connections to be created by another peep.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns>open connection</returns>
+        protected virtual IDbConnection OpenConnectionFor<T>()
+        {
+            return ConnectionFactory.Create();
+        }
+
+        /// <summary>
+        /// Allow connections to be created by another peep.
+        /// </summary>
+        /// <param name="configClassType">A <c>IConfigurationSection</c> type</param>
+        /// <returns>open connection</returns>
+        protected virtual IDbConnection OpenConnectionFor(Type configClassType)
+        {
+            if (configClassType == null) throw new ArgumentNullException(nameof(configClassType));
+            return ConnectionFactory.Create();
         }
 
         private void SetCache(IConfigurationSection section)
