@@ -24,6 +24,9 @@ namespace codeRR.Server.Web.Infrastructure
 
         public void Load(string pluginDirectory)
         {
+            if (!Directory.Exists(pluginDirectory))
+                Directory.CreateDirectory(pluginDirectory);
+
             var files = Directory.GetFiles(pluginDirectory, "*.dll");
             foreach (var file in files)
             {

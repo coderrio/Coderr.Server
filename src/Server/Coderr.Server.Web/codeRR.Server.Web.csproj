@@ -326,6 +326,8 @@
     <Compile Include="Infrastructure\Logging\LogAdapter.cs" />
     <Compile Include="Infrastructure\Logging\LogManagerAdapter.cs" />
     <Compile Include="Infrastructure\Logging\WebApiLogger.cs" />
+    <Compile Include="Infrastructure\PluginConfiguration.cs" />
+    <Compile Include="Infrastructure\PluginManager.cs" />
     <Compile Include="Infrastructure\SchemaUpdateModule.cs" />
     <Compile Include="Infrastructure\SessionStoreMediator.cs" />
     <Compile Include="Models\Account\AcceptViewModel.cs" />

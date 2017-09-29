@@ -22,6 +22,7 @@ namespace codeRR.Server.SqlServer.Tools
 
             var settings = new JsonSerializerSettings
             {
+                NullValueHandling = NullValueHandling.Ignore,
                 ContractResolver = new IncludeNonPublicMembersContractResolver(),
                 ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor
             };
@@ -34,6 +35,7 @@ namespace codeRR.Server.SqlServer.Tools
         {
             var jsonSerializerSettings = new JsonSerializerSettings
             {
+                NullValueHandling = NullValueHandling.Ignore,
                 ContractResolver = new IncludeNonPublicMembersContractResolver(),
                 TypeNameHandling = TypeNameHandling.Objects
             };

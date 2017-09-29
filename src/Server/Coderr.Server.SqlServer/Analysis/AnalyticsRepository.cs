@@ -25,9 +25,9 @@ namespace codeRR.Server.SqlServer.Analysis
         private readonly IAdoNetUnitOfWork _unitOfWork;
         private MsmqMessageQueue _queue;
 
-        public AnalyticsRepository(IAdoNetUnitOfWork unitOfWork)
+        public AnalyticsRepository(AnalysisDbContext dbContext)
         {
-            _unitOfWork = unitOfWork;
+            _unitOfWork = dbContext?.UnitOfWork ?? throw new ArgumentNullException(nameof(dbContext));
 
             var settings = ConfigurationStore.Instance.Load<MessageQueueSettings>();
             if (settings != null && !settings.UseSql)

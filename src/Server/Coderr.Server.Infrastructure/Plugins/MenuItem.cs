@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace codeRR.Server.Infrastructure.Plugins
 {
     /// <summary>
-    /// Item for <see cref="MenuConfiguration"/>.
+    ///     Item for <see cref="MenuConfiguration" />.
     /// </summary>
     public class MenuItem
     {
@@ -29,7 +29,7 @@ namespace codeRR.Server.Infrastructure.Plugins
         }
 
         /// <summary>
-        /// Child items
+        ///     Child items
         /// </summary>
         /// <param name="name">Name in pascal case</param>
         /// <returns>item</returns>
@@ -37,31 +37,28 @@ namespace codeRR.Server.Infrastructure.Plugins
         public MenuItem this[string name] => _items[name];
 
         /// <summary>
-        /// All children
+        ///     All children
         /// </summary>
-        public IEnumerable<MenuItem> Items
-        {
-            get { return _items.Values; }
-        }
+        public IEnumerable<MenuItem> Items => _items.Values;
 
         /// <summary>
-        /// Name in PascalCase.
+        ///     Name in PascalCase.
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; }
 
         /// <summary>
-        /// Title (menu text)
-        /// </summary>
-        public string Title { get; private set; }
-
-        /// <summary>
-        /// Hashbang path
+        ///     Hashbang path
         /// </summary>
         public string SpaRoute { get; }
 
+        /// <summary>
+        ///     Title (menu text)
+        /// </summary>
+        public string Title { get; }
+
 
         /// <summary>
-        /// Add child item
+        ///     Add child item
         /// </summary>
         /// <param name="name"></param>
         /// <param name="title"></param>
@@ -77,7 +74,7 @@ namespace codeRR.Server.Infrastructure.Plugins
         }
 
         /// <summary>
-        /// Change path to absolute path (except for hash routes).
+        ///     Change path to absolute path (except for hash routes).
         /// </summary>
         /// <param name="formatter"></param>
         /// <returns></returns>

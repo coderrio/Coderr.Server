@@ -1,7 +1,7 @@
 ﻿namespace codeRR.Server.Infrastructure.Plugins
 {
     /// <summary>
-    /// Main menu
+    ///     Main menu
     /// </summary>
     public class MenuConfiguration
     {
@@ -29,7 +29,7 @@
         }
 
         /// <summary>
-        /// Generate menu
+        ///     Generate menu
         /// </summary>
         /// <returns></returns>
         public MenuItem BuildMenu()
