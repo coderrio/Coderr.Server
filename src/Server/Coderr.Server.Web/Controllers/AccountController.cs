@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Security.Authentication;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -150,6 +151,10 @@ namespace codeRR.Server.Web.Controllers
 
         public ActionResult Login()
         {
+            var url = ConfigurationManager.AppSettings["LoginUrl"];
+            if (url != null && url != Request.Url.AbsolutePath)
+                return Redirect(url);
+
             return View();
         }
 

@@ -24,5 +24,19 @@ create table IncidentVersions
 	VersionId int not null constraint FK_IncidentVersions_ApplicationVersions references ApplicationVersions(Id)
 );
 
+IF COL_LENGTH('dbo.Incidents', 'StackTrace') IS NULL
+BEGIN
+ALTER TABLE Incidents ADD StackTrace varchar(MAX);
+
+UPDATE Incidents
+	SET StackTrace = (
+	SELECT TOP (1) Substring(Exception, 
+					CHARINDEX('"StackTrace":"', Exception) + 14, 
+					DATALENGTH(exception)-CHARINDEX('"StackTrace":"', Exception) - 14 - 1)
+	FROM ErrorReports
+	WHERE IncidentId = Incidents.Id)
+
+END
+
 
 UPDATE DatabaseSchema SET Version = 6;

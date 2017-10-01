@@ -13,13 +13,17 @@ namespace codeRR.Server.Web.Infrastructure
     {
         private static string _errorMessage;
 
+        private static bool IsDisabled => (ConfigurationManager.AppSettings["DisableMigrations"] == "true") ||
+                                          (ConfigurationManager.AppSettings["Configured"] != "true");
+
+
         public static void Register()
         {
             DynamicModuleUtility.RegisterModule(typeof(SchemaUpdateModule));
         }
         public void Init(HttpApplication context)
         {
-            if (ConfigurationManager.AppSettings["Configured"] != "true")
+            if (IsDisabled)
                 return;
 
             if (!SetupTools.DbTools.CanSchemaBeUpgraded())
