@@ -74,6 +74,21 @@ namespace codeRR.Server.Api.Client
         }
 
         /// <summary>
+        ///     Make a request
+        /// </summary>
+        /// <typeparam name="TReply">Reply from a request (a class from the <c>codeRR.Api</c> library)</typeparam>
+        /// <param name="request">request being made</param>
+        /// <returns></returns>
+        public async Task<TReply> RequestAsync<TReply>(Request<TReply> request)
+        {
+            //TODO: Unwrap the cqs object to query parameters instead
+            //to allow caching in the server
+            var response = await RequestAsync("POST", "request", request);
+            return await DeserializeResponse<TReply>(response);
+        }
+
+
+        /// <summary>
         ///     Open a channel
         /// </summary>
         /// <param name="uri">Root URL to the codeRR web</param>
