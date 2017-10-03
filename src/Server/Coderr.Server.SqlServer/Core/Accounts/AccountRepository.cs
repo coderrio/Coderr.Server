@@ -17,32 +17,23 @@ namespace codeRR.Server.SqlServer.Core.Accounts
 
         public AccountRepository(IAdoNetUnitOfWork uow)
         {
-            if (uow == null) throw new ArgumentNullException("uow");
-            _uow = uow;
+            _uow = uow ?? throw new ArgumentNullException(nameof(uow));
         }
 
-        /*
-        public string Id { get; private set; }
-        public string UserName { get; private set; }
-        public string HashedPassword { get; private set; }
-        public string Salt { get; private set; }
-        public DateTime CreatedAtUtc { get; private set; }
-        public AccountState AccountState { get; set; }
-        public string Email { get; private set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public DateTime UpdatedAtUtc { get; set; }
-        public string CompanyName { get; set; }
-        public string LastUsedOrganization { get; set; }
-        public string ActivationKey { get; set; }
-        public int LoginAttempts { get; private set; }
-        public DateTime LastLoginAtUtc { get; private set; }*/
+        /// <inheritdoc />
+        public Task<int> CountAsync()
+        {
+            return Task.FromResult((int)_uow.ExecuteScalar("SELECT CAST(count(*) as int) FROM Accounts"));
+        }
 
+
+        /// <inheritdoc />
         public async Task CreateAsync(Account account)
         {
             await _uow.InsertAsync(account);
         }
 
+        /// <inheritdoc />
         public async Task<Account> FindByActivationKeyAsync(string activationKey)
         {
             using (var cmd = _uow.CreateCommand())
@@ -53,6 +44,7 @@ namespace codeRR.Server.SqlServer.Core.Accounts
             }
         }
 
+        /// <inheritdoc />
         public async Task UpdateAsync(Account account)
         {
             using (var cmd = (DbCommand) _uow.CreateCommand())
@@ -87,9 +79,11 @@ namespace codeRR.Server.SqlServer.Core.Accounts
             }
         }
 
+        /// <inheritdoc />
         public async Task<Account> FindByUserNameAsync(string userName)
         {
-            if (userName == null) throw new ArgumentNullException("userName");
+            if (userName == null) throw new ArgumentNullException(nameof(userName));
+
             using (var cmd = (DbCommand) _uow.CreateCommand())
             {
                 cmd.CommandText = "SELECT TOP 1 * FROM Accounts WHERE UserName=@uname";
@@ -100,7 +94,8 @@ namespace codeRR.Server.SqlServer.Core.Accounts
 
         public async Task<Account> GetByIdAsync(int id)
         {
-            if (id <= 0) throw new ArgumentNullException("id");
+            if (id <= 0) throw new ArgumentNullException(nameof(id));
+
             using (var cmd = _uow.CreateCommand())
             {
                 cmd.CommandText = "SELECT * FROM Accounts WHERE Id=@id";
@@ -109,9 +104,11 @@ namespace codeRR.Server.SqlServer.Core.Accounts
             }
         }
 
+        /// <inheritdoc />
         public async Task<Account> FindByEmailAsync(string emailAddress)
         {
-            if (emailAddress == null) throw new ArgumentNullException("emailAddress");
+            if (emailAddress == null) throw new ArgumentNullException(nameof(emailAddress));
+
             using (var cmd = _uow.CreateCommand())
             {
                 cmd.CommandText = "SELECT * FROM Accounts WHERE Email=@email";
@@ -120,8 +117,11 @@ namespace codeRR.Server.SqlServer.Core.Accounts
             }
         }
 
+        /// <inheritdoc />
         public async Task<IEnumerable<Account>> GetByIdAsync(int[] ids)
         {
+            if (ids == null) throw new ArgumentNullException(nameof(ids));
+
             using (var cmd = (DbCommand) _uow.CreateCommand())
             {
                 cmd.CommandText = "SELECT * FROM Accounts WHERE Id IN (@ids)";
@@ -131,9 +131,11 @@ namespace codeRR.Server.SqlServer.Core.Accounts
         }
 
 
+        /// <inheritdoc />
         public async Task<bool> IsEmailAddressTakenAsync(string email)
         {
-            if (email == null) throw new ArgumentNullException("email");
+            if (email == null) throw new ArgumentNullException(nameof(email));
+
             using (var cmd = _uow.CreateDbCommand())
             {
                 cmd.CommandText = "SELECT TOP 1 Email FROM Accounts WHERE Email = @Email";
@@ -144,9 +146,11 @@ namespace codeRR.Server.SqlServer.Core.Accounts
         }
 
 
+        /// <inheritdoc />
         public async Task<bool> IsUserNameTakenAsync(string userName)
         {
-            if (userName == null) throw new ArgumentNullException("userName");
+            if (userName == null) throw new ArgumentNullException(nameof(userName));
+
             using (var cmd = _uow.CreateDbCommand())
             {
                 cmd.CommandText = "SELECT TOP 1 UserName FROM Accounts WHERE UserName = @userName";
@@ -158,6 +162,7 @@ namespace codeRR.Server.SqlServer.Core.Accounts
 
         public void Create(Account account)
         {
+            if (account == null) throw new ArgumentNullException(nameof(account));
             using (var cmd = _uow.CreateCommand())
             {
                 //for systems where ID must be specified
@@ -200,9 +205,17 @@ namespace codeRR.Server.SqlServer.Core.Accounts
             }
         }
 
-        public Account GetByUserName(string userName)
+        public async Task<Account> GetByUserNameAsync(string userName)
         {
-            return _uow.First<Account>(new {UserName = userName});
+            if (userName == null) throw new ArgumentNullException(nameof(userName));
+
+            using (var cmd = _uow.CreateCommand())
+            {
+                cmd.CommandText = "SELECT * FROM Accounts WHERE UserName=@userName";
+                cmd.AddParameter("userName", userName);
+                return await cmd.FirstAsync(new AccountMapper());
+            }
         }
+
     }
 }

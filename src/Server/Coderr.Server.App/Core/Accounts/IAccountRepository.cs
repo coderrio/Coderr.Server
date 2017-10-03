@@ -10,6 +10,12 @@ namespace codeRR.Server.App.Core.Accounts
     public interface IAccountRepository
     {
         /// <summary>
+        ///     Count the number of created accounts.
+        /// </summary>
+        /// <returns></returns>
+        Task<int> CountAsync();
+
+        /// <summary>
         ///     Create a new account.
         /// </summary>
         /// <param name="account">account</param>

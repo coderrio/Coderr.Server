@@ -1,5 +1,6 @@
 ﻿using System;
 using DotNetCqs;
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
 
 namespace codeRR.Server.Api.Core.Accounts.Commands
 {
@@ -16,12 +17,9 @@ namespace codeRR.Server.Api.Core.Accounts.Commands
         /// <param name="email">Email address</param>
         public RegisterAccount(string userName, string password, string email)
         {
-            if (userName == null) throw new ArgumentNullException("userName");
-            if (password == null) throw new ArgumentNullException("password");
-            if (email == null) throw new ArgumentNullException("email");
-            UserName = userName;
-            Password = password;
-            Email = email;
+            UserName = userName ?? throw new ArgumentNullException("userName");
+            Password = password ?? throw new ArgumentNullException("password");
+            Email = email ?? throw new ArgumentNullException("email");
         }
 
         /// <summary>
@@ -30,6 +28,19 @@ namespace codeRR.Server.Api.Core.Accounts.Commands
         protected RegisterAccount()
         {
         }
+
+        /// <summary>
+        ///     Use a specific account id
+        /// </summary>
+        /// <remarks>
+        ///     <para>0 = auto increment</para>
+        /// </remarks>
+        public int AccountId { get; private set; }
+
+        /// <summary>
+        ///     do not send an activation email, activate the account directly.
+        /// </summary>
+        public bool ActivateDirectly { get; private set; }
 
         /// <summary>
         ///     Email address.
@@ -45,5 +56,16 @@ namespace codeRR.Server.Api.Core.Accounts.Commands
         ///     User name
         /// </summary>
         public string UserName { get; private set; }
+
+        /// <summary>
+        ///     Activate this account directly
+        /// </summary>
+        /// <param name="accountId">Id of the account</param>
+        public void Activate(int accountId)
+        {
+            if (accountId <= 0) throw new ArgumentOutOfRangeException("accountId");
+            ActivateDirectly = true;
+            AccountId = accountId;
+        }
     }
 }

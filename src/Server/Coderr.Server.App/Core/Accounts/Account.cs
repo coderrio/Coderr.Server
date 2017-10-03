@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Security.Authentication;
 using System.Security.Cryptography;
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
 
 namespace codeRR.Server.App.Core.Accounts
 {
@@ -17,14 +18,26 @@ namespace codeRR.Server.App.Core.Accounts
         /// <summary>
         ///     Create a new instance of <see cref="Account" />-
         /// </summary>
+        /// <param name="accountId">Predefined account id</param>
+        /// <param name="userName">User name</param>
+        /// <param name="password">password</param>
+        public Account(int accountId, string userName, string password)
+            : this(userName, password)
+        {
+            if (accountId <= 0) throw new ArgumentOutOfRangeException(nameof(accountId));
+            Id = accountId;
+        }
+
+        /// <summary>
+        ///     Create a new instance of <see cref="Account" />-
+        /// </summary>
         /// <param name="userName">User name</param>
         /// <param name="password">password</param>
         public Account(string userName, string password)
         {
-            if (userName == null) throw new ArgumentNullException("userName");
-            if (password == null) throw new ArgumentNullException("password");
+            if (password == null) throw new ArgumentNullException(nameof(password));
 
-            UserName = userName;
+            UserName = userName ?? throw new ArgumentNullException(nameof(userName));
             CreatedAtUtc = DateTime.UtcNow;
             ActivationKey = Guid.NewGuid().ToString("N");
             AccountState = AccountState.VerificationRequired;
@@ -119,7 +132,7 @@ namespace codeRR.Server.App.Core.Accounts
         /// <param name="newPassword">New password as entered by the user.</param>
         public void ChangePassword(string newPassword)
         {
-            if (newPassword == null) throw new ArgumentNullException("newPassword");
+            if (newPassword == null) throw new ArgumentNullException(nameof(newPassword));
             HashedPassword = HashNewPassword(newPassword);
             ActivationKey = null;
             UpdatedAtUtc = DateTime.UtcNow;
@@ -172,7 +185,7 @@ namespace codeRR.Server.App.Core.Accounts
         /// </summary>
         /// <remarks>
         ///     <para>
-        ///         Changes user state to <see cref="codeRR.App.Core.Accounts.AccountState.ResetPassword" /> and generates a new
+        ///         Changes user state to <see cref="codeRR.Server.App.Core.Accounts.AccountState.ResetPassword" /> and generates a new
         ///         <see cref="ActivationKey" />.
         ///     </para>
         /// </remarks>
@@ -189,8 +202,7 @@ namespace codeRR.Server.App.Core.Accounts
         /// <param name="email">Email address</param>
         public void SetVerifiedEmail(string email)
         {
-            if (email == null) throw new ArgumentNullException("email");
-            Email = email;
+            Email = email ?? throw new ArgumentNullException(nameof(email));
         }
 
         /// <summary>
@@ -200,7 +212,7 @@ namespace codeRR.Server.App.Core.Accounts
         /// <returns><c>true</c> if the password is the same as the current one; otherwise false.</returns>
         public bool ValidatePassword(string enteredPassword)
         {
-            if (enteredPassword == null) throw new ArgumentNullException("enteredPassword");
+            if (enteredPassword == null) throw new ArgumentNullException(nameof(enteredPassword));
             var salt = Convert.FromBase64String(Salt);
             var algorithm2 = new Rfc2898DeriveBytes(enteredPassword, salt);
             var pw = algorithm2.GetBytes(128);
@@ -217,7 +229,7 @@ namespace codeRR.Server.App.Core.Accounts
         /// <returns>Salted and hashed password</returns>
         private string HashNewPassword(string password)
         {
-            if (password == null) throw new ArgumentNullException("password");
+            if (password == null) throw new ArgumentNullException(nameof(password));
             var algorithm2 = new Rfc2898DeriveBytes(password, 64);
             var salt = algorithm2.Salt;
             Salt = Convert.ToBase64String(salt);
