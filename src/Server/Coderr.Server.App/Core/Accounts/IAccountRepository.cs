@@ -42,7 +42,7 @@ namespace codeRR.Server.App.Core.Accounts
         /// <summary>
         ///     Find user
         /// </summary>
-        /// <param name="userName">username to match</param>
+        /// <param name="userName">user name to match</param>
         /// <returns>account if found; otherwise <c>null</c>.</returns>
         Task<Account> FindByUserNameAsync(string userName);
 
@@ -54,6 +54,13 @@ namespace codeRR.Server.App.Core.Accounts
         /// <exception cref="EntityNotFoundException">No account exists with the given id.</exception>
         Task<Account> GetByIdAsync(int id);
 
+        /// <summary>
+        /// Get user by user name
+        /// </summary>
+        /// <param name="userName">user name</param>
+        /// <returns>user</returns>
+        /// <exception cref="EntityNotFoundException">No account exists with the given userName.</exception>
+        Task<Account> GetByUserNameAsync(string userName);
 
         /// <summary>
         ///     Get all accounts by the given ids
@@ -72,9 +79,9 @@ namespace codeRR.Server.App.Core.Accounts
 
 
         /// <summary>
-        ///     Check if username is already taken.
+        ///     Check if user name is already taken.
         /// </summary>
-        /// <param name="userName">Username</param>
+        /// <param name="userName">User name</param>
         /// <returns><c>true</c> if it exists; otherwise <c>false</c>.</returns>
         Task<bool> IsUserNameTakenAsync(string userName);
 
