@@ -12,8 +12,8 @@ namespace codeRR.Server.Infrastructure.Configuration
         /// <summary>
         ///     Used to access the currently configured implementation
         /// </summary>
-        [SuppressMessage("Microsoft.Usage", "CA2211:NonConstantFieldsShouldNotBeVisible")] public static
-            ConfigurationStore Instance = new DatabaseStore();
+        [SuppressMessage("Microsoft.Usage", "CA2211:NonConstantFieldsShouldNotBeVisible")]
+        public static ConfigurationStore Instance;
 
         /// <summary>
         ///     Load a settings section

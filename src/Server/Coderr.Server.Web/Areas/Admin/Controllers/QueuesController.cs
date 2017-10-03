@@ -2,6 +2,7 @@
 using codeRR.Server.Infrastructure;
 using codeRR.Server.Infrastructure.Configuration;
 using codeRR.Server.Infrastructure.Queueing;
+using codeRR.Server.Infrastructure.Queueing.Msmq;
 using codeRR.Server.Web.Areas.Admin.Models;
 
 namespace codeRR.Server.Web.Areas.Admin.Controllers
@@ -46,21 +47,21 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
                 return Redirect(Url.GetNextWizardStep());
             }
 
-            var errorMessage = "";
+            string errorMessage;
             if (
-                !SetupTools.ValidateMessageQueue(model.ReportQueue, model.ReportAuthentication, model.ReportTransactions,
+                !MsMqTools.ValidateMessageQueue(model.ReportQueue, model.ReportAuthentication, model.ReportTransactions,
                     out errorMessage))
             {
                 ModelState.AddModelError("ReportQueue", errorMessage);
             }
             if (
-                !SetupTools.ValidateMessageQueue(model.FeedbackQueue, model.FeedbackAuthentication,
+                !MsMqTools.ValidateMessageQueue(model.FeedbackQueue, model.FeedbackAuthentication,
                     model.FeedbackTransactions, out errorMessage))
             {
                 ModelState.AddModelError("FeedbackQueue", errorMessage);
             }
             if (
-                !SetupTools.ValidateMessageQueue(model.EventQueue, model.EventAuthentication, model.EventTransactions,
+                !MsMqTools.ValidateMessageQueue(model.EventQueue, model.EventAuthentication, model.EventTransactions,
                     out errorMessage))
             {
                 ModelState.AddModelError("EventQueue", errorMessage);

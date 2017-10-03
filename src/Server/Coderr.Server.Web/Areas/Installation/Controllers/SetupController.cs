@@ -14,6 +14,13 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
     [OutputCache(Duration = 0, NoStore = true)]
     public class SetupController : Controller
     {
+        private IConnectionFactory _connectionFactory;
+
+        public SetupController(IConnectionFactory connectionFactory)
+        {
+            _connectionFactory = connectionFactory;
+        }
+
         [HttpPost]
         [AllowAnonymous]
         public ActionResult Activate()
@@ -97,10 +104,12 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
             if (!ModelState.IsValid)
                 return View("ErrorTracking", model);
 
-            var settings = new codeRRConfigSection();
-            settings.ActivateTracking = model.ActivateTracking;
-            settings.ContactEmail = model.ContactEmail;
-            settings.InstallationId = model.InstallationId;
+            var settings = new codeRRConfigSection
+            {
+                ActivateTracking = model.ActivateTracking,
+                ContactEmail = model.ContactEmail,
+                InstallationId = model.InstallationId
+            };
             ConfigurationStore.Instance.Store(settings);
             return Redirect(Url.GetNextWizardStep());
         }
@@ -110,7 +119,7 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
         {
             try
             {
-                ConnectionFactory.Create();
+                _connectionFactory.Open();
             }
             catch
             {

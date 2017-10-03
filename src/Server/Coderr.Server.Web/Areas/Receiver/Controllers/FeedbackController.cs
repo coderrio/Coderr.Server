@@ -20,9 +20,11 @@ namespace codeRR.Server.Web.Areas.Receiver.Controllers
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(FeedbackController));
         private readonly IMessageQueue _queue;
+        private IConnectionFactory _connectionFactory;
 
-        public FeedbackController(IMessageQueueProvider queueProvider)
+        public FeedbackController(IMessageQueueProvider queueProvider, IConnectionFactory connectionFactory)
         {
+            _connectionFactory = connectionFactory;
             _queue = queueProvider.Open("FeedbackQueue");
         }
 
@@ -32,7 +34,7 @@ namespace codeRR.Server.Web.Areas.Receiver.Controllers
             try
             {
                 int appId;
-                using (var connection = ConnectionFactory.Create())
+                using (var connection = _connectionFactory.Open())
                 {
                     using (var cmd = (DbCommand) connection.CreateCommand())
                     {

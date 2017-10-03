@@ -24,15 +24,19 @@ namespace codeRR.Server.ReportAnalyzer.Inbound
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(SaveReportHandler));
         private readonly IMessageQueue _queue;
-        private List<Func<NewReportDTO, bool>> _filters = new List<Func<NewReportDTO, bool>>();
+        private readonly IConnectionFactory _connectionFactory;
+        private readonly List<Func<NewReportDTO, bool>> _filters = new List<Func<NewReportDTO, bool>>();
 
         /// <summary>
         ///     Creates a new instance of <see cref="SaveReportHandler" />.
         /// </summary>
         /// <param name="queueProvider">provider</param>
-        public SaveReportHandler(IMessageQueueProvider queueProvider)
+        /// <param name="connectionFactory">Tries to find connection named "Queue" and uses default if not found.</param>
+        /// <exception cref="ArgumentNullException">queueProvider;connectionFactory</exception>
+        public SaveReportHandler(IMessageQueueProvider queueProvider, IConnectionFactory connectionFactory)
         {
-            if (queueProvider == null) throw new ArgumentNullException("queueProvider");
+            if (queueProvider == null) throw new ArgumentNullException(nameof(queueProvider));
+            _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
             _queue = queueProvider.Open("ReportQueue");
         }
 
@@ -138,9 +142,9 @@ namespace codeRR.Server.ReportAnalyzer.Inbound
                 });
         }
 
-        private static async Task<AppInfo> GetAppAsync(string appKey)
+        private async Task<AppInfo> GetAppAsync(string appKey)
         {
-            using (var con = ConnectionFactory.Create())
+            using (var con = OpenConnection())
             {
                 using (var cmd = con.CreateDbCommand())
                 {
@@ -161,14 +165,19 @@ namespace codeRR.Server.ReportAnalyzer.Inbound
             }
         }
 
+        private IDbConnection OpenConnection()
+        {
+            return _connectionFactory.TryOpen("queue") ?? _connectionFactory.Open();
+        }
+
         private async Task StoreInvalidReportAsync(string appKey, string sig, string remoteAddress, byte[] reportBody)
         {
             try
             {
-                using (var connection = ConnectionFactory.Create())
+                using (var connection = OpenConnection())
                 {
                     //TODO: Make something generic.
-                    using (var cmd = (SqlCommand)connection.CreateCommand())
+                    using (var cmd = (SqlCommand) connection.CreateCommand())
                     {
                         cmd.CommandText =
                             @"INSERT INTO InvalidReports(appkey, signature, reportbody, errormessage, createdatutc)
@@ -204,7 +213,7 @@ namespace codeRR.Server.ReportAnalyzer.Inbound
             catch (Exception ex)
             {
                 _logger.Error(
-                    "Failed to StoreReport: " + JsonConvert.SerializeObject(new { model = report }), ex);
+                    "Failed to StoreReport: " + JsonConvert.SerializeObject(new {model = report}), ex);
             }
         }
 

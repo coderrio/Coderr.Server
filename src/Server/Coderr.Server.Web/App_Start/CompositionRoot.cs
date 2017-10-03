@@ -28,6 +28,7 @@ namespace codeRR.Server.Web
             builder.RegisterComponents(Lifetime.Scoped, Assembly.GetExecutingAssembly());
             builder.RegisterService(CreateConnection, Lifetime.Scoped);
             builder.RegisterService(CreateTaskInvoker, Lifetime.Singleton);
+            builder.RegisterInstance(Startup.ConnectionFactory);
             action(builder);
 
             RegisterBuiltInComponents(builder);
@@ -49,7 +50,8 @@ namespace codeRR.Server.Web
 
         private IAdoNetUnitOfWork CreateConnection(IServiceLocator arg)
         {
-            return new AdoNetUnitOfWork(ConnectionFactory.Create(), true);
+            var factory = arg.Resolve<IConnectionFactory>();
+            return new AdoNetUnitOfWork(factory.Open(), true);
         }
 
         private IScopedTaskInvoker CreateTaskInvoker(IServiceLocator arg)

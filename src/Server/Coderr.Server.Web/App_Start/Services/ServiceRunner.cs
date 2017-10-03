@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Configuration.Internal;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using codeRR.Server.Infrastructure;
 using codeRR.Server.Web.Cqs;
 using codeRR.Server.Web.Infrastructure;
 using DotNetCqs;
@@ -19,12 +21,17 @@ namespace codeRR.Server.Web.Services
     public class ServiceRunner : IDisposable
     {
         private readonly CompositionRoot _compositionRoot = new CompositionRoot();
-        private readonly CqsBuilder _cqsBuilder = new CqsBuilder();
+        private readonly CqsBuilder _cqsBuilder;
         private readonly ILog _log = LogManager.GetLogger(typeof(ServiceRunner));
         private readonly PluginManager _pluginManager = new PluginManager();
         private ApplicationServiceManager _appManager;
         private BackgroundJobManager _backgroundJobManager;
         private PluginConfiguration _pluginConfiguration;
+
+        public ServiceRunner(IConnectionFactory connectionFactory)
+        {
+            _cqsBuilder = new CqsBuilder(connectionFactory);
+        }
 
         public IContainer Container => CompositionRoot.Container;
 

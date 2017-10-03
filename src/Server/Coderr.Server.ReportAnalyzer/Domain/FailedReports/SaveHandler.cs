@@ -17,16 +17,17 @@ namespace codeRR.Server.ReportAnalyzer.Domain.FailedReports
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(SaveReportHandlerOld));
         private readonly IAdoNetUnitOfWork _unitOfWork;
+        private readonly IConnectionFactory _connectionFactory;
 
-        public SaveReportHandlerOld(IAdoNetUnitOfWork unitOfWork)
+        public SaveReportHandlerOld(IAdoNetUnitOfWork unitOfWork, IConnectionFactory connectionFactory)
         {
-            _unitOfWork = unitOfWork;
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
         }
 
         public async Task<bool> BuildReportAsync(string fileId, string appKey, string sig, byte[] reportBody)
         {
-            Guid appKeyGuid;
-            if (!Guid.TryParse(appKey, out appKeyGuid))
+            if (!Guid.TryParse(appKey, out var appKeyGuid))
             {
                 _logger.Warn("Incorrect appKeyFormat: " + appKey + ".");
                 return true;
@@ -84,7 +85,7 @@ namespace codeRR.Server.ReportAnalyzer.Domain.FailedReports
         {
             try
             {
-                using (var connection = ConnectionFactory.Create())
+                using (var connection = _connectionFactory.Open("Queue"))
                 {
                     using (var cmd = (DbCommand) connection.CreateCommand())
                     {

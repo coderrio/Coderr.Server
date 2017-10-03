@@ -16,6 +16,12 @@ namespace codeRR.Server.Infrastructure.Configuration.Database
     public class DatabaseStore : ConfigurationStore
     {
         private readonly Dictionary<Type, Wrapper> _items = new Dictionary<Type, Wrapper>();
+        private readonly IConnectionFactory _connectionFactory;
+
+        public DatabaseStore(IConnectionFactory connectionFactory)
+        {
+            _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
+        }
 
         /// <summary>
         ///     Load a settings section
@@ -26,8 +32,7 @@ namespace codeRR.Server.Infrastructure.Configuration.Database
         {
             lock (_items)
             {
-                Wrapper t;
-                if (_items.TryGetValue(typeof(T), out t) && !t.HasExpired())
+                if (_items.TryGetValue(typeof(T), out var t) && !t.HasExpired())
                 {
                     return (T)t.Value;
                 }
@@ -97,7 +102,7 @@ namespace codeRR.Server.Infrastructure.Configuration.Database
         /// <returns>open connection</returns>
         protected virtual IDbConnection OpenConnectionFor<T>()
         {
-            return ConnectionFactory.Create();
+            return _connectionFactory.Open();
         }
 
         /// <summary>
@@ -108,7 +113,7 @@ namespace codeRR.Server.Infrastructure.Configuration.Database
         protected virtual IDbConnection OpenConnectionFor(Type configClassType)
         {
             if (configClassType == null) throw new ArgumentNullException(nameof(configClassType));
-            return ConnectionFactory.Create();
+            return _connectionFactory.Open();
         }
 
         private void SetCache(IConfigurationSection section)

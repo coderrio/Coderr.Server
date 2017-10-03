@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Security.Claims;
@@ -11,16 +12,12 @@ namespace codeRR.Server.Infrastructure.Security
     /// </summary>
     public class PrincipalFactory : IPrincipalFactory
     {
-        private static readonly IPrincipalFactory _instance = new PrincipalFactory();
+        private static IPrincipalFactory _instance = new PrincipalFactory();
 
-        static PrincipalFactory()
+        public static void Configure(string principalFactoryType)
         {
-            //FactoryMethod = context => new OneTruePrincipal(x.);
-            var factoryType = ConfigurationManager.AppSettings["PrincipalFactoryType"];
-            if (factoryType != null)
-            {
-                _instance = (IPrincipalFactory)TypeHelper.CreateAssemblyObject(factoryType);
-            }
+            if (principalFactoryType == null) throw new ArgumentNullException(nameof(principalFactoryType));
+            _instance = (IPrincipalFactory)TypeHelper.CreateAssemblyObject(principalFactoryType);
         }
 
         Task<ClaimsPrincipal> IPrincipalFactory.CreateAsync(PrincipalFactoryContext context)

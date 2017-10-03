@@ -10,6 +10,13 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
     [Authorize]
     public class HomeController : Controller
     {
+        private IConnectionFactory _connectionFactory;
+
+        public HomeController(IConnectionFactory connectionFactory)
+        {
+            _connectionFactory = connectionFactory;
+        }
+
         public ActionResult Basics()
         {
             var model = new BasicsViewModel();
@@ -32,9 +39,11 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Basics(BasicsViewModel model)
         {
-            var settings = new BaseConfiguration();
-            settings.BaseUrl = new Uri(model.BaseUrl);
-            settings.SupportEmail = model.SupportEmail;
+            var settings = new BaseConfiguration
+            {
+                BaseUrl = new Uri(model.BaseUrl),
+                SupportEmail = model.SupportEmail
+            };
             ConfigurationStore.Instance.Store(settings);
             return Redirect(Url.GetNextWizardStep());
         }
@@ -61,10 +70,12 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
             if (!ModelState.IsValid)
                 return View("ErrorTracking", model);
 
-            var settings = new codeRRConfigSection();
-            settings.ActivateTracking = model.ActivateTracking;
-            settings.ContactEmail = model.ContactEmail;
-            settings.InstallationId = model.InstallationId;
+            var settings = new codeRRConfigSection
+            {
+                ActivateTracking = model.ActivateTracking,
+                ContactEmail = model.ContactEmail,
+                InstallationId = model.InstallationId
+            };
             ConfigurationStore.Instance.Store(settings);
             WebApiApplication.ReportTocodeRR = model.ActivateTracking;
             return Redirect(Url.GetNextWizardStep());
@@ -75,7 +86,7 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
         {
             try
             {
-                ConnectionFactory.Create();
+                _connectionFactory.Open();
             }
             catch
             {

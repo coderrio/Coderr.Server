@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NET452
+using System;
 using System.Messaging;
 
 namespace codeRR.Server.Infrastructure.Queueing.Msmq
@@ -43,3 +44,4 @@ namespace codeRR.Server.Infrastructure.Queueing.Msmq
         }
     }
 }
+#endif

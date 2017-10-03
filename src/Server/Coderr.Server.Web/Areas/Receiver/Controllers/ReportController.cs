@@ -5,6 +5,7 @@ using System.Security.Authentication;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using codeRR.Server.Infrastructure;
 using codeRR.Server.Infrastructure.Queueing;
 using codeRR.Server.ReportAnalyzer.Inbound;
 using codeRR.Server.Web.Areas.Receiver.Helpers;
@@ -19,15 +20,17 @@ namespace codeRR.Server.Web.Areas.Receiver.Controllers
         private static readonly SamplingCounter _samplingCounter = new SamplingCounter();
         private readonly ILog _logger = LogManager.GetLogger(typeof(ReportController));
         private readonly IMessageQueueProvider _queueProvider;
+        private IConnectionFactory _connectionFactory;
 
         static ReportController()
         {
             _samplingCounter.Load();
         }
 
-        public ReportController(IMessageQueueProvider queueProvider)
+        public ReportController(IMessageQueueProvider queueProvider, IConnectionFactory connectionFactory)
         {
             _queueProvider = queueProvider;
+            _connectionFactory = connectionFactory;
         }
 
         [HttpGet, Route("receiver/report/")]
@@ -58,7 +61,7 @@ namespace codeRR.Server.Web.Areas.Receiver.Controllers
             {
                 var buffer = new byte[HttpContext.Current.Request.InputStream.Length];
                 HttpContext.Current.Request.InputStream.Read(buffer, 0, buffer.Length);
-                var handler = new SaveReportHandler(_queueProvider);
+                var handler = new SaveReportHandler(_queueProvider, _connectionFactory);
                 await handler.BuildReportAsync(appKey, sig, Request.GetClientIpAddress(), buffer);
                 return Request.CreateResponse(HttpStatusCode.OK);
             }

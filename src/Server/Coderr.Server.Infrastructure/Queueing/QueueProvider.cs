@@ -2,7 +2,9 @@
 using System.Configuration;
 using codeRR.Server.Infrastructure.Configuration;
 using codeRR.Server.Infrastructure.Queueing.Ado;
+#if NET452
 using codeRR.Server.Infrastructure.Queueing.Msmq;
+#endif
 using Griffin.Container;
 
 namespace codeRR.Server.Infrastructure.Queueing
@@ -23,7 +25,12 @@ namespace codeRR.Server.Infrastructure.Queueing
         private IMessageQueue _eventQueue;
         private IMessageQueue _feedbackQueue;
         private IMessageQueue _reportQueue;
+        private IConnectionFactory _connectionFactory;
 
+        public QueueProvider(IConnectionFactory connectionFactory)
+        {
+            _connectionFactory = connectionFactory;
+        }
 
         public IMessageQueue Open(string queueName)
         {
@@ -59,16 +66,18 @@ namespace codeRR.Server.Infrastructure.Queueing
 
 
             if (!config.UseSql)
+            {
+#if NET452
                 return new MsmqMessageQueue(config.ReportQueue, config.ReportAuthentication,
                     config.ReportTransactions);
+#else
+                throw new NotSupportedException("MSMQ is currently not supported for .NET Standard.");
+#endif
+            }
+                
 
 
-            var conStr = ConfigurationManager.ConnectionStrings["Queue"]
-                         ?? ConfigurationManager.ConnectionStrings["Db"];
-            var conString = conStr.ConnectionString;
-            var provider = conStr.ProviderName;
-
-            return new AdoNetMessageQueue(queueName, provider, conString);
+            return new AdoNetMessageQueue(queueName, _connectionFactory);
         }
     }
 }

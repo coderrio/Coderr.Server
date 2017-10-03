@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NET452
+using System;
 using System.Configuration;
 using System.Data;
 using System.Data.Common;
@@ -9,15 +10,45 @@ namespace codeRR.Server.Infrastructure
     /// <summary>
     ///     Generates SQL connections
     /// </summary>
-    public class ConnectionFactory
+    public class Net452ConnectionFactory : IConnectionFactory
     {
         private static Func<IDbConnection> _customFactory;
+
+        /// <inheritdoc />
+        public IDbConnection Open()
+        {
+            return Create("Db");
+        }
+
+        /// <inheritdoc />
+        public IDbConnection Open(string connectionStringName)
+        {
+            return Create(connectionStringName);
+        }
+
+        /// <inheritdoc />
+        public IDbConnection TryOpen(string connectionStringName)
+        {
+            return Create(connectionStringName, false);
+        }
+
+
+        /// <summary>
+        ///     For integration tests etc.
+        /// </summary>
+        /// <param name="factoryMethod">factory method</param>
+        /// <param name="caller"></param>
+        public static void SetConnectionFactory(Func<IDbConnection> factoryMethod,
+            [CallerMemberName] string caller = "")
+        {
+            _customFactory = factoryMethod;
+        }
 
         /// <summary>
         ///     Creates a connection using the <c>web.config</c> connection string named <c>Db</c>.
         /// </summary>
         /// <returns>open connection</returns>
-        public static IDbConnection Create()
+        private static IDbConnection Create(string connectionStringName, bool throwIfMissing = true)
         {
             if (_customFactory != null)
             {
@@ -25,13 +56,20 @@ namespace codeRR.Server.Infrastructure
                 return con;
             }
 
-            var conStr = ConfigurationManager.ConnectionStrings["Db"];
+            var conStr = ConfigurationManager.ConnectionStrings[connectionStringName];
             if (conStr == null)
-                throw new ConfigurationErrorsException("Expected a <connectionString> named 'Db' in web.config");
+            {
+                if (throwIfMissing)
+                    throw new ConfigurationErrorsException(
+                        $"Expected a <connectionString> named '{connectionStringName}' in web.config");
+                return null;
+            }
+
 
             var provider = DbProviderFactories.GetFactory(conStr.ProviderName);
             if (provider == null)
-                throw new ConfigurationErrorsException($"Sql provider '{conStr.ProviderName}' was not found/registered.");
+                throw new ConfigurationErrorsException(
+                    $"Sql provider '{conStr.ProviderName}' was not found/registered.");
 
             var connection = provider.CreateConnection();
             connection.ConnectionString = conStr.ConnectionString + ";connect timeout=22;";
@@ -47,15 +85,6 @@ namespace codeRR.Server.Infrastructure
 
             return connection;
         }
-
-        /// <summary>
-        ///     For integration tests etc.
-        /// </summary>
-        /// <param name="factoryMethod">factory method</param>
-        /// <param name="caller"></param>
-        public static void SetConnectionFactory(Func<IDbConnection> factoryMethod, [CallerMemberName] string caller = "")
-        {
-            _customFactory = factoryMethod;
-        }
     }
 }
+#endif

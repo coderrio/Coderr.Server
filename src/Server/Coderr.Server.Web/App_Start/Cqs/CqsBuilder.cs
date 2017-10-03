@@ -1,5 +1,6 @@
 ﻿using System;
 using codeRR.Server.App.Core.Accounts.Requests;
+using codeRR.Server.Infrastructure;
 using codeRR.Server.Infrastructure.Queueing;
 using codeRR.Server.ReportAnalyzer.Scanners;
 using codeRR.Server.SqlServer.Core.Users;
@@ -15,8 +16,14 @@ namespace codeRR.Server.Web.Cqs
     {
         private static readonly MyEventHandlerRegistry _registry = new MyEventHandlerRegistry();
         private readonly ILog _log = LogManager.GetLogger(typeof(CqsBuilder));
-        private readonly IMessageQueueProvider _queueProvider = new QueueProvider();
+        private readonly IMessageQueueProvider _queueProvider;
         private IEventBus _eventBus;
+
+        public CqsBuilder(IConnectionFactory connectionFactory)
+        {
+            if (connectionFactory == null) throw new ArgumentNullException(nameof(connectionFactory));
+            _queueProvider = new QueueProvider(connectionFactory);
+        }
 
         public EventHandlerRegistry EventHandlerRegistry
         {

@@ -13,10 +13,10 @@ namespace codeRR.Server.Infrastructure.Queueing.Ado
     /// </summary>
     public class AdoNetMessageQueue : IMessageQueue
     {
-        private readonly string _connectionString;
         private readonly AdoNetQueueEntryMapper _mapper;
-        private readonly string _providerName;
         private readonly string _queueName;
+        private readonly IConnectionFactory _connectionFactory;
+
         private readonly JsonSerializerSettings _settings = new JsonSerializerSettings
         {
             NullValueHandling = NullValueHandling.Ignore,
@@ -30,17 +30,15 @@ namespace codeRR.Server.Infrastructure.Queueing.Ado
         /// Creates a new instance of <see cref="AdoNetMessageQueue"/>.
         /// </summary>
         /// <param name="queueName">Queue name (should match a table named <c>$"Queue{queueName}"</c>. i.e. if you specify "Reports" here, the should be a table named "QueueReports".</param>
-        /// <param name="providerName">ADO.NET provider name, typically <c>System.Data.SqlClient</c></param>
-        /// <param name="connectionString">Connection string name in web.config</param>
-        public AdoNetMessageQueue(string queueName, string providerName, string connectionString)
+        /// <param name="connectionFactory">Tries to open the connection "Queue" and fall back to default if not found.</param>
+        public AdoNetMessageQueue(string queueName, IConnectionFactory connectionFactory)
         {
             if (queueName == null) throw new ArgumentNullException(nameof(queueName));
             if (string.IsNullOrEmpty(queueName))
                 throw new ArgumentNullException(nameof(queueName));
 
             _queueName = queueName;
-            _providerName = providerName ?? throw new ArgumentNullException(nameof(providerName));
-            _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
+            _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
             _mapper = new AdoNetQueueEntryMapper();
         }
 
@@ -163,11 +161,8 @@ namespace codeRR.Server.Infrastructure.Queueing.Ado
 
         private IDbConnection OpenConnection()
         {
-            var connectionFactory = DbProviderFactories.GetFactory(_providerName);
-            var con = connectionFactory.CreateConnection();
-            con.ConnectionString = _connectionString;
-            con.Open();
-            return con;
+            return _connectionFactory.TryOpen("Queue")
+                   ?? _connectionFactory.Open();
         }
     }
 }

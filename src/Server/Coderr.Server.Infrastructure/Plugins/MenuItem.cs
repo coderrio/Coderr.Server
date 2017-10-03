@@ -21,10 +21,8 @@ namespace codeRR.Server.Infrastructure.Plugins
         /// <param name="spaRoute">Page to visit</param>
         public MenuItem(string name, string title, string spaRoute)
         {
-            if (title == null) throw new ArgumentNullException(nameof(title));
-            if (spaRoute == null) throw new ArgumentNullException(nameof(spaRoute));
-            Title = title;
-            SpaRoute = spaRoute;
+            Title = title ?? throw new ArgumentNullException(nameof(title));
+            SpaRoute = spaRoute ?? throw new ArgumentNullException(nameof(spaRoute));
             Name = name;
         }
 

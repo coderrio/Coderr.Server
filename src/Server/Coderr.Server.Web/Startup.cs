@@ -11,6 +11,8 @@ using System.Web.Routing;
 using codeRR.Server.App.Configuration;
 using codeRR.Server.Infrastructure;
 using codeRR.Server.Infrastructure.Configuration;
+using codeRR.Server.Infrastructure.Configuration.Database;
+using codeRR.Server.Infrastructure.Security;
 using codeRR.Server.SqlServer.Core.Users;
 using codeRR.Server.Web;
 using codeRR.Server.Web.Infrastructure;
@@ -31,12 +33,25 @@ namespace codeRR.Server.Web
 {
     public class Startup
     {
-        private readonly ServiceRunner _serviceRunner = new ServiceRunner();
+        private readonly ServiceRunner _serviceRunner;
+
+        public Startup()
+        {
+            ConfigureConnectionFactory();
+            ConfigurationStore.Instance = new DatabaseStore(ConnectionFactory);
+            _serviceRunner = new ServiceRunner(ConnectionFactory);
+        }
+
+        public static IConnectionFactory ConnectionFactory { get; set; }
+
+        private bool IsConfigured => ConfigurationManager.AppSettings["Configured"] == "true";
 
         public void Configuration(IAppBuilder app)
         {
             if (!IsConfigured)
+            {
                 RouteConfig.RegisterInstallationRoutes(RouteTable.Routes);
+            }
             else
             {
                 ConfigureErrorTracking();
@@ -53,11 +68,6 @@ namespace codeRR.Server.Web
                 RouteConfig.RegisterRoutes(RouteTable.Routes);
         }
 
-        private bool IsConfigured
-        {
-            get { return ConfigurationManager.AppSettings["Configured"] == "true"; }
-
-        }
         private static void ConfigureApiKeyAuthentication(HttpFilterCollection configFilters)
         {
             var configType = ConfigurationManager.AppSettings["ApiKeyAuthenticator"];
@@ -73,6 +83,12 @@ namespace codeRR.Server.Web
 
         private void ConfigureAuth(IAppBuilder app)
         {
+            var type = ConfigurationManager.AppSettings["PrincipalFactoryType"];
+            if (type != null)
+            {
+                PrincipalFactory.Configure(type);
+            }
+
             var provider = new CookieAuthenticationProvider
             {
                 OnApplyRedirect = ctx =>
@@ -97,6 +113,15 @@ namespace codeRR.Server.Web
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
         }
 
+        private void ConfigureConnectionFactory()
+        {
+            var typeName = ConfigurationManager.AppSettings["ConnectionFactoryType"];
+            if (typeName != null)
+                ConnectionFactory = (IConnectionFactory) TypeHelper.CreateAssemblyObject(typeName);
+            else
+                ConnectionFactory = new Net452ConnectionFactory();
+        }
+
         private static void ConfigureDataMapping()
         {
             var provider = new AssemblyScanningMappingProvider();
@@ -107,17 +132,16 @@ namespace codeRR.Server.Web
         private static void ConfigureErrorTracking()
         {
             var errorTrackingConfig = ConfigurationStore.Instance.Load<codeRRConfigSection>();
-            if ((errorTrackingConfig != null) && errorTrackingConfig.ActivateTracking)
+            if (errorTrackingConfig != null && errorTrackingConfig.ActivateTracking)
             {
                 var uri = new Uri("https://report.coderrapp.com");
                 if (!string.IsNullOrEmpty(errorTrackingConfig.ContactEmail) ||
                     !string.IsNullOrEmpty(errorTrackingConfig.InstallationId))
-                {
                     OneTrue.Configuration.ContextProviders.Add(new CustomerInfoProvider(
                         errorTrackingConfig.ContactEmail,
                         errorTrackingConfig.InstallationId));
-                }
-                OneTrue.Configuration.Credentials(uri, "2b3002d3ab3e4a57ad45cff2210221ab", "f381a5c9797f49bd8a3238b892d02806");
+                OneTrue.Configuration.Credentials(uri, "2b3002d3ab3e4a57ad45cff2210221ab",
+                    "f381a5c9797f49bd8a3238b892d02806");
                 WebApiApplication.ReportTocodeRR = true;
                 GlobalConfiguration.Configuration.Services.Add(typeof(IExceptionLogger), new WebApiLogger());
             }

@@ -1,11 +1,12 @@
 ﻿using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using codeRR.Server.Infrastructure;
 using Griffin.Data;
 
 namespace codeRR.Server.SqlServer.Tests
 {
-    internal class ConnectionFactory
+    internal class ConnectionFactory : IConnectionFactory
     {
         public static IAdoNetUnitOfWork Create()
         {
@@ -25,6 +26,23 @@ namespace codeRR.Server.SqlServer.Tests
             };
             connection.Open();
             return connection;
+        }
+
+        public IDbConnection Open()
+        {
+            return OpenConnection();
+        }
+
+        public IDbConnection Open(string connectionStringName)
+        {
+            return OpenConnection();
+        }
+
+        public IDbConnection TryOpen(string connectionStringName)
+        {
+            if (connectionStringName == "Queue")
+                return null;
+            return OpenConnection();
         }
     }
 }

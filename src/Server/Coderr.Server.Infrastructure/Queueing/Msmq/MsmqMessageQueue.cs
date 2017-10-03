@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NET452
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Messaging;
@@ -210,3 +211,4 @@ namespace codeRR.Server.Infrastructure.Queueing.Msmq
         }
     }
 }
+#endif

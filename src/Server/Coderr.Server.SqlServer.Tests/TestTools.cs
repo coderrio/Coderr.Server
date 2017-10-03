@@ -4,6 +4,7 @@ using System.Data;
 using codeRR.Server.App.Core.Accounts;
 using codeRR.Server.App.Core.Applications;
 using codeRR.Server.App.Core.Users;
+using codeRR.Server.ReportAnalyzer;
 using codeRR.Server.ReportAnalyzer.Domain.Reports;
 using codeRR.Server.SqlServer.Analysis;
 using codeRR.Server.SqlServer.Core.Accounts;
@@ -82,7 +83,7 @@ namespace codeRR.Server.SqlServer.Tests
                 report.Init(report.GenerateHashCodeIdentifier());
 
                 var incident = new ReportAnalyzer.Domain.Incidents.IncidentBeingAnalyzed(report);
-                var incRepos = new AnalyticsRepository(uow);
+                var incRepos = new AnalyticsRepository(new AnalysisDbContext(new ConnectionFactory()));
                 incRepos.CreateIncident(incident);
                 report.IncidentId = incident.Id;
                 incRepos.CreateReport(report);
