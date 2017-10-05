@@ -110,8 +110,8 @@
     <Reference Include="DotNetCqs, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetCqs.1.0.1\lib\net452\DotNetCqs.dll</HintPath>
     </Reference>
-    <Reference Include="Griffin.Container, Version=1.1.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Griffin.Container.1.1.4\lib\net40\Griffin.Container.dll</HintPath>
+    <Reference Include="Griffin.Container, Version=1.1.7.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Griffin.Container.1.1.7\lib\net452\Griffin.Container.dll</HintPath>
     </Reference>
     <Reference Include="Griffin.Container.Mvc5, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Griffin.Container.Mvc5.1.0.2\lib\net40\Griffin.Container.Mvc5.dll</HintPath>

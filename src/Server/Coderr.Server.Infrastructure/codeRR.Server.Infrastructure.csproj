@@ -5,16 +5,15 @@
     <AssemblyName>Coderr.Server.Infrastructure</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
-  <PackageReference Include="Griffin.Container" Version="1.1.4" />
+  <PackageReference Include="Griffin.Container" Version="1.1.5" />
   <PackageReference Include="Griffin.Framework" Version="1.0.42" />
   <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Coderr.Server.Api\codeRR.Server.Api.csproj" />
   </ItemGroup>
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net452'">
     <Reference Include="System.Configuration" />
     <Reference Include="System.Messaging" />
-    <Reference Include="System.Web" />
   </ItemGroup>
 </Project>
