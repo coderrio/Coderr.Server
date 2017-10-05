@@ -60,10 +60,10 @@ namespace codeRR.Server.Web
                 {"HttpMethod", Request.HttpMethod}
             };
             if (Request.UrlReferrer != null)
-                properties.Add("Referer", Request.UrlReferrer.ToString());
+                properties.Add("Referrer", Request.UrlReferrer.ToString());
             if (data.Length < 30000)
                 properties.Add("Body", data);
-            properties.Add("OneTrueTags", "unhandled-exception");
+            properties.Add("ErrTags", "unhandled-exception");
             var collection = new ContextCollectionDTO("Request", properties);
             //OneTrue.Report(exception, collection);
         }

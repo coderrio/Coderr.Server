@@ -16,12 +16,6 @@ namespace codeRR.Server.Infrastructure.Queueing
     [Component(Lifetime = Lifetime.Singleton)]
     public class QueueProvider : IMessageQueueProvider
     {
-        /// <summary>
-        ///     To allow extensions (not the most fantastic way to do it, more of a hack). Got to be able to update the container
-        ///     service registry.
-        /// </summary>
-        public static Func<string, MessageQueueSettings, IMessageQueue> CreateQueueHandler;
-
         private IMessageQueue _eventQueue;
         private IMessageQueue _feedbackQueue;
         private IMessageQueue _reportQueue;
@@ -61,10 +55,6 @@ namespace codeRR.Server.Infrastructure.Queueing
 
         protected virtual IMessageQueue CreateQueue(string queueName, MessageQueueSettings config)
         {
-            if (CreateQueueHandler != null)
-                return CreateQueueHandler(queueName, config);
-
-
             if (!config.UseSql)
             {
 #if NET452

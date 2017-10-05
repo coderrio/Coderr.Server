@@ -64,7 +64,8 @@ namespace codeRR.Server.App.Modules.Tagging.Handlers
             foreach (var collection in e.Report.ContextCollections)
             {
                 string tagsStr;
-                if (!collection.Properties.TryGetValue("OneTrueTags", out tagsStr))
+                if (!collection.Properties.TryGetValue("OneTrueTags", out tagsStr)
+                    && !collection.Properties.TryGetValue("ErrTags", out tagsStr))
                     continue;
 
                 try
