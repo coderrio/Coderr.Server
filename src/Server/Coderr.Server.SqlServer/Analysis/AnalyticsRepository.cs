@@ -25,11 +25,11 @@ namespace codeRR.Server.SqlServer.Analysis
         private readonly IAdoNetUnitOfWork _unitOfWork;
         private MsmqMessageQueue _queue;
 
-        public AnalyticsRepository(AnalysisDbContext dbContext)
+        public AnalyticsRepository(AnalysisDbContext dbContext, ConfigurationStore configurationStore)
         {
             _unitOfWork = dbContext?.UnitOfWork ?? throw new ArgumentNullException(nameof(dbContext));
 
-            var settings = ConfigurationStore.Instance.Load<MessageQueueSettings>();
+            var settings = configurationStore.Load<MessageQueueSettings>();
             if (settings != null && !settings.UseSql)
             {
                 _queue = new MsmqMessageQueue(settings.ReportQueue, settings.ReportAuthentication,

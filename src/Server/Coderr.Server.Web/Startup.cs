@@ -39,10 +39,12 @@ namespace codeRR.Server.Web
         {
             ConfigureConnectionFactory();
             ConfigurationStore.Instance = new DatabaseStore(ConnectionFactory);
+            ConfigurationStore = ConfigurationStore.Instance;
             _serviceRunner = new ServiceRunner(ConnectionFactory);
         }
 
         public static IConnectionFactory ConnectionFactory { get; set; }
+        public static ConfigurationStore ConfigurationStore { get; private set; }
 
         private bool IsConfigured => ConfigurationManager.AppSettings["Configured"] == "true";
 

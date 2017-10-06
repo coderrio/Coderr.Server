@@ -92,17 +92,13 @@ namespace codeRR.Server.Api.Client
         ///     Open a channel
         /// </summary>
         /// <param name="uri">Root URL to the codeRR web</param>
-        /// <param name="apiKey">Api key from the admin area in codeRR web</param>
-        /// <param name="sharedSecret">Shared secret from the admin area in codeRR web</param>
+        /// <param name="apiKey">API key from the administration area in codeRR web</param>
+        /// <param name="sharedSecret">Shared secret from the administration area in codeRR web</param>
         public void Open(Uri uri, string apiKey, string sharedSecret)
         {
-            if (apiKey == null) throw new ArgumentNullException(nameof(apiKey));
-            if (sharedSecret == null) throw new ArgumentNullException(nameof(sharedSecret));
-            if (uri == null) throw new ArgumentNullException(nameof(uri));
-
-            _apiKey = apiKey;
-            _sharedSecret = sharedSecret;
-            _uri = uri;
+            _apiKey = apiKey ?? throw new ArgumentNullException(nameof(apiKey));
+            _sharedSecret = sharedSecret ?? throw new ArgumentNullException(nameof(sharedSecret));
+            _uri = uri ?? throw new ArgumentNullException(nameof(uri));
         }
 
         private async Task<TResult> DeserializeResponse<TResult>(HttpWebResponse response)

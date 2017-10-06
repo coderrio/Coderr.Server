@@ -117,8 +117,8 @@
       <HintPath>..\packages\Griffin.Container.Mvc5.1.0.2\lib\net40\Griffin.Container.Mvc5.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Griffin.Core, Version=1.0.42.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Griffin.Framework.1.0.42\lib\net45\Griffin.Core.dll</HintPath>
+    <Reference Include="Griffin.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Griffin.Framework.2.0.0-alpha01\lib\net451\Griffin.Core.dll</HintPath>
     </Reference>
     <Reference Include="Griffin.Cqs, Version=1.0.11.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Griffin.Framework.Cqs.1.0.11\lib\net45\Griffin.Cqs.dll</HintPath>

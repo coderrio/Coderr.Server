@@ -16,18 +16,17 @@ namespace codeRR.Server.App.Modules.Tagging.Handlers
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(IdentifyTagsFromIncident));
         private readonly ITagsRepository _repository;
-        private ITagIdentifierProvider _tagIdentifierProvider;
+        private readonly ITagIdentifierProvider _tagIdentifierProvider;
 
         /// <summary>
         ///     Creates a new instance of <see cref="IdentifyTagsFromIncident" />.
         /// </summary>
-        /// <param name="repository">repos</param>
+        /// <param name="repository">repository</param>
         /// <param name="tagIdentifierProvider">Used to be able to create tag identifiers in all modules</param>
         /// <exception cref="ArgumentNullException">repository</exception>
         public IdentifyTagsFromIncident(ITagsRepository repository, ITagIdentifierProvider tagIdentifierProvider)
         {
-            if (repository == null) throw new ArgumentNullException("repository");
-            _repository = repository;
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
             _tagIdentifierProvider = tagIdentifierProvider;
         }
 
@@ -63,8 +62,7 @@ namespace codeRR.Server.App.Modules.Tagging.Handlers
         {
             foreach (var collection in e.Report.ContextCollections)
             {
-                string tagsStr;
-                if (!collection.Properties.TryGetValue("OneTrueTags", out tagsStr)
+                if (!collection.Properties.TryGetValue("OneTrueTags", out var tagsStr)
                     && !collection.Properties.TryGetValue("ErrTags", out tagsStr))
                     continue;
 

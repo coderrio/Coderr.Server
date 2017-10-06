@@ -5,6 +5,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using codeRR.Server.App.Core.Accounts.Requests;
 using codeRR.Server.Infrastructure;
+using codeRR.Server.Infrastructure.Configuration;
 using codeRR.Server.Infrastructure.Queueing;
 using codeRR.Server.ReportAnalyzer;
 using codeRR.Server.ReportAnalyzer.Scanners;
@@ -22,7 +23,7 @@ namespace codeRR.Server.Web
         public static IContainer Container;
         private readonly ILog _logger = LogManager.GetLogger(typeof(CompositionRoot));
 
-        public void Build(Action<ContainerRegistrar> action)
+        public void Build(Action<ContainerRegistrar> action, ConfigurationStore configStore)
         {
             var builder = new ContainerRegistrar();
             builder.RegisterComponents(Lifetime.Scoped, Assembly.GetExecutingAssembly());
@@ -37,7 +38,7 @@ namespace codeRR.Server.Web
             builder.RegisterService(x => Container, Lifetime.Singleton);
             builder.RegisterService(x => x);
             builder.RegisterConcrete<AnalysisDbContext>();
-
+            builder.RegisterInstance(configStore);
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
             builder.RegisterControllers(Assembly.GetExecutingAssembly());
 

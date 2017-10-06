@@ -19,6 +19,11 @@ namespace codeRR.Server.ReportAnalyzer
             _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
         }
 
+        public AnalysisDbContext(IAdoNetUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+        }
+
         /// <summary>
         ///     Open and valid connection
         /// </summary>

@@ -7,7 +7,6 @@ using System.Web.Optimization;
 using codeRR.Server.Infrastructure;
 using codeRR.Server.SqlServer;
 using codeRR.Server.Web.Infrastructure.Logging;
-using Griffin.Signals;
 using log4net;
 using log4net.Config;
 using OneTrueError.Client.Contracts;
@@ -21,7 +20,6 @@ namespace codeRR.Server.Web
 
         static WebApiApplication()
         {
-            Signal.SignalRaised += OnSignalRaised;
             var path2 = AppDomain.CurrentDomain.BaseDirectory;
             XmlConfigurator.ConfigureAndWatch(new FileInfo(Path.Combine(path2, "log4net.config")));
             _logger = LogManager.GetLogger(typeof(WebApiApplication));
@@ -67,10 +65,6 @@ namespace codeRR.Server.Web
             var collection = new ContextCollectionDTO("Request", properties);
             //OneTrue.Report(exception, collection);
         }
-
-        private static void OnSignalRaised(object sender, SignalRaisedEventArgs e)
-        {
-            _logger.Debug(e.SignalName + ": " + e.Reason + ", " + e.Exception);
-        }
+        
     }
 }

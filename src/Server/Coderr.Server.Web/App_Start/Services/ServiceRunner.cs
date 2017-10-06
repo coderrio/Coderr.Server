@@ -62,7 +62,7 @@ namespace codeRR.Server.Web.Services
                     service.AddService(typeof(IApplicationService));
 
                     registrar.RegisterService(x => _cqsBuilder.CreateRequestReplyBus(Container), Lifetime.Singleton);
-                });
+                }, Startup.ConfigurationStore);
 
                 BuildServices();
                 _appManager.Start();

@@ -4,6 +4,7 @@ using System.Data;
 using codeRR.Server.App.Core.Accounts;
 using codeRR.Server.App.Core.Applications;
 using codeRR.Server.App.Core.Users;
+using codeRR.Server.Infrastructure.Configuration;
 using codeRR.Server.ReportAnalyzer;
 using codeRR.Server.ReportAnalyzer.Domain.Reports;
 using codeRR.Server.SqlServer.Analysis;
@@ -18,6 +19,11 @@ namespace codeRR.Server.SqlServer.Tests
     public class TestTools : IDisposable
     {
         private string _dbName;
+
+        public TestTools()
+        {
+            ConfigStore = new TestConfigStore();
+        }
 
         public void CreateDatabase()
         {
@@ -83,7 +89,7 @@ namespace codeRR.Server.SqlServer.Tests
                 report.Init(report.GenerateHashCodeIdentifier());
 
                 var incident = new ReportAnalyzer.Domain.Incidents.IncidentBeingAnalyzed(report);
-                var incRepos = new AnalyticsRepository(new AnalysisDbContext(new ConnectionFactory()));
+                var incRepos = new AnalyticsRepository(new AnalysisDbContext(uow), ConfigStore);
                 incRepos.CreateIncident(incident);
                 report.IncidentId = incident.Id;
                 incRepos.CreateReport(report);
@@ -91,6 +97,8 @@ namespace codeRR.Server.SqlServer.Tests
                 uow.SaveChanges();
             }
         }
+
+        public ConfigurationStore ConfigStore { get; private set; }
 
         public void ToLatestVersion()
         {

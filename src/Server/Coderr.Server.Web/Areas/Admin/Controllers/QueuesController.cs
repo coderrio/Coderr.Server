@@ -47,10 +47,9 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
                 return Redirect(Url.GetNextWizardStep());
             }
 
-            string errorMessage;
             if (
                 !MsMqTools.ValidateMessageQueue(model.ReportQueue, model.ReportAuthentication, model.ReportTransactions,
-                    out errorMessage))
+                    out var errorMessage))
             {
                 ModelState.AddModelError("ReportQueue", errorMessage);
             }
