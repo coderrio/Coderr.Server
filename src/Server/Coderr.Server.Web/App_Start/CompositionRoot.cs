@@ -60,8 +60,8 @@ namespace codeRR.Server.Web
             var invoker = new ScopedTaskInvoker(Container);
             invoker.TaskExecuted += (sender, args) =>
             {
-                //var db = args.Scope.Resolve<IAdoNetUnitOfWork>();
-                //db.SaveChanges();
+                var db = args.Scope.Resolve<AnalysisDbContext>();
+                db.UnitOfWork.SaveChanges();
             };
             return invoker;
         }
