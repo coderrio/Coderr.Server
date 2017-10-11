@@ -48,7 +48,7 @@ namespace codeRR.Server.Web.Infrastructure.Auth
                 }
 
                 var claims = key.Claims;
-                var factoryContext = new PrincipalFactoryContext(0, key.GeneratedKey, new[] {OneTrueClaims.RoleSystem})
+                var factoryContext = new PrincipalFactoryContext(0, key.GeneratedKey, new[] {CoderrClaims.RoleSystem})
                 {
                     AuthenticationType = "ApiKey",
                     Claims = claims

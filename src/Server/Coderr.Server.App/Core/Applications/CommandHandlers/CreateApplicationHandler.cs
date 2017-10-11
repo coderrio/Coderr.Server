@@ -45,13 +45,13 @@ namespace codeRR.Server.App.Core.Applications.CommandHandlers
             });
 
             var identity = ClaimsPrincipal.Current.Identities.First();
-            var claim = new Claim(OneTrueClaims.Application, app.Id.ToString(), ClaimValueTypes.Integer32);
+            var claim = new Claim(CoderrClaims.Application, app.Id.ToString(), ClaimValueTypes.Integer32);
             identity.AddClaim(claim);
-            claim = new Claim(OneTrueClaims.ApplicationAdmin, app.Id.ToString(), ClaimValueTypes.Integer32);
+            claim = new Claim(CoderrClaims.ApplicationAdmin, app.Id.ToString(), ClaimValueTypes.Integer32);
             identity.AddClaim(claim);
-            claim = new Claim(OneTrueClaims.ApplicationName, app.Name, ClaimValueTypes.String);
+            claim = new Claim(CoderrClaims.ApplicationName, app.Name, ClaimValueTypes.String);
             identity.AddClaim(claim);
-            identity.AddClaim(OneTrueClaims.UpdateIdentity);
+            identity.AddClaim(CoderrClaims.UpdateIdentity);
 
             var evt = new ApplicationCreated(app.Id, app.Name, command.UserId, command.ApplicationKey, app.SharedSecret);
             await _eventBus.PublishAsync(evt);

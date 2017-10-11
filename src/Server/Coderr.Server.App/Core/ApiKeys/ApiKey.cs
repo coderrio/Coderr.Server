@@ -25,7 +25,7 @@ namespace codeRR.Server.App.Core.ApiKeys
         /// </summary>
         /// <remarks>
         ///     <para>
-        ///         Typically contains <see cref="OneTrueClaims.Application" /> to identity which applications the key can access.
+        ///         Typically contains <see cref="CoderrClaims.Application" /> to identity which applications the key can access.
         ///     </para>
         /// </remarks>
         public Claim[] Claims { get { return _claims.ToArray(); } private set { _claims = new List<Claim>(value); } }
@@ -64,7 +64,7 @@ namespace codeRR.Server.App.Core.ApiKeys
         {
             if (applicationId <= 0) throw new ArgumentOutOfRangeException("applicationId");
 
-            _claims.Add(new Claim(OneTrueClaims.Application, applicationId.ToString(), ClaimValueTypes.Integer32));
+            _claims.Add(new Claim(CoderrClaims.Application, applicationId.ToString(), ClaimValueTypes.Integer32));
         }
 
         /// <summary>

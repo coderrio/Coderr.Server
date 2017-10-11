@@ -21,13 +21,13 @@ namespace TsGenerator
             var pos = path.IndexOf(@"\src\Tools\");
             path = path.Substring(0, pos + 5);
 
-            var destDir = Path.Combine(path, @"Server\OneTrueError.Web\Scripts\Models\");
-            ResolvePath = Path.Combine(path, @"Server\OneTrueError.Api\bin\Debug");
-            var srcPath= Path.Combine(path, @"Server\OneTrueError.Api\bin\Debug");
+            var destDir = Path.Combine(path, @"Server\Coderr.Server.Web\Scripts\Models\");
+            ResolvePath = Path.Combine(path, @"Server\Coderr.Server.Api\bin\Debug\net452\");
+            var srcPath= Path.Combine(path, @"Server\Coderr.Server.Api\bin\Debug\net452\");
             AppDomain.CurrentDomain.AssemblyResolve += OnLoadAssembly;
 
-            var assemblies = Directory.GetFiles(srcPath, "*api*.dll").Select(Assembly.LoadFile);
-            var nameFilters = assemblies.Select(x => x.GetName().Name).ToArray();
+            var assemblies = Directory.GetFiles(srcPath, "*api*.dll").Select(Assembly.LoadFile).ToList();
+            var nameFilters = assemblies.Select(x => x.GetName().Name.Replace("Coderr", "codeRR")).ToArray();
 
             //var nameFilters = new[]
             //{
@@ -38,7 +38,7 @@ namespace TsGenerator
             //    "OneTrueError"
             //};
 
-            var tsGen = new TypescriptGenerator("OneTrueError", nameFilters);
+            var tsGen = new TypescriptGenerator("codeRR", nameFilters);
             //tsGen.Generate(new[] { asm1, asm2 }, @"C:\temp\Typescript");
             tsGen.Generate(assemblies, destDir);
             

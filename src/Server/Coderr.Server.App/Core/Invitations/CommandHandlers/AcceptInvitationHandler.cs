@@ -86,7 +86,7 @@ namespace codeRR.Server.App.Core.Invitations.CommandHandlers
             {
                 var claims = invitation.Invitations
                     .Select(
-                        x => new Claim(OneTrueClaims.Application, x.ApplicationId.ToString(), ClaimValueTypes.Integer32))
+                        x => new Claim(CoderrClaims.Application, x.ApplicationId.ToString(), ClaimValueTypes.Integer32))
                     .ToList();
 
                 var context = new PrincipalFactoryContext(account.Id, account.UserName, new string[0])

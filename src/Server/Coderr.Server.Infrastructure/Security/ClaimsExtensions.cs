@@ -17,7 +17,7 @@ namespace codeRR.Server.Infrastructure.Security
         /// <param name="principal">current principal</param>
         public static void AddUpdateCredentialClaim(this ClaimsPrincipal principal)
         {
-            principal.Identities.First().AddClaim(OneTrueClaims.UpdateIdentity);
+            principal.Identities.First().AddClaim(CoderrClaims.UpdateIdentity);
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace codeRR.Server.Infrastructure.Security
         }
 
         /// <summary>
-        ///     Checks if the user has the <c>OneTrueClaims.ApplicationAdmin</c> claim or if user is SysAdmin or System.
+        ///     Checks if the user has the <c>CoderrClaims.ApplicationAdmin</c> claim or if user is SysAdmin or System.
         /// </summary>
         /// <param name="principal">principal to search in</param>
         /// <param name="applicationId">Application to check</param>
@@ -116,13 +116,13 @@ namespace codeRR.Server.Infrastructure.Security
         /// <exception cref="InvalidOperationException">Claim is not found in the identity.</exception>
         public static bool IsApplicationAdmin(this ClaimsPrincipal principal, int applicationId)
         {
-            return principal.HasClaim(OneTrueClaims.ApplicationAdmin, applicationId.ToString())
-                   || principal.IsInRole(OneTrueClaims.RoleSysAdmin)
-                   || principal.IsInRole(OneTrueClaims.RoleSystem);
+            return principal.HasClaim(CoderrClaims.ApplicationAdmin, applicationId.ToString())
+                   || principal.IsInRole(CoderrClaims.RoleSysAdmin)
+                   || principal.IsInRole(CoderrClaims.RoleSystem);
         }
 
         /// <summary>
-        ///     Get if the <c>OneTrueClaims.Application</c> claim is specified for the given application (claim value)
+        ///     Get if the <c>CoderrClaims.Application</c> claim is specified for the given application (claim value)
         /// </summary>
         /// <param name="principal">principal to search in</param>
         /// <param name="applicationId">App to check</param>
@@ -131,20 +131,20 @@ namespace codeRR.Server.Infrastructure.Security
         /// <exception cref="InvalidOperationException">Claim is not found in the identity.</exception>
         public static bool IsApplicationMember(this ClaimsPrincipal principal, int applicationId, bool checkSystemRoles = false)
         {
-            var isAdmin = principal.HasClaim(OneTrueClaims.Application, applicationId.ToString());
+            var isAdmin = principal.HasClaim(CoderrClaims.Application, applicationId.ToString());
             if (checkSystemRoles)
-                isAdmin = isAdmin || IsSysAdmin(principal) || principal.IsInRole(OneTrueClaims.RoleSystem);
+                isAdmin = isAdmin || IsSysAdmin(principal) || principal.IsInRole(CoderrClaims.RoleSystem);
             return isAdmin;
         }
 
         /// <summary>
-        ///     Get if the user is part of <c>OneTrueClaims.RoleSysAdmin</c>.
+        ///     Get if the user is part of <c>CoderrClaims.RoleSysAdmin</c>.
         /// </summary>
         /// <param name="principal">principal to search in</param>
         /// <returns><c>true</c> if the role was found; otherwise <c>false</c>.</returns>
         public static bool IsSysAdmin(this IPrincipal principal)
         {
-            return principal.IsInRole(OneTrueClaims.RoleSysAdmin);
+            return principal.IsInRole(CoderrClaims.RoleSysAdmin);
         }
     }
 }

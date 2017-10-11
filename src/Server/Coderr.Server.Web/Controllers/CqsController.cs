@@ -190,10 +190,10 @@ namespace codeRR.Server.Web.Controllers
 
         private async Task HandleSecurityPrincipalUpdates()
         {
-            var gotUpdate = ClaimsPrincipal.Current.Identities.First().TryRemoveClaim(OneTrueClaims.UpdateIdentity);
+            var gotUpdate = ClaimsPrincipal.Current.Identities.First().TryRemoveClaim(CoderrClaims.UpdateIdentity);
 
             //to be sure that there are no other points in the flow that added the same claim
-            while (ClaimsPrincipal.Current.Identities.First().TryRemoveClaim(OneTrueClaims.UpdateIdentity))
+            while (ClaimsPrincipal.Current.Identities.First().TryRemoveClaim(CoderrClaims.UpdateIdentity))
             {
             }
 
@@ -220,7 +220,7 @@ namespace codeRR.Server.Web.Controllers
         {
             if (ClaimsPrincipal.Current.Identity.AuthenticationType != "ApiKey")
                 return;
-            if (ClaimsPrincipal.Current.IsInRole(OneTrueClaims.RoleSysAdmin))
+            if (ClaimsPrincipal.Current.IsInRole(CoderrClaims.RoleSysAdmin))
                 return;
 
             var prop = cqsObject.GetType().GetProperty("ApplicationId");

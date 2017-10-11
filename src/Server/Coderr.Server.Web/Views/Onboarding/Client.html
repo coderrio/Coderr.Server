@@ -51,7 +51,7 @@
                         <div>
                             <p>Copy/paste the code below to your application. The correct appkey/sharedSecret have been specified.</p>
                             <pre><code data-lang="c#">var uri = new Uri("https://report.coderrapp.com");
-OneTrue.Configuration.Credentials(uri,
+Err.Configuration.Credentials(uri,
                                   "<span data-name="AppKey"></span>",
                                   "<span data-name="SharedSecret"></span>");</code></pre>
                         </div>
@@ -68,7 +68,7 @@ OneTrue.Configuration.Credentials(uri,
 catch (Exception ex)
 {
     //adding optional error model.
-    OneTrue.Report(ex, new { UserId = userId});
+    Err.Report(ex, new { UserId = userId});
 }</code></pre>
                         </div>
                         <p>
@@ -83,7 +83,7 @@ catch (Exception ex)
                         <p>codeRR will automatically discover any proxy and use it if required.</p>
                         <h2>Production</h2>
                         <p>When going to production it's recommended that you enable queued reports:</p>
-                        <pre><code class="c#">OneTrue.Configuration.QueueReports = true;</code></pre>
+                        <pre><code class="c#">Err.Configuration.QueueReports = true;</code></pre>
                         <p>It means that codeRR will upload reports in the background without affecting user experience. Great option if there are connectivity problems.</p>
                         <h2>Documentation</h2>
                         <p>
@@ -112,10 +112,10 @@ catch (Exception ex)
     {
         //copy the lines below
         var uri = new Uri("https://report.coderrapp.com");
-        OneTrue.Configuration.Credentials(uri,
+        Err.Configuration.Credentials(uri,
                                           "<span data-name="AppKey"></span>",
                                           "<span data-name="SharedSecret"></span>");
-        OneTrue.Configuration.CatchAspNetExceptions();
+        Err.Configuration.CatchAspNetExceptions();
                             
         //[..rest of the init code..]
     }
@@ -142,7 +142,7 @@ catch (Exception ex)
     }
     catch (Exception ex)
     {
-        OneTrue.Report(ex, model);
+        Err.Report(ex, model);
         ModelState.AddModelError("", ex.Message);
         return View(model);
     }
@@ -177,10 +177,10 @@ catch (Exception ex)
     {
         // copy the lines below
         var uri = new Uri("https://report.coderrapp.com");
-        OneTrue.Configuration.Credentials(uri,
+        Err.Configuration.Credentials(uri,
                                           "<span data-name="AppKey"></span>",
                                           "<span data-name="SharedSecret"></span>");
-        OneTrue.Configuration.CatchMvcExceptions();
+        Err.Configuration.CatchMvcExceptions();
                             
         //[..rest of the init code...]
         AreaRegistration.RegisterAllAreas();
@@ -213,7 +213,7 @@ catch (Exception ex)
     }
     catch (Exception ex)
     {
-        OneTrue.Report(ex, model);
+        Err.Report(ex, model);
         ModelState.AddModelError("", ex.Message);
         return View(model);
     }
@@ -248,10 +248,10 @@ catch (Exception ex)
     {
         // copy the lines below
         var uri = new Uri("https://report.coderrapp.com");
-        OneTrue.Configuration.Credentials(uri,
+        Err.Configuration.Credentials(uri,
                                           "<span data-name="AppKey"></span>",
                                           "<span data-name="SharedSecret"></span>");
-        OneTrue.Configuration.CatchWebApiExceptions();
+        Err.Configuration.CatchWebApiExceptions();
                             
         // [..rest of the init code..]
     }
@@ -260,11 +260,11 @@ catch (Exception ex)
                             <p>That will automatically catch all uncaught exceptions.</p>
                             <h2>Options</h2>
                             <pre><code class="c#">//Report requests slower than 1 second
-OneTrue.Configuration.TrackSlowRequests(TimeSpan.FromSeconds(1));
+Err.Configuration.TrackSlowRequests(TimeSpan.FromSeconds(1));
 // report POSTs with invalid models
-OneTrue.Configuration.ReportInvalidModelStates();
+Err.Configuration.ReportInvalidModelStates();
 // Track 404 pages (including missing controllers and actions).
-OneTrue.Configuration.Report404();
+Err.Configuration.Report404();
 </code></pre>
                         </div>
                         <h3>Reporting errors manually</h3>
@@ -280,7 +280,7 @@ OneTrue.Configuration.Report404();
     }
     catch (Exception ex)
     {
-        OneTrue.Report(ex, new { companyId });
+        Err.Report(ex, new { companyId });
         throw;
     }
 }</code></pre>
@@ -315,10 +315,10 @@ OneTrue.Configuration.Report404();
     {
         //copy the lines below
         var uri = new Uri("https://report.coderrapp.com");
-        OneTrue.Configuration.Credentials(uri,
+        Err.Configuration.Credentials(uri,
                                          "<span data-name="AppKey"></span>",
                                          "<span data-name="SharedSecret"></span>");
-        OneTrue.Configuration.CatchWinFormsExceptions();
+        Err.Configuration.CatchWinFormsExceptions();
                         
         // [..rest of the init code..]
         Application.EnableVisualStyles();
@@ -330,15 +330,15 @@ OneTrue.Configuration.Report404();
 
                         <h2>Options</h2>
                         <pre><code class="c#">// Take screen shots of active form
-OneTrue.Configuration.TakeScreenshotOfActiveFormOnly();
+Err.Configuration.TakeScreenshotOfActiveFormOnly();
                     
 // take screen shots of all open forms
-OneTrue.Configuration.TakeScreenshots();
+Err.Configuration.TakeScreenshots();
                     
 // Customization of error report dialog
-OneTrue.Configuration.UserInteraction.AskUserForDetails = true;
-OneTrue.Configuration.UserInteraction.AskUserForPermission = true;
-OneTrue.Configuration.UserInteraction.AskForEmailAddress = true;
+Err.Configuration.UserInteraction.AskUserForDetails = true;
+Err.Configuration.UserInteraction.AskUserForPermission = true;
+Err.Configuration.UserInteraction.AskForEmailAddress = true;
 </code></pre>
                         <h3>Reporting errors manually</h3>
                         <div>
@@ -351,7 +351,7 @@ OneTrue.Configuration.UserInteraction.AskForEmailAddress = true;
     }
     catch (Exception ex)
     {
-        OneTrue.Report(ex);
+        Err.Report(ex);
     }
 }</code></pre>
                         </div>
@@ -387,10 +387,10 @@ OneTrue.Configuration.UserInteraction.AskForEmailAddress = true;
     public static void AppInitialize()
     {
          var uri = new uri("https://report.coderrapp.com");
-        OneTrue.Configuration.Credentials(uri,
+        Err.Configuration.Credentials(uri,
                                           "<span data-name="AppKey"></span>",
                                           "<span data-name="SharedSecret"></span>");
-        OneTrue.Configuration.CatchWcfExceptions();
+        Err.Configuration.CatchWcfExceptions();
     }
 }</code></pre>
                         </div>
@@ -418,7 +418,7 @@ public class OrderService : IOrderService
         }
         catch (Exception ex)
         {
-            OneTrue.Report(ex, lines);
+            Err.Report(ex, lines);
             throw;
         }
     }

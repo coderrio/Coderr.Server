@@ -4,7 +4,6 @@ using System.Security;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using codeRR.Server.Api.Core.Applications.Events;
-using codeRR.Server.Api.Core.Applications.Events.codeRR.Api.Core.Accounts.Events;
 using codeRR.Server.Api.Core.Invitations.Commands;
 using codeRR.Server.Api.Core.Messaging;
 using codeRR.Server.Api.Core.Messaging.Commands;

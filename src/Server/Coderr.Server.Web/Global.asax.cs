@@ -4,12 +4,13 @@ using System.IO;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
+using codeRR.Client;
 using codeRR.Server.Infrastructure;
 using codeRR.Server.SqlServer;
 using codeRR.Server.Web.Infrastructure.Logging;
 using log4net;
 using log4net.Config;
-using OneTrueError.Client.Contracts;
+using codeRR.Client.Contracts;
 
 namespace codeRR.Server.Web
 {
@@ -63,7 +64,7 @@ namespace codeRR.Server.Web
                 properties.Add("Body", data);
             properties.Add("ErrTags", "unhandled-exception");
             var collection = new ContextCollectionDTO("Request", properties);
-            //OneTrue.Report(exception, collection);
+            Err.Report(exception, collection);
         }
         
     }

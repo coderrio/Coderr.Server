@@ -12,7 +12,7 @@ namespace codeRR.Server.Api.Client.Tests
         //[Fact]
         public async Task Test()
         {
-            var client = new OneTrueApiClient();
+            var client = new ServerApiClient();
             client.Open(new Uri("http://localhost/coderr/"), "", "");
             FindAccountByUserNameResult result = null;
             try

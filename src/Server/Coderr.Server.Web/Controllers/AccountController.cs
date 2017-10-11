@@ -345,14 +345,14 @@ namespace codeRR.Server.Web.Controllers
             };
             foreach (var app in apps)
             {
-                claims.Add(new Claim(OneTrueClaims.Application, app.Id.ToString(), ClaimValueTypes.Integer32));
-                claims.Add(new Claim(OneTrueClaims.ApplicationName, app.Name, ClaimValueTypes.String));
+                claims.Add(new Claim(CoderrClaims.Application, app.Id.ToString(), ClaimValueTypes.Integer32));
+                claims.Add(new Claim(CoderrClaims.ApplicationName, app.Name, ClaimValueTypes.String));
                 if (app.IsAdmin)
-                    claims.Add(new Claim(OneTrueClaims.ApplicationAdmin, app.Id.ToString(), ClaimValueTypes.Integer32));
+                    claims.Add(new Claim(CoderrClaims.ApplicationAdmin, app.Id.ToString(), ClaimValueTypes.Integer32));
             }
 
             //accountId == 1 for backwards compatibility (with version 1.0)
-            var roles = isSysAdmin || accountId == 1 ? new[] {OneTrueClaims.RoleSysAdmin} : new string[0];
+            var roles = isSysAdmin || accountId == 1 ? new[] {CoderrClaims.RoleSysAdmin} : new string[0];
             var context = new PrincipalFactoryContext(accountId, userName, roles)
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Web.Http.ExceptionHandling;
 using log4net;
-using OneTrueError.Client;
-using OneTrueError.Client.Contracts;
+using codeRR.Client;
+using codeRR.Client.Contracts;
 
 namespace codeRR.Server.Web.Infrastructure.Logging
 {
@@ -36,7 +36,7 @@ namespace codeRR.Server.Web.Infrastructure.Logging
             if (data.Length < 30000)
                 properties.Add("Body", data);
             var collection = new ContextCollectionDTO("Request", properties);
-            OneTrue.Report(context.Exception, collection);
+            Err.Report(context.Exception, collection);
             base.Log(context);
         }
     }

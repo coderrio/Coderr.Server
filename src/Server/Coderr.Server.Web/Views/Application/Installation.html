@@ -43,7 +43,7 @@
             <div style="background: #ffffff; overflow: auto; padding: .2em .6em; width: auto;">
                 <pre style="line-height: 125%; margin: 0;"><span style="color: #008800; font-style: italic">// To send to our service</span>
 var uri = new Uri(<span style="color: #0000FF">&quot;<span data-name="AppUrl"></span>&quot;</span>);
-OneTrue.Configuration.Credentials(uri,
+Err.Configuration.Credentials(uri,
                                   <span style="color: #0000FF">&quot;<span data-name="AppKey"></span>&quot;</span>, 
                                   <span style="color: #0000FF">&quot;<span data-name="SharedSecret"></span>&quot;</span>);
 </pre>
@@ -70,7 +70,7 @@ OneTrue.Configuration.Credentials(uri,
     }
     <span style="color: #000080; font-weight: bold">catch</span> (Exception exception)
     {
-        OneTrue.Report(exception);
+        Err.Report(exception);
     }
 }
 </pre>
@@ -101,10 +101,10 @@ OneTrue.Configuration.Credentials(uri,
         <span style="color: #008800; font-weight: bold">static</span> <span style="color: #008800; font-weight: bold">void</span> <span style="color: #0066BB; font-weight: bold">Main</span>(<span style="color: #333399; font-weight: bold">string</span>[] args)
         {
             var uri = new Uri(<span style="color: #0000FF">&quot;<span data-name="AppUrl"></span>&quot;</span>);
-            OneTrue.Configuration.Credentials(uri,
+            Err.Configuration.Credentials(uri,
                                               <span style="color: #0000FF">&quot;<span data-name="AppKey"></span>&quot;</span>, 
                                               <span style="color: #0000FF">&quot;<span data-name="SharedSecret"></span>&quot;</span>);
-            OneTrue.Configuration.Advanced.UploadReportFailed += OnReportfailed;
+            Err.Configuration.Advanced.UploadReportFailed += OnReportfailed;
 
             <span style="color: #888888">//[.. Your code here ..]</span>
 
@@ -149,12 +149,12 @@ OneTrue.Configuration.Credentials(uri,
 {
     <span style="color: #000080; font-weight: bold">protected</span> <span style="color: #000080; font-weight: bold">void</span> Application_Start()
     {
-        <span style="color: #008800; font-style: italic">// The appkey and shared key can be found in onetrueeror.com</span>
+        <span style="color: #008800; font-style: italic">// The appkey and shared key can be found in coderrapp.com</span>
         var uri = new Uri(<span style="color: #0000FF">&quot;<span data-name="AppUrl"></span>&quot;</span>);
-        OneTrue.Configuration.Credentials(uri,
+        Err.Configuration.Credentials(uri,
                                           <span style="color: #0000FF">&quot;<span data-name="AppKey"></span>&quot;</span>, 
                                           <span style="color: #0000FF">&quot;<span data-name="SharedSecret"></span>&quot;</span>);
-        OneTrue.Configuration.CatchAspNetExceptions();
+        Err.Configuration.CatchAspNetExceptions();
     }
 }
 </pre>
@@ -184,7 +184,7 @@ OneTrue.Configuration.Credentials(uri,
     }
     <span style="color: #000080; font-weight: bold">catch</span> (Exception exception)
     {
-        OneTrue.Report(exception);
+        Err.Report(exception);
     }
 }
 </pre>
@@ -192,7 +192,7 @@ OneTrue.Configuration.Credentials(uri,
 
 
             <p>
-                All report methods are documented <a target="_blank" href="http://coderrapp.com/doc/client/?topic=html/Methods_T_codeRR_Reporting_OneTrue.htm">here</a>. Do note the support
+                All report methods are documented <a target="_blank" href="http://coderrapp.com/doc/client/?topic=html/Methods_T_codeRR_Reporting_Err.htm">here</a>. Do note the support
                 for two-step-reporting which work well with stateless protocols like HTTP.
             </p>
 
@@ -207,7 +207,7 @@ OneTrue.Configuration.Credentials(uri,
                 Sample configuration:
                 <!-- HTML generated using hilite.me -->
                 <div style="background: #ffffff; overflow: auto; padding: .2em .6em; width: auto;">
-                    <pre style="line-height: 125%; margin: 0;">OneTrue.Configuration.SetErrorPage(<span style="color: #0000FF">&quot;~/views/error.aspx&quot;</span>);
+                    <pre style="line-height: 125%; margin: 0;">Err.Configuration.SetErrorPage(<span style="color: #0000FF">&quot;~/views/error.aspx&quot;</span>);
 </pre>
                 </div>
 
@@ -243,12 +243,12 @@ OneTrue.Configuration.Credentials(uri,
 {
     <span style="color: #000080; font-weight: bold">protected</span> <span style="color: #000080; font-weight: bold">void</span> Application_Start()
     {
-        <span style="color: #008800; font-style: italic">// The appkey and shared key can be found in onetrueeror.com</span>
+        <span style="color: #008800; font-style: italic">// The appkey and shared key can be found in coderrapp.com</span>
         var uri = new Uri(<span style="color: #0000FF">&quot;<span data-name="AppUrl"></span>&quot;</span>);
-        OneTrue.Configuration.Credentials(uri,
+        Err.Configuration.Credentials(uri,
                                           <span style="color: #0000FF">&quot;<span data-name="AppKey"></span>&quot;</span>, 
                                           <span style="color: #0000FF">&quot;<span data-name="SharedSecret"></span>&quot;</span>);
-        OneTrue.Configuration.CatchWinFormsExceptions();
+        Err.Configuration.CatchWinFormsExceptions();
     }
 }
 </pre>
@@ -275,7 +275,7 @@ OneTrue.Configuration.Credentials(uri,
     }
     <span style="color: #000080; font-weight: bold">catch</span> (Exception exception)
     {
-        OneTrue.Report(exception);
+        Err.Report(exception);
     }
 }
 </pre>
@@ -283,7 +283,7 @@ OneTrue.Configuration.Credentials(uri,
 
 
         <p>
-            All report methods are documented <a target="_blank" href="http://coderrapp.com/doc/client/?topic=html/Methods_T_codeRR_Reporting_OneTrue.htm">here</a>.
+            All report methods are documented <a target="_blank" href="http://coderrapp.com/doc/client/?topic=html/Methods_T_codeRR_Reporting_Err.htm">here</a>.
         </p>
 
     </div>
@@ -294,7 +294,7 @@ OneTrue.Configuration.Credentials(uri,
         </p>
         <!-- HTML generated using hilite.me -->
         <div style="background: #ffffff; overflow: auto; padding: .2em .6em; width: auto;">
-            <pre style="line-height: 125%; margin: 0;">OneTrue.Configuration.SetErrorForm(context =&gt; <span style="color: #000080; font-weight: bold">new</span> CustomReportForm() { ReportId = context.ReportId });
+            <pre style="line-height: 125%; margin: 0;">Err.Configuration.SetErrorForm(context =&gt; <span style="color: #000080; font-weight: bold">new</span> CustomReportForm() { ReportId = context.ReportId });
 </pre>
         </div>
         <p>The context contains the information that we've collected about the exception. Read the documentation to see a sample form.</p>
@@ -332,11 +332,11 @@ OneTrue.Configuration.Credentials(uri,
     <span style="color: #000080; font-weight: bold">public</span> <span style="color: #000080; font-weight: bold">static</span> <span style="color: #000080; font-weight: bold">void</span> AppInitialize()
     {
         var uri = new Uri(<span style="color: #0000FF">&quot;<span data-name="AppUrl"></span>&quot;</span>);
-        OneTrue.Configuration.Credentials(uri,
+        Err.Configuration.Credentials(uri,
                                           <span style="color: #0000FF">&quot;<span data-name="AppKey"></span>&quot;</span>, 
                                           <span style="color: #0000FF">&quot;<span data-name="SharedSecret"></span>&quot;</span>);
         <span style="color: #008800; font-style: italic">//add the WCF context providers.</span>
-        OneTrue.Configuration.CatchWcfExceptions();
+        Err.Configuration.CatchWcfExceptions();
      }
  }
  
@@ -363,7 +363,7 @@ OneTrue.Configuration.Credentials(uri,
     }
     <span style="color: #000080; font-weight: bold">catch</span> (Exception exception)
     {
-        OneTrue.Report(exception);
+        Err.Report(exception);
     }
 }
 </pre>
@@ -371,7 +371,7 @@ OneTrue.Configuration.Credentials(uri,
 
 
             <p>
-                All report methods are documented <a target="_blank" href="http://coderrapp.com/doc/client/?topic=html/Methods_T_codeRR_Reporting_OneTrue.htm">here</a>.
+                All report methods are documented <a target="_blank" href="http://coderrapp.com/doc/client/?topic=html/Methods_T_codeRR_Reporting_Err.htm">here</a>.
             </p>
 
         </div>
@@ -381,7 +381,7 @@ OneTrue.Configuration.Credentials(uri,
                 Sample configuration:
                 <!-- HTML generated using hilite.me -->
                 <div style="background: #ffffff; overflow: auto; padding: .2em .6em; width: auto;">
-                    <pre style="line-height: 125%; margin: 0;">OneTrue.Configuration.SetErrorPage(<span style="color: #0000FF">&quot;~/views/error.aspx&quot;</span>);
+                    <pre style="line-height: 125%; margin: 0;">Err.Configuration.SetErrorPage(<span style="color: #0000FF">&quot;~/views/error.aspx&quot;</span>);
 </pre>
                 </div>
 
@@ -425,10 +425,10 @@ OneTrue.Configuration.Credentials(uri,
     <span style="color: #000080; font-weight: bold">protected</span> <span style="color: #000080; font-weight: bold">void</span> Application_Start(<span style="color: #000080; font-weight: bold">object</span> sender, EventArgs e)
     {
         var uri = new Uri(<span style="color: #0000FF">&quot;<span data-name="AppUrl"></span>&quot;</span>);
-        OneTrue.Configuration.Credentials(uri,
+        Err.Configuration.Credentials(uri,
                                           <span style="color: #0000FF">&quot;<span data-name="AppKey"></span>&quot;</span>, 
                                           <span style="color: #0000FF">&quot;<span data-name="SharedSecret"></span>&quot;</span>);
-        OneTrue.Configuration.CatchAsmxExceptions();
+        Err.Configuration.CatchAsmxExceptions();
     }
 }
 </pre>
@@ -454,7 +454,7 @@ OneTrue.Configuration.Credentials(uri,
     }
     <span style="color: #000080; font-weight: bold">catch</span> (Exception exception)
     {
-        OneTrue.Report(exception);
+        Err.Report(exception);
     }
 }
 </pre>
@@ -462,7 +462,7 @@ OneTrue.Configuration.Credentials(uri,
 
 
             <p>
-                All report methods are documented <a target="_blank" href="http://coderrapp.com/doc/client/?topic=html/Methods_T_codeRR_Reporting_OneTrue.htm">here</a>.
+                All report methods are documented <a target="_blank" href="http://coderrapp.com/doc/client/?topic=html/Methods_T_codeRR_Reporting_Err.htm">here</a>.
             </p>
 
         </div>
@@ -489,7 +489,7 @@ OneTrue.Configuration.Credentials(uri,
 </pre>
             </div>
             <p>
-                Then you just configure it using <code>OneTrue.Configuration.SetErrorMessageFactory(new SampleErrorMessageFactory());</code>
+                Then you just configure it using <code>Err.Configuration.SetErrorMessageFactory(new SampleErrorMessageFactory());</code>
             </p>
 
             <p>

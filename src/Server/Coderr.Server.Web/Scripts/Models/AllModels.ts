@@ -1,4 +1,6 @@
-﻿module codeRR.Web.Overview.Queries {
+﻿
+
+module codeRR.Web.Overview.Queries {
     export class GetOverview {
         public static TYPE_NAME: string = 'GetOverview';
         public NumberOfDays: number;
@@ -587,10 +589,10 @@ module codeRR.Core.Reports.Queries {
 module codeRR.Core.Notifications {
     export class AddNotification {
         public static TYPE_NAME: string = 'AddNotification';
-        public NotificationType: string;
+        public AccountId: number;
         public HoldbackInterval: any;
         public Message: string;
-        public AccountId: number;
+        public NotificationType: string;
         public RoleName: string;
         public CommandId: string;
         public constructor(accountId: number, message: string) {
@@ -748,6 +750,7 @@ module codeRR.Core.Incidents.Queries {
         public static TYPE_NAME: string = 'FindIncidents';
         public ApplicationId: number;
         public Closed: boolean;
+        public FreeText: string;
         public Ignored: boolean;
         public ItemsPerPage: number;
         public MaxDate: any;
@@ -755,11 +758,10 @@ module codeRR.Core.Incidents.Queries {
         public Open: boolean;
         public PageNumber: number;
         public ReOpened: boolean;
-        public FreeText: string;
         public SortAscending: boolean;
         public SortType: codeRR.Core.Incidents.IncidentOrder;
-        public QueryId: string;
         public Version: string;
+        public QueryId: string;
     }
 
     export class GetIncident {
@@ -890,17 +892,19 @@ module codeRR.Core.Incidents.Commands {
             this.IncidentId = incidentId;
         }
     }
-    export class ReOpenIncident {
-        public static TYPE_NAME: string = 'ReOpenIncident';
+
+    export class IgnoreIncident {
+        public static TYPE_NAME: string = 'IgnoreIncident';
         public IncidentId: number;
         public UserId: number;
+        public CommandId: string;
         public constructor(incidentId: number) {
             this.IncidentId = incidentId;
         }
     }
 
-    export class IgnoreIncident {
-        public static TYPE_NAME: string = 'IgnoreIncident';
+    export class ReOpenIncident {
+        public static TYPE_NAME: string = 'ReOpenIncident';
         public IncidentId: number;
         public UserId: number;
         public CommandId: string;
@@ -976,7 +980,6 @@ module codeRR.Core.Applications.Queries {
         public AppKey: string;
         public ApplicationId: number;
         public QueryId: string;
-        public Version:string;
     }
 
     export class GetApplicationInfoResult {
@@ -1039,8 +1042,8 @@ module codeRR.Core.Applications.Queries {
         public static TYPE_NAME: string = 'GetApplicationOverview';
         public ApplicationId: number;
         public NumberOfDays: number;
-        public QueryId: string;
         public Version: string;
+        public QueryId: string;
         public constructor(applicationId: number) {
             this.ApplicationId = applicationId;
         }
@@ -1079,6 +1082,17 @@ module codeRR.Core.Applications.Events {
         public EventId: string;
     }
 
+    export class UserAddedToApplication {
+        public static TYPE_NAME: string = 'UserAddedToApplication';
+        public AccountId: number;
+        public ApplicationId: number;
+        public EventId: string;
+        public constructor(applicationId: number, accountId: number) {
+            this.ApplicationId = applicationId;
+            this.AccountId = accountId;
+        }
+    }
+
     export class UserInvitedToApplication {
         public static TYPE_NAME: string = 'UserInvitedToApplication';
         public ApplicationId: number;
@@ -1093,19 +1107,6 @@ module codeRR.Core.Applications.Events {
             this.ApplicationName = applicationName;
             this.EmailAddress = emailAddress;
             this.InvitedBy = invitedBy;
-        }
-    }
-
-}
-module codeRR.Core.Applications.Events.codeRR.Api.Core.Accounts.Events {
-    export class UserAddedToApplication {
-        public static TYPE_NAME: string = 'UserAddedToApplication';
-        public AccountId: number;
-        public ApplicationId: number;
-        public EventId: string;
-        public constructor(applicationId: number, accountId: number) {
-            this.ApplicationId = applicationId;
-            this.AccountId = accountId;
         }
     }
 
@@ -1249,6 +1250,17 @@ module codeRR.Core.ApiKeys.Commands {
         }
     }
 
+    export class EditApiKey {
+        public static TYPE_NAME: string = 'EditApiKey';
+        public ApplicationIds: number[];
+        public ApplicationName: string;
+        public Id: number;
+        public CommandId: string;
+        public constructor(id: number) {
+            this.Id = id;
+        }
+    }
+
 }
 module codeRR.Core.Accounts {
     export class RegisterSimple {
@@ -1347,6 +1359,7 @@ module codeRR.Core.Accounts.Requests {
         public AccountId: number;
         public Result: LoginResult;
         public UserName: string;
+        public IsSysAdmin: boolean;
     }
 
     export enum LoginResult {
@@ -1458,6 +1471,7 @@ module codeRR.Core.Accounts.Events {
     export class AccountRegistered {
         public static TYPE_NAME: string = 'AccountRegistered';
         public AccountId: number;
+        public IsSysAdmin: boolean;
         public UserName: string;
         public EventId: string;
         public constructor(accountId: number, userName: string) {
@@ -1507,6 +1521,8 @@ module codeRR.Core.Accounts.Commands {
 
     export class RegisterAccount {
         public static TYPE_NAME: string = 'RegisterAccount';
+        public AccountId: number;
+        public ActivateDirectly: boolean;
         public Email: string;
         public Password: string;
         public UserName: string;

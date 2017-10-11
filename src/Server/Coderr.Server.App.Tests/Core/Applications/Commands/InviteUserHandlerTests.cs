@@ -152,8 +152,8 @@ namespace codeRR.Server.App.Tests.Core.Applications.Commands
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Role, OneTrueClaims.RoleSysAdmin),
-                new Claim(OneTrueClaims.ApplicationAdmin, "1")
+                new Claim(ClaimTypes.Role, CoderrClaims.RoleSysAdmin),
+                new Claim(CoderrClaims.ApplicationAdmin, "1")
             };
             var identity = new ClaimsIdentity(claims);
             return new ClaimsPrincipal(identity);

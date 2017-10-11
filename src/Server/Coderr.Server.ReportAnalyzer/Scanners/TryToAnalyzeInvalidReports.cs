@@ -71,7 +71,7 @@
 //                var newReport = _reportDtoConverter.ConvertReport(report, app.ApplicationId);
 //                if (headers.ContainsKey("RemoteAddress"))
 //                    newReport.RemoteAddress = (string)headers["RemoteAddress"];
-//                var principal = new OneTruePrincipal(app.CustomerId, IAdoNetUnitOfWork.CreateDbName(app.CustomerId));
+//                var principal = new CoderrPrincipal(app.CustomerId, IAdoNetUnitOfWork.CreateDbName(app.CustomerId));
 //                Thread.CurrentPrincipal = principal;
 //                _scopedTaskInvoker.Execute<AnalyzeReport>(x => { x.Analyze(newReport); });
 //            }

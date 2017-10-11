@@ -72,7 +72,7 @@ namespace codeRR.Server.SqlServer.Modules.Similarities
                     while (reader.Read())
                     {
                         var json = (string) reader["Properties"];
-                        var properties = OneTrueSerializer.Deserialize<ContextCollectionPropertyDbEntity[]>(json);
+                        var properties = CoderrDtoSerializer.Deserialize<ContextCollectionPropertyDbEntity[]>(json);
                         var col = new SimilarityCollection(incidentId, reader.GetString(1));
                         col.GetType().GetProperty("Id").SetValue(col, reader.GetInt32(0));
                         foreach (var entity in properties)

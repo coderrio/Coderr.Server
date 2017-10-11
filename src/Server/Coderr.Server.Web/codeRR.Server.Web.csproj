@@ -11,7 +11,7 @@
     <IISExpressSSLPort />
     <IISExpressUseClassicPipelineMode />
     <IISExpressWindowsAuthentication />
-    <MvcBuildViews>false</MvcBuildViews>
+    <MvcBuildViews>true</MvcBuildViews>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <OutputType>Library</OutputType>
@@ -107,6 +107,12 @@
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Coderr.Client, Version=1.0.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Coderr.Client.1.0.6\lib\net451\Coderr.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Coderr.Client.AspNet.Mvc5, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Coderr.Client.AspNet.Mvc5.1.0.4\lib\net451\Coderr.Client.AspNet.Mvc5.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetCqs, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetCqs.1.0.1\lib\net452\DotNetCqs.dll</HintPath>
     </Reference>
@@ -171,12 +177,6 @@
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="OneTrueError.Client, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OneTrueError.Client.1.0.3\lib\net40\OneTrueError.Client.dll</HintPath>
-    </Reference>
-    <Reference Include="OneTrueError.Client.AspNet.Mvc5, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OneTrueError.Client.AspNet.Mvc5.1.0.2\lib\net45\OneTrueError.Client.AspNet.Mvc5.dll</HintPath>
-    </Reference>
     <Reference Include="Owin">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
@@ -187,6 +187,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Messaging" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">

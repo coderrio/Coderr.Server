@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using OneTrueError.Client.ContextProviders;
-using OneTrueError.Client.Contracts;
-using OneTrueError.Client.Reporters;
+using codeRR.Client.ContextProviders;
+using codeRR.Client.Contracts;
+using codeRR.Client.Reporters;
 
 namespace codeRR.Server.Web.Infrastructure
 {

@@ -34,7 +34,6 @@ var codeRR;
                 };
                 var appQuery = new codeRR.Core.Applications.Queries.GetApplicationInfo();
                 appQuery.ApplicationId = ctx.routeData["applicationId"];
-                appQuery.Version = this.filterVersion;
                 CqsClient.query(appQuery)
                     .done(function (info) {
                     Yo.GlobalConfig.applicationScope["application"] = info;

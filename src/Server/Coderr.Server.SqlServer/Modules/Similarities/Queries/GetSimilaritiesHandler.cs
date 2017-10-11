@@ -37,7 +37,7 @@ namespace codeRR.Server.SqlServer.Modules.Similarities.Queries
                     while (await reader.ReadAsync())
                     {
                         var json = (string) reader["Properties"];
-                        var properties = OneTrueSerializer.Deserialize<ContextCollectionPropertyDbEntity[]>(json);
+                        var properties = CoderrDtoSerializer.Deserialize<ContextCollectionPropertyDbEntity[]>(json);
                         var col = new GetSimilaritiesCollection {Name = reader.GetString(0)};
                         col.Similarities = (from prop in properties
                             let values =

@@ -12,7 +12,7 @@ namespace codeRR.Server.Api.Client
     /// <summary>
     ///     Client for the codeRR server API
     /// </summary>
-    public class OneTrueApiClient : IQueryBus, ICommandBus, IEventBus
+    public class ServerApiClient : IQueryBus, ICommandBus, IEventBus
     {
         private readonly JsonSerializerSettings _jsonSerializerSettings = new JsonSerializerSettings
         {
@@ -27,9 +27,9 @@ namespace codeRR.Server.Api.Client
 
 
         /// <summary>
-        ///     Creates a new instance of <see cref="OneTrueApiClient" />.
+        ///     Creates a new instance of <see cref="ServerApiClient" />.
         /// </summary>
-        public OneTrueApiClient()
+        public ServerApiClient()
         {
             _jsonSerializerSettings.ContractResolver = new IncludeNonPublicMembersContractResolver();
         }
@@ -37,7 +37,7 @@ namespace codeRR.Server.Api.Client
         /// <summary>
         ///     Execute a command
         /// </summary>
-        /// <typeparam name="T">type of query (from the <c>codeRR.Api</c> class library)</typeparam>
+        /// <typeparam name="T">type of query (from the <c>codeRR.Server.Api</c> class library)</typeparam>
         /// <param name="command">command to execute</param>
         /// <returns>task</returns>
         public async Task ExecuteAsync<T>(T command) where T : Command
@@ -49,7 +49,7 @@ namespace codeRR.Server.Api.Client
         /// <summary>
         ///     Publish an event
         /// </summary>
-        /// <typeparam name="TApplicationEvent">type of event (from the <c>codeRR.Api</c> class library)</typeparam>
+        /// <typeparam name="TApplicationEvent">type of event (from the <c>codeRR.Server.Api</c> class library)</typeparam>
         /// <param name="e">event to publish</param>
         /// <returns>task</returns>
         public async Task PublishAsync<TApplicationEvent>(TApplicationEvent e)
@@ -62,7 +62,7 @@ namespace codeRR.Server.Api.Client
         /// <summary>
         ///     Make a query
         /// </summary>
-        /// <typeparam name="TResult">Result from a query (a class from the <c>codeRR.Api</c> library)</typeparam>
+        /// <typeparam name="TResult">Result from a query (a class from the <c>codeRR.Server.Api</c> library)</typeparam>
         /// <param name="query"></param>
         /// <returns></returns>
         public async Task<TResult> QueryAsync<TResult>(Query<TResult> query)
@@ -76,7 +76,7 @@ namespace codeRR.Server.Api.Client
         /// <summary>
         ///     Make a request
         /// </summary>
-        /// <typeparam name="TReply">Reply from a request (a class from the <c>codeRR.Api</c> library)</typeparam>
+        /// <typeparam name="TReply">Reply from a request (a class from the <c>codeRR.Server.Api</c> library)</typeparam>
         /// <param name="request">request being made</param>
         /// <returns></returns>
         public async Task<TReply> RequestAsync<TReply>(Request<TReply> request)

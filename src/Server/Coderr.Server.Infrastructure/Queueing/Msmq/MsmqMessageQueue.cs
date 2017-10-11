@@ -55,7 +55,7 @@ namespace codeRR.Server.Infrastructure.Queueing.Msmq
                 throw new NotSupportedException("Failed to get type class from string '" +
                                                 metadata.AssemblyQualifiedTypeName + "'.");
 
-            return OneTrueSerializer.Deserialize(json, type);
+            return CoderrDtoSerializer.Deserialize(json, type);
         }
 
         public void Write(int applicationId, object message)
@@ -150,7 +150,7 @@ namespace codeRR.Server.Infrastructure.Queueing.Msmq
         {
             var reader = new StreamReader(message.BodyStream, Encoding.UTF8);
             var json = reader.ReadToEnd();
-            return OneTrueSerializer.Deserialize<T>(json);
+            return CoderrDtoSerializer.Deserialize<T>(json);
         }
 
         private static void SerializeBody(object message, Message msg)

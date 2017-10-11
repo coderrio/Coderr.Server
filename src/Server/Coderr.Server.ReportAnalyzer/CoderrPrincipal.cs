@@ -7,14 +7,14 @@ namespace codeRR.Server.ReportAnalyzer
     /// <summary>
     ///     codeRR principal
     /// </summary>
-    public class OneTruePrincipal : IPrincipal
+    public class CoderrPrincipal : IPrincipal
     {
         /// <summary>
-        ///     Creates a new instance of <see cref="OneTruePrincipal" />.
+        ///     Creates a new instance of <see cref="CoderrPrincipal" />.
         /// </summary>
         /// <param name="userName">logged in user</param>
         /// <exception cref="ArgumentNullException">userName</exception>
-        public OneTruePrincipal(string userName)
+        public CoderrPrincipal(string userName)
         {
             if (userName == null) throw new ArgumentNullException(nameof(userName));
             Identity = new GenericIdentity(userName);
@@ -23,9 +23,9 @@ namespace codeRR.Server.ReportAnalyzer
         /// <summary>
         ///     Current user, do not work in an async/task context.
         /// </summary>
-        public static OneTruePrincipal Current
+        public static CoderrPrincipal Current
         {
-            get { return (OneTruePrincipal) Thread.CurrentPrincipal; }
+            get { return (CoderrPrincipal) Thread.CurrentPrincipal; }
         }
 
 

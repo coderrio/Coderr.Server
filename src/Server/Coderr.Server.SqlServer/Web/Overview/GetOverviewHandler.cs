@@ -39,7 +39,7 @@ namespace codeRR.Server.SqlServer.Web.Overview
                     return _appIds;
 
                 var appIds = ClaimsPrincipal.Current
-    .FindAll(x => x.Type == OneTrueClaims.Application)
+    .FindAll(x => x.Type == CoderrClaims.Application)
     .Select(x => int.Parse(x.Value).ToString())
     .ToList();
                 _appIds = string.Join(",", appIds);
@@ -53,7 +53,7 @@ namespace codeRR.Server.SqlServer.Web.Overview
                 query.NumberOfDays = 30;
             var labels = CreateTimeLabels(query);
 
-            if (!ClaimsPrincipal.Current.FindAll(x => x.Type == OneTrueClaims.Application).Any())
+            if (!ClaimsPrincipal.Current.FindAll(x => x.Type == CoderrClaims.Application).Any())
             {
                 return new GetOverviewResult()
                 {

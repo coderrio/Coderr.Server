@@ -48,7 +48,6 @@ module codeRR.Application {
 
             const appQuery = new Core.Applications.Queries.GetApplicationInfo();
             appQuery.ApplicationId = ctx.routeData["applicationId"];
-            appQuery.Version = this.filterVersion;
             CqsClient.query<Core.Applications.Queries.GetApplicationInfoResult>(appQuery)
                 .done(info => {
                     Yo.GlobalConfig.applicationScope["application"] = info;

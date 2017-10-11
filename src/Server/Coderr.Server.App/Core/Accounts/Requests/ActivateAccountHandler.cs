@@ -55,7 +55,7 @@ namespace codeRR.Server.App.Core.Accounts.Requests
             var query = new GetApplicationList {AccountId = account.Id};
             var apps = await _queryBus.QueryAsync(query);
             var claims =
-                Enumerable.Select(apps, x => new Claim(OneTrueClaims.Application, x.Id.ToString(), ClaimValueTypes.Integer32))
+                Enumerable.Select(apps, x => new Claim(CoderrClaims.Application, x.Id.ToString(), ClaimValueTypes.Integer32))
                     .ToArray<Claim>();
 
             if (ClaimsPrincipal.Current.IsAccount(account.Id))

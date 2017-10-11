@@ -126,7 +126,7 @@ namespace codeRR.Server.SqlServer.Core.ApiKeys
             if (key == null) throw new ArgumentNullException(nameof(key));
 
             await _uow.InsertAsync(key);
-            foreach (var claim in key.Claims.Where(x => x.Type == OneTrueClaims.Application))
+            foreach (var claim in key.Claims.Where(x => x.Type == CoderrClaims.Application))
             {
                 AddApplication(key.Id, int.Parse(claim.Value));
             }

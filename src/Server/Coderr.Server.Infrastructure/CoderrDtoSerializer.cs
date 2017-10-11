@@ -6,7 +6,7 @@ namespace codeRR.Server.Infrastructure
     /// <summary>
     ///     Internal serializer, used only to store stuff that aren´t exposed outside the App/data namespace.
     /// </summary>
-    public static class OneTrueSerializer
+    public static class CoderrDtoSerializer
     {
         private static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
         {

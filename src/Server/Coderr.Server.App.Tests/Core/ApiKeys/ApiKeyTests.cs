@@ -15,7 +15,7 @@ namespace codeRR.Server.App.Tests.Core.ApiKeys
 
             sut.Add(1);
 
-            var claim = sut.Claims.FirstOrDefault(x => x.Type == OneTrueClaims.Application && x.Value == "1");
+            var claim = sut.Claims.FirstOrDefault(x => x.Type == CoderrClaims.Application && x.Value == "1");
             claim.Should().NotBeNull("because applications Should be represented as claims");
         }
 

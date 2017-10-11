@@ -80,9 +80,9 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
                     new Claim(ClaimTypes.NameIdentifier, account.Id.ToString(), ClaimValueTypes.Integer32),
                     new Claim(ClaimTypes.Name, account.UserName, ClaimValueTypes.String),
                     new Claim(ClaimTypes.Email, account.Email, ClaimValueTypes.String),
-                    new Claim(OneTrueClaims.Application, app.Id.ToString(), ClaimValueTypes.Integer32),
-                    new Claim(OneTrueClaims.ApplicationAdmin, app.Id.ToString(), ClaimValueTypes.Integer32),
-                    new Claim(ClaimTypes.Role, OneTrueClaims.RoleSysAdmin, ClaimValueTypes.String)
+                    new Claim(CoderrClaims.Application, app.Id.ToString(), ClaimValueTypes.Integer32),
+                    new Claim(CoderrClaims.ApplicationAdmin, app.Id.ToString(), ClaimValueTypes.Integer32),
+                    new Claim(ClaimTypes.Role, CoderrClaims.RoleSysAdmin, ClaimValueTypes.String)
                 };
                 var identity = new ClaimsIdentity(claims, "Cookie", ClaimTypes.Name, ClaimTypes.Role);
                 var properties = new AuthenticationProperties {IsPersistent = false};

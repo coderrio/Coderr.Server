@@ -62,7 +62,7 @@
 //                if (headers.ContainsKey("RemoteAddress"))
 //                    newReport.RemoteAddress = (string) headers["RemoteAddress"];
 
-//                var principal = new OneTruePrincipal(app.CustomerId, "Service");
+//                var principal = new CoderrPrincipal(app.CustomerId, "Service");
 //                Thread.CurrentPrincipal = principal;
 //                _scopedTaskInvoker.Execute<AnalyzeReport>(x => { x.Analyze(newReport); });
 //            }

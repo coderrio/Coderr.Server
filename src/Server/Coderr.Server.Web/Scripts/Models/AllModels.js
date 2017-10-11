@@ -935,14 +935,6 @@ var codeRR;
                 }());
                 CloseIncident.TYPE_NAME = 'CloseIncident';
                 Commands.CloseIncident = CloseIncident;
-                var ReOpenIncident = (function () {
-                    function ReOpenIncident(incidentId) {
-                        this.IncidentId = incidentId;
-                    }
-                    return ReOpenIncident;
-                }());
-                ReOpenIncident.TYPE_NAME = 'ReOpenIncident';
-                Commands.ReOpenIncident = ReOpenIncident;
                 var IgnoreIncident = (function () {
                     function IgnoreIncident(incidentId) {
                         this.IncidentId = incidentId;
@@ -951,6 +943,14 @@ var codeRR;
                 }());
                 IgnoreIncident.TYPE_NAME = 'IgnoreIncident';
                 Commands.IgnoreIncident = IgnoreIncident;
+                var ReOpenIncident = (function () {
+                    function ReOpenIncident(incidentId) {
+                        this.IncidentId = incidentId;
+                    }
+                    return ReOpenIncident;
+                }());
+                ReOpenIncident.TYPE_NAME = 'ReOpenIncident';
+                Commands.ReOpenIncident = ReOpenIncident;
             })(Commands = Incidents.Commands || (Incidents.Commands = {}));
         })(Incidents = Core.Incidents || (Core.Incidents = {}));
     })(Core = codeRR.Core || (codeRR.Core = {}));
@@ -1138,6 +1138,15 @@ var codeRR;
                 }());
                 ApplicationDeleted.TYPE_NAME = 'ApplicationDeleted';
                 Events.ApplicationDeleted = ApplicationDeleted;
+                var UserAddedToApplication = (function () {
+                    function UserAddedToApplication(applicationId, accountId) {
+                        this.ApplicationId = applicationId;
+                        this.AccountId = accountId;
+                    }
+                    return UserAddedToApplication;
+                }());
+                UserAddedToApplication.TYPE_NAME = 'UserAddedToApplication';
+                Events.UserAddedToApplication = UserAddedToApplication;
                 var UserInvitedToApplication = (function () {
                     function UserInvitedToApplication(invitationKey, applicationId, applicationName, emailAddress, invitedBy) {
                         this.InvitationKey = invitationKey;
@@ -1153,41 +1162,6 @@ var codeRR;
             })(Events = Applications.Events || (Applications.Events = {}));
         })(Applications = Core.Applications || (Core.Applications = {}));
     })(Core = codeRR.Core || (codeRR.Core = {}));
-})(codeRR || (codeRR = {}));
-(function (codeRR_1) {
-    var Core;
-    (function (Core_1) {
-        var Applications;
-        (function (Applications) {
-            var Events;
-            (function (Events_1) {
-                var codeRR;
-                (function (codeRR) {
-                    var Api;
-                    (function (Api) {
-                        var Core;
-                        (function (Core) {
-                            var Accounts;
-                            (function (Accounts) {
-                                var Events;
-                                (function (Events) {
-                                    var UserAddedToApplication = (function () {
-                                        function UserAddedToApplication(applicationId, accountId) {
-                                            this.ApplicationId = applicationId;
-                                            this.AccountId = accountId;
-                                        }
-                                        return UserAddedToApplication;
-                                    }());
-                                    UserAddedToApplication.TYPE_NAME = 'UserAddedToApplication';
-                                    Events.UserAddedToApplication = UserAddedToApplication;
-                                })(Events = Accounts.Events || (Accounts.Events = {}));
-                            })(Accounts = Core.Accounts || (Core.Accounts = {}));
-                        })(Core = Api.Core || (Api.Core = {}));
-                    })(Api = codeRR.Api || (codeRR.Api = {}));
-                })(codeRR = Events_1.codeRR || (Events_1.codeRR = {}));
-            })(Events = Applications.Events || (Applications.Events = {}));
-        })(Applications = Core_1.Applications || (Core_1.Applications = {}));
-    })(Core = codeRR_1.Core || (codeRR_1.Core = {}));
 })(codeRR || (codeRR = {}));
 (function (codeRR) {
     var Core;
@@ -1338,6 +1312,14 @@ var codeRR;
                 }());
                 DeleteApiKey.TYPE_NAME = 'DeleteApiKey';
                 Commands.DeleteApiKey = DeleteApiKey;
+                var EditApiKey = (function () {
+                    function EditApiKey(id) {
+                        this.Id = id;
+                    }
+                    return EditApiKey;
+                }());
+                EditApiKey.TYPE_NAME = 'EditApiKey';
+                Commands.EditApiKey = EditApiKey;
             })(Commands = ApiKeys.Commands || (ApiKeys.Commands = {}));
         })(ApiKeys = Core.ApiKeys || (Core.ApiKeys = {}));
     })(Core = codeRR.Core || (codeRR.Core = {}));

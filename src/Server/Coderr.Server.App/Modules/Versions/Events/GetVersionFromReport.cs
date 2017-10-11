@@ -30,7 +30,7 @@ namespace codeRR.Server.App.Modules.Versions.Events
             var assemblyName = GetVersionAssemblyName(e.Incident.ApplicationId);
             if (assemblyName == null)
             {
-                var notice = new AddNotification(OneTrueClaims.RoleSysAdmin,
+                var notice = new AddNotification(CoderrClaims.RoleSysAdmin,
                     "There is no version assembly configured for " + e.Incident.ApplicationName +
                     ". Go to 'System Settings'/Versions and configure one")
                 {
@@ -47,7 +47,7 @@ namespace codeRR.Server.App.Modules.Versions.Events
 
             if (!collection.Properties.TryGetValue(assemblyName, out string version))
             {
-                var notice = new AddNotification(OneTrueClaims.RoleSysAdmin,
+                var notice = new AddNotification(CoderrClaims.RoleSysAdmin,
                     "Assembly " + assemblyName + " is configured for application " + e.Incident.ApplicationName +
                     ". It do however not exist. Configure a new one at 'System Settings'/Versions.")
                 {

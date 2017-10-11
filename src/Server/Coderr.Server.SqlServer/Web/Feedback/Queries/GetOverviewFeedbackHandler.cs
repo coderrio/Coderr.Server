@@ -38,7 +38,7 @@ namespace codeRR.Server.SqlServer.Web.Feedback.Queries
                 // since the code below would otherwise
                 // allow SQL injection 
                 var appIds = ClaimsPrincipal.Current
-                    .FindAll(x => x.Type == OneTrueClaims.Application)
+                    .FindAll(x => x.Type == CoderrClaims.Application)
                     .Select(x => int.Parse(x.Value).ToString())
                     .ToList();
                 if (appIds.Count == 0)

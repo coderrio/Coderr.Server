@@ -24,7 +24,7 @@ using Griffin.Data.Mapper;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
-using OneTrueError.Client;
+using codeRR.Client;
 using Owin;
 
 [assembly: OwinStartup(typeof(Startup))]
@@ -139,10 +139,10 @@ namespace codeRR.Server.Web
                 var uri = new Uri("https://report.coderrapp.com");
                 if (!string.IsNullOrEmpty(errorTrackingConfig.ContactEmail) ||
                     !string.IsNullOrEmpty(errorTrackingConfig.InstallationId))
-                    OneTrue.Configuration.ContextProviders.Add(new CustomerInfoProvider(
+                    Err.Configuration.ContextProviders.Add(new CustomerInfoProvider(
                         errorTrackingConfig.ContactEmail,
                         errorTrackingConfig.InstallationId));
-                OneTrue.Configuration.Credentials(uri, "2b3002d3ab3e4a57ad45cff2210221ab",
+                Err.Configuration.Credentials(uri, "2b3002d3ab3e4a57ad45cff2210221ab",
                     "f381a5c9797f49bd8a3238b892d02806");
                 WebApiApplication.ReportTocodeRR = true;
                 GlobalConfiguration.Configuration.Services.Add(typeof(IExceptionLogger), new WebApiLogger());

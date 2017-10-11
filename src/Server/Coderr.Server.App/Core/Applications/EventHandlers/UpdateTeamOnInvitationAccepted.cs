@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using codeRR.Server.Api.Core.Accounts.Events;
-using codeRR.Server.Api.Core.Applications.Events.codeRR.Api.Core.Accounts.Events;
+using codeRR.Server.Api.Core.Applications.Events;
 using DotNetCqs;
 using Griffin.Container;
 

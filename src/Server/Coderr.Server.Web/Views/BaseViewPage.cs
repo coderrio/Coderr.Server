@@ -24,8 +24,8 @@ namespace codeRR.Server.Web.Views
 
                 var identity = (ClaimsIdentity) User.Identity;
                 var dict = new Dictionary<string, string>();
-                var ids = identity.FindAll(x => x.Type == OneTrueClaims.Application).ToList();
-                var names = identity.FindAll(x => x.Type == OneTrueClaims.ApplicationName).ToList();
+                var ids = identity.FindAll(x => x.Type == CoderrClaims.Application).ToList();
+                var names = identity.FindAll(x => x.Type == CoderrClaims.ApplicationName).ToList();
                 for (var i = 0; i < ids.Count; i++)
                     dict[ids[i].Value] = names[i].Value;
                 return dict;
@@ -67,8 +67,8 @@ namespace codeRR.Server.Web.Views
 
                 var identity = (ClaimsIdentity) User.Identity;
                 var dict = new Dictionary<string, string>();
-                var ids = identity.FindAll(x => x.Type == OneTrueClaims.Application).ToList();
-                var names = identity.FindAll(x => x.Type == OneTrueClaims.ApplicationName).ToList();
+                var ids = identity.FindAll(x => x.Type == CoderrClaims.Application).ToList();
+                var names = identity.FindAll(x => x.Type == CoderrClaims.ApplicationName).ToList();
                 var count = Math.Min(ids.Count, names.Count);
                 for (var i = 0; i < count; i++)
                     dict[ids[i].Value] = names[i].Value;

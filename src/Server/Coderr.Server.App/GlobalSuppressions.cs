@@ -218,12 +218,6 @@ using System.Runtime.CompilerServices;
     SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "FilterCondition",
         Scope = "member",
         Target =
-            "codeRR.App.Modules.Triggers.Commands.DtoToDomainConverters.#ConvertFilterCondition(codeRR.Api.Modules.Triggers.TriggerFilterCondition)"
-        )]
-[assembly:
-    SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "FilterCondition",
-        Scope = "member",
-        Target =
             "codeRR.App.Modules.Triggers.Queries.DomainToDtoConverters.#ConvertFilterCondition(codeRR.App.Modules.Triggers.Domain.FilterCondition)"
         )]
 [assembly:

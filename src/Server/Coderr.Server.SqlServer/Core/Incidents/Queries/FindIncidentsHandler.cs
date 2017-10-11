@@ -58,7 +58,7 @@ namespace codeRR.Server.SqlServer.Core.Incidents.Queries
                 else if (!ClaimsPrincipal.Current.IsSysAdmin())
                 {
                     var appIds = ClaimsPrincipal.Current.Claims
-                        .Where(x => x.Type == OneTrueClaims.Application)
+                        .Where(x => x.Type == CoderrClaims.Application)
                         .Select(x => x.Value)
                         .ToArray();
                     sqlQuery += $" {startWord} Applications.Id IN({string.Join(",", appIds)})";
