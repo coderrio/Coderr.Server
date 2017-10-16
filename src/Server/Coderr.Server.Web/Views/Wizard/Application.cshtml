@@ -1,0 +1,49 @@
+﻿@model codeRR.Server.Web.Models.Wizard.ApplicationViewModel
+@{
+    ViewData["Title"] = "Create a new team";
+    Layout = "_Layout.cshtml";
+}
+@section css {
+    <style>
+        html, body {
+            height: 90%;
+        }
+
+        .footer-4, .navbar {
+            display: none;
+        }
+    </style>
+}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <h1>Create application</h1>
+            @if (ViewBag.FirstApplication || true)
+            {
+                <p>It's time to create an application. "Application", in codeRR language, means an error reporting entity. </p>
+                <p>
+                    If you have a client/server based product named "l33tApp" you would typically create two applications in codeRR: 
+                        
+                </p>
+                <ul>
+                    <li>l33tApp Client</li>
+                    <li>l33tApp Server</li>
+                </ul>
+                <p>
+                    By doing so it's really
+                    easy to see which errors belongs to which part of the product.
+                    Specify the name of your first application, you'll be able to add more applications later.
+                </p>
+            }
+            <form method="post">
+                <div class="form-group">
+                    <input type="text" name="Name" placeholder="Application name" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Create</button>
+                    <a href="https://coderrapp.com/documentation/wizard/application" target="_self">Help</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

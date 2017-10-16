@@ -313,6 +313,7 @@
     <Compile Include="Controllers\GuidController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PageController.cs" />
+    <Compile Include="Controllers\WizardController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -339,6 +340,11 @@
     <Compile Include="Models\Account\ResetPasswordViewModel.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Wizard\ApplicationViewModel.cs" />
+    <Compile Include="Models\Wizard\ConfigurePackageViewModel.cs" />
+    <Compile Include="Models\Wizard\PackagesViewModel.cs" />
+    <Compile Include="Models\Wizard\NugetPackage.cs" />
+    <Compile Include="Models\Wizard\ValidateViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
@@ -552,6 +558,11 @@
     <Content Include="Views\Shared\_Layout.NoAuth.cshtml" />
     <Content Include="Views\Shared\_LeftMenu.cshtml" />
     <Content Include="Views\Shared\_TopBar.cshtml" />
+    <Content Include="Views\Wizard\Application.cshtml" />
+    <Content Include="Views\Wizard\_Layout.cshtml" />
+    <Content Include="Views\Wizard\Packages.cshtml" />
+    <Content Include="Views\Wizard\ConfigurePackage.cshtml" />
+    <Content Include="Views\Wizard\Validate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Installation\Views\Setup\Completed.cshtml" />

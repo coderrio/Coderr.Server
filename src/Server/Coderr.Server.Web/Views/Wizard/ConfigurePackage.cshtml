@@ -1,0 +1,54 @@
+﻿@model codeRR.Server.Web.Models.Wizard.ConfigurePackageViewModel
+@{
+    ViewData["Title"] = "Configure package";
+    Layout = "_Layout.cshtml";
+}
+@section css
+{
+    <style>
+        code { background: transparent !important;}
+    </style>
+}
+<div class="container">
+    <div class="row">
+        <div>
+            <h1>Application configuration</h1>
+            <p>
+                Follow the instructions below.
+            </p>
+            <div>
+                @Html.Raw(Model.Instruction)
+            </div>
+            <div>
+                <h3>Validate</h3>
+                <p>Once the client is configured, try reporting an exception manually. Add something like the code below.</p>
+                <pre><code class="lang-c#">try {
+    throw new Exception("Test");
+}
+catch (Exception ex)
+{
+    Err.Report(ex);
+}</code></pre>
+                <p>
+                    <a class="btn btn-primary" href="@Url.Action("Validate", new{Model.LibraryName, Model.ApplicationId})" target="_self">Configuration is done</a>
+                    <a href="https://coderrapp.com/documentation/wizard/which_package" target="_self">Get help</a> 
+                </p>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/vs.min.css" rel="stylesheet">
+    <script>
+        $(document).ready(function () {
+            $('pre code').each(function (i, block) {
+                hljs.highlightBlock(block);
+            });
+        });
+    </script>
+}

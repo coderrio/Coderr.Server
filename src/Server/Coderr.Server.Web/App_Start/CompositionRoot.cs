@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Reflection;
 using System.Web.Http;
 using System.Web.Mvc;
+using codeRR.Server.App.Configuration;
 using codeRR.Server.App.Core.Accounts.Requests;
 using codeRR.Server.Infrastructure;
 using codeRR.Server.Infrastructure.Configuration;
@@ -18,6 +19,11 @@ using log4net;
 
 namespace codeRR.Server.Web
 {
+    public interface IConfiguration<out TConfigType>
+    {
+        TConfigType Value { get; }
+    }
+
     public class CompositionRoot
     {
         public static IContainer Container;
@@ -42,6 +48,7 @@ namespace codeRR.Server.Web
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
             builder.RegisterControllers(Assembly.GetExecutingAssembly());
 
+            builder.RegisterService(x => Startup.ConfigurationStore.Load<BaseConfiguration>());
             var ioc = builder.Build();
 
             DependencyResolver.SetResolver(new GriffinDependencyResolver(ioc));

@@ -14,12 +14,7 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
     [OutputCache(Duration = 0, NoStore = true)]
     public class SetupController : Controller
     {
-        private IConnectionFactory _connectionFactory;
-
-        public SetupController(IConnectionFactory connectionFactory)
-        {
-            _connectionFactory = connectionFactory;
-        }
+        private readonly IConnectionFactory _connectionFactory = new Net452ConnectionFactory();
 
         [HttpPost]
         [AllowAnonymous]

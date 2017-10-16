@@ -1,0 +1,22 @@
+﻿@model codeRR.Server.Web.Models.Wizard.ValidateViewModel
+@{
+    ViewData["Title"] = "Validate";
+    Layout = "_Layout.cshtml";
+}
+<div class="container">
+    <div class="row">
+        <div>
+            <h1>Validate configuration</h1>
+            <p>
+                We could not find a reported exception. Did you have trouble configuring the library?
+            </p>
+            <p>
+                If so, let us know how we can help. Send an email to support@@coderrapp.com.
+            </p>
+            <div>
+                <a href="/#/">Exit guide</a> |
+                <a href="@Url.Action("ConfigurePackage", new{Model.ApplicationId, Model.LibraryName})">Back to the configuration step</a>
+            </div>
+        </div>
+    </div>
+</div>
