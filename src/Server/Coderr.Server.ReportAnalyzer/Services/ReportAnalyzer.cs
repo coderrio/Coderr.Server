@@ -75,9 +75,9 @@ namespace codeRR.Server.ReportAnalyzer.Services
             }
             else
             {
-                if (incident.ReportCount > 10000)
+                if (incident.ReportCount > 1000)
                 {
-                    _logger.Debug("Reportcount is more than 10000. Ignoring report for incident " + incident.Id);
+                    _logger.Debug("Report count is more than 10000. Ignoring report for incident " + incident.Id);
                     return;
                 }
 

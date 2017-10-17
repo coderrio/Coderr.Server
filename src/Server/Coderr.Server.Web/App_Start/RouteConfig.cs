@@ -10,7 +10,7 @@ namespace codeRR.Server.Web
             routes.MapRoute(
                 "Default",
                 "{controller}/{action}/{id}",
-                new {controller = "Home", action = "ToInstall", id = UrlParameter.Optional},
+                new {controller = "Boot", action = "ToInstall", id = UrlParameter.Optional},
                 new[] {"codeRR.Server.Web.Controllers"}
                 );
         }

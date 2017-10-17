@@ -81,9 +81,7 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
             var config = ConfigurationStore.Instance.Load<codeRRConfigSection>();
             if (config != null)
             {
-                model.ActivateTracking = config.ActivateTracking;
                 model.ContactEmail = config.ContactEmail;
-                model.InstallationId = config.InstallationId;
             }
             else
             {
@@ -101,9 +99,9 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
 
             var settings = new codeRRConfigSection
             {
-                ActivateTracking = model.ActivateTracking,
+                ActivateTracking = true,
                 ContactEmail = model.ContactEmail,
-                InstallationId = model.InstallationId
+                InstallationId = Guid.NewGuid().ToString("N")
             };
             ConfigurationStore.Instance.Store(settings);
             return Redirect(Url.GetNextWizardStep());

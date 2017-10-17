@@ -7,28 +7,22 @@
 
         <h2>Error tracking</h2>
         <p>
-            To correct bugs much faster we would like to activate codeRR for your installation. All exceptions
-            will be uploaded to our own installation for further analysis.
+            To correct bugs faster we have activated codeRR in the community server. By completing this
+            setup, you allow us to collect error information and sent it to our own hosted service.
+        </p>
+        <p>
+            You can optionally enter your email address to get notifications when the errors in your
+            installation have been corrected and released. 
+        </p>
+        <p>
+            <em>(We might also contact you if we need more information
+                about the error)</em>
         </p>
         <form method="post" action="@Url.Action("Errors")" style="width: 100%" class="form">
             @Html.ValidationSummary(false)
-            <div class="form-group">
-                @Html.CheckBoxFor(x => x.ActivateTracking, new {@class = "form-control", style = "display:inline;height:auto;width:inherit;"})
-                @Html.LabelFor(x => x.ActivateTracking, new {@class = "control-label"})
-                <br/>
-                <small>Allow us to track errors.</small>
-            </div>
             <div class="form-group disabled suboption">
                 @Html.LabelFor(x => x.ContactEmail, new {@class = "control-label"})
-                @Html.TextBoxFor(x => x.ContactEmail, new {@class = "form-control", disabled = ""})
-                <small>Email address that we may contact if we need any further information (will also receive notifications when your errors have been corrected).</small>
-            </div>
-            <div class="form-group disabled suboption">
-                @Html.LabelFor(x => x.InstallationId, new {@class = "control-label"})
-                @Html.TextBoxFor(x => x.InstallationId, new {@class = "form-control", disabled = ""})
-                <small>A fixed identity which identifies this specific installation. You can generate a GUID and then store it. Used to identify the number of installations that have the same issue.</small>
-                <br/>
-                <small>A guid generated for your convencience if you want to enable this feature: @Guid.NewGuid().ToString("N")</small>
+                @Html.TextBoxFor(x => x.ContactEmail, new {@class = "form-control", placeholder = "Your email address"})
             </div>
             <br/>
             @Html.Raw(ViewBag.PrevLink)

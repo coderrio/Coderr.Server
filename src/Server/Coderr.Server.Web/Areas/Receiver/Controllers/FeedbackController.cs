@@ -20,7 +20,7 @@ namespace codeRR.Server.Web.Areas.Receiver.Controllers
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(FeedbackController));
         private readonly IMessageQueue _queue;
-        private IConnectionFactory _connectionFactory;
+        private readonly IConnectionFactory _connectionFactory;
 
         public FeedbackController(IMessageQueueProvider queueProvider, IConnectionFactory connectionFactory)
         {

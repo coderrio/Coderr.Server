@@ -285,6 +285,7 @@
     <Compile Include="Areas\Admin\Models\QueueViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ReportingViewModel.cs" />
     <Compile Include="Areas\Installation\Controllers\AccountController.cs" />
+    <Compile Include="Areas\Installation\Controllers\BootController.cs" />
     <Compile Include="Areas\Installation\Controllers\MessagingController.cs" />
     <Compile Include="Areas\Installation\Controllers\SetupController.cs" />
     <Compile Include="Areas\Installation\Controllers\SqlController.cs" />
@@ -532,7 +533,7 @@
     <Content Include="Views\Feedback\Incident.html" />
     <Content Include="Views\Feedback\Overview.html" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\NoInstallation.cshtml" />
+    <Content Include="Views\Boot\NoInstallation.cshtml" />
     <Content Include="Views\Home\Welcome.html" />
     <Content Include="Views\Incident\Close.html" />
     <Content Include="Views\Incident\Ignore.html" />

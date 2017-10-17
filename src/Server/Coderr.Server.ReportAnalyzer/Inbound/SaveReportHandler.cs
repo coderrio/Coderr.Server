@@ -30,14 +30,13 @@ namespace codeRR.Server.ReportAnalyzer.Inbound
         /// <summary>
         ///     Creates a new instance of <see cref="SaveReportHandler" />.
         /// </summary>
-        /// <param name="queueProvider">provider</param>
+        /// <param name="queue">Queue used to enqueue new error reports</param>
         /// <param name="connectionFactory">Tries to find connection named "Queue" and uses default if not found.</param>
         /// <exception cref="ArgumentNullException">queueProvider;connectionFactory</exception>
-        public SaveReportHandler(IMessageQueueProvider queueProvider, IConnectionFactory connectionFactory)
+        public SaveReportHandler(IMessageQueue queue, IConnectionFactory connectionFactory)
         {
-            if (queueProvider == null) throw new ArgumentNullException(nameof(queueProvider));
+            _queue = queue ?? throw new ArgumentNullException(nameof(queue));
             _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
-            _queue = queueProvider.Open("ReportQueue");
         }
 
         public void AddFilter(Func<NewReportDTO, bool> filter)
@@ -71,7 +70,7 @@ namespace codeRR.Server.ReportAnalyzer.Inbound
 
             var report = DeserializeBody(reportBody);
 
-            //fix malconfigured clients
+            // correct incorrect clients
             if (report.CreatedAtUtc > DateTime.UtcNow)
                 report.CreatedAtUtc = DateTime.UtcNow;
 

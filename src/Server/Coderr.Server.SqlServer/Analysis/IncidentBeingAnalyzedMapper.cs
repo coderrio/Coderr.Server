@@ -4,9 +4,9 @@ using Griffin.Data.Mapper;
 
 namespace codeRR.Server.SqlServer.Analysis
 {
-    public class Incident2Mapper : CrudEntityMapper<IncidentBeingAnalyzed>
+    public class IncidentBeingAnalyzedMapper : CrudEntityMapper<IncidentBeingAnalyzed>
     {
-        public Incident2Mapper()
+        public IncidentBeingAnalyzedMapper()
             : base("Incidents")
         {
             Property(x => x.UpdatedAtUtc)

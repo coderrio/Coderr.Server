@@ -61,7 +61,7 @@ namespace codeRR.Server.Web.Areas.Receiver.Controllers
             {
                 var buffer = new byte[HttpContext.Current.Request.InputStream.Length];
                 HttpContext.Current.Request.InputStream.Read(buffer, 0, buffer.Length);
-                var handler = new SaveReportHandler(_queueProvider, _connectionFactory);
+                var handler = new SaveReportHandler(_queueProvider.Open("ReportQueue"), _connectionFactory);
                 await handler.BuildReportAsync(appKey, sig, Request.GetClientIpAddress(), buffer);
                 return Request.CreateResponse(HttpStatusCode.OK);
             }

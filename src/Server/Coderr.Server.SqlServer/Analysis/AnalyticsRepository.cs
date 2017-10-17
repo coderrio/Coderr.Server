@@ -71,10 +71,10 @@ namespace codeRR.Server.SqlServer.Analysis
 
         public void CreateIncident(IncidentBeingAnalyzed incident)
         {
+            if (incident == null) throw new ArgumentNullException("incident");
             if (string.IsNullOrEmpty(incident.ReportHashCode))
                 throw new InvalidOperationException("ReportHashCode is required to be able to detect duplicates");
 
-            if (incident == null) throw new ArgumentNullException("incident");
             using (var cmd = _unitOfWork.CreateCommand())
             {
                 cmd.CommandText =
@@ -88,6 +88,7 @@ namespace codeRR.Server.SqlServer.Analysis
                 cmd.AddParameter("ReportCount", incident.ReportCount);
                 cmd.AddParameter("UpdatedAtUtc", incident.UpdatedAtUtc);
                 cmd.AddParameter("Description", incident.Description);
+                cmd.AddParameter("StackTrace", incident.StackTrace);
                 cmd.AddParameter("FullName", incident.FullName);
                 var id = (int) (decimal) cmd.ExecuteScalar();
                 incident.GetType()
