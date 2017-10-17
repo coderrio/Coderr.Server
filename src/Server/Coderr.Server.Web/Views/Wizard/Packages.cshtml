@@ -41,6 +41,14 @@
         .package:hover {
             background-color: #eaeaea;
         }
+        .package.active:hover {
+            background-color: #eaeaea;
+        }
+        .package.active {
+            background-color: #eaeaea;
+            border: #cccccc;
+        }
+
     </style>
 }
 <div class="container">
@@ -103,6 +111,8 @@
 {
     <script>
         $('.package').hover(function () {
+            $('.package').removeClass('active');
+            $(this).addClass('active');
             $('#description').html($('div', this).html());
             $('#instruction-panel').removeClass('hidden');
         })

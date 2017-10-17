@@ -61,7 +61,7 @@ namespace codeRR.Server.Web.Infrastructure
             sw.WriteLine("Database schema upgrade failed");
             sw.WriteLine();
             sw.WriteLine("Failed to update the database schema. Sorry for that. We do however promise to help you as fast as we can.");
-            sw.WriteLine("Email the contents below to support@coderrapp.com. Include your MS SQL server version.");
+            sw.WriteLine("Email the contents below to help@coderrapp.com. Include your MS SQL server version.");
             sw.WriteLine();
             sw.WriteLine("============================");
             sw.WriteLine(_errorMessage);

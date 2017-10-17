@@ -18,7 +18,7 @@
     <div class="row">
         <div class="col-md-6 mx-auto">
             <h1>Create application</h1>
-            @if (ViewBag.FirstApplication || true)
+            @if (ViewBag.FirstApplication)
             {
                 <p>It's time to create an application. "Application", in codeRR language, means an error reporting entity. </p>
                 <p>
@@ -41,7 +41,8 @@
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">Create</button>
-                    <a href="https://coderrapp.com/documentation/wizard/application" target="_self">Help</a>
+                    <a href="https://discuss.coderrapp.com" target="_self">Help</a> | 
+                    <a href="@Url.Content("~/")#/">Exit wizard</a>
                 </div>
             </form>
         </div>

@@ -1,7 +1,7 @@
 ﻿@using codeRR.Server.Infrastructure.Security
 <nav class="topbar">
     <div class="topbar-left text-left pl-4" style="">
-        <a href="/#/">
+        <a href="#/">
             <img src="/Content/images/layout/logo.png" class="hidden-enlarged"/>
             <img src="/Content/images/layout/logo_min.png" class="hidden-not-enlarged"/>
         </a>
@@ -29,7 +29,7 @@
                     {
                         <div class="dropdown-divider"></div>
                         <h6 class="dropdown-header">Admin settings</h6>
-                        <a href="#create-application" data-toggle="modal" data-target="#create-application" class="dropdown-item">
+                        <a href="@Url.Action("Application", "Wizard")" class="dropdown-item">
                             <i class="fa fa-file"></i> <span>Create new application</span>
                         </a>
                         <a href="@Url.Content("~/Admin")" class="dropdown-item">

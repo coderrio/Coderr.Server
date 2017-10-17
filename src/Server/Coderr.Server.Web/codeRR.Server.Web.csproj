@@ -342,6 +342,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Wizard\ApplicationViewModel.cs" />
     <Compile Include="Models\Wizard\ConfigurePackageViewModel.cs" />
+    <Compile Include="Models\Wizard\HelpViewModel.cs" />
     <Compile Include="Models\Wizard\PackagesViewModel.cs" />
     <Compile Include="Models\Wizard\NugetPackage.cs" />
     <Compile Include="Models\Wizard\ValidateViewModel.cs" />
@@ -403,6 +404,7 @@
     <Content Include="Content\alertifyjs\themes\semantic.min.css" />
     <Content Include="Content\alertifyjs\themes\semantic.rtl.css" />
     <Content Include="Content\alertifyjs\themes\semantic.rtl.min.css" />
+    <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap\bootstrap-grid.css" />
     <Content Include="Content\bootstrap\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap\bootstrap-reboot.css" />

@@ -7,10 +7,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - codeRR</title>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="@Url.Content("~/Content/bootstrap/bootstrap.min.css")">
+    <link rel="stylesheet" href="@Url.Content("~/Content/bootstrap.min.css")">
     @Styles.Render("~/Content/css")
     @RenderSection("Styles", false)
-    <script>window.bootScripts = []</script>
+    <script>
+        window.bootScripts = [];
+        window.API_URL = '@ApiUrl';
+        window.WEB_SITE = '@(new Uri(Request.Url, Url.Content("~")))';
+        window.WEB_ROOT = '@Url.Content("~")';
+    </script>
     <link rel="stylesheet" href="@Url.Content("~/Content/morris.css")">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/css/tether.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
@@ -142,9 +147,6 @@
     <script src="@Url.Content("~/Scripts/CqsClient.js")"></script>
     @Scripts.Render("~/bundles/app")
     <script type="text/javascript">
-        var API_URL = '@ApiUrl';
-        var WEB_SITE = '@(new Uri(Request.Url, Url.Content("~")))';
-        var WEB_ROOT = '@Url.Content("~")';
         Griffin.Net.HttpClient.REDIRECT_401_TO = '@LoginUrl';
     </script>
     @RenderSection("scripts", false)
@@ -216,9 +218,9 @@
     @Html.Partial("~/Views/Application/_create.cshtml")
     @Html.Partial("~/Views/Shared/_support.cshtml")
     <script>
-            window.bootScripts.forEach(function (func) {
-                func();
-            });
+        window.bootScripts.forEach(function (func) {
+            func();
+        });
     </script>
 </body>
 </html>

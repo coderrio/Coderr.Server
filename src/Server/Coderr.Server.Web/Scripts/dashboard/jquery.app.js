@@ -3,6 +3,14 @@ toggleMenuItem = function (uri) {
         uri = '/#/';
     var $a;
     if (typeof uri === 'string') {
+
+        // we do not include root in links since
+        // we can exist in a virtual folder, which means 
+        // that we would have had to parse links on all regular HTML pages.
+        var webRoot = window['WEB_ROOT'];
+        if (uri.indexOf(webRoot) === 0) {
+            uri = uri.substr(webRoot.length);
+        }
         $a = $('#sidebar-menu a[href="' + uri + '"]');
     } else {
         $a = $(uri);

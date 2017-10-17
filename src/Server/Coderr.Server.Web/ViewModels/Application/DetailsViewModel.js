@@ -32,6 +32,13 @@ var codeRR;
                     ctx.resolve();
                     self.renderChart(result);
                 };
+                var items = ctx.select.all('.wizard-config');
+                items.forEach(function (item) {
+                    var href = window['WEB_ROOT'] +
+                        'configure/choose/package?applicationId=' +
+                        ctx.routeData['applicationId'];
+                    item.setAttribute('href', href);
+                });
                 var appQuery = new codeRR.Core.Applications.Queries.GetApplicationInfo();
                 appQuery.ApplicationId = ctx.routeData["applicationId"];
                 CqsClient.query(appQuery)

@@ -8,6 +8,6 @@ namespace codeRR.Server.Web.Models.Wizard
     public class ValidateViewModel
     {
         public int ApplicationId { get; set; }
-        public int LibraryName { get; set; }
+        public string LibraryName { get; set; }
     }
 }

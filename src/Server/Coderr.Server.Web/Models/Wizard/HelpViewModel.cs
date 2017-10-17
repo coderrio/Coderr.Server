@@ -6,10 +6,10 @@ using System.Web;
 
 namespace codeRR.Server.Web.Models.Wizard
 {
-    public class ApplicationViewModel
+    public class HelpViewModel
     {
         [Required]
-        public string Name { get; set; }
+        public string Message { get; set; }
 
         public string Referer { get; set; }
     }

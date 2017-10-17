@@ -20,18 +20,11 @@
                 @Html.Raw(Model.Instruction)
             </div>
             <div>
-                <h3>Validate</h3>
-                <p>Once the client is configured, try reporting an exception manually. Add something like the code below.</p>
-                <pre><code class="lang-c#">try {
-    throw new Exception("Test");
-}
-catch (Exception ex)
-{
-    Err.Report(ex);
-}</code></pre>
+
                 <p>
-                    <a class="btn btn-primary" href="@Url.Action("Validate", new{Model.LibraryName, Model.ApplicationId})" target="_self">Configuration is done</a>
-                    <a href="https://coderrapp.com/documentation/wizard/which_package" target="_self">Get help</a> 
+                    <a class="btn btn-primary" href="@Url.Action("Validate", new{Model.LibraryName, Model.ApplicationId})" target="_self">Configuration is done</a> 
+                    <a href="https://discuss.coderrapp.com" target="_self">Help</a> | 
+                    <a href="@Url.Content("~/")#/">Exit wizard</a>
                 </p>
 
             </div>

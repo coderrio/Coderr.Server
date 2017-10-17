@@ -1,6 +1,6 @@
 ﻿$(function() {
     $("[data-val-required]:not(:hidden):not(:checkbox)").after('<span class="required-indicator">*</span>');
-    $(".icon-info-sign[title], [data-title]").tooltip();
+    //$(".icon-info-sign[title], [data-title]").tooltip();
 
 });
 
@@ -22,7 +22,11 @@ function getUrlVars() {
 
 var queryParameters = getUrlVars();
 if (queryParameters["usernote"]) {
-    humane.log(decodeURIComponent(queryParameters["usernote"]));
+    var p = queryParameters["usernote"];
+    console.log(p);
+    var a = decodeURIComponent(p);
+    console.log(a);
+    humane.log(a);
 }
 
 var ChartService = {

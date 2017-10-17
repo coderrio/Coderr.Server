@@ -184,7 +184,7 @@ namespace codeRR.Server.Web.Controllers
                         ModelState.AddModelError("", "Incorrect username or password.");
                     else
                         ModelState.AddModelError("",
-                            "Your account is locked or have not been activated (check your mailbox). Contact support@coderrapp.com if you need assistance.");
+                            "Your account is locked or have not been activated (check your mailbox). Contact help@coderrapp.com if you need assistance.");
 
                     model.Password = "";
                     return View(model);

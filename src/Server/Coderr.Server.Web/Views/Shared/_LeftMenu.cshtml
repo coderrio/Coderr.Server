@@ -9,9 +9,9 @@
             <li class="has_sub" id="mnuDashboard">
                 <a href="javascript:void(0)" class="waves-effect"><i class="zmdi zmdi-view-dashboard"></i><span> Dashboard </span> </a>
                 <ul class="list-unstyled">
-                    <li><a href="/#/">Overview</a></li>
-                    <li><a href="/#/incidents">Incidents</a></li>
-                    <li><a href="/#/feedback">Feedback</a></li>
+                    <li><a href="#/">Overview</a></li>
+                    <li><a href="#/incidents">Incidents</a></li>
+                    <li><a href="#/feedback">Feedback</a></li>
                 </ul>
             </li>
         </ul>
@@ -29,10 +29,10 @@
                 <span class="menu-arrow"></span>
             </a>
             <ul class="list-unstyled">
-                <li><a href="/#/application/{id}/">Summary</a></li>
-                <li><a href="/#/application/{id}/incidents">Incidents</a></li>
-                <li><a href="/#/application/{id}/feedback">Feedback</a></li>
-                <li data-if="IsAdmin"><a href="/#/application/{id}/team">Team members</a></li>
+                <li><a href="#/application/{id}/">Summary</a></li>
+                <li><a href="#/application/{id}/incidents">Incidents</a></li>
+                <li><a href="#/application/{id}/feedback">Feedback</a></li>
+                <li data-if="IsAdmin"><a href="#/application/{id}/team">Team members</a></li>
             </ul>
         </li>
     </ul>
@@ -78,7 +78,7 @@
         var incidentMatch = re.exec(window.location.hash);
         if (incidentMatch) {
             $('#mnuIncident li a').each(function() {
-                var link = '/#/application/' +
+                var link = window.WEB_ROOT + '#/application/' +
                     incidentMatch[1] +
                     "/incident/" +
                     incidentMatch[2] +

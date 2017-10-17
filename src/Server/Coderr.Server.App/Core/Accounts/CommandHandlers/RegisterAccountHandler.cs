@@ -88,9 +88,7 @@ namespace codeRR.Server.App.Core.Accounts.CommandHandlers
             }
         }
 
-#pragma warning disable 1998
         private async Task SendAccountInfo(string userName)
-#pragma warning restore 1998
         {
             var account = await _repository.GetByUserNameAsync(userName);
 
@@ -103,7 +101,7 @@ namespace codeRR.Server.App.Core.Accounts.CommandHandlers
 Someone (you?) tried to create an account with the same information as your account. 
 
 If it was you, you can request a new password from the login page. Otherwise, 
-contact us so that we can investigate: support@coderrapp.com
+contact us so that we can investigate: help@coderrapp.com
 
 Cheerio,
   codeRR Team",
