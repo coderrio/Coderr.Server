@@ -168,14 +168,15 @@
 
             function startSpaApplication() {
                 Griffin.Yo.Views.ViewRenderer.DEBUG = false;
-                Griffin.Yo.GlobalConfig.resourceLocator = {
-                    getHtml: function(section) {
-                        return '/Page?path=/Views/' + section + ".cshtml";
+                Griffin.Yo.Spa.Config.resourceLocator = {
+                    getHtml: function (section) {
+                        return WEB_ROOT + 'Views/' + section + ".html";
                     },
-                    getScript: function(section) {
-                        return '/ViewModels/' + section + "ViewModel.js";
+                    getScript: function (section) {
+                        return WEB_ROOT + 'ViewModels/' + section + "ViewModel.js";
                     }
                 };
+
                 var spa = new Griffin.Yo.Spa.SpaEngine('codeRR');
                 spa.addTarget('BootstrapModal', new Griffin.Yo.Routing.ViewTargets.BootstrapModalViewTarget());
 

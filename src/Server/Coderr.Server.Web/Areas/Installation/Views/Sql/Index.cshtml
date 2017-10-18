@@ -5,9 +5,8 @@
     <div class="row">
         <div class="col-lg-6">
             <h2>Database configuration</h2>
-
             <p>
-                It's time to to configure the database. To do that you need
+                It's time to configure the database. To do that you need
                 to start by specifying which database to use. We expect that you have created
                 a database and configured an account for it.
             </p>
@@ -16,13 +15,13 @@
             </p>
             <form method="post" action="@Url.Action("Connection", "Sql")" style="width: 100%" class="form-inline" id="dbForm">
                 <div>
-                    <br/><br/>
+                    <br /><br />
                     @Html.Raw(ViewBag.PrevLink)
-                    <button id="saveButton" class="btn">Test Connection</button>
+                    <button id="testConnection" class="btn btn-primary">Test Connection</button>
                     @Html.Raw(ViewBag.NextLink)
                 </div>
             </form>
-            <br/>
+            <br />
             <div class="alert alert-warning" id="error" style="display: none">
             </div>
         </div>
@@ -34,10 +33,8 @@
                     by taking the SqlServer class library and convert it to a library for your favorite DB engine.
                 </em>
             </p>
-
             <h3>Example</h3>
             <pre><code>Data Source=(localdb)\ProjectsV12;Initial Catalog=codeRR;Integrated Security=True;Connect Timeout=30;</code></pre>
-
             <h2>Tip!</h2>
             <p>
                 Do you want to give permissions to the IIS app pool? Add <em>"IIS APPPOOL\YourAppPool"</em> as the windows account in SQL Server Management Studio.
@@ -48,25 +45,34 @@
         </div>
     </div>
 </div>
-
 @section scripts
 {
-
     <script type="text/javascript">
-        $('#saveButton')
+        $('[data-name="nextLink"]').addClass("disabled");
+        $('#testConnection')
             .click(function(e) {
                 e.preventDefault();
                 var conStr = encodeURIComponent($('[name="connectionString"]').val());
-                $
-                    .getJSON(
-                        '@Url.RouteUrl(new {Area = "Installation", Controller = "Sql", Action = "Validate"})/?connectionString=' + conStr)
-                    .done(function(data) {
-                        if (data.result == "fail") {
-                            $('#error').text(data.reason).show();
+                var url =
+                    '@Url.RouteUrl(new {Area = "Installation", Controller = "Sql", Action = "Validate"})/?connectionString=' +
+                    conStr;
+                $.post(url,
+                    function (data) {
+                        if (data.result === "fail") {
+                            var reason = data.reason.replace(/\\n/g, "<br>")
+                                .replace(/\\'/g, "'")
+                                .replace(/\\"/g, '"')
+                                .replace(/\\\\/g, '\\')
+                                .replace(/\\&/g, "&")
+                                .replace(/\\r/g, "r")
+                                .replace(/\\t/g, "\t")
+                                .replace(/\\b/g, "\b")
+                                .replace(/\\f/g, "\f");
+                            $('#error').html(reason).show();
                         } else {
                             $('#error').hide();
-                            $("#testConnection").removeClass("btn-primary");
-                            $('#saveButton').removeAttr("disabled").addClass("btn-primary");
+                            $("#testConnection").removeClass("btn-primary").addClass('btn-default');
+                            $('[data-name="nextLink"]').removeClass('disabled').addClass('btn-primary');
                             humane.log("Connection was successful. Click on the Next button to continue.");
                         }
                     });

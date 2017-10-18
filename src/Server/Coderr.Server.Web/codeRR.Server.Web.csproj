@@ -23,7 +23,7 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <TypeScriptToolsVersion>2.3</TypeScriptToolsVersion>
     <UseGlobalApplicationHostFile />
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
     <Use64BitIISExpress />
@@ -406,12 +406,6 @@
     <Content Include="Content\alertifyjs\themes\semantic.rtl.css" />
     <Content Include="Content\alertifyjs\themes\semantic.rtl.min.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\bootstrap\bootstrap-grid.css" />
-    <Content Include="Content\bootstrap\bootstrap-grid.min.css" />
-    <Content Include="Content\bootstrap\bootstrap-reboot.css" />
-    <Content Include="Content\bootstrap\bootstrap-reboot.min.css" />
-    <Content Include="Content\bootstrap\bootstrap.css" />
-    <Content Include="Content\bootstrap\bootstrap.min.css" />
     <Content Include="Content\complete.css" />
     <Content Include="Content\editor\bold.png" />
     <Content Include="Content\editor\bullets.png" />
@@ -448,17 +442,10 @@
     <Content Include="log4net.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Nuget\ReadMe.txt" />
     <Content Include="packages.config" />
     <Content Include="Scripts\alertify.js" />
     <Content Include="Scripts\alertify.min.js" />
     <Content Include="Areas\Admin\Views\ApiKeys\Edit.cshtml" />
-    <Content Include="Content\bootstrap\bootstrap-grid.css.map" />
-    <Content Include="Content\bootstrap\bootstrap-grid.min.css.map" />
-    <Content Include="Content\bootstrap\bootstrap-reboot.css.map" />
-    <Content Include="Content\bootstrap\bootstrap-reboot.min.css.map" />
-    <Content Include="Content\bootstrap\bootstrap.css.map" />
-    <Content Include="Content\bootstrap\bootstrap.min.css.map" />
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.woff" />
@@ -468,6 +455,7 @@
     <Content Include="fonts\Material-Design-Iconic-Font.ttf" />
     <Content Include="fonts\Material-Design-Iconic-Font.woff" />
     <Content Include="fonts\Material-Design-Iconic-Font.woff2" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -574,9 +562,6 @@
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
     </None>
-    <None Include="Properties\PublishProfiles\LocalPublish.pubxml" />
-    <None Include="Properties\PublishProfiles\WebPI Site.pubxml" />
-    <None Include="Properties\PublishProfiles\WebPI VDir.pubxml" />
     <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.1.1.min.map" />
   </ItemGroup>
@@ -641,11 +626,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>50473</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:50473/</IISUrl>
+          <IISUrl>http://localhost/codeRR.Server.Web</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

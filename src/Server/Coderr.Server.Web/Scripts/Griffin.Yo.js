@@ -1191,23 +1191,15 @@ var Griffin;
             Config.resourceLocator = {
                 getHtml: function (section) {
                     var path = window.location.pathname;
-                    if (window.location.pathname.indexOf(".") > -1) {
-                        var pos = window.location.pathname.lastIndexOf("/");
-                        path = window.location.pathname.substr(0, pos);
+                    if (path.substr(-1, 1) != '/') {
+                        path = path + '/';
                     }
-                    if (path.substring(-1, 1) === "/") {
-                        path = path.substring(0, path.length - 1);
-                    }
-                    return path + ("/Views/" + section + ".html");
+                    return path + "Views/" + section + ".html";
                 },
                 getScript: function (section) {
                     var path = window.location.pathname;
-                    if (window.location.pathname.indexOf(".") > -1) {
-                        var pos = window.location.pathname.lastIndexOf("/");
-                        path = window.location.pathname.substr(0, pos);
-                    }
-                    if (path.substring(-1, 1) === "/") {
-                        path = path.substring(0, path.length - 1);
+                    if (path.substr(-1, 1) != '/') {
+                        path = path + '/';
                     }
                     return path + ("/ViewModels/" + section + "ViewModel.js");
                 }

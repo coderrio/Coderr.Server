@@ -50,7 +50,10 @@ namespace codeRR.Server.Infrastructure.Configuration.Database
                         var items = new Dictionary<string, string>();
                         while (reader.Read())
                         {
-                            items[reader.GetString(0)] = reader.GetString(1);
+                            var name = reader.GetString(0);
+                            var dbValue = reader.GetValue(1);
+                            var value = dbValue is DBNull ? null : (string) dbValue;
+                            items[name] = value;
                         }
 
                         if (items.Count == 0)

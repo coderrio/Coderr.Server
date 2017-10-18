@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - codeRR</title>
-    <link href="/Content/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -14,7 +14,7 @@
 <body>
     <div class="navbar navbar-dark bg-dark">
         <div class="container">
-            <span class="navbar-brand">codeRR - Admin area</span>
+            <span class="navbar-brand">codeRR - Administration area</span>
             <span>
                 <a href="@Url.Content("~/#")">
                     <span class="fa  fa-2x fa-home text-warning"></span>

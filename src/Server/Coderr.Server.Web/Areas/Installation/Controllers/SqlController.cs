@@ -5,20 +5,25 @@ using codeRR.Server.Infrastructure;
 
 namespace codeRR.Server.Web.Areas.Installation.Controllers
 {
-    [OutputCache(Duration = 0, NoStore = true)]
     public class SqlController : Controller
     {
+        private static int _counter;
+
         [HttpPost]
+        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult Connection()
         {
             return RedirectToAction("Tables");
         }
 
+        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult Index()
         {
             var constr = ConfigurationManager.ConnectionStrings["Db"];
             if (!string.IsNullOrEmpty(constr?.ConnectionString))
+            {
                 ViewBag.ConnectionString = constr.ConnectionString ?? "";
+            }
             else
             {
                 ViewBag.ConnectionString = "";
@@ -30,11 +35,14 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
         }
 
         [HttpGet]
+        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult Tables()
         {
             ViewBag.GotException = false;
             if (SetupTools.DbTools.GotUpToDateTables())
+            {
                 ViewBag.GotTables = true;
+            }
             else
             {
                 ViewBag.GotTables = false;
@@ -44,6 +52,7 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
         }
 
         [HttpPost]
+        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult Tables(string go)
         {
             try
@@ -63,6 +72,7 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
             //return RedirectToRoute(new {Area = "Installation", Controller = "Setup", Action = "Done"});
         }
 
+        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult Validate()
         {
             try
@@ -77,7 +87,12 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
                     .Replace("\"", "\\\"")
                     .Replace("\r", "")
                     .Replace("\n", "\\n");
-                return Content(@"{ ""result"": ""fail"", ""reason"": """ + errMsg + @"""}", "application/json");
+                return Json(new
+                {
+                    result = "fail",
+                    reason = errMsg,
+                    attempt = ++_counter
+                }, JsonRequestBehavior.AllowGet);
             }
         }
 

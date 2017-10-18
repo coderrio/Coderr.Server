@@ -7,7 +7,7 @@
             <h2>Database configuration</h2>
 
             <p>
-                It's time to to configure the database. To do that you need
+                It's time to configure the database. To do that you need
                 to start by specifying which database to use. We expect that you have created
                 a database and configured an account for it.
             </p>
@@ -35,7 +35,7 @@
                 </em>
             </p>
             <h3>Example</h3>
-            <pre><code>Data Source=(localdb)\ProjectsV12;Initial Catalog=codeRR;Integrated Security=True;Connect Timeout=30;</code></pre>
+            <pre><code>Data Source=yourDbServer;Initial Catalog=codeRR;Integrated Security=True;Connect Timeout=30;</code></pre>
         </div>
     </div>
 </div>
@@ -44,6 +44,7 @@
 {
 
     <script type="text/javascript">
+        $('[data-name="nextLink"]').prop('disabled', 'true');
         $('#saveButton')
             .click(function(e) {
                 e.preventDefault();
@@ -52,13 +53,14 @@
                     .getJSON(
                         '@Url.RouteUrl(new {Area = "Installation", Controller = "Sql", Action = "Validate"})/?connectionString=' + conStr)
                     .done(function(data) {
-                        if (data.result == "fail") {
+                        if (data.result === "fail") {
                             $('#error').text(data.reason).show();
                         } else {
                             $('#error').hide();
                             $("#testConnection").removeClass("btn-primary");
                             $('#saveButton').removeAttr("disabled").addClass("btn-primary");
                             humane.log("Connection was successful. Click on the Next button to continue.");
+                            $('[data-name="nextLink"]').prop('disabled', 'false');
                         }
                     });
             });

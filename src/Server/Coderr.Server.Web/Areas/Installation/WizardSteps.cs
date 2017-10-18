@@ -40,7 +40,7 @@ namespace codeRR.Server.Web.Areas.Installation
 
             var step = Steps[index];
             return
-                $@"<a class=""btn btn- btn-default"" href=""{urlHelper.Content(step.VirtualPath)}"">{step.Name} &gt;&gt;</a>";
+                $@"<a class=""btn btn-outline-primary"" data-name=""nextLink"" href=""{urlHelper.Content(step.VirtualPath)}"">{step.Name} &gt;&gt;</a>";
         }
 
         public static string GetPreviousWizardStepLink(this UrlHelper urlHelper)
@@ -53,7 +53,7 @@ namespace codeRR.Server.Web.Areas.Installation
 
             var step = Steps[index];
             return
-                $@"<a class=""btn btn-default"" href=""{urlHelper.Content(step.VirtualPath)}"">&lt;&lt; {step.Name}</a>";
+                $@"<a class=""btn btn-outline-dark"" href=""{urlHelper.Content(step.VirtualPath)}"">&lt;&lt; {step.Name}</a>";
         }
 
         private static int FindCurrentIndex(UrlHelper urlHelper)

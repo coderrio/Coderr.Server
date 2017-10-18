@@ -13,7 +13,7 @@ namespace codeRR.Server.Web.Controllers
             if (!path.StartsWith("/views", StringComparison.OrdinalIgnoreCase))
                 return new HttpStatusCodeResult(403);
 
-            return PartialView(path);
+            return PartialView("~" + path);
         }
     }
 }

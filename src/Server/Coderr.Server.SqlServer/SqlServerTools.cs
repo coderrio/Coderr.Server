@@ -80,7 +80,7 @@ namespace codeRR.Server.SqlServer
                 else
                     connectionString = connectionString.Substring(0, pos) + "1" + connectionString.Substring(endPos);
             }
-
+            SqlConnection.ClearAllPools();
             var con = new SqlConnection(connectionString);
             con.Open();
         }

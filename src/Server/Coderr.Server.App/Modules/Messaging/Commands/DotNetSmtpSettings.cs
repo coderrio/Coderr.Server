@@ -57,7 +57,7 @@ namespace codeRR.Server.App.Modules.Messaging.Commands
             AccountPassword = items.GetString("AccountPassword", "");
             SmtpHost = items.GetString("SmtpHost");
             PortNumber = items.GetInteger("PortNumber");
-            UseSsl = items.GetBoolean("UseSsl");
+            UseSsl = items.GetBoolean("UseSSL");
         }
     }
 }
