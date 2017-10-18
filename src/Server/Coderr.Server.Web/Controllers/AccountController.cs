@@ -151,16 +151,25 @@ namespace codeRR.Server.Web.Controllers
 
         public ActionResult Login()
         {
+            var config = ConfigurationStore.Instance.Load<BaseConfiguration>();
+            var model = new LoginViewModel
+            {
+                AllowRegistrations = config.AllowRegistrations != false
+            };
+
             var url = ConfigurationManager.AppSettings["LoginUrl"];
             if (url != null && url != Request.Url.AbsolutePath)
                 return Redirect(url);
 
-            return View();
+            return View(model);
         }
 
         [HttpPost]
         public async Task<ActionResult> Login(LoginViewModel model)
         {
+            var config = ConfigurationStore.Instance.Load<BaseConfiguration>();
+            model.AllowRegistrations = config.AllowRegistrations != false;
+
             if (!ModelState.IsValid)
                 return View(model);
 
@@ -228,6 +237,12 @@ namespace codeRR.Server.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            var config = ConfigurationStore.Instance.Load<BaseConfiguration>();
+            if (config.AllowRegistrations == false)
+            {
+                ModelState.AddModelError("", "New registrations are not allowed.");
+            }
+
             if (!ModelState.IsValid)
                 return View(model);
 

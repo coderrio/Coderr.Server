@@ -23,9 +23,6 @@ namespace codeRR.Server.Web.Infrastructure.Logging
             _logger.Error("Request + " + context.Request.RequestUri + ", data" + data, context.Exception);
             _logger.Error(context.Exception);
 
-            if (!WebApiApplication.ReportTocodeRR)
-                return;
-
             var properties = new Dictionary<string, string>
             {
                 {"Url", context.Request.RequestUri.ToString()},

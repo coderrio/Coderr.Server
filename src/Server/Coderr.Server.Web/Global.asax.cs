@@ -17,7 +17,6 @@ namespace codeRR.Server.Web
     public class WebApiApplication : HttpApplication
     {
         private static readonly ILog _logger;
-        public static bool ReportTocodeRR;
 
         static WebApiApplication()
         {
@@ -49,9 +48,6 @@ namespace codeRR.Server.Web
                 data = reader.ReadToEnd();
             }
             _logger.Error("Request + " + Request.Url + ", data" + data, exception);
-
-            if (!ReportTocodeRR)
-                return;
 
             var properties = new Dictionary<string, string>
             {

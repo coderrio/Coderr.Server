@@ -76,7 +76,7 @@ namespace codeRR.Server.Web
             if (!string.IsNullOrEmpty(configType))
             {
                 var instance = TypeHelper.CreateAssemblyObject(configType);
-                configFilters.Add((IFilter) instance);
+                configFilters.Add((IFilter)instance);
                 return;
             }
 
@@ -119,7 +119,7 @@ namespace codeRR.Server.Web
         {
             var typeName = ConfigurationManager.AppSettings["ConnectionFactoryType"];
             if (typeName != null)
-                ConnectionFactory = (IConnectionFactory) TypeHelper.CreateAssemblyObject(typeName);
+                ConnectionFactory = (IConnectionFactory)TypeHelper.CreateAssemblyObject(typeName);
             else
                 ConnectionFactory = new Net452ConnectionFactory();
         }
@@ -142,10 +142,9 @@ namespace codeRR.Server.Web
                     Err.Configuration.ContextProviders.Add(new CustomerInfoProvider(
                         errorTrackingConfig.ContactEmail,
                         errorTrackingConfig.InstallationId));
-                Err.Configuration.Credentials(uri, 
+                Err.Configuration.Credentials(uri,
                     "2b3002d3ab3e4a57ad45cff2210221ab",
                     "f381a5c9797f49bd8a3238b892d02806");
-                WebApiApplication.ReportTocodeRR = true;
                 GlobalConfiguration.Configuration.Services.Add(typeof(IExceptionLogger), new WebApiLogger());
             }
             else
@@ -189,7 +188,7 @@ namespace codeRR.Server.Web
 
             var middlewareRegistrar = TypeHelper.CreateAssemblyObject(middlewareTypeStr);
             if (middlewareRegistrar != null)
-                middlewareRegistrar.GetType().GetMethod("Register").Invoke(middlewareRegistrar, new object[] {app});
+                middlewareRegistrar.GetType().GetMethod("Register").Invoke(middlewareRegistrar, new object[] { app });
         }
     }
 }

@@ -37,7 +37,10 @@
     <div class="form-group">
         <input id="login-button" type="submit" class="btn btn-primary" value="Sign in" />
         <a href="@Url.Content("~/password/request/reset")" class="btn">Reset password</a>
-        @Html.ActionLink("Register", "Register", null, new { @class = "btn" })
+        @if (Model.AllowRegistrations)
+        {
+            @Html.ActionLink("Register", "Register", null, new { @class = "btn" })
+        }
     </div>
 </form>
 

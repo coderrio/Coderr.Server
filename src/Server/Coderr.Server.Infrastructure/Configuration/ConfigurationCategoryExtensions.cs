@@ -23,14 +23,29 @@ namespace codeRR.Server.Infrastructure.Configuration
             foreach (var kvp in settings)
             {
                 var property = type.GetProperty(kvp.Key);
-                if (property.PropertyType == typeof(Uri))
+                var propertyType = property.PropertyType;
+                if (propertyType == typeof(Uri))
                 {
                     var value = new Uri(kvp.Value);
                     property.SetValue(section, value);
                 }
-                else if (!property.PropertyType.IsAssignableFrom(typeof(string)))
+                else if (!propertyType.IsAssignableFrom(typeof(string)))
                 {
-                    var value = Convert.ChangeType(kvp.Value, property.PropertyType);
+                    var realType = Nullable.GetUnderlyingType(propertyType);
+                    if (realType != null)
+                    {
+                        // we got a nullable type and the string represents
+                        // null, so just assign it.
+                        if (string.IsNullOrEmpty(kvp.Value))
+                        {
+                            property.SetValue(section, null);
+                            continue;
+                        }
+
+                        propertyType = realType;
+                    }
+
+                    var value = Convert.ChangeType(kvp.Value, propertyType);
                     property.SetValue(section, value);
                 }
                 else

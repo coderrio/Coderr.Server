@@ -25,9 +25,11 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
             {
                 model.BaseUrl = config.BaseUrl.ToString();
                 model.SupportEmail = config.SupportEmail;
+                model.AllowRegistrations = config.AllowRegistrations != false;
             }
             else
             {
+                model.AllowRegistrations = true;
                 model.BaseUrl = Request.Url.ToString().Replace("installation/setup/basics/", "");
                 ViewBag.NextLink = "";
             }
@@ -42,7 +44,8 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
             var settings = new BaseConfiguration
             {
                 BaseUrl = new Uri(model.BaseUrl),
-                SupportEmail = model.SupportEmail
+                SupportEmail = model.SupportEmail,
+                AllowRegistrations = model.AllowRegistrations
             };
             ConfigurationStore.Instance.Store(settings);
             return Redirect(Url.GetNextWizardStep());
@@ -54,9 +57,7 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
             var config = ConfigurationStore.Instance.Load<codeRRConfigSection>();
             if (config != null)
             {
-                model.ActivateTracking = config.ActivateTracking;
                 model.ContactEmail = config.ContactEmail;
-                model.InstallationId = config.InstallationId;
             }
             else
                 ViewBag.NextLink = "";
@@ -72,12 +73,9 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
 
             var settings = new codeRRConfigSection
             {
-                ActivateTracking = model.ActivateTracking,
                 ContactEmail = model.ContactEmail,
-                InstallationId = model.InstallationId
             };
             ConfigurationStore.Instance.Store(settings);
-            WebApiApplication.ReportTocodeRR = model.ActivateTracking;
             return Redirect(Url.GetNextWizardStep());
         }
 

@@ -4,7 +4,6 @@
 }
 <div class="container">
     <div class="col-lg-6">
-
         <h2>Base configuration</h2>
         <form method="post" action="@Url.Action("Basics")" style="width: 100%" class="form">
             @Html.ValidationSummary(false)
@@ -13,18 +12,27 @@
                     Base URL
                 </label>
                 <input type="url"
-                       name="BaseUrl" class="form-control" value="@Model.BaseUrl" placeholder="http://yourhostName"/>
-                <small>Address used when visiting this site.</small>
+                       name="BaseUrl" class="form-control" value="@Model.BaseUrl" placeholder="http://yourhostName" />
+                <small class="form-text text-muted">Address used when visiting this site.</small>
             </div>
             <div class="form-group">
                 <label for="SupportEmail">
                     Email address
                 </label>
-                <input type="email" id="SupportEmail" name="SupportEmail" class="form-control" value="@Model.SupportEmail"/>
-                <small>Used by your users when they need support using codeRR, for instance for account troubles. Also used as sender in outbound emails.</small>
+                <input type="email" id="SupportEmail" name="SupportEmail" class="form-control" value="@Model.SupportEmail" />
+                <small class="form-text text-muted">Used by your users when they need support using codeRR, for instance for account troubles. Also used as sender in outbound emails.</small>
             </div>
-            <br/>
-            <input type="submit" class="btn btn-primary" value="Save"/>
+            <div class="form-check">
+                <label for="AllowRegistrations" class="form-check-label">
+                    <input type="checkbox" id="AllowRegistrations" name="AllowRegistrations" class="form-check-input" value="1" @(@Model.AllowRegistrations ? "checked=\"checked\"" : "") />
+                    Allow registrations
+                </label>
+                <br/>
+                <small class="form-text text-muted">Allow users to create new accounts by using the registration page.</small>
+            </div>
+
+            <br />
+            <input type="submit" class="btn btn-primary" value="Save" />
         </form>
     </div>
 </div>

@@ -10,6 +10,16 @@ namespace codeRR.Server.App.Configuration
     public sealed class BaseConfiguration : IConfigurationSection
     {
         /// <summary>
+        ///     allow new users to register accounts.
+        /// </summary>
+        /// <remarks>
+        ///     <para>
+        ///         <c>null</c> = not configured = allow.
+        ///     </para>
+        /// </remarks>
+        public bool? AllowRegistrations { get; set; }
+
+        /// <summary>
         ///     Base URL for the home page, including protocol (http:// or https://)
         /// </summary>
         public Uri BaseUrl { get; set; }
@@ -24,10 +34,7 @@ namespace codeRR.Server.App.Configuration
         /// </summary>
         public string SupportEmail { get; set; }
 
-        string IConfigurationSection.SectionName
-        {
-            get { return "BaseConfig"; }
-        }
+        string IConfigurationSection.SectionName => "BaseConfig";
 
         IDictionary<string, string> IConfigurationSection.ToDictionary()
         {

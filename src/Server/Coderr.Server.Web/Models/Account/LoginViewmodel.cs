@@ -11,5 +11,10 @@ namespace codeRR.Server.Web.Models.Account
 
         [Required]
         public string UserName { get; set; }
+
+        /// <summary>
+        /// Allow new users to register.
+        /// </summary>
+        public bool AllowRegistrations { get; set; }
     }
 }
