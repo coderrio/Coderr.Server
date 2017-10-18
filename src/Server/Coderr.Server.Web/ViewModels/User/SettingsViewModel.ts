@@ -46,6 +46,7 @@ module codeRR.User {
             cmd.FirstName = dto.FirstName;
             cmd.LastName = dto.LastName;
             cmd.MobileNumber = dto.MobileNumber;
+            cmd.EmailAddress = dto.EmailAddress;
             CqsClient.command(cmd);
             humane.log("Settings have been saved.");
         }

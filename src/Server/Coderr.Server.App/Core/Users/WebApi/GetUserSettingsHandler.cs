@@ -31,6 +31,7 @@ namespace codeRR.Server.App.Core.Users.WebApi
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 MobileNumber = user.MobileNumber,
+                EmailAddress = user.EmailAddress,
                 Notifications = new NotificationSettings
                 {
                     NotifyOnReOpenedIncident = settings.ReopenedIncident.ConvertEnum<NotificationState>(),

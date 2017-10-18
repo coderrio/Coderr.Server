@@ -8,6 +8,16 @@ namespace codeRR.Server.Api.Core.Users.Commands
     public class UpdatePersonalSettings : Command
     {
         /// <summary>
+        ///     Change email address
+        /// </summary>
+        /// <remarks>
+        ///     <para>
+        ///         Do not required additional verification, we trust the user once it has an activated account.
+        ///     </para>
+        /// </remarks>
+        public string EmailAddress { get; set; }
+
+        /// <summary>
         ///     First name (if specified)
         /// </summary>
         public string FirstName { get; set; }

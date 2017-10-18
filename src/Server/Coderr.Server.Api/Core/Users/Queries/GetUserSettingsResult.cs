@@ -11,6 +11,11 @@ namespace codeRR.Server.Api.Core.Users.Queries
     public class GetUserSettingsResult
     {
         /// <summary>
+        ///     From the user account, always specified.
+        /// </summary>
+        public string EmailAddress { get; set; }
+
+        /// <summary>
         ///     First name (optional)
         /// </summary>
         public string FirstName { get; set; }
@@ -21,7 +26,7 @@ namespace codeRR.Server.Api.Core.Users.Queries
         public string LastName { get; set; }
 
         /// <summary>
-        ///     Cell phone number (otional, but required for text notifications).
+        ///     Cell phone number (optional, but required for text notifications).
         /// </summary>
         public string MobileNumber { get; set; }
 

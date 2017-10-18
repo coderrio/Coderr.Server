@@ -420,6 +420,7 @@ module codeRR.Core.Users.Queries {
 
     export class GetUserSettingsResult {
         public static TYPE_NAME: string = 'GetUserSettingsResult';
+        public EmailAddress: string;
         public FirstName: string;
         public LastName: string;
         public MobileNumber: string;
@@ -442,6 +443,7 @@ module codeRR.Core.Users.Commands {
 
     export class UpdatePersonalSettings {
         public static TYPE_NAME: string = 'UpdatePersonalSettings';
+        public EmailAddress: string;
         public FirstName: string;
         public LastName: string;
         public MobileNumber: string;

@@ -78,8 +78,8 @@ namespace codeRR.Server.SqlServer.Analysis
             using (var cmd = _unitOfWork.CreateCommand())
             {
                 cmd.CommandText =
-                    "INSERT INTO Incidents (ReportHashCode, ApplicationId, CreatedAtUtc, HashCodeIdentifier, ReportCount, UpdatedAtUtc, Description, FullName, IsReOpened)" +
-                    " VALUES (@ReportHashCode, @ApplicationId, @CreatedAtUtc, @HashCodeIdentifier, @ReportCount, @UpdatedAtUtc, @Description, @FullName, 0);select SCOPE_IDENTITY();";
+                    "INSERT INTO Incidents (ReportHashCode, ApplicationId, CreatedAtUtc, HashCodeIdentifier, StackTrace, ReportCount, UpdatedAtUtc, Description, FullName, IsReOpened)" +
+                    " VALUES (@ReportHashCode, @ApplicationId, @CreatedAtUtc, @HashCodeIdentifier, @StackTrace, @ReportCount, @UpdatedAtUtc, @Description, @FullName, 0);select SCOPE_IDENTITY();";
                 cmd.AddParameter("Id", incident.Id);
                 cmd.AddParameter("ReportHashCode", incident.ReportHashCode);
                 cmd.AddParameter("ApplicationId", incident.ApplicationId);
