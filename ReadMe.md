@@ -50,7 +50,7 @@ The context information will be attached as:
 
 ## Community
 
-* [Discussion board](https://discuss.coderrapp.com)
+* [Discussion board](http://discuss.coderrapp.com)
 * [Report bugs](https://github.com/coderrapp/coderr.server/issues)
 * [Documentation](https://coderrapp.com/documentation)
 * [Commercial support](mailto:support@coderrapp.com?subject=Commercial%20support%20inquiry)
