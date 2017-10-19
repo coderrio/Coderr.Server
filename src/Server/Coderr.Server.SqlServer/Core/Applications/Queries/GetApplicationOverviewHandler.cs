@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using codeRR.Server.Api.Core.Applications.Queries;
@@ -98,7 +99,7 @@ group by cast(ErrorReports.CreatedAtUtc as date);";
 
                     result.ErrorReports = errorReports.Select(x => x.Value).ToArray();
                     result.Incidents = incidents.Select(x => x.Value).ToArray();
-                    result.TimeAxisLabels = incidents.Select(x => x.Key.ToShortDateString()).ToArray();
+                    result.TimeAxisLabels = incidents.Select(x => x.Key.ToString("yyyy-MM-dd")).ToArray();
                 }
             }
 

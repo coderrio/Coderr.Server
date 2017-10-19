@@ -43,6 +43,7 @@ namespace codeRR.Server.App.Modules.Geolocation.EventHandlers
             if (string.IsNullOrEmpty(e.Report.RemoteAddress))
                 return;
 
+            e.Report.RemoteAddress = "155.4.14.41";
             if (e.Report.RemoteAddress == "::1")
                 return;
             if (e.Report.RemoteAddress == "127.0.0.1")

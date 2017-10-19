@@ -4,11 +4,22 @@
             <div class="pull-right">
                 <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Actions
+                        Incident menu
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <h6 class="dropdown-header">Browse information</h6>
+                        <a class="dropdown-item" href="#/application/:applicationId/incident/:incidentId/feedback" data-title="View comments from users">
+                            <span class="fa fa-comment"></span> Feedback (from users)
+                        </a>
+                        <a class="dropdown-item" href="#/application/:applicationId/incident/:incidentId/context" data-title="See what all error reports had in common">
+                            <span class="fa fa-line-chart"></span> Report similarities
+                        </a>
+                        <a class="dropdown-item" href="#/application/:applicationId/incident/:incidentId/origins" data-title="See where the reports are from (geographically)">
+                            <span class="fa fa-globe"></span> Report origins
+                        </a>
+                        <h6 class="dropdown-header">Actions</h6>
                         <a class="dropdown-item" href="#/application/:applicationId/incident/:incidentId/close" data-title="This incident have been corrected and should not generate any more reports" data-unless="IsSolved">
-                            <span class="fa fa-check"></span> Solve
+                            <span class="fa fa-check"></span> Close
                         </a>
                         <a class="dropdown-item" href="#/application/:applicationId/incident/:incidentId/ignore" data-title="Do not trigger notifications or show this incident as active, no matter how many reports it receive." data-unless="IsIgnored">
                             <span class="fa fa-pause"></span> Ignore
@@ -95,9 +106,9 @@
                 </div>
                 <div class="text-center">
                     <form id="refresh-chart" style="display: inline">
-                        <input type="radio" name="range" value="30" checked="checked"/> month
-                        <input type="radio" name="range" value="7"/> week
-                        <input type="radio" name="range" value="1"/> day
+                        <input type="radio" name="range" value="30" checked="checked" /> month
+                        <input type="radio" name="range" value="7" /> week
+                        <input type="radio" name="range" value="1" /> day
                     </form>
                 </div>
             </div>
@@ -111,27 +122,27 @@
             <div class="card-box">
                 <table id="reportsTable" class="table table-striped">
                     <thead>
-                    <tr>
-                        <th>Message</th>
-                        <th>Reported at (UTC)</th>
-                        <th>Ip address</th>
-                        <th>&nbsp;</th>
-                    </tr>
+                        <tr>
+                            <th>Message</th>
+                            <th>Reported at (UTC)</th>
+                            <th>Ip address</th>
+                            <th>&nbsp;</th>
+                        </tr>
                     </thead>
                     <tbody data-collection="Items">
-                    <tr>
-                        <td>
-                            <a href="" data-name="Message"></a>
-                        </td>
-                        <td data-name="CreatedAtUtc"></td>
-                        <td data-name="RemoteAddress"></td>
-                        <td></td>
-                    </tr>
+                        <tr>
+                            <td>
+                                <a href="" data-name="Message"></a>
+                            </td>
+                            <td data-name="CreatedAtUtc"></td>
+                            <td data-name="RemoteAddress"></td>
+                            <td></td>
+                        </tr>
                     </tbody>
                     <tfoot>
-                    <tr>
-                        <td colspan="4" class="text-right" id="pager"></td>
-                    </tr>
+                        <tr>
+                            <td colspan="4" class="text-right" id="pager"></td>
+                        </tr>
                     </tfoot>
                 </table>
             </div>

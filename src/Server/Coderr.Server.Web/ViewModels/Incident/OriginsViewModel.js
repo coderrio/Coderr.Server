@@ -43,19 +43,29 @@ var codeRR;
                     var query = new codeRR.Modules.ErrorOrigins.Queries.GetOriginsForIncident(context.routeData["incidentId"]);
                     CqsClient.query(query)
                         .done(function (response) {
-                        var points = [];
-                        response.Items.forEach(function (item) {
-                            var point = new google.maps.LatLng(item.Latitude, item.Longitude);
-                            for (var a = 0; a < item.NumberOfErrorReports; a++) {
-                                points.push(point);
-                            }
-                        });
-                        var heatmap = new google.maps.visualization.HeatmapLayer({
-                            data: points,
-                            map: map,
-                            dissipating: false,
-                            radius: 5
-                        });
+                        if (response.Items.length < 50) {
+                            response.Items.forEach(function (item) {
+                                var point = new google.maps.LatLng(item.Latitude, item.Longitude);
+                                var marker = new google.maps.Marker({
+                                    position: point,
+                                    map: map,
+                                    title: item.NumberOfErrorReports + " error report(s)"
+                                });
+                            });
+                        }
+                        else {
+                            var points = [];
+                            response.Items.forEach(function (item) {
+                                var point = new google.maps.LatLng(item.Latitude, item.Longitude);
+                                points.push({ location: point, weight: item.NumberOfErrorReports });
+                            });
+                            var heatmap = new google.maps.visualization.HeatmapLayer({
+                                data: points,
+                                map: map,
+                                dissipating: true,
+                                radius: 15
+                            });
+                        }
                     });
                 };
             };

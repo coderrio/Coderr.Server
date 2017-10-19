@@ -55,20 +55,29 @@ module codeRR.Incident {
                 CqsClient.query<Modules.ErrorOrigins.Queries.GetOriginsForIncidentResult>(query)
                     .done(response => {
 
-                        var points: any[] = [];
-                        response.Items.forEach(item => {
-                            var point = new google.maps.LatLng(item.Latitude, item.Longitude);
-                            for (let a = 0; a < item.NumberOfErrorReports; a++) {
-                                points.push(point);
-                            }
-                        });
+                        if (response.Items.length < 50) {
+                            response.Items.forEach(item => {
+                                var point = new google.maps.LatLng(item.Latitude, item.Longitude);
+                                var marker = new google.maps.Marker({
+                                    position: point,
+                                    map: map,
+                                    title: item.NumberOfErrorReports + " error report(s)"
+                                });
+                            });
+                        } else {
+                            var points: any[] = [];
+                            response.Items.forEach(item => {
+                                var point = new google.maps.LatLng(item.Latitude, item.Longitude);
+                                points.push({ location: point, weight: item.NumberOfErrorReports });
+                            });
 
-                        var heatmap = new google.maps.visualization.HeatmapLayer({
-                            data: points,
-                            map: map,
-                            dissipating: false,
-                            radius: 5
-                        });
+                            var heatmap = new google.maps.visualization.HeatmapLayer({
+                                data: points,
+                                map: map,
+                                dissipating: true,
+                                radius: 15
+                            });
+                        }
 
                     });
             };
