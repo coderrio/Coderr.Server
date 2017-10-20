@@ -32,9 +32,9 @@
                 </div>
                 <div class="text-center">
                     <form id="refresh-chart" style="display: inline">
-                        <input type="radio" name="range" value="30" checked="checked"/> month
-                        <input type="radio" name="range" value="7"/> week
-                        <input type="radio" name="range" value="1"/> day
+                        <input type="radio" name="range" value="30" checked="checked" /> month
+                        <input type="radio" name="range" value="7" /> week
+                        <input type="radio" name="range" value="1" /> day
                     </form>
                 </div>
             </div>
@@ -77,42 +77,43 @@
         <div class="col-lg-12">
             <div class="card-box">
                 <div class="float-right">
-                    <input data-name="freeText" type="text" class="form-control" placeholder="search (at least 3 chars)" style="float: left; max-width: 200px; margin-right: 10px;"/>
+                    <input data-name="freeText" type="text" class="form-control" placeholder="search (at least 3 chars)" style="float: left; max-width: 200px; margin-right: 10px;" />
                     <div class="btn-group">
                         <label href="#active" id="btnActive" class="btn btn-primary active">Active</label>
                         <label href="#closed" id="btnClosed" class="btn btn-primary">Closed</label>
                         <label href="#ignored" id="btnIgnored" class="btn btn-primary">Ignored</label>
                     </div>
                 </div>
-                <h4 class="header-title m-b-30">Incidents
+                <h4 class="header-title m-b-30">
+                    Incidents
                 </h4>
                 <table id="incidentTable" class="table table-striped">
                     <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th style="min-width: 100px">Application</th>
-                        <th style="cursor: pointer; min-width: 100px" id="LastReportCol">Last report <span id="lastReport-sort" class="glyphicon glyphicon-chevron-down"></span></th>
-                        <th style="cursor: pointer; min-width: 100px" id="CountCol">Report count <span id="count-sort" class="glyphicon glyphicon-chevron-up" style="visibility: hidden"></span></th>
-                        <th>&nbsp;</th>
-                    </tr>
+                        <tr>
+                            <th>Name</th>
+                            <th style="min-width: 100px">Application</th>
+                            <th style="cursor: pointer; min-width: 100px" id="LastReportCol">Last report <span id="lastReport-sort" class="glyphicon glyphicon-chevron-down"></span></th>
+                            <th style="cursor: pointer; min-width: 100px" id="CountCol">Report count <span id="count-sort" class="glyphicon glyphicon-chevron-up" style="visibility: hidden"></span></th>
+                            <th>&nbsp;</th>
+                        </tr>
                     </thead>
                     <tbody data-collection="Items">
-                    <tr>
-                        <td>
-                            <a href="" data-name="Name"></a>
-                        </td>
-                        <td>
-                            <a data-name="ApplicationName" href="" data-url="#/application/:applicationId/"></a>
-                        </td>
-                        <td data-name="LastUpdateAtUtc"></td>
-                        <td data-name="ReportCount"></td>
-                        <td></td>
-                    </tr>
+                        <tr>
+                            <td>
+                                <a href="" data-name="Name"></a>
+                            </td>
+                            <td>
+                                <a data-name="ApplicationName" href="" data-url="#/application/:applicationId/"></a>
+                            </td>
+                            <td data-name="LastUpdateAtUtc"></td>
+                            <td data-name="ReportCount"></td>
+                            <td></td>
+                        </tr>
                     </tbody>
                     <tfoot>
-                    <tr>
-                        <td colspan="4" class="text-right" id="pager"></td>
-                    </tr>
+                        <tr>
+                            <td colspan="5" id="pager"></td>
+                        </tr>
                     </tfoot>
                 </table>
             </div>
