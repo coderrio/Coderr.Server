@@ -1,5 +1,5 @@
 ﻿using System;
-using DotNetCqs;
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
 
 namespace codeRR.Server.Api.Core.Accounts.Events
 {
@@ -31,7 +31,8 @@ namespace codeRR.Server.Api.Core.Accounts.Events
         /// <summary>
         ///     Account id (primary key).
         /// </summary>
-        public int AccountId { get; }
+        
+        public int AccountId { get; private set; }
 
         /// <summary>
         ///     The registered user is a system administrator
@@ -47,6 +48,6 @@ namespace codeRR.Server.Api.Core.Accounts.Events
         /// <summary>
         ///     User name as entered by the user.
         /// </summary>
-        public string UserName { get; }
+        public string UserName { get; private set; }
     }
 }

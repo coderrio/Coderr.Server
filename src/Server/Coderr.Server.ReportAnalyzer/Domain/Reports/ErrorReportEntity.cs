@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using codeRR.Server.ReportAnalyzer.Domain.Incidents;
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
 
 namespace codeRR.Server.ReportAnalyzer.Domain.Reports
 {
@@ -62,17 +62,17 @@ namespace codeRR.Server.ReportAnalyzer.Domain.Reports
         /// <summary>
         ///     Gets or sets id from the client library
         /// </summary>
-        public string ClientReportId { get; }
+        public string ClientReportId { get; private set; }
 
         /// <summary>
         ///     Context collection
         /// </summary>
-        public ErrorReportContext[] ContextInfo { get; }
+        public ErrorReportContext[] ContextInfo { get; private set; }
 
         /// <summary>
         ///     When this entity was created (in the server)
         /// </summary>
-        public DateTime CreatedAtUtc { get; }
+        public DateTime CreatedAtUtc { get; private set; }
 
         /// <summary>
         ///     Thrown exception

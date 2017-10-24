@@ -1,5 +1,5 @@
 ﻿using System;
-using DotNetCqs;
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
 
 namespace codeRR.Server.Api.Core.Incidents.Commands
 {
@@ -29,7 +29,7 @@ namespace codeRR.Server.Api.Core.Incidents.Commands
         /// <summary>
         ///     Incident to reopen
         /// </summary>
-        public int IncidentId { get; }
+        public int IncidentId { get; private set; }
 
         /// <summary>
         ///     User requesting item to be reopened.

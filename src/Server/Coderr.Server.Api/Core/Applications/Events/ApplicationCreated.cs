@@ -1,5 +1,6 @@
 ﻿using System;
 using DotNetCqs;
+// ReSharper disable All
 
 namespace codeRR.Server.Api.Core.Applications.Events
 {

@@ -1,5 +1,5 @@
 ﻿using System;
-using DotNetCqs;
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
 
 namespace codeRR.Server.Api.Core.ApiKeys.Commands
 {
@@ -41,6 +41,6 @@ namespace codeRR.Server.Api.Core.ApiKeys.Commands
         /// <summary>
         ///     Key id
         /// </summary>
-        public int Id { get; }
+        public int Id { get; private set; }
     }
 }
