@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using codeRR.Server.Infrastructure;
-using codeRR.Server.Infrastructure.MessageBus;
 using codeRR.Server.ReportAnalyzer.Inbound;
 using codeRR.Server.Web.Areas.Receiver.Helpers;
 using codeRR.Server.Web.Areas.Receiver.Models;

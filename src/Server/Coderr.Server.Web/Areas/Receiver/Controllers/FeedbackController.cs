@@ -6,7 +6,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
 using codeRR.Server.Infrastructure;
-using codeRR.Server.Infrastructure.MessageBus;
 using codeRR.Server.ReportAnalyzer.LibContracts;
 using codeRR.Server.Web.Areas.Receiver.Helpers;
 using codeRR.Server.Web.Areas.Receiver.Models;

@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using codeRR.Server.Infrastructure;
-using codeRR.Server.Infrastructure.MessageBus;
 using codeRR.Server.Infrastructure.Security;
 using codeRR.Server.Web.Cqs;
 using codeRR.Server.Web.Infrastructure;

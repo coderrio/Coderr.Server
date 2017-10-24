@@ -1,5 +1,4 @@
 ﻿using codeRR.Server.Infrastructure;
-using codeRR.Server.Infrastructure.MessageBus;
 using DotNetCqs.Queues;
 using DotNetCqs.Queues.AdoNet;
 using Griffin.Container;

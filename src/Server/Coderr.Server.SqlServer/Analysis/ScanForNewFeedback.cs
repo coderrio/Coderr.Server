@@ -1,6 +1,5 @@
 ﻿using System;
 using codeRR.Server.Api.Core.Feedback.Commands;
-using codeRR.Server.Infrastructure.MessageBus;
 using codeRR.Server.ReportAnalyzer.LibContracts;
 using DotNetCqs;
 using DotNetCqs.Queues;

@@ -97,8 +97,8 @@
     <Reference Include="Coderr.Client.AspNet.Mvc5, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Coderr.Client.AspNet.Mvc5.1.0.4\lib\net451\Coderr.Client.AspNet.Mvc5.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetCqs, Version=2.0.3.7, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetCqs.2.0.3.7\lib\net452\DotNetCqs.dll</HintPath>
+    <Reference Include="DotNetCqs, Version=2.0.3.8, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetCqs.2.0.3.8\lib\net452\DotNetCqs.dll</HintPath>
     </Reference>
     <Reference Include="DotNetCqs.Queues.AdoNet, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetCqs.Queues.AdoNet.1.0.0\lib\net452\DotNetCqs.Queues.AdoNet.dll</HintPath>

@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using codeRR.Server.Infrastructure.MessageBus;
 using codeRR.Server.ReportAnalyzer.Domain.Reports;
 using codeRR.Server.ReportAnalyzer.LibContracts;
 using DotNetCqs;
