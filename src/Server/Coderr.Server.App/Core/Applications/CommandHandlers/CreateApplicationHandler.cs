@@ -41,14 +41,7 @@ namespace codeRR.Server.App.Core.Applications.CommandHandlers
                 Roles = new[] {ApplicationRole.Admin, ApplicationRole.Member},
             });
 
-            var identity = context.Principal.Identities.First();
-            var claim = new Claim(CoderrClaims.Application, app.Id.ToString(), ClaimValueTypes.Integer32);
-            identity.AddClaim(claim);
-            claim = new Claim(CoderrClaims.ApplicationAdmin, app.Id.ToString(), ClaimValueTypes.Integer32);
-            identity.AddClaim(claim);
-            claim = new Claim(CoderrClaims.ApplicationName, app.Name, ClaimValueTypes.String);
-            identity.AddClaim(claim);
-            identity.AddClaim(CoderrClaims.UpdateIdentity);
+            // WebProject redirects to update all credentials
 
             var evt = new ApplicationCreated(app.Id, app.Name, command.UserId, command.ApplicationKey, app.SharedSecret);
             await context.SendAsync(evt);

@@ -59,7 +59,8 @@ namespace codeRR.Server.Web.Controllers
             await _messageBus.SendAsync(this.ClaimsUser(), app);
             await Task.Delay(100);//ugly!
 
-            return RedirectToAction("Packages", new {appKey = app.ApplicationKey});
+            var returnUrl = Url.Action("Packages", new {appKey = app.ApplicationKey});
+            return RedirectToAction("UpdateSession", "Account", new {returnUrl});
         }
 
 
