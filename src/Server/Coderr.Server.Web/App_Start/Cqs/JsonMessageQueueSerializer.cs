@@ -1,11 +1,12 @@
 ﻿using System;
 using codeRR.Server.Infrastructure;
+using DotNetCqs.Queues;
 using DotNetCqs.Queues.AdoNet;
 using Newtonsoft.Json;
 
 namespace codeRR.Server.Web.Cqs
 {
-    public class JsonMessageQueueSerializer : IMessageSerializer
+    public class JsonMessageQueueSerializer : IMessageSerializer<string>
     {
         private JsonSerializerSettings _settings = new JsonSerializerSettings
         {
