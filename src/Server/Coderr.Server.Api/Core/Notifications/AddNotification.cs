@@ -42,6 +42,14 @@ namespace codeRR.Server.Api.Core.Notifications
         }
 
         /// <summary>
+        /// Serialization constructor
+        /// </summary>
+        protected AddNotification()
+        {
+            
+        }
+
+        /// <summary>
         /// Display only for the specified user.
         /// </summary>
         public int? AccountId { get; private set; }
