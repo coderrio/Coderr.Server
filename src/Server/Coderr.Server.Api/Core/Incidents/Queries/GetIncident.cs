@@ -6,6 +6,7 @@ namespace codeRR.Server.Api.Core.Incidents.Queries
     /// <summary>
     ///     Get incident query
     /// </summary>
+    [Message]
     public class GetIncident : Query<GetIncidentResult>
     {
         /// <summary>

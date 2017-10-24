@@ -16,6 +16,8 @@ namespace codeRR.Server.Web.IoC
             _container = container;
         }
 
+        public IParentContainer InnerContainer { get { return _container; } }
+
         public TService Resolve<TService>()
         {
             return (TService) _container.Resolve(typeof(TService));

@@ -20,7 +20,7 @@ namespace codeRR.Server.SqlServer.Core.Incidents.Queries
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<GetIncidentStatisticsResult> ExecuteAsync(GetIncidentStatistics query)
+        public async Task<GetIncidentStatisticsResult> HandleAsync(IMessageContext context, GetIncidentStatistics query)
         {
             if (query.NumberOfDays == 1)
                 return await GetTodaysOverviewAsync(query);

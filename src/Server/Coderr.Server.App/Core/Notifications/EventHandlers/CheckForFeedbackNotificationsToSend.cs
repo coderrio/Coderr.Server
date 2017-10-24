@@ -16,38 +16,30 @@ namespace codeRR.Server.App.Core.Notifications.EventHandlers
     /// </summary>
     [Component(RegisterAsSelf = true)]
     public class CheckForFeedbackNotificationsToSend :
-        IApplicationEventSubscriber<FeedbackAttachedToIncident>
+        IMessageHandler<FeedbackAttachedToIncident>
     {
-        private readonly ICommandBus _commandBus;
         private readonly INotificationsRepository _notificationsRepository;
-        private readonly IQueryBus _queryBus;
 
         /// <summary>
         ///     Creates a new instance of <see cref="CheckForNotificationsToSend" />.
         /// </summary>
         /// <param name="notificationsRepository">To load notification configuration</param>
-        /// <param name="commandBus">To send emails</param>
-        /// <param name="queryBus"></param>
-        public CheckForFeedbackNotificationsToSend(INotificationsRepository notificationsRepository,
-            ICommandBus commandBus,
-            IQueryBus queryBus)
+        public CheckForFeedbackNotificationsToSend(INotificationsRepository notificationsRepository)
         {
             _notificationsRepository = notificationsRepository;
-            _commandBus = commandBus;
-            _queryBus = queryBus;
         }
 
         /// <inheritdoc/>
-        public async Task HandleAsync(FeedbackAttachedToIncident e)
+        public async Task HandleAsync(IMessageContext context, FeedbackAttachedToIncident e)
         {
             var settings = await _notificationsRepository.GetAllAsync(-1);
-            var incident = await _queryBus.QueryAsync(new GetIncident(e.IncidentId));
+            var incident = await context.QueryAsync(new GetIncident(e.IncidentId));
             foreach (var setting in settings)
             {
                 if (setting.UserFeedback == NotificationState.Disabled)
                     continue;
 
-                var notificationEmail = await _queryBus.QueryAsync<string>(new GetAccountEmailById(setting.AccountId));
+                var notificationEmail = await context.QueryAsync(new GetAccountEmailById(setting.AccountId));
                 var config = ConfigurationStore.Instance.Load<BaseConfiguration>();
 
                 var shortName = incident.Description.Length > 40
@@ -74,7 +66,7 @@ From: {1}
 
 
                 var emailCmd = new SendEmail(msg);
-                await _commandBus.ExecuteAsync(emailCmd);
+                await context.SendAsync(emailCmd);
             }
         }
     }

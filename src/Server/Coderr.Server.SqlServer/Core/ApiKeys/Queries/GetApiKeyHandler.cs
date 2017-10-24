@@ -35,7 +35,7 @@ namespace codeRR.Server.SqlServer.Core.ApiKeys.Queries
         /// <summary>Method used to execute the query</summary>
         /// <param name="query">Query to execute.</param>
         /// <returns>Task which will contain the result once completed.</returns>
-        public async Task<GetApiKeyResult> ExecuteAsync(GetApiKey query)
+        public async Task<GetApiKeyResult> HandleAsync(IMessageContext context, GetApiKey query)
         {
             if (query == null) throw new ArgumentNullException(nameof(query));
 

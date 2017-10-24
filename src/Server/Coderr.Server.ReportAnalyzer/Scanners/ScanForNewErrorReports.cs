@@ -1,8 +1,11 @@
 using System;
 using System.Linq;
-using codeRR.Server.Infrastructure.Queueing;
+using System.Threading.Tasks;
+using codeRR.Server.Infrastructure.MessageBus;
 using codeRR.Server.ReportAnalyzer.Domain.Reports;
 using codeRR.Server.ReportAnalyzer.LibContracts;
+using DotNetCqs;
+using DotNetCqs.Queues;
 using Griffin.Container;
 using log4net;
 
@@ -21,13 +24,13 @@ namespace codeRR.Server.ReportAnalyzer.Scanners
         /// <summary>
         ///     Creates a new instance of <see cref="ScanForNewErrorReports" />.
         /// </summary>
-        /// <param name="analyzer">to analyze inbound reprots</param>
-        /// <param name="queueProvider">To be able to read inbound reports</param>
+        /// <param name="analyzer">to analyze inbound reports</param>
+        /// <param name="queue">To be able to read inbound reports</param>
         public ScanForNewErrorReports(Services.ReportAnalyzer analyzer,
             IMessageQueueProvider queueProvider)
         {
             _analyzer = analyzer;
-            _queue = queueProvider.Open("ReportQueue");
+            _queue = queueProvider.Open("Reports");
         }
 
 
@@ -35,16 +38,17 @@ namespace codeRR.Server.ReportAnalyzer.Scanners
         ///     Execute on a set of report mastery.
         /// </summary>
         /// <returns><c>false</c> if there are no more reports to analyze.</returns>
-        public bool Execute()
+        public async Task<bool> Execute()
         {
-            using (var transaction = _queue.BeginTransaction())
+            using (var session = _queue.BeginSession())
             {
-                var dto = _queue.TryReceive<ReceivedReportDTO>(transaction, TimeSpan.FromMilliseconds(500));
-                if (dto == null)
+                var msg = await session.DequeueWithCredentials(TimeSpan.FromSeconds(1));
+                if (msg == null)
                     return false;
 
                 try
                 {
+                    var dto = (ReceivedReportDTO)msg.Message.Body;
                     ErrorReportException ex = null;
                     if (dto.Exception != null)
                     {
@@ -55,14 +59,14 @@ namespace codeRR.Server.ReportAnalyzer.Scanners
                     {
                         RemoteAddress = dto.RemoteAddress
                     };
-                    _analyzer.Analyze(entity);
+                    _analyzer.Analyze(msg.Principal, entity);
                 }
                 catch (Exception ex)
                 {
                     _logger.Error("Failed to analyze report ", ex);
                 }
 
-                transaction.Commit();
+                await session.SaveChanges();
             }
             return true;
         }

@@ -6,6 +6,7 @@ namespace codeRR.Server.Api.Core.Incidents.Queries
     /// <summary>
     ///     Get incident information tailored for the close page.
     /// </summary>
+    [Message]
     public class GetIncidentForClosePage : Query<GetIncidentForClosePageResult>
     {
         /// <summary>

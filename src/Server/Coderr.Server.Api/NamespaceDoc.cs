@@ -14,7 +14,7 @@ namespace codeRR.Server.Api
     ///         help of commands. A command is not an atomic unit, but do in most cases represent an use case.
     ///     </para>
     ///     <para>
-    ///         Queries are the read model in the application. They are used to fetch information. Queries are indempotent and
+    ///         Queries are the read model in the application. They are used to fetch information. Queries are idempotent and
     ///         may not change
     ///         application state.
     ///     </para>
@@ -27,7 +27,7 @@ namespace codeRR.Server.Api
     ///     <para>
     ///         There is a tool in the &quot;Tool&quot; root folder which are used to generate Typescript classes from these
     ///         APIs. The <c>.ts</c> files can be
-    ///         invoked using ajax directly from the web.
+    ///         invoked using Ajax directly from the web.
     ///     </para>
     ///     <para>
     ///         You can also invoke the DTOs directly from your application using a HTTP client. Serialize the DTO as JSON and

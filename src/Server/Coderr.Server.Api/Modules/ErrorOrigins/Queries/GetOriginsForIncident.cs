@@ -6,6 +6,7 @@ namespace codeRR.Server.Api.Modules.ErrorOrigins.Queries
     /// <summary>
     ///     Get all error origins for the specified incident.
     /// </summary>
+    [Message]
     public class GetOriginsForIncident : Query<GetOriginsForIncidentResult>
     {
         /// <summary>

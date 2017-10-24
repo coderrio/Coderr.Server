@@ -5,8 +5,10 @@ using codeRR.Server.App.Core.Applications;
 using codeRR.Server.SqlServer.Core.ApiKeys;
 using codeRR.Server.SqlServer.Core.ApiKeys.Queries;
 using codeRR.Server.SqlServer.Core.Applications;
+using DotNetCqs;
 using FluentAssertions;
 using Griffin.Data;
+using NSubstitute;
 using Xunit;
 
 namespace codeRR.Server.SqlServer.Tests.Core.ApiKeys.Queries
@@ -47,15 +49,16 @@ namespace codeRR.Server.SqlServer.Tests.Core.ApiKeys.Queries
         public async void should_Be_able_to_fetch_existing_key_by_id()
         {
             var query = new GetApiKey(_existingEntity.Id);
+            var context = Substitute.For<IMessageContext>();
 
             var sut = new GetApiKeyHandler(_uow);
-            var result = await sut.ExecuteAsync(query);
+            var result = await sut.HandleAsync(context, query);
 
-            AssertionExtensions.Should((object) result).NotBeNull();
-            AssertionExtensions.Should((string) result.GeneratedKey).Be(_existingEntity.GeneratedKey);
-            AssertionExtensions.Should((string) result.ApplicationName).Be(_existingEntity.ApplicationName);
-            AssertionExtensions.Should((int) result.AllowedApplications[0].ApplicationId).Be(_application.Id);
-            AssertionExtensions.Should((string) result.AllowedApplications[0].ApplicationName).Be(_application.Name);
+            result.Should().NotBeNull();
+            result.GeneratedKey.Should().Be(_existingEntity.GeneratedKey);
+            result.ApplicationName.Should().Be(_existingEntity.ApplicationName);
+            result.AllowedApplications[0].ApplicationId.Should().Be(_application.Id);
+            result.AllowedApplications[0].ApplicationName.Should().Be(_application.Name);
         }
 
         private void GetApplication()

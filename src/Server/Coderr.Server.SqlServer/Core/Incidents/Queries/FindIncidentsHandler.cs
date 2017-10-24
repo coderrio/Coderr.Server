@@ -14,7 +14,7 @@ using Griffin.Data.Mapper;
 namespace codeRR.Server.SqlServer.Core.Incidents.Queries
 {
     [Component]
-    public class FindIncidentsHandler : IQueryHandler<FindIncidents, FindIncidentResult>
+    public class FindIncidentsHandler : IQueryHandler<FindIncidents, FindIncidentsResult>
     {
         private readonly IAdoNetUnitOfWork _uow;
 
@@ -23,7 +23,7 @@ namespace codeRR.Server.SqlServer.Core.Incidents.Queries
             _uow = uow;
         }
 
-        public async Task<FindIncidentResult> ExecuteAsync(FindIncidents query)
+        public async Task<FindIncidentsResult> HandleAsync(IMessageContext context, FindIncidents query)
         {
             using (var cmd = (DbCommand) _uow.CreateCommand())
             {
@@ -46,18 +46,18 @@ namespace codeRR.Server.SqlServer.Core.Incidents.Queries
 
                 if (query.ApplicationId > 0)
                 {
-                    if (!ClaimsPrincipal.Current.IsApplicationMember(query.ApplicationId)
-                        && !ClaimsPrincipal.Current.IsSysAdmin()
-                        && !ClaimsPrincipal.Current.IsApplicationAdmin(query.ApplicationId))
+                    if (!context.Principal.IsApplicationMember(query.ApplicationId)
+                        && !context.Principal.IsSysAdmin()
+                        && !context.Principal.IsApplicationAdmin(query.ApplicationId))
                         throw new UnauthorizedAccessException(
                             "You are not a member of application " + query.ApplicationId);
 
                     sqlQuery += $" {startWord} Applications.Id = @id";
                     cmd.AddParameter("id", query.ApplicationId);
                 }
-                else if (!ClaimsPrincipal.Current.IsSysAdmin())
+                else if (!context.Principal.IsSysAdmin())
                 {
-                    var appIds = ClaimsPrincipal.Current.Claims
+                    var appIds = context.Principal.Claims
                         .Where(x => x.Type == CoderrClaims.Application)
                         .Select(x => x.Value)
                         .ToArray();
@@ -134,9 +134,9 @@ namespace codeRR.Server.SqlServer.Core.Incidents.Queries
                     cmd.CommandText += string.Format(@" OFFSET {0} ROWS FETCH NEXT {1} ROWS ONLY", offset,
                         query.ItemsPerPage);
                 }
-                var items = await cmd.ToListAsync<FindIncidentResultItem>();
+                var items = await cmd.ToListAsync<FindIncidentsResultItem>();
 
-                return new FindIncidentResult
+                return new FindIncidentsResult
                 {
                     Items = items.ToArray(),
                     PageNumber = query.PageNumber,

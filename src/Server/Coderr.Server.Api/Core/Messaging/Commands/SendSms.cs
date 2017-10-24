@@ -18,7 +18,8 @@ namespace codeRR.Server.Api.Core.Messaging.Commands
     /// ]]>
     ///     </example>
     /// </remarks>
-    public class SendSms : Command
+    [Message]
+    public class SendSms
     {
         /// <summary>
         ///     Creates a new instance of <see cref="SendSms" />.

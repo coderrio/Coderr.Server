@@ -16,6 +16,7 @@ using codeRR.Server.App.Configuration;
 using codeRR.Server.Infrastructure.Security;
 using codeRR.Server.Web.Models.Wizard;
 using DotNetCqs;
+using Griffin.Data;
 using Newtonsoft.Json;
 
 namespace codeRR.Server.Web.Controllers
@@ -24,14 +25,14 @@ namespace codeRR.Server.Web.Controllers
     public class WizardController : Controller
     {
         private readonly BaseConfiguration _baseConfiguration;
-        private readonly ICommandBus _cmdBus;
-        private readonly IQueryBus _queryBus;
+        private readonly IMessageBus _messageBus;
+        private IQueryBus _queryBus;
 
-        public WizardController(BaseConfiguration baseConfiguration, IQueryBus queryBus, ICommandBus cmdBus)
+        public WizardController(BaseConfiguration baseConfiguration, IMessageBus messageBus, IQueryBus queryBus)
         {
             _baseConfiguration = baseConfiguration;
+            _messageBus = messageBus;
             _queryBus = queryBus;
-            _cmdBus = cmdBus;
         }
 
         [Route("configure/application")]
@@ -55,7 +56,8 @@ namespace codeRR.Server.Web.Controllers
                 ApplicationKey = Guid.NewGuid().ToString("N"),
                 UserId = User.GetAccountId()
             };
-            await _cmdBus.ExecuteAsync(app);
+            await _messageBus.SendAsync(this.ClaimsUser(), app);
+            await Task.Delay(100);//ugly!
 
             return RedirectToAction("Packages", new {appKey = app.ApplicationKey});
         }
@@ -66,7 +68,7 @@ namespace codeRR.Server.Web.Controllers
         {
             await Init();
             var query = new GetApplicationInfo(model.ApplicationId);
-            var appInfo = await _queryBus.QueryAsync(query);
+            var appInfo = await _queryBus.QueryAsync(this.ClaimsUser(), query);
 
             try
             {
@@ -102,8 +104,16 @@ namespace codeRR.Server.Web.Controllers
 
             if (applicationId == null)
             {
-                var appInfo = await _queryBus.QueryAsync(new GetApplicationInfo(appKey));
-                applicationId = appInfo.Id;
+                try
+                {
+                    var appInfo = await _queryBus.QueryAsync(this.ClaimsUser(), new GetApplicationInfo(appKey));
+                    applicationId = appInfo.Id;
+                }
+                catch (EntityNotFoundException)
+                {
+                    await Task.Delay(1000);
+                    return RedirectToAction("Packages", new {appKey});
+                }
             }
 
             var model = new PackagesViewModel {ApplicationId = applicationId.Value};
@@ -154,7 +164,7 @@ namespace codeRR.Server.Web.Controllers
             {
                 ApplicationId = model.ApplicationId
             };
-            var result = await _queryBus.QueryAsync(query);
+            var result = await _queryBus.QueryAsync(this.ClaimsUser(), query);
             if (result.TotalCount == 0)
                 return View(model);
 
@@ -164,7 +174,7 @@ namespace codeRR.Server.Web.Controllers
         protected async Task Init(int maxCount = 0)
         {
             var query = new GetApplicationList();
-            var result = await _queryBus.QueryAsync(query);
+            var result = await _queryBus.QueryAsync(this.ClaimsUser(), query);
             ViewBag.FirstApplication = result.Length <= maxCount;
         }
 

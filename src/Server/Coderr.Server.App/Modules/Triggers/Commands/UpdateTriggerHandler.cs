@@ -11,7 +11,7 @@ namespace codeRR.Server.App.Modules.Triggers.Commands
     ///     Handler for <see cref="UpdateTrigger" />.
     /// </summary>
     [Component]
-    public class UpdateTriggerHandler : ICommandHandler<UpdateTrigger>
+    public class UpdateTriggerHandler : IMessageHandler<UpdateTrigger>
     {
         private readonly ITriggerRepository _triggerRepository;
 
@@ -34,7 +34,7 @@ namespace codeRR.Server.App.Modules.Triggers.Commands
         /// <returns>
         ///     Task which will be completed once the command has been executed.
         /// </returns>
-        public async Task ExecuteAsync(UpdateTrigger command)
+        public async Task HandleAsync(IMessageContext context, UpdateTrigger command)
         {
             if (command == null) throw new ArgumentNullException("command");
             var domainEntity = await _triggerRepository.GetAsync(command.Id);

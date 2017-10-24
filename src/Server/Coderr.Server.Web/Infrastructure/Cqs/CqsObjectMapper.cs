@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using codeRR.Server.Api;
 using DotNetCqs;
+using Microsoft.Owin.Security.Provider;
 using Newtonsoft.Json;
 
 namespace codeRR.Server.Web.Infrastructure.Cqs
@@ -51,28 +54,12 @@ namespace codeRR.Server.Web.Infrastructure.Cqs
         /// </summary>
         /// <param name="cqsType">The type.</param>
         /// <returns><c>true</c> if the objects is a command handler; otherwise <c>false</c></returns>
-        public static bool IsCqsType(Type cqsType)
+        private static bool IsCqsType(Type cqsType)
         {
             if (cqsType.IsAbstract || cqsType.IsInterface)
                 return false;
 
-            if (cqsType.IsSubclassOf(typeof(Command))
-                || cqsType.IsSubclassOf(typeof(ApplicationEvent)))
-                return true;
-
-            if (cqsType.BaseType == typeof(object) || cqsType.BaseType == null)
-                return false;
-
-            if (!cqsType.BaseType.IsGenericType)
-                return false;
-
-            var typeDef = cqsType.BaseType.GetGenericTypeDefinition();
-            if (typeDef == typeof(Query<>)
-                || typeDef == typeof(Request<>))
-                return true;
-
-
-            return false;
+            return cqsType.GetCustomAttribute<MessageAttribute>() != null;
         }
 
         /// <summary>

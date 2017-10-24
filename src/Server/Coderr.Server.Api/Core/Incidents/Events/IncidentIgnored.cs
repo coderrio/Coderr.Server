@@ -6,7 +6,8 @@ namespace codeRR.Server.Api.Core.Incidents.Events
     /// <summary>
     ///     Our user have configured that all new reports for this incident should be ignored
     /// </summary>
-    public class IncidentIgnored : ApplicationEvent
+    [Message]
+    public class IncidentIgnored
     {
         /// <summary>
         ///     Creates a new instance of <see cref="IncidentIgnored" />.

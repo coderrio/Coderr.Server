@@ -13,9 +13,8 @@ namespace codeRR.Server.App.Core.Incidents.Commands
     ///     Handler of <see cref="CloseIncident" />.
     /// </summary>
     [Component]
-    public class CloseIncidentHandler : ICommandHandler<CloseIncident>
+    public class CloseIncidentHandler : IMessageHandler<CloseIncident>
     {
-        private readonly ICommandBus _commandBus;
         private readonly IFeedbackRepository _feedbackRepository;
         private readonly IIncidentRepository _repository;
 
@@ -24,13 +23,10 @@ namespace codeRR.Server.App.Core.Incidents.Commands
         /// </summary>
         /// <param name="repository">To be able to load and update incident</param>
         /// <param name="feedbackRepository">To be able to see if someone is waiting on update notifications.</param>
-        /// <param name="commandBus">To send notification emails.</param>
-        public CloseIncidentHandler(IIncidentRepository repository, IFeedbackRepository feedbackRepository,
-            ICommandBus commandBus)
+        public CloseIncidentHandler(IIncidentRepository repository, IFeedbackRepository feedbackRepository)
         {
             _repository = repository;
             _feedbackRepository = feedbackRepository;
-            _commandBus = commandBus;
         }
 
         /// <summary>
@@ -40,7 +36,7 @@ namespace codeRR.Server.App.Core.Incidents.Commands
         /// <returns>
         ///     Task which will be completed once the command has been executed.
         /// </returns>
-        public async Task ExecuteAsync(CloseIncident command)
+        public async Task HandleAsync(IMessageContext context, CloseIncident command)
         {
             if (command == null) throw new ArgumentNullException("command");
 
@@ -59,7 +55,7 @@ namespace codeRR.Server.App.Core.Incidents.Commands
                     TextBody = command.NotificationText
                 };
                 var sendMessage = new SendEmail(emailMessage);
-                await _commandBus.ExecuteAsync(sendMessage);
+                await context.SendAsync(sendMessage);
             }
 
             //var reports = _reportsRepository.GetAll(incident.Reports.Select(x => x.ReportId).ToArray());

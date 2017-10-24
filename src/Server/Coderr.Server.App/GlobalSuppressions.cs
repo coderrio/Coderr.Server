@@ -24,12 +24,12 @@ using System.Runtime.CompilerServices;
 [assembly:
     SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope = "member",
         Target =
-            "codeRR.App.Core.Applications.CommandHandlers.CreateApplicationHandler.#.ctor(codeRR.App.Core.Applications.IApplicationRepository,codeRR.App.Core.Users.IUserRepository,DotNetCqs.IEventBus)"
+            "codeRR.App.Core.Applications.CommandHandlers.CreateApplicationHandler.#.ctor(codeRR.App.Core.Applications.IApplicationRepository,codeRR.App.Core.Users.IUserRepository,DotNetCqs.IMessageBus)"
         )]
 [assembly:
     SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope = "member",
         Target =
-            "codeRR.App.Core.Applications.EventHandlers.CreateDefaultAppOnAccountActivated.#.ctor(DotNetCqs.ICommandBus)"
+            "codeRR.App.Core.Applications.EventHandlers.CreateDefaultAppOnAccountActivated.#.ctor(DotNetCqs.IMessageBus)"
         )]
 [assembly:
     SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope = "member",
@@ -59,11 +59,11 @@ using System.Runtime.CompilerServices;
 [assembly:
     SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope = "member",
         Target =
-            "codeRR.App.Core.Invitations.CommandHandlers.InviteUserHandler.#.ctor(codeRR.App.Core.Invitations.Data.IInvitationRepository,DotNetCqs.IEventBus,codeRR.App.Core.Users.IUserRepository,codeRR.App.Core.Applications.IApplicationRepository,DotNetCqs.ICommandBus)"
+            "codeRR.App.Core.Invitations.CommandHandlers.InviteUserHandler.#.ctor(codeRR.App.Core.Invitations.Data.IInvitationRepository,DotNetCqs.IMessageBus,codeRR.App.Core.Users.IUserRepository,codeRR.App.Core.Applications.IApplicationRepository,DotNetCqs.IMessageBus)"
         )]
 [assembly:
     SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope = "member",
-        Target = "codeRR.App.Modules.Triggers.Domain.Actions.SendEmailTask.#.ctor(DotNetCqs.ICommandBus)")]
+        Target = "codeRR.App.Modules.Triggers.Domain.Actions.SendEmailTask.#.ctor(DotNetCqs.IMessageBus)")]
 [assembly:
     SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope = "member",
         Target =
@@ -223,7 +223,7 @@ using System.Runtime.CompilerServices;
 [assembly:
     SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope = "member",
         Target =
-            "codeRR.App.Core.Invitations.CommandHandlers.AcceptInvitationHandler.#.ctor(codeRR.App.Core.Invitations.Data.IInvitationRepository,codeRR.App.Core.Accounts.IAccountRepository,DotNetCqs.IEventBus)"
+            "codeRR.App.Core.Invitations.CommandHandlers.AcceptInvitationHandler.#.ctor(codeRR.App.Core.Invitations.Data.IInvitationRepository,codeRR.App.Core.Accounts.IAccountRepository,DotNetCqs.IMessageBus)"
         )]
 [assembly:
     SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "1", Scope = "member",

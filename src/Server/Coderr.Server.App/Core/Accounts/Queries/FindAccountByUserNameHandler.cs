@@ -31,7 +31,7 @@ namespace codeRR.Server.App.Core.Accounts.Queries
         /// <returns>
         ///     Task which will contain the result once completed.
         /// </returns>
-        public async Task<FindAccountByUserNameResult> ExecuteAsync(FindAccountByUserName query)
+        public async Task<FindAccountByUserNameResult> HandleAsync(IMessageContext context, FindAccountByUserName query)
         {
             if (query == null) throw new ArgumentNullException("query");
 

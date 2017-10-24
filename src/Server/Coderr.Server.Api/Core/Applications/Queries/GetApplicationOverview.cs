@@ -6,6 +6,7 @@ namespace codeRR.Server.Api.Core.Applications.Queries
     /// <summary>
     ///     Get stats etc that can be presented as an overview for an application.
     /// </summary>
+    [Message]
     public class GetApplicationOverview : Query<GetApplicationOverviewResult>
     {
         /// <summary>

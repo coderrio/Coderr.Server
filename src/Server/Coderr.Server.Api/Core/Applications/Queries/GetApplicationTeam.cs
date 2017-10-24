@@ -6,6 +6,7 @@ namespace codeRR.Server.Api.Core.Applications.Queries
     /// <summary>
     ///     Get all members of a specific application
     /// </summary>
+    [Message]
     public class GetApplicationTeam : Query<GetApplicationTeamResult>
     {
         /// <summary>

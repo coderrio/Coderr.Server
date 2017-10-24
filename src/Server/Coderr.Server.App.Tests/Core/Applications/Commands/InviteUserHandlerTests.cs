@@ -22,24 +22,21 @@ namespace codeRR.Server.App.Tests.Core.Applications.Commands
     public class InviteUserHandlerTests
     {
         private readonly IApplicationRepository _applicationRepository;
-        private readonly ICommandBus _commandBus;
-        private readonly IEventBus _eventBus;
         private readonly IInvitationRepository _invitationRepository;
         private readonly InviteUserHandler _sut;
         private readonly IUserRepository _userRepository;
+        private IMessageContext _context;
 
         public InviteUserHandlerTests()
         {
             _invitationRepository = Substitute.For<IInvitationRepository>();
             _userRepository = Substitute.For<IUserRepository>();
             _applicationRepository = Substitute.For<IApplicationRepository>();
-            _commandBus = Substitute.For<ICommandBus>();
-            _eventBus = Substitute.For<IEventBus>();
             _userRepository.GetUserAsync(1).Returns(new User(1, "First"));
             _applicationRepository.GetByIdAsync(1).Returns(new Application(1, "MyApp"));
+            _context = Substitute.For<IMessageContext>();
             ConfigurationStore.Instance = new TestStore();
-            _sut = new InviteUserHandler(_invitationRepository, _eventBus, _userRepository, _applicationRepository,
-                _commandBus);
+            _sut = new InviteUserHandler(_invitationRepository, _userRepository, _applicationRepository);
         }
 
         [Fact]
@@ -51,9 +48,9 @@ namespace codeRR.Server.App.Tests.Core.Applications.Commands
             _applicationRepository.GetTeamMembersAsync(1).Returns(members);
             _applicationRepository.WhenForAnyArgs(x => x.CreateAsync(Arg.Any<ApplicationTeamMember>()))
                 .Do(x => actual = x.Arg<ApplicationTeamMember>());
-            _sut.PrincipalAccessor = CreateAdminPrincipal;
+            _context.Principal.Returns(CreateAdminPrincipal());
 
-            await _sut.ExecuteAsync(cmd);
+            await _sut.HandleAsync(_context, cmd);
 
             await _applicationRepository.Received().CreateAsync(Arg.Any<ApplicationTeamMember>());
             actual.EmailAddress.Should().Be(cmd.EmailAddress);
@@ -68,9 +65,9 @@ namespace codeRR.Server.App.Tests.Core.Applications.Commands
             var cmd = new InviteUser(1, "jonas@gauffin.com") { UserId = 1 };
             var members = new[] { new ApplicationTeamMember(1, 3, "karl") };
             _applicationRepository.GetTeamMembersAsync(1).Returns(members);
-            _sut.PrincipalAccessor = () => new ClaimsPrincipal(new ClaimsIdentity());
+            _context.Principal.Returns(CreateAdminPrincipal());
 
-            Func<Task> actual = async () => await _sut.ExecuteAsync(cmd);
+            Func<Task> actual = async () => await _sut.HandleAsync(_context, cmd);
 
             actual.ShouldThrow<SecurityException>();
         }
@@ -81,9 +78,9 @@ namespace codeRR.Server.App.Tests.Core.Applications.Commands
             var cmd = new InviteUser(1, "jonas@gauffin.com") { UserId = 1 };
             var members = new[] { new ApplicationTeamMember(3, 3, "karl") };
             _applicationRepository.GetTeamMembersAsync(1).Returns(members);
-            _sut.PrincipalAccessor = () => new ClaimsPrincipal(new ClaimsIdentity());
+            _context.Principal.Returns(CreateAdminPrincipal());
 
-            Func<Task> actual = async () => await _sut.ExecuteAsync(cmd);
+            Func<Task> actual = async () => await _sut.HandleAsync(_context, cmd);
 
             actual.ShouldThrow<SecurityException>();
         }
@@ -95,9 +92,9 @@ namespace codeRR.Server.App.Tests.Core.Applications.Commands
             var members = new[] { new ApplicationTeamMember(1, 3, "karl") };
             _userRepository.FindByEmailAsync(cmd.EmailAddress).Returns(new User(3, "existing"));
             _applicationRepository.GetTeamMembersAsync(1).Returns(members);
-            _sut.PrincipalAccessor = CreateAdminPrincipal;
+            _context.Principal.Returns(CreateAdminPrincipal());
 
-            await _sut.ExecuteAsync(cmd);
+            await _sut.HandleAsync(_context, cmd);
 
             await _applicationRepository.DidNotReceive().CreateAsync(Arg.Any<ApplicationTeamMember>());
         }
@@ -108,9 +105,9 @@ namespace codeRR.Server.App.Tests.Core.Applications.Commands
             var cmd = new InviteUser(1, "jonas@gauffin.com") { UserId = 1 };
             var members = new[] { new ApplicationTeamMember(1, cmd.EmailAddress) };
             _applicationRepository.GetTeamMembersAsync(1).Returns(members);
-            _sut.PrincipalAccessor = CreateAdminPrincipal;
+            _context.Principal.Returns(CreateAdminPrincipal());
 
-            await _sut.ExecuteAsync(cmd);
+            await _sut.HandleAsync(_context, cmd);
 
             await _applicationRepository.DidNotReceive().CreateAsync(Arg.Any<ApplicationTeamMember>());
         }
@@ -124,12 +121,12 @@ namespace codeRR.Server.App.Tests.Core.Applications.Commands
             _applicationRepository.GetTeamMembersAsync(1).Returns(members);
             _applicationRepository.WhenForAnyArgs(x => x.CreateAsync(Arg.Any<ApplicationTeamMember>()))
                 .Do(x => actual = x.Arg<ApplicationTeamMember>());
-            _sut.PrincipalAccessor = CreateAdminPrincipal;
+            _context.Principal.Returns(CreateAdminPrincipal());
 
-            await _sut.ExecuteAsync(cmd);
+            await _sut.HandleAsync(_context, cmd);
 
             await _applicationRepository.Received().CreateAsync(Arg.Any<ApplicationTeamMember>());
-            await _eventBus.Received().PublishAsync(Arg.Any<UserInvitedToApplication>());
+            await _context.Received().SendAsync(Arg.Any<UserInvitedToApplication>());
         }
 
         [Fact]
@@ -141,11 +138,11 @@ namespace codeRR.Server.App.Tests.Core.Applications.Commands
             _applicationRepository.GetTeamMembersAsync(1).Returns(members);
             _applicationRepository.WhenForAnyArgs(x => x.CreateAsync(Arg.Any<ApplicationTeamMember>()))
                 .Do(x => actual = x.Arg<ApplicationTeamMember>());
-            _sut.PrincipalAccessor = CreateAdminPrincipal;
+            _context.Principal.Returns(CreateAdminPrincipal());
 
-            await _sut.ExecuteAsync(cmd);
+            await _sut.HandleAsync(_context, cmd);
 
-            await _commandBus.Received().ExecuteAsync(Arg.Any<SendEmail>());
+            await _context.Received().SendAsync(Arg.Any<SendEmail>());
         }
 
         private ClaimsPrincipal CreateAdminPrincipal()

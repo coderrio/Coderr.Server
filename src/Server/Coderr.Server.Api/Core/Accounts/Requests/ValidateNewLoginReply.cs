@@ -1,7 +1,7 @@
 ﻿namespace codeRR.Server.Api.Core.Accounts.Requests
 {
     /// <summary>
-    ///     Reply for <see cref="ValidateNewLogin" />.
+    ///     DTO
     /// </summary>
     public class ValidateNewLoginReply
     {
@@ -11,7 +11,7 @@
         public bool EmailIsTaken { get; set; }
 
         /// <summary>
-        ///     The given username is already associated with an account.
+        ///     The given user name is already associated with an account.
         /// </summary>
         public bool UserNameIsTaken { get; set; }
     }

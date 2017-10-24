@@ -9,7 +9,7 @@ namespace codeRR.Server.App.Core.Applications.CommandHandlers
     ///     Used to update application name and applicationType.
     /// </summary>
     [Component]
-    public class UpdateApplicationHandler : ICommandHandler<UpdateApplication>
+    public class UpdateApplicationHandler : IMessageHandler<UpdateApplication>
     {
         private readonly IApplicationRepository _repository;
 
@@ -23,7 +23,7 @@ namespace codeRR.Server.App.Core.Applications.CommandHandlers
         }
 
         /// <inheritdoc />
-        public async Task ExecuteAsync(UpdateApplication command)
+        public async Task HandleAsync(IMessageContext context, UpdateApplication command)
         {
             var app = await _repository.GetByIdAsync(command.ApplicationId);
             app.Name = command.Name;

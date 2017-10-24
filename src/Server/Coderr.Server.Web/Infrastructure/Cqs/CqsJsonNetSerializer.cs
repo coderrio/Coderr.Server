@@ -1,13 +1,12 @@
 using System;
 using System.Reflection;
-using Griffin.Cqs.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
 namespace codeRR.Server.Web.Infrastructure.Cqs
 {
-    internal class CqsJsonNetSerializer : ICqsDeserializer
+    internal class CqsJsonNetSerializer
     {
         private readonly JsonSerializerSettings _settings = new JsonSerializerSettings
         {

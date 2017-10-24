@@ -38,7 +38,7 @@ namespace codeRR.Server.App.Core.Applications.QueryHandlers
         /// <returns>
         ///     Task which will contain the result once completed.
         /// </returns>
-        public async Task<ApplicationListItem[]> ExecuteAsync(GetApplicationList query)
+        public async Task<ApplicationListItem[]> HandleAsync(IMessageContext context, GetApplicationList query)
         {
             if (query == null) throw new ArgumentNullException("query");
             ApplicationListItem[] result;

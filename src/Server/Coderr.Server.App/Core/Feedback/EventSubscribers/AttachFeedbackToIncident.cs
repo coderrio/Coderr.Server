@@ -11,19 +11,16 @@ namespace codeRR.Server.App.Core.Feedback.EventSubscribers
     ///     Responsible of attaching feedback to incidents when the feedback was uploaded before the actual incident.
     /// </summary>
     [Component(RegisterAsSelf = true)]
-    internal class AttachFeedbackToIncident : IApplicationEventSubscriber<ReportAddedToIncident>
+    internal class AttachFeedbackToIncident : IMessageHandler<ReportAddedToIncident>
     {
-        private readonly IEventBus _eventBus;
         private readonly IFeedbackRepository _repository;
 
-        public AttachFeedbackToIncident(IFeedbackRepository repository, IEventBus eventBus)
+        public AttachFeedbackToIncident(IFeedbackRepository repository)
         {
-            if (eventBus == null) throw new ArgumentNullException("eventBus");
             _repository = repository;
-            _eventBus = eventBus;
         }
 
-        public async Task HandleAsync(ReportAddedToIncident e)
+        public async Task HandleAsync(IMessageContext context, ReportAddedToIncident e)
         {
             var feedback = await _repository.FindPendingAsync(e.Report.ReportId);
             if (feedback == null)
@@ -37,7 +34,7 @@ namespace codeRR.Server.App.Core.Feedback.EventSubscribers
                 Message = feedback.Description,
                 UserEmailAddress = feedback.EmailAddress
             };
-            await _eventBus.PublishAsync(evt);
+            await context.SendAsync(evt);
             await _repository.UpdateAsync(feedback);
         }
     }

@@ -2,39 +2,33 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Security.Claims;
+using codeRR.Server.Infrastructure;
 using codeRR.Server.Infrastructure.Configuration;
-using codeRR.Server.Infrastructure.Queueing;
-using codeRR.Server.Infrastructure.Queueing.Msmq;
 using codeRR.Server.ReportAnalyzer;
 using codeRR.Server.ReportAnalyzer.Domain.Incidents;
 using codeRR.Server.ReportAnalyzer.Domain.Reports;
 using codeRR.Server.ReportAnalyzer.Scanners;
 using codeRR.Server.SqlServer.Tools;
+using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 using log4net;
+using Newtonsoft.Json;
 
 namespace codeRR.Server.SqlServer.Analysis
 {
     [Component]
-    public class AnalyticsRepository : IAnalyticsRepository, IDisposable
+    public class AnalyticsRepository : IAnalyticsRepository
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(AnalyticsRepository));
         private readonly ReportDtoConverter _reportDtoConverter = new ReportDtoConverter();
         private readonly IAdoNetUnitOfWork _unitOfWork;
-        private MsmqMessageQueue _queue;
 
         public AnalyticsRepository(AnalysisDbContext dbContext, ConfigurationStore configurationStore)
         {
             _unitOfWork = dbContext?.UnitOfWork ?? throw new ArgumentNullException(nameof(dbContext));
-
-            var settings = configurationStore.Load<MessageQueueSettings>();
-            if (settings != null && !settings.UseSql)
-            {
-                _queue = new MsmqMessageQueue(settings.ReportQueue, settings.ReportAuthentication,
-                    settings.ReportTransactions);
-            }
         }
 
         public bool ExistsByClientId(string clientReportId)
@@ -131,42 +125,8 @@ namespace codeRR.Server.SqlServer.Analysis
                 return (string) cmd.ExecuteScalar();
             }
         }
-
-        /// <summary>
-        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-
-        //TODO: Break this out to a separate repository so that we can register it in the container
-        //using either the SQL or MSMQ implementation.
-        public IReadOnlyList<ErrorReportEntity> GetReportsToAnalyze()
-        {
-            if (_queue == null)
-                return GetReportsUsingSql();
-
-
-            var report = _queue.TryReceive<ErrorReportEntity>(TimeSpan.FromSeconds(1));
-            return new[] {report};
-        }
-
-        /// <summary>
-        ///     Dispose pattern.
-        /// </summary>
-        /// <param name="isDisposing">Invoked from Dispose().</param>
-        protected virtual void Dispose(bool isDisposing)
-        {
-            if (_queue != null)
-            {
-                _queue.Dispose();
-                _queue = null;
-            }
-        }
-
-        private IReadOnlyList<ErrorReportEntity> GetReportsUsingSql()
+        
+        public IReadOnlyList<ErrorReportEntity> GetReportsUsingSql()
         {
             using (var cmd = _unitOfWork.CreateCommand())
             {
@@ -190,6 +150,10 @@ namespace codeRR.Server.SqlServer.Analysis
                                 var report = _reportDtoConverter.LoadReportFromJson(json);
                                 var newReport = _reportDtoConverter.ConvertReport(report, (int) reader["ApplicationId"]);
                                 newReport.RemoteAddress = (string) reader["RemoteAddress"];
+
+                                var claims = CoderrDtoSerializer.Deserialize<Claim[]>((string) reader["Claims"]);
+                                newReport.User = new ClaimsPrincipal(new ClaimsIdentity(claims));
+
                                 reports.Add(newReport);
                                 idsToRemove.Add(reader.GetInt32(0));
                             }

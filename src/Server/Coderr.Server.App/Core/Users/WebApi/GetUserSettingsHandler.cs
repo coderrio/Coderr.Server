@@ -21,7 +21,7 @@ namespace codeRR.Server.App.Core.Users.WebApi
             _userRepository = userRepository;
         }
 
-        public async Task<GetUserSettingsResult> ExecuteAsync(GetUserSettings query)
+        public async Task<GetUserSettingsResult> HandleAsync(IMessageContext context, GetUserSettings query)
         {
             var settings = await _repository.TryGetAsync(query.UserId, query.ApplicationId)
                            ?? new UserNotificationSettings(query.UserId, query.ApplicationId);

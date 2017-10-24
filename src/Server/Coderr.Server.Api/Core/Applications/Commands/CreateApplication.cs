@@ -1,4 +1,5 @@
 ﻿using System;
+using codeRR.Server.Api.Core.Accounts.Requests;
 using DotNetCqs;
 
 namespace codeRR.Server.Api.Core.Applications.Commands
@@ -6,7 +7,8 @@ namespace codeRR.Server.Api.Core.Applications.Commands
     /// <summary>
     ///     Create a new application.
     /// </summary>
-    public class CreateApplication : Command
+    [Message]
+    public class CreateApplication
     {
         /// <summary>
         ///     Creates a new instance of <see cref="CreateApplication" />.

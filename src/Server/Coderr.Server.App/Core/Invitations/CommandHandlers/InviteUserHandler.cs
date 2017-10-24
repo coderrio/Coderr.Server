@@ -13,6 +13,7 @@ using codeRR.Server.App.Core.Users;
 using codeRR.Server.Infrastructure.Configuration;
 using codeRR.Server.Infrastructure.Security;
 using DotNetCqs;
+using DotNetCqs.DependencyInjection;
 using Griffin.Container;
 using log4net;
 
@@ -27,11 +28,9 @@ namespace codeRR.Server.App.Core.Invitations.CommandHandlers
     ///     </para>
     /// </remarks>
     [Component]
-    public class InviteUserHandler : ICommandHandler<InviteUser>
+    public class InviteUserHandler : IMessageHandler<InviteUser>
     {
         private readonly IApplicationRepository _applicationRepository;
-        private readonly ICommandBus _commandBus;
-        private readonly IEventBus _eventBus;
         private readonly IInvitationRepository _invitationRepository;
         private readonly IUserRepository _userRepository;
         private readonly ILog _logger = LogManager.GetLogger(typeof(InviteUserHandler));
@@ -40,33 +39,22 @@ namespace codeRR.Server.App.Core.Invitations.CommandHandlers
         ///     Creates a new instance of <see cref="InviteUserHandler" />.
         /// </summary>
         /// <param name="invitationRepository">Store invitations</param>
-        /// <param name="eventBus">publish invite events</param>
         /// <param name="userRepository">To load inviter and invitee</param>
         /// <param name="applicationRepository">Add pending member</param>
-        /// <param name="commandBus">To send in invitation email</param>
-        public InviteUserHandler(IInvitationRepository invitationRepository, IEventBus eventBus,
-            IUserRepository userRepository, IApplicationRepository applicationRepository, ICommandBus commandBus)
+        public InviteUserHandler(IInvitationRepository invitationRepository,
+            IUserRepository userRepository, IApplicationRepository applicationRepository)
         {
             _invitationRepository = invitationRepository;
-            _eventBus = eventBus;
             _userRepository = userRepository;
             _applicationRepository = applicationRepository;
-            _commandBus = commandBus;
-            PrincipalAccessor = () => ClaimsPrincipal.Current;
         }
 
-        /// <summary>
-        /// To enable switching principal for unit tests
-        /// </summary>
-        internal Func<ClaimsPrincipal> PrincipalAccessor { get; set; }
-
         /// <inheritdoc />
-        public async Task ExecuteAsync(InviteUser command)
+        public async Task HandleAsync(IMessageContext context, InviteUser command)
         {
             var inviter = await _userRepository.GetUserAsync(command.UserId);
-            var principal = PrincipalAccessor();
-            if (!principal.IsSysAdmin() &&
-                !principal.IsApplicationAdmin(command.ApplicationId))
+            if (!context.Principal.IsSysAdmin() &&
+                !context.Principal.IsApplicationAdmin(command.ApplicationId))
             {
                 _logger.Warn($"User {command.UserId} attempted to do an invite for an application: {command.ApplicationId}.");
                 throw new SecurityException("You are not an admin of that application.");
@@ -89,7 +77,7 @@ namespace codeRR.Server.App.Core.Invitations.CommandHandlers
                 };
 
                 await _applicationRepository.CreateAsync(member);
-                await _eventBus.PublishAsync(new UserAddedToApplication(command.ApplicationId, member.AccountId));
+                await context.SendAsync(new UserAddedToApplication(command.ApplicationId, member.AccountId));
                 return;
             }
             else
@@ -114,7 +102,7 @@ namespace codeRR.Server.App.Core.Invitations.CommandHandlers
             {
                 invitation = new Invitation(command.EmailAddress, inviter.UserName);
                 await _invitationRepository.CreateAsync(invitation);
-                await SendInvitationEmailAsync(invitation, command.Text);
+                await SendInvitationEmailAsync(context, invitation, command.Text);
             }
 
             invitation.Add(command.ApplicationId, inviter.UserName);
@@ -128,7 +116,7 @@ namespace codeRR.Server.App.Core.Invitations.CommandHandlers
                 command.EmailAddress,
                 inviter.UserName);
 
-            await _eventBus.PublishAsync(evt);
+            await context.SendAsync(evt);
         }
 
         /// <summary>
@@ -137,7 +125,7 @@ namespace codeRR.Server.App.Core.Invitations.CommandHandlers
         /// <param name="invitation">Invitation to generate an email for</param>
         /// <param name="reason">Why the user was invited (optional)</param>
         /// <returns>task</returns>
-        protected virtual async Task SendInvitationEmailAsync(Invitation invitation, string reason)
+        protected virtual async Task SendInvitationEmailAsync(IMessageContext context, Invitation invitation, string reason)
         {
             var config = ConfigurationStore.Instance.Load<BaseConfiguration>();
             var url = config.BaseUrl.ToString().TrimEnd('/');
@@ -163,7 +151,7 @@ Best regards,
                 Recipients = new[] {new EmailAddress(invitation.EmailToInvitedUser)}
             };
 
-            await _commandBus.ExecuteAsync(new SendEmail(msg));
+            await context.SendAsync(new SendEmail(msg));
         }
     }
 }

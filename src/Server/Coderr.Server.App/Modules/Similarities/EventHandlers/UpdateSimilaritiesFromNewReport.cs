@@ -14,7 +14,7 @@ namespace codeRR.Server.App.Modules.Similarities.EventHandlers
     ///     Responsible of analyzing the reports Context Data to find similarities from all reports in an incident.
     /// </summary>
     [Component(RegisterAsSelf = true)]
-    public class UpdateSimilaritiesFromNewReport : IApplicationEventSubscriber<ReportAddedToIncident>
+    public class UpdateSimilaritiesFromNewReport : IMessageHandler<ReportAddedToIncident>
     {
         private readonly AdapterRepository _adapterRepository = new AdapterRepository();
         private readonly ILog _logger = LogManager.GetLogger(typeof(UpdateSimilaritiesFromNewReport));
@@ -38,7 +38,7 @@ namespace codeRR.Server.App.Modules.Similarities.EventHandlers
         /// <returns>
         ///     Task to wait on.
         /// </returns>
-        public async Task HandleAsync(ReportAddedToIncident e)
+        public async Task HandleAsync(IMessageContext context, ReportAddedToIncident e)
         {
             _logger.Debug("Updating similarities");
             var adapters = _adapterRepository.GetAdapters();

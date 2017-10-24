@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using codeRR.Server.Api.Core.Accounts.Queries;
 using FluentAssertions;

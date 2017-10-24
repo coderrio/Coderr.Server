@@ -95,7 +95,7 @@ namespace codeRR.Server.Infrastructure.Security
         ///     <c>true</c> if current principal is a <c>ClaimsPrincipal</c>, the user is authenticated and the accountId is
         ///     same; otherwise <c>false</c>.
         /// </returns>
-        public static bool IsAccount(this IPrincipal principal, int accountId)
+        public static bool IsCurrentAccount(this IPrincipal principal, int accountId)
         {
             var p = principal as ClaimsPrincipal;
             if (p == null)
@@ -145,6 +145,29 @@ namespace codeRR.Server.Infrastructure.Security
         public static bool IsSysAdmin(this IPrincipal principal)
         {
             return principal.IsInRole(CoderrClaims.RoleSysAdmin);
+        }
+
+        public static string ToFriendlyString(this IPrincipal principal)
+        {
+            var cc = principal as ClaimsPrincipal;
+            if (cc == null || !principal.Identity.IsAuthenticated)
+            {
+                return "Anonymous";
+            }
+
+            string str = cc.Identity.Name + " [";
+            foreach (var claim in cc.Claims)
+            {
+                var pos = claim.Type.LastIndexOf('/');
+                if (pos != -1)
+                    str += claim.Type.Substring(pos + 1);
+                else
+                    str += claim.Type;
+
+                str += "=" + claim.Value + ", ";
+            }
+            str = str.Remove(str.Length - 2, 2) + "]";
+            return str;
         }
     }
 }

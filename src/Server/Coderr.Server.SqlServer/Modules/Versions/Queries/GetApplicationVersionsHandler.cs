@@ -18,7 +18,7 @@ namespace codeRR.Server.SqlServer.Modules.Versions.Queries
             _uow = uow;
         }
 
-        public async Task<GetApplicationVersionsResult> ExecuteAsync(GetApplicationVersions query)
+        public async Task<GetApplicationVersionsResult> HandleAsync(IMessageContext context, GetApplicationVersions query)
         {
             var sql =
                 @"SELECT version, sum(incidentcount) incidentcount, sum(reportcount) reportcount, min(FirstReportDate) as FirstReportDate, max(LastReportDate)as LastReportDate

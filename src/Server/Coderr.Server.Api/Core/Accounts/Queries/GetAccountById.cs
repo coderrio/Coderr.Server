@@ -6,6 +6,7 @@ namespace codeRR.Server.Api.Core.Accounts.Queries
     /// <summary>
     ///     Get account information.
     /// </summary>
+    [Message]
     public class GetAccountById : Query<AccountDTO>
     {
         /// <summary>

@@ -18,7 +18,7 @@ namespace codeRR.Server.SqlServer.Core.Accounts.QueryHandlers
             _accountRepository = accountRepository;
         }
 
-        public async Task<string> ExecuteAsync(GetAccountEmailById query)
+        public async Task<string> HandleAsync(IMessageContext context, GetAccountEmailById query)
         {
             var usr = await _accountRepository.GetByIdAsync((int) query.AccountId);
             return usr.Email;

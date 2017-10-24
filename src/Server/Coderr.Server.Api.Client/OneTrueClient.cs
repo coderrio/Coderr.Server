@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace codeRR.Server.Api.Client
     /// <summary>
     ///     Client for the codeRR server API
     /// </summary>
-    public class ServerApiClient : IQueryBus, ICommandBus, IEventBus
+    public class ServerApiClient : IMessageBus, IQueryBus
     {
         private readonly JsonSerializerSettings _jsonSerializerSettings = new JsonSerializerSettings
         {
@@ -34,37 +35,16 @@ namespace codeRR.Server.Api.Client
             _jsonSerializerSettings.ContractResolver = new IncludeNonPublicMembersContractResolver();
         }
 
-        /// <summary>
-        ///     Execute a command
-        /// </summary>
-        /// <typeparam name="T">type of query (from the <c>codeRR.Server.Api</c> class library)</typeparam>
-        /// <param name="command">command to execute</param>
-        /// <returns>task</returns>
-        public async Task ExecuteAsync<T>(T command) where T : Command
+
+        async Task<TResult> IQueryBus.QueryAsync<TResult>(ClaimsPrincipal user, Query<TResult> query)
         {
-            var response = await RequestAsync("POST", "command", command);
-            response.Close();
+            //TODO: Unwrap the cqs object to query parameters instead
+            //to allow caching in the server
+            var response = await RequestAsync("POST", "query", query);
+            return await DeserializeResponse<TResult>(response);
+
         }
 
-        /// <summary>
-        ///     Publish an event
-        /// </summary>
-        /// <typeparam name="TApplicationEvent">type of event (from the <c>codeRR.Server.Api</c> class library)</typeparam>
-        /// <param name="e">event to publish</param>
-        /// <returns>task</returns>
-        public async Task PublishAsync<TApplicationEvent>(TApplicationEvent e)
-            where TApplicationEvent : ApplicationEvent
-        {
-            var response = await RequestAsync("POST", "event", e);
-            response.Close();
-        }
-
-        /// <summary>
-        ///     Make a query
-        /// </summary>
-        /// <typeparam name="TResult">Result from a query (a class from the <c>codeRR.Server.Api</c> library)</typeparam>
-        /// <param name="query"></param>
-        /// <returns></returns>
         public async Task<TResult> QueryAsync<TResult>(Query<TResult> query)
         {
             //TODO: Unwrap the cqs object to query parameters instead
@@ -73,18 +53,25 @@ namespace codeRR.Server.Api.Client
             return await DeserializeResponse<TResult>(response);
         }
 
-        /// <summary>
-        ///     Make a request
-        /// </summary>
-        /// <typeparam name="TReply">Reply from a request (a class from the <c>codeRR.Server.Api</c> library)</typeparam>
-        /// <param name="request">request being made</param>
-        /// <returns></returns>
-        public async Task<TReply> RequestAsync<TReply>(Request<TReply> request)
+        
+        async Task IMessageBus.SendAsync(ClaimsPrincipal principal, object message)
         {
-            //TODO: Unwrap the cqs object to query parameters instead
-            //to allow caching in the server
-            var response = await RequestAsync("POST", "request", request);
-            return await DeserializeResponse<TReply>(response);
+            await RequestAsync("POST", "send", message);
+        }
+
+        async Task IMessageBus.SendAsync(ClaimsPrincipal principal, Message message)
+        {
+            await RequestAsync("POST", "send", message.Body);
+        }
+
+        async Task IMessageBus.SendAsync(Message message)
+        {
+            await RequestAsync("POST", "send", message.Body);
+        }
+
+        public async Task SendAsync(object message)
+        {
+            await RequestAsync("POST", "send", message);
         }
 
 
@@ -100,6 +87,7 @@ namespace codeRR.Server.Api.Client
             _sharedSecret = sharedSecret ?? throw new ArgumentNullException(nameof(sharedSecret));
             _uri = uri ?? throw new ArgumentNullException(nameof(uri));
         }
+        
 
         private async Task<TResult> DeserializeResponse<TResult>(HttpWebResponse response)
         {

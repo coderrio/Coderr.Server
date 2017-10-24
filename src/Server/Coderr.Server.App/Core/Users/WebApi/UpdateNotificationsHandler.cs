@@ -12,7 +12,7 @@ namespace codeRR.Server.App.Core.Users.WebApi
     ///     Handler for <see cref="UpdateNotifications" />.
     /// </summary>
     [Component]
-    public class UpdateNotificationsHandler : ICommandHandler<UpdateNotifications>
+    public class UpdateNotificationsHandler : IMessageHandler<UpdateNotifications>
     {
         private readonly INotificationsRepository _notificationsRepository;
 
@@ -34,7 +34,7 @@ namespace codeRR.Server.App.Core.Users.WebApi
         /// <returns>
         ///     Task which will be completed once the command has been executed.
         /// </returns>
-        public async Task ExecuteAsync(UpdateNotifications command)
+        public async Task HandleAsync(IMessageContext context, UpdateNotifications command)
         {
             var settings = await _notificationsRepository.TryGetAsync(command.UserId, command.ApplicationId);
             if (settings == null)

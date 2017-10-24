@@ -6,6 +6,7 @@ namespace codeRR.Server.Api.Web.Feedback.Queries
     /// <summary>
     ///     Get all feedback that is for a specific application
     /// </summary>
+    [Message]
     public class GetFeedbackForApplicationPage : Query<GetFeedbackForApplicationPageResult>
     {
         /// <summary>

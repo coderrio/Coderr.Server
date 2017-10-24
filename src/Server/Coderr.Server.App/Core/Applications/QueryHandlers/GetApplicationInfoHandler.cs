@@ -41,7 +41,7 @@ namespace codeRR.Server.App.Core.Applications.QueryHandlers
         /// <returns>
         ///     Task which will contain the result once completed.
         /// </returns>
-        public async Task<GetApplicationInfoResult> ExecuteAsync(GetApplicationInfo query)
+        public async Task<GetApplicationInfoResult> HandleAsync(IMessageContext context, GetApplicationInfo query)
         {
             Application app;
             if (!string.IsNullOrEmpty(query.AppKey))

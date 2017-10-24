@@ -15,7 +15,6 @@ namespace codeRR.Server.SqlServer.Web.Overview
     internal class GetOverviewHandler : IQueryHandler<GetOverview, GetOverviewResult>
     {
         private readonly IAdoNetUnitOfWork _unitOfWork;
-        private string _appIds;
 
         public GetOverviewHandler(IAdoNetUnitOfWork unitOfWork)
         {
@@ -31,29 +30,15 @@ namespace codeRR.Server.SqlServer.Web.Overview
             }
         }
 
-        private string ApplicationIds
-        {
-            get
-            {
-                if (_appIds != null)
-                    return _appIds;
+        private string ApplicationIds { get; set; }
 
-                var appIds = ClaimsPrincipal.Current
-    .FindAll(x => x.Type == CoderrClaims.Application)
-    .Select(x => int.Parse(x.Value).ToString())
-    .ToList();
-                _appIds = string.Join(",", appIds);
-                return _appIds;
-            }
-        }
-
-        public async Task<GetOverviewResult> ExecuteAsync(GetOverview query)
+        public async Task<GetOverviewResult> HandleAsync(IMessageContext context, GetOverview query)
         {
             if (query.NumberOfDays == 0)
                 query.NumberOfDays = 30;
             var labels = CreateTimeLabels(query);
 
-            if (!ClaimsPrincipal.Current.FindAll(x => x.Type == CoderrClaims.Application).Any())
+            if (!context.Principal.FindAll(x => x.Type == CoderrClaims.Application).Any())
             {
                 return new GetOverviewResult()
                 {
@@ -62,6 +47,12 @@ namespace codeRR.Server.SqlServer.Web.Overview
                     TimeAxisLabels = labels
                 };
             }
+
+            var appIds = context.Principal
+                .FindAll(x => x.Type == CoderrClaims.Application)
+                .Select(x => int.Parse(x.Value).ToString())
+                .ToList();
+            ApplicationIds = string.Join(",", appIds);
 
             if (query.NumberOfDays == 1)
                 return await GetTodaysOverviewAsync(query);

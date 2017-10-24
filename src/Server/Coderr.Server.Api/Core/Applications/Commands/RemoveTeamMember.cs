@@ -6,7 +6,8 @@ namespace codeRR.Server.Api.Core.Applications.Commands
     /// <summary>
     ///     Remove a team member from the
     /// </summary>
-    public class RemoveTeamMember : Command
+    [Message]
+    public class RemoveTeamMember
     {
         /// <summary>
         ///     Creates a new instance of <see cref="RemoveTeamMember" />.

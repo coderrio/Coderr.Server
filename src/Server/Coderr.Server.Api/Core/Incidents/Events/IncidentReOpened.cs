@@ -6,7 +6,8 @@ namespace codeRR.Server.Api.Core.Incidents.Events
     /// <summary>
     ///     Our user had closed the incident and we just got a new report despite that.
     /// </summary>
-    public class IncidentReOpened : ApplicationEvent
+    [Message]
+    public class IncidentReOpened
     {
         /// <summary>
         ///     Creates a new instance of <see cref="IncidentReOpened" />.

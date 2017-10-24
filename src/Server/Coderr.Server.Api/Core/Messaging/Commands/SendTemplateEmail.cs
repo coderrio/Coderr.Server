@@ -6,7 +6,8 @@ namespace codeRR.Server.Api.Core.Messaging.Commands
     /// <summary>
     ///     Send email using a template.
     /// </summary>
-    public class SendTemplateEmail : Command
+    [Message]
+    public class SendTemplateEmail
     {
         /// <summary>
         ///     Creates a new instance of <see cref="SendTemplateEmail" />.

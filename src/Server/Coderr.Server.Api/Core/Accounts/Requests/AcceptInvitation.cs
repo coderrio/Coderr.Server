@@ -7,7 +7,7 @@ namespace codeRR.Server.Api.Core.Accounts.Requests
     /// <summary>
     ///     You must create an account before accepting the invitation
     /// </summary>
-    public class AcceptInvitation : Request<AcceptInvitationReply>
+    public class AcceptInvitation
     {
         /// <summary>
         ///     Creates a new instance of <see cref="AcceptInvitation" />.

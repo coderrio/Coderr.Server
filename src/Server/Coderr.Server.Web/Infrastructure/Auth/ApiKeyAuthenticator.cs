@@ -66,7 +66,6 @@ namespace codeRR.Server.Web.Infrastructure.Auth
                 };
                 var principal = await PrincipalFactory.CreateAsync(factoryContext);
                 context.Principal = principal;
-                Thread.CurrentPrincipal = principal;
             }
         }
 

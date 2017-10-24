@@ -19,7 +19,7 @@ namespace codeRR.Server.SqlServer.Core.Incidents.Queries
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<GetReportListResult> ExecuteAsync(GetReportList query)
+        public async Task<GetReportListResult> HandleAsync(IMessageContext context, GetReportList query)
         {
             using (var cmd = _unitOfWork.CreateCommand())
             {

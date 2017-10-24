@@ -6,12 +6,13 @@ namespace codeRR.Server.Api.Core.Accounts.Queries
     /// <summary>
     ///     Find an account by the given user name
     /// </summary>
+    [Message]
     public class FindAccountByUserName : Query<FindAccountByUserNameResult>
     {
         /// <summary>
         ///     Creates a new instance of <see cref="FindAccountByUserName" />.
         /// </summary>
-        /// <param name="userName">username</param>
+        /// <param name="userName">user name</param>
         public FindAccountByUserName(string userName)
         {
             if (userName == null) throw new ArgumentNullException("userName");

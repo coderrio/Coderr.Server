@@ -5,7 +5,8 @@ namespace codeRR.Server.Api.Core.Applications.Events
     /// <summary>
     ///     A user have been added directly, or through an invitation
     /// </summary>
-    public class UserAddedToApplication : ApplicationEvent
+    [Message]
+    public class UserAddedToApplication
     {
         /// <summary>
         ///     Creates a new instance of <see cref="UserAddedToApplication" />.

@@ -8,6 +8,7 @@ using codeRR.Server.Api.Core.ApiKeys.Queries;
 using codeRR.Server.Api.Core.Applications.Queries;
 using codeRR.Server.Infrastructure.Security;
 using codeRR.Server.Web.Areas.Admin.Models.ApiKeys;
+using codeRR.Server.Web.Controllers;
 using DotNetCqs;
 
 namespace codeRR.Server.Web.Areas.Admin.Controllers
@@ -15,13 +16,13 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
     [Authorize]
     public class ApiKeysController : Controller
     {
-        private readonly ICommandBus _commandBus;
-        private readonly IQueryBus _queryBus;
+        private readonly IMessageBus _messageBus;
+        private IQueryBus _queryBus;
 
-        public ApiKeysController(IQueryBus queryBus, ICommandBus commandBus)
+        public ApiKeysController(IMessageBus messageBus, IQueryBus queryBus)
         {
+            _messageBus = messageBus;
             _queryBus = queryBus;
-            _commandBus = commandBus;
         }
 
         public async Task<ActionResult> Create()
@@ -45,7 +46,7 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
                 ? new int[0]
                 : model.SelectedApplications.Select(int.Parse).ToArray();
             var cmd = new CreateApiKey(model.ApplicationName, apiKey, sharedSecret, apps);
-            await _commandBus.ExecuteAsync(cmd);
+            await _messageBus.SendAsync(this.ClaimsUser(), cmd);
 
             return RedirectToAction("Created", new { apiKey, sharedSecret });
         }
@@ -53,7 +54,7 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
         public async Task<ActionResult> Edit(int id)
         {
             var applications = await GetMyApplications();
-            var key = await _queryBus.QueryAsync(new GetApiKey(id));
+            var key = await _queryBus.QueryAsync(this.ClaimsUser(), new GetApiKey(id));
             var model = new EditViewModel
             {
                 Id = key.Id,
@@ -80,7 +81,7 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
                 ApplicationName = model.ApplicationName
             };
 
-            await _commandBus.ExecuteAsync(cmd);
+            await _messageBus.SendAsync(this.ClaimsUser(), cmd);
 
             return RedirectToAction("Details", new { model.Id });
         }
@@ -96,7 +97,7 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
         public async Task<ActionResult> Delete(int id)
         {
             var cmd = new DeleteApiKey(id);
-            await _commandBus.ExecuteAsync(cmd);
+            await _messageBus.SendAsync(this.ClaimsUser(), cmd);
             return RedirectToAction("Deleted");
         }
 
@@ -108,14 +109,14 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
 
         public async Task<ActionResult> Details(int id)
         {
-            var key = await _queryBus.QueryAsync(new GetApiKey(id));
+            var key = await _queryBus.QueryAsync(this.ClaimsUser(), new GetApiKey(id));
             return View(key);
         }
 
         public async Task<ActionResult> Index()
         {
             var query = new ListApiKeys();
-            var result = await _queryBus.QueryAsync(query);
+            var result = await _queryBus.QueryAsync(this.ClaimsUser(), query);
             var vms = Enumerable.Select(result.Keys, x => new ListViewModelItem { Id = x.Id, Name = x.ApplicationName }).ToArray<ListViewModelItem>();
             var model = new ListViewModel { Keys = vms };
             return View(model);
@@ -128,7 +129,7 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
                 AccountId = User.GetAccountId(),
                 FilterAsAdmin = true
             };
-            var items = await _queryBus.QueryAsync(query);
+            var items = await _queryBus.QueryAsync(this.ClaimsUser(), query);
             var applications = Enumerable.ToDictionary(items, x => x.Id.ToString(), x => x.Name);
             return applications;
         }

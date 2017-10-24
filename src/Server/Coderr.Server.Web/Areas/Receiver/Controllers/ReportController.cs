@@ -2,14 +2,16 @@
 using System.Net;
 using System.Net.Http;
 using System.Security.Authentication;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using codeRR.Server.Infrastructure;
-using codeRR.Server.Infrastructure.Queueing;
+using codeRR.Server.Infrastructure.MessageBus;
 using codeRR.Server.ReportAnalyzer.Inbound;
 using codeRR.Server.Web.Areas.Receiver.Helpers;
 using codeRR.Server.Web.Areas.Receiver.Models;
+using DotNetCqs.Queues;
 using log4net;
 
 namespace codeRR.Server.Web.Areas.Receiver.Controllers
@@ -19,7 +21,7 @@ namespace codeRR.Server.Web.Areas.Receiver.Controllers
     {
         private static readonly SamplingCounter _samplingCounter = new SamplingCounter();
         private readonly ILog _logger = LogManager.GetLogger(typeof(ReportController));
-        private readonly IMessageQueueProvider _queueProvider;
+        private readonly IMessageQueue _messageQueue;
         private IConnectionFactory _connectionFactory;
 
         static ReportController()
@@ -29,7 +31,7 @@ namespace codeRR.Server.Web.Areas.Receiver.Controllers
 
         public ReportController(IMessageQueueProvider queueProvider, IConnectionFactory connectionFactory)
         {
-            _queueProvider = queueProvider;
+            _messageQueue = queueProvider.Open("Reports");
             _connectionFactory = connectionFactory;
         }
 
@@ -61,8 +63,8 @@ namespace codeRR.Server.Web.Areas.Receiver.Controllers
             {
                 var buffer = new byte[HttpContext.Current.Request.InputStream.Length];
                 HttpContext.Current.Request.InputStream.Read(buffer, 0, buffer.Length);
-                var handler = new SaveReportHandler(_queueProvider.Open("ReportQueue"), _connectionFactory);
-                await handler.BuildReportAsync(appKey, sig, Request.GetClientIpAddress(), buffer);
+                var handler = new SaveReportHandler(_messageQueue, _connectionFactory);
+                await handler.BuildReportAsync(User as ClaimsPrincipal, appKey, sig, Request.GetClientIpAddress(), buffer);
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
             catch (InvalidCredentialException ex)

@@ -22,7 +22,7 @@ namespace codeRR.Server.SqlServer.Web.Feedback.Queries
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<GetFeedbackForDashboardPageResult> ExecuteAsync(GetFeedbackForDashboardPage query)
+        public async Task<GetFeedbackForDashboardPageResult> HandleAsync(IMessageContext context, GetFeedbackForDashboardPage query)
         {
             using (var cmd = _unitOfWork.CreateCommand())
             {
@@ -37,7 +37,7 @@ namespace codeRR.Server.SqlServer.Web.Feedback.Queries
                 // something getting a string into our claims
                 // since the code below would otherwise
                 // allow SQL injection 
-                var appIds = ClaimsPrincipal.Current
+                var appIds = context.Principal
                     .FindAll(x => x.Type == CoderrClaims.Application)
                     .Select(x => int.Parse(x.Value).ToString())
                     .ToList();

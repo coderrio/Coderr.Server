@@ -11,7 +11,7 @@ namespace codeRR.Server.App.Core.Users.WebApi
     ///     Handler for <see cref="UpdatePersonalSettings" />.
     /// </summary>
     [Component]
-    public class UpdatePersonalSettingsHandler : ICommandHandler<UpdatePersonalSettings>
+    public class UpdatePersonalSettingsHandler : IMessageHandler<UpdatePersonalSettings>
     {
         private readonly IUserRepository _userRepository;
         private readonly IAccountRepository _accountRepository;
@@ -35,7 +35,7 @@ namespace codeRR.Server.App.Core.Users.WebApi
         /// <returns>
         ///     Task which will be completed once the command has been executed.
         /// </returns>
-        public async Task ExecuteAsync(UpdatePersonalSettings command)
+        public async Task HandleAsync(IMessageContext context, UpdatePersonalSettings command)
         {
             if (command == null) throw new ArgumentNullException(nameof(command));
 

@@ -13,20 +13,8 @@ namespace codeRR.Server.App.Modules.Messaging.Commands
     ///     Send an email using a template.
     /// </summary>
     [Component]
-    public class SendTemplateEmailHandler : ICommandHandler<SendTemplateEmail>
+    public class SendTemplateEmailHandler : IMessageHandler<SendTemplateEmail>
     {
-        private readonly ICommandBus _commandBus;
-
-        /// <summary>
-        ///     Creates a new instance of <see cref="SendTemplateEmailHandler" />.
-        /// </summary>
-        /// <param name="commandBus">Used to send the <see cref="SendEmail" /> command.</param>
-        /// <exception cref="ArgumentNullException">commandBus</exception>
-        public SendTemplateEmailHandler(ICommandBus commandBus)
-        {
-            if (commandBus == null) throw new ArgumentNullException("commandBus");
-            _commandBus = commandBus;
-        }
 
         /// <summary>
         ///     Execute a command asynchronously.
@@ -35,7 +23,7 @@ namespace codeRR.Server.App.Modules.Messaging.Commands
         /// <returns>
         ///     Task which will be completed once the command has been executed.
         /// </returns>
-        public async Task ExecuteAsync(SendTemplateEmail command)
+        public async Task HandleAsync(IMessageContext context, SendTemplateEmail command)
         {
             var loader = new TemplateLoader();
             var templateParser = new TemplateParser();
@@ -97,7 +85,7 @@ namespace codeRR.Server.App.Modules.Messaging.Commands
             msg.HtmlBody = complete;
 
             var sendEmail = new SendEmail(msg);
-            await _commandBus.ExecuteAsync(sendEmail);
+            await context.SendAsync(sendEmail);
         }
     }
 }

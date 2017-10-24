@@ -13,22 +13,22 @@ using log4net;
 namespace codeRR.Server.SqlServer.Core.Feedback.Commands
 {
     [Component]
-    public class SubmitFeedbackHandler : ICommandHandler<SubmitFeedback>
+    public class SubmitFeedbackHandler : IMessageHandler<SubmitFeedback>
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(SubmitFeedbackHandler));
         private readonly IReportsRepository _reportsRepository;
         private readonly IAdoNetUnitOfWork _unitOfWork;
-        private readonly IEventBus _eventBus;
+        private readonly IMessageBus _messageBus;
 
         public SubmitFeedbackHandler(IAdoNetUnitOfWork unitOfWork, IReportsRepository reportsRepository,
-            IEventBus eventBus)
+            IMessageBus messageBus)
         {
             _unitOfWork = unitOfWork;
             _reportsRepository = reportsRepository;
-            _eventBus = eventBus;
+            _messageBus = messageBus;
         }
 
-        public async Task ExecuteAsync(SubmitFeedback command)
+        public async Task HandleAsync(IMessageContext context, SubmitFeedback command)
         {
             ReportDTO report;
             if (command.ReportId > 0)
@@ -90,7 +90,7 @@ namespace codeRR.Server.SqlServer.Core.Feedback.Commands
                     UserEmailAddress = command.Email,
                     IncidentId = report.IncidentId
                 };
-                await _eventBus.PublishAsync(evt);
+                await context.SendAsync(evt);
 
                 await cmd.ExecuteNonQueryAsync();
             }

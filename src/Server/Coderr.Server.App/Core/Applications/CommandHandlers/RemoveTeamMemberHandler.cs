@@ -12,7 +12,7 @@ namespace codeRR.Server.App.Core.Applications.CommandHandlers
     ///     Remove a team member from an application
     /// </summary>
     [Component]
-    public class RemoveTeamMemberHandler : ICommandHandler<RemoveTeamMember>
+    public class RemoveTeamMemberHandler : IMessageHandler<RemoveTeamMember>
     {
         private readonly IApplicationRepository _applicationRepository;
         private readonly ILog _logger = LogManager.GetLogger(typeof(RemoveTeamMember));
@@ -27,9 +27,9 @@ namespace codeRR.Server.App.Core.Applications.CommandHandlers
         }
 
         /// <inheritdoc />
-        public async Task ExecuteAsync(RemoveTeamMember command)
+        public async Task HandleAsync(IMessageContext context, RemoveTeamMember command)
         {
-            ClaimsPrincipal.Current.EnsureApplicationAdmin(command.ApplicationId);
+            context.Principal.EnsureApplicationAdmin(command.ApplicationId);
             await _applicationRepository.RemoveTeamMemberAsync(command.ApplicationId, command.UserToRemove);
             _logger.Info("Removed " + command.UserToRemove + " from application " + command.ApplicationId);
         }

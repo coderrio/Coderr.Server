@@ -17,21 +17,17 @@ namespace codeRR.Server.App.Core.Accounts.CommandHandlers
     ///     Handler for <see cref="RegisterSimple" />.
     /// </summary>
     [Component]
-    internal class RegisterSimpleHandler : ICommandHandler<RegisterSimple>
+    internal class RegisterSimpleHandler : IMessageHandler<RegisterSimple>
     {
-        private readonly ICommandBus _commandBus;
-        private readonly IEventBus _eventBus;
         private readonly ILog _logger = LogManager.GetLogger(typeof(RegisterSimpleHandler));
         private readonly IAccountRepository _repository;
 
-        public RegisterSimpleHandler(IAccountRepository repository, ICommandBus commandBus, IEventBus eventBus)
+        public RegisterSimpleHandler(IAccountRepository repository)
         {
             _repository = repository;
-            _commandBus = commandBus;
-            _eventBus = eventBus;
         }
 
-        public async Task ExecuteAsync(RegisterSimple command)
+        public async Task HandleAsync(IMessageContext context, RegisterSimple command)
         {
             var pos = command.EmailAddress.IndexOf('@');
             if (pos == -1)
@@ -44,7 +40,7 @@ namespace codeRR.Server.App.Core.Accounts.CommandHandlers
             if (user != null)
             {
                 _logger.Warn("Email already taken, sending reset password: " + command.EmailAddress);
-                await _commandBus.ExecuteAsync(new RequestPasswordReset(command.EmailAddress));
+                await context.SendAsync(new RequestPasswordReset(command.EmailAddress));
             }
 
             var userName = await TryCreateUsernameAsync(command, pos);
@@ -61,13 +57,13 @@ namespace codeRR.Server.App.Core.Accounts.CommandHandlers
             account.SetVerifiedEmail(command.EmailAddress);
             await _repository.CreateAsync(account);
 
-            await SendAccountEmail(account, password);
+            await SendAccountEmail(context, account, password);
 
             var evt = new AccountRegistered(account.Id, account.UserName);
-            await _eventBus.PublishAsync(evt);
+            await context.SendAsync(evt);
         }
 
-        private Task SendAccountEmail(Account account, string password)
+        private Task SendAccountEmail(IMessageContext context, Account account, string password)
         {
             var config = ConfigurationStore.Instance.Load<BaseConfiguration>();
             //TODO: HTML email
@@ -91,7 +87,7 @@ Thanks,
             };
             msg.Recipients = new[] {new EmailAddress(account.Email)};
 
-            return _commandBus.ExecuteAsync(new SendEmail(msg));
+            return context.SendAsync(new SendEmail(msg));
         }
 
         private async Task<string> TryCreateUsernameAsync(RegisterSimple command, int pos)

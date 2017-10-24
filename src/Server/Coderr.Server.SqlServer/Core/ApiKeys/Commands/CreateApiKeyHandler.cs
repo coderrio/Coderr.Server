@@ -9,18 +9,18 @@ using Griffin.Data;
 namespace codeRR.Server.SqlServer.Core.ApiKeys.Commands
 {
     [Component(RegisterAsSelf = true)]
-    public class CreateApiKeyHandler : ICommandHandler<CreateApiKey>
+    public class CreateApiKeyHandler : IMessageHandler<CreateApiKey>
     {
         private readonly IAdoNetUnitOfWork _unitOfWork;
-        private readonly IEventBus _eventBus;
+        private readonly IMessageBus _messageBus;
 
-        public CreateApiKeyHandler(IAdoNetUnitOfWork unitOfWork, IEventBus eventBus)
+        public CreateApiKeyHandler(IAdoNetUnitOfWork unitOfWork, IMessageBus messageBus)
         {
             _unitOfWork = unitOfWork;
-            _eventBus = eventBus;
+            _messageBus = messageBus;
         }
 
-        public async Task ExecuteAsync(CreateApiKey command)
+        public async Task HandleAsync(IMessageContext context, CreateApiKey command)
         {
             int id;
             using (var cmd = _unitOfWork.CreateDbCommand())
@@ -50,7 +50,7 @@ namespace codeRR.Server.SqlServer.Core.ApiKeys.Commands
 
             var evt = new ApiKeyCreated(command.ApplicationName, command.ApiKey, command.SharedSecret,
                 command.ApplicationIds, command.AccountId);
-            await _eventBus.PublishAsync(evt);
+            await context.SendAsync(evt);
         }
     }
 }

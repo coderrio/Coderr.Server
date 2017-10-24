@@ -7,7 +7,8 @@ namespace codeRR.Server.Api.Core.Incidents.Events
     /// <summary>
     ///     We just received a new report and attached it to the given incident.
     /// </summary>
-    public class ReportAddedToIncident : ApplicationEvent
+    [Message]
+    public class ReportAddedToIncident
     {
         /// <summary>
         ///     Creates a new instance of <see cref="ReportAddedToIncident" />.

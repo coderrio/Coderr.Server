@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Configuration;
+using System.Data;
 using System.Reflection;
 using System.Web.Http;
 using System.Web.Mvc;
+using codeRR.Server.App;
 using codeRR.Server.App.Configuration;
-using codeRR.Server.App.Core.Accounts.Requests;
 using codeRR.Server.Infrastructure;
 using codeRR.Server.Infrastructure.Configuration;
-using codeRR.Server.Infrastructure.Queueing;
 using codeRR.Server.ReportAnalyzer;
 using codeRR.Server.ReportAnalyzer.Scanners;
 using codeRR.Server.SqlServer.Core.Users;
@@ -59,7 +59,7 @@ namespace codeRR.Server.Web
         private IAdoNetUnitOfWork CreateConnection(IServiceLocator arg)
         {
             var factory = arg.Resolve<IConnectionFactory>();
-            return new AdoNetUnitOfWork(factory.Open(), true);
+            return new AdoNetUowSpy(new AdoNetUnitOfWork(factory.Open(), true, IsolationLevel.RepeatableRead));
         }
 
         private IScopedTaskInvoker CreateTaskInvoker(IServiceLocator arg)
@@ -75,24 +75,24 @@ namespace codeRR.Server.Web
 
         private void RegisterBuiltInComponents(ContainerRegistrar builder)
         {
-            builder.RegisterComponents(Lifetime.Scoped, typeof(ValidateNewLoginHandler).Assembly);
+            builder.RegisterComponents(Lifetime.Scoped, typeof(AppType).Assembly);
             builder.RegisterComponents(Lifetime.Scoped, typeof(UserRepository).Assembly);
             builder.RegisterComponents(Lifetime.Scoped, typeof(ScanForNewErrorReports).Assembly);
         }
 
         private void RegisterQueues(ContainerRegistrar builder)
         {
-            builder.RegisterComponents(Lifetime.Scoped, typeof(QueueProvider).Assembly);
+            builder.RegisterComponents(Lifetime.Scoped, typeof(SetupTools).Assembly);
 
-            var queueProviderTypeStr = ConfigurationManager.AppSettings["QueueProviderType"];
-            if (string.IsNullOrEmpty(queueProviderTypeStr))
-            {
-                builder.RegisterConcrete<QueueProvider>(Lifetime.Singleton);
-                return;
-            }
+            //var queueProviderTypeStr = ConfigurationManager.AppSettings["QueueProviderType"];
+            //if (string.IsNullOrEmpty(queueProviderTypeStr))
+            //{
+            //    builder.RegisterConcrete<MessageQueueProvider>(Lifetime.Singleton);
+            //    return;
+            //}
 
-            var type = Type.GetType(queueProviderTypeStr, true);
-            builder.RegisterConcrete(type, Lifetime.Singleton);
+            //var type = Type.GetType(queueProviderTypeStr, true);
+            //builder.RegisterConcrete(type, Lifetime.Singleton);
         }
     }
 }

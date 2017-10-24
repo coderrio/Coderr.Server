@@ -12,7 +12,7 @@ namespace codeRR.Server.App.Modules.Tagging.Handlers
     ///     Adds a "incident-reopened" tag
     /// </summary>
     [Component(RegisterAsSelf = true)]
-    public class IncidentReopenedHandler : IApplicationEventSubscriber<IncidentReOpened>
+    public class IncidentReopenedHandler : IMessageHandler<IncidentReOpened>
     {
         private readonly ITagsRepository _repository;
 
@@ -28,7 +28,7 @@ namespace codeRR.Server.App.Modules.Tagging.Handlers
         }
 
         /// <inheritdoc />
-        public async Task HandleAsync(IncidentReOpened e)
+        public async Task HandleAsync(IMessageContext context, IncidentReOpened e)
         {
             var tags = await _repository.GetTagsAsync(e.IncidentId);
             if (tags.Any(x => x.Name == "incident-reopened"))

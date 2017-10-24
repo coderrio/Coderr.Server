@@ -34,7 +34,7 @@ namespace codeRR.Server.App.Modules.Geolocation.QueryHandlers
         /// <returns>
         ///     Task which will contain the result once completed.
         /// </returns>
-        public async Task<GetOriginsForIncidentResult> ExecuteAsync(GetOriginsForIncident query)
+        public async Task<GetOriginsForIncidentResult> HandleAsync(IMessageContext context, GetOriginsForIncident query)
         {
             var reports = await _repository.FindForIncidentAsync(query.IncidentId);
             var items = from x in reports

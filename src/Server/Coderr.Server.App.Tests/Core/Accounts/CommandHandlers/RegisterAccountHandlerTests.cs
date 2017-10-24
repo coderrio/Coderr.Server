@@ -19,15 +19,14 @@ namespace codeRR.Server.App.Tests.Core.Accounts.CommandHandlers
         {
             ConfigurationStore.Instance = new TestStore();
             var repos = Substitute.For<IAccountRepository>();
-            var cmdBus = Substitute.For<ICommandBus>();
-            var eventBus = Substitute.For<IEventBus>();
             var cmd = new RegisterAccount("rne", "yo", "some@Emal.com");
+            var context = Substitute.For<IMessageContext>();
             repos.When(x => x.CreateAsync(Arg.Any<Account>()))
                 .Do(x => x.Arg<Account>().SetId(3));
 
 
-            var sut = new RegisterAccountHandler(repos, cmdBus, eventBus);
-            await sut.ExecuteAsync(cmd);
+            var sut = new RegisterAccountHandler(repos);
+            await sut.HandleAsync(context, cmd);
             await repos.Received().CreateAsync(Arg.Any<Account>());
         }
 
@@ -36,18 +35,17 @@ namespace codeRR.Server.App.Tests.Core.Accounts.CommandHandlers
         {
             ConfigurationStore.Instance = new TestStore();
             var repos = Substitute.For<IAccountRepository>();
-            var cmdBus = Substitute.For<ICommandBus>();
-            var eventBus = Substitute.For<IEventBus>();
+            var context = Substitute.For<IMessageContext>();
             var cmd = new RegisterAccount("rne", "yo", "some@Emal.com");
             repos.When(x => x.CreateAsync(Arg.Any<Account>()))
                 .Do(x => x.Arg<Account>().SetId(3));
 
 
-            var sut = new RegisterAccountHandler(repos, cmdBus, eventBus);
-            await sut.ExecuteAsync(cmd);
+            var sut = new RegisterAccountHandler(repos);
+            await sut.HandleAsync(context, cmd);
 
-            await eventBus.Received().PublishAsync(Arg.Any<AccountRegistered>());
-            AssertionExtensions.Should((int) eventBus.Method("PublishAsync").Arg<AccountRegistered>().AccountId).Be(3);
+            await context.Received().SendAsync(Arg.Any<AccountRegistered>());
+            context.Method("PublishAsync").Arg<AccountRegistered>().AccountId.Should().Be(3);
         }
 
         [Fact]
@@ -55,17 +53,16 @@ namespace codeRR.Server.App.Tests.Core.Accounts.CommandHandlers
         {
             ConfigurationStore.Instance = new TestStore();
             var repos = Substitute.For<IAccountRepository>();
-            var cmdBus = Substitute.For<ICommandBus>();
-            var eventBus = Substitute.For<IEventBus>();
+            var context = Substitute.For<IMessageContext>();
             var cmd = new RegisterAccount("rne", "yo", "some@Emal.com");
             repos.When(x => x.CreateAsync(Arg.Any<Account>()))
                 .Do(x => x.Arg<Account>().SetId(3));
 
 
-            var sut = new RegisterAccountHandler(repos, cmdBus, eventBus);
-            await sut.ExecuteAsync(cmd);
+            var sut = new RegisterAccountHandler(repos);
+            await sut.HandleAsync(context, cmd);
 
-            await cmdBus.Received().ExecuteAsync(Arg.Any<SendEmail>());
+            await context.Received().SendAsync(Arg.Any<SendEmail>());
         }
     }
 }

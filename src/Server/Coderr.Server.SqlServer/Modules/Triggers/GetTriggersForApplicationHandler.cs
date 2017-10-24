@@ -20,7 +20,7 @@ namespace codeRR.Server.SqlServer.Modules.Triggers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<TriggerDTO[]> ExecuteAsync(GetTriggersForApplication query)
+        public async Task<TriggerDTO[]> HandleAsync(IMessageContext context, GetTriggersForApplication query)
         {
             using (var cmd = (DbCommand) _unitOfWork.CreateCommand())
             {

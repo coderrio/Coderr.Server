@@ -1,8 +1,9 @@
 ﻿using System;
 using codeRR.Server.Api.Core.Feedback.Commands;
-using codeRR.Server.Infrastructure.Queueing;
+using codeRR.Server.Infrastructure.MessageBus;
 using codeRR.Server.ReportAnalyzer.LibContracts;
 using DotNetCqs;
+using DotNetCqs.Queues;
 using Griffin.ApplicationServices;
 using Griffin.Container;
 using log4net;
@@ -17,14 +18,14 @@ namespace codeRR.Server.SqlServer.Analysis
     [Component(Lifetime = Lifetime.Singleton)]
     public class ScanForNewFeedback : ApplicationServiceTimer
     {
-        private readonly ICommandBus _cmdBus;
+        private readonly IMessageBus _messageBus;
         private readonly ILog _logger = LogManager.GetLogger(typeof(ScanForNewFeedback));
         private readonly IMessageQueue _messageQueue;
 
-        public ScanForNewFeedback(ICommandBus cmdBus, IMessageQueueProvider queueProvider)
+        public ScanForNewFeedback(IMessageBus messageBus, IMessageQueueProvider queueProvider)
         {
-            _cmdBus = cmdBus;
-            _messageQueue = queueProvider.Open("FeedbackQueue");
+            _messageBus = messageBus;
+            _messageQueue = queueProvider.Open("Feedback");
             Interval = TimeSpan.FromSeconds(1);
         }
 
@@ -33,24 +34,36 @@ namespace codeRR.Server.SqlServer.Analysis
         {
             while (true)
             {
-                var dto = _messageQueue.Receive<ReceivedFeedbackDTO>();
-                if (dto == null)
-                    break;
-
-                try
+                using (var session = _messageQueue.BeginSession())
                 {
-                    var submitCmd = new SubmitFeedback(dto.ReportId, dto.RemoteAddress)
+                    var msg = session.DequeueWithCredentials(TimeSpan.FromSeconds(1)).GetAwaiter().GetResult();
+                    if (msg == null)
                     {
-                        CreatedAtUtc = dto.ReceivedAtUtc,
-                        Email = dto.EmailAddress,
-                        Feedback = dto.Description
-                    };
-                    _cmdBus.ExecuteAsync(submitCmd).Wait();
+                        session.SaveChanges();
+                        break;
+                    }
+
+
+                    var dto = (ReceivedFeedbackDTO)msg.Message.Body;
+
+                    try
+                    {
+                        var submitCmd = new SubmitFeedback(dto.ReportId, dto.RemoteAddress)
+                        {
+                            CreatedAtUtc = dto.ReceivedAtUtc,
+                            Email = dto.EmailAddress,
+                            Feedback = dto.Description
+                        };
+                        _messageBus.SendAsync(msg.Principal, submitCmd).Wait();
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Error("Failed to process " + JsonConvert.SerializeObject(dto), ex);
+                    }
+
+                    session.SaveChanges();
                 }
-                catch (Exception ex)
-                {
-                    _logger.Error("Failed to process " + JsonConvert.SerializeObject(dto), ex);
-                }
+              
             }
         }
     }

@@ -13,7 +13,7 @@ namespace codeRR.Server.App.Modules.Triggers.EventHandlers
     ///     Responsible of creating context collection metadata for all reports that have been added to an incident.
     /// </summary>
     [Component(RegisterAsSelf = true)]
-    public class UpdateCollectionsOnReportAdded : IApplicationEventSubscriber<ReportAddedToIncident>
+    public class UpdateCollectionsOnReportAdded : IMessageHandler<ReportAddedToIncident>
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(UpdateCollectionsOnReportAdded));
         private readonly ITriggerRepository _repository;
@@ -35,24 +35,24 @@ namespace codeRR.Server.App.Modules.Triggers.EventHandlers
         /// <returns>
         ///     Task to wait on.
         /// </returns>
-        public async Task HandleAsync(ReportAddedToIncident e)
+        public async Task HandleAsync(IMessageContext context, ReportAddedToIncident e)
         {
             if (e == null) throw new ArgumentNullException("e");
 
             _logger.Debug("doing collections");
             var collections = await _repository.GetCollectionsAsync(e.Incident.ApplicationId);
-            foreach (var context in e.Report.ContextCollections)
+            foreach (var collectionDto in e.Report.ContextCollections)
             {
                 var isNew = false;
                 var meta =
-                    collections.FirstOrDefault(x => x.Name.Equals(context.Name, StringComparison.OrdinalIgnoreCase));
+                    collections.FirstOrDefault(x => x.Name.Equals(collectionDto.Name, StringComparison.OrdinalIgnoreCase));
                 if (meta == null)
                 {
                     isNew = true;
-                    meta = new CollectionMetadata(e.Incident.ApplicationId, context.Name);
+                    meta = new CollectionMetadata(e.Incident.ApplicationId, collectionDto.Name);
                 }
 
-                foreach (var property in context.Properties)
+                foreach (var property in collectionDto.Properties)
                 {
                     meta.AddOrUpdateProperty(property.Key);
                 }

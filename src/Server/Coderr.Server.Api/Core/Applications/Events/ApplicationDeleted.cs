@@ -5,7 +5,8 @@ namespace codeRR.Server.Api.Core.Applications.Events
     /// <summary>
     ///     An application have been deleted.
     /// </summary>
-    public class ApplicationDeleted : ApplicationEvent
+    [Message]
+    public class ApplicationDeleted
     {
         /// <summary>
         ///     Key used when uploading reports

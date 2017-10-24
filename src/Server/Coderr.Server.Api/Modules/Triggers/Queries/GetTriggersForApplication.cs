@@ -6,6 +6,7 @@ namespace codeRR.Server.Api.Modules.Triggers.Queries
     /// <summary>
     ///     Get all triggers for an application
     /// </summary>
+    [Message]
     public class GetTriggersForApplication : Query<TriggerDTO[]>
     {
         /// <summary>

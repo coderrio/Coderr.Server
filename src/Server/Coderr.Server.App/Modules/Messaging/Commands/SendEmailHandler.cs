@@ -15,17 +15,9 @@ using Griffin.Container;
 namespace codeRR.Server.App.Modules.Messaging.Commands
 {
     [Component]
-    internal class SendEmailHandler : ICommandHandler<SendEmail>
+    internal class SendEmailHandler : IMessageHandler<SendEmail>
     {
-        private readonly IQueryBus _queryBus;
-
-        public SendEmailHandler(IQueryBus queryBus)
-        {
-            if (queryBus == null) throw new ArgumentNullException("queryBus");
-            _queryBus = queryBus;
-        }
-
-        public async Task ExecuteAsync(SendEmail command)
+        public async Task HandleAsync(IMessageContext context, SendEmail command)
         {
             var client = CreateSmtpClient();
             if (client == null)
@@ -44,7 +36,7 @@ namespace codeRR.Server.App.Modules.Messaging.Commands
                 if (int.TryParse(recipient.Address, out accountId))
                 {
                     var query = new GetAccountEmailById(accountId);
-                    var emailAddress = await _queryBus.QueryAsync<string>(query);
+                    var emailAddress = await context.QueryAsync(query);
                     email.To.Add(new MailAddress(emailAddress, recipient.Name));
                 }
                 else

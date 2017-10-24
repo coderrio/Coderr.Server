@@ -21,7 +21,7 @@
 //            _repository = repository;
 //        }
 
-//        public async Task<GetReportResult> ExecuteAsync(GetReport query)
+//        public async Task<GetReportResult> ExecuteAsync(IMessageContext context, GetReport query)
 //        {
 //            ErrorReportEntity entity = null;
 

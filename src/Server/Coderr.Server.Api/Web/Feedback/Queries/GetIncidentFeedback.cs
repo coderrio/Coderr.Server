@@ -9,6 +9,7 @@ namespace codeRR.Server.Api.Web.Feedback.Queries
     /// <remarks>
     ///     <para>Will only fetch for the most specific id</para>
     /// </remarks>
+    [Message]
     public class GetIncidentFeedback : Query<GetIncidentFeedbackResult>
     {
         /// <summary>

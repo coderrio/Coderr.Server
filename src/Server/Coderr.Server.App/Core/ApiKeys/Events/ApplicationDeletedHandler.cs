@@ -11,7 +11,7 @@ namespace codeRR.Server.App.Core.ApiKeys.Events
     ///     application mapping.
     /// </summary>
     [Component(RegisterAsSelf = true)]
-    public class ApplicationDeletedHandler : IApplicationEventSubscriber<ApplicationDeleted>
+    public class ApplicationDeletedHandler : IMessageHandler<ApplicationDeleted>
     {
         private readonly IApiKeyRepository _repository;
 
@@ -26,7 +26,7 @@ namespace codeRR.Server.App.Core.ApiKeys.Events
         }
 
         /// <inheritdoc />
-        public async Task HandleAsync(ApplicationDeleted e)
+        public async Task HandleAsync(IMessageContext context, ApplicationDeleted e)
         {
             var apps = await _repository.GetForApplicationAsync(e.ApplicationId);
             foreach (var apiKey in apps)

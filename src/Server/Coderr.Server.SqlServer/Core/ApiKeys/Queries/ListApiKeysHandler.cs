@@ -19,7 +19,7 @@ namespace codeRR.Server.SqlServer.Core.ApiKeys.Queries
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ListApiKeysResult> ExecuteAsync(ListApiKeys query)
+        public async Task<ListApiKeysResult> HandleAsync(IMessageContext context, ListApiKeys query)
         {
             var keys =
                 await

@@ -30,7 +30,7 @@ namespace codeRR.Server.App.Core.Reports.Queries
         /// <summary>Method used to execute the query</summary>
         /// <param name="query">Query to execute.</param>
         /// <returns>Task which will contain the result once completed.</returns>
-        public async Task<GetReportResult> ExecuteAsync(GetReport query)
+        public async Task<GetReportResult> HandleAsync(IMessageContext context, GetReport query)
         {
             var report = await _repository.GetAsync(query.ReportId);
             var collections = Enumerable.ToList((

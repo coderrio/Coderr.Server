@@ -6,7 +6,8 @@ namespace codeRR.Server.Api.Core.Incidents.Commands
     /// <summary>
     ///     An incident which has either been closed or ignored is marked as active again
     /// </summary>
-    public class ReOpenIncident : Command
+    [Message]
+    public class ReOpenIncident
     {
         /// <summary>
         ///     Creates a new instance of <see cref="ReOpenIncident" />.

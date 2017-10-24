@@ -7,7 +7,8 @@ namespace codeRR.Server.Api.Core.Accounts.Commands
     /// <summary>
     ///     Register a new account and send out an activation email.
     /// </summary>
-    public class RegisterAccount : Command
+    [Message]
+    public class RegisterAccount
     {
         /// <summary>
         ///     Creates a new instance of <see cref="RegisterAccount" />

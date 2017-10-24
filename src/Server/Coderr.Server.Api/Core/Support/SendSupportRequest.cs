@@ -3,9 +3,10 @@
 namespace codeRR.Server.Api.Core.Support
 {
     /// <summary>
-    ///     Send a support request to Gauffin Interactive AB
+    ///     Send a support request to 1TCompany AB
     /// </summary>
-    public class SendSupportRequest : Command
+    [Message]
+    public class SendSupportRequest
     {
         /// <summary>
         ///     Problem statement

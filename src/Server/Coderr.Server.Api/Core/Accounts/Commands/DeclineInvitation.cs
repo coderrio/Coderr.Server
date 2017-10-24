@@ -6,7 +6,8 @@ namespace codeRR.Server.Api.Core.Accounts.Commands
     /// <summary>
     ///     Invited person do not want to accept the invitation
     /// </summary>
-    public class DeclineInvitation : Command
+    [Message]
+    public class DeclineInvitation
     {
         /// <summary>
         ///     Serialization constructor

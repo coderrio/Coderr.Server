@@ -1,10 +1,12 @@
-﻿using DotNetCqs;
+﻿using codeRR.Server.Api.Core.Accounts.Requests;
+using DotNetCqs;
 
 namespace codeRR.Server.Api.Core.Users.Queries
 {
     /// <summary>
     ///     Get settings for an user.
     /// </summary>
+    [Message]
     public class GetUserSettings : Query<GetUserSettingsResult>
     {
         /// <summary>

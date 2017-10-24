@@ -6,8 +6,10 @@ using codeRR.Server.App.Core.Applications;
 using codeRR.Server.SqlServer.Core.ApiKeys;
 using codeRR.Server.SqlServer.Core.ApiKeys.Commands;
 using codeRR.Server.SqlServer.Core.Applications;
+using DotNetCqs;
 using FluentAssertions;
 using Griffin.Data;
+using NSubstitute;
 using Xunit;
 
 namespace codeRR.Server.SqlServer.Tests.Core.ApiKeys.Commands
@@ -47,9 +49,10 @@ namespace codeRR.Server.SqlServer.Tests.Core.ApiKeys.Commands
         public async Task Should_be_able_to_delete_key_by_ApiKey()
         {
             var cmd = new DeleteApiKey(_existingEntity.GeneratedKey);
+            var context = Substitute.For<IMessageContext>();
 
             var sut = new DeleteApiKeyHandler(_uow);
-            await sut.ExecuteAsync(cmd);
+            await sut.HandleAsync(context, cmd);
 
             var count = _uow.ExecuteScalar("SELECT cast(count(*) as int) FROM ApiKeys WHERE Id = @id",
                 new {id = _existingEntity.Id});
@@ -60,9 +63,10 @@ namespace codeRR.Server.SqlServer.Tests.Core.ApiKeys.Commands
         public async Task Should_be_able_to_delete_key_by_id()
         {
             var cmd = new DeleteApiKey(_existingEntity.Id);
+            var context = Substitute.For<IMessageContext>();
 
             var sut = new DeleteApiKeyHandler(_uow);
-            await sut.ExecuteAsync(cmd);
+            await sut.HandleAsync(context, cmd);
 
             var count = _uow.ExecuteScalar("SELECT cast(count(*) as int) FROM ApiKeys WHERE Id = @id",
                 new {id = _existingEntity.Id});

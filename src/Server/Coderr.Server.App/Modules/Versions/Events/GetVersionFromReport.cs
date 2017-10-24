@@ -12,20 +12,18 @@ using Griffin.Container;
 namespace codeRR.Server.App.Modules.Versions.Events
 {
     [Component]
-    internal class GetVersionFromReport : IApplicationEventSubscriber<ReportAddedToIncident>
+    internal class GetVersionFromReport : IMessageHandler<ReportAddedToIncident>
     {
         private const string NotifyNoVersion = "Versions.Configure";
         private const string NotifyNotRecognizedVersion = "Versions.ReConfigure";
-        private readonly ICommandBus _commandBus;
         private IVersionRepository _repository;
 
-        public GetVersionFromReport(ICommandBus commandBus, IVersionRepository repository)
+        public GetVersionFromReport(IVersionRepository repository)
         {
-            _commandBus = commandBus;
             _repository = repository;
         }
 
-        public async Task HandleAsync(ReportAddedToIncident e)
+        public async Task HandleAsync(IMessageContext context, ReportAddedToIncident e)
         {
             var assemblyName = GetVersionAssemblyName(e.Incident.ApplicationId);
             if (assemblyName == null)
@@ -37,7 +35,7 @@ namespace codeRR.Server.App.Modules.Versions.Events
                     HoldbackInterval = TimeSpan.FromDays(3),
                     NotificationType = NotifyNoVersion
                 };
-                await _commandBus.ExecuteAsync(notice);
+                await context.SendAsync(notice);
                 return;
             }
 
@@ -54,7 +52,7 @@ namespace codeRR.Server.App.Modules.Versions.Events
                     HoldbackInterval = TimeSpan.FromDays(3),
                     NotificationType = NotifyNotRecognizedVersion
                 };
-                await _commandBus.ExecuteAsync(notice);
+                await context.SendAsync(notice);
                 return;
             }
 

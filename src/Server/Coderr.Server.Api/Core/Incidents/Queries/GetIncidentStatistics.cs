@@ -5,6 +5,7 @@ namespace codeRR.Server.Api.Core.Incidents.Queries
     /// <summary>
     ///     Get statistics (i.e. history for a certain period of time)
     /// </summary>
+    [Message]
     public class GetIncidentStatistics : Query<GetIncidentStatisticsResult>
     {
         /// <summary>
@@ -13,7 +14,7 @@ namespace codeRR.Server.Api.Core.Incidents.Queries
         public int IncidentId { get; set; }
 
         /// <summary>
-        ///     Amount of time to look back (i.e. startdate = DateTime.Now.Substract(WindowSize))
+        ///     Amount of time to look back (i.e. start date = DateTime.Now.Substract(WindowSize))
         /// </summary>
         /// <remarks>
         ///     1 = switch to hours

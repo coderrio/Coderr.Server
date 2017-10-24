@@ -12,7 +12,7 @@ namespace codeRR.Server.Api.Core.Accounts
     ///         the name part of the email address.
     ///     </para>
     /// </remarks>
-    public class RegisterSimple : Command
+    public class RegisterSimple
     {
         /// <summary>
         ///     Create a new instance of <see cref="RegisterSimple" />.

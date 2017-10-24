@@ -5,8 +5,9 @@ namespace codeRR.Server.Api.Modules.ContextData.Queries
 {
     /// <summary>
     ///     Get similarities (i.e. analyzed context collections where we have normalized values and checked which values are
-    ///     more frequently occuring).
+    ///     more frequently occurring).
     /// </summary>
+    [Message]
     public class GetSimilarities : Query<GetSimilaritiesResult>
     {
         /// <summary>

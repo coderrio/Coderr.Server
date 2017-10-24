@@ -5,6 +5,7 @@ namespace codeRR.Server.Api.Core.Applications.Queries
     /// <summary>
     ///     Get a list of applications.
     /// </summary>
+    [Message]
     public class GetApplicationList : Query<ApplicationListItem[]>
     {
         /// <summary>

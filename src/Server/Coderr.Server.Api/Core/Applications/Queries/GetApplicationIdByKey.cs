@@ -6,6 +6,7 @@ namespace codeRR.Server.Api.Core.Applications.Queries
     /// <summary>
     ///     Get an application by using the AppKey.
     /// </summary>
+    [Message]
     public class GetApplicationIdByKey : Query<GetApplicationIdByKeyResult>
     {
         /// <summary>

@@ -6,7 +6,8 @@ namespace codeRR.Server.Api.Core.Incidents.Commands
     /// <summary>
     ///     Close incident (i.e. we have corrected the issue)
     /// </summary>
-    public class CloseIncident : Command
+    [Message]
+    public class CloseIncident
     {
         /// <summary>
         ///     Creates a new instance of <see cref="CloseIncident" />.

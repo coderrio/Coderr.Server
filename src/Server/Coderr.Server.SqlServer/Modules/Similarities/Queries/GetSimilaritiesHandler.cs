@@ -22,7 +22,7 @@ namespace codeRR.Server.SqlServer.Modules.Similarities.Queries
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<GetSimilaritiesResult> ExecuteAsync(GetSimilarities query)
+        public async Task<GetSimilaritiesResult> HandleAsync(IMessageContext context, GetSimilarities query)
         {
             using (var cmd = _unitOfWork.CreateDbCommand())
             {

@@ -6,7 +6,8 @@ namespace codeRR.Server.Api.Core.Incidents.Commands
     /// <summary>
     ///     Ignore incident
     /// </summary>
-    public class IgnoreIncident : Command
+    [Message]
+    public class IgnoreIncident
     {
         /// <summary>
         ///     Creates a new instance of <see cref="IgnoreIncident" />.

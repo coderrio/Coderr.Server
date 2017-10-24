@@ -18,7 +18,7 @@ namespace codeRR.Server.SqlServer.Core.Incidents.Queries
             _uow = uow;
         }
 
-        public async Task<GetIncidentForClosePageResult> ExecuteAsync(GetIncidentForClosePage query)
+        public async Task<GetIncidentForClosePageResult> HandleAsync(IMessageContext context, GetIncidentForClosePage query)
         {
             using (var cmd = _uow.CreateCommand())
             {

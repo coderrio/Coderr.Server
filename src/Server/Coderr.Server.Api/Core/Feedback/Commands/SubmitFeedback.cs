@@ -9,7 +9,8 @@ namespace codeRR.Server.Api.Core.Feedback.Commands
     ///     A user that experienced an error have either followed the link to our website to submit an error or have entered it
     ///     directly into our client library integration.
     /// </summary>
-    public class SubmitFeedback : Command, IValidatableObject
+    [Message]
+    public class SubmitFeedback
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="SubmitFeedback" /> class.

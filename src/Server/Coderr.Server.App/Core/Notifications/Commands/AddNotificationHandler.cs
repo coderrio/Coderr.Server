@@ -9,14 +9,14 @@ namespace codeRR.Server.App.Core.Notifications.Commands
     /// Handler for <see cref="AddNotification"/>.
     /// </summary>
     [Component]
-    public class AddNotificationHandler : ICommandHandler<AddNotification>
+    public class AddNotificationHandler : IMessageHandler<AddNotification>
     {
         /// <summary>
         /// Not implemented yet.
         /// </summary>
         /// <param name="command">cmd</param>
         /// <returns>task</returns>
-        public Task ExecuteAsync(AddNotification command)
+        public Task HandleAsync(IMessageContext context, AddNotification command)
         {
             //TODO: Implement
             return Task.FromResult<object>(null);

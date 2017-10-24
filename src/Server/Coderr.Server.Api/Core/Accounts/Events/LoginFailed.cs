@@ -4,9 +4,10 @@ using DotNetCqs;
 namespace codeRR.Server.Api.Core.Accounts.Events
 {
     /// <summary>
-    ///     A login attepmt failed
+    ///     A login attempt failed
     /// </summary>
-    public class LoginFailed : ApplicationEvent
+    [Message]
+    public class LoginFailed
     {
         /// <summary>
         ///     Creates a new instance of <see cref="LoginFailed" />.

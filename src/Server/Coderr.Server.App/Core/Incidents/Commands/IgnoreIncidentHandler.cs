@@ -12,9 +12,8 @@ namespace codeRR.Server.App.Core.Incidents.Commands
     ///     Handler for <see cref="IgnoreIncident" />.
     /// </summary>
     [Component]
-    public class IgnoreIncidentHandler : ICommandHandler<IgnoreIncident>
+    public class IgnoreIncidentHandler : IMessageHandler<IgnoreIncident>
     {
-        private readonly IEventBus _eventBus;
         private readonly IIncidentRepository _incidentRepository;
         private readonly IUserRepository _userRepository;
 
@@ -23,31 +22,27 @@ namespace codeRR.Server.App.Core.Incidents.Commands
         /// </summary>
         /// <param name="incidentRepository">to load and update info about the incident that is being ignored</param>
         /// <param name="userRepository">to get info about the user that ignores the incident</param>
-        /// <param name="eventBus">to publish ignore event</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public IgnoreIncidentHandler(IIncidentRepository incidentRepository, IUserRepository userRepository,
-            IEventBus eventBus)
+        public IgnoreIncidentHandler(IIncidentRepository incidentRepository, IUserRepository userRepository)
         {
             if (incidentRepository == null) throw new ArgumentNullException("incidentRepository");
             if (userRepository == null) throw new ArgumentNullException("userRepository");
-            if (eventBus == null) throw new ArgumentNullException("eventBus");
 
             _incidentRepository = incidentRepository;
             _userRepository = userRepository;
-            _eventBus = eventBus;
         }
 
         /// <summary>Execute a command asynchronously.</summary>
         /// <param name="command">Command to execute.</param>
         /// <returns>Task which will be completed once the command has been executed.</returns>
-        public async Task ExecuteAsync(IgnoreIncident command)
+        public async Task HandleAsync(IMessageContext context, IgnoreIncident command)
         {
             var user = await _userRepository.GetUserAsync(command.UserId);
             var incident = await _incidentRepository.GetAsync(command.IncidentId);
             incident.IgnoreFutureReports(user.UserName);
             await _incidentRepository.UpdateAsync(incident);
 
-            await _eventBus.PublishAsync(new IncidentIgnored(command.IncidentId, user.AccountId, user.UserName));
+            await context.SendAsync(new IncidentIgnored(command.IncidentId, user.AccountId, user.UserName));
         }
     }
 }

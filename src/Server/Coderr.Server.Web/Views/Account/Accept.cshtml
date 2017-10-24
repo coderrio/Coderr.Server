@@ -1,11 +1,9 @@
 ﻿@model codeRR.Server.Web.Models.Account.AcceptViewModel
-
 @{
     ViewBag.Title = "Register";
 }
 
-
-<div class="container">
+<div class="container mt-3">
     <div style="max-width: 800px">
         <h2>Welcome to codeRR</h2>
         <p>
@@ -16,45 +14,34 @@
                 @Html.AntiForgeryToken()
                 @Html.HiddenFor(x => x.InvitationKey)
                 <div class="form-group">
-                    <label class="control-label col-sm-2" for="UserName">Username</label>
-                    <div class="col-sm-10">
-                        @Html.TextBoxFor(model => model.UserName, new {placeholder = "User name", @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.UserName)
-                    </div>
+                    <label for="UserName">User name</label>
+                    @Html.TextBoxFor(model => model.UserName, new { placeholder = "User name", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.UserName)
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-2" for="Password">Password</label>
-                    <div class="col-sm-10">
-                        @Html.PasswordFor(model => model.Password, new {placeholder = "Password", @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Password)
-                        <span id="password-awesomeness"></span>
-                    </div>
+                    <label for="Password">Password</label>
+                    @Html.PasswordFor(model => model.Password, new { placeholder = "Password", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Password)
+                    <span id="password-awesomeness"></span>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-2" for="Password2">Type password again</label>
-                    <div class="col-sm-10">
-                        @Html.PasswordFor(model => model.Password2, new {placeholder = "Password verification", equalTo = "#Password", @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Password2)
-                    </div>
+                    <label for="Password2">Type password again</label>
+                    @Html.PasswordFor(model => model.Password2, new { placeholder = "Password verification", equalTo = "#Password", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Password2)
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-2" for="inputEmail">Email</label>
-                    <div class="col-sm-10">
-                        @Html.TextBoxFor(model => model.Email, new {placeholder = "Email", @class="form-control"})
-                        @Html.ValidationMessageFor(model => model.Email)
-                    </div>
+                    <label for="inputEmail">Email</label>
+                    @Html.TextBoxFor(model => model.Email, new { placeholder = "Email", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Email)
                 </div>
                 <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-primary">Accept invitation</button>
-                        @Html.ActionLink("Back to first page", "Index", "Home", null, new {@class = "btn btn-default"})
-                    </div>
+                    <button type="submit" class="btn btn-primary">Accept invitation</button>
+                    @Html.ActionLink("Back to first page", "Index", "Home", null, new { @class = "btn btn-default" })
                 </div>
             </form>
         </div>
     </div>
 </div>
-
 <script type="text/javascript">
     function scorePassword(pass) {
         var score = 0;
@@ -101,13 +88,13 @@
 @section ViewModelScripts
 {
     <script type="text/javascript">
-        $(function() {
+        $(function () {
             $('#Password')
-                .keypress(function() {
+                .keypress(function () {
                     $('#password-awesomeness').html(checkPassStrength(this.value));
                 });
             $('#Password')
-                .keyup(function() {
+                .keyup(function () {
                     $('#password-awesomeness').html(checkPassStrength(this.value));
                 });
             /*$('#Passssword2').focusout(function () {

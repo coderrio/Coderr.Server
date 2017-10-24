@@ -6,6 +6,7 @@ namespace codeRR.Server.Api.Modules.Tagging.Queries
     /// <summary>
     ///     Get all tags that the system have identified for an incident.
     /// </summary>
+    [Message]
     public class GetTagsForIncident : Query<TagDTO[]>
     {
         /// <summary>

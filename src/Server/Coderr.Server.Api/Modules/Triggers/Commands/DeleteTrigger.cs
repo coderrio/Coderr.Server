@@ -6,7 +6,8 @@ namespace codeRR.Server.Api.Modules.Triggers.Commands
     /// <summary>
     ///     Delete a trigger
     /// </summary>
-    public class DeleteTrigger : Command
+    [Message]
+    public class DeleteTrigger
     {
         /// <summary>
         ///     Creates a new instance of <see cref="DeleteTrigger" />.

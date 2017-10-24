@@ -6,7 +6,8 @@ namespace codeRR.Server.Api.Modules.Tagging.Events
     /// <summary>
     ///     New tag(s) have been identified for the processed incident.
     /// </summary>
-    public class TagAttachedToIncident : ApplicationEvent
+    [Message]
+    public class TagAttachedToIncident
     {
         /// <summary>
         ///     Creates a new instance of <see cref="TagAttachedToIncident" />.

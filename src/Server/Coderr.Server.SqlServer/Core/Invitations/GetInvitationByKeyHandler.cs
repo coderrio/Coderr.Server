@@ -16,7 +16,7 @@ namespace codeRR.Server.SqlServer.Core.Invitations
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<GetInvitationByKeyResult> ExecuteAsync(GetInvitationByKey query)
+        public async Task<GetInvitationByKeyResult> HandleAsync(IMessageContext context, GetInvitationByKey query)
         {
             using (var cmd = _unitOfWork.CreateDbCommand())
             {

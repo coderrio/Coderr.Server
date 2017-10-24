@@ -113,24 +113,22 @@
     <Reference Include="Coderr.Client.AspNet.Mvc5, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Coderr.Client.AspNet.Mvc5.1.0.4\lib\net451\Coderr.Client.AspNet.Mvc5.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetCqs, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetCqs.1.0.1\lib\net452\DotNetCqs.dll</HintPath>
+    <Reference Include="DotNetCqs, Version=2.0.3.7, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetCqs.2.0.3.7\lib\net452\DotNetCqs.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetCqs.Queues.AdoNet, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetCqs.Queues.AdoNet.1.0.0\lib\net452\DotNetCqs.Queues.AdoNet.dll</HintPath>
     </Reference>
     <Reference Include="Griffin.Container, Version=1.1.7.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Griffin.Container.1.1.7\lib\net452\Griffin.Container.dll</HintPath>
     </Reference>
     <Reference Include="Griffin.Container.Mvc5, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Griffin.Container.Mvc5.1.0.2\lib\net40\Griffin.Container.Mvc5.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Griffin.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Griffin.Framework.2.0.0-alpha01\lib\net451\Griffin.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Griffin.Cqs, Version=1.0.11.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Griffin.Framework.Cqs.1.0.11\lib\net45\Griffin.Cqs.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core">
@@ -173,9 +171,6 @@
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Owin">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
@@ -246,13 +241,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdoNetUowSpy.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\CompositionRoot.cs" />
-    <Compile Include="App_Start\Cqs\CqsBuilder.cs" />
+    <Compile Include="App_Start\Cqs\GriffinHandlerResolverAdapter.cs" />
     <Compile Include="App_Start\Cqs\JsonFormatter.cs" />
+    <Compile Include="App_Start\Cqs\JsonMessageQueueSerializer.cs" />
+    <Compile Include="App_Start\Cqs\MessageQueueProvider.cs" />
     <Compile Include="App_Start\Cqs\Metadata.cs" />
-    <Compile Include="App_Start\Cqs\MyEventHandlerRegistry.cs" />
-    <Compile Include="App_Start\Cqs\QueuedEventBus.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IoC\GriffinContainerAdapter.cs" />
     <Compile Include="App_Start\IoC\GriffinContainerScopeAdapter.cs" />
@@ -270,7 +266,6 @@
     <Compile Include="Areas\Admin\Models\Applications\ApplicationVersionViewModel.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\MessagingController.cs" />
-    <Compile Include="Areas\Admin\Controllers\QueuesController.cs" />
     <Compile Include="Areas\Admin\Controllers\ReportingController.cs" />
     <Compile Include="Areas\Admin\Models\AccountViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ApiKeys\EditViewModel.cs" />
@@ -310,6 +305,7 @@
     <Compile Include="Areas\Receiver\ReportingApi\NewReportDTO.cs" />
     <Compile Include="Areas\Receiver\ReportingApi\NewReportException.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ControllerExtensions.cs" />
     <Compile Include="Controllers\CqsController.cs" />
     <Compile Include="Controllers\GuidController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -321,7 +317,6 @@
     <Compile Include="Infrastructure\Auth\ApiKeyAuthenticator.cs" />
     <Compile Include="Infrastructure\Auth\AuthenticationFailureResult.cs" />
     <Compile Include="Infrastructure\Auth\SignalRAuthenticateAttribute.cs" />
-    <Compile Include="Infrastructure\Cqs\CqsClientFactory.cs" />
     <Compile Include="Infrastructure\Cqs\CqsJsonNetSerializer.cs" />
     <Compile Include="Infrastructure\Cqs\CqsObjectMapper.cs" />
     <Compile Include="Infrastructure\CustomerInfoProvider.cs" />
@@ -333,6 +328,7 @@
     <Compile Include="Infrastructure\PluginManager.cs" />
     <Compile Include="Infrastructure\SchemaUpdateModule.cs" />
     <Compile Include="Infrastructure\SessionStoreMediator.cs" />
+    <Compile Include="Infrastructure\TransactionalAttribute.cs" />
     <Compile Include="Models\Account\AcceptViewModel.cs" />
     <Compile Include="Models\Account\IsTrueAttribute.cs" />
     <Compile Include="Models\Account\LoginViewmodel.cs" />
@@ -442,7 +438,9 @@
     <Content Include="log4net.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Scripts\alertify.js" />
     <Content Include="Scripts\alertify.min.js" />
     <Content Include="Areas\Admin\Views\ApiKeys\Edit.cshtml" />
@@ -504,7 +502,6 @@
     <Content Include="Views\Account\ActivationRequested.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
-    <Content Include="Views\Account\InvitationNotFound.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\PasswordRequestReceived.cshtml" />
     <Content Include="Views\Account\PrivacyPolicy.cshtml" />

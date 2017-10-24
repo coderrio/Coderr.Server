@@ -7,7 +7,8 @@ namespace codeRR.Server.Api.Core.ApiKeys.Commands
     ///     Create a new api key
     /// </summary>
     [AuthorizeRoles("SysAdmin")]
-    public class EditApiKey : Command
+    [Message]
+    public class EditApiKey
     {
         /// <summary>
         ///     Creates a new instance of <see cref="EditApiKey" />.

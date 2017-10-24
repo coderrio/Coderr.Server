@@ -31,7 +31,7 @@ namespace codeRR.Server.App.Core.Accounts.Queries
         /// <returns>
         ///     Task which will contain the result once completed.
         /// </returns>
-        public async Task<AccountDTO> ExecuteAsync(GetAccountById query)
+        public async Task<AccountDTO> HandleAsync(IMessageContext context, GetAccountById query)
         {
             if (query == null) throw new ArgumentNullException("query");
 

@@ -6,7 +6,8 @@ namespace codeRR.Server.Api.Modules.Triggers.Commands
     /// <summary>
     ///     Create a new trigger
     /// </summary>
-    public class CreateTrigger : Command
+    [Message]
+    public class CreateTrigger
     {
         /// <summary>
         ///     Creates a new instance of <see cref="CreateTrigger" />.

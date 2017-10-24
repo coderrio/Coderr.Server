@@ -2,6 +2,9 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
+using System.Runtime.ExceptionServices;
+using System.Security.Authentication;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,9 +15,6 @@ using codeRR.Server.Infrastructure.Security;
 using codeRR.Server.Web.Infrastructure.Cqs;
 using DotNetCqs;
 using Griffin;
-using Griffin.Cqs;
-using Griffin.Cqs.Authorization;
-using Griffin.Cqs.Net;
 using log4net;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
@@ -24,27 +24,30 @@ namespace codeRR.Server.Web.Controllers
     [System.Web.Http.Authorize]
     public class CqsController : ApiController
     {
+        private readonly IMessageBus _messageBus;
+        private IQueryBus _queryBus;
         private static readonly CqsObjectMapper _cqsObjectMapper = new CqsObjectMapper();
         private static readonly CqsJsonNetSerializer _serializer = new CqsJsonNetSerializer();
-        private readonly CqsMessageProcessor _cqsProcessor;
         private readonly ILog _logger = LogManager.GetLogger(typeof(CqsController));
+        private static readonly MethodInfo _queryMethod;
+        private static readonly MethodInfo _sendMethod;
 
         static CqsController()
         {
             if (_cqsObjectMapper.IsEmpty)
                 _cqsObjectMapper.ScanAssembly(typeof(CreateApplication).Assembly);
+
+            _queryMethod = typeof(IQueryBus)
+                .GetMethods(BindingFlags.Public | BindingFlags.Instance)
+                .First(x => x.Name == "QueryAsync" && x.GetParameters().Length == 2);
+
+            _sendMethod = typeof(IMessageBus).GetMethod("SendAsync", new Type[]{typeof(ClaimsPrincipal), typeof(object)});
         }
 
-        public CqsController(IQueryBus queryBus, IRequestReplyBus requestReplyBus, ICommandBus commandBus,
-            IEventBus eventBus)
+        public CqsController(IMessageBus messageBus, IQueryBus queryBus)
         {
-            _cqsProcessor = new CqsMessageProcessor
-            {
-                CommandBus = commandBus,
-                RequestReplyBus = requestReplyBus,
-                EventBus = eventBus,
-                QueryBus = queryBus
-            };
+            _messageBus = messageBus;
+            _queryBus = queryBus;
         }
 
 
@@ -63,7 +66,7 @@ namespace codeRR.Server.Web.Controllers
 
             var json = await Request.Content.ReadAsStringAsync();
 
-            object cqsObject;
+            object cqsObject, cqsReplyObject = null;
             if (!string.IsNullOrEmpty(dotNetType))
             {
                 cqsObject = _cqsObjectMapper.Deserialize(dotNetType, json);
@@ -101,24 +104,33 @@ namespace codeRR.Server.Web.Controllers
             {
                 var prop = cqsObject.GetType().GetProperty("CreatedById");
                 if ((prop != null) && prop.CanWrite)
-                    prop.SetValue(cqsObject, ClaimsPrincipal.Current.GetAccountId());
+                    prop.SetValue(cqsObject, User.GetAccountId());
                 prop = cqsObject.GetType().GetProperty("AccountId");
                 if ((prop != null) && prop.CanWrite)
-                    prop.SetValue(cqsObject, ClaimsPrincipal.Current.GetAccountId());
+                    prop.SetValue(cqsObject, User.GetAccountId());
                 prop = cqsObject.GetType().GetProperty("UserId");
                 if ((prop != null) && prop.CanWrite)
-                    prop.SetValue(cqsObject, ClaimsPrincipal.Current.GetAccountId());
+                    prop.SetValue(cqsObject, User.GetAccountId());
             }
 
             RestrictOnApplicationId(cqsObject);
 
-            ClientResponse cqsReplyObject = null;
             Exception ex = null;
             try
             {
                 _logger.Debug("Invoking " + cqsObject.GetType().Name + " " + json);
-                cqsReplyObject = await _cqsProcessor.ProcessAsync(cqsObject);
-                RestrictOnApplicationId(cqsReplyObject);
+                if (IsQuery(cqsObject))
+                {
+                    cqsReplyObject = await InvokeQuery(cqsObject);
+                }
+                else
+                {
+                    await InvokeMessage(cqsObject);
+                }
+
+                if (cqsReplyObject != null)
+                    RestrictOnApplicationId(cqsReplyObject);
+
                 await HandleSecurityPrincipalUpdates();
             }
             catch (AggregateException e1)
@@ -136,15 +148,15 @@ namespace codeRR.Server.Web.Controllers
             {
                 _logger.Error("HTTP error for " + json, ex);
                 var response = Request.CreateResponse(HttpStatusCode.OK);
-                response.StatusCode = (HttpStatusCode) ((HttpException) ex).GetHttpCode();
+                response.StatusCode = (HttpStatusCode)((HttpException)ex).GetHttpCode();
                 response.ReasonPhrase = FirstLine(ex.Message);
                 return response;
             }
-            if (ex is AuthorizationException)
+            if (ex is InvalidCredentialException)
             {
                 _logger.Error("Auth error for " + json, ex);
-                var authEx = (AuthorizationException) ex;
-                var response = Request.CreateResponse(HttpStatusCode.OK);
+                var authEx = (InvalidCredentialException)ex;
+                var response = Request.CreateResponse(HttpStatusCode.Forbidden);
                 response.StatusCode = HttpStatusCode.Unauthorized;
                 response.ReasonPhrase = FirstLine(ex.Message);
                 return response;
@@ -161,15 +173,14 @@ namespace codeRR.Server.Web.Controllers
             var reply = Request.CreateResponse(HttpStatusCode.OK);
 
             // for instance commands do not have a return value.
-            if (cqsReplyObject.Body != null)
+            if (cqsReplyObject != null)
             {
-                reply.Headers.Add("X-Cqs-Object-Type", cqsReplyObject.Body.GetType().GetSimpleAssemblyQualifiedName());
-                reply.Headers.Add("X-Cqs-Name", cqsReplyObject.Body.GetType().Name);
-                if (cqsReplyObject.Body is Exception)
-                    reply.StatusCode = (HttpStatusCode) 500;
+                reply.Headers.Add("X-Cqs-Object-Type", cqsReplyObject.GetType().GetSimpleAssemblyQualifiedName());
+                reply.Headers.Add("X-Cqs-Name", cqsReplyObject.GetType().Name);
+                if (cqsReplyObject is Exception)
+                    reply.StatusCode = (HttpStatusCode)500;
 
-                string cnt;
-                json = _serializer.Serialize(cqsReplyObject.Body, out cnt);
+                json = _serializer.Serialize(cqsReplyObject, out var cnt);
                 _logger.Debug("Reply to " + cqsObject.GetType().Name + ": " + json);
                 reply.Content = new StringContent(json, Encoding.UTF8, "application/json");
             }
@@ -182,9 +193,55 @@ namespace codeRR.Server.Web.Controllers
             return reply;
         }
 
+        private async Task<object> InvokeQuery(object dto)
+        {
+            var type = dto.GetType();
+            var replyType = type.BaseType.GetGenericArguments()[0];
+            var method = _queryMethod.MakeGenericMethod(replyType);
+            try
+            {
+                var result = method.Invoke(_queryBus, new[] {User, dto});
+                var task = (Task)result;
+                await task;
+                return ((dynamic)task).Result;
+            }
+            catch (TargetInvocationException exception)
+            {
+                ExceptionDispatchInfo.Capture(exception.InnerException).Throw();
+                throw;
+            }
+        }
+
+        private async Task InvokeMessage(object dto)
+        {
+            var type = dto.GetType();
+            try
+            {
+                var task = (Task)_sendMethod.Invoke(_messageBus, new[] { (ClaimsPrincipal)User, dto });
+                await task;
+            }
+            catch (TargetInvocationException exception)
+            {
+                ExceptionDispatchInfo.Capture(exception.InnerException).Throw();
+                throw;
+            }
+        }
+
+        public static bool IsQuery(object cqsObject)
+        {
+            var baseType = cqsObject.GetType().BaseType;
+            while (baseType != null)
+            {
+                if (baseType.FullName.StartsWith("DotNetCqs.Query"))
+                    return true;
+                baseType = baseType.BaseType;
+            }
+            return false;
+        }
+
         private string FirstLine(string msg)
         {
-            var pos = msg.IndexOfAny(new[] {'\r', '\n'});
+            var pos = msg.IndexOfAny(new[] { '\r', '\n' });
             return pos == -1 ? msg : msg.Substring(0, pos);
         }
 
@@ -199,7 +256,7 @@ namespace codeRR.Server.Web.Controllers
 
             if (gotUpdate)
             {
-                var usr = (ClaimsPrincipal) User;
+                var usr = (ClaimsPrincipal)User;
                 var c = ClaimsPrincipal.Current;
                 var t = usr.GetHashCode() == c.GetHashCode();
 
@@ -210,7 +267,7 @@ namespace codeRR.Server.Web.Controllers
                 if (authenticationContext != null)
                 {
                     context.Authentication.AuthenticationResponseGrant = new AuthenticationResponseGrant(
-                        (ClaimsPrincipal) User,
+                        (ClaimsPrincipal)User,
                         authenticationContext.Properties);
                 }
             }
@@ -227,13 +284,13 @@ namespace codeRR.Server.Web.Controllers
             if ((prop == null) || !prop.CanRead)
                 return;
 
-            var value = (int) prop.GetValue(cqsObject);
+            var value = (int)prop.GetValue(cqsObject);
             if (!ClaimsPrincipal.Current.IsApplicationMember(value))
             {
                 _logger.Warn("Tried to access an application without privileges. accountId: " + User.Identity.Name + ", appId: " + value);
                 throw new HttpException(403, "The given application key is not allowed for application " + value);
             }
-                
+
         }
     }
 }

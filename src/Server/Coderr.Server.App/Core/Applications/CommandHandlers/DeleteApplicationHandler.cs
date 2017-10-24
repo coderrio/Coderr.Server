@@ -12,31 +12,28 @@ namespace codeRR.Server.App.Core.Applications.CommandHandlers
     ///     Handler for <see cref="DeleteApplication" />.
     /// </summary>
     [Component(RegisterAsSelf = true)]
-    public class DeleteApplicationHandler : ICommandHandler<DeleteApplication>
+    public class DeleteApplicationHandler : IMessageHandler<DeleteApplication>
     {
-        private readonly IEventBus _eventBus;
         private readonly IApplicationRepository _repository;
 
         /// <summary>
         ///     Creates a new instance of <see cref="DeleteApplicationHandler" />.
         /// </summary>
         /// <param name="repository">used to delete the application</param>
-        /// <param name="eventBus">to publish ApplicationDeleted</param>
-        public DeleteApplicationHandler(IApplicationRepository repository, IEventBus eventBus)
+        public DeleteApplicationHandler(IApplicationRepository repository)
         {
             _repository = repository;
-            _eventBus = eventBus;
         }
 
         /// <inheritdoc/>
-        public async Task ExecuteAsync(DeleteApplication command)
+        public async Task HandleAsync(IMessageContext context, DeleteApplication command)
         {
-            ClaimsPrincipal.Current.EnsureApplicationAdmin(command.Id);
+            context.Principal.EnsureApplicationAdmin(command.Id);
 
             var app = await _repository.GetByIdAsync(command.Id);
             await _repository.DeleteAsync(command.Id);
             var evt = new ApplicationDeleted {ApplicationName = app.Name, ApplicationId = app.Id, AppKey = app.AppKey};
-            await _eventBus.PublishAsync(evt);
+            await context.SendAsync(evt);
         }
     }
 }

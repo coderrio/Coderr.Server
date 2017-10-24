@@ -6,12 +6,13 @@ namespace codeRR.Server.Api.Core.Accounts.Events
     /// <summary>
     ///     A user have accepted an invitation.
     /// </summary>
-    public class InvitationAccepted : ApplicationEvent
+    [Message]
+    public class InvitationAccepted
     {
         /// <summary>
         ///     Creates a new instance of <see cref="InvitationAccepted" />.
         /// </summary>
-        /// <param name="accountId">account that accepted the inviation</param>
+        /// <param name="accountId">account that accepted the invitation</param>
         /// <param name="invitedByUserName">user that made the invite</param>
         /// <param name="userName">userName of the person that accepted the invitation</param>
         /// <exception cref="ArgumentNullException">invitedByUserName; userName</exception>
@@ -34,7 +35,7 @@ namespace codeRR.Server.Api.Core.Accounts.Events
         }
 
         /// <summary>
-        ///     The email that the inviation was accepted by.
+        ///     The email that the invitation was accepted by.
         /// </summary>
         public string AcceptedEmailAddress { get; set; }
 

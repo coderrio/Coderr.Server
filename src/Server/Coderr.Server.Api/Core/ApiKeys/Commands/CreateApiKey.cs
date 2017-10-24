@@ -10,7 +10,8 @@ namespace codeRR.Server.Api.Core.ApiKeys.Commands
     ///     <para>API keys are used to be able to communicate with the codeRR server through the HTTP API.</para>
     /// </remarks>
     [AuthorizeRoles("SysAdmin")]
-    public class CreateApiKey : Command
+    [Message]
+    public class CreateApiKey
     {
         /// <summary>
         ///     Creates a new instance of <see cref="CreateApiKey" />.

@@ -1,4 +1,5 @@
 ﻿using System;
+using codeRR.Server.Api.Core.Accounts.Requests;
 using DotNetCqs;
 
 namespace codeRR.Server.Api.Core.Invitations.Commands
@@ -12,7 +13,8 @@ namespace codeRR.Server.Api.Core.Invitations.Commands
     ///         add the user as a member of the specified application.
     ///     </para>
     /// </remarks>
-    public class InviteUser : Command
+    [Message]
+    public class InviteUser
     {
         /// <summary>
         ///     Create a new instance of <see cref="InviteUser" />.

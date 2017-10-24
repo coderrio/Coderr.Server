@@ -2,6 +2,7 @@
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using DotNetCqs;
 using log4net;
 using Newtonsoft.Json;
 

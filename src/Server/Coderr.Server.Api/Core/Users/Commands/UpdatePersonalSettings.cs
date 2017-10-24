@@ -1,11 +1,13 @@
-﻿using DotNetCqs;
+﻿using codeRR.Server.Api.Core.Accounts.Requests;
+using DotNetCqs;
 
 namespace codeRR.Server.Api.Core.Users.Commands
 {
     /// <summary>
     ///     Update personal settings.
     /// </summary>
-    public class UpdatePersonalSettings : Command
+    [Message]
+    public class UpdatePersonalSettings
     {
         /// <summary>
         ///     Change email address

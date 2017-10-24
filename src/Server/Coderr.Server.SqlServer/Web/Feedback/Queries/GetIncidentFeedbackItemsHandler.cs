@@ -19,7 +19,7 @@ namespace codeRR.Server.SqlServer.Web.Feedback.Queries
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<GetIncidentFeedbackResult> ExecuteAsync(GetIncidentFeedback query)
+        public async Task<GetIncidentFeedbackResult> HandleAsync(IMessageContext context, GetIncidentFeedback query)
         {
             using (var cmd = (DbCommand) _unitOfWork.CreateCommand())
             {

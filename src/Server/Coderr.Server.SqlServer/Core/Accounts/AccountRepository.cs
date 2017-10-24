@@ -7,6 +7,7 @@ using codeRR.Server.App.Core.Accounts;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
+using log4net;
 
 namespace codeRR.Server.SqlServer.Core.Accounts
 {
@@ -18,6 +19,7 @@ namespace codeRR.Server.SqlServer.Core.Accounts
         public AccountRepository(IAdoNetUnitOfWork uow)
         {
             _uow = uow ?? throw new ArgumentNullException(nameof(uow));
+            LogManager.GetLogger(typeof(AccountRepository)).Info("UOW hash: " + _uow.GetHashCode());
         }
 
         /// <inheritdoc />

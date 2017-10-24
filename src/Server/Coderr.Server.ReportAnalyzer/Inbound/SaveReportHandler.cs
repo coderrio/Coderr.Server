@@ -4,12 +4,14 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Security.Authentication;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using codeRR.Server.Infrastructure;
-using codeRR.Server.Infrastructure.Queueing;
 using codeRR.Server.ReportAnalyzer.Inbound.Models;
 using codeRR.Server.ReportAnalyzer.LibContracts;
+using DotNetCqs;
+using DotNetCqs.Queues;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 using log4net;
@@ -45,7 +47,7 @@ namespace codeRR.Server.ReportAnalyzer.Inbound
             _filters.Add(filter);
         }
 
-        public async Task BuildReportAsync(string appKey, string signatureProvidedByTheClient, string remoteAddress,
+        public async Task BuildReportAsync(ClaimsPrincipal user, string appKey, string signatureProvidedByTheClient, string remoteAddress,
             byte[] reportBody)
         {
             if (!Guid.TryParse(appKey, out var tempKey))
@@ -89,7 +91,7 @@ namespace codeRR.Server.ReportAnalyzer.Inbound
                 ReportVersion = report.ReportVersion
             };
 
-            await StoreReportAsync(internalDto);
+            await StoreReportAsync(user, internalDto);
         }
 
         private static ReceivedReportContextInfo ConvertCollection(NewReportContextInfo arg)
@@ -201,19 +203,22 @@ namespace codeRR.Server.ReportAnalyzer.Inbound
             }
         }
 
-#pragma warning disable 1998
-        private async Task StoreReportAsync(ReceivedReportDTO report)
-#pragma warning restore 1998
+        private Task StoreReportAsync(ClaimsPrincipal user, ReceivedReportDTO report)
         {
             try
             {
-                _queue.Write(report.ApplicationId, report);
+                using (var session = _queue.BeginSession())
+                {
+                    session.EnqueueAsync(user, new Message(report));
+                    session.SaveChanges();
+                }
             }
             catch (Exception ex)
             {
                 _logger.Error(
                     "Failed to StoreReport: " + JsonConvert.SerializeObject(new {model = report}), ex);
             }
+            return Task.FromResult<object>(null);
         }
 
         private class AppInfo

@@ -19,7 +19,7 @@ namespace codeRR.Server.SqlServer.Core.Incidents.Queries
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<GetIncidentResult> ExecuteAsync(GetIncident query)
+        public async Task<GetIncidentResult> HandleAsync(IMessageContext context, GetIncident query)
         {
             var result = await _unitOfWork.FirstAsync<GetIncidentResult>(new {Id = query.IncidentId});
 

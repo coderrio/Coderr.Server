@@ -4,13 +4,14 @@ using Newtonsoft.Json;
 namespace codeRR.Server.Infrastructure
 {
     /// <summary>
-    ///     Internal serializer, used only to store stuff that aren´t exposed outside the App/data namespace.
+    ///     Internal serializer, used only to store stuff that aren't exposed outside the App/data namespace.
     /// </summary>
     public static class CoderrDtoSerializer
     {
         private static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
         {
-            ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor
+            ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
+            ContractResolver = new IncludeNonPublicMembersContractResolver()
         };
 
         /// <summary>
@@ -27,7 +28,7 @@ namespace codeRR.Server.Infrastructure
         /// <summary>
         ///     Deserialize JSON
         /// </summary>
-        /// <param name="json">json</param>
+        /// <param name="json">JSON</param>
         /// <param name="type">type being deserialized</param>
         /// <returns>object</returns>
         public static object Deserialize(string json, Type type)

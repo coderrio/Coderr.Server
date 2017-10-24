@@ -35,10 +35,11 @@ namespace codeRR.Server.SqlServer.Tests.Core.ApiKeys.Commands
         public async Task Should_be_able_to_Create_a_key_without_applications_mapped()
         {
             var cmd = new CreateApiKey("Mofo", Guid.NewGuid().ToString("N"), Guid.NewGuid().ToString("N"));
-            var bus = Substitute.For<IEventBus>();
+            var bus = Substitute.For<IMessageBus>();
+            var ctx = Substitute.For<IMessageContext>();
 
             var sut = new CreateApiKeyHandler(_uow, bus);
-            await sut.ExecuteAsync(cmd);
+            await sut.HandleAsync(ctx, cmd);
 
             var repos = new ApiKeyRepository(_uow);
             var generated = await repos.GetByKeyAsync(cmd.ApiKey);
@@ -51,10 +52,11 @@ namespace codeRR.Server.SqlServer.Tests.Core.ApiKeys.Commands
         {
             var cmd = new CreateApiKey("Mofo", Guid.NewGuid().ToString("N"), Guid.NewGuid().ToString("N"),
                 new[] {_applicationId});
-            var bus = Substitute.For<IEventBus>();
+            var bus = Substitute.For<IMessageBus>();
+            var ctx = Substitute.For<IMessageContext>();
 
             var sut = new CreateApiKeyHandler(_uow, bus);
-            await sut.ExecuteAsync(cmd);
+            await sut.HandleAsync(ctx, cmd);
 
             var repos = new ApiKeyRepository(_uow);
             var generated = await repos.GetByKeyAsync(cmd.ApiKey);

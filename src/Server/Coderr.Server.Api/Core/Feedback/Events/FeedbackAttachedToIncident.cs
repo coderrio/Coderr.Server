@@ -5,7 +5,8 @@ namespace codeRR.Server.Api.Core.Feedback.Events
     /// <summary>
     ///     Feedback was attached to incident.
     /// </summary>
-    public class FeedbackAttachedToIncident : ApplicationEvent
+    [Message]
+    public class FeedbackAttachedToIncident
     {
         /// <summary>
         ///     Incident that the feedback was attached to.

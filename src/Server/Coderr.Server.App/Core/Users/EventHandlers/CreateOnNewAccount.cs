@@ -9,7 +9,7 @@ namespace codeRR.Server.App.Core.Users.EventHandlers
     ///     Responsible of creating an user entity when a new account is created.
     /// </summary>
     [Component(RegisterAsSelf = true)]
-    internal class CreateOnNewAccount : IApplicationEventSubscriber<AccountActivated>
+    internal class CreateOnNewAccount : IMessageHandler<AccountActivated>
     {
         private readonly IUserRepository _userRepository;
 
@@ -18,7 +18,7 @@ namespace codeRR.Server.App.Core.Users.EventHandlers
             _userRepository = userRepository;
         }
 
-        public async Task HandleAsync(AccountActivated e)
+        public async Task HandleAsync(IMessageContext context, AccountActivated e)
         {
             await _userRepository.CreateAsync(new User(e.AccountId, e.UserName)
             {

@@ -2,13 +2,16 @@
 using System.Data.Common;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
 using codeRR.Server.Infrastructure;
-using codeRR.Server.Infrastructure.Queueing;
+using codeRR.Server.Infrastructure.MessageBus;
 using codeRR.Server.ReportAnalyzer.LibContracts;
 using codeRR.Server.Web.Areas.Receiver.Helpers;
 using codeRR.Server.Web.Areas.Receiver.Models;
+using DotNetCqs;
+using DotNetCqs.Queues;
 using Griffin.Data;
 using log4net;
 using Newtonsoft.Json;
@@ -25,7 +28,7 @@ namespace codeRR.Server.Web.Areas.Receiver.Controllers
         public FeedbackController(IMessageQueueProvider queueProvider, IConnectionFactory connectionFactory)
         {
             _connectionFactory = connectionFactory;
-            _queue = queueProvider.Open("FeedbackQueue");
+            _queue = queueProvider.Open("Feedback");
         }
 
         [HttpPost, Route("receiver/report/{appKey}/feedback")]
@@ -36,14 +39,14 @@ namespace codeRR.Server.Web.Areas.Receiver.Controllers
                 int appId;
                 using (var connection = _connectionFactory.Open())
                 {
-                    using (var cmd = (DbCommand) connection.CreateCommand())
+                    using (var cmd = (DbCommand)connection.CreateCommand())
                     {
                         cmd.CommandText = "SELECT Id FROM Applications WHERE AppKey = @key";
                         cmd.AddParameter("key", appKey);
-                        appId = (int) await cmd.ExecuteScalarAsync();
+                        appId = (int)await cmd.ExecuteScalarAsync();
                     }
                 }
-                using (var transaction = _queue.BeginTransaction())
+                using (var session = _queue.BeginSession())
                 {
                     var dto = new ReceivedFeedbackDTO
                     {
@@ -55,15 +58,16 @@ namespace codeRR.Server.Web.Areas.Receiver.Controllers
                         ReportId = model.ReportId,
                         ReportVersion = "1"
                     };
-                    _queue.Write(appId, dto);
 
-                    transaction.Commit();
+                    await session.EnqueueAsync(User as ClaimsPrincipal, new Message(dto));
+
+                    await session.SaveChanges();
                 }
             }
             catch (Exception ex)
             {
                 _logger.Warn(
-                    "Failed to submit feedback: " + JsonConvert.SerializeObject(new {appKey, model}),
+                    "Failed to submit feedback: " + JsonConvert.SerializeObject(new { appKey, model }),
                     ex);
             }
 

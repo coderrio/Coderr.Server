@@ -8,7 +8,7 @@ using Griffin.Data;
 namespace codeRR.Server.SqlServer.Modules.Triggers
 {
     [Component]
-    public class DeleteTriggerHandler : ICommandHandler<DeleteTrigger>
+    public class DeleteTriggerHandler : IMessageHandler<DeleteTrigger>
     {
         private readonly IAdoNetUnitOfWork _uow;
 
@@ -17,7 +17,7 @@ namespace codeRR.Server.SqlServer.Modules.Triggers
             _uow = uow;
         }
 
-        public async Task ExecuteAsync(DeleteTrigger command)
+        public async Task HandleAsync(IMessageContext context, DeleteTrigger command)
         {
             using (var cmd = (DbCommand) _uow.CreateCommand())
             {

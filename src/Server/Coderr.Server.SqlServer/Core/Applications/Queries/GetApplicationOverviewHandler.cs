@@ -20,7 +20,7 @@ namespace codeRR.Server.SqlServer.Core.Applications.Queries
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<GetApplicationOverviewResult> ExecuteAsync(GetApplicationOverview query)
+        public async Task<GetApplicationOverviewResult> HandleAsync(IMessageContext context, GetApplicationOverview query)
         {
             if (query.NumberOfDays == 0)
                 query.NumberOfDays = 30;

@@ -6,7 +6,8 @@ namespace codeRR.Server.Api.Core.Applications.Commands
     /// <summary>
     ///     Update application
     /// </summary>
-    public class UpdateApplication : Command
+    [Message]
+    public class UpdateApplication
     {
         /// <summary>
         ///     Creates a new instance of <see cref="UpdateApplication" />.

@@ -14,7 +14,8 @@ namespace codeRR.Server.Api.Core.Notifications
     ///         issues).
     ///     </para>
     /// </remarks>
-    public class AddNotification : Command
+    [Message]
+    public class AddNotification
     {
         /// <summary>
         ///     Creates a new instance of <see cref="AddNotification" />.

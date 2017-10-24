@@ -17,7 +17,7 @@ namespace codeRR.Server.ReportAnalyzer.Scanners
         /// <summary>
         ///     Creates a new instance of <see cref="ScanForNewErrorReportsBatcher" />.
         /// </summary>
-        /// <param name="invoker">Creates a IoC lifetime scope everytime <see cref="ScanForNewErrorReports" /> is executed.</param>
+        /// <param name="invoker">Creates a IoC lifetime scope every time <see cref="ScanForNewErrorReports" /> is executed.</param>
         /// <exception cref="ArgumentNullException">invoker</exception>
         public ScanForNewErrorReportsBatcher(IScopedTaskInvoker invoker)
         {
@@ -49,7 +49,7 @@ namespace codeRR.Server.ReportAnalyzer.Scanners
             {
                 // There is no spoon.
                 var fork = false;
-                _invoker.Execute<ScanForNewErrorReports>(x => fork = x.Execute());
+                _invoker.Execute<ScanForNewErrorReports>(x => fork = x.Execute().GetAwaiter().GetResult());
                 if (false == fork)
                     break;
             }

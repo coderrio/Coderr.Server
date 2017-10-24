@@ -6,7 +6,8 @@ namespace codeRR.Server.Api.Core.Accounts.Events
     /// <summary>
     ///     An user have registered an account and activated it.
     /// </summary>
-    public class AccountRegistered : ApplicationEvent
+    [Message]
+    public class AccountRegistered
     {
         /// <summary>
         ///     Create a new instance of <see cref="AccountRegistered" />-

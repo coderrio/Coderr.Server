@@ -5,19 +5,19 @@ using Griffin.Data.Mapper;
 
 namespace codeRR.Server.SqlServer.Core.Incidents.Queries
 {
-    public class FindIncidentResultItemMapper : IEntityMapper<FindIncidentResultItem>
+    public class FindIncidentResultItemMapper : IEntityMapper<FindIncidentsResultItem>
     {
         public object Create(IDataRecord record)
         {
-            return new FindIncidentResultItem((int) record["Id"], (string) record["Description"]);
+            return new FindIncidentsResultItem((int) record["Id"], (string) record["Description"]);
         }
 
         public void Map(IDataRecord source, object destination)
         {
-            Map(source, (FindIncidentResultItem) destination);
+            Map(source, (FindIncidentsResultItem) destination);
         }
 
-        public void Map(IDataRecord source, FindIncidentResultItem destination)
+        public void Map(IDataRecord source, FindIncidentsResultItem destination)
         {
             destination.ApplicationName = (string) source["ApplicationName"];
             destination.ApplicationId = source["ApplicationId"].ToString();

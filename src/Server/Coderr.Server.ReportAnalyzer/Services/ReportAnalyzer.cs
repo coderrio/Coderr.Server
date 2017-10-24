@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using codeRR.Server.Api.Core.Incidents;
 using codeRR.Server.Api.Core.Incidents.Events;
 using codeRR.Server.Api.Core.Reports;
@@ -20,7 +21,7 @@ namespace codeRR.Server.ReportAnalyzer.Services
     [Component(Lifetime = Lifetime.Scoped)]
     public class ReportAnalyzer
     {
-        private readonly IEventBus _eventBus;
+        private readonly IMessageBus _messageBus;
         private readonly HashCodeGenerator _hashCodeGenerator;
         private readonly ILog _logger = LogManager.GetLogger(typeof(ReportAnalyzer));
         private readonly IAnalyticsRepository _repository;
@@ -29,12 +30,12 @@ namespace codeRR.Server.ReportAnalyzer.Services
         ///     Creates a new instance of <see cref="ReportAnalyzer" />.
         /// </summary>
         /// <param name="hashCodeGenerator">Used to identify is this is a new unique exception</param>
-        /// <param name="eventBus">to publish the <see cref="ReportAddedToIncident" /> event</param>
+        /// <param name="messageBus">to publish the <see cref="ReportAddedToIncident" /> event</param>
         /// <param name="repository">repos</param>
-        public ReportAnalyzer(HashCodeGenerator hashCodeGenerator, IEventBus eventBus, IAnalyticsRepository repository)
+        public ReportAnalyzer(HashCodeGenerator hashCodeGenerator, IMessageBus messageBus, IAnalyticsRepository repository)
         {
             _hashCodeGenerator = hashCodeGenerator;
-            _eventBus = eventBus;
+            _messageBus = messageBus;
             _repository = repository;
         }
 
@@ -43,7 +44,7 @@ namespace codeRR.Server.ReportAnalyzer.Services
         /// </summary>
         /// <param name="report">report</param>
         /// <exception cref="ArgumentNullException">report</exception>
-        public void Analyze(ErrorReportEntity report)
+        public void Analyze(ClaimsPrincipal user, ErrorReportEntity report)
         {
             if (report == null) throw new ArgumentNullException("report");
 
@@ -92,7 +93,7 @@ namespace codeRR.Server.ReportAnalyzer.Services
                 {
                     isReOpened = true;
                     incident.ReOpen();
-                    _eventBus.PublishAsync(new IncidentReOpened(incident.ApplicationId, incident.Id,
+                    _messageBus.SendAsync(user, new IncidentReOpened(incident.ApplicationId, incident.Id,
                         incident.CreatedAtUtc));
                 }
 
@@ -119,7 +120,7 @@ namespace codeRR.Server.ReportAnalyzer.Services
             sw.Start();
             _logger.Debug("Publishing now: " + report.ClientReportId);
             var e = new ReportAddedToIncident(summary, ConvertToCoreReport(report), isReOpened);
-            _eventBus.PublishAsync(e);
+            _messageBus.SendAsync(user, e);
             if (sw.ElapsedMilliseconds > 200)
                 _logger.Debug("Publish took " + sw.ElapsedMilliseconds);
             sw.Stop();

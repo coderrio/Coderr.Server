@@ -12,7 +12,8 @@ namespace codeRR.Server.Api.Core.Accounts.Commands
     ///         <see cref="ResetPassword" /> will be exeucted when the user clicks on the link.
     ///     </para>
     /// </remarks>
-    public class RequestPasswordReset : Command
+    [Message]
+    public class RequestPasswordReset
     {
         /// <summary>
         ///     Serialization constructor

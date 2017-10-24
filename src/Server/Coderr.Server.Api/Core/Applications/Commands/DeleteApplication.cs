@@ -6,7 +6,8 @@ namespace codeRR.Server.Api.Core.Applications.Commands
     /// <summary>
     ///     Delete an existing application including of all its data.
     /// </summary>
-    public class DeleteApplication : Command
+    [Message]
+    public class DeleteApplication
     {
         /// <summary>
         ///     Creates a new instance of <see cref="DeleteApplication" />.

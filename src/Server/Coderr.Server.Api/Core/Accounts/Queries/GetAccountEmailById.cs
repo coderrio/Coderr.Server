@@ -6,6 +6,7 @@ namespace codeRR.Server.Api.Core.Accounts.Queries
     /// <summary>
     ///     Get email for a specific account
     /// </summary>
+    [Message]
     public class GetAccountEmailById : Query<string>
     {
         /// <summary>

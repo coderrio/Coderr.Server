@@ -6,6 +6,7 @@ namespace codeRR.Server.Api.Core.ApiKeys.Queries
     /// <summary>
     ///     Get information about an API key
     /// </summary>
+    [Message]
     public class GetApiKey : Query<GetApiKeyResult>
     {
         /// <summary>

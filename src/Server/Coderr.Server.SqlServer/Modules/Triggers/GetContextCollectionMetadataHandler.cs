@@ -20,7 +20,7 @@ namespace codeRR.Server.SqlServer.Modules.Triggers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<GetContextCollectionMetadataItem[]> ExecuteAsync(GetContextCollectionMetadata query)
+        public async Task<GetContextCollectionMetadataItem[]> HandleAsync(IMessageContext context, GetContextCollectionMetadata query)
         {
             using (var cmd = (DbCommand) _unitOfWork.CreateCommand())
             {

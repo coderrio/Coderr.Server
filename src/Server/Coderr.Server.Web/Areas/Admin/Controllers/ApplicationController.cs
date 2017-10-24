@@ -9,6 +9,7 @@ using codeRR.Server.Api.Modules.Triggers.Queries;
 using codeRR.Server.App.Modules.Versions.Config;
 using codeRR.Server.Infrastructure.Configuration;
 using codeRR.Server.Web.Areas.Admin.Models.Applications;
+using codeRR.Server.Web.Controllers;
 using DotNetCqs;
 
 namespace codeRR.Server.Web.Areas.Admin.Controllers
@@ -16,24 +17,22 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
     [Authorize]
     public class ApplicationController : Controller
     {
-        private readonly ICommandBus _cmdBus;
-        private readonly IQueryBus _queryBus;
+        private readonly IMessageBus _messageBus;
+        private IQueryBus _queryBus;
 
-
-        public ApplicationController(IQueryBus queryBus, ICommandBus cmdBus)
+        public ApplicationController(IMessageBus messageBus, IQueryBus queryBus)
         {
-            if (queryBus == null) throw new ArgumentNullException("queryBus");
-            if (cmdBus == null) throw new ArgumentNullException("cmdBus");
+            if (messageBus == null) throw new ArgumentNullException("messageBus");
 
+            _messageBus = messageBus;
             _queryBus = queryBus;
-            _cmdBus = cmdBus;
         }
 
         [HttpPost]
         public async Task<ActionResult> Delete(int id)
         {
             var cmd = new DeleteApplication(id);
-            await _cmdBus.ExecuteAsync(cmd);
+            await _messageBus.SendAsync(this.ClaimsUser(), cmd);
             await Task.Delay(500);
 
             var url = Url.Action("Deleted");
@@ -48,7 +47,7 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
         public async Task<ActionResult> Edit(int id)
         {
             var query = new GetApplicationInfo(id);
-            var app = await _queryBus.QueryAsync(query);
+            var app = await _queryBus.QueryAsync(this.ClaimsUser(), query);
             var model = new EditViewModel
             {
                 ApplicationId = app.Id,
@@ -65,7 +64,7 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
                 return View(model);
 
             var cmd = new UpdateApplication(model.ApplicationId, model.Name);
-            await _cmdBus.ExecuteAsync(cmd);
+            await _messageBus.SendAsync(this.ClaimsUser(), cmd);
 
             var dict = new RouteValueDictionary {{"usernote", "Application was updated"}};
             return RedirectToAction("Index", dict);
@@ -73,7 +72,7 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
 
         public async Task<ActionResult> Index()
         {
-            var apps = await _queryBus.QueryAsync(new GetApplicationList());
+            var apps = await _queryBus.QueryAsync(this.ClaimsUser(), new GetApplicationList());
             var model = Enumerable.Select(apps, x => new ApplicationViewModel {Id = x.Id, Name = x.Name}).ToList<ApplicationViewModel>();
             return View(model);
         }
@@ -113,7 +112,7 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
         private async Task<SelectListItem[]> FetchAssemblies(int id)
         {
             var query = new GetContextCollectionMetadata(id);
-            var assemblyReslt = await _queryBus.QueryAsync(query);
+            var assemblyReslt = await _queryBus.QueryAsync(this.ClaimsUser(), query);
             var assemblyCollection = Enumerable.FirstOrDefault(assemblyReslt, x => x.Name == "Assemblies");
             var items = new SelectListItem[0];
             if (assemblyCollection != null)

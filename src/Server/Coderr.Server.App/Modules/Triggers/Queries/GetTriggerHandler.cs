@@ -34,7 +34,7 @@ namespace codeRR.Server.App.Modules.Triggers.Queries
         /// <returns>
         ///     Task which will contain the result once completed.
         /// </returns>
-        public async Task<GetTriggerDTO> ExecuteAsync(GetTrigger query)
+        public async Task<GetTriggerDTO> HandleAsync(IMessageContext context, GetTrigger query)
         {
             var trigger = await _repository.GetAsync(query.Id);
             return new GetTriggerDTO

@@ -8,18 +8,16 @@ using Griffin.Container;
 namespace codeRR.Server.App.Core.Applications.EventHandlers
 {
     [Component(RegisterAsSelf = true)]
-    internal class UpdateTeamOnInvitationAccepted : IApplicationEventSubscriber<InvitationAccepted>
+    internal class UpdateTeamOnInvitationAccepted : IMessageHandler<InvitationAccepted>
     {
         private readonly IApplicationRepository _applicationRepository;
-        private readonly IEventBus _eventBus;
 
-        public UpdateTeamOnInvitationAccepted(IApplicationRepository applicationRepository, IEventBus eventBus)
+        public UpdateTeamOnInvitationAccepted(IApplicationRepository applicationRepository)
         {
             _applicationRepository = applicationRepository;
-            _eventBus = eventBus;
         }
 
-        public async Task HandleAsync(InvitationAccepted e)
+        public async Task HandleAsync(IMessageContext context, InvitationAccepted e)
         {
             foreach (var applicationId in e.ApplicationIds)
             {
@@ -29,7 +27,7 @@ namespace codeRR.Server.App.Core.Applications.EventHandlers
                 {
                     member.AcceptInvitation(e.AccountId);
                     await _applicationRepository.UpdateAsync(member);
-                    await _eventBus.PublishAsync(new UserAddedToApplication(applicationId, e.AccountId));
+                    await context.SendAsync(new UserAddedToApplication(applicationId, e.AccountId));
                 }
             }
         }

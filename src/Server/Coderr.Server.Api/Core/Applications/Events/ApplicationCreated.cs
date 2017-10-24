@@ -6,7 +6,8 @@ namespace codeRR.Server.Api.Core.Applications.Events
     /// <summary>
     ///     Published when a new application have been created by a user.
     /// </summary>
-    public class ApplicationCreated : ApplicationEvent
+    [Message]
+    public class ApplicationCreated
     {
         /// <summary>
         ///     Creates a new instance of <see cref="ApplicationCreated" />.

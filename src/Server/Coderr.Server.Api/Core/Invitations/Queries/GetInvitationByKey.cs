@@ -6,6 +6,7 @@ namespace codeRR.Server.Api.Core.Invitations.Queries
     /// <summary>
     ///     Get invitation by using the emailed invitation key
     /// </summary>
+    [Message]
     public class GetInvitationByKey : Query<GetInvitationByKeyResult>
     {
         /// <summary>

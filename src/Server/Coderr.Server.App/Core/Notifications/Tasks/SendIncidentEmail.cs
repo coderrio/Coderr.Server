@@ -15,19 +15,6 @@ namespace codeRR.Server.App.Core.Notifications.Tasks
     /// </summary>
     public class SendIncidentEmail
     {
-        private readonly ICommandBus _commandBus;
-
-        /// <summary>
-        ///     Creates a new instance of <see cref="SendIncidentEmail" />.
-        /// </summary>
-        /// <param name="commandBus">To send the email</param>
-        /// <exception cref="ArgumentNullException">commandBus</exception>
-        public SendIncidentEmail(ICommandBus commandBus)
-        {
-            if (commandBus == null) throw new ArgumentNullException("commandBus");
-            _commandBus = commandBus;
-        }
-
         /// <summary>
         ///     Send
         /// </summary>
@@ -36,7 +23,7 @@ namespace codeRR.Server.App.Core.Notifications.Tasks
         /// <param name="report">Report being processed.</param>
         /// <returns>task</returns>
         /// <exception cref="ArgumentNullException">idOrEmailAddress; incident; report</exception>
-        public async Task SendAsync(string idOrEmailAddress, IncidentSummaryDTO incident, ReportDTO report)
+        public async Task SendAsync(IMessageContext context, string idOrEmailAddress, IncidentSummaryDTO incident, ReportDTO report)
         {
             if (idOrEmailAddress == null) throw new ArgumentNullException("idOrEmailAddress");
             if (incident == null) throw new ArgumentNullException("incident");
@@ -91,7 +78,7 @@ Exception: {3}
             }
 
             var emailCmd = new SendEmail(msg);
-            await _commandBus.ExecuteAsync(emailCmd);
+            await context.SendAsync(emailCmd);
         }
     }
 }

@@ -19,16 +19,16 @@ namespace codeRR.Server.App.Core.Support
     ///     </para>
     /// </remarks>
     [Component]
-    public class SendSupportRequestHandler : ICommandHandler<SendSupportRequest>
+    public class SendSupportRequestHandler : IMessageHandler<SendSupportRequest>
     {
         /// <inheritdoc />
-        public async Task ExecuteAsync(SendSupportRequest command)
+        public async Task HandleAsync(IMessageContext context, SendSupportRequest command)
         {
             var baseConfig = ConfigurationStore.Instance.Load<BaseConfiguration>();
             var errorConfig = ConfigurationStore.Instance.Load<codeRRConfigSection>();
 
             string email = null;
-            var claim = ClaimsPrincipal.Current.FindFirst(ClaimTypes.Email);
+            var claim = context.Principal.FindFirst(ClaimTypes.Email);
             if (claim != null)
                 email = claim.Value;
 

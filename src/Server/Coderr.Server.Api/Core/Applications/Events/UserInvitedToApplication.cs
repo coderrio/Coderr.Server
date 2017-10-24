@@ -7,7 +7,8 @@ namespace codeRR.Server.Api.Core.Applications.Events
     /// <summary>
     ///     Event published when the <see cref="InviteUser" /> command is done.
     /// </summary>
-    public class UserInvitedToApplication : ApplicationEvent
+    [Message]
+    public class UserInvitedToApplication
     {
         /// <summary>
         ///     Creates a new instance of <see cref="UserInvitedToApplication" />.

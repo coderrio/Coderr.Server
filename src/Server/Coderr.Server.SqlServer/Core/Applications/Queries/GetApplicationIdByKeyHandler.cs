@@ -16,7 +16,7 @@ namespace codeRR.Server.SqlServer.Core.Applications.Queries
             _uow = uow;
         }
 
-        public async Task<GetApplicationIdByKeyResult> ExecuteAsync(GetApplicationIdByKey query)
+        public async Task<GetApplicationIdByKeyResult> HandleAsync(IMessageContext context, GetApplicationIdByKey query)
         {
             using (var cmd = _uow.CreateDbCommand())
             {

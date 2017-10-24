@@ -6,7 +6,8 @@ namespace codeRR.Server.Api.Modules.Triggers.Commands
     /// <summary>
     ///     Update an existing trigger
     /// </summary>
-    public class UpdateTrigger : Command
+    [Message]
+    public class UpdateTrigger
     {
         /// <summary>
         ///     Creates a new instance of <see cref="UpdateTrigger" />.

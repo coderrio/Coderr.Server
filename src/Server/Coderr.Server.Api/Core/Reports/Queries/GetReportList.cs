@@ -6,6 +6,7 @@ namespace codeRR.Server.Api.Core.Reports.Queries
     /// <summary>
     ///     Get reports
     /// </summary>
+    [Message]
     public class GetReportList : Query<GetReportListResult>
     {
         /// <summary>

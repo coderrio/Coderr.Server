@@ -11,7 +11,7 @@ namespace codeRR.Server.App.Modules.Triggers.Commands
     ///     Handler for <see cref="CreateTrigger" />.
     /// </summary>
     [Component]
-    public class CreateTriggerHandler : ICommandHandler<CreateTrigger>
+    public class CreateTriggerHandler : IMessageHandler<CreateTrigger>
     {
         private readonly ITriggerRepository _repository;
 
@@ -33,7 +33,7 @@ namespace codeRR.Server.App.Modules.Triggers.Commands
         /// <returns>
         ///     Task which will be completed once the command has been executed.
         /// </returns>
-        public async Task ExecuteAsync(CreateTrigger command)
+        public async Task HandleAsync(IMessageContext context, CreateTrigger command)
         {
             var domainModel = new Trigger(command.ApplicationId)
             {

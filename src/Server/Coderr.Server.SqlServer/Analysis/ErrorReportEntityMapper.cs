@@ -21,6 +21,10 @@ namespace codeRR.Server.SqlServer.Analysis
 
             Property(x => x.ClientReportId)
                 .ColumnName("ErrorId");
+
+            Property(x => x.User)
+                .Ignore();
+
         }
     }
 }

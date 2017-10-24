@@ -18,7 +18,7 @@ namespace codeRR.Server.App.Modules.Tagging.Handlers
             _repository = repository;
         }
 
-        public async Task<TagDTO[]> ExecuteAsync(GetTagsForIncident query)
+        public async Task<TagDTO[]> HandleAsync(IMessageContext context, GetTagsForIncident query)
         {
             return (await _repository.GetTagsAsync(query.IncidentId)).Select(ConvertTag).ToArray();
         }

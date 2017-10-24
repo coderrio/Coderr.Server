@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using codeRR.Server.ReportAnalyzer.Domain.Incidents;
 
 namespace codeRR.Server.ReportAnalyzer.Domain.Reports
@@ -61,17 +62,17 @@ namespace codeRR.Server.ReportAnalyzer.Domain.Reports
         /// <summary>
         ///     Gets or sets id from the client library
         /// </summary>
-        public string ClientReportId { get; private set; }
+        public string ClientReportId { get; }
 
         /// <summary>
         ///     Context collection
         /// </summary>
-        public ErrorReportContext[] ContextInfo { get; private set; }
+        public ErrorReportContext[] ContextInfo { get; }
 
         /// <summary>
         ///     When this entity was created (in the server)
         /// </summary>
-        public DateTime CreatedAtUtc { get; private set; }
+        public DateTime CreatedAtUtc { get; }
 
         /// <summary>
         ///     Thrown exception
@@ -106,6 +107,12 @@ namespace codeRR.Server.ReportAnalyzer.Domain.Reports
         ///     Denormalization to be able to generate lists quicker (this is really Exception.Message)
         /// </summary>
         public string Title { get; set; }
+
+
+        /// <summary>
+        ///     User/Site/application that the report is for.
+        /// </summary>
+        public ClaimsPrincipal User { get; set; }
 
         /// <summary>
         ///     Used when we get hash code collisions to identify the correct incident.

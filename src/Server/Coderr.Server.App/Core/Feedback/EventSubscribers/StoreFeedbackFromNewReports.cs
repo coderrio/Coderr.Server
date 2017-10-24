@@ -13,21 +13,9 @@ namespace codeRR.Server.App.Core.Feedback.EventSubscribers
     ///     Responsible of separating the feedback from the incident when it's uploaded as context data.
     /// </summary>
     [Component(RegisterAsSelf = true)]
-    public class StoreFeedbackFromNewReports : IApplicationEventSubscriber<ReportAddedToIncident>
+    public class StoreFeedbackFromNewReports : IMessageHandler<ReportAddedToIncident>
     {
-        private readonly ICommandBus _commandBus;
         private readonly ILog _logger = LogManager.GetLogger(typeof(StoreFeedbackFromNewReports));
-
-        /// <summary>
-        ///     Creates a new instance of <see cref="StoreFeedbackFromNewReports" />.
-        /// </summary>
-        /// <param name="commandBus">to send the <see cref="SubmitFeedback" /> command</param>
-        /// <exception cref="ArgumentNullException">commandBus</exception>
-        public StoreFeedbackFromNewReports(ICommandBus commandBus)
-        {
-            if (commandBus == null) throw new ArgumentNullException("commandBus");
-            _commandBus = commandBus;
-        }
 
         /// <summary>
         ///     Process an event asynchronously.
@@ -36,7 +24,7 @@ namespace codeRR.Server.App.Core.Feedback.EventSubscribers
         /// <returns>
         ///     Task to wait on.
         /// </returns>
-        public async Task HandleAsync(ReportAddedToIncident e)
+        public async Task HandleAsync(IMessageContext context, ReportAddedToIncident e)
         {
             try
             {
@@ -56,7 +44,7 @@ namespace codeRR.Server.App.Core.Feedback.EventSubscribers
                     Email = email
                 };
 
-                await _commandBus.ExecuteAsync(cmd);
+                await context.SendAsync(cmd);
             }
             catch (Exception exception)
             {

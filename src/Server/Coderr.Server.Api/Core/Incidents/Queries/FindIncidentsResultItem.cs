@@ -3,16 +3,16 @@
 namespace codeRR.Server.Api.Core.Incidents.Queries
 {
     /// <summary>
-    ///     Item for <see cref="FindIncidentResult" />.
+    ///     Item for <see cref="FindIncidentsResult" />.
     /// </summary>
-    public class FindIncidentResultItem
+    public class FindIncidentsResultItem
     {
         /// <summary>
-        ///     Creates new instance of <see cref="FindIncidentResultItem" />.
+        ///     Creates new instance of <see cref="FindIncidentsResultItem" />.
         /// </summary>
-        /// <param name="id">indicent id</param>
+        /// <param name="id">incident id</param>
         /// <param name="name">incident name</param>
-        public FindIncidentResultItem(int id, string name)
+        public FindIncidentsResultItem(int id, string name)
         {
             if (name == null) throw new ArgumentNullException("name");
             if (id <= 0) throw new ArgumentOutOfRangeException("id");
@@ -23,7 +23,7 @@ namespace codeRR.Server.Api.Core.Incidents.Queries
         /// <summary>
         ///     Serialization constructor
         /// </summary>
-        protected FindIncidentResultItem()
+        protected FindIncidentsResultItem()
         {
         }
 
@@ -54,7 +54,7 @@ namespace codeRR.Server.Api.Core.Incidents.Queries
         public bool IsReOpened { get; set; }
 
         /// <summary>
-        ///     When the last report was recieved (or when the last user action was made)
+        ///     When the last report was received (or when the last user action was made)
         /// </summary>
         public DateTime LastUpdateAtUtc { get; set; }
 

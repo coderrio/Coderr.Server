@@ -6,6 +6,7 @@ namespace codeRR.Server.Api.Modules.Triggers.Queries
     /// <summary>
     ///     Get metadata (context collection information)
     /// </summary>
+    [Message]
     public class GetContextCollectionMetadata : Query<GetContextCollectionMetadataItem[]>
     {
         /// <summary>

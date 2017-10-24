@@ -12,7 +12,7 @@ namespace codeRR.Server.App.Modules.Tagging.Handlers
     ///     Scan through the error report to identify which libraries were used when the exception was thrown.
     /// </summary>
     [Component(RegisterAsSelf = true)]
-    public class IdentifyTagsFromIncident : IApplicationEventSubscriber<ReportAddedToIncident>
+    public class IdentifyTagsFromIncident : IMessageHandler<ReportAddedToIncident>
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(IdentifyTagsFromIncident));
         private readonly ITagsRepository _repository;
@@ -37,7 +37,7 @@ namespace codeRR.Server.App.Modules.Tagging.Handlers
         /// <returns>
         ///     Task to wait on.
         /// </returns>
-        public async Task HandleAsync(ReportAddedToIncident e)
+        public async Task HandleAsync(IMessageContext context, ReportAddedToIncident e)
         {
             _logger.Debug("Checking tags..");
             var tags = await _repository.GetTagsAsync(e.Incident.Id);

@@ -4,25 +4,20 @@ using System.Reflection;
 using codeRR.Server.Infrastructure.Plugins;
 using DotNetCqs;
 using Griffin.Container;
-using Griffin.Cqs.InversionOfControl;
 
 namespace codeRR.Server.Web.Infrastructure
 {
     public class PluginConfiguration : Configuration
     {
         private readonly IContainerRegistrar _containerRegistrar;
-        private readonly EventHandlerRegistry _registry;
 
-        public PluginConfiguration(IContainerRegistrar containerRegistrar, EventHandlerRegistry registry)
+        public PluginConfiguration(IContainerRegistrar containerRegistrar)
         {
             _containerRegistrar = containerRegistrar;
-            _registry = registry;
         }
 
         public override void RegisterCqrsHandlers(Assembly assembly)
         {
-            _registry.ScanAssembly(assembly);
-
             var types = from type in assembly.GetTypes()
                 let handlerInterface = GetHandlerInterface(type)
                 where handlerInterface != null
@@ -49,8 +44,8 @@ namespace codeRR.Server.Web.Infrastructure
             var matchingInterfaces = from ifType in type.GetInterfaces()
                 where ifType.IsGenericType
                 let typeDefinition = ifType.GetGenericTypeDefinition()
-                where typeDefinition == typeof(ICommandHandler<>)
-                      || typeDefinition == typeof(IApplicationEventSubscriber<>)
+                where typeDefinition == typeof(IMessageHandler<>)
+                      || typeDefinition == typeof(IMessageHandler<>)
                       || typeDefinition == typeof(IQueryHandler<,>)
                 select ifType;
             return matchingInterfaces.FirstOrDefault();

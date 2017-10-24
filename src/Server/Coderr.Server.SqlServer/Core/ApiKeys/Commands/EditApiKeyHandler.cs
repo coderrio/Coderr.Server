@@ -7,18 +7,18 @@ using Griffin.Data;
 namespace codeRR.Server.SqlServer.Core.ApiKeys.Commands
 {
     [Component(RegisterAsSelf = true)]
-    public class EditApiKeyHandler : ICommandHandler<EditApiKey>
+    public class EditApiKeyHandler : IMessageHandler<EditApiKey>
     {
         private readonly IAdoNetUnitOfWork _unitOfWork;
-        private readonly IEventBus _eventBus;
+        private readonly IMessageBus _messageBus;
 
-        public EditApiKeyHandler(IAdoNetUnitOfWork unitOfWork, IEventBus eventBus)
+        public EditApiKeyHandler(IAdoNetUnitOfWork unitOfWork, IMessageBus messageBus)
         {
             _unitOfWork = unitOfWork;
-            _eventBus = eventBus;
+            _messageBus = messageBus;
         }
 
-        public async Task ExecuteAsync(EditApiKey command)
+        public async Task HandleAsync(IMessageContext context, EditApiKey command)
         {
             using (var cmd = _unitOfWork.CreateDbCommand())
             {

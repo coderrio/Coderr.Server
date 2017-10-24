@@ -11,7 +11,7 @@ namespace codeRR.Server.App.Core.Notifications.EventHandlers
     ///     Will delete all reports for the given application
     /// </summary>
     [Component(RegisterAsSelf = true)]
-    public class ApplicationDeletedHandler : IApplicationEventSubscriber<ApplicationDeleted>
+    public class ApplicationDeletedHandler : IMessageHandler<ApplicationDeleted>
     {
         private IAdoNetUnitOfWork _uow;
 
@@ -25,7 +25,7 @@ namespace codeRR.Server.App.Core.Notifications.EventHandlers
         }
 
         /// <inheritdoc />
-        public Task HandleAsync(ApplicationDeleted e)
+        public Task HandleAsync(IMessageContext context, ApplicationDeleted e)
         {
             _uow.ExecuteNonQuery("DELETE FROM UserNotificationSettings WHERE ApplicationId = @id", new { id = e.ApplicationId });
             return Task.FromResult<object>(null);

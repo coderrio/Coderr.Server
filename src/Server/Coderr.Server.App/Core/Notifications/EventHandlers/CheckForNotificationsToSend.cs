@@ -13,9 +13,8 @@ namespace codeRR.Server.App.Core.Notifications.EventHandlers
     /// </summary>
     [Component(RegisterAsSelf = true)]
     public class CheckForNotificationsToSend :
-        IApplicationEventSubscriber<ReportAddedToIncident>
+        IMessageHandler<ReportAddedToIncident>
     {
-        private readonly ICommandBus _commandBus;
         private readonly INotificationsRepository _notificationsRepository;
         private readonly IUserRepository _userRepository;
 
@@ -23,13 +22,11 @@ namespace codeRR.Server.App.Core.Notifications.EventHandlers
         ///     Creates a new instance of <see cref="CheckForNotificationsToSend" />.
         /// </summary>
         /// <param name="notificationsRepository">To load notification configuration</param>
-        /// <param name="commandBus">To send emails</param>
         /// <param name="userRepository">To load user info</param>
-        public CheckForNotificationsToSend(INotificationsRepository notificationsRepository, ICommandBus commandBus,
+        public CheckForNotificationsToSend(INotificationsRepository notificationsRepository,
             IUserRepository userRepository)
         {
             _notificationsRepository = notificationsRepository;
-            _commandBus = commandBus;
             _userRepository = userRepository;
         }
 
@@ -40,7 +37,7 @@ namespace codeRR.Server.App.Core.Notifications.EventHandlers
         /// <returns>
         ///     Task to wait on.
         /// </returns>
-        public async Task HandleAsync(ReportAddedToIncident e)
+        public async Task HandleAsync(IMessageContext context, ReportAddedToIncident e)
         {
             if (e == null) throw new ArgumentNullException("e");
 
@@ -49,26 +46,26 @@ namespace codeRR.Server.App.Core.Notifications.EventHandlers
             {
                 if (setting.NewIncident != NotificationState.Disabled && e.Incident.ReportCount == 1)
                 {
-                    await CreateNotification(e, setting.AccountId, setting.NewIncident);
+                    await CreateNotification(context, e, setting.AccountId, setting.NewIncident);
                 }
                 else if (setting.NewReport != NotificationState.Disabled)
                 {
-                    await CreateNotification(e, setting.AccountId, setting.NewReport);
+                    await CreateNotification(context, e, setting.AccountId, setting.NewReport);
                 }
                 else if (setting.ReopenedIncident != NotificationState.Disabled && e.IsReOpened)
                 {
-                    await CreateNotification(e, setting.AccountId, setting.ReopenedIncident);
+                    await CreateNotification(context, e, setting.AccountId, setting.ReopenedIncident);
                 }
             }
         }
 
-        private async Task CreateNotification(ReportAddedToIncident e, int accountId,
+        private async Task CreateNotification(IMessageContext context, ReportAddedToIncident e, int accountId,
             NotificationState state)
         {
             if (state == NotificationState.Email)
             {
-                var email = new SendIncidentEmail(_commandBus);
-                await email.SendAsync(accountId.ToString(), e.Incident, e.Report);
+                var email = new SendIncidentEmail();
+                await email.SendAsync(context, accountId.ToString(), e.Incident, e.Report);
             }
             else
             {

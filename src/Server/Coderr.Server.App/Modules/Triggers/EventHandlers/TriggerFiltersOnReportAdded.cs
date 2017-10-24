@@ -14,7 +14,7 @@ namespace codeRR.Server.App.Modules.Triggers.EventHandlers
     ///     Waits on the ReportAdded and then loads all notifications for the application that the report belongs to.
     /// </summary>
     [Component(RegisterAsSelf = true)]
-    public class TriggerFiltersOnReportAdded : IApplicationEventSubscriber<ReportAddedToIncident>
+    public class TriggerFiltersOnReportAdded : IMessageHandler<ReportAddedToIncident>
     {
         private readonly ITriggerActionFactory _actionFactory;
         private readonly ITriggerRepository _repository;
@@ -42,7 +42,7 @@ namespace codeRR.Server.App.Modules.Triggers.EventHandlers
         /// <returns>
         ///     Task to wait on.
         /// </returns>
-        public async Task HandleAsync(ReportAddedToIncident e)
+        public async Task HandleAsync(IMessageContext context, ReportAddedToIncident e)
         {
             _logger.Debug("doing filters..");
             IEnumerable<Trigger> triggers;
@@ -67,13 +67,13 @@ namespace codeRR.Server.App.Modules.Triggers.EventHandlers
                 foreach (var actionData in triggerResults)
                 {
                     var action = _actionFactory.Create(actionData.ActionName);
-                    var context = new ActionExecutionContext
+                    var actionContext = new ActionExecutionContext
                     {
                         Config = actionData,
                         ErrorReport = e.Report,
                         Incident = e.Incident
                     };
-                    await action.ExecuteAsync(context);
+                    await action.ExecuteAsync(actionContext);
                 }
             }
 

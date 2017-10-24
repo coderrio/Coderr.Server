@@ -17,9 +17,8 @@ namespace codeRR.Server.App.Modules.ReportSpikes
     /// </summary>
     [Component(RegisterAsSelf = true)]
     public class CheckForReportPeak :
-        IApplicationEventSubscriber<ReportAddedToIncident>
+        IMessageHandler<ReportAddedToIncident>
     {
-        private readonly ICommandBus _commandBus;
         private readonly INotificationsRepository _repository;
         private readonly IReportSpikeRepository _spikeRepository;
 
@@ -28,13 +27,10 @@ namespace codeRR.Server.App.Modules.ReportSpikes
         /// </summary>
         /// <param name="repository">To check if spikes should be analyzed</param>
         /// <param name="spikeRepository">store/fetch information of current spikes.</param>
-        /// <param name="commandBus">used to send emails</param>
-        public CheckForReportPeak(INotificationsRepository repository, IReportSpikeRepository spikeRepository,
-            ICommandBus commandBus)
+        public CheckForReportPeak(INotificationsRepository repository, IReportSpikeRepository spikeRepository)
         {
             _repository = repository;
             _spikeRepository = spikeRepository;
-            _commandBus = commandBus;
         }
 
         /// <summary>
@@ -44,7 +40,7 @@ namespace codeRR.Server.App.Modules.ReportSpikes
         /// <returns>
         ///     Task to wait on.
         /// </returns>
-        public async Task HandleAsync(ReportAddedToIncident e)
+        public async Task HandleAsync(IMessageContext context, ReportAddedToIncident e)
         {
             if (e == null) throw new ArgumentNullException("e");
 
@@ -104,7 +100,7 @@ namespace codeRR.Server.App.Modules.ReportSpikes
             foreach (var message in messages)
             {
                 var sendEmail = new SendEmail(message);
-                await _commandBus.ExecuteAsync(sendEmail);
+                await context.SendAsync(sendEmail);
             }
         }
 

@@ -6,7 +6,9 @@ namespace codeRR.Server.Api.Core.ApiKeys.Commands
     /// <summary>
     ///     Delete an API key.
     /// </summary>
-    public class DeleteApiKey : Command
+    [AuthorizeRoles("SysAdmin")]
+    [Message]
+    public class DeleteApiKey
     {
         /// <summary>
         ///     Serialization constructor

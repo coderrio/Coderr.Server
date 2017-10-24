@@ -13,19 +13,17 @@ namespace codeRR.Server.App.Core.Accounts.CommandHandlers
     ///     Handler for <see cref="RequestPasswordReset" />.
     /// </summary>
     [Component]
-    internal class RequestPasswordResetHandler : ICommandHandler<RequestPasswordReset>
+    internal class RequestPasswordResetHandler : IMessageHandler<RequestPasswordReset>
     {
         private readonly IAccountRepository _accountRepository;
-        private readonly ICommandBus _commandBus;
         private readonly ILog _logger = LogManager.GetLogger(typeof(RequestPasswordResetHandler));
 
-        public RequestPasswordResetHandler(IAccountRepository accountRepository, ICommandBus commandBus)
+        public RequestPasswordResetHandler(IAccountRepository accountRepository)
         {
             _accountRepository = accountRepository;
-            _commandBus = commandBus;
         }
 
-        public async Task ExecuteAsync(RequestPasswordReset command)
+        public async Task HandleAsync(IMessageContext context, RequestPasswordReset command)
         {
             var account = await _accountRepository.FindByEmailAsync(command.EmailAddress);
             if (account == null)
@@ -52,7 +50,7 @@ namespace codeRR.Server.App.Core.Accounts.CommandHandlers
                 Subject = "Reset password"
             };
 
-            await _commandBus.ExecuteAsync(cmd);
+            await context.SendAsync(cmd);
         }
     }
 }

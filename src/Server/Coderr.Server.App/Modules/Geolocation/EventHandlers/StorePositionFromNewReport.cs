@@ -15,7 +15,7 @@ namespace codeRR.Server.App.Modules.Geolocation.EventHandlers
     ///     Responsible of looking up geographic position of the IP address that delivered the report.
     /// </summary>
     [Component(RegisterAsSelf = true)]
-    public class StorePositionFromNewReport : IApplicationEventSubscriber<ReportAddedToIncident>
+    public class StorePositionFromNewReport : IMessageHandler<ReportAddedToIncident>
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(StorePositionFromNewReport));
         private readonly IErrorOriginRepository _repository;
@@ -38,7 +38,7 @@ namespace codeRR.Server.App.Modules.Geolocation.EventHandlers
         /// <returns>
         ///     Task to wait on.
         /// </returns>
-        public async Task HandleAsync(ReportAddedToIncident e)
+        public async Task HandleAsync(IMessageContext context, ReportAddedToIncident e)
         {
             if (string.IsNullOrEmpty(e.Report.RemoteAddress))
                 return;

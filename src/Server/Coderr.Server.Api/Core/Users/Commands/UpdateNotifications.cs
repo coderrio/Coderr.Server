@@ -5,10 +5,11 @@ namespace codeRR.Server.Api.Core.Users.Commands
     /// <summary>
     ///     Update user notifications
     /// </summary>
-    public class UpdateNotifications : Command
+    [Message]
+    public class UpdateNotifications
     {
         /// <summary>
-        ///     Application that the settings is for (0 = generel settings)
+        ///     Application that the settings is for (0 = general settings)
         /// </summary>
         public int ApplicationId { get; set; }
 

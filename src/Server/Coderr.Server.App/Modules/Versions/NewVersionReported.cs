@@ -5,7 +5,7 @@ namespace codeRR.Server.App.Modules.Versions
     /// <summary>
     ///     We received a report for a new version
     /// </summary>
-    public class NewVersionReported : ApplicationEvent
+    public class NewVersionReported
     {
         /// <summary>
         ///     Which application the version was reported for

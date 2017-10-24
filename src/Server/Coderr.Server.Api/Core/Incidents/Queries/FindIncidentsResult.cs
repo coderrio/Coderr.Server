@@ -3,14 +3,14 @@
 namespace codeRR.Server.Api.Core.Incidents.Queries
 {
     /// <summary>
-    ///     Result for <see cref="FindIncidentResult" />.
+    ///     Result for <see cref="FindIncidentsResult" />.
     /// </summary>
-    public class FindIncidentResult
+    public class FindIncidentsResult
     {
         /// <summary>
         ///     Items
         /// </summary>
-        public IReadOnlyList<FindIncidentResultItem> Items { get; set; }
+        public IReadOnlyList<FindIncidentsResultItem> Items { get; set; }
 
         /// <summary>
         ///     Page number (one based index)

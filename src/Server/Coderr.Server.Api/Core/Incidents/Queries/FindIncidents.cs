@@ -11,7 +11,8 @@ namespace codeRR.Server.Api.Core.Incidents.Queries
     ///         Default query is only open incidents with 20 items per page.
     ///     </para>
     /// </remarks>
-    public class FindIncidents : Query<FindIncidentResult>
+    [Message]
+    public class FindIncidents : Query<FindIncidentsResult>
     {
         /// <summary>
         ///     Creates a new instance of <see cref="FindIncidents" />.

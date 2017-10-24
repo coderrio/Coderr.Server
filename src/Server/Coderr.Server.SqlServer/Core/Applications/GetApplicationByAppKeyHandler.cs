@@ -18,7 +18,7 @@
 //        }
 
 
-//        public async Task<ApplicationResult> ExecuteAsync(GetApplicationByAppKey query)
+//        public async Task<ApplicationResult> ExecuteAsync(IMessageContext context, GetApplicationByAppKey query)
 //        {
 //            using (var cmd = _uow.CreateCommand())
 //            {

@@ -17,7 +17,7 @@ namespace codeRR.Server.App.Core.Applications.QueryHandlers
             _applicationRepository = applicationRepository;
         }
 
-        public async Task<GetApplicationTeamResult> ExecuteAsync(GetApplicationTeam query)
+        public async Task<GetApplicationTeamResult> HandleAsync(IMessageContext context, GetApplicationTeam query)
         {
             var members = await _applicationRepository.GetTeamMembersAsync(query.ApplicationId);
             var result = new GetApplicationTeamResult

@@ -11,32 +11,29 @@ namespace codeRR.Server.App.Core.Incidents.Commands
     /// Uses the incident repository and the domain entity to apply the change.
     /// </summary>
     [Component]
-    public class ReOpenIncidentHandler : ICommandHandler<ReOpenIncident>
+    public class ReOpenIncidentHandler : IMessageHandler<ReOpenIncident>
     {
         private readonly IIncidentRepository _repository;
-        private readonly IEventBus _eventBus;
 
         /// <summary>
         ///     Creates a new instance of <see cref="CloseIncidentHandler" />.
         /// </summary>
         /// <param name="repository">To be able to load and update incident</param>
-        /// <param name="eventBus">Used to publish <see cref="IncidentReOpened"/></param>
-        public ReOpenIncidentHandler(IIncidentRepository repository, IEventBus eventBus)
+        public ReOpenIncidentHandler(IIncidentRepository repository)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
-            _eventBus = eventBus;
         }
 
 
         /// <inheritdoc/>
-        public async Task ExecuteAsync(ReOpenIncident command)
+        public async Task HandleAsync(IMessageContext context, ReOpenIncident command)
         {
             var incident = await _repository.GetAsync(command.IncidentId);
             incident.Reopen();
             await _repository.UpdateAsync(incident);
 
             var evt = new IncidentReOpened(incident.ApplicationId, incident.Id, DateTime.UtcNow);
-            await _eventBus.PublishAsync(evt);
+            await context.SendAsync(evt);
         }
     }
 }

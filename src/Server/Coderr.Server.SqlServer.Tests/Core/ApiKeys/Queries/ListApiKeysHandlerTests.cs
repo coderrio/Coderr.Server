@@ -2,9 +2,11 @@
 using codeRR.Server.Api.Core.ApiKeys.Queries;
 using codeRR.Server.App.Core.ApiKeys;
 using codeRR.Server.SqlServer.Core.ApiKeys.Queries;
+using DotNetCqs;
 using FluentAssertions;
 using Griffin.Data;
 using Griffin.Data.Mapper;
+using NSubstitute;
 using Xunit;
 
 namespace codeRR.Server.SqlServer.Tests.Core.ApiKeys.Queries
@@ -39,9 +41,10 @@ namespace codeRR.Server.SqlServer.Tests.Core.ApiKeys.Queries
         public async void should_be_able_to_load_a_key()
         {
             var query = new ListApiKeys();
+            var context = Substitute.For<IMessageContext>();
 
             var sut = new ListApiKeysHandler(_uow);
-            var result = await sut.ExecuteAsync(query);
+            var result = await sut.HandleAsync(context, query);
 
             result.Keys.Should().NotBeEmpty();
             AssertionExtensions.Should((string) result.Keys[0].ApiKey).Be(_existingEntity.GeneratedKey);

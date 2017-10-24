@@ -6,7 +6,8 @@ namespace codeRR.Server.Api.Core.ApiKeys.Events
     /// <summary>
     /// A new API key has been created.
     /// </summary>
-    public class ApiKeyCreated : ApplicationEvent
+    [Message]
+    public class ApiKeyCreated
     {
         /// <summary>
         ///     Creates a new instance of <see cref="ApiKeyCreated" />.

@@ -13,21 +13,18 @@ using Griffin.Container;
 namespace codeRR.Server.App.Core.Applications.CommandHandlers
 {
     [Component]
-    internal class CreateApplicationHandler : ICommandHandler<CreateApplication>
+    internal class CreateApplicationHandler : IMessageHandler<CreateApplication>
     {
-        private readonly IEventBus _eventBus;
         private readonly IApplicationRepository _repository;
         private readonly IUserRepository _userRepository;
 
-        public CreateApplicationHandler(IApplicationRepository repository, IUserRepository userRepository,
-            IEventBus eventBus)
+        public CreateApplicationHandler(IApplicationRepository repository, IUserRepository userRepository)
         {
             _repository = repository;
             _userRepository = userRepository;
-            _eventBus = eventBus;
         }
 
-        public async Task ExecuteAsync(CreateApplication command)
+        public async Task HandleAsync(IMessageContext context, CreateApplication command)
         {
             var app = new Application(command.UserId, command.Name)
             {
@@ -44,7 +41,7 @@ namespace codeRR.Server.App.Core.Applications.CommandHandlers
                 Roles = new[] {ApplicationRole.Admin, ApplicationRole.Member},
             });
 
-            var identity = ClaimsPrincipal.Current.Identities.First();
+            var identity = context.Principal.Identities.First();
             var claim = new Claim(CoderrClaims.Application, app.Id.ToString(), ClaimValueTypes.Integer32);
             identity.AddClaim(claim);
             claim = new Claim(CoderrClaims.ApplicationAdmin, app.Id.ToString(), ClaimValueTypes.Integer32);
@@ -54,7 +51,7 @@ namespace codeRR.Server.App.Core.Applications.CommandHandlers
             identity.AddClaim(CoderrClaims.UpdateIdentity);
 
             var evt = new ApplicationCreated(app.Id, app.Name, command.UserId, command.ApplicationKey, app.SharedSecret);
-            await _eventBus.PublishAsync(evt);
+            await context.SendAsync(evt);
         }
     }
 }

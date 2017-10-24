@@ -8,7 +8,7 @@ using Griffin.Data;
 namespace codeRR.Server.SqlServer.Core.ApiKeys.Commands
 {
     [Component(RegisterAsSelf = true)]
-    public class DeleteApiKeyHandler : ICommandHandler<DeleteApiKey>
+    public class DeleteApiKeyHandler : IMessageHandler<DeleteApiKey>
     {
         private readonly IAdoNetUnitOfWork _unitOfWork;
 
@@ -18,7 +18,7 @@ namespace codeRR.Server.SqlServer.Core.ApiKeys.Commands
             _unitOfWork = unitOfWork;
         }
 
-        public Task ExecuteAsync(DeleteApiKey command)
+        public Task HandleAsync(IMessageContext context, DeleteApiKey command)
         {
             int id;
             if (!string.IsNullOrEmpty(command.ApiKey))

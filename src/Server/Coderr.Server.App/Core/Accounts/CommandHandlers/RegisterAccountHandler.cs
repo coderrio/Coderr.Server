@@ -21,10 +21,8 @@ namespace codeRR.Server.App.Core.Accounts.CommandHandlers
     ///     </para>
     /// </remarks>
     [Component]
-    public class RegisterAccountHandler : ICommandHandler<RegisterAccount>
+    public class RegisterAccountHandler : IMessageHandler<RegisterAccount>
     {
-        private readonly ICommandBus _commandBus;
-        private readonly IEventBus _eventBus;
         private readonly IAccountRepository _repository;
         private ILog _logger = LogManager.GetLogger(typeof(RegisterAccountHandler));
 
@@ -32,13 +30,9 @@ namespace codeRR.Server.App.Core.Accounts.CommandHandlers
         ///     Creates a new instance of <see cref="RegisterAccountHandler" />.
         /// </summary>
         /// <param name="repository">repos</param>
-        /// <param name="commandBus">to send verification email</param>
-        /// <param name="eventBus">to send <see cref="AccountRegistered" />.</param>
-        public RegisterAccountHandler(IAccountRepository repository, ICommandBus commandBus, IEventBus eventBus)
+        public RegisterAccountHandler(IAccountRepository repository)
         {
             _repository = repository;
-            _commandBus = commandBus;
-            _eventBus = eventBus;
         }
 
         /// <summary>
@@ -48,13 +42,13 @@ namespace codeRR.Server.App.Core.Accounts.CommandHandlers
         /// <returns>
         ///     Task which will be completed once the command has been executed.
         /// </returns>
-        public async Task ExecuteAsync(RegisterAccount command)
+        public async Task HandleAsync(IMessageContext context, RegisterAccount command)
         {
             if (command == null) throw new ArgumentNullException("command");
 
             if (!string.IsNullOrEmpty(command.UserName) && await _repository.IsUserNameTakenAsync(command.UserName))
             {
-                await SendAccountInfo(command.UserName);
+                await SendAccountInfo(context, command.UserName);
                 _logger.Warn("UserName is taken: " + command.UserName);
                 return;
             }
@@ -76,19 +70,19 @@ namespace codeRR.Server.App.Core.Accounts.CommandHandlers
             // accounts can be activated directly.
             // should not send activation email then.
             if (account.AccountState == AccountState.VerificationRequired)
-                await SendVerificationEmail(account);
+                await SendVerificationEmail(context, account);
 
             var evt = new AccountRegistered(account.Id, account.UserName) { IsSysAdmin = account.IsSysAdmin };
-            await _eventBus.PublishAsync(evt);
+            await context.SendAsync(evt);
 
             if (command.ActivateDirectly)
             {
                 var evt1 = new AccountActivated(account.Id, account.UserName) { EmailAddress = account.Email };
-                await _eventBus.PublishAsync(evt1);
+                await context.SendAsync(evt1);
             }
         }
 
-        private async Task SendAccountInfo(string userName)
+        private async Task SendAccountInfo(IMessageContext context, string userName)
         {
             var account = await _repository.GetByUserNameAsync(userName);
 
@@ -109,10 +103,10 @@ Cheerio,
             };
             msg.Recipients = new[] { new EmailAddress(account.Email) };
 
-            await _commandBus.ExecuteAsync(new SendEmail(msg));
+            await context.SendAsync(new SendEmail(msg));
         }
 
-        private Task SendVerificationEmail(Account account)
+        private Task SendVerificationEmail(IMessageContext context, Account account)
         {
             var config = ConfigurationStore.Instance.Load<BaseConfiguration>();
             //TODO: HTML email
@@ -131,7 +125,7 @@ Good luck,
             };
             msg.Recipients = new[] { new EmailAddress(account.Email) };
 
-            return _commandBus.ExecuteAsync(new SendEmail(msg));
+            return context.SendAsync(new SendEmail(msg));
         }
     }
 }
