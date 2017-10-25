@@ -45,7 +45,7 @@ namespace codeRR.Server.App.Tests.Core.Accounts.CommandHandlers
             await sut.HandleAsync(context, cmd);
 
             await context.Received().SendAsync(Arg.Any<AccountRegistered>());
-            context.Method("PublishAsync").Arg<AccountRegistered>().AccountId.Should().Be(3);
+            context.Method("SendAsync").Arg<AccountRegistered>().AccountId.Should().Be(3);
         }
 
         [Fact]

@@ -3,10 +3,9 @@
 namespace codeRR.Server.ReportAnalyzer.LibContracts
 {
     /// <summary>
-    ///     DTO for a client library report. Should always look exactly as the report in the codeRR.Client assembly
+    ///     Command
     /// </summary>
-    [Serializable]
-    public class ReceivedReportDTO
+    public class ProcessReport
     {
         /// <summary>
         ///     Application that this report belongs to
@@ -16,7 +15,7 @@ namespace codeRR.Server.ReportAnalyzer.LibContracts
         /// <summary>
         ///     A collection of context information such as HTTP request information or computer hardware info.
         /// </summary>
-        public ReceivedReportContextInfo[] ContextCollections { get; set; }
+        public ProcessReportContextInfoDto[] ContextCollections { get; set; }
 
         /// <summary>
         ///     Date specified at client side
@@ -32,7 +31,7 @@ namespace codeRR.Server.ReportAnalyzer.LibContracts
         /// <summary>
         ///     Exception which was caught.
         /// </summary>
-        public ReceivedReportException Exception { get; set; }
+        public ProcessReportExceptionDto Exception { get; set; }
 
         /// <summary>
         ///     Remote address that we received the report from

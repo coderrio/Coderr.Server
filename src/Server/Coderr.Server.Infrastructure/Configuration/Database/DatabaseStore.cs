@@ -16,9 +16,9 @@ namespace codeRR.Server.Infrastructure.Configuration.Database
     public class DatabaseStore : ConfigurationStore
     {
         private readonly Dictionary<Type, Wrapper> _items = new Dictionary<Type, Wrapper>();
-        private readonly IConnectionFactory _connectionFactory;
+        private readonly Func<IDbConnection> _connectionFactory;
 
-        public DatabaseStore(IConnectionFactory connectionFactory)
+        public DatabaseStore(Func<IDbConnection> connectionFactory)
         {
             _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
         }
@@ -105,7 +105,7 @@ namespace codeRR.Server.Infrastructure.Configuration.Database
         /// <returns>open connection</returns>
         protected virtual IDbConnection OpenConnectionFor<T>()
         {
-            return _connectionFactory.Open();
+            return OpenConnectionFor(typeof(T));
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace codeRR.Server.Infrastructure.Configuration.Database
         protected virtual IDbConnection OpenConnectionFor(Type configClassType)
         {
             if (configClassType == null) throw new ArgumentNullException(nameof(configClassType));
-            return _connectionFactory.Open();
+            return _connectionFactory();
         }
 
         private void SetCache(IConfigurationSection section)

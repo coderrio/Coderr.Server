@@ -18,14 +18,11 @@ namespace codeRR.Server.SqlServer.Core.Feedback.Commands
         private readonly ILog _logger = LogManager.GetLogger(typeof(SubmitFeedbackHandler));
         private readonly IReportsRepository _reportsRepository;
         private readonly IAdoNetUnitOfWork _unitOfWork;
-        private readonly IMessageBus _messageBus;
 
-        public SubmitFeedbackHandler(IAdoNetUnitOfWork unitOfWork, IReportsRepository reportsRepository,
-            IMessageBus messageBus)
+        public SubmitFeedbackHandler(IAdoNetUnitOfWork unitOfWork, IReportsRepository reportsRepository)
         {
             _unitOfWork = unitOfWork;
             _reportsRepository = reportsRepository;
-            _messageBus = messageBus;
         }
 
         public async Task HandleAsync(IMessageContext context, SubmitFeedback command)

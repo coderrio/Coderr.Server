@@ -236,7 +236,6 @@
     <Compile Include="App_Start\Cqs\GriffinHandlerResolverAdapter.cs" />
     <Compile Include="App_Start\Cqs\JsonFormatter.cs" />
     <Compile Include="App_Start\Cqs\JsonMessageQueueSerializer.cs" />
-    <Compile Include="App_Start\Cqs\MessageQueueProvider.cs" />
     <Compile Include="App_Start\Cqs\Metadata.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IoC\GriffinContainerAdapter.cs" />

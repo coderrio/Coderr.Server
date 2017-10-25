@@ -6,7 +6,7 @@ using Griffin.Data;
 
 namespace codeRR.Server.SqlServer.Tests
 {
-    internal class ConnectionFactory : IConnectionFactory
+    internal class ConnectionFactory
     {
         public static IAdoNetUnitOfWork Create()
         {

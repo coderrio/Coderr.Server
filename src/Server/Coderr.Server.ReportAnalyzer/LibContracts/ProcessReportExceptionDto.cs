@@ -7,12 +7,12 @@ namespace codeRR.Server.ReportAnalyzer.LibContracts
     ///     Model used to wrap all information from an exception.
     /// </summary>
     [Serializable]
-    public class ReceivedReportException
+    public class ProcessReportExceptionDto
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ReceivedReportException" /> class.
+        ///     Initializes a new instance of the <see cref="ProcessReportExceptionDto" /> class.
         /// </summary>
-        public ReceivedReportException()
+        public ProcessReportExceptionDto()
         {
             Properties = new Dictionary<string, string>();
         }
@@ -41,7 +41,7 @@ namespace codeRR.Server.ReportAnalyzer.LibContracts
         /// <summary>
         ///     Inner exception (if any; otherwise <c>null</c>).
         /// </summary>
-        public ReceivedReportException InnerException { get; set; }
+        public ProcessReportExceptionDto InnerExceptionDto { get; set; }
 
         /// <summary>
         ///     Exception message

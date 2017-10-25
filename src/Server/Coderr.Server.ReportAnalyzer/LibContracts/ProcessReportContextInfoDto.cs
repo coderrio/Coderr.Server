@@ -8,22 +8,22 @@ namespace codeRR.Server.ReportAnalyzer.LibContracts
     ///     Context collection
     /// </summary>
     [Serializable]
-    public class ReceivedReportContextInfo
+    public class ProcessReportContextInfoDto
     {
         /// <summary>
-        ///     Creates a new instance of <see cref="ReceivedReportContextInfo" />.
+        ///     Creates a new instance of <see cref="ProcessReportContextInfoDto" />.
         /// </summary>
-        protected ReceivedReportContextInfo()
+        protected ProcessReportContextInfoDto()
         {
         }
 
         /// <summary>
-        ///     Creates a new instance of <see cref="ReceivedReportContextInfo" />.
+        ///     Creates a new instance of <see cref="ProcessReportContextInfoDto" />.
         /// </summary>
         /// <param name="name">context collection name</param>
         /// <param name="properties">properties</param>
         /// <exception cref="ArgumentNullException">name; items</exception>
-        public ReceivedReportContextInfo(string name, Dictionary<string, string> properties)
+        public ProcessReportContextInfoDto(string name, Dictionary<string, string> properties)
         {
             if (name == null) throw new ArgumentNullException("name");
             if (properties == null) throw new ArgumentNullException("properties");

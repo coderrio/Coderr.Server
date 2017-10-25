@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -21,6 +20,7 @@ using Griffin.Container;
 using Griffin.Data;
 using log4net;
 using Owin;
+using WebGrease.Css.Extensions;
 using ScopeClosingEventArgs = Griffin.ApplicationServices.ScopeClosingEventArgs;
 
 namespace codeRR.Server.Web.Services
@@ -30,19 +30,13 @@ namespace codeRR.Server.Web.Services
     /// </summary>
     public class ServiceRunner : IDisposable
     {
-        private readonly IConnectionFactory _connectionFactory;
         private readonly CompositionRoot _compositionRoot = new CompositionRoot();
         private readonly ILog _log = LogManager.GetLogger(typeof(ServiceRunner));
         private readonly PluginManager _pluginManager = new PluginManager();
         private ApplicationServiceManager _appManager;
         private BackgroundJobManager _backgroundJobManager;
         private PluginConfiguration _pluginConfiguration;
-        private CancellationTokenSource _shutdownToken = new CancellationTokenSource();
-
-        public ServiceRunner(IConnectionFactory connectionFactory)
-        {
-            _connectionFactory = connectionFactory;
-        }
+        private readonly CancellationTokenSource _shutdownToken = new CancellationTokenSource();
 
         public IContainer Container => CompositionRoot.Container;
 
@@ -64,49 +58,33 @@ namespace codeRR.Server.Web.Services
                 {
                     LetPluginsRegisterServices(registrar);
 
-                    registrar.RegisterConcrete<DotNetCqs.Bus.SingleInstanceMessageBus>(Lifetime.Singleton);
+                    registrar.RegisterService<IMessageBus>(
+                        x => new SingleInstanceMessageBus(x.Resolve<IMessageQueueProvider>().Open("Messaging")),
+                        Lifetime.Singleton);
                     registrar.RegisterConcrete<ScopedQueryBus>();
-                    registrar.RegisterInstance<IMessageQueue>(
-                        new AdoNetMessageQueue("Messaging", () => _connectionFactory.Open(),
-                            new JsonMessageQueueSerializer())
-                        {
-                            TableName = "MessageQueue"
-                        });
-
-                    registrar.RegisterService<IMessageInvoker>(x =>
+                    registrar.RegisterService(CreateMessageInvoker, Lifetime.Scoped);
+                    registrar.RegisterService(x=> CreateQueueListener(x, "Messaging"), Lifetime.Singleton);
+                    registrar.RegisterService(x => CreateQueueListener(x, "Reports"), Lifetime.Singleton);
+                    registrar.RegisterService(x => CreateQueueListener(x, "Feedback"), Lifetime.Singleton);
+                    registrar.RegisterService<IMessageQueueProvider>(x =>
                     {
-                        var scope = new GriffinContainerScopeAdapter((IChildContainer)x);
-                        var invoker = new MessageInvoker(scope);
-                        invoker.InvokingHandler += (sender, args) =>
-                        {
-                            _log.Debug($"Invoking {args.Handler} in scope " + scope.GetHashCode());
-                        };
-                        invoker.HandlerInvoked += (sender, args) =>
-                        {
-                            if (args.Exception == null)
-                            {
-                                _log.Debug($"Ran {args.Handler}, took {args.ExecutionTime.TotalMilliseconds}ms");
-                            }
-                            else
-                            {
-                                _log.Error(
-                                    $"Ran {args.Handler}, took {args.ExecutionTime.TotalMilliseconds}ms, but FAILED.",
-                                    args.Exception);
-                            }
-                        };
-                        return invoker;
-                    }, Lifetime.Scoped);
-                    registrar.RegisterService(CreateQueueListener, Lifetime.Singleton);
+                        return new AdoNetMessageQueueProvider(
+                            () => DbConnectionFactory.Open(Startup.ConnectionStringName, true),
+                            new JsonMessageQueueSerializer()
+                        );
+                    }, Lifetime.Singleton);
 
                     // let us guard it since it runs events in the background.
                     //var service = registrar.Registrations.First(x => x.Implements(typeof(IMessageBus)));
                     //service.AddService(typeof(IApplicationService));
-
                 }, Startup.ConfigurationStore);
 
-                var listener = CreateQueueListener(null);
-                listener.RunAsync(_shutdownToken.Token).ContinueWith(OnStopped);
-                
+                Container.ResolveAll<QueueListener>()
+                    .ForEach(x => x
+                        .RunAsync(_shutdownToken.Token)
+                        .ContinueWith(OnStopped)
+                    );
+
                 BuildServices();
                 _appManager.Start();
                 _backgroundJobManager.Start();
@@ -117,43 +95,6 @@ namespace codeRR.Server.Web.Services
                 _log.Error("Failed to start.", exception);
                 throw;
             }
-        }
-
-        private void OnStopped(Task obj)
-        {
-            _log.Warn("QueueListener stopped");
-        }
-
-        private QueueListener CreateQueueListener(IServiceLocator serviceLocator)
-        {
-            var queue = Container.Resolve<IMessageQueue>();
-            var listener = new QueueListener(queue, new GriffinHandlerScopeFactory(Container))
-            {
-                RetryAttempts = new[]
-                    {TimeSpan.FromMilliseconds(500), TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2)},
-
-            };
-            listener.Logger = s => _log.Info(s);
-            listener.PoisonMessageDetected += (sender, args) =>
-            {
-                _log.Error("Poison message: " + args.Message.Body, args.Exception);
-            };
-            listener.ScopeCreated += (sender, args) =>
-            {
-                _log.Debug("Running " + args.Message.Body + ", Credentials: " + args.Principal.ToFriendlyString());
-            };
-            listener.ScopeClosing += (sender, args) =>
-            {
-                if (args.Exception == null)
-                {
-                    var all = args.Scope.ResolveDependency<IAdoNetUnitOfWork>().ToList();
-                    _log.Info("Saving " + all[0].GetHashCode() + " of " + all.Count + " from scope " + args.Scope.GetHashCode());
-                    all[0].SaveChanges();
-                }
-                if (args.Exception != null)
-                    _log.Error("Failed to process " + args.Message.Body + ".", args.Exception);
-            };
-            return listener;
         }
 
         public void Stop()
@@ -188,16 +129,61 @@ namespace codeRR.Server.Web.Services
             _backgroundJobManager.ScopeClosing += OnBackgroundJobScopeClosing;
         }
 
+        private IMessageInvoker CreateMessageInvoker(IServiceLocator x)
+        {
+            var scope = new GriffinContainerScopeAdapter((IChildContainer) x);
+            var invoker = new MessageInvoker(scope);
+            invoker.InvokingHandler += (sender, args) =>
+            {
+                _log.Debug($"Invoking {args.Handler} in scope " + scope.GetHashCode());
+            };
+            invoker.HandlerInvoked += (sender, args) =>
+            {
+                if (args.Exception == null)
+                    _log.Debug($"Ran {args.Handler}, took {args.ExecutionTime.TotalMilliseconds}ms");
+                else
+                    _log.Error(
+                        $"Ran {args.Handler}, took {args.ExecutionTime.TotalMilliseconds}ms, but FAILED.",
+                        args.Exception);
+            };
+            return invoker;
+        }
+
+        private QueueListener CreateQueueListener(IServiceLocator serviceLocator, string queueName)
+        {
+            var queue = serviceLocator.Resolve<IMessageQueueProvider>().Open(queueName);
+            var listener = new QueueListener(queue, new GriffinHandlerScopeFactory(Container))
+            {
+                RetryAttempts = new[]
+                    {TimeSpan.FromMilliseconds(500), TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2)},
+                Logger = s => _log.Info(s)
+            };
+            listener.PoisonMessageDetected += (sender, args) =>
+            {
+                _log.Error(queueName + " Poison message: " + args.Message.Body, args.Exception);
+            };
+            listener.ScopeCreated += (sender, args) =>
+            {
+                _log.Debug(queueName + " Running " + args.Message.Body + ", Credentials: " +
+                           args.Principal.ToFriendlyString());
+            };
+            listener.ScopeClosing += (sender, args) =>
+            {
+                if (args.Exception == null)
+                {
+                    var all = args.Scope.ResolveDependency<IAdoNetUnitOfWork>().ToList();
+                    all[0].SaveChanges();
+                }
+                if (args.Exception != null)
+                    _log.Error(queueName + " Failed to process " + args.Message.Body + ".", args.Exception);
+            };
+            return listener;
+        }
+
         private void LetPluginsRegisterServices(ContainerRegistrar registrar)
         {
             _pluginConfiguration = new PluginConfiguration(registrar);
             _pluginManager.ConfigurePlugins(_pluginConfiguration);
-        }
-
-
-        private void OnJobFailed(object sender, BackgroundJobFailedEventArgs e)
-        {
-            _log.Error("Failed to execute " + e.Job, e.Exception);
         }
 
 
@@ -213,9 +199,20 @@ namespace codeRR.Server.Web.Services
             }
         }
 
+
+        private void OnJobFailed(object sender, BackgroundJobFailedEventArgs e)
+        {
+            _log.Error("Failed to execute " + e.Job, e.Exception);
+        }
+
         private void OnServiceFailed(object sender, ApplicationServiceFailedEventArgs e)
         {
             _log.Error("Failed to execute " + e.ApplicationService, e.Exception);
+        }
+
+        private void OnStopped(Task obj)
+        {
+            _log.Warn("QueueListener stopped");
         }
 
         private void WarmupPlugins()

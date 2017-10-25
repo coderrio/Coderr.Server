@@ -13,7 +13,7 @@ using log4net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace codeRR.Server.ReportAnalyzer.Services
+namespace codeRR.Server.ReportAnalyzer.Handlers
 {
     /// <summary>
     ///     Runs analysis for the report.

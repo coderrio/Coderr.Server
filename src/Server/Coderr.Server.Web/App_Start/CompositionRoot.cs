@@ -35,7 +35,6 @@ namespace codeRR.Server.Web
             builder.RegisterComponents(Lifetime.Scoped, Assembly.GetExecutingAssembly());
             builder.RegisterService(CreateConnection, Lifetime.Scoped);
             builder.RegisterService(CreateTaskInvoker, Lifetime.Singleton);
-            builder.RegisterInstance(Startup.ConnectionFactory);
             action(builder);
 
             RegisterBuiltInComponents(builder);
@@ -58,8 +57,8 @@ namespace codeRR.Server.Web
 
         private IAdoNetUnitOfWork CreateConnection(IServiceLocator arg)
         {
-            var factory = arg.Resolve<IConnectionFactory>();
-            return new AdoNetUowSpy(new AdoNetUnitOfWork(factory.Open(), true, IsolationLevel.RepeatableRead));
+            var con = DbConnectionFactory.Open(Startup.ConnectionStringName, true);
+            return new AdoNetUowSpy(new AdoNetUnitOfWork(con, true, IsolationLevel.RepeatableRead));
         }
 
         private IScopedTaskInvoker CreateTaskInvoker(IServiceLocator arg)
@@ -77,7 +76,7 @@ namespace codeRR.Server.Web
         {
             builder.RegisterComponents(Lifetime.Scoped, typeof(AppType).Assembly);
             builder.RegisterComponents(Lifetime.Scoped, typeof(UserRepository).Assembly);
-            builder.RegisterComponents(Lifetime.Scoped, typeof(ScanForNewErrorReports).Assembly);
+            builder.RegisterComponents(Lifetime.Scoped, typeof(ReportAnalyzer.Handlers.ReportAnalyzer).Assembly);
         }
 
         private void RegisterQueues(ContainerRegistrar builder)

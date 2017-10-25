@@ -10,11 +10,11 @@ namespace codeRR.Server.ReportAnalyzer
     /// </summary>
     public class AnalysisDbContext : IDisposable
     {
-        private readonly IConnectionFactory _connectionFactory;
+        private readonly Func<IDbConnection> _connectionFactory;
         private IDbConnection _con;
         private IAdoNetUnitOfWork _unitOfWork;
 
-        public AnalysisDbContext(IConnectionFactory connectionFactory)
+        public AnalysisDbContext(Func<IDbConnection> connectionFactory)
         {
             _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
         }
@@ -35,7 +35,7 @@ namespace codeRR.Server.ReportAnalyzer
                 if (_con != null)
                     return _con;
 
-                _con = _connectionFactory.Open();
+                _con = _connectionFactory();
                 return _con;
             }
         }

@@ -66,7 +66,7 @@ namespace codeRR.Server.App.Tests.Core.Applications.Commands
             var cmd = new InviteUser(1, "jonas@gauffin.com") { UserId = 1 };
             var members = new[] { new ApplicationTeamMember(1, 3, "karl") };
             _applicationRepository.GetTeamMembersAsync(1).Returns(members);
-            _context.Principal.Returns(CreateAdminPrincipal());
+            _context.Principal.Returns(CreateUserPrincipal());
 
             Func<Task> actual = async () => await _sut.HandleAsync(_context, cmd);
 
@@ -74,16 +74,16 @@ namespace codeRR.Server.App.Tests.Core.Applications.Commands
         }
 
         [Fact]
-        public void Sysadmin_should_be_able_To_invite_users()
+        public async Task Sysadmin_should_be_able_To_invite_users()
         {
             var cmd = new InviteUser(1, "jonas@gauffin.com") { UserId = 1 };
             var members = new[] { new ApplicationTeamMember(3, 3, "karl") };
             _applicationRepository.GetTeamMembersAsync(1).Returns(members);
             _context.Principal.Returns(CreateAdminPrincipal());
 
-            Func<Task> actual = async () => await _sut.HandleAsync(_context, cmd);
+            await _sut.HandleAsync(_context, cmd);
 
-            actual.ShouldThrow<SecurityException>();
+            await _context.Received().SendAsync(Arg.Any<UserInvitedToApplication>());
         }
 
         [Fact]
@@ -152,6 +152,15 @@ namespace codeRR.Server.App.Tests.Core.Applications.Commands
             {
                 new Claim(ClaimTypes.Role, CoderrClaims.RoleSysAdmin),
                 new Claim(CoderrClaims.ApplicationAdmin, "1")
+            };
+            var identity = new ClaimsIdentity(claims);
+            return new ClaimsPrincipal(identity);
+        }
+
+        private ClaimsPrincipal CreateUserPrincipal()
+        {
+            var claims = new List<Claim>
+            {
             };
             var identity = new ClaimsIdentity(claims);
             return new ClaimsPrincipal(identity);

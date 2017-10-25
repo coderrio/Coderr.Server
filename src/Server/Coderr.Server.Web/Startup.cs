@@ -37,12 +37,13 @@ namespace codeRR.Server.Web
 
         public Startup()
         {
-            ConfigureConnectionFactory();
-            _serviceRunner = new ServiceRunner(ConnectionFactory);
-            ConfigurationStore = new DatabaseStore(ConnectionFactory);
+            ConnectionStringName = ConfigurationManager.AppSettings["ConnectionStringName"] ?? "Db";
+            _serviceRunner = new ServiceRunner();
+            ConfigurationStore = new DatabaseStore(() => DbConnectionFactory.Open(ConnectionStringName, true));
         }
 
-        public static IConnectionFactory ConnectionFactory { get; set; }
+        public static string ConnectionStringName { get; private set; }
+
         public static ConfigurationStore ConfigurationStore { get; private set; }
 
         private bool IsConfigured => ConfigurationManager.AppSettings["Configured"] == "true";
@@ -112,15 +113,6 @@ namespace codeRR.Server.Web
             });
 
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
-        }
-
-        private void ConfigureConnectionFactory()
-        {
-            var typeName = ConfigurationManager.AppSettings["ConnectionFactoryType"];
-            if (typeName != null)
-                ConnectionFactory = (IConnectionFactory)TypeHelper.CreateAssemblyObject(typeName);
-            else
-                ConnectionFactory = new Net452ConnectionFactory();
         }
 
         private static void ConfigureDataMapping()

@@ -10,12 +10,10 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        private IConnectionFactory _connectionFactory;
         private ConfigurationStore _configStore;
 
-        public HomeController(IConnectionFactory connectionFactory, ConfigurationStore configStore)
+        public HomeController(ConfigurationStore configStore)
         {
-            _connectionFactory = connectionFactory;
             _configStore = configStore;
         }
 
@@ -86,7 +84,7 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
         {
             try
             {
-                _connectionFactory.Open();
+                DbConnectionFactory.Open(Startup.ConnectionStringName, true);
             }
             catch
             {

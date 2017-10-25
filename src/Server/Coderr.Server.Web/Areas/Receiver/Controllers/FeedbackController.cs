@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
+using codeRR.Server.App.Core.Applications;
 using codeRR.Server.Infrastructure;
 using codeRR.Server.ReportAnalyzer.LibContracts;
 using codeRR.Server.Web.Areas.Receiver.Helpers;
@@ -20,13 +21,13 @@ namespace codeRR.Server.Web.Areas.Receiver.Controllers
     [AllowAnonymous]
     public class FeedbackController : ApiController
     {
+        private readonly IApplicationRepository _applicationRepository;
         private readonly ILog _logger = LogManager.GetLogger(typeof(FeedbackController));
         private readonly IMessageQueue _queue;
-        private readonly IConnectionFactory _connectionFactory;
 
-        public FeedbackController(IMessageQueueProvider queueProvider, IConnectionFactory connectionFactory)
+        public FeedbackController(IMessageQueueProvider queueProvider, IApplicationRepository applicationRepository)
         {
-            _connectionFactory = connectionFactory;
+            _applicationRepository = applicationRepository;
             _queue = queueProvider.Open("Feedback");
         }
 
@@ -35,21 +36,12 @@ namespace codeRR.Server.Web.Areas.Receiver.Controllers
         {
             try
             {
-                int appId;
-                using (var connection = _connectionFactory.Open())
-                {
-                    using (var cmd = (DbCommand)connection.CreateCommand())
-                    {
-                        cmd.CommandText = "SELECT Id FROM Applications WHERE AppKey = @key";
-                        cmd.AddParameter("key", appKey);
-                        appId = (int)await cmd.ExecuteScalarAsync();
-                    }
-                }
+                var app = await _applicationRepository.GetByKeyAsync(appKey);
                 using (var session = _queue.BeginSession())
                 {
-                    var dto = new ReceivedFeedbackDTO
+                    var dto = new ProcessFeedback
                     {
-                        ApplicationId = appId,
+                        ApplicationId = app.Id,
                         Description = model.Description,
                         EmailAddress = model.EmailAddress,
                         ReceivedAtUtc = DateTime.UtcNow,
@@ -59,7 +51,6 @@ namespace codeRR.Server.Web.Areas.Receiver.Controllers
                     };
 
                     await session.EnqueueAsync(User as ClaimsPrincipal, new Message(dto));
-
                     await session.SaveChanges();
                 }
             }

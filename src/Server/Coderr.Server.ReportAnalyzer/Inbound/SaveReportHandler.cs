@@ -24,21 +24,20 @@ namespace codeRR.Server.ReportAnalyzer.Inbound
     /// </summary>
     public class SaveReportHandler
     {
+        private readonly IAdoNetUnitOfWork _unitOfWork;
         private readonly ILog _logger = LogManager.GetLogger(typeof(SaveReportHandler));
         private readonly IMessageQueue _queue;
-        private readonly IConnectionFactory _connectionFactory;
         private readonly List<Func<NewReportDTO, bool>> _filters = new List<Func<NewReportDTO, bool>>();
 
         /// <summary>
         ///     Creates a new instance of <see cref="SaveReportHandler" />.
         /// </summary>
-        /// <param name="queue">Queue used to enqueue new error reports</param>
-        /// <param name="connectionFactory">Tries to find connection named "Queue" and uses default if not found.</param>
+        /// <param name="queue">Queue to store inbound reports in</param>
         /// <exception cref="ArgumentNullException">queueProvider;connectionFactory</exception>
-        public SaveReportHandler(IMessageQueue queue, IConnectionFactory connectionFactory)
+        public SaveReportHandler(IMessageQueue queue, IAdoNetUnitOfWork unitOfWork)
         {
+            _unitOfWork = unitOfWork;
             _queue = queue ?? throw new ArgumentNullException(nameof(queue));
-            _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
         }
 
         public void AddFilter(Func<NewReportDTO, bool> filter)
@@ -79,7 +78,7 @@ namespace codeRR.Server.ReportAnalyzer.Inbound
             if (_filters.Any(x => !x(report)))
                 return;
 
-            var internalDto = new ReceivedReportDTO
+            var internalDto = new ProcessReport
             {
                 ApplicationId = application.Id,
                 RemoteAddress = remoteAddress,
@@ -94,14 +93,14 @@ namespace codeRR.Server.ReportAnalyzer.Inbound
             await StoreReportAsync(user, internalDto);
         }
 
-        private static ReceivedReportContextInfo ConvertCollection(NewReportContextInfo arg)
+        private static ProcessReportContextInfoDto ConvertCollection(NewReportContextInfo arg)
         {
-            return new ReceivedReportContextInfo(arg.Name, arg.Properties);
+            return new ProcessReportContextInfoDto(arg.Name, arg.Properties);
         }
 
-        private static ReceivedReportException ConvertException(NewReportException exception)
+        private static ProcessReportExceptionDto ConvertException(NewReportException exception)
         {
-            var ex = new ReceivedReportException
+            var ex = new ProcessReportExceptionDto
             {
                 Name = exception.Name,
                 AssemblyName = exception.AssemblyName,
@@ -114,7 +113,7 @@ namespace codeRR.Server.ReportAnalyzer.Inbound
                 StackTrace = exception.StackTrace
             };
             if (exception.InnerException != null)
-                ex.InnerException = ConvertException(exception.InnerException);
+                ex.InnerExceptionDto = ConvertException(exception.InnerException);
             return ex;
         }
 
@@ -145,57 +144,48 @@ namespace codeRR.Server.ReportAnalyzer.Inbound
 
         private async Task<AppInfo> GetAppAsync(string appKey)
         {
-            using (var con = OpenConnection())
+            using (var cmd = _unitOfWork.CreateDbCommand())
             {
-                using (var cmd = con.CreateDbCommand())
+                cmd.CommandText = "SELECT Id, SharedSecret FROM Applications WHERE AppKey = @key";
+                cmd.AddParameter("key", appKey);
+                using (var reader = await cmd.ExecuteReaderAsync())
                 {
-                    cmd.CommandText = "SELECT Id, SharedSecret FROM Applications WHERE AppKey = @key";
-                    cmd.AddParameter("key", appKey);
-                    using (var reader = await cmd.ExecuteReaderAsync())
-                    {
-                        if (!await reader.ReadAsync())
-                            return null;
+                    if (!await reader.ReadAsync())
+                        return null;
 
-                        return new AppInfo
-                        {
-                            Id = reader.GetInt32(0),
-                            SharedSecret = reader.GetString(1)
-                        };
-                    }
+                    return new AppInfo
+                    {
+                        Id = reader.GetInt32(0),
+                        SharedSecret = reader.GetString(1)
+                    };
                 }
             }
-        }
 
-        private IDbConnection OpenConnection()
-        {
-            return _connectionFactory.TryOpen("queue") ?? _connectionFactory.Open();
         }
 
         private async Task StoreInvalidReportAsync(string appKey, string sig, string remoteAddress, byte[] reportBody)
         {
             try
             {
-                using (var connection = OpenConnection())
+                //TODO: Make something generic.
+                using (var cmd = (SqlCommand)_unitOfWork.CreateCommand())
                 {
-                    //TODO: Make something generic.
-                    using (var cmd = (SqlCommand) connection.CreateCommand())
-                    {
-                        cmd.CommandText =
-                            @"INSERT INTO InvalidReports(appkey, signature, reportbody, errormessage, createdatutc)
+                    cmd.CommandText =
+                        @"INSERT INTO InvalidReports(appkey, signature, reportbody, errormessage, createdatutc)
                                             VALUES (@appkey, @signature, @reportbody, @errormessage, @createdatutc);";
-                        cmd.AddParameter("appKey", appKey);
-                        cmd.AddParameter("signature", sig);
-                        var p = cmd.CreateParameter();
-                        p.SqlDbType = SqlDbType.Image;
-                        p.ParameterName = "reportbody";
-                        p.Value = reportBody;
-                        cmd.Parameters.Add(p);
-                        //cmd.AddParameter("reportbody", reportBody);
-                        cmd.AddParameter("errormessage", "Failed to validate signature");
-                        cmd.AddParameter("createdatutc", DateTime.UtcNow);
-                        await cmd.ExecuteNonQueryAsync();
-                    }
+                    cmd.AddParameter("appKey", appKey);
+                    cmd.AddParameter("signature", sig);
+                    var p = cmd.CreateParameter();
+                    p.SqlDbType = SqlDbType.Image;
+                    p.ParameterName = "reportbody";
+                    p.Value = reportBody;
+                    cmd.Parameters.Add(p);
+                    //cmd.AddParameter("reportbody", reportBody);
+                    cmd.AddParameter("errormessage", "Failed to validate signature");
+                    cmd.AddParameter("createdatutc", DateTime.UtcNow);
+                    await cmd.ExecuteNonQueryAsync();
                 }
+
             }
             catch (Exception ex)
             {
@@ -203,7 +193,7 @@ namespace codeRR.Server.ReportAnalyzer.Inbound
             }
         }
 
-        private Task StoreReportAsync(ClaimsPrincipal user, ReceivedReportDTO report)
+        private Task StoreReportAsync(ClaimsPrincipal user, ProcessReport report)
         {
             try
             {
@@ -216,7 +206,7 @@ namespace codeRR.Server.ReportAnalyzer.Inbound
             catch (Exception ex)
             {
                 _logger.Error(
-                    "Failed to StoreReport: " + JsonConvert.SerializeObject(new {model = report}), ex);
+                    "Failed to StoreReport: " + JsonConvert.SerializeObject(new { model = report }), ex);
             }
             return Task.FromResult<object>(null);
         }

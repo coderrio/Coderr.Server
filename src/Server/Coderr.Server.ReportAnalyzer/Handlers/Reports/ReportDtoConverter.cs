@@ -13,23 +13,23 @@ namespace codeRR.Server.ReportAnalyzer.Scanners
         /// <summary>
         ///     Convert exception to our internal format
         /// </summary>
-        /// <param name="exception">exception</param>
+        /// <param name="exceptionDto">exception</param>
         /// <returns>our format</returns>
-        public ErrorReportException ConvertException(ReceivedReportException exception)
+        public ErrorReportException ConvertException(ProcessReportExceptionDto exceptionDto)
         {
             var ex = new ErrorReportException
             {
-                AssemblyName = exception.AssemblyName,
-                BaseClasses = exception.BaseClasses,
-                Everything = exception.Everything,
-                FullName = exception.FullName,
-                Message = exception.Message,
-                Name = exception.Name,
-                Namespace = exception.Namespace,
-                StackTrace = exception.StackTrace
+                AssemblyName = exceptionDto.AssemblyName,
+                BaseClasses = exceptionDto.BaseClasses,
+                Everything = exceptionDto.Everything,
+                FullName = exceptionDto.FullName,
+                Message = exceptionDto.Message,
+                Name = exceptionDto.Name,
+                Namespace = exceptionDto.Namespace,
+                StackTrace = exceptionDto.StackTrace
             };
-            if (exception.InnerException != null)
-                ex.InnerException = ConvertException(exception.InnerException);
+            if (exceptionDto.InnerExceptionDto != null)
+                ex.InnerException = ConvertException(exceptionDto.InnerExceptionDto);
             return ex;
         }
 
@@ -39,7 +39,7 @@ namespace codeRR.Server.ReportAnalyzer.Scanners
         /// <param name="report">client report</param>
         /// <param name="applicationId">application that we identified that the report belongs to</param>
         /// <returns>internal format</returns>
-        public ErrorReportEntity ConvertReport(ReceivedReportDTO report, int applicationId)
+        public ErrorReportEntity ConvertReport(ProcessReport report, int applicationId)
         {
             ErrorReportException ex = null;
             if (report.Exception != null)
@@ -58,10 +58,10 @@ namespace codeRR.Server.ReportAnalyzer.Scanners
         /// </summary>
         /// <param name="json">JSON</param>
         /// <returns>DTO</returns>
-        public ReceivedReportDTO LoadReportFromJson(string json)
+        public ProcessReport LoadReportFromJson(string json)
         {
             var report =
-                JsonConvert.DeserializeObject<ReceivedReportDTO>(json, new JsonSerializerSettings
+                JsonConvert.DeserializeObject<ProcessReport>(json, new JsonSerializerSettings
                 {
                     ObjectCreationHandling = ObjectCreationHandling.Auto,
                     TypeNameHandling = TypeNameHandling.Auto,

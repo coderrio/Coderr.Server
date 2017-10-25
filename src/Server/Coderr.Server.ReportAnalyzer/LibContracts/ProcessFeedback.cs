@@ -3,10 +3,10 @@
 namespace codeRR.Server.ReportAnalyzer.LibContracts
 {
     /// <summary>
-    ///     Feedback item as recieved by the client library
+    ///     Feedback item as received by the client library
     /// </summary>
     [Serializable]
-    public class ReceivedFeedbackDTO
+    public class ProcessFeedback
     {
         /// <summary>
         ///     Application that the report belongs to.

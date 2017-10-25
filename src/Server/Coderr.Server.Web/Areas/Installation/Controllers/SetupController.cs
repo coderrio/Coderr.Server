@@ -14,7 +14,6 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
     [OutputCache(Duration = 0, NoStore = true)]
     public class SetupController : Controller
     {
-        private readonly IConnectionFactory _connectionFactory = new Net452ConnectionFactory();
         private ConfigurationStore _configStore;
 
         public SetupController(ConfigurationStore configStore)
@@ -118,7 +117,7 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
         {
             try
             {
-                _connectionFactory.Open();
+                DbConnectionFactory.Open(Startup.ConnectionStringName, true);
             }
             catch
             {

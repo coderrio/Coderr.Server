@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Net;
 using System.Net.Http;
 using System.Security.Authentication;
@@ -11,6 +12,7 @@ using codeRR.Server.ReportAnalyzer.Inbound;
 using codeRR.Server.Web.Areas.Receiver.Helpers;
 using codeRR.Server.Web.Areas.Receiver.Models;
 using DotNetCqs.Queues;
+using Griffin.Data;
 using log4net;
 
 namespace codeRR.Server.Web.Areas.Receiver.Controllers
@@ -18,20 +20,20 @@ namespace codeRR.Server.Web.Areas.Receiver.Controllers
     [AllowAnonymous]
     public class ReportController : ApiController
     {
+        private readonly IAdoNetUnitOfWork _unitOfWork;
         private static readonly SamplingCounter _samplingCounter = new SamplingCounter();
         private readonly ILog _logger = LogManager.GetLogger(typeof(ReportController));
         private readonly IMessageQueue _messageQueue;
-        private IConnectionFactory _connectionFactory;
 
         static ReportController()
         {
             _samplingCounter.Load();
         }
 
-        public ReportController(IMessageQueueProvider queueProvider, IConnectionFactory connectionFactory)
+        public ReportController(IMessageQueueProvider queueProvider, IAdoNetUnitOfWork unitOfWork)
         {
+            _unitOfWork = unitOfWork;
             _messageQueue = queueProvider.Open("Reports");
-            _connectionFactory = connectionFactory;
         }
 
         [HttpGet, Route("receiver/report/")]
@@ -62,7 +64,7 @@ namespace codeRR.Server.Web.Areas.Receiver.Controllers
             {
                 var buffer = new byte[HttpContext.Current.Request.InputStream.Length];
                 HttpContext.Current.Request.InputStream.Read(buffer, 0, buffer.Length);
-                var handler = new SaveReportHandler(_messageQueue, _connectionFactory);
+                var handler = new SaveReportHandler(_messageQueue, _unitOfWork);
                 await handler.BuildReportAsync(User as ClaimsPrincipal, appKey, sig, Request.GetClientIpAddress(), buffer);
                 return Request.CreateResponse(HttpStatusCode.OK);
             }

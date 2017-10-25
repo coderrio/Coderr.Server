@@ -43,7 +43,7 @@ namespace codeRR.Server.SqlServer.Analysis
                     }
 
 
-                    var dto = (ReceivedFeedbackDTO)msg.Message.Body;
+                    var dto = (ProcessFeedback)msg.Message.Body;
 
                     try
                     {
