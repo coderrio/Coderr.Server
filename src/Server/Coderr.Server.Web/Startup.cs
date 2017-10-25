@@ -38,9 +38,8 @@ namespace codeRR.Server.Web
         public Startup()
         {
             ConfigureConnectionFactory();
-            ConfigurationStore.Instance = new DatabaseStore(ConnectionFactory);
-            ConfigurationStore = ConfigurationStore.Instance;
             _serviceRunner = new ServiceRunner(ConnectionFactory);
+            ConfigurationStore = new DatabaseStore(ConnectionFactory);
         }
 
         public static IConnectionFactory ConnectionFactory { get; set; }
@@ -56,7 +55,7 @@ namespace codeRR.Server.Web
             }
             else
             {
-                ConfigureErrorTracking();
+                ConfigureErrorTracking(ConfigurationStore);
                 ConfigureDataMapping();
                 _serviceRunner.Start(app);
             }
@@ -131,9 +130,9 @@ namespace codeRR.Server.Web
             EntityMappingProvider.Provider = provider;
         }
 
-        private static void ConfigureErrorTracking()
+        private static void ConfigureErrorTracking(ConfigurationStore configStore)
         {
-            var errorTrackingConfig = ConfigurationStore.Instance.Load<codeRRConfigSection>();
+            var errorTrackingConfig = configStore.Load<codeRRConfigSection>();
             if (errorTrackingConfig != null && errorTrackingConfig.ActivateTracking)
             {
                 var uri = new Uri("https://report.coderrapp.com");

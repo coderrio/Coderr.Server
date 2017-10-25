@@ -17,13 +17,20 @@ namespace codeRR.Server.App.Modules.Messaging.Commands
     [Component]
     internal class SendEmailHandler : IMessageHandler<SendEmail>
     {
+        private ConfigurationStore _configStore;
+
+        public SendEmailHandler(ConfigurationStore configStore)
+        {
+            _configStore = configStore;
+        }
+
         public async Task HandleAsync(IMessageContext context, SendEmail command)
         {
             var client = CreateSmtpClient();
             if (client == null)
                 return;
 
-            var baseConfig = ConfigurationStore.Instance.Load<BaseConfiguration>();
+            var baseConfig = _configStore.Load<BaseConfiguration>();
 
             var email = new MailMessage
             {
@@ -65,9 +72,9 @@ namespace codeRR.Server.App.Modules.Messaging.Commands
             await client.SendMailAsync(email);
         }
 
-        private static SmtpClient CreateSmtpClient()
+        private SmtpClient CreateSmtpClient()
         {
-            var config = ConfigurationStore.Instance.Load<DotNetSmtpSettings>();
+            var config = _configStore.Load<DotNetSmtpSettings>();
             if (string.IsNullOrEmpty(config.SmtpHost))
                 return null;
 

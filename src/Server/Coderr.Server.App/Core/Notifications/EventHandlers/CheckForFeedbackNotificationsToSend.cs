@@ -19,14 +19,16 @@ namespace codeRR.Server.App.Core.Notifications.EventHandlers
         IMessageHandler<FeedbackAttachedToIncident>
     {
         private readonly INotificationsRepository _notificationsRepository;
+        private ConfigurationStore _configStore;
 
         /// <summary>
         ///     Creates a new instance of <see cref="CheckForNotificationsToSend" />.
         /// </summary>
         /// <param name="notificationsRepository">To load notification configuration</param>
-        public CheckForFeedbackNotificationsToSend(INotificationsRepository notificationsRepository)
+        public CheckForFeedbackNotificationsToSend(INotificationsRepository notificationsRepository, ConfigurationStore configStore)
         {
             _notificationsRepository = notificationsRepository;
+            _configStore = configStore;
         }
 
         /// <inheritdoc/>
@@ -40,7 +42,7 @@ namespace codeRR.Server.App.Core.Notifications.EventHandlers
                     continue;
 
                 var notificationEmail = await context.QueryAsync(new GetAccountEmailById(setting.AccountId));
-                var config = ConfigurationStore.Instance.Load<BaseConfiguration>();
+                var config = _configStore.Load<BaseConfiguration>();
 
                 var shortName = incident.Description.Length > 40
                     ? incident.Description.Substring(0, 40) + "..."

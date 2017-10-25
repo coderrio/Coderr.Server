@@ -19,13 +19,15 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
     {
         private readonly IMessageBus _messageBus;
         private IQueryBus _queryBus;
+        private ConfigurationStore _configStore;
 
-        public ApplicationController(IMessageBus messageBus, IQueryBus queryBus)
+        public ApplicationController(IMessageBus messageBus, IQueryBus queryBus, ConfigurationStore configStore)
         {
             if (messageBus == null) throw new ArgumentNullException("messageBus");
 
             _messageBus = messageBus;
             _queryBus = queryBus;
+            _configStore = configStore;
         }
 
         [HttpPost]
@@ -87,7 +89,7 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
             };
 
             //null if this is the first time we run or if this specific application have not been configured yet.
-            var item = ConfigurationStore.Instance.Load<ApplicationVersionConfig>();
+            var item = _configStore.Load<ApplicationVersionConfig>();
             var myAssembly = item?.Items.FirstOrDefault(x => x.ApplicationId == id);
             model.SelectedAssembly = myAssembly?.AssemblyName;
 
@@ -102,9 +104,9 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
                 return View(model);
 
             //null if this is the first time we run
-            var config = ConfigurationStore.Instance.Load<ApplicationVersionConfig>() ?? new ApplicationVersionConfig();
+            var config = _configStore.Load<ApplicationVersionConfig>() ?? new ApplicationVersionConfig();
             config.AddOrUpdate(model.ApplicationId, model.SelectedAssembly);
-            ConfigurationStore.Instance.Store(config);
+            _configStore.Store(config);
 
             return RedirectToAction("Index", new {usernote = "Assembly was updated successfully."});
         }

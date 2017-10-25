@@ -16,6 +16,12 @@ namespace codeRR.Server.App.Modules.Triggers.Domain.Actions
     public class SendSmsAction : ITriggerAction
     {
         private readonly ILog _log = LogManager.GetLogger(typeof(SendSmsAction));
+        private ConfigurationStore _configStore;
+
+        public SendSmsAction(ConfigurationStore configStore)
+        {
+            _configStore = configStore;
+        }
 
         /// <summary>
         ///     Execute action
@@ -26,7 +32,7 @@ namespace codeRR.Server.App.Modules.Triggers.Domain.Actions
             if (context == null) throw new ArgumentNullException("context");
             try
             {
-                var config = ConfigurationStore.Instance.Load<BaseConfiguration>();
+                var config = _configStore.Load<BaseConfiguration>();
                 var baseUrl = config.BaseUrl;
                 //TODO: Add title
                 var msg = "";

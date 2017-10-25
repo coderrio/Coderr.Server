@@ -11,16 +11,18 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
     public class HomeController : Controller
     {
         private IConnectionFactory _connectionFactory;
+        private ConfigurationStore _configStore;
 
-        public HomeController(IConnectionFactory connectionFactory)
+        public HomeController(IConnectionFactory connectionFactory, ConfigurationStore configStore)
         {
             _connectionFactory = connectionFactory;
+            _configStore = configStore;
         }
 
         public ActionResult Basics()
         {
             var model = new BasicsViewModel();
-            var config = ConfigurationStore.Instance.Load<BaseConfiguration>();
+            var config = _configStore.Load<BaseConfiguration>();
             if (config != null)
             {
                 model.BaseUrl = config.BaseUrl.ToString();
@@ -47,14 +49,14 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
                 SupportEmail = model.SupportEmail,
                 AllowRegistrations = model.AllowRegistrations
             };
-            ConfigurationStore.Instance.Store(settings);
+            _configStore.Store(settings);
             return Redirect(Url.GetNextWizardStep());
         }
 
         public ActionResult Errors()
         {
             var model = new ErrorTrackingViewModel();
-            var config = ConfigurationStore.Instance.Load<codeRRConfigSection>();
+            var config = _configStore.Load<codeRRConfigSection>();
             if (config != null)
             {
                 model.ContactEmail = config.ContactEmail;
@@ -75,7 +77,7 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
             {
                 ContactEmail = model.ContactEmail,
             };
-            ConfigurationStore.Instance.Store(settings);
+            _configStore.Store(settings);
             return Redirect(Url.GetNextWizardStep());
         }
 

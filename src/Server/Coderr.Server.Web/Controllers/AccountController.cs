@@ -36,13 +36,15 @@ namespace codeRR.Server.Web.Controllers
         private readonly ILog _logger = LogManager.GetLogger(typeof(AccountController));
         private IMessageBus _messageBus;
         private IQueryBus _queryBus;
+        private ConfigurationStore _configStore;
 
-        public AccountController(IAccountService accountService, IMessageBus messageBus, IAdoNetUnitOfWork uow, IQueryBus queryBus)
+        public AccountController(IAccountService accountService, IMessageBus messageBus, IAdoNetUnitOfWork uow, IQueryBus queryBus, ConfigurationStore configStore)
         {
             _accountService = accountService;
             _messageBus = messageBus;
             _uow = uow;
             _queryBus = queryBus;
+            _configStore = configStore;
         }
 
         /// <summary>
@@ -122,7 +124,7 @@ namespace codeRR.Server.Web.Controllers
 
         public ActionResult Activated()
         {
-            var config = ConfigurationStore.Instance.Load<BaseConfiguration>();
+            var config = _configStore.Load<BaseConfiguration>();
             ViewBag.DashboardUrl = config.BaseUrl + "/welcome";
             return View();
         }
@@ -139,7 +141,7 @@ namespace codeRR.Server.Web.Controllers
 
         public ActionResult Login()
         {
-            var config = ConfigurationStore.Instance.Load<BaseConfiguration>();
+            var config = _configStore.Load<BaseConfiguration>();
             var model = new LoginViewModel
             {
                 AllowRegistrations = config.AllowRegistrations != false
@@ -155,7 +157,7 @@ namespace codeRR.Server.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> Login(LoginViewModel model)
         {
-            var config = ConfigurationStore.Instance.Load<BaseConfiguration>();
+            var config = _configStore.Load<BaseConfiguration>();
             model.AllowRegistrations = config.AllowRegistrations != false;
 
             if (!ModelState.IsValid)
@@ -208,7 +210,7 @@ namespace codeRR.Server.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
-            var config = ConfigurationStore.Instance.Load<BaseConfiguration>();
+            var config = _configStore.Load<BaseConfiguration>();
             if (config.AllowRegistrations == false)
             {
                 ModelState.AddModelError("", "New registrations are not allowed.");

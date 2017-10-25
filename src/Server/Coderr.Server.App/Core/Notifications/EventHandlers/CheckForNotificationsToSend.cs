@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using codeRR.Server.Api.Core.Incidents.Events;
 using codeRR.Server.App.Core.Notifications.Tasks;
 using codeRR.Server.App.Core.Users;
+using codeRR.Server.Infrastructure.Configuration;
 using DotNetCqs;
 using Griffin.Container;
 
@@ -17,6 +18,7 @@ namespace codeRR.Server.App.Core.Notifications.EventHandlers
     {
         private readonly INotificationsRepository _notificationsRepository;
         private readonly IUserRepository _userRepository;
+        private ConfigurationStore _configStore;
 
         /// <summary>
         ///     Creates a new instance of <see cref="CheckForNotificationsToSend" />.
@@ -24,10 +26,11 @@ namespace codeRR.Server.App.Core.Notifications.EventHandlers
         /// <param name="notificationsRepository">To load notification configuration</param>
         /// <param name="userRepository">To load user info</param>
         public CheckForNotificationsToSend(INotificationsRepository notificationsRepository,
-            IUserRepository userRepository)
+            IUserRepository userRepository, ConfigurationStore configStore)
         {
             _notificationsRepository = notificationsRepository;
             _userRepository = userRepository;
+            _configStore = configStore;
         }
 
         /// <summary>
@@ -64,12 +67,12 @@ namespace codeRR.Server.App.Core.Notifications.EventHandlers
         {
             if (state == NotificationState.Email)
             {
-                var email = new SendIncidentEmail();
+                var email = new SendIncidentEmail(_configStore);
                 await email.SendAsync(context, accountId.ToString(), e.Incident, e.Report);
             }
             else
             {
-                var handler = new SendIncidentSms(_userRepository);
+                var handler = new SendIncidentSms(_userRepository, _configStore);
                 await handler.SendAsync(accountId, e.Incident, e.Report);
             }
         }

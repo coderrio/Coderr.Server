@@ -8,10 +8,17 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
     [Authorize]
     public class MessagingController : Controller
     {
+        private ConfigurationStore _configStore;
+
+        public MessagingController(ConfigurationStore configStore)
+        {
+            _configStore = configStore;
+        }
+
         public ActionResult Email()
         {
             var model = new EmailViewModel();
-            var settings = ConfigurationStore.Instance.Load<DotNetSmtpSettings>();
+            var settings = _configStore.Load<DotNetSmtpSettings>();
             if (settings == null || string.IsNullOrEmpty(settings.SmtpHost))
                 return View(model);
 
@@ -37,7 +44,7 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
                 SmtpHost = model.SmtpHost,
                 UseSsl = model.UseSSL
             };
-            ConfigurationStore.Instance.Store(settings);
+            _configStore.Store(settings);
             return Redirect(Url.GetNextWizardStep());
         }
     }

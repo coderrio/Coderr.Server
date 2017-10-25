@@ -21,16 +21,18 @@ namespace codeRR.Server.App.Modules.ReportSpikes
     {
         private readonly INotificationsRepository _repository;
         private readonly IReportSpikeRepository _spikeRepository;
+        private ConfigurationStore _configStore;
 
         /// <summary>
         ///     Creates a new instance of <see cref="CheckForReportPeak" />.
         /// </summary>
         /// <param name="repository">To check if spikes should be analyzed</param>
         /// <param name="spikeRepository">store/fetch information of current spikes.</param>
-        public CheckForReportPeak(INotificationsRepository repository, IReportSpikeRepository spikeRepository)
+        public CheckForReportPeak(INotificationsRepository repository, IReportSpikeRepository spikeRepository, ConfigurationStore configStore)
         {
             _repository = repository;
             _spikeRepository = spikeRepository;
+            _configStore = configStore;
         }
 
         /// <summary>
@@ -44,7 +46,7 @@ namespace codeRR.Server.App.Modules.ReportSpikes
         {
             if (e == null) throw new ArgumentNullException("e");
 
-            var config = ConfigurationStore.Instance.Load<BaseConfiguration>();
+            var config = _configStore.Load<BaseConfiguration>();
             var url = config.BaseUrl;
             var settings = await _repository.GetAllAsync(e.Report.ApplicationId);
             if (!settings.Any(x => x.ApplicationSpike != NotificationState.Disabled))

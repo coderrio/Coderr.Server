@@ -13,21 +13,23 @@ namespace codeRR.Server.App.Modules.Versions.Events
     public class AttachVersionTagToIncident : ITagIdentifier
     {
         private readonly IVersionRepository _repository;
+        private ConfigurationStore _configStore;
 
         /// <summary>
         /// Creates a new instance of <see cref="AttachVersionTagToIncident"/>.
         /// </summary>
         /// <param name="repository">repos</param>
-        public AttachVersionTagToIncident(IVersionRepository repository)
+        public AttachVersionTagToIncident(IVersionRepository repository, ConfigurationStore configStore)
         {
             if (repository == null) throw new ArgumentNullException("repository");
             _repository = repository;
+            _configStore = configStore;
         }
 
 
         private string GetVersionAssemblyName(int applicationId)
         {
-            var config = ConfigurationStore.Instance.Load<ApplicationVersionConfig>();
+            var config = _configStore.Load<ApplicationVersionConfig>();
             return config == null ? null : config.GetAssemblyName(applicationId);
         }
 

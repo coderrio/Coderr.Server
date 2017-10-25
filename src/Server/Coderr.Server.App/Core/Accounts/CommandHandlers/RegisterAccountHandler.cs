@@ -25,14 +25,16 @@ namespace codeRR.Server.App.Core.Accounts.CommandHandlers
     {
         private readonly IAccountRepository _repository;
         private ILog _logger = LogManager.GetLogger(typeof(RegisterAccountHandler));
+        private ConfigurationStore _configStore;
 
         /// <summary>
         ///     Creates a new instance of <see cref="RegisterAccountHandler" />.
         /// </summary>
         /// <param name="repository">repos</param>
-        public RegisterAccountHandler(IAccountRepository repository)
+        public RegisterAccountHandler(IAccountRepository repository, ConfigurationStore configStore)
         {
             _repository = repository;
+            _configStore = configStore;
         }
 
         /// <summary>
@@ -86,7 +88,7 @@ namespace codeRR.Server.App.Core.Accounts.CommandHandlers
         {
             var account = await _repository.GetByUserNameAsync(userName);
 
-            var config = ConfigurationStore.Instance.Load<BaseConfiguration>();
+            var config = _configStore.Load<BaseConfiguration>();
             //TODO: HTML email
             var msg = new EmailMessage
             {
@@ -108,7 +110,7 @@ Cheerio,
 
         private Task SendVerificationEmail(IMessageContext context, Account account)
         {
-            var config = ConfigurationStore.Instance.Load<BaseConfiguration>();
+            var config = _configStore.Load<BaseConfiguration>();
             //TODO: HTML email
             var msg = new EmailMessage
             {

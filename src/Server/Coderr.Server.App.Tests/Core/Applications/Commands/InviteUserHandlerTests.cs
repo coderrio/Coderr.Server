@@ -26,6 +26,7 @@ namespace codeRR.Server.App.Tests.Core.Applications.Commands
         private readonly InviteUserHandler _sut;
         private readonly IUserRepository _userRepository;
         private IMessageContext _context;
+        private TestStore _configStore;
 
         public InviteUserHandlerTests()
         {
@@ -35,8 +36,8 @@ namespace codeRR.Server.App.Tests.Core.Applications.Commands
             _userRepository.GetUserAsync(1).Returns(new User(1, "First"));
             _applicationRepository.GetByIdAsync(1).Returns(new Application(1, "MyApp"));
             _context = Substitute.For<IMessageContext>();
-            ConfigurationStore.Instance = new TestStore();
-            _sut = new InviteUserHandler(_invitationRepository, _userRepository, _applicationRepository);
+            _configStore = new TestStore();
+            _sut = new InviteUserHandler(_invitationRepository, _userRepository, _applicationRepository, _configStore);
         }
 
         [Fact]

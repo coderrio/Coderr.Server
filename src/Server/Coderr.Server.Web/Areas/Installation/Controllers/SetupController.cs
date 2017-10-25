@@ -15,6 +15,12 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
     public class SetupController : Controller
     {
         private readonly IConnectionFactory _connectionFactory = new Net452ConnectionFactory();
+        private ConfigurationStore _configStore;
+
+        public SetupController(ConfigurationStore configStore)
+        {
+            _configStore = configStore;
+        }
 
         [HttpPost]
         [AllowAnonymous]
@@ -32,7 +38,7 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
         public ActionResult Basics()
         {
             var model = new BasicsViewModel();
-            var config = ConfigurationStore.Instance.Load<BaseConfiguration>();
+            var config = _configStore.Load<BaseConfiguration>();
             if (config != null)
             {
                 model.BaseUrl = config.BaseUrl.ToString();
@@ -64,7 +70,7 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
             }
             settings.BaseUrl = new Uri(model.BaseUrl);
             settings.SupportEmail = model.SupportEmail;
-            ConfigurationStore.Instance.Store(settings);
+            _configStore.Store(settings);
             return Redirect(Url.GetNextWizardStep());
         }
 
@@ -78,7 +84,7 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
         public ActionResult Errors()
         {
             var model = new ErrorTrackingViewModel();
-            var config = ConfigurationStore.Instance.Load<codeRRConfigSection>();
+            var config = _configStore.Load<codeRRConfigSection>();
             if (config != null)
             {
                 model.ContactEmail = config.ContactEmail;
@@ -103,7 +109,7 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
                 ContactEmail = model.ContactEmail,
                 InstallationId = Guid.NewGuid().ToString("N")
             };
-            ConfigurationStore.Instance.Store(settings);
+            _configStore.Store(settings);
             return Redirect(Url.GetNextWizardStep());
         }
 

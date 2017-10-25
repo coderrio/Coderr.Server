@@ -18,15 +18,17 @@ namespace codeRR.Server.App.Core.Reports.Jobs
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(DeleteOldReports));
         private readonly IAdoNetUnitOfWork _unitOfWork;
+        private ConfigurationStore _configStore;
 
         /// <summary>
         ///     Creates a new instance of <see cref="DeleteOldReports" />.
         /// </summary>
         /// <param name="unitOfWork">Used for SQL queries</param>
-        public DeleteOldReports(IAdoNetUnitOfWork unitOfWork)
+        public DeleteOldReports(IAdoNetUnitOfWork unitOfWork, ConfigurationStore configStore)
         {
             if (unitOfWork == null) throw new ArgumentNullException("unitOfWork");
             _unitOfWork = unitOfWork;
+            _configStore = configStore;
         }
 
         /// <summary>
@@ -34,7 +36,7 @@ namespace codeRR.Server.App.Core.Reports.Jobs
         /// </summary>
         public int MaxReportsPerIncident
         {
-            get { return ConfigurationStore.Instance.Load<ReportConfig>().MaxReportsPerIncident; }
+            get { return _configStore.Load<ReportConfig>().MaxReportsPerIncident; }
         }
 
         /// <summary>
@@ -44,7 +46,7 @@ namespace codeRR.Server.App.Core.Reports.Jobs
         {
             get
             {
-                var config = ConfigurationStore.Instance.Load<ReportConfig>();
+                var config = _configStore.Load<ReportConfig>();
                 return config != null ? config.RetentionDays : 90;
             }
         }

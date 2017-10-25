@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Linq;
 using System.Security;
 using System.Security.Claims;
@@ -34,6 +35,7 @@ namespace codeRR.Server.App.Core.Invitations.CommandHandlers
         private readonly IInvitationRepository _invitationRepository;
         private readonly IUserRepository _userRepository;
         private readonly ILog _logger = LogManager.GetLogger(typeof(InviteUserHandler));
+        private ConfigurationStore _configStore;
 
         /// <summary>
         ///     Creates a new instance of <see cref="InviteUserHandler" />.
@@ -42,11 +44,12 @@ namespace codeRR.Server.App.Core.Invitations.CommandHandlers
         /// <param name="userRepository">To load inviter and invitee</param>
         /// <param name="applicationRepository">Add pending member</param>
         public InviteUserHandler(IInvitationRepository invitationRepository,
-            IUserRepository userRepository, IApplicationRepository applicationRepository)
+            IUserRepository userRepository, IApplicationRepository applicationRepository, ConfigurationStore configStore)
         {
             _invitationRepository = invitationRepository;
             _userRepository = userRepository;
             _applicationRepository = applicationRepository;
+            _configStore = configStore;
         }
 
         /// <inheritdoc />
@@ -127,7 +130,7 @@ namespace codeRR.Server.App.Core.Invitations.CommandHandlers
         /// <returns>task</returns>
         protected virtual async Task SendInvitationEmailAsync(IMessageContext context, Invitation invitation, string reason)
         {
-            var config = ConfigurationStore.Instance.Load<BaseConfiguration>();
+            var config = _configStore.Load<BaseConfiguration>();
             var url = config.BaseUrl.ToString().TrimEnd('/');
             if (string.IsNullOrEmpty(reason))
                 reason = "";

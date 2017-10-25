@@ -15,6 +15,13 @@ namespace codeRR.Server.App.Core.Notifications.Tasks
     /// </summary>
     public class SendIncidentEmail
     {
+        private ConfigurationStore _configStore;
+
+        public SendIncidentEmail(ConfigurationStore configStore)
+        {
+            _configStore = configStore;
+        }
+
         /// <summary>
         ///     Send
         /// </summary>
@@ -29,7 +36,7 @@ namespace codeRR.Server.App.Core.Notifications.Tasks
             if (incident == null) throw new ArgumentNullException("incident");
             if (report == null) throw new ArgumentNullException("report");
 
-            var config = ConfigurationStore.Instance.Load<BaseConfiguration>();
+            var config = _configStore.Load<BaseConfiguration>();
 
             var shortName = incident.Name.Length > 40
                 ? incident.Name.Substring(0, 40) + "..."

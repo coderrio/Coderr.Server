@@ -21,10 +21,12 @@ namespace codeRR.Server.App.Core.Accounts.CommandHandlers
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(RegisterSimpleHandler));
         private readonly IAccountRepository _repository;
+        private ConfigurationStore _configStore;
 
-        public RegisterSimpleHandler(IAccountRepository repository)
+        public RegisterSimpleHandler(IAccountRepository repository, ConfigurationStore configStore)
         {
             _repository = repository;
+            _configStore = configStore;
         }
 
         public async Task HandleAsync(IMessageContext context, RegisterSimple command)
@@ -65,7 +67,7 @@ namespace codeRR.Server.App.Core.Accounts.CommandHandlers
 
         private Task SendAccountEmail(IMessageContext context, Account account, string password)
         {
-            var config = ConfigurationStore.Instance.Load<BaseConfiguration>();
+            var config = _configStore.Load<BaseConfiguration>();
             //TODO: HTML email
             var msg = new EmailMessage
             {

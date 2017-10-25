@@ -10,16 +10,22 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
     public class ReportingController : Controller
     {
         private ILog _logger = LogManager.GetLogger(typeof(ReportingController));
+        private ConfigurationStore _configStore;
+
+        public ReportingController(ConfigurationStore configStore)
+        {
+            _configStore = configStore;
+        }
 
         [HttpGet]
         public ActionResult Index()
         {
             var model = new ReportingViewModel();
-            var settings = ConfigurationStore.Instance.Load<ReportConfig>();
+            var settings = _configStore.Load<ReportConfig>();
             if (settings == null || settings.MaxReportsPerIncident == 0)
                 return View(model);
 
-            _logger.Debug("Display acess: " + settings.MaxReportsPerIncident + " from " + ConfigurationStore.Instance.GetHashCode());
+            _logger.Debug("Display acess: " + settings.MaxReportsPerIncident + " from " + _configStore.GetHashCode());
             model.MaxReportsPerIncident = settings.MaxReportsPerIncident;
             model.RetentionDays= settings.RetentionDays;
             return View(model);
@@ -37,8 +43,8 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
                 RetentionDays = model.RetentionDays,
             };
             _logger.Debug("Storing: " + settings.MaxReportsPerIncident);
-            ConfigurationStore.Instance.Store(settings);
-            _logger.Debug("Stored: " + settings.MaxReportsPerIncident + " to " + ConfigurationStore.Instance.GetHashCode());
+            _configStore.Store(settings);
+            _logger.Debug("Stored: " + settings.MaxReportsPerIncident + " to " + _configStore.GetHashCode());
 
             return RedirectToAction("Index", "Home");
         }

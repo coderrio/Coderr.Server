@@ -17,10 +17,12 @@ namespace codeRR.Server.App.Modules.Versions.Events
         private const string NotifyNoVersion = "Versions.Configure";
         private const string NotifyNotRecognizedVersion = "Versions.ReConfigure";
         private IVersionRepository _repository;
+        private ConfigurationStore _configStore;
 
-        public GetVersionFromReport(IVersionRepository repository)
+        public GetVersionFromReport(IVersionRepository repository, ConfigurationStore configStore)
         {
             _repository = repository;
+            _configStore = configStore;
         }
 
         public async Task HandleAsync(IMessageContext context, ReportAddedToIncident e)
@@ -74,7 +76,7 @@ namespace codeRR.Server.App.Modules.Versions.Events
 
         private string GetVersionAssemblyName(int applicationId)
         {
-            var config = ConfigurationStore.Instance.Load<ApplicationVersionConfig>();
+            var config = _configStore.Load<ApplicationVersionConfig>();
             return config?.GetAssemblyName(applicationId);
         }
 

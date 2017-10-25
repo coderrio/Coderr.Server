@@ -16,16 +16,18 @@ namespace codeRR.Server.App.Core.Notifications.Tasks
     public class SendIncidentSms
     {
         private readonly IUserRepository _userRepository;
+        private ConfigurationStore _configStore;
 
         /// <summary>
         ///     Creates a new instance of <see cref="SendIncidentSms" />.
         /// </summary>
         /// <param name="userRepository">to fetch phone number</param>
         /// <exception cref="ArgumentNullException">userRepository</exception>
-        public SendIncidentSms(IUserRepository userRepository)
+        public SendIncidentSms(IUserRepository userRepository, ConfigurationStore configStore)
         {
             if (userRepository == null) throw new ArgumentNullException("userRepository");
             _userRepository = userRepository;
+            _configStore = configStore;
         }
 
         /// <summary>
@@ -47,7 +49,7 @@ namespace codeRR.Server.App.Core.Notifications.Tasks
             if (string.IsNullOrEmpty(settings.MobileNumber))
                 return; //TODO: LOG
 
-            var config = ConfigurationStore.Instance.Load<BaseConfiguration>();
+            var config = _configStore.Load<BaseConfiguration>();
             var url = config.BaseUrl;
             var shortName = incident.Name.Length > 20
                 ? incident.Name.Substring(0, 20) + "..."

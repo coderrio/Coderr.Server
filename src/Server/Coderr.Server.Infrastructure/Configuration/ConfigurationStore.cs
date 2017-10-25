@@ -10,12 +10,6 @@ namespace codeRR.Server.Infrastructure.Configuration
     public abstract class ConfigurationStore
     {
         /// <summary>
-        ///     Used to access the currently configured implementation
-        /// </summary>
-        [SuppressMessage("Microsoft.Usage", "CA2211:NonConstantFieldsShouldNotBeVisible")]
-        public static ConfigurationStore Instance;
-
-        /// <summary>
         ///     Load a settings section
         /// </summary>
         /// <typeparam name="T">Type of section</typeparam>

@@ -17,7 +17,7 @@ namespace codeRR.Server.App.Tests.Core.Accounts.CommandHandlers
         [Fact]
         public async Task Should_create_a_new_account()
         {
-            ConfigurationStore.Instance = new TestStore();
+            var configStore = new TestStore();
             var repos = Substitute.For<IAccountRepository>();
             var cmd = new RegisterAccount("rne", "yo", "some@Emal.com");
             var context = Substitute.For<IMessageContext>();
@@ -25,7 +25,7 @@ namespace codeRR.Server.App.Tests.Core.Accounts.CommandHandlers
                 .Do(x => x.Arg<Account>().SetId(3));
 
 
-            var sut = new RegisterAccountHandler(repos);
+            var sut = new RegisterAccountHandler(repos, configStore);
             await sut.HandleAsync(context, cmd);
             await repos.Received().CreateAsync(Arg.Any<Account>());
         }
@@ -33,7 +33,7 @@ namespace codeRR.Server.App.Tests.Core.Accounts.CommandHandlers
         [Fact]
         public async Task Should_inform_the_rest_of_the_system_about_the_new_account()
         {
-            ConfigurationStore.Instance = new TestStore();
+            var configStore = new TestStore();
             var repos = Substitute.For<IAccountRepository>();
             var context = Substitute.For<IMessageContext>();
             var cmd = new RegisterAccount("rne", "yo", "some@Emal.com");
@@ -41,7 +41,7 @@ namespace codeRR.Server.App.Tests.Core.Accounts.CommandHandlers
                 .Do(x => x.Arg<Account>().SetId(3));
 
 
-            var sut = new RegisterAccountHandler(repos);
+            var sut = new RegisterAccountHandler(repos, configStore);
             await sut.HandleAsync(context, cmd);
 
             await context.Received().SendAsync(Arg.Any<AccountRegistered>());
@@ -51,7 +51,7 @@ namespace codeRR.Server.App.Tests.Core.Accounts.CommandHandlers
         [Fact]
         public async Task Should_send_activation_email()
         {
-            ConfigurationStore.Instance = new TestStore();
+            var configStore = new TestStore();
             var repos = Substitute.For<IAccountRepository>();
             var context = Substitute.For<IMessageContext>();
             var cmd = new RegisterAccount("rne", "yo", "some@Emal.com");
@@ -59,7 +59,7 @@ namespace codeRR.Server.App.Tests.Core.Accounts.CommandHandlers
                 .Do(x => x.Arg<Account>().SetId(3));
 
 
-            var sut = new RegisterAccountHandler(repos);
+            var sut = new RegisterAccountHandler(repos, configStore);
             await sut.HandleAsync(context, cmd);
 
             await context.Received().SendAsync(Arg.Any<SendEmail>());

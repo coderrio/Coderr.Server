@@ -21,11 +21,18 @@ namespace codeRR.Server.App.Core.Support
     [Component]
     public class SendSupportRequestHandler : IMessageHandler<SendSupportRequest>
     {
+        private ConfigurationStore _configStore;
+
+        public SendSupportRequestHandler(ConfigurationStore configStore)
+        {
+            _configStore = configStore;
+        }
+
         /// <inheritdoc />
         public async Task HandleAsync(IMessageContext context, SendSupportRequest command)
         {
-            var baseConfig = ConfigurationStore.Instance.Load<BaseConfiguration>();
-            var errorConfig = ConfigurationStore.Instance.Load<codeRRConfigSection>();
+            var baseConfig = _configStore.Load<BaseConfiguration>();
+            var errorConfig = _configStore.Load<codeRRConfigSection>();
 
             string email = null;
             var claim = context.Principal.FindFirst(ClaimTypes.Email);
