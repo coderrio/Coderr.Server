@@ -4,7 +4,7 @@ namespace codeRR.Server.Web.Areas.Installation.Models
 {
     public class BasicsViewModel
     {
-        [Required, MinLength(4)]
+        [Required, MinLength(8)]
         public string BaseUrl { get; set; }
 
         [Required, EmailAddress]

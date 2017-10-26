@@ -169,7 +169,7 @@ namespace codeRR.Server.Web.Controllers
             if (result.TotalCount == 0)
                 return View(model);
 
-            return Redirect("~/#/application/" + model.ApplicationId);
+            return Redirect("~/#/application/" + model.ApplicationId + "/");
         }
 
         protected async Task Init(int maxCount = 0)

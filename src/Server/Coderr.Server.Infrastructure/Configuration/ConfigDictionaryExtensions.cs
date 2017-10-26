@@ -7,7 +7,7 @@ namespace codeRR.Server.Infrastructure.Configuration
     /// <summary>
     ///     Moves otherwise repeated conversions to a single place.
     /// </summary>
-    public static class DictionaryExtensions
+    public static class ConfigDictionaryExtensions
     {
         /// <summary>
         ///     Convert dictionary item to a boolean.
@@ -17,19 +17,25 @@ namespace codeRR.Server.Infrastructure.Configuration
         /// <returns>Value</returns>
         /// <exception cref="ArgumentException">If key is not present. Key name is included in the exception message.</exception>
         /// <exception cref="FormatException">Value is not a boolean. Includes key name and source value in the exception message.</exception>
-        public static bool GetBoolean(this IDictionary<string, string> dictionary, string name)
+        public static bool GetBoolean(this IDictionary<string, string> dictionary, string name, bool? defaultValue = false)
         {
             if (dictionary == null) throw new ArgumentNullException("dictionary");
             if (name == null) throw new ArgumentNullException("name");
-            string value;
-            if (!dictionary.TryGetValue(name, out value))
-                throw new ArgumentException(string.Format("Failed to find key '{0}' in dictionary.", name));
 
-            bool boolValue;
-            if (!bool.TryParse(value, out boolValue))
-                throw new FormatException(string.Format("Failed to convert '{0}' from value '{1}' to a boolean.", name,
-                    value));
-            return boolValue;
+            if (!dictionary.TryGetValue(name, out var value))
+            {
+                if (defaultValue != null)
+                    return defaultValue.Value;
+                throw new ArgumentException($"Failed to find key '{name}' in dictionary.");
+            }
+
+            if (bool.TryParse(value, out var boolValue))
+                return boolValue;
+
+            if (defaultValue != null)
+                return defaultValue.Value;
+
+            throw new FormatException($"Failed to convert '{name}' from value '{value}' to a boolean.");
         }
 
         /// <summary>
@@ -41,19 +47,26 @@ namespace codeRR.Server.Infrastructure.Configuration
         /// <exception cref="ArgumentException">If key is not present. Key name is included in the exception message.</exception>
         /// <exception cref="FormatException">Value is not a boolean. Includes key name and source value in the exception message.</exception>
         [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "integer")]
-        public static int GetInteger(this IDictionary<string, string> dictionary, string name)
+        public static int GetInteger(this IDictionary<string, string> dictionary, string name, int? defaultValue = 0)
         {
             if (dictionary == null) throw new ArgumentNullException("dictionary");
             if (name == null) throw new ArgumentNullException("name");
-            string value;
-            if (!dictionary.TryGetValue(name, out value))
-                throw new ArgumentException(string.Format("Failed to find key '{0}' in dictionary.", name));
 
-            int intValue;
-            if (!int.TryParse(value, out intValue))
-                throw new FormatException(string.Format("Failed to convert '{0}' from value '{1}' to an integer.",
-                    name, value));
-            return intValue;
+            if (!dictionary.TryGetValue(name, out var value))
+            {
+                if (defaultValue != null)
+                    return defaultValue.Value;
+                throw new ArgumentException($"Failed to find key '{name}' in dictionary.");
+            }
+
+
+            if (int.TryParse(value, out var intValue))
+                return intValue;
+
+            if (defaultValue != null)
+                return defaultValue.Value;
+
+            throw new FormatException($"Failed to convert '{name}' from value '{value}' to an integer.");
         }
 
         /// <summary>
@@ -63,15 +76,18 @@ namespace codeRR.Server.Infrastructure.Configuration
         /// <param name="name">Key</param>
         /// <returns>Value</returns>
         /// <exception cref="ArgumentException">If key is not present. Key name is included in the exception message.</exception>
-        public static string GetString(this IDictionary<string, string> dictionary, string name)
+        public static string GetString(this IDictionary<string, string> dictionary, string name, bool requireParameter = true)
         {
             if (dictionary == null) throw new ArgumentNullException("dictionary");
             if (name == null) throw new ArgumentNullException("name");
-            string value;
-            if (!dictionary.TryGetValue(name, out value))
-                throw new ArgumentException(string.Format("Failed to find key '{0}' in dictionary.", name));
 
-            return value;
+            if (dictionary.TryGetValue(name, out var value))
+                return value;
+
+            if (requireParameter)
+                throw new ArgumentException($"Failed to find key '{name}' in dictionary.");
+
+            return null;
         }
 
         /// <summary>
@@ -86,8 +102,9 @@ namespace codeRR.Server.Infrastructure.Configuration
         {
             if (dictionary == null) throw new ArgumentNullException("dictionary");
             if (name == null) throw new ArgumentNullException("name");
-            string value;
-            return !dictionary.TryGetValue(name, out value) ? defaultValue : value;
+            return !dictionary.TryGetValue(name, out var value)
+                ? defaultValue
+                : value;
         }
     }
 }

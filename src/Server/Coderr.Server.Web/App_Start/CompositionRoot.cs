@@ -47,7 +47,7 @@ namespace codeRR.Server.Web
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
             builder.RegisterControllers(Assembly.GetExecutingAssembly());
 
-            builder.RegisterService(x => Startup.ConfigurationStore.Load<BaseConfiguration>());
+            builder.RegisterService(x => configStore.Load<BaseConfiguration>());
             var ioc = builder.Build();
 
             DependencyResolver.SetResolver(new GriffinDependencyResolver(ioc));

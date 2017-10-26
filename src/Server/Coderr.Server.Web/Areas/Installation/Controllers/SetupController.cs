@@ -16,9 +16,9 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
     {
         private ConfigurationStore _configStore;
 
-        public SetupController(ConfigurationStore configStore)
+        public SetupController()
         {
-            _configStore = configStore;
+            _configStore = Startup.ConfigurationStore;
         }
 
         [HttpPost]
@@ -57,6 +57,19 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
         [HttpPost]
         public ActionResult Basics(BasicsViewModel model)
         {
+            if (model.BaseUrl.StartsWith("http://yourServerName/", StringComparison.OrdinalIgnoreCase))
+                ModelState.AddModelError("BaseUrl", "You must specify a correct server name in the URL, or all links in notification emails will be incorrect.");
+            if (model.BaseUrl.StartsWith("http://localhost/", StringComparison.OrdinalIgnoreCase))
+                ModelState.AddModelError("BaseUrl", "You must specify a correct server name in the URL, or all links in notification emails will be incorrect.");
+            if (model.BaseUrl.StartsWith("https://localhost/", StringComparison.OrdinalIgnoreCase))
+                ModelState.AddModelError("BaseUrl", "You must specify a correct server name in the URL, or all links in notification emails will be incorrect.");
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.NextLink = "";
+                return View(model);
+            }
+
             var settings = new BaseConfiguration();
             if (!model.BaseUrl.EndsWith("/"))
                 model.BaseUrl += "/";

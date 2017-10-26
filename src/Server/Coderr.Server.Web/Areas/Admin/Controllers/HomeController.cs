@@ -41,6 +41,15 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Basics(BasicsViewModel model)
         {
+            if (model.BaseUrl.StartsWith("http://yourServerName/", StringComparison.OrdinalIgnoreCase))
+                ModelState.AddModelError("BaseUrl", "You must specify a correct URL, or all links in notification emails will be incorrect.");
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.NextLink = "";
+                return View(model);
+            }
+
             var settings = new BaseConfiguration
             {
                 BaseUrl = new Uri(model.BaseUrl),

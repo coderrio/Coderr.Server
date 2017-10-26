@@ -10,9 +10,9 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
     {
         private ConfigurationStore _configStore;
 
-        public MessagingController(ConfigurationStore configStore)
+        public MessagingController()
         {
-            _configStore = configStore;
+            _configStore = Startup.ConfigurationStore;
         }
 
         public ActionResult Email()

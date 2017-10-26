@@ -7,7 +7,7 @@ namespace codeRR.Server.Web.Areas.Admin.Models
         /// <summary>
         /// URL to coderr (typically "http://yourHostName/" or "http://somehost/coderr/")
         /// </summary>
-        [Required, MinLength(4)]
+        [Required, MinLength(8)]
         public string BaseUrl { get; set; }
 
         /// <summary>
