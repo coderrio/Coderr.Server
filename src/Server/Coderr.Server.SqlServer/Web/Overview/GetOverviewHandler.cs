@@ -120,7 +120,7 @@ right join applications on (applicationid=applications.id)
             var labels = new string[query.NumberOfDays + 1]; //+1 for today
             for (var i = 0; i <= query.NumberOfDays; i++)
             {
-                labels[i] = startDate.AddDays(i).ToShortDateString();
+                labels[i] = startDate.AddDays(i).ToString("yyyy-MM-dd");
             }
             return labels;
         }
