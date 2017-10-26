@@ -1,6 +1,17 @@
-﻿<div id="View row" style="width:100%">
+﻿<style>
+    .col {
+        min-width: 20vw;
+    }
+
+    @media only screen and (max-width: 900px) {
+        .col {
+            min-width: 300px;
+        }
+    }
+</style>
+<div id="View row" style="width:100%">
     <div data-collection="Items">
-        <div class="col-xl-2 col-lg-4 col-md-6 col-sm-12">
+        <div class="col">
             <div class="card-box tilebox-one">
                 <h6 class="text-muted m-b-20" data-name="Title"></h6>
                 <div data-name="Message" style="padding-bottom: 10px; padding-top: 20px; text-align: left;">

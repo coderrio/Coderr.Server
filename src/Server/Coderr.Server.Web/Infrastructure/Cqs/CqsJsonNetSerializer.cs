@@ -6,11 +6,15 @@ using Newtonsoft.Json.Serialization;
 
 namespace codeRR.Server.Web.Infrastructure.Cqs
 {
+    /// <summary>
+    /// This serializer is used by the client/side and MAY NOT include type definitions.
+    /// </summary>
     internal class CqsJsonNetSerializer
     {
         private readonly JsonSerializerSettings _settings = new JsonSerializerSettings
         {
             NullValueHandling = NullValueHandling.Ignore,
+            TypeNameHandling = TypeNameHandling.None,
             ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
             ContractResolver = new IncludeNonPublicMembersContractResolver()
         };

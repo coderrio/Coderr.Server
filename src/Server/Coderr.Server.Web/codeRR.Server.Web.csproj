@@ -305,6 +305,7 @@
     <Compile Include="Infrastructure\Auth\ApiKeyAuthenticator.cs" />
     <Compile Include="Infrastructure\Auth\AuthenticationFailureResult.cs" />
     <Compile Include="Infrastructure\Auth\SignalRAuthenticateAttribute.cs" />
+    <Compile Include="Infrastructure\CompressedRequestHandler.cs" />
     <Compile Include="Infrastructure\Cqs\CqsJsonNetSerializer.cs" />
     <Compile Include="Infrastructure\Cqs\CqsObjectMapper.cs" />
     <Compile Include="Infrastructure\CustomerInfoProvider.cs" />

@@ -154,6 +154,7 @@ namespace codeRR.Server.Web
                 SessionStore = new SessionStoreMediator()
             });
 
+            config.MessageHandlers.Add(new CompressedRequestHandler());
             config.DependencyResolver = GlobalConfiguration.Configuration.DependencyResolver;
             config.MapHttpAttributeRoutes();
             //config.Routes.MapHttpRoute(

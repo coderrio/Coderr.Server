@@ -1,15 +1,22 @@
 ﻿using System;
 using System.Data.Common;
+using System.IO;
+using System.IO.Compression;
 using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
+using codeRR.Client.Contracts;
 using codeRR.Server.App.Core.Applications;
 using codeRR.Server.Infrastructure;
 using codeRR.Server.ReportAnalyzer.LibContracts;
 using codeRR.Server.Web.Areas.Receiver.Helpers;
 using codeRR.Server.Web.Areas.Receiver.Models;
+using codeRR.Server.Web.Cqs;
+using codeRR.Server.Web.Infrastructure.Cqs;
 using DotNetCqs;
 using DotNetCqs.Queues;
 using Griffin.Data;
@@ -32,10 +39,16 @@ namespace codeRR.Server.Web.Areas.Receiver.Controllers
         }
 
         [HttpPost, Route("receiver/report/{appKey}/feedback")]
-        public async Task<HttpResponseMessage> SupplyFeedback(string appKey, string sig, FeedbackModel model)
+        public async Task<HttpResponseMessage> SupplyFeedback(string appKey, string sig)
         {
+
+            var json = await UnpackContent();
+
             try
             {
+                var ser = new CqsJsonNetSerializer();
+                var model = (FeedbackDTO)ser.Deserialize(typeof(FeedbackDTO), json);
+
                 var app = await _applicationRepository.GetByKeyAsync(appKey);
                 using (var session = _queue.BeginSession())
                 {
@@ -57,11 +70,24 @@ namespace codeRR.Server.Web.Areas.Receiver.Controllers
             catch (Exception ex)
             {
                 _logger.Warn(
-                    "Failed to submit feedback: " + JsonConvert.SerializeObject(new { appKey, model }),
+                    "Failed to submit feedback: " + JsonConvert.SerializeObject(new { appKey, json }),
                     ex);
             }
 
             return new HttpResponseMessage(HttpStatusCode.NoContent);
+        }
+
+        private async Task<string> UnpackContent()
+        {
+            var ms = new MemoryStream();
+            using (var zipStream = new GZipStream(HttpContext.Current.Request.InputStream, CompressionMode.Decompress))
+            {
+                await zipStream.CopyToAsync(ms);
+            }
+
+            ms.Position = 0;
+            var sr = new StreamReader(ms, Encoding.UTF8);
+            return sr.ReadToEnd();
         }
     }
 }
