@@ -80,6 +80,17 @@ namespace codeRR.Server.Web.Areas.Receiver.Controllers
         private async Task<string> UnpackContent()
         {
             var ms = new MemoryStream();
+            await HttpContext.Current.Request.InputStream.CopyToAsync(ms);
+            ms.Position = 0;
+
+            // not compressed.
+            if (ms.GetBuffer()[0] == '{')
+            {
+                var str = new StreamReader(ms);
+                return str.ReadToEnd();
+            }
+
+            ms.Position = 0;
             using (var zipStream = new GZipStream(HttpContext.Current.Request.InputStream, CompressionMode.Decompress))
             {
                 await zipStream.CopyToAsync(ms);
