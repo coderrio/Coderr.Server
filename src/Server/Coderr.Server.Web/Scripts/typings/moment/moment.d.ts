@@ -693,3 +693,5 @@ declare module 'moment/moment' {
 }
 
 declare var moment: moment.MomentStatic;
+//export momentsAgo;
+declare function momentsAgo(date: any): string;

@@ -29,7 +29,7 @@ module codeRR.Feedback {
                     html(value, dto) {
                         console.log(dto);
                         return `Reported for <a href="#/application/${dto.applicationId}/incident/${dto.IncidentId}">${
-                            dto.IncidentName}</a> at ${moment(dto.WrittenAtUtc).fromNow()}`;
+                            dto.IncidentName}</a> at ${momentsAgo(dto.WrittenAtUtc)}`;
                     }
                 },
                 EmailAddress: {

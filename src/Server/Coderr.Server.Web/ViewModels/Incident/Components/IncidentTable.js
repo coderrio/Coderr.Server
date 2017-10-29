@@ -141,8 +141,7 @@ var IncidentTableViewModel = (function () {
             },
             LastUpdateAtUtc: {
                 text: function (value) {
-                    var date = new Date(value);
-                    return moment(date).fromNow();
+                    return momentsAgo(value);
                 }
             }
         };

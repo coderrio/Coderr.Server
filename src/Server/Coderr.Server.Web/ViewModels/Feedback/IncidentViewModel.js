@@ -61,7 +61,7 @@ var codeRR;
                         return "color:#ccc";
                     },
                     html: function (value, dto) {
-                        return "Written " + moment(dto.WrittenAtUtc).fromNow();
+                        return "Written " + momentsAgo(dto.WrittenAtUtc);
                     }
                 },
                 EmailAddress: {

@@ -15,7 +15,7 @@ module codeRR.Report {
             const directives = {
                 CreatedAtUtc: {
                     text(value) {
-                        return moment(value).fromNow();
+                        return momentsAgo(value);
                     }
                 },
                 ContextCollections: {

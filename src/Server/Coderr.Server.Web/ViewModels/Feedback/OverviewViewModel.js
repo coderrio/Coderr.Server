@@ -48,7 +48,7 @@ var codeRR;
                     },
                     html: function (value, dto) {
                         console.log(dto);
-                        return "Reported for <a href=\"#/application/" + dto.ApplicationId + "/feedback\">" + dto.ApplicationName + "</a> " + moment(dto.WrittenAtUtc).fromNow();
+                        return "Reported for <a href=\"#/application/" + dto.ApplicationId + "/feedback\">" + dto.ApplicationName + "</a> " + momentsAgo(dto.WrittenAtUtc);
                     }
                 },
                 EmailAddress: {

@@ -146,7 +146,7 @@ module codeRR.Incident {
                 Items: {
                     CreatedAtUtc: {
                         text(value, dto) {
-                            return moment(value).fromNow();
+                            return momentsAgo(value);
                         }
                     },
                     Message: {
@@ -175,17 +175,17 @@ module codeRR.Incident {
             const directives = {
                 CreatedAtUtc: {
                     text(value) {
-                        return moment(value).fromNow();
+                        return momentsAgo(value);
                     }
                 },
                 UpdatedAtUtc: {
                     text(value) {
-                        return moment(value).fromNow();
+                        return momentsAgo(value);
                     }
                 },
                 SolvedAtUtc: {
                     text(value) {
-                        return moment(value).fromNow();
+                        return momentsAgo(value);
                     }
                 },
                 Tags: {

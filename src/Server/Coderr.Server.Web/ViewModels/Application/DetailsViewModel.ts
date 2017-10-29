@@ -119,20 +119,17 @@ module codeRR.Application {
             const directives = {
                 CreatedAtUtc: {
                     text(value) {
-                        const date = new Date(value);
-                        return moment(date).fromNow();
+                        return momentsAgo(value);
                     }
                 },
                 UpdatedAtUtc: {
                     text(value) {
-                        const date = new Date(value);
-                        return moment(date).fromNow();
+                        return momentsAgo(value);
                     }
                 },
                 SolvedAtUtc: {
                     text(value) {
-                        const date = new Date(value);
-                        return moment(date).fromNow();
+                        return momentsAgo(value);
                     }
                 },
                 Versions: {

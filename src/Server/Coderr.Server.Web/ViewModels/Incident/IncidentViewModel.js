@@ -115,7 +115,7 @@ var codeRR;
                     Items: {
                         CreatedAtUtc: {
                             text: function (value, dto) {
-                                return moment(value).fromNow();
+                                return momentsAgo(value);
                             }
                         },
                         Message: {
@@ -143,17 +143,17 @@ var codeRR;
                 var directives = {
                     CreatedAtUtc: {
                         text: function (value) {
-                            return moment(value).fromNow();
+                            return momentsAgo(value);
                         }
                     },
                     UpdatedAtUtc: {
                         text: function (value) {
-                            return moment(value).fromNow();
+                            return momentsAgo(value);
                         }
                     },
                     SolvedAtUtc: {
                         text: function (value) {
-                            return moment(value).fromNow();
+                            return momentsAgo(value);
                         }
                     },
                     Tags: {

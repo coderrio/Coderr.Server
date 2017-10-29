@@ -23,7 +23,7 @@ var codeRR;
                             },
                             html: function (value, dto) {
                                 console.log(dto);
-                                return "Reported for <a href=\"#/application/" + dto.applicationId + "/incident/" + dto.IncidentId + "\">" + dto.IncidentName + "</a> at " + moment(dto.WrittenAtUtc).fromNow();
+                                return "Reported for <a href=\"#/application/" + dto.applicationId + "/incident/" + dto.IncidentId + "\">" + dto.IncidentName + "</a> at " + momentsAgo(dto.WrittenAtUtc);
                             }
                         },
                         EmailAddress: {

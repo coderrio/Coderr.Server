@@ -164,12 +164,12 @@ module codeRR.Overview {
                     },
                     CreatedAtUtc: {
                         text(value) {
-                            return moment(value).fromNow();
+                            return momentsAgo(value);
                         }
                     },
                     LastUpdateAtUtc: {
                         text(value) {
-                            return moment(value).fromNow();
+                            return momentsAgo(value);
                         }
                     },
                     ApplicationName: {

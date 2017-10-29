@@ -15,7 +15,7 @@ var codeRR;
                 var directives = {
                     CreatedAtUtc: {
                         text: function (value) {
-                            return moment(value).fromNow();
+                            return momentsAgo(value);
                         }
                     },
                     ContextCollections: {

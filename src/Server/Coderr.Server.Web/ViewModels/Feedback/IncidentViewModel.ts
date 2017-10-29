@@ -27,7 +27,7 @@ module codeRR.Feedback {
                         return "color:#ccc";
                     },
                     html(value, dto) {
-                        return `Written ${moment(dto.WrittenAtUtc).fromNow()}`;
+                        return `Written ${momentsAgo(dto.WrittenAtUtc)}`;
                     }
                 },
                 EmailAddress: {

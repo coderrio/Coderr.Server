@@ -97,20 +97,17 @@ var codeRR;
                 var directives = {
                     CreatedAtUtc: {
                         text: function (value) {
-                            var date = new Date(value);
-                            return moment(date).fromNow();
+                            return momentsAgo(value);
                         }
                     },
                     UpdatedAtUtc: {
                         text: function (value) {
-                            var date = new Date(value);
-                            return moment(date).fromNow();
+                            return momentsAgo(value);
                         }
                     },
                     SolvedAtUtc: {
                         text: function (value) {
-                            var date = new Date(value);
-                            return moment(date).fromNow();
+                            return momentsAgo(value);
                         }
                     },
                     Versions: {

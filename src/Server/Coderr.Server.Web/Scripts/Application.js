@@ -4,6 +4,13 @@
 
 });
 
+function momentsAgo(dateStr) {
+    if (dateStr.substr(dateStr.length - 1, 1) !== 'Z') {
+        dateStr = dateStr + 'Z'
+    }
+    return moment(dateStr).fromNow();
+}
+
 function nl2br(str, is_xhtml) {
     var breakTag = is_xhtml ? "<br />" : "<br>";
     return (str + "").replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1" + breakTag + "$2");

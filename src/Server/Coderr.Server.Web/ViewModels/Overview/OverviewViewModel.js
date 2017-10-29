@@ -141,12 +141,12 @@ var codeRR;
                         },
                         CreatedAtUtc: {
                             text: function (value) {
-                                return moment(value).fromNow();
+                                return momentsAgo(value);
                             }
                         },
                         LastUpdateAtUtc: {
                             text: function (value) {
-                                return moment(value).fromNow();
+                                return momentsAgo(value);
                             }
                         },
                         ApplicationName: {
