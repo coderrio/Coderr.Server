@@ -235,7 +235,6 @@
     <Compile Include="App_Start\CompositionRoot.cs" />
     <Compile Include="App_Start\Cqs\GriffinHandlerResolverAdapter.cs" />
     <Compile Include="App_Start\Cqs\JsonFormatter.cs" />
-    <Compile Include="App_Start\Cqs\JsonMessageQueueSerializer.cs" />
     <Compile Include="App_Start\Cqs\Metadata.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IoC\GriffinContainerAdapter.cs" />
@@ -306,7 +305,6 @@
     <Compile Include="Infrastructure\Auth\AuthenticationFailureResult.cs" />
     <Compile Include="Infrastructure\Auth\SignalRAuthenticateAttribute.cs" />
     <Compile Include="Infrastructure\CompressedRequestHandler.cs" />
-    <Compile Include="Infrastructure\Cqs\CqsJsonNetSerializer.cs" />
     <Compile Include="Infrastructure\Cqs\CqsObjectMapper.cs" />
     <Compile Include="Infrastructure\CustomerInfoProvider.cs" />
     <Compile Include="Infrastructure\InstallationHelper.cs" />

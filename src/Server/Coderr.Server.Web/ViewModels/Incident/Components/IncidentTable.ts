@@ -31,7 +31,7 @@ class IncidentTableViewModel implements Griffin.WebApp.IPagerSubscriber {
         if (applicationVersion != null) {
             query.Version = applicationVersion;
         }
-        CqsClient.query<codeRR.Core.Incidents.Queries.FindIncidentResult>(query)
+        CqsClient.query<codeRR.Core.Incidents.Queries.FindIncidentsResult>(query)
             .done(response => {
 
                 var itemsElem = this.ctx.viewContainer.querySelector("#incidentTable") as HTMLElement;
@@ -45,6 +45,7 @@ class IncidentTableViewModel implements Griffin.WebApp.IPagerSubscriber {
             });
 
         this.ctx.handle.click("#btnClosed", e => this.onBtnClosed(e));
+        this.ctx.handle.click("#btnNew", e => this.onBtnNew(e));
         this.ctx.handle.click("#btnActive", e => this.onBtnActive(e));
         this.ctx.handle.click("#btnIgnored", e => this.onBtnIgnored(e));
         this.ctx.handle.click("#LastReportCol", e => this.onLastReportCol(e));
@@ -82,6 +83,15 @@ class IncidentTableViewModel implements Griffin.WebApp.IPagerSubscriber {
     private onBtnActive(e: Event) {
         e.preventDefault();
         this.incidentType = "active";
+        this.pager.reset();
+        $(e.target).parent().find('label').removeClass('active');
+        $(e.target).addClass('active');
+        this.loadItems();
+    }
+
+    private onBtnNew(e: Event) {
+        e.preventDefault();
+        this.incidentType = "new";
         this.pager.reset();
         $(e.target).parent().find('label').removeClass('active');
         $(e.target).addClass('active');
@@ -185,13 +195,14 @@ class IncidentTableViewModel implements Griffin.WebApp.IPagerSubscriber {
         const query = new codeRR.Core.Incidents.Queries.FindIncidents();
         query.SortType = this.sortType;
         query.SortAscending = this.sortAscending;
-        query.Open = false;
         if (this.incidentType === "closed") {
-            query.Closed = true;
+            query.IsClosed = true;
         } else if (this.incidentType === 'ignored') {
-            query.Ignored = true;
+            query.IsIgnored = true;
+        } else if (this.incidentType === 'new') {
+            query.IsNew = true;
         } else {
-            query.Open = true;
+            query.IsAssigned = true;
         }
         if (pageNumber === 0) {
             query.PageNumber = this.pager.currentPage;
@@ -203,7 +214,7 @@ class IncidentTableViewModel implements Griffin.WebApp.IPagerSubscriber {
             query.FreeText = searchBox.value;
 
         query.ItemsPerPage = 20;
-        CqsClient.query<codeRR.Core.Incidents.Queries.FindIncidentResultItem>(query)
+        CqsClient.query<codeRR.Core.Incidents.Queries.FindIncidentsResultItem>(query)
             .done(response => {
                 var table = document.getElementById("incidentTable");
                 this.renderTable(table, response);

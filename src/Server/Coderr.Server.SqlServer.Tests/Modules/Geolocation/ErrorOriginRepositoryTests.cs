@@ -22,7 +22,7 @@ namespace codeRR.Server.SqlServer.Tests.Modules.Geolocation
         {
             var origin = new ErrorOrigin("127.0.0.1", 934.934, 28.282);
             var uow = _testTools.CreateUnitOfWork();
-            _testTools.CreateUserAndApp();
+            _testTools.CreateBasicData();
 
             var handler = new ErrorOriginRepository(uow);
             await handler.CreateAsync(origin, 1, 1, 1);

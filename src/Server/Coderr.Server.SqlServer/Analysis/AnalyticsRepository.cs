@@ -72,8 +72,8 @@ namespace codeRR.Server.SqlServer.Analysis
             using (var cmd = _unitOfWork.CreateCommand())
             {
                 cmd.CommandText =
-                    "INSERT INTO Incidents (ReportHashCode, ApplicationId, CreatedAtUtc, HashCodeIdentifier, StackTrace, ReportCount, UpdatedAtUtc, Description, FullName, IsReOpened)" +
-                    " VALUES (@ReportHashCode, @ApplicationId, @CreatedAtUtc, @HashCodeIdentifier, @StackTrace, @ReportCount, @UpdatedAtUtc, @Description, @FullName, 0);select SCOPE_IDENTITY();";
+                    "INSERT INTO Incidents (ReportHashCode, ApplicationId, CreatedAtUtc, HashCodeIdentifier, StackTrace, ReportCount, UpdatedAtUtc, Description, FullName, IsReOpened, LastReportAtUtc)" +
+                    " VALUES (@ReportHashCode, @ApplicationId, @CreatedAtUtc, @HashCodeIdentifier, @StackTrace, @ReportCount, @UpdatedAtUtc, @Description, @FullName, 0, @LastReportAtUtc);select SCOPE_IDENTITY();";
                 cmd.AddParameter("Id", incident.Id);
                 cmd.AddParameter("ReportHashCode", incident.ReportHashCode);
                 cmd.AddParameter("ApplicationId", incident.ApplicationId);
@@ -84,6 +84,7 @@ namespace codeRR.Server.SqlServer.Analysis
                 cmd.AddParameter("Description", incident.Description);
                 cmd.AddParameter("StackTrace", incident.StackTrace);
                 cmd.AddParameter("FullName", incident.FullName);
+                cmd.AddParameter("LastReportAtUtc", incident.LastReportAtUtc);
                 var id = (int) (decimal) cmd.ExecuteScalar();
                 incident.GetType()
                     .GetProperty("Id", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)

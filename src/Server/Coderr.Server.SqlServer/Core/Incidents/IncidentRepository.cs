@@ -33,9 +33,10 @@ namespace codeRR.Server.SqlServer.Core.Incidents
                         UpdatedAtUtc = @UpdatedAtUtc,
                         Description = @Description,
                         Solution = @Solution,
-                        IsSolved = @IsSolved,
                         IsSolutionShared = @IsSolutionShared,
-                        IgnoreReports = @IgnoreReports,
+                        AssignedToId = @AssignedTo,
+                        AssignedAtUtc = @AssignedAtUtc,
+                        State = @state,
                         IgnoringReportsSinceUtc = @IgnoringReportsSinceUtc,
                         IgnoringRequestedBy = @IgnoringRequestedBy
                         WHERE Id = @id";
@@ -43,12 +44,13 @@ namespace codeRR.Server.SqlServer.Core.Incidents
                 cmd.AddParameter("ApplicationId", incident.ApplicationId);
                 cmd.AddParameter("UpdatedAtUtc", incident.UpdatedAtUtc);
                 cmd.AddParameter("Description", incident.Description);
-                cmd.AddParameter("IgnoreReports", incident.IgnoreReports);
+                cmd.AddParameter("State", (int)incident.State);
+                cmd.AddParameter("AssignedTo", incident.AssignedToId);
+                cmd.AddParameter("AssignedAtUtc", incident.AssignedAtUtc);
                 cmd.AddParameter("IgnoringReportsSinceUtc", incident.IgnoringReportsSinceUtc.ToDbNullable());
                 cmd.AddParameter("IgnoringRequestedBy", incident.IgnoringRequestedBy);
                 cmd.AddParameter("Solution",
                     incident.Solution == null ? null : EntitySerializer.Serialize(incident.Solution));
-                cmd.AddParameter("IsSolved", incident.IsSolved);
                 cmd.AddParameter("IsSolutionShared", incident.IsSolutionShared);
                 await cmd.ExecuteNonQueryAsync();
             }
@@ -89,43 +91,7 @@ namespace codeRR.Server.SqlServer.Core.Incidents
                 return cmd.FirstOrDefault(new IncidentMapper());
             }
         }
-
-        public IEnumerable<IncidentSummaryDTO> FindLatestForApplication(int applicationId, int count)
-        {
-            using (var cmd = _uow.CreateCommand())
-            {
-                cmd.CommandText =
-                    "SELECT TOP " + count +
-                    " * FROM Incidents WHERE ApplicationId = @applicationId AND IsSolved=0 ORDER BY UpdatedAtUtc DESC";
-
-                cmd.AddParameter("applicationId", applicationId);
-                return cmd.ToList<IncidentSummaryDTO>();
-            }
-        }
-
-        public IEnumerable<IncidentSummaryDTO> FindLatestForOrganization(int count)
-        {
-            using (var cmd = _uow.CreateCommand())
-            {
-                cmd.CommandText =
-                    "SELECT TOP " + count + " * FROM Incidents WHERE IsSolved=0 ORDER BY UpdatedAtUtc DESC";
-
-
-                return cmd.ToList<IncidentSummaryDTO>();
-            }
-        }
-
-        public IEnumerable<IncidentSummaryDTO> FindWithMostReportsForOrganization(int count)
-        {
-            using (var cmd = _uow.CreateCommand())
-            {
-                cmd.CommandText =
-                    "SELECT TOP " + count + " * FROM Incidents WHERE IsSolved=0 ORDER BY Count DESC";
-
-                return cmd.ToList<IncidentSummaryDTO>();
-            }
-        }
-
+        
         public Incident Get(int id)
         {
             using (var cmd = _uow.CreateCommand())

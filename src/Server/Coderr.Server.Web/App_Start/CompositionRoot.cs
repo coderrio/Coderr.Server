@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.Data;
 using System.Reflection;
 using System.Web.Http;
@@ -9,7 +8,6 @@ using codeRR.Server.App.Configuration;
 using codeRR.Server.Infrastructure;
 using codeRR.Server.Infrastructure.Configuration;
 using codeRR.Server.ReportAnalyzer;
-using codeRR.Server.ReportAnalyzer.Scanners;
 using codeRR.Server.SqlServer.Core.Users;
 using codeRR.Server.Web.IoC;
 using Griffin.Container;
@@ -76,7 +74,7 @@ namespace codeRR.Server.Web
         {
             builder.RegisterComponents(Lifetime.Scoped, typeof(AppType).Assembly);
             builder.RegisterComponents(Lifetime.Scoped, typeof(UserRepository).Assembly);
-            builder.RegisterComponents(Lifetime.Scoped, typeof(ReportAnalyzer.Handlers.ReportAnalyzer).Assembly);
+            builder.RegisterComponents(Lifetime.Scoped, typeof(ReportAnalyzer.Handlers.Reports.ReportAnalyzer).Assembly);
         }
 
         private void RegisterQueues(ContainerRegistrar builder)

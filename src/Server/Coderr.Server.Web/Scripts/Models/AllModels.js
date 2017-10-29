@@ -439,13 +439,13 @@ var codeRR;
 (function (codeRR) {
     var Core;
     (function (Core) {
-        var IgnoreFieldAttribute = (function () {
-            function IgnoreFieldAttribute() {
+        var EnumExtensions = (function () {
+            function EnumExtensions() {
             }
-            return IgnoreFieldAttribute;
+            return EnumExtensions;
         }());
-        IgnoreFieldAttribute.TYPE_NAME = 'IgnoreFieldAttribute';
-        Core.IgnoreFieldAttribute = IgnoreFieldAttribute;
+        EnumExtensions.TYPE_NAME = 'EnumExtensions';
+        Core.EnumExtensions = EnumExtensions;
     })(Core = codeRR.Core || (codeRR.Core = {}));
 })(codeRR || (codeRR = {}));
 (function (codeRR) {
@@ -800,22 +800,6 @@ var codeRR;
         (function (Incidents) {
             var Queries;
             (function (Queries) {
-                var FindIncidentResult = (function () {
-                    function FindIncidentResult() {
-                    }
-                    return FindIncidentResult;
-                }());
-                FindIncidentResult.TYPE_NAME = 'FindIncidentResult';
-                Queries.FindIncidentResult = FindIncidentResult;
-                var FindIncidentResultItem = (function () {
-                    function FindIncidentResultItem(id, name) {
-                        this.Id = id;
-                        this.Name = name;
-                    }
-                    return FindIncidentResultItem;
-                }());
-                FindIncidentResultItem.TYPE_NAME = 'FindIncidentResultItem';
-                Queries.FindIncidentResultItem = FindIncidentResultItem;
                 var FindIncidents = (function () {
                     function FindIncidents() {
                     }
@@ -823,6 +807,22 @@ var codeRR;
                 }());
                 FindIncidents.TYPE_NAME = 'FindIncidents';
                 Queries.FindIncidents = FindIncidents;
+                var FindIncidentsResult = (function () {
+                    function FindIncidentsResult() {
+                    }
+                    return FindIncidentsResult;
+                }());
+                FindIncidentsResult.TYPE_NAME = 'FindIncidentsResult';
+                Queries.FindIncidentsResult = FindIncidentsResult;
+                var FindIncidentsResultItem = (function () {
+                    function FindIncidentsResultItem(id, name) {
+                        this.Id = id;
+                        this.Name = name;
+                    }
+                    return FindIncidentsResultItem;
+                }());
+                FindIncidentsResultItem.TYPE_NAME = 'FindIncidentsResultItem';
+                Queries.FindIncidentsResultItem = FindIncidentsResultItem;
                 var GetIncident = (function () {
                     function GetIncident(incidentId) {
                         this.IncidentId = incidentId;
@@ -885,6 +885,16 @@ var codeRR;
         (function (Incidents) {
             var Events;
             (function (Events) {
+                var IncidentAssigned = (function () {
+                    function IncidentAssigned(incidentId, assignedById, assignedToId) {
+                        this.IncidentId = incidentId;
+                        this.AssignedById = assignedById;
+                        this.AssignedToId = assignedToId;
+                    }
+                    return IncidentAssigned;
+                }());
+                IncidentAssigned.TYPE_NAME = 'IncidentAssigned';
+                Events.IncidentAssigned = IncidentAssigned;
                 var IncidentIgnored = (function () {
                     function IncidentIgnored(incidentId, accountId, userName) {
                         this.IncidentId = incidentId;
@@ -926,6 +936,16 @@ var codeRR;
         (function (Incidents) {
             var Commands;
             (function (Commands) {
+                var AssignIncident = (function () {
+                    function AssignIncident(incidentId, assignedTo, assignedBy) {
+                        this.IncidentId = incidentId;
+                        this.AssignedTo = assignedTo;
+                        this.AssignedBy = assignedBy;
+                    }
+                    return AssignIncident;
+                }());
+                AssignIncident.TYPE_NAME = 'AssignIncident';
+                Commands.AssignIncident = AssignIncident;
                 var CloseIncident = (function () {
                     function CloseIncident(solution, incidentId) {
                         this.Solution = solution;
@@ -1059,6 +1079,14 @@ var codeRR;
                 }());
                 GetApplicationList.TYPE_NAME = 'GetApplicationList';
                 Queries.GetApplicationList = GetApplicationList;
+                var GetApplicationOverview = (function () {
+                    function GetApplicationOverview(applicationId) {
+                        this.ApplicationId = applicationId;
+                    }
+                    return GetApplicationOverview;
+                }());
+                GetApplicationOverview.TYPE_NAME = 'GetApplicationOverview';
+                Queries.GetApplicationOverview = GetApplicationOverview;
                 var GetApplicationOverviewResult = (function () {
                     function GetApplicationOverviewResult() {
                     }
@@ -1095,14 +1123,6 @@ var codeRR;
                 }());
                 GetApplicationTeamResultInvitation.TYPE_NAME = 'GetApplicationTeamResultInvitation';
                 Queries.GetApplicationTeamResultInvitation = GetApplicationTeamResultInvitation;
-                var GetApplicationOverview = (function () {
-                    function GetApplicationOverview(applicationId) {
-                        this.ApplicationId = applicationId;
-                    }
-                    return GetApplicationOverview;
-                }());
-                GetApplicationOverview.TYPE_NAME = 'GetApplicationOverview';
-                Queries.GetApplicationOverview = GetApplicationOverview;
                 var OverviewStatSummary = (function () {
                     function OverviewStatSummary() {
                     }
@@ -1282,6 +1302,13 @@ var codeRR;
                 }());
                 ApiKeyCreated.TYPE_NAME = 'ApiKeyCreated';
                 Events.ApiKeyCreated = ApiKeyCreated;
+                var ApiKeyRemoved = (function () {
+                    function ApiKeyRemoved() {
+                    }
+                    return ApiKeyRemoved;
+                }());
+                ApiKeyRemoved.TYPE_NAME = 'ApiKeyRemoved';
+                Events.ApiKeyRemoved = ApiKeyRemoved;
             })(Events = ApiKeys.Events || (ApiKeys.Events = {}));
         })(ApiKeys = Core.ApiKeys || (Core.ApiKeys = {}));
     })(Core = codeRR.Core || (codeRR.Core = {}));
@@ -1357,32 +1384,6 @@ var codeRR;
                 }());
                 AcceptInvitation.TYPE_NAME = 'AcceptInvitation';
                 Requests.AcceptInvitation = AcceptInvitation;
-                var AcceptInvitationReply = (function () {
-                    function AcceptInvitationReply(accountId, userName) {
-                        this.AccountId = accountId;
-                        this.UserName = userName;
-                    }
-                    return AcceptInvitationReply;
-                }());
-                AcceptInvitationReply.TYPE_NAME = 'AcceptInvitationReply';
-                Requests.AcceptInvitationReply = AcceptInvitationReply;
-                var ActivateAccount = (function () {
-                    function ActivateAccount(activationKey) {
-                        this.ActivationKey = activationKey;
-                    }
-                    return ActivateAccount;
-                }());
-                ActivateAccount.TYPE_NAME = 'ActivateAccount';
-                Requests.ActivateAccount = ActivateAccount;
-                var ActivateAccountReply = (function () {
-                    function ActivateAccountReply(accountId, userName) {
-                        this.AccountId = accountId;
-                        this.UserName = userName;
-                    }
-                    return ActivateAccountReply;
-                }());
-                ActivateAccountReply.TYPE_NAME = 'ActivateAccountReply';
-                Requests.ActivateAccountReply = ActivateAccountReply;
                 var ChangePassword = (function () {
                     function ChangePassword(currentPassword, newPassword) {
                         this.CurrentPassword = currentPassword;
@@ -1392,65 +1393,6 @@ var codeRR;
                 }());
                 ChangePassword.TYPE_NAME = 'ChangePassword';
                 Requests.ChangePassword = ChangePassword;
-                var ChangePasswordReply = (function () {
-                    function ChangePasswordReply() {
-                    }
-                    return ChangePasswordReply;
-                }());
-                ChangePasswordReply.TYPE_NAME = 'ChangePasswordReply';
-                Requests.ChangePasswordReply = ChangePasswordReply;
-                var IgnoreFieldAttribute = (function () {
-                    function IgnoreFieldAttribute() {
-                    }
-                    return IgnoreFieldAttribute;
-                }());
-                IgnoreFieldAttribute.TYPE_NAME = 'IgnoreFieldAttribute';
-                Requests.IgnoreFieldAttribute = IgnoreFieldAttribute;
-                var Login = (function () {
-                    function Login(userName, password) {
-                        this.UserName = userName;
-                        this.Password = password;
-                    }
-                    return Login;
-                }());
-                Login.TYPE_NAME = 'Login';
-                Requests.Login = Login;
-                var LoginReply = (function () {
-                    function LoginReply() {
-                    }
-                    return LoginReply;
-                }());
-                LoginReply.TYPE_NAME = 'LoginReply';
-                Requests.LoginReply = LoginReply;
-                var LoginResult;
-                (function (LoginResult) {
-                    LoginResult[LoginResult["Locked"] = 0] = "Locked";
-                    LoginResult[LoginResult["IncorrectLogin"] = 1] = "IncorrectLogin";
-                    LoginResult[LoginResult["Successful"] = 2] = "Successful";
-                })(LoginResult = Requests.LoginResult || (Requests.LoginResult = {}));
-                var ResetPassword = (function () {
-                    function ResetPassword(activationKey, newPassword) {
-                        this.ActivationKey = activationKey;
-                        this.NewPassword = newPassword;
-                    }
-                    return ResetPassword;
-                }());
-                ResetPassword.TYPE_NAME = 'ResetPassword';
-                Requests.ResetPassword = ResetPassword;
-                var ResetPasswordReply = (function () {
-                    function ResetPasswordReply() {
-                    }
-                    return ResetPasswordReply;
-                }());
-                ResetPasswordReply.TYPE_NAME = 'ResetPasswordReply';
-                Requests.ResetPasswordReply = ResetPasswordReply;
-                var ValidateNewLogin = (function () {
-                    function ValidateNewLogin() {
-                    }
-                    return ValidateNewLogin;
-                }());
-                ValidateNewLogin.TYPE_NAME = 'ValidateNewLogin';
-                Requests.ValidateNewLogin = ValidateNewLogin;
                 var ValidateNewLoginReply = (function () {
                     function ValidateNewLoginReply() {
                     }

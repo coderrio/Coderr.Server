@@ -18,23 +18,14 @@ namespace codeRR.Server.Api.Client
         private readonly JsonSerializerSettings _jsonSerializerSettings = new JsonSerializerSettings
         {
             ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
-            Formatting = Formatting.Indented
+            Formatting = Formatting.Indented,
+            NullValueHandling = NullValueHandling.Ignore,
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+            ContractResolver = new IncludeNonPublicMembersContractResolver()
         };
-
         private string _apiKey;
-
         private string _sharedSecret;
         private Uri _uri;
-
-
-        /// <summary>
-        ///     Creates a new instance of <see cref="ServerApiClient" />.
-        /// </summary>
-        public ServerApiClient()
-        {
-            _jsonSerializerSettings.ContractResolver = new IncludeNonPublicMembersContractResolver();
-        }
-
 
         async Task<TResult> IQueryBus.QueryAsync<TResult>(ClaimsPrincipal user, Query<TResult> query)
         {

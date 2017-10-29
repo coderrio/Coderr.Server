@@ -6,9 +6,9 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
-	  <PackageReference Include="xunit" Version="2.3.0-beta4-build3742" />
+	  <PackageReference Include="xunit" Version="2.3.1" />
 	  <PackageReference Include="FluentAssertions" Version="4.19.4" />
-		<PackageReference Include="NSubstitute" Version="2.0.3" />
+		<PackageReference Include="NSubstitute" Version="3.1.0" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\Coderr.Server.SqlServer\codeRR.Server.SqlServer.csproj" />

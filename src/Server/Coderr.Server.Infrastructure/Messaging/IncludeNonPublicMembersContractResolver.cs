@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace codeRR.Server.Infrastructure
+namespace codeRR.Server.Infrastructure.Messaging
 {
     /// <summary>
     ///     Used by JSON.NET to be able to deserialize properties with private setters.

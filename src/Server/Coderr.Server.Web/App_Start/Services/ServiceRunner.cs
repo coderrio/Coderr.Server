@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using codeRR.Server.Infrastructure;
+using codeRR.Server.Infrastructure.Messaging;
 using codeRR.Server.Infrastructure.Security;
 using codeRR.Server.Web.Cqs;
 using codeRR.Server.Web.Infrastructure;
@@ -70,7 +71,7 @@ namespace codeRR.Server.Web.Services
                     {
                         return new AdoNetMessageQueueProvider(
                             () => DbConnectionFactory.Open(Startup.ConnectionStringName, true),
-                            new JsonMessageQueueSerializer()
+                            new MessagingSerializer(typeof(AdoNetMessageDto))
                         );
                     }, Lifetime.Singleton);
 
@@ -151,6 +152,7 @@ namespace codeRR.Server.Web.Services
 
         private QueueListener CreateQueueListener(IServiceLocator serviceLocator, string queueName)
         {
+
             var queue = serviceLocator.Resolve<IMessageQueueProvider>().Open(queueName);
             var listener = new QueueListener(queue, new GriffinHandlerScopeFactory(Container))
             {
@@ -174,8 +176,6 @@ namespace codeRR.Server.Web.Services
                     var all = args.Scope.ResolveDependency<IAdoNetUnitOfWork>().ToList();
                     all[0].SaveChanges();
                 }
-                if (args.Exception != null)
-                    _log.Error(queueName + " Failed to process " + args.Message.Body + ".", args.Exception);
             };
             return listener;
         }

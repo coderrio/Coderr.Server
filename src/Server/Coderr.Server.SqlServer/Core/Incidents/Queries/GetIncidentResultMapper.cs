@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using codeRR.Server.Api.Core.Incidents.Queries;
 using codeRR.Server.App.Core.Incidents;
 using codeRR.Server.SqlServer.Tools;
@@ -15,16 +17,22 @@ namespace codeRR.Server.SqlServer.Core.Incidents.Queries
             Property(x => x.FeedbackCount).Ignore();
             Property(x => x.Tags).Ignore();
             Property(x => x.ContextCollections).Ignore();
-            Property(x => x.IsIgnored).ColumnName("IgnoreReports");
+            Property(x => x.IncidentState)
+                .ColumnName("State");
+            Property(x => x.AssignedToId)
+                .ToPropertyValue(x => x is DBNull ? (int?) null : (int) x);
 
             Property(x => x.Solution)
                 .ToPropertyValue(x => EntitySerializer.Deserialize<IncidentSolution>(x)?.Description);
 
-            Property(x => x.IsSolved)
-                .ToPropertyValue(DbConverters.BoolFromByteArray);
+            Property(x => x.IsSolved).Ignore();
+            Property(x => x.IsIgnored).Ignore();
 
             Property(x => x.IsSolutionShared)
                 .ToPropertyValue(DbConverters.BoolFromByteArray);
+
+            
         }
+
     }
 }

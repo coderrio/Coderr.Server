@@ -9,6 +9,7 @@ module codeRR.Incident {
     import ReportDay = Core.Incidents.Queries.ReportDay;
     import ApplicationService = codeRR.Applications.ApplicationService;
     import ReOpenIncident = codeRR.Core.Incidents.Commands.ReOpenIncident;
+    import AssignIncident = Core.Incidents.Commands.AssignIncident;
 
     export class IncidentViewModel implements PagerSubscriber, Griffin.Yo.Spa.ViewModels.IViewModel {
         private static UP = "fa-chevron-up";
@@ -21,6 +22,9 @@ module codeRR.Incident {
         private chart: morris.GridChart;
         id: number;
         isIgnored = false;
+        isAssigned = false;
+        isNew = true;
+        assignedToName: string;
 
         constructor(appScope) {
             console.log(appScope);
@@ -42,13 +46,11 @@ module codeRR.Incident {
 
                     IncidentNavigation.set(ctx.routeData);
 
-                    //if (response.IsIgnored) {
-                    //    $('#actionButtons').remove();
-                    //}
-                    //var item = ctx.select.one('#actionButtons');
-                    //$(".page-title-box ol").before(item);
-
                     this.isIgnored = response.IsIgnored;
+                    this.isAssigned = response.AssignedToId != null;
+                    this.isNew = response.AssignedToId == null && !response.IsSolved && !response.IsIgnored;
+                    this.assignedToName = response.AssignedTo;
+
                     this.name = response.Description;
                     this.id = response.Id;
                     this.applicationId = response.ApplicationId;
@@ -87,13 +89,18 @@ module codeRR.Incident {
                 });
 
             ctx.handle.change('[name="range"]', e => this.onRange(e));
-
+            ctx.handle.click('#assignToMe', e => this.assignToMe(e));
         }
 
         deactivate() {
 
         }
 
+        private assignToMe(e: Event) {
+            var cmd = new AssignIncident(this.id, window['ACCOUNT_ID'], window['ACCOUNT_ID']);
+            CqsClient.command(cmd);
+            humane.log('Assignment request have been sent.');
+        }
 
         onPager(pager: Pager): void {
             const query = new Core.Reports.Queries.GetReportList(this.id);
@@ -192,8 +199,9 @@ module codeRR.Incident {
                         return value;
                     },
                     href(value) {
-                        if (value.substr(0, 2) !== 'v-' || value !== "ignored" || value !== "solved" )
+                        if (value.substr(0, 2) !== 'v-' && value !== "ignored" && value !== "solved" )
                             return `http://stackoverflow.com/search?q=%5B${value}%5D+${dto.Description}`;
+                        return null;
                     }
                 }
 

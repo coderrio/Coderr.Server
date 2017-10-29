@@ -10,7 +10,7 @@ declare function nl2br(text: string): string;
 
 module codeRR.Feedback {
     import CqsClient = Griffin.Cqs.CqsClient;
-    import OverviewFeedback = Web.Feedback.Queries.GetFeedbackForDashboardPage;
+    import OverviewFeedback = codeRR.Web.Feedback.Queries.GetFeedbackForDashboardPage;
     import OverviewFeedbackResult = Web.Feedback.Queries.GetFeedbackForDashboardPageResult;
     import Yo = Griffin.Yo;
 

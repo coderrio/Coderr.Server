@@ -44,9 +44,10 @@ var codeRR;
                 this.pager.draw(pagerElement);
                 this.getIncidentsFromServer(1);
                 ctx.handle.change('[name="range"]', function (e) { return _this.OnRange(e); });
-                ctx.handle.click("#btnClosed", function (e) { return _this.onBtnClosed(e); });
-                ctx.handle.click("#btnActive", function (e) { return _this.onBtnActive(e); });
+                ctx.handle.click("#btnNew", function (e) { return _this.onBtnNew(e); });
+                ctx.handle.click("#btnAssigned", function (e) { return _this.onBtnAssigned(e); });
                 ctx.handle.click("#btnIgnored", function (e) { return _this.onBtnIgnored(e); });
+                ctx.handle.click("#btnClosed", function (e) { return _this.onBtnClosed(e); });
                 ctx.handle.click("#LastReportCol", function (e) { return _this.onLastReportCol(e); });
                 ctx.handle.click("#CountCol", function (e) { return _this.onCountCol(e); });
             };
@@ -87,9 +88,17 @@ var codeRR;
                 $(e.target).addClass('active');
                 this.getIncidentsFromServer(0);
             };
-            OverviewViewModel.prototype.onBtnActive = function (e) {
+            OverviewViewModel.prototype.onBtnNew = function (e) {
                 e.preventDefault();
-                this._incidentType = "active";
+                this._incidentType = "new";
+                this.pager.reset();
+                $(e.target).parent().find('label').removeClass('active');
+                $(e.target).addClass('active');
+                this.getIncidentsFromServer(0);
+            };
+            OverviewViewModel.prototype.onBtnAssigned = function (e) {
+                e.preventDefault();
+                this._incidentType = "assigned";
                 this.pager.reset();
                 $(e.target).parent().find('label').removeClass('active');
                 $(e.target).addClass('active');
@@ -177,8 +186,16 @@ var codeRR;
                 query.PageNumber = pageNumber;
                 query.ItemsPerPage = 10;
                 if (this._incidentType === "closed") {
-                    query.Closed = true;
-                    query.Open = false;
+                    query.IsClosed = true;
+                }
+                if (this._incidentType === "new") {
+                    query.IsNew = true;
+                }
+                if (this._incidentType === "assigned") {
+                    query.IsAssigned = true;
+                }
+                if (this._incidentType === "ignored") {
+                    query.IsIgnored = true;
                 }
                 //else if (this._incidentType === '')
                 CqsClient.query(query)

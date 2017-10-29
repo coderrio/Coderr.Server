@@ -1,16 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net452</TargetFrameworks>
-    <Version>1.0.4.0</Version>
+    <Version>1.1.0</Version>
     <RootNamespace>codeRR.Server.Api</RootNamespace>
     <AssemblyName>Coderr.Server.Api</AssemblyName>
-    <!--<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <DocumentationFile>bin\$(Configuration)\net452\codeRR.Api.Client.xml</DocumentationFile>-->
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\codeRR.Server.Api.xml</DocumentationFile>
   </PropertyGroup>
-  <!--  <PropertyGroup>
+    <PropertyGroup>
     <PackageId>codeRR.Server.Api</PackageId>
     <Authors>1TCompany AB</Authors>
-    <Description>CQRS api definition for codeRR Server.</Description>
+    <Description>CQRS API definition for codeRR Server.</Description>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes>First release</PackageReleaseNotes>
     <Copyright>Copyright 2017 © 1TCompany AB. All rights reserved.</Copyright>
@@ -23,7 +23,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
     <NoWarn>1701;1702;1705;1591</NoWarn>
-  </PropertyGroup>-->
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="DotNetCqs" Version="2.0.3.8" />
   </ItemGroup>

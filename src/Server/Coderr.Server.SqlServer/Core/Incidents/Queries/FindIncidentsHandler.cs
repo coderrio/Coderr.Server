@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using codeRR.Server.Api.Core.Incidents;
 using codeRR.Server.Api.Core.Incidents.Queries;
+using codeRR.Server.App.Core.Incidents;
 using codeRR.Server.Infrastructure.Security;
 using DotNetCqs;
 using Griffin.Container;
@@ -81,14 +82,16 @@ namespace codeRR.Server.SqlServer.Core.Incidents.Queries
                 
 
                 sqlQuery += " AND (";
-                if (query.Ignored)
-                    sqlQuery += "IgnoreReports = 1 OR ";
-                if (query.Closed)
-                    sqlQuery += "IsSolved = 1 OR ";
-                if (query.Open)
-                    sqlQuery += "(IsSolved = 0 AND IgnoreReports = 0) OR ";
+                if (query.IsIgnored)
+                    sqlQuery += $"State = {(int)IncidentState.Ignored} OR ";
+                if (query.IsNew)
+                    sqlQuery += $"State = {(int)IncidentState.New} OR ";
+                if (query.IsClosed)
+                    sqlQuery += $"State = {(int)IncidentState.Closed} OR ";
+                if (query.IsAssigned)
+                    sqlQuery += $"State = {(int)IncidentState.Active} OR ";
                 if (query.ReOpened)
-                    sqlQuery += "(IsReOpened = 1) OR ";
+                    sqlQuery += "IsReOpened = 1 OR ";
 
                 if (sqlQuery.EndsWith("OR "))
                     sqlQuery = sqlQuery.Remove(sqlQuery.Length - 4) + ") ";

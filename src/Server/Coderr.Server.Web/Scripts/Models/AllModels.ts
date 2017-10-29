@@ -1,10 +1,7 @@
-﻿
-
-module codeRR.Web.Overview.Queries {
+﻿module codeRR.Web.Overview.Queries {
     export class GetOverview {
         public static TYPE_NAME: string = 'GetOverview';
         public NumberOfDays: number;
-        public QueryId: string;
     }
 
     export class GetOverviewApplicationResult {
@@ -37,7 +34,6 @@ module codeRR.Web.Feedback.Queries {
     export class GetFeedbackForApplicationPage {
         public static TYPE_NAME: string = 'GetFeedbackForApplicationPage';
         public ApplicationId: number;
-        public QueryId: string;
         public constructor(applicationId: number) {
             this.ApplicationId = applicationId;
         }
@@ -61,7 +57,6 @@ module codeRR.Web.Feedback.Queries {
 
     export class GetFeedbackForDashboardPage {
         public static TYPE_NAME: string = 'GetFeedbackForDashboardPage';
-        public QueryId: string;
     }
 
     export class GetFeedbackForDashboardPageResult {
@@ -83,7 +78,6 @@ module codeRR.Web.Feedback.Queries {
     export class GetIncidentFeedback {
         public static TYPE_NAME: string = 'GetIncidentFeedback';
         public IncidentId: number;
-        public QueryId: string;
         public constructor(incidentId: number) {
             this.IncidentId = incidentId;
         }
@@ -111,7 +105,6 @@ module codeRR.Modules.Versions.Queries {
     export class GetApplicationVersions {
         public static TYPE_NAME: string = 'GetApplicationVersions';
         public ApplicationId: number;
-        public QueryId: string;
         public constructor(applicationId: number) {
             this.ApplicationId = applicationId;
         }
@@ -194,7 +187,6 @@ module codeRR.Modules.Triggers.Queries {
     export class GetContextCollectionMetadata {
         public static TYPE_NAME: string = 'GetContextCollectionMetadata';
         public ApplicationId: number;
-        public QueryId: string;
         public constructor(applicationId: number) {
             this.ApplicationId = applicationId;
         }
@@ -209,7 +201,6 @@ module codeRR.Modules.Triggers.Queries {
     export class GetTrigger {
         public static TYPE_NAME: string = 'GetTrigger';
         public Id: number;
-        public QueryId: string;
         public constructor(id: number) {
             this.Id = id;
         }
@@ -232,7 +223,6 @@ module codeRR.Modules.Triggers.Queries {
     export class GetTriggersForApplication {
         public static TYPE_NAME: string = 'GetTriggersForApplication';
         public ApplicationId: number;
-        public QueryId: string;
         public constructor(applicationId: number) {
             this.ApplicationId = applicationId;
         }
@@ -252,7 +242,6 @@ module codeRR.Modules.Triggers.Commands {
         public RunForExistingIncidents: boolean;
         public RunForNewIncidents: boolean;
         public RunForReOpenedIncidents: boolean;
-        public CommandId: string;
         public constructor(applicationId: number, name: string) {
             this.ApplicationId = applicationId;
             this.Name = name;
@@ -262,7 +251,6 @@ module codeRR.Modules.Triggers.Commands {
     export class DeleteTrigger {
         public static TYPE_NAME: string = 'DeleteTrigger';
         public Id: number;
-        public CommandId: string;
         public constructor(id: number) {
             this.Id = id;
         }
@@ -279,7 +267,6 @@ module codeRR.Modules.Triggers.Commands {
         public RunForExistingIncidents: boolean;
         public RunForNewIncidents: boolean;
         public RunForReOpenedIncidents: boolean;
-        public CommandId: string;
         public constructor(id: number, name: string) {
             this.Id = id;
             this.Name = name;
@@ -299,7 +286,6 @@ module codeRR.Modules.Tagging.Queries {
     export class GetTagsForIncident {
         public static TYPE_NAME: string = 'GetTagsForIncident';
         public IncidentId: number;
-        public QueryId: string;
         public constructor(incidentId: number) {
             this.IncidentId = incidentId;
         }
@@ -311,7 +297,6 @@ module codeRR.Modules.Tagging.Events {
         public static TYPE_NAME: string = 'TagAttachedToIncident';
         public IncidentId: number;
         public Tags: codeRR.Modules.Tagging.TagDTO[];
-        public EventId: string;
         public constructor(incidentId: number, tags: codeRR.Modules.Tagging.TagDTO[]) {
             this.IncidentId = incidentId;
             this.Tags = tags;
@@ -323,7 +308,6 @@ module codeRR.Modules.ErrorOrigins.Queries {
     export class GetOriginsForIncident {
         public static TYPE_NAME: string = 'GetOriginsForIncident';
         public IncidentId: number;
-        public QueryId: string;
         public constructor(incidentId: number) {
             this.IncidentId = incidentId;
         }
@@ -346,7 +330,6 @@ module codeRR.Modules.ContextData.Queries {
     export class GetSimilarities {
         public static TYPE_NAME: string = 'GetSimilarities';
         public IncidentId: number;
-        public QueryId: string;
         public constructor(incidentId: number) {
             this.IncidentId = incidentId;
         }
@@ -386,9 +369,8 @@ module codeRR.Modules.ContextData.Queries {
 
 }
 module codeRR.Core {
-    export class IgnoreFieldAttribute {
-        public static TYPE_NAME: string = 'IgnoreFieldAttribute';
-        public TypeId: any;
+    export class EnumExtensions {
+        public static TYPE_NAME: string = 'EnumExtensions';
     }
 
 }
@@ -415,7 +397,6 @@ module codeRR.Core.Users.Queries {
         public static TYPE_NAME: string = 'GetUserSettings';
         public ApplicationId: number;
         public UserId: number;
-        public QueryId: string;
     }
 
     export class GetUserSettingsResult {
@@ -438,7 +419,6 @@ module codeRR.Core.Users.Commands {
         public NotifyOnReOpenedIncident: codeRR.Core.Users.NotificationState;
         public NotifyOnUserFeedback: codeRR.Core.Users.NotificationState;
         public UserId: number;
-        public CommandId: string;
     }
 
     export class UpdatePersonalSettings {
@@ -448,7 +428,6 @@ module codeRR.Core.Users.Commands {
         public LastName: string;
         public MobileNumber: string;
         public UserId: number;
-        public CommandId: string;
     }
 
 }
@@ -458,7 +437,6 @@ module codeRR.Core.Support {
         public Message: string;
         public Subject: string;
         public Url: string;
-        public CommandId: string;
     }
 
 }
@@ -504,7 +482,6 @@ module codeRR.Core.Reports.Queries {
     export class GetReport {
         public static TYPE_NAME: string = 'GetReport';
         public ReportId: number;
-        public QueryId: string;
         public constructor(reportId: number) {
             this.ReportId = reportId;
         }
@@ -528,7 +505,6 @@ module codeRR.Core.Reports.Queries {
         public IncidentId: number;
         public PageNumber: number;
         public PageSize: number;
-        public QueryId: string;
         public constructor(incidentId: number) {
             this.IncidentId = incidentId;
         }
@@ -596,7 +572,6 @@ module codeRR.Core.Notifications {
         public Message: string;
         public NotificationType: string;
         public RoleName: string;
-        public CommandId: string;
         public constructor(accountId: number, message: string) {
             this.AccountId = accountId;
             this.Message = message;
@@ -638,14 +613,12 @@ module codeRR.Core.Messaging.Commands {
     export class SendEmail {
         public static TYPE_NAME: string = 'SendEmail';
         public EmailMessage: codeRR.Core.Messaging.EmailMessage;
-        public CommandId: string;
     }
 
     export class SendSms {
         public static TYPE_NAME: string = 'SendSms';
         public Message: string;
         public PhoneNumber: string;
-        public CommandId: string;
         public constructor(phoneNumber: string, message: string) {
             this.PhoneNumber = phoneNumber;
             this.Message = message;
@@ -660,7 +633,6 @@ module codeRR.Core.Messaging.Commands {
         public Subject: string;
         public TemplateName: string;
         public To: string;
-        public CommandId: string;
         public constructor(mailTitle: string, templateName: string) {
             this.MailTitle = mailTitle;
             this.TemplateName = templateName;
@@ -672,7 +644,6 @@ module codeRR.Core.Invitations.Queries {
     export class GetInvitationByKey {
         public static TYPE_NAME: string = 'GetInvitationByKey';
         public InvitationKey: string;
-        public QueryId: string;
         public constructor(invitationKey: string) {
             this.InvitationKey = invitationKey;
         }
@@ -691,7 +662,6 @@ module codeRR.Core.Invitations.Commands {
         public EmailAddress: string;
         public Text: string;
         public UserId: number;
-        public CommandId: string;
         public constructor(applicationId: number, emailAddress: string) {
             this.ApplicationId = applicationId;
             this.EmailAddress = emailAddress;
@@ -713,6 +683,7 @@ module codeRR.Core.Incidents {
         public CreatedAtUtc: any;
         public Id: number;
         public IsReOpened: boolean;
+        public AssignedToUserId: number;
         public LastUpdateAtUtc: any;
         public Name: string;
         public ReportCount: number;
@@ -724,16 +695,34 @@ module codeRR.Core.Incidents {
 
 }
 module codeRR.Core.Incidents.Queries {
-    export class FindIncidentResult {
-        public static TYPE_NAME: string = 'FindIncidentResult';
-        public Items: codeRR.Core.Incidents.Queries.FindIncidentResultItem[];
+    export class FindIncidents {
+        public static TYPE_NAME: string = 'FindIncidents';
+        public ApplicationId: number;
+        public FreeText: string;
+        public IsAssigned: boolean;
+        public IsClosed: boolean;
+        public IsIgnored: boolean;
+        public IsNew: boolean;
+        public ItemsPerPage: number;
+        public MaxDate: any;
+        public MinDate: any;
+        public PageNumber: number;
+        public ReOpened: boolean;
+        public SortAscending: boolean;
+        public SortType: codeRR.Core.Incidents.IncidentOrder;
+        public Version: string;
+    }
+
+    export class FindIncidentsResult {
+        public static TYPE_NAME: string = 'FindIncidentsResult';
+        public Items: codeRR.Core.Incidents.Queries.FindIncidentsResultItem[];
         public PageNumber: number;
         public PageSize: number;
         public TotalCount: number;
     }
 
-    export class FindIncidentResultItem {
-        public static TYPE_NAME: string = 'FindIncidentResultItem';
+    export class FindIncidentsResultItem {
+        public static TYPE_NAME: string = 'FindIncidentsResultItem';
         public ApplicationId: string;
         public ApplicationName: string;
         public CreatedAtUtc: any;
@@ -748,28 +737,9 @@ module codeRR.Core.Incidents.Queries {
         }
     }
 
-    export class FindIncidents {
-        public static TYPE_NAME: string = 'FindIncidents';
-        public ApplicationId: number;
-        public Closed: boolean;
-        public FreeText: string;
-        public Ignored: boolean;
-        public ItemsPerPage: number;
-        public MaxDate: any;
-        public MinDate: any;
-        public Open: boolean;
-        public PageNumber: number;
-        public ReOpened: boolean;
-        public SortAscending: boolean;
-        public SortType: codeRR.Core.Incidents.IncidentOrder;
-        public Version: string;
-        public QueryId: string;
-    }
-
     export class GetIncident {
         public static TYPE_NAME: string = 'GetIncident';
         public IncidentId: number;
-        public QueryId: string;
         public constructor(incidentId: number) {
             this.IncidentId = incidentId;
         }
@@ -778,7 +748,6 @@ module codeRR.Core.Incidents.Queries {
     export class GetIncidentForClosePage {
         public static TYPE_NAME: string = 'GetIncidentForClosePage';
         public IncidentId: number;
-        public QueryId: string;
         public constructor(incidentId: number) {
             this.IncidentId = incidentId;
         }
@@ -798,11 +767,14 @@ module codeRR.Core.Incidents.Queries {
         public DayStatistics: codeRR.Core.Incidents.Queries.ReportDay[];
         public Description: string;
         public FeedbackCount: number;
+        public AssignedToId: number;
         public FullName: string;
         public HashCodeIdentifier: string;
         public Id: number;
         public IsIgnored: boolean;
         public IsReOpened: boolean;
+        public AssignedTo: string;
+        public AssignedAtUtc: any;
         public IsSolutionShared: boolean;
         public IsSolved: boolean;
         public PreviousSolutionAtUtc: any;
@@ -821,7 +793,6 @@ module codeRR.Core.Incidents.Queries {
         public static TYPE_NAME: string = 'GetIncidentStatistics';
         public IncidentId: number;
         public NumberOfDays: number;
-        public QueryId: string;
     }
 
     export class GetIncidentStatisticsResult {
@@ -838,12 +809,23 @@ module codeRR.Core.Incidents.Queries {
 
 }
 module codeRR.Core.Incidents.Events {
+    export class IncidentAssigned {
+        public static TYPE_NAME: string = 'IncidentAssigned';
+        public AssignedById: number;
+        public AssignedToId: number;
+        public IncidentId: number;
+        public constructor(incidentId: number, assignedById: number, assignedToId: number) {
+            this.IncidentId = incidentId;
+            this.AssignedById = assignedById;
+            this.AssignedToId = assignedToId;
+        }
+    }
+
     export class IncidentIgnored {
         public static TYPE_NAME: string = 'IncidentIgnored';
         public AccountId: number;
         public IncidentId: number;
         public UserName: string;
-        public EventId: string;
         public constructor(incidentId: number, accountId: number, userName: string) {
             this.IncidentId = incidentId;
             this.AccountId = accountId;
@@ -856,7 +838,6 @@ module codeRR.Core.Incidents.Events {
         public ApplicationId: number;
         public CreatedAtUtc: any;
         public IncidentId: number;
-        public EventId: string;
         public constructor(applicationId: number, incidentId: number, createdAtUtc: any) {
             this.ApplicationId = applicationId;
             this.IncidentId = incidentId;
@@ -869,7 +850,6 @@ module codeRR.Core.Incidents.Events {
         public Incident: codeRR.Core.Incidents.IncidentSummaryDTO;
         public IsReOpened: boolean;
         public Report: codeRR.Core.Reports.ReportDTO;
-        public EventId: string;
         public constructor(incident: codeRR.Core.Incidents.IncidentSummaryDTO, report: codeRR.Core.Reports.ReportDTO, isReOpened: boolean) {
             this.Incident = incident;
             this.Report = report;
@@ -879,6 +859,18 @@ module codeRR.Core.Incidents.Events {
 
 }
 module codeRR.Core.Incidents.Commands {
+    export class AssignIncident {
+        public static TYPE_NAME: string = 'AssignIncident';
+        public AssignedBy: number;
+        public AssignedTo: number;
+        public IncidentId: number;
+        public constructor(incidentId: number, assignedTo: number, assignedBy: number) {
+            this.IncidentId = incidentId;
+            this.AssignedTo = assignedTo;
+            this.AssignedBy = assignedBy;
+        }
+    }
+
     export class CloseIncident {
         public static TYPE_NAME: string = 'CloseIncident';
         public CanSendNotification: boolean;
@@ -888,7 +880,6 @@ module codeRR.Core.Incidents.Commands {
         public ShareSolution: boolean;
         public Solution: string;
         public UserId: number;
-        public CommandId: string;
         public constructor(solution: string, incidentId: number) {
             this.Solution = solution;
             this.IncidentId = incidentId;
@@ -899,7 +890,6 @@ module codeRR.Core.Incidents.Commands {
         public static TYPE_NAME: string = 'IgnoreIncident';
         public IncidentId: number;
         public UserId: number;
-        public CommandId: string;
         public constructor(incidentId: number) {
             this.IncidentId = incidentId;
         }
@@ -909,7 +899,6 @@ module codeRR.Core.Incidents.Commands {
         public static TYPE_NAME: string = 'ReOpenIncident';
         public IncidentId: number;
         public UserId: number;
-        public CommandId: string;
         public constructor(incidentId: number) {
             this.IncidentId = incidentId;
         }
@@ -922,7 +911,6 @@ module codeRR.Core.Feedback.Events {
         public IncidentId: number;
         public Message: string;
         public UserEmailAddress: string;
-        public EventId: string;
     }
 
 }
@@ -935,7 +923,6 @@ module codeRR.Core.Feedback.Commands {
         public Feedback: string;
         public RemoteAddress: string;
         public ReportId: number;
-        public CommandId: string;
         public constructor(errorId: string, remoteAddress: string) {
             this.ErrorId = errorId;
             this.RemoteAddress = remoteAddress;
@@ -966,7 +953,6 @@ module codeRR.Core.Applications.Queries {
     export class GetApplicationIdByKey {
         public static TYPE_NAME: string = 'GetApplicationIdByKey';
         public ApplicationKey: string;
-        public QueryId: string;
         public constructor(applicationKey: string) {
             this.ApplicationKey = applicationKey;
         }
@@ -981,7 +967,6 @@ module codeRR.Core.Applications.Queries {
         public static TYPE_NAME: string = 'GetApplicationInfo';
         public AppKey: string;
         public ApplicationId: number;
-        public QueryId: string;
     }
 
     export class GetApplicationInfoResult {
@@ -999,7 +984,16 @@ module codeRR.Core.Applications.Queries {
         public static TYPE_NAME: string = 'GetApplicationList';
         public AccountId: number;
         public FilterAsAdmin: boolean;
-        public QueryId: string;
+    }
+
+    export class GetApplicationOverview {
+        public static TYPE_NAME: string = 'GetApplicationOverview';
+        public ApplicationId: number;
+        public NumberOfDays: number;
+        public Version: string;
+        public constructor(applicationId: number) {
+            this.ApplicationId = applicationId;
+        }
     }
 
     export class GetApplicationOverviewResult {
@@ -1014,7 +1008,6 @@ module codeRR.Core.Applications.Queries {
     export class GetApplicationTeam {
         public static TYPE_NAME: string = 'GetApplicationTeam';
         public ApplicationId: number;
-        public QueryId: string;
         public constructor(applicationId: number) {
             this.ApplicationId = applicationId;
         }
@@ -1040,17 +1033,6 @@ module codeRR.Core.Applications.Queries {
         public InvitedByUserName: string;
     }
 
-    export class GetApplicationOverview {
-        public static TYPE_NAME: string = 'GetApplicationOverview';
-        public ApplicationId: number;
-        public NumberOfDays: number;
-        public Version: string;
-        public QueryId: string;
-        public constructor(applicationId: number) {
-            this.ApplicationId = applicationId;
-        }
-    }
-
     export class OverviewStatSummary {
         public static TYPE_NAME: string = 'OverviewStatSummary';
         public Followers: number;
@@ -1068,7 +1050,6 @@ module codeRR.Core.Applications.Events {
         public ApplicationName: string;
         public CreatedById: number;
         public SharedSecret: string;
-        public EventId: string;
         public constructor(id: number, name: string, createdById: number, appKey: string, sharedSecret: string) {
             this.CreatedById = createdById;
             this.AppKey = appKey;
@@ -1081,14 +1062,12 @@ module codeRR.Core.Applications.Events {
         public AppKey: string;
         public ApplicationId: number;
         public ApplicationName: string;
-        public EventId: string;
     }
 
     export class UserAddedToApplication {
         public static TYPE_NAME: string = 'UserAddedToApplication';
         public AccountId: number;
         public ApplicationId: number;
-        public EventId: string;
         public constructor(applicationId: number, accountId: number) {
             this.ApplicationId = applicationId;
             this.AccountId = accountId;
@@ -1102,7 +1081,6 @@ module codeRR.Core.Applications.Events {
         public EmailAddress: string;
         public InvitationKey: string;
         public InvitedBy: string;
-        public EventId: string;
         public constructor(invitationKey: string, applicationId: number, applicationName: string, emailAddress: string, invitedBy: string) {
             this.InvitationKey = invitationKey;
             this.ApplicationId = applicationId;
@@ -1120,7 +1098,6 @@ module codeRR.Core.Applications.Commands {
         public Name: string;
         public TypeOfApplication: codeRR.Core.Applications.TypeOfApplication;
         public UserId: number;
-        public CommandId: string;
         public constructor(name: string, typeOfApplication: codeRR.Core.Applications.TypeOfApplication) {
             this.Name = name;
             this.TypeOfApplication = typeOfApplication;
@@ -1130,7 +1107,6 @@ module codeRR.Core.Applications.Commands {
     export class DeleteApplication {
         public static TYPE_NAME: string = 'DeleteApplication';
         public Id: number;
-        public CommandId: string;
         public constructor(id: number) {
             this.Id = id;
         }
@@ -1140,7 +1116,6 @@ module codeRR.Core.Applications.Commands {
         public static TYPE_NAME: string = 'RemoveTeamMember';
         public ApplicationId: number;
         public UserToRemove: number;
-        public CommandId: string;
         public constructor(applicationId: number, userToRemove: number) {
             this.ApplicationId = applicationId;
             this.UserToRemove = userToRemove;
@@ -1152,7 +1127,6 @@ module codeRR.Core.Applications.Commands {
         public ApplicationId: number;
         public Name: string;
         public TypeOfApplication: codeRR.Core.Applications.TypeOfApplication;
-        public CommandId: string;
         public constructor(applicationId: number, name: string) {
             this.ApplicationId = applicationId;
             this.Name = name;
@@ -1165,7 +1139,6 @@ module codeRR.Core.ApiKeys.Queries {
         public static TYPE_NAME: string = 'GetApiKey';
         public ApiKey: string;
         public Id: number;
-        public QueryId: string;
         public constructor(id: number) {
             this.Id = id;
         }
@@ -1190,7 +1163,6 @@ module codeRR.Core.ApiKeys.Queries {
 
     export class ListApiKeys {
         public static TYPE_NAME: string = 'ListApiKeys';
-        public QueryId: string;
     }
 
     export class ListApiKeysResult {
@@ -1214,7 +1186,6 @@ module codeRR.Core.ApiKeys.Events {
         public ApplicationNameForTheAppUsingTheKey: string;
         public CreatedById: number;
         public SharedSecret: string;
-        public EventId: string;
         public constructor(applicationNameForTheAppUsingTheKey: string, apiKey: string, sharedSecret: string, applicationIds: number[], createdById: number) {
             this.ApplicationNameForTheAppUsingTheKey = applicationNameForTheAppUsingTheKey;
             this.ApiKey = apiKey;
@@ -1222,6 +1193,10 @@ module codeRR.Core.ApiKeys.Events {
             this.ApplicationIds = applicationIds;
             this.CreatedById = createdById;
         }
+    }
+
+    export class ApiKeyRemoved {
+        public static TYPE_NAME: string = 'ApiKeyRemoved';
     }
 
 }
@@ -1233,7 +1208,6 @@ module codeRR.Core.ApiKeys.Commands {
         public ApplicationIds: number[];
         public ApplicationName: string;
         public SharedSecret: string;
-        public CommandId: string;
         public constructor(applicationName: string, apiKey: string, sharedSecret: string, applicationIds: number[]) {
             this.ApplicationName = applicationName;
             this.ApiKey = apiKey;
@@ -1246,7 +1220,6 @@ module codeRR.Core.ApiKeys.Commands {
         public static TYPE_NAME: string = 'DeleteApiKey';
         public ApiKey: string;
         public Id: number;
-        public CommandId: string;
         public constructor(id: number) {
             this.Id = id;
         }
@@ -1257,7 +1230,6 @@ module codeRR.Core.ApiKeys.Commands {
         public ApplicationIds: number[];
         public ApplicationName: string;
         public Id: number;
-        public CommandId: string;
         public constructor(id: number) {
             this.Id = id;
         }
@@ -1268,7 +1240,6 @@ module codeRR.Core.Accounts {
     export class RegisterSimple {
         public static TYPE_NAME: string = 'RegisterSimple';
         public EmailAddress: string;
-        public CommandId: string;
         public constructor(emailAddress: string) {
             this.EmailAddress = emailAddress;
         }
@@ -1286,40 +1257,10 @@ module codeRR.Core.Accounts.Requests {
         public LastName: string;
         public Password: string;
         public UserName: string;
-        public RequestId: string;
         public constructor(userName: string, password: string, invitationKey: string) {
             this.UserName = userName;
             this.Password = password;
             this.InvitationKey = invitationKey;
-        }
-    }
-
-    export class AcceptInvitationReply {
-        public static TYPE_NAME: string = 'AcceptInvitationReply';
-        public AccountId: number;
-        public UserName: string;
-        public constructor(accountId: number, userName: string) {
-            this.AccountId = accountId;
-            this.UserName = userName;
-        }
-    }
-
-    export class ActivateAccount {
-        public static TYPE_NAME: string = 'ActivateAccount';
-        public ActivationKey: string;
-        public RequestId: string;
-        public constructor(activationKey: string) {
-            this.ActivationKey = activationKey;
-        }
-    }
-
-    export class ActivateAccountReply {
-        public static TYPE_NAME: string = 'ActivateAccountReply';
-        public AccountId: number;
-        public UserName: string;
-        public constructor(accountId: number, userName: string) {
-            this.AccountId = accountId;
-            this.UserName = userName;
         }
     }
 
@@ -1328,69 +1269,10 @@ module codeRR.Core.Accounts.Requests {
         public CurrentPassword: string;
         public NewPassword: string;
         public UserId: number;
-        public RequestId: string;
         public constructor(currentPassword: string, newPassword: string) {
             this.CurrentPassword = currentPassword;
             this.NewPassword = newPassword;
         }
-    }
-
-    export class ChangePasswordReply {
-        public static TYPE_NAME: string = 'ChangePasswordReply';
-        public Success: boolean;
-    }
-
-    export class IgnoreFieldAttribute {
-        public static TYPE_NAME: string = 'IgnoreFieldAttribute';
-        public TypeId: any;
-    }
-
-    export class Login {
-        public static TYPE_NAME: string = 'Login';
-        public Password: string;
-        public UserName: string;
-        public RequestId: string;
-        public constructor(userName: string, password: string) {
-            this.UserName = userName;
-            this.Password = password;
-        }
-    }
-
-    export class LoginReply {
-        public static TYPE_NAME: string = 'LoginReply';
-        public AccountId: number;
-        public Result: LoginResult;
-        public UserName: string;
-        public IsSysAdmin: boolean;
-    }
-
-    export enum LoginResult {
-        Locked = 0,
-        IncorrectLogin = 1,
-        Successful = 2,
-    }
-
-    export class ResetPassword {
-        public static TYPE_NAME: string = 'ResetPassword';
-        public ActivationKey: string;
-        public NewPassword: string;
-        public RequestId: string;
-        public constructor(activationKey: string, newPassword: string) {
-            this.ActivationKey = activationKey;
-            this.NewPassword = newPassword;
-        }
-    }
-
-    export class ResetPasswordReply {
-        public static TYPE_NAME: string = 'ResetPasswordReply';
-        public Success: boolean;
-    }
-
-    export class ValidateNewLogin {
-        public static TYPE_NAME: string = 'ValidateNewLogin';
-        public Email: string;
-        public UserName: string;
-        public RequestId: string;
     }
 
     export class ValidateNewLoginReply {
@@ -1422,7 +1304,6 @@ module codeRR.Core.Accounts.Queries {
     export class FindAccountByUserName {
         public static TYPE_NAME: string = 'FindAccountByUserName';
         public UserName: string;
-        public QueryId: string;
         public constructor(userName: string) {
             this.UserName = userName;
         }
@@ -1441,7 +1322,6 @@ module codeRR.Core.Accounts.Queries {
     export class GetAccountById {
         public static TYPE_NAME: string = 'GetAccountById';
         public AccountId: number;
-        public QueryId: string;
         public constructor(accountId: number) {
             this.AccountId = accountId;
         }
@@ -1450,7 +1330,6 @@ module codeRR.Core.Accounts.Queries {
     export class GetAccountEmailById {
         public static TYPE_NAME: string = 'GetAccountEmailById';
         public AccountId: number;
-        public QueryId: string;
         public constructor(accountId: number) {
             this.AccountId = accountId;
         }
@@ -1463,7 +1342,6 @@ module codeRR.Core.Accounts.Events {
         public AccountId: number;
         public EmailAddress: string;
         public UserName: string;
-        public EventId: string;
         public constructor(accountId: number, userName: string) {
             this.AccountId = accountId;
             this.UserName = userName;
@@ -1475,7 +1353,6 @@ module codeRR.Core.Accounts.Events {
         public AccountId: number;
         public IsSysAdmin: boolean;
         public UserName: string;
-        public EventId: string;
         public constructor(accountId: number, userName: string) {
             this.AccountId = accountId;
             this.UserName = userName;
@@ -1490,7 +1367,6 @@ module codeRR.Core.Accounts.Events {
         public InvitedByUserName: string;
         public InvitedEmailAddress: string;
         public UserName: string;
-        public EventId: string;
         public constructor(accountId: number, invitedByUserName: string, userName: string) {
             this.AccountId = accountId;
             this.InvitedByUserName = invitedByUserName;
@@ -1504,7 +1380,6 @@ module codeRR.Core.Accounts.Events {
         public IsActivated: boolean;
         public IsLocked: boolean;
         public UserName: string;
-        public EventId: string;
         public constructor(userName: string) {
             this.UserName = userName;
         }
@@ -1515,7 +1390,6 @@ module codeRR.Core.Accounts.Commands {
     export class DeclineInvitation {
         public static TYPE_NAME: string = 'DeclineInvitation';
         public InvitationId: string;
-        public CommandId: string;
         public constructor(invitationId: string) {
             this.InvitationId = invitationId;
         }
@@ -1528,7 +1402,6 @@ module codeRR.Core.Accounts.Commands {
         public Email: string;
         public Password: string;
         public UserName: string;
-        public CommandId: string;
         public constructor(userName: string, password: string, email: string) {
             this.UserName = userName;
             this.Password = password;
@@ -1539,7 +1412,6 @@ module codeRR.Core.Accounts.Commands {
     export class RequestPasswordReset {
         public static TYPE_NAME: string = 'RequestPasswordReset';
         public EmailAddress: string;
-        public CommandId: string;
         public constructor(emailAddress: string) {
             this.EmailAddress = emailAddress;
         }

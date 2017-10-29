@@ -27,14 +27,10 @@ module codeRR.User {
             }
 
             const cmd = new Core.Accounts.Requests.ChangePassword(dto.CurrentPassword, dto.NewPassword);
-            CqsClient.request<Core.Accounts.Requests.ChangePasswordReply>(cmd)
+            CqsClient.command(cmd)
                 .done(result => {
-                    if (result.Success) {
-                        this.context.render({ NewPassword: "", NewPassword2: "", CurrentPassword: "" });
-                        humane.log("Password have been changed.");
-                    } else {
-                        humane.error("Password could not be changed. Did you enter your current password correctly?");
-                    }
+                    this.context.render({ NewPassword: "", NewPassword2: "", CurrentPassword: "" });
+                    humane.log("Password have been changed.");
                 });
 
         }

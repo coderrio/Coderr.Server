@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using codeRR.Server.Api.Core.Applications.Commands;
+using codeRR.Server.Infrastructure.Messaging;
 using codeRR.Server.Infrastructure.Security;
 using codeRR.Server.Web.Infrastructure.Cqs;
 using DotNetCqs;
@@ -27,7 +28,7 @@ namespace codeRR.Server.Web.Controllers
         private readonly IMessageBus _messageBus;
         private IQueryBus _queryBus;
         private static readonly CqsObjectMapper _cqsObjectMapper = new CqsObjectMapper();
-        private static readonly CqsJsonNetSerializer _serializer = new CqsJsonNetSerializer();
+        private static readonly MessagingSerializer _serializer = new MessagingSerializer();
         private readonly ILog _logger = LogManager.GetLogger(typeof(CqsController));
         private static readonly MethodInfo _queryMethod;
         private static readonly MethodInfo _sendMethod;

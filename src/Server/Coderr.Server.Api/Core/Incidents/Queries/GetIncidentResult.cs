@@ -16,6 +16,21 @@ namespace codeRR.Server.Api.Core.Incidents.Queries
         public int ApplicationId { get; private set; }
 
         /// <summary>
+        ///     When it was assigned to the person.
+        /// </summary>
+        public DateTime? AssignedAtUtc { get; set; }
+
+        /// <summary>
+        ///     User name of the person that this incident is assigned to.
+        /// </summary>
+        public string AssignedTo { get; set; }
+
+        /// <summary>
+        ///     User assigned to the incident.
+        /// </summary>
+        public int? AssignedToId { get; set; }
+
+        /// <summary>
         ///     Context collection names.
         /// </summary>
         public string[] ContextCollections { get; set; }
@@ -42,7 +57,7 @@ namespace codeRR.Server.Api.Core.Incidents.Queries
 
                 return _description;
             }
-            set { _description = value; }
+            set => _description = value;
         }
 
         /// <summary>
@@ -67,6 +82,12 @@ namespace codeRR.Server.Api.Core.Incidents.Queries
         public int Id { get; private set; }
 
         /// <summary>
+        ///     Stores the state temporary to be able to assigned the bool fields
+        /// </summary>
+        [IgnoreField]
+        public int IncidentState { get; set; }
+
+        /// <summary>
         ///     Ignore future reports for this incident (i.e. no notifications, do not store new reports etc).
         /// </summary>
         /// <remarks>
@@ -74,7 +95,7 @@ namespace codeRR.Server.Api.Core.Incidents.Queries
         ///         Report counter will still be updated.
         ///     </para>
         /// </remarks>
-        public bool IsIgnored { get; set; }
+        public bool IsIgnored => IncidentState == 2;
 
         /// <summary>
         ///     If the incident was closed and then received error reports again.
@@ -89,7 +110,7 @@ namespace codeRR.Server.Api.Core.Incidents.Queries
         /// <summary>
         ///     Incident has been marked as solved (i.e. closed)
         /// </summary>
-        public bool IsSolved { get; set; }
+        public bool IsSolved => IncidentState == 3;
 
         /// <summary>
         ///     Solution written last time (if <see cref="IsReOpened" /> is <c>true</c>).

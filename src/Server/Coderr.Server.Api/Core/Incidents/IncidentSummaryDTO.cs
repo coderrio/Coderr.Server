@@ -56,6 +56,11 @@ namespace codeRR.Server.Api.Core.Incidents
         public bool IsReOpened { get; set; }
 
         /// <summary>
+        /// someone is assigned to this incident
+        /// </summary>
+        public int? AssignedToUserId { get; set; }
+
+        /// <summary>
         ///     Update is both when the incident was open/closed and when we received a new report. TODO: Should be refactored into
         ///     two fields.
         /// </summary>

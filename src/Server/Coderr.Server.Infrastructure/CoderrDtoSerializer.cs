@@ -1,4 +1,5 @@
 ﻿using System;
+using codeRR.Server.Infrastructure.Messaging;
 using Newtonsoft.Json;
 
 namespace codeRR.Server.Infrastructure

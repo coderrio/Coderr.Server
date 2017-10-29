@@ -9,9 +9,12 @@ var codeRR;
         var CqsClient = Griffin.Cqs.CqsClient;
         var Pager = Griffin.WebApp.Pager;
         var ReOpenIncident = codeRR.Core.Incidents.Commands.ReOpenIncident;
+        var AssignIncident = codeRR.Core.Incidents.Commands.AssignIncident;
         var IncidentViewModel = (function () {
             function IncidentViewModel(appScope) {
                 this.isIgnored = false;
+                this.isAssigned = false;
+                this.isNew = true;
                 console.log(appScope);
             }
             IncidentViewModel.prototype.getTitle = function () {
@@ -26,12 +29,10 @@ var codeRR;
                     .done(function (response) {
                     window['currentIncident'] = response;
                     IncidentNavigation.set(ctx.routeData);
-                    //if (response.IsIgnored) {
-                    //    $('#actionButtons').remove();
-                    //}
-                    //var item = ctx.select.one('#actionButtons');
-                    //$(".page-title-box ol").before(item);
                     _this.isIgnored = response.IsIgnored;
+                    _this.isAssigned = response.AssignedToId != null;
+                    _this.isNew = response.AssignedToId == null && !response.IsSolved && !response.IsIgnored;
+                    _this.assignedToName = response.AssignedTo;
                     _this.name = response.Description;
                     _this.id = response.Id;
                     _this.applicationId = response.ApplicationId;
@@ -64,8 +65,14 @@ var codeRR;
                     _this.renderInitialChart(elem, response.DayStatistics);
                 });
                 ctx.handle.change('[name="range"]', function (e) { return _this.onRange(e); });
+                ctx.handle.click('#assignToMe', function (e) { return _this.assignToMe(e); });
             };
             IncidentViewModel.prototype.deactivate = function () {
+            };
+            IncidentViewModel.prototype.assignToMe = function (e) {
+                var cmd = new AssignIncident(this.id, window['ACCOUNT_ID'], window['ACCOUNT_ID']);
+                CqsClient.command(cmd);
+                humane.log('Assignment request have been sent.');
             };
             IncidentViewModel.prototype.onPager = function (pager) {
                 var _this = this;
@@ -159,8 +166,9 @@ var codeRR;
                             return value;
                         },
                         href: function (value) {
-                            if (value.substr(0, 2) !== 'v-' || value !== "ignored" || value !== "solved")
+                            if (value.substr(0, 2) !== 'v-' && value !== "ignored" && value !== "solved")
                                 return "http://stackoverflow.com/search?q=%5B" + value + "%5D+" + dto.Description;
+                            return null;
                         }
                     }
                 };

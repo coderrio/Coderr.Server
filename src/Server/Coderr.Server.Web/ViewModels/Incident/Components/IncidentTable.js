@@ -30,6 +30,7 @@ var IncidentTableViewModel = (function () {
             _this.pager.draw(_this.ctx.select.one("#pager"));
         });
         this.ctx.handle.click("#btnClosed", function (e) { return _this.onBtnClosed(e); });
+        this.ctx.handle.click("#btnNew", function (e) { return _this.onBtnNew(e); });
         this.ctx.handle.click("#btnActive", function (e) { return _this.onBtnActive(e); });
         this.ctx.handle.click("#btnIgnored", function (e) { return _this.onBtnIgnored(e); });
         this.ctx.handle.click("#LastReportCol", function (e) { return _this.onLastReportCol(e); });
@@ -64,6 +65,14 @@ var IncidentTableViewModel = (function () {
     IncidentTableViewModel.prototype.onBtnActive = function (e) {
         e.preventDefault();
         this.incidentType = "active";
+        this.pager.reset();
+        $(e.target).parent().find('label').removeClass('active');
+        $(e.target).addClass('active');
+        this.loadItems();
+    };
+    IncidentTableViewModel.prototype.onBtnNew = function (e) {
+        e.preventDefault();
+        this.incidentType = "new";
         this.pager.reset();
         $(e.target).parent().find('label').removeClass('active');
         $(e.target).addClass('active');
@@ -158,15 +167,17 @@ var IncidentTableViewModel = (function () {
         var query = new codeRR.Core.Incidents.Queries.FindIncidents();
         query.SortType = this.sortType;
         query.SortAscending = this.sortAscending;
-        query.Open = false;
         if (this.incidentType === "closed") {
-            query.Closed = true;
+            query.IsClosed = true;
         }
         else if (this.incidentType === 'ignored') {
-            query.Ignored = true;
+            query.IsIgnored = true;
+        }
+        else if (this.incidentType === 'new') {
+            query.IsNew = true;
         }
         else {
-            query.Open = true;
+            query.IsAssigned = true;
         }
         if (pageNumber === 0) {
             query.PageNumber = this.pager.currentPage;

@@ -15,6 +15,9 @@
         window.API_URL = '@ApiUrl';
         window.WEB_SITE = '@(new Uri(Request.Url, Url.Content("~")))';
         window.WEB_ROOT = '@Url.Content("~")';
+
+        //this is is validated server side for commands, thus don't try to play with it ;)
+        window.ACCOUNT_ID = @User.GetAccountId();
     </script>
     <link rel="stylesheet" href="@Url.Content("~/Content/morris.css")">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/css/tether.min.css" />

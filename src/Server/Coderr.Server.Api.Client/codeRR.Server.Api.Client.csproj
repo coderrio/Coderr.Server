@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net452;netstandard2.0</TargetFrameworks>
-    <Version>1.0.0.0</Version>
+    <Version>1.1.0</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <DocumentationFile>bin\$(Configuration)\net452\codeRR.Api.Client.xml</DocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Coderr.Server.Api.Client.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <PackageId>codeRR.Server.Api.Client</PackageId>

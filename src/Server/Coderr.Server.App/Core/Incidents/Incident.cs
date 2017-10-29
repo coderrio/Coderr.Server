@@ -36,6 +36,11 @@ namespace codeRR.Server.App.Core.Incidents
         public int ApplicationId { get; private set; }
 
         /// <summary>
+        ///     when this incident was assigned.
+        /// </summary>
+        public DateTime? AssignedAtUtc { get; private set; }
+
+        /// <summary>
         ///     When the incident was created in the client library.
         /// </summary>
         public DateTime CreatedAtUtc { get; private set; }
@@ -52,7 +57,7 @@ namespace codeRR.Server.App.Core.Incidents
 
                 return _description;
             }
-            set { _description = value; }
+            set => _description = value;
         }
 
         /// <summary>
@@ -61,17 +66,7 @@ namespace codeRR.Server.App.Core.Incidents
         public int Id { get; private set; }
 
         /// <summary>
-        ///     Do not accept any more reports for this exception
-        /// </summary>
-        /// <remarks>
-        ///     <para>
-        ///         Means that no notifications or reports should be saved on this incident
-        ///     </para>
-        /// </remarks>
-        public bool IgnoreReports { get; private set; }
-
-        /// <summary>
-        ///     <see cref="IgnoreReports" /> was set to true at this time.
+        ///     When we started to ignore reports for this incident.
         /// </summary>
         public DateTime IgnoringReportsSinceUtc { get; private set; }
 
@@ -97,9 +92,9 @@ namespace codeRR.Server.App.Core.Incidents
         public bool IsSolutionShared { get; private set; }
 
         /// <summary>
-        ///     If this incident has been fixed.
+        ///     When we received the last report.
         /// </summary>
-        public bool IsSolved { get; private set; }
+        public DateTime LastReportAtUtc { get; set; }
 
         /// <summary>
         ///     <see cref="IsReopened" /> has been set to true, this tells when the incident was closed the last time.
@@ -135,10 +130,51 @@ namespace codeRR.Server.App.Core.Incidents
         public string StackTrace { get; set; }
 
         /// <summary>
+        ///     Current state of this incident
+        /// </summary>
+        public IncidentState State { get; private set; }
+
+        /// <summary>
         ///     When the incident was updated through the UI or when a new report was received (whatever change was made last
         ///     time).
         /// </summary>
         public DateTime UpdatedAtUtc { get; private set; }
+
+        /// <summary>
+        ///     The user currently working with this incident.
+        /// </summary>
+        public int? AssignedToId { get; private set; }
+
+        /// <summary>
+        /// Assign this incident to someone.
+        /// </summary>
+        /// <param name="userId">User to assign to</param>
+        public void Assign(int userId)
+        {
+            if (userId <= 0) throw new ArgumentOutOfRangeException(nameof(userId));
+            AssignedAtUtc = DateTime.UtcNow;
+            AssignedToId = userId;
+            UpdatedAtUtc = DateTime.UtcNow;
+            State = IncidentState.Active;
+        }
+
+        /// <summary>
+        ///     Yay! One in the dev team figured out how the error can be solved.
+        /// </summary>
+        /// <param name="solvedBy">AccountId for whoever wrote the solution</param>
+        /// <param name="solution">Actual solution</param>
+        /// <exception cref="ArgumentNullException">solution</exception>
+        /// <exception cref="ArgumentOutOfRangeException">solvedBy</exception>
+        public void Close(int solvedBy, string solution)
+        {
+            if (solution == null) throw new ArgumentNullException("solution");
+            if (solvedBy <= 0) throw new ArgumentOutOfRangeException("solvedBy");
+
+            Solution = new IncidentSolution(solvedBy, solution);
+            UpdatedAtUtc = DateTime.UtcNow;
+            SolvedAtUtc = DateTime.UtcNow;
+            State = IncidentState.Closed;
+        }
 
         /// <summary>
         ///     Do not want to store reports or receive notifications for this incident.
@@ -148,8 +184,9 @@ namespace codeRR.Server.App.Core.Incidents
         public void IgnoreFutureReports(string accountName)
         {
             if (accountName == null) throw new ArgumentNullException("accountName");
-            IgnoreReports = true;
+            State = IncidentState.Ignored;
             IgnoringReportsSinceUtc = DateTime.UtcNow;
+            UpdatedAtUtc = DateTime.UtcNow;
             IgnoringRequestedBy = accountName;
         }
 
@@ -160,11 +197,11 @@ namespace codeRR.Server.App.Core.Incidents
         public void Reopen()
         {
             LastSolutionAtUtc = SolvedAtUtc;
-            IsSolved = false;
+            State = IncidentState.Active;
             ReopenedAtUtc = DateTime.UtcNow;
             IsReopened = true;
-            IgnoreReports = false;
             IgnoringReportsSinceUtc = DateTime.MinValue;
+            UpdatedAtUtc = DateTime.UtcNow;
         }
 
         /// <summary>
@@ -174,24 +211,6 @@ namespace codeRR.Server.App.Core.Incidents
         {
             //TODO: Do something
             IsSolutionShared = true;
-        }
-
-        /// <summary>
-        ///     Yay! One in the dev team figured out how the error can be solved.
-        /// </summary>
-        /// <param name="solvedBy">AccountId for whoever wrote the solution</param>
-        /// <param name="solution">Actual solution</param>
-        /// <exception cref="ArgumentNullException">solution</exception>
-        /// <exception cref="ArgumentOutOfRangeException">solvedBy</exception>
-        public void Solve(int solvedBy, string solution)
-        {
-            if (solution == null) throw new ArgumentNullException("solution");
-            if (solvedBy <= 0) throw new ArgumentOutOfRangeException("solvedBy");
-
-            Solution = new IncidentSolution(solvedBy, solution);
-            UpdatedAtUtc = DateTime.UtcNow;
-            SolvedAtUtc = DateTime.UtcNow;
-            IsSolved = true;
         }
     }
 }

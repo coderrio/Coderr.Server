@@ -20,7 +20,6 @@ namespace codeRR.Server.Api.Core.Incidents.Queries
         public FindIncidents()
         {
             MaxDate = DateTime.MaxValue;
-            Open = true;
             ItemsPerPage = 20;
         }
 
@@ -33,19 +32,29 @@ namespace codeRR.Server.Api.Core.Incidents.Queries
         public int ApplicationId { get; set; }
 
         /// <summary>
-        ///     Include closed incidents
-        /// </summary>
-        public bool Closed { get; set; }
-
-        /// <summary>
         ///     Will be searched in incident.message and report.stacktrace.
         /// </summary>
         public string FreeText { get; set; }
 
         /// <summary>
+        ///     Been assigned to someone
+        /// </summary>
+        public bool IsAssigned { get; set; }
+
+        /// <summary>
+        ///     Include closed incidents
+        /// </summary>
+        public bool IsClosed { get; set; }
+
+        /// <summary>
         ///     Include ignored incidents
         /// </summary>
-        public bool Ignored { get; set; }
+        public bool IsIgnored { get; set; }
+
+        /// <summary>
+        ///     Incidents that have not been assigned to someone (or closed/ignored).
+        /// </summary>
+        public bool IsNew { get; set; }
 
         /// <summary>
         ///     Number of items per page.
@@ -61,11 +70,6 @@ namespace codeRR.Server.Api.Core.Incidents.Queries
         ///     Start of period
         /// </summary>
         public DateTime MinDate { get; set; }
-
-        /// <summary>
-        ///     Include open incidents
-        /// </summary>
-        public bool Open { get; set; }
 
         /// <summary>
         ///     Page to fetch (one based index)

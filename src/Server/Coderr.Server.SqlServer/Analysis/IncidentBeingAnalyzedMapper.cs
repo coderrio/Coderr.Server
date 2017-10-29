@@ -1,4 +1,5 @@
 ﻿using System;
+using codeRR.Server.App.Core.Incidents;
 using codeRR.Server.ReportAnalyzer.Domain.Incidents;
 using Griffin.Data.Mapper;
 
@@ -25,11 +26,15 @@ namespace codeRR.Server.SqlServer.Analysis
                 .ToPropertyValue(DbConverters.ToEntityDate)
                 .ToColumnValue(DbConverters.ToNullableSqlDate);
 
-            Property(x => x.IsSolved)
-                .ToPropertyValue(o => Convert.ToBoolean(((byte[]) o)[0]));
+            Property(x => x.IsClosed)
+                .Ignore();
 
             Property(x => x.IsIgnored)
-                .ColumnName("IgnoreReports");
+                .Ignore();
+
+            Property(x => x.State)
+                .ToPropertyValue(x => (IncidentState) x)
+                .ToColumnValue(x => (int) x);
         }
     }
 }

@@ -24,8 +24,8 @@ namespace codeRR.Server.SqlServer.Core.Incidents
                 .ToColumnValue(DbConverters.SerializeEntity)
                 .ToPropertyValue(EntitySerializer.Deserialize<IncidentSolution>);
 
-            Property(x => x.IsSolved)
-                .ToPropertyValue(DbConverters.BoolFromByteArray);
+            Property(x => x.State);
+                
 
             Property(x => x.IsSolutionShared)
                 .ToPropertyValue(DbConverters.BoolFromByteArray);

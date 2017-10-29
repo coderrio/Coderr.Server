@@ -1,4 +1,5 @@
 ﻿using System;
+using codeRR.Server.App.Core.Incidents;
 using codeRR.Server.ReportAnalyzer.Domain.Reports;
 
 namespace codeRR.Server.ReportAnalyzer.Domain.Incidents
@@ -110,17 +111,19 @@ namespace codeRR.Server.ReportAnalyzer.Domain.Incidents
         /// <summary>
         ///     Incident is ignored, i.e. do not track any more reports or send any notifications.
         /// </summary>
-        public bool IsIgnored { get; set; }
+        public bool IsIgnored => State == IncidentState.Ignored;
 
         /// <summary>
         ///     Incident is opened again after being closed.
         /// </summary>
         public bool IsReOpened { get; set; }
 
+        public IncidentState State { get; private set; }
+
         /// <summary>
         ///     Incident have been solved (bug as been identified and corrected)
         /// </summary>
-        public bool IsSolved { get; set; }
+        public bool IsClosed => State == IncidentState.Closed;
 
         /// <summary>
         ///     Set if incident was closed and a solution was written
@@ -160,6 +163,8 @@ namespace codeRR.Server.ReportAnalyzer.Domain.Incidents
         /// </summary>
         public DateTime UpdatedAtUtc { get; private set; }
 
+        public DateTime LastReportAtUtc { get; set; }
+
         /// <summary>
         ///     Add another report.
         /// </summary>
@@ -175,8 +180,9 @@ namespace codeRR.Server.ReportAnalyzer.Domain.Incidents
                 FullName = entity.Exception.FullName;
                 StackTrace = entity.Exception.StackTrace;
             }
-            if (UpdatedAtUtc < entity.CreatedAtUtc)
-                UpdatedAtUtc = entity.CreatedAtUtc;
+            if (LastReportAtUtc < entity.CreatedAtUtc)
+                LastReportAtUtc = entity.CreatedAtUtc;
+
 
             ReportCount++;
         }
@@ -188,7 +194,7 @@ namespace codeRR.Server.ReportAnalyzer.Domain.Incidents
         public void ReOpen()
         {
             PreviousSolutionAtUtc = SolvedAtUtc;
-            IsSolved = false;
+            State = IncidentState.New;
             ReOpenedAtUtc = DateTime.UtcNow;
             IsReOpened = true;
         }

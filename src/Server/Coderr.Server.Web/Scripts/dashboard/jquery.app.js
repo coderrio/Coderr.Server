@@ -11,7 +11,26 @@ toggleMenuItem = function (uri) {
         if (uri.indexOf(webRoot) === 0) {
             uri = uri.substr(webRoot.length);
         }
-        $a = $('#sidebar-menu a[href="' + uri + '"]');
+
+        var uriToFind = uri;
+        var selector = '#sidebar-menu a[href="' + uri + '"]';
+        $a = $(selector);
+
+        // divide the url until we find a parent menu item
+        // (since some pages only exist in context menus)
+        while ($a.length === 0) {
+            var pos = uriToFind.lastIndexOf('/');
+            if (pos === uriToFind.length - 1) {
+                uriToFind = uriToFind.substr(0, uriToFind.length - 1);
+                pos = uriToFind.lastIndexOf('/');
+            }
+            if (pos === -1) {
+                break;
+            }
+
+            uriToFind = uriToFind.substr(0, pos + 1);
+            $a = $('#sidebar-menu a[href="' + uriToFind + '"]');
+        }
     } else {
         $a = $(uri);
     }
@@ -25,7 +44,9 @@ toggleMenuItem = function (uri) {
 window.addEventListener('hashchange',
     function() {
         window.scrollTo(0, 0);
+        toggleMenuItem(window.location.pathname + window.location.hash);
     });
+
 
 $('#sidebar-menu').on('click',
     '.has_sub > a',

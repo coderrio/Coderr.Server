@@ -12,6 +12,7 @@ using System.Web.Http;
 using codeRR.Client.Contracts;
 using codeRR.Server.App.Core.Applications;
 using codeRR.Server.Infrastructure;
+using codeRR.Server.Infrastructure.Messaging;
 using codeRR.Server.ReportAnalyzer.LibContracts;
 using codeRR.Server.Web.Areas.Receiver.Helpers;
 using codeRR.Server.Web.Areas.Receiver.Models;
@@ -46,7 +47,7 @@ namespace codeRR.Server.Web.Areas.Receiver.Controllers
 
             try
             {
-                var ser = new CqsJsonNetSerializer();
+                var ser = new MessagingSerializer();
                 var model = (FeedbackDTO)ser.Deserialize(typeof(FeedbackDTO), json);
 
                 var app = await _applicationRepository.GetByKeyAsync(appKey);

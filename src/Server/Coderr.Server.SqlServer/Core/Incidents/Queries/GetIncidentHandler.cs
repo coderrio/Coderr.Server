@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using codeRR.Server.Api.Core.Incidents.Queries;
 using DotNetCqs;
@@ -21,7 +22,13 @@ namespace codeRR.Server.SqlServer.Core.Incidents.Queries
 
         public async Task<GetIncidentResult> HandleAsync(IMessageContext context, GetIncident query)
         {
-            var result = await _unitOfWork.FirstAsync<GetIncidentResult>(new {Id = query.IncidentId});
+            var sql =
+                "SELECT Incidents.*, Users.Username as AssignedTo " +
+                " FROM Incidents " +
+                " LEFT JOIN Users ON (AssignedToId = Users.AccountId) " +
+                " WHERE Incidents.Id = @id";
+
+            var result = await _unitOfWork.FirstAsync<GetIncidentResult>(sql, new {Id = query.IncidentId});
 
             var tags = GetTags(query.IncidentId);
             result.Tags = tags.ToArray();

@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using codeRR.Server.Api.Core.Applications.Queries;
+using codeRR.Server.App.Core.Incidents;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
@@ -118,15 +119,15 @@ group by cast(ErrorReports.CreatedAtUtc as date);";
                     var versionId =
                         _unitOfWork.ExecuteScalar("SELECT Id FROM ApplicationVersions WHERE Version=@version",
                             new {version = query.Version});
-                    cmd.CommandText = @"select count(id) 
+                    cmd.CommandText = $@"select count(id) 
 from incidents 
 JOIN IncidentVersions ON (Incidents.Id = IncidentVersions.IncidentId)
 WHERE IncidentVersions.VersionId = @versionId
 AND CreatedAtUtc >= @minDate
 AND CreatedAtUtc <= GetUtcDate()
 AND ApplicationId = @appId 
-AND Incidents.IgnoreReports = 0 
-AND Incidents.IsSolved = 0;
+AND Incidents.State <> {(int)IncidentState.Ignored}
+AND Incidents.State <> {(int)IncidentState.Closed};
 
 SELECT count(id) from ErrorReports 
 JOIN IncidentVersions ON (ErrorReports.IncidentId = IncidentVersions.IncidentId)
@@ -156,12 +157,12 @@ AND DATALENGTH(Description) > 0;";
                 }
                 else
                 {
-                    cmd.CommandText = @"select count(id) from incidents 
+                    cmd.CommandText = $@"select count(id) from incidents 
 where CreatedAtUtc >= @minDate
 AND CreatedAtUtc <= GetUtcDate()
 AND ApplicationId = @appId 
-AND Incidents.IgnoreReports = 0 
-AND Incidents.IsSolved = 0;
+AND Incidents.State <> {(int)IncidentState.Ignored}
+AND Incidents.State <> {(int)IncidentState.Closed};
 
 select count(id) from ErrorReports 
 where CreatedAtUtc >= @minDate

@@ -41,7 +41,7 @@ namespace codeRR.Server.App.Core.Incidents.Commands
             if (command == null) throw new ArgumentNullException("command");
 
             var incident = await _repository.GetAsync(command.IncidentId);
-            incident.Solve(command.UserId, command.Solution);
+            incident.Close(command.UserId, command.Solution);
             if (command.ShareSolution)
                 incident.ShareSolution();
 

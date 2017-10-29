@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using codeRR.Server.Api.Web.Overview.Queries;
+using codeRR.Server.App.Core.Incidents;
 using codeRR.Server.Infrastructure.Security;
 using DotNetCqs;
 using Griffin.Container;
@@ -129,30 +130,30 @@ right join applications on (applicationid=applications.id)
         {
             using (var cmd = _unitOfWork.CreateDbCommand())
             {
-                cmd.CommandText = string.Format(@"select count(id) from incidents 
+                cmd.CommandText = $@"select count(id) from incidents 
 where CreatedAtUtc >= @minDate
 AND CreatedAtUtc <= GetUtcDate()
-AND Incidents.ApplicationId IN ({0})
-AND Incidents.IgnoreReports = 0 
-AND Incidents.IsSolved = 0;
+AND Incidents.ApplicationId IN ({ApplicationIds})
+AND Incidents.State <> {(int)IncidentState.Ignored} 
+AND Incidents.State <> {(int)IncidentState.Closed};
 
 select count(id) from errorreports 
 where CreatedAtUtc >= @minDate
-AND ApplicationId IN ({0})
+AND ApplicationId IN ({ApplicationIds})
 
 select count(distinct emailaddress) from IncidentFeedback
 where CreatedAtUtc >= @minDate
 AND CreatedAtUtc <= GetUtcDate()
-AND ApplicationId IN ({0})
+AND ApplicationId IN ({ApplicationIds})
 AND emailaddress is not null
 AND DATALENGTH(emailaddress) > 0;
 
 select count(*) from IncidentFeedback 
 where CreatedAtUtc >= @minDate
 AND CreatedAtUtc <= GetUtcDate()
-AND ApplicationId IN ({0})
+AND ApplicationId IN ({ApplicationIds})
 AND Description is not null
-AND DATALENGTH(Description) > 0;", ApplicationIds);
+AND DATALENGTH(Description) > 0;";
 
                 var minDate = query.NumberOfDays == 1
                     ? StartDateForHours

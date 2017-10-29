@@ -55,9 +55,10 @@ module codeRR.Overview {
             this.pager.draw(pagerElement);
             this.getIncidentsFromServer(1);
             ctx.handle.change('[name="range"]', e => this.OnRange(e));
-            ctx.handle.click("#btnClosed", e => this.onBtnClosed(e));
-            ctx.handle.click("#btnActive", e => this.onBtnActive(e));
+            ctx.handle.click("#btnNew", e => this.onBtnNew(e));
+            ctx.handle.click("#btnAssigned", e => this.onBtnAssigned(e));
             ctx.handle.click("#btnIgnored", e => this.onBtnIgnored(e));
+            ctx.handle.click("#btnClosed", e => this.onBtnClosed(e));
             ctx.handle.click("#LastReportCol", e => this.onLastReportCol(e));
             ctx.handle.click("#CountCol", e => this.onCountCol(e));
         }
@@ -105,9 +106,18 @@ module codeRR.Overview {
             this.getIncidentsFromServer(0);
         }
 
-        private onBtnActive(e: Event) {
+        private onBtnNew(e: Event) {
             e.preventDefault();
-            this._incidentType = "active";
+            this._incidentType = "new";
+            this.pager.reset();
+            $(e.target).parent().find('label').removeClass('active');
+            $(e.target).addClass('active');
+            this.getIncidentsFromServer(0);
+        }
+
+        private onBtnAssigned(e: Event) {
+            e.preventDefault();
+            this._incidentType = "assigned";
             this.pager.reset();
             $(e.target).parent().find('label').removeClass('active');
             $(e.target).addClass('active');
@@ -141,7 +151,7 @@ module codeRR.Overview {
             this.getIncidentsFromServer(this.pager.currentPage);
         }
 
-        private renderTable(pageNumber: number, data: Core.Incidents.Queries.FindIncidentResult) {
+        private renderTable(pageNumber: number, data: codeRR.Core.Incidents.Queries.FindIncidentsResult) {
             const directives = {
                 Items: {
                     Name: {
@@ -201,14 +211,22 @@ module codeRR.Overview {
             query.PageNumber = pageNumber;
             query.ItemsPerPage = 10;
             if (this._incidentType === "closed") {
-                query.Closed = true;
-                query.Open = false;
+                query.IsClosed = true;
+            }
+            if (this._incidentType === "new") {
+                query.IsNew = true;
+            }
+            if (this._incidentType === "assigned") {
+                query.IsAssigned = true;
+            }
+            if (this._incidentType === "ignored") {
+                query.IsIgnored = true;
             }
 
             //else if (this._incidentType === '')
 
 
-            CqsClient.query<Core.Incidents.Queries.FindIncidentResult>(query)
+            CqsClient.query<Core.Incidents.Queries.FindIncidentsResult>(query)
                 .done(response => {
                     if (this.pager.pageCount === 0) {
                         this.pager.update(response.PageNumber, response.PageSize, response.TotalCount);

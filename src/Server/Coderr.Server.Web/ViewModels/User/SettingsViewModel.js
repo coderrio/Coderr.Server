@@ -22,15 +22,10 @@ var codeRR;
                     return;
                 }
                 var cmd = new codeRR.Core.Accounts.Requests.ChangePassword(dto.CurrentPassword, dto.NewPassword);
-                CqsClient.request(cmd)
+                CqsClient.command(cmd)
                     .done(function (result) {
-                    if (result.Success) {
-                        _this.context.render({ NewPassword: "", NewPassword2: "", CurrentPassword: "" });
-                        humane.log("Password have been changed.");
-                    }
-                    else {
-                        humane.error("Password could not be changed. Did you enter your current password correctly?");
-                    }
+                    _this.context.render({ NewPassword: "", NewPassword2: "", CurrentPassword: "" });
+                    humane.log("Password have been changed.");
                 });
             };
             SettingsViewModel.prototype.saveSettings_click = function (e) {

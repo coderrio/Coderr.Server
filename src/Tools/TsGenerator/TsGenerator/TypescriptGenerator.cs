@@ -105,10 +105,13 @@ namespace TsGenerator
             {
                 foreach (var type in assembly.GetTypes())
                 {
-                    if (!type.IsPublic || (!type.IsEnum && type.GetProperties().Length == 0))
+                    if (!type.IsPublic)
                     {
                         continue;
                     }
+                    if (typeof(Attribute).IsAssignableFrom(type))
+                        continue;
+
                     if (type.GetCustomAttributes().Any(x => x.GetType().Name.Contains("Ignore")))
                         continue;
 

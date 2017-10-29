@@ -12,10 +12,10 @@ namespace codeRR.Server.ReportAnalyzer.Handlers
     [Component]
     public class ProcessReportHandler : IMessageHandler<ProcessReport>
     {
-        private readonly ReportAnalyzer _analyzer;
+        private readonly Reports.ReportAnalyzer _analyzer;
         private readonly ILog _logger = LogManager.GetLogger(typeof(ProcessReportHandler));
 
-        public ProcessReportHandler(ReportAnalyzer analyzer)
+        public ProcessReportHandler(Reports.ReportAnalyzer analyzer)
         {
             _analyzer = analyzer;
         }

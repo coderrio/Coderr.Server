@@ -1,5 +1,5 @@
 using System;
-using codeRR.Server.Infrastructure;
+using codeRR.Server.Infrastructure.Messaging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 

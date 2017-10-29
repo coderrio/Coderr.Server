@@ -13,7 +13,7 @@ using log4net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace codeRR.Server.ReportAnalyzer.Handlers
+namespace codeRR.Server.ReportAnalyzer.Handlers.Reports
 {
     /// <summary>
     ///     Runs analysis for the report.
@@ -89,7 +89,7 @@ namespace codeRR.Server.ReportAnalyzer.Handlers
                     _repository.UpdateIncident(incident);
                     return;
                 }
-                if (incident.IsSolved)
+                if (incident.IsClosed)
                 {
                     isReOpened = true;
                     incident.ReOpen();
