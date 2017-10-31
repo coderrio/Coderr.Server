@@ -138,6 +138,10 @@ module codeRR.Incident {
                 lineColors: ['#0094DA']
             };
             this.chart = Morris.Line(this.chartOptions);
+            $(window).resize(() => {
+                (<any>this.chart).redraw();
+            });
+
         }
 
         private renderTable(pageNumber: number, data: any) {
@@ -241,7 +245,6 @@ module codeRR.Incident {
                     this.chartOptions.xLabelFormat = null;
                     if (days === 7) {
                         this.chartOptions.xLabelFormat = (xDate: Date): string => {
-                            console.log(moment(xDate).format('dd'));
                             return moment(xDate).format('dd');
                         }
                     } else if (days === 1) {

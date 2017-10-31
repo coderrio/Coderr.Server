@@ -163,7 +163,6 @@ namespace codeRR.Server.Web.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-
             try
             {
                 var principal = await _accountService.Login(model.UserName, model.Password);
@@ -177,6 +176,8 @@ namespace codeRR.Server.Web.Controllers
              
                 SignIn(principal);
 
+                if (model.ReturnUrl != null && model.ReturnUrl.StartsWith("/"))
+                    return Redirect(model.ReturnUrl);
                 return Redirect("~/#/");
             }
             catch (AuthenticationException err)

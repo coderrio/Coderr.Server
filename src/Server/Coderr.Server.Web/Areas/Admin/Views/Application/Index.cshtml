@@ -3,7 +3,7 @@
     ViewBag.Title = "Admin - Applications";
 }
 <div class="container">
-    <div class="col-lg-6">
+    <div class="col-lg-12">
         <h2>Applications</h2>
         <p>
             Here you can delete applications, which also will delete all data which have been associated with them.
@@ -18,9 +18,9 @@
                     <tr>
                         <td>@item.Name</td>
                         <td>
-                            <a class="btn btn-default" href="@Url.Action("Edit", new {id=item.Id})" data-name="@item.Name">Rename</a>
-                            <a class="btn btn-default" href="@Url.Action("Versions", new {id=item.Id})" data-name="@item.Name" title="Select the assembly which contains the application version">Version assembly</a>
-                            <a class="btn btn-danger" href="#@item.Id" data-name="@item.Name">Delete</a>
+                            <a class="btn btn-outline-primary" href="@Url.Action("Edit", new {id=item.Id})" data-name="@item.Name">Rename</a>
+                            <a class="btn btn-outline-primary" href="@Url.Action("Versions", new {id=item.Id})" data-name="@item.Name" title="Select the assembly which contains the application version">Version assembly</a>
+                            <a class="btn btn-outline-danger" href="#@item.Id" data-name="@item.Name">Delete</a>
                         </td>
                     </tr>
                 }
@@ -33,11 +33,11 @@
 </form>
 @section scripts{
     <script>
-        $('#applications a.btn-danger').click(function (e) {
+        $('#applications a.btn-outline-danger').click(function (e) {
             e.preventDefault();
             var name = $(this).attr('data-name');
             var id = $(this).attr('href').substr(1);
-            if (confirm('Do you really want to deleted "' + name + '"?')) {
+            if (confirm('Do you really want to delete "' + name + '"?')) {
                 $('#delete-form input').val(id);
                 $('#delete-form').submit();
             }

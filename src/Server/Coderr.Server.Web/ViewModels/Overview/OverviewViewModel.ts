@@ -299,6 +299,9 @@ module codeRR.Overview {
             };
             this._ctx.renderPartial("legend", { labels: legendLabels }, directives);
             this._ctx.renderPartial("StatSummary", result.StatSummary);
+            $(window).resize(() => {
+                (<any>this.chart).redraw();
+            });
         }
 
         updateChart(result: Web.Overview.Queries.GetOverviewResult, numberOfDays: number) {

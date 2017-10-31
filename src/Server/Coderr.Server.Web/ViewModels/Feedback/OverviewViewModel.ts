@@ -40,6 +40,12 @@ module codeRR.Feedback {
                     },
                     href(value) {
                         return `mailto:${value}`;
+                    },
+                    style(value) {
+                        if (!value) {
+                            return "display:none";
+                        }
+                        return "color: #ee99ee";
                     }
                 }
             }

@@ -207,6 +207,7 @@ var codeRR;
                 });
             };
             OverviewViewModel.prototype.renderChart = function (result, numberOfDays) {
+                var _this = this;
                 //no applications man!
                 if (result.IncidentsPerApplication.length === 0) {
                     $('#chart-container').html('<h4 class="header-title m-t-0 m-b-20">Incident trend</h4><em>No applications have been created.</em>');
@@ -265,6 +266,9 @@ var codeRR;
                 };
                 this._ctx.renderPartial("legend", { labels: legendLabels }, directives);
                 this._ctx.renderPartial("StatSummary", result.StatSummary);
+                $(window).resize(function () {
+                    _this.chart.redraw();
+                });
             };
             OverviewViewModel.prototype.updateChart = function (result, numberOfDays) {
                 var data = [];

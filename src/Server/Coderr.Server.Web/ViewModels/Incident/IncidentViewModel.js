@@ -90,6 +90,7 @@ var codeRR;
                 this.loadChartInfo(days);
             };
             IncidentViewModel.prototype.renderInitialChart = function (chartElement, stats) {
+                var _this = this;
                 var data = [];
                 for (var i = 0; i < stats.length; ++i) {
                     var dataItem = {
@@ -108,6 +109,9 @@ var codeRR;
                     lineColors: ['#0094DA']
                 };
                 this.chart = Morris.Line(this.chartOptions);
+                $(window).resize(function () {
+                    _this.chart.redraw();
+                });
             };
             IncidentViewModel.prototype.renderTable = function (pageNumber, data) {
                 var self = this;
@@ -205,7 +209,6 @@ var codeRR;
                     _this.chartOptions.xLabelFormat = null;
                     if (days === 7) {
                         _this.chartOptions.xLabelFormat = function (xDate) {
-                            console.log(moment(xDate).format('dd'));
                             return moment(xDate).format('dd');
                         };
                     }

@@ -10,6 +10,7 @@ var codeRR;
             function DetailsViewModel() {
                 this.chartDays = 30;
                 this.totalIncidentCount = 0;
+                this.firstRender = true;
             }
             DetailsViewModel.prototype.getTitle = function () {
                 var bc = [
@@ -122,7 +123,7 @@ var codeRR;
                 this.ctx.render(dto, directives);
             };
             DetailsViewModel.prototype.renderChart = function (result) {
-                console.log(result);
+                var _this = this;
                 var data = [];
                 var labels = [{ name: "Reports", color: "#0094DA" }, { name: "Incidents", color: "#2B4141" }];
                 for (var i = 0; i < result.ErrorReports.length; ++i) {
@@ -144,6 +145,12 @@ var codeRR;
                     lineColors: ["#0094DA", "#2B4141"]
                 };
                 this.chart = Morris.Line(this.chartOptions);
+                if (this.firstRender) {
+                    this.firstRender = false;
+                    $(window).resize(function () {
+                        _this.chart.redraw();
+                    });
+                }
                 var directives = {
                     labels: {
                         color: {

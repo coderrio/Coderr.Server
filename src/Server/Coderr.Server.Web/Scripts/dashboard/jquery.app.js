@@ -16,6 +16,11 @@ toggleMenuItem = function (uri) {
         var selector = '#sidebar-menu a[href="' + uri + '"]';
         $a = $(selector);
 
+        //try to append trailing slash
+        if ($a.length === 0) {
+            $a = $('#sidebar-menu a[href="' + uri + '/"]');
+        }
+
         // divide the url until we find a parent menu item
         // (since some pages only exist in context menus)
         while ($a.length === 0) {

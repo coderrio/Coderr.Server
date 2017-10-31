@@ -144,9 +144,8 @@ module codeRR.Application {
             this.ctx.render(dto, directives);
         }
 
-
+        private firstRender: boolean = true;
         renderChart(result: Core.Applications.Queries.GetApplicationOverviewResult) {
-            console.log(result);
             const data = [];
             const labels = [{ name: "Reports", color: "#0094DA" }, { name: "Incidents", color: "#2B4141" }];
             for (let i = 0; i < result.ErrorReports.length; ++i) {
@@ -169,6 +168,13 @@ module codeRR.Application {
                 lineColors: ["#0094DA", "#2B4141"]
             };
             this.chart = Morris.Line(this.chartOptions);
+            if (this.firstRender) {
+                this.firstRender = false;
+                $(window).resize(() => {
+                    (<any>this.chart).redraw();
+                });
+            }
+
             const directives = {
                 labels: {
                     color: {

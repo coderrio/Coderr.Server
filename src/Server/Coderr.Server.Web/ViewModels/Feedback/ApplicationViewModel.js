@@ -32,6 +32,12 @@ var codeRR;
                             },
                             href: function (value) {
                                 return "mailto:" + value;
+                            },
+                            style: function (value) {
+                                if (!value) {
+                                    return "display:none";
+                                }
+                                return "color: #ee99ee";
                             }
                         }
                     }
