@@ -47,10 +47,10 @@ var codeRR;
                     Yo.GlobalConfig.applicationScope["application"] = info;
                     _this.totalIncidentCount = info.TotalIncidentCount;
                     _this.applicationName = info.Name;
+                    firstIsRun = true;
                     if (chartResult != null) {
                         chartRendering(chartResult);
                     }
-                    firstIsRun = true;
                     _this.renderInfo(info);
                     ctx.handle.click(".version", function (e) {
                         var version = e.target.getAttribute("data-value");

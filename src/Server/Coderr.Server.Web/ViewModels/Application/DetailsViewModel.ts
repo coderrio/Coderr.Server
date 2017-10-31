@@ -62,10 +62,10 @@ module codeRR.Application {
 
                     this.totalIncidentCount = info.TotalIncidentCount;
                     this.applicationName = info.Name;
+                    firstIsRun = true;
                     if (chartResult != null) {
                         chartRendering(chartResult);
                     }
-                    firstIsRun = true;
                     this.renderInfo(info);
                     ctx.handle.click(".version",
                         e => {

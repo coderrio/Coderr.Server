@@ -9,7 +9,7 @@ class IncidentTableViewModel implements Griffin.WebApp.IPagerSubscriber {
     private static UP = "fa fa-chevron-up";
     private static DOWN = "fa fa-chevron-down";
     private sortType: IncidentOrder = IncidentOrder.Newest;
-    private incidentType: string;
+    private incidentType: string = "new";
     private sortAscending = false;
     private pager: Griffin.WebApp.Pager;
     private ctx: Griffin.Yo.Spa.ViewModels.IActivationContext;
@@ -25,6 +25,7 @@ class IncidentTableViewModel implements Griffin.WebApp.IPagerSubscriber {
         const query = new codeRR.Core.Incidents.Queries.FindIncidents();
         query.PageNumber = 1;
         query.ItemsPerPage = 20;
+        query.IsNew = true;
         if (applicationId != null) {
             query.ApplicationId = applicationId;
         }

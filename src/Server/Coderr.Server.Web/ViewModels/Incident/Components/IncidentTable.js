@@ -6,6 +6,7 @@ var IncidentOrder = codeRR.Core.Incidents.IncidentOrder;
 var IncidentTableViewModel = (function () {
     function IncidentTableViewModel(ctx) {
         this.sortType = IncidentOrder.Newest;
+        this.incidentType = "new";
         this.sortAscending = false;
         this.ctx = ctx;
     }
@@ -14,6 +15,7 @@ var IncidentTableViewModel = (function () {
         var query = new codeRR.Core.Incidents.Queries.FindIncidents();
         query.PageNumber = 1;
         query.ItemsPerPage = 20;
+        query.IsNew = true;
         if (applicationId != null) {
             query.ApplicationId = applicationId;
         }
