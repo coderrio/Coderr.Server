@@ -22,4 +22,15 @@ IF @ConstraintName IS NOT NULL
 EXEC('ALTER TABLE incidents DROP CONSTRAINT ' + @ConstraintName)
 alter table incidents drop column IgnoreReports;
 
+-- ApiKey module deletes relations manually.
+DECLARE @ConstraintName nvarchar(200)
+SELECT @ConstraintName = Name FROM SYS.DEFAULT_CONSTRAINTS
+WHERE PARENT_OBJECT_ID = OBJECT_ID('incidents')
+AND PARENT_COLUMN_ID = (SELECT column_id FROM sys.columns
+                        WHERE NAME = N'ApplicationId'
+                        AND object_id = OBJECT_ID(N'ApiKeyApplications'))
+IF @ConstraintName IS NOT NULL
+EXEC('ALTER TABLE ApiKeyApplications DROP CONSTRAINT ' + @ConstraintName)
+
+
 UPDATE DatabaseSchema SET Version = 8;

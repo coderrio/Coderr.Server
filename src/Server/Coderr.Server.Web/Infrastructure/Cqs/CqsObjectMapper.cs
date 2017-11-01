@@ -59,7 +59,7 @@ namespace codeRR.Server.Web.Infrastructure.Cqs
             if (cqsType.IsAbstract || cqsType.IsInterface)
                 return false;
 
-            return cqsType.GetCustomAttribute<MessageAttribute>() != null;
+            return cqsType.GetCustomAttribute<MessageAttribute>(true) != null;
         }
 
         /// <summary>

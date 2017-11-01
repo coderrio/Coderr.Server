@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using codeRR.Client;
 using codeRR.Server.Infrastructure;
 using codeRR.Server.Infrastructure.Messaging;
 using codeRR.Server.Infrastructure.Security;
@@ -134,6 +135,18 @@ namespace codeRR.Server.Web.Services
         {
             var scope = new GriffinContainerScopeAdapter((IChildContainer) x);
             var invoker = new MessageInvoker(scope);
+            invoker.HandlerMissing += (sender, args) =>
+            {
+                try
+                {
+                    throw new NoHandlerRegisteredException(
+                        "Failed to find a handler for " + args.Message.Body.GetType());
+                }
+                catch (Exception ex)
+                {
+                    Err.Report(ex, new {args.Message});
+                }
+            };
             invoker.InvokingHandler += (sender, args) =>
             {
                 _log.Debug($"Invoking {args.Handler} in scope " + scope.GetHashCode());
@@ -143,9 +156,18 @@ namespace codeRR.Server.Web.Services
                 if (args.Exception == null)
                     _log.Debug($"Ran {args.Handler}, took {args.ExecutionTime.TotalMilliseconds}ms");
                 else
+                {
+                    Err.Report(args.Exception, new
+                    {
+                        args.Message,
+                        HandlerType = args.Handler.GetType(),
+                        args.ExecutionTime
+                    });
                     _log.Error(
                         $"Ran {args.Handler}, took {args.ExecutionTime.TotalMilliseconds}ms, but FAILED.",
                         args.Exception);
+
+                }
             };
             return invoker;
         }
@@ -162,6 +184,7 @@ namespace codeRR.Server.Web.Services
             };
             listener.PoisonMessageDetected += (sender, args) =>
             {
+                Err.Report(args.Exception, new {args.Message});
                 _log.Error(queueName + " Poison message: " + args.Message.Body, args.Exception);
             };
             listener.ScopeCreated += (sender, args) =>
@@ -195,6 +218,7 @@ namespace codeRR.Server.Web.Services
             }
             catch (Exception exception)
             {
+                Err.Report(e.Exception);
                 _log.Error("Failed to close scope. Err: " + exception, e.Exception);
             }
         }
@@ -202,11 +226,13 @@ namespace codeRR.Server.Web.Services
 
         private void OnJobFailed(object sender, BackgroundJobFailedEventArgs e)
         {
+            Err.Report(e.Exception, new{JobType = e.Job?.GetType().FullName});
             _log.Error("Failed to execute " + e.Job, e.Exception);
         }
 
         private void OnServiceFailed(object sender, ApplicationServiceFailedEventArgs e)
         {
+            Err.Report(e.Exception, new { JobType = e.ApplicationService?.GetType().FullName });
             _log.Error("Failed to execute " + e.ApplicationService, e.Exception);
         }
 

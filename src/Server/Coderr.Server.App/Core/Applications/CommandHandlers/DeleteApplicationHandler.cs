@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.ApiKeys.Commands;
 using codeRR.Server.Api.Core.Applications.Commands;
 using codeRR.Server.Api.Core.Applications.Events;
 using codeRR.Server.Infrastructure.Security;

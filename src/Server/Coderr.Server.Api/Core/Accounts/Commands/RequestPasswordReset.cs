@@ -7,11 +7,6 @@ namespace codeRR.Server.Api.Core.Accounts.Commands
     /// <summary>
     ///     Request a password reset (i.e. lock account, email an activation link to the user and wait for activation).
     /// </summary>
-    /// <remarks>
-    ///     <para>
-    ///         <see cref="ResetPassword" /> will be exeucted when the user clicks on the link.
-    ///     </para>
-    /// </remarks>
     [Message]
     public class RequestPasswordReset
     {

@@ -230,7 +230,6 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AdoNetUowSpy.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\CompositionRoot.cs" />
     <Compile Include="App_Start\Cqs\GriffinHandlerResolverAdapter.cs" />

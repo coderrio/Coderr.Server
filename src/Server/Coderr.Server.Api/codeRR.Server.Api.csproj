@@ -21,7 +21,7 @@
     <PackageLicenseUrl>https://raw.githubusercontent.com/coderr/codeRR.Server/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://coderrapp.com</PackageProjectUrl>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+  <PropertyGroup>
     <NoWarn>1701;1702;1705;1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>

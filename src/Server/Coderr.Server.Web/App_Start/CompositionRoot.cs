@@ -56,7 +56,7 @@ namespace codeRR.Server.Web
         private IAdoNetUnitOfWork CreateConnection(IServiceLocator arg)
         {
             var con = DbConnectionFactory.Open(Startup.ConnectionStringName, true);
-            return new AdoNetUowSpy(new AdoNetUnitOfWork(con, true, IsolationLevel.RepeatableRead));
+            return new AdoNetUnitOfWork(con, true, IsolationLevel.RepeatableRead);
         }
 
         private IScopedTaskInvoker CreateTaskInvoker(IServiceLocator arg)
