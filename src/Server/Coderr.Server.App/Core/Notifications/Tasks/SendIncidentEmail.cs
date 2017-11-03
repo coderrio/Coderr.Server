@@ -45,7 +45,7 @@ namespace codeRR.Server.App.Core.Notifications.Tasks
             // need to be safe for subjects
             shortName = shortName.Replace("\n", ";");
 
-            var baseUrl = string.Format("{0}/#/application/{1}/incident/{2}",
+            var baseUrl = string.Format("{0}/#/application/{1}/incident/{2}/",
                 config.BaseUrl.ToString().TrimEnd('/'),
                 report.ApplicationId,
                 report.IncidentId);
@@ -56,7 +56,7 @@ namespace codeRR.Server.App.Core.Notifications.Tasks
             {
                 msg.Subject = "ReOpened: " + shortName;
                 msg.TextBody = string.Format(@"Incident: {0}
-Report url: {0}/report/{1}
+Report url: {0}/report/{1}/
 Description: {2}
 Exception: {3}
 
@@ -76,7 +76,7 @@ Exception: {2}
             {
                 msg.Subject = "Updated: " + shortName;
                 msg.TextBody = string.Format(@"Incident: {0}
-Report url: {0}/report/{1}
+Report url: {0}/report/{1}/
 Description: {2}
 Exception: {3}
 

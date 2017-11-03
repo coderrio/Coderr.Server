@@ -126,7 +126,7 @@ namespace codeRR.Server.Web.Services
             _backgroundJobManager = new BackgroundJobManager(CompositionRoot.Container);
             _backgroundJobManager.JobFailed += OnJobFailed;
             _backgroundJobManager.StartInterval = TimeSpan.FromSeconds(Debugger.IsAttached ? 0 : 10);
-            _backgroundJobManager.ExecuteInterval = TimeSpan.FromMinutes(5);
+            _backgroundJobManager.ExecuteInterval = TimeSpan.FromMinutes(3);
 
             _backgroundJobManager.ScopeClosing += OnBackgroundJobScopeClosing;
         }
@@ -147,27 +147,20 @@ namespace codeRR.Server.Web.Services
                     Err.Report(ex, new {args.Message});
                 }
             };
-            invoker.InvokingHandler += (sender, args) =>
-            {
-                _log.Debug($"Invoking {args.Handler} in scope " + scope.GetHashCode());
-            };
             invoker.HandlerInvoked += (sender, args) =>
             {
                 if (args.Exception == null)
-                    _log.Debug($"Ran {args.Handler}, took {args.ExecutionTime.TotalMilliseconds}ms");
-                else
-                {
-                    Err.Report(args.Exception, new
-                    {
-                        args.Message,
-                        HandlerType = args.Handler.GetType(),
-                        args.ExecutionTime
-                    });
-                    _log.Error(
-                        $"Ran {args.Handler}, took {args.ExecutionTime.TotalMilliseconds}ms, but FAILED.",
-                        args.Exception);
+                    return;
 
-                }
+                Err.Report(args.Exception, new
+                {
+                    args.Message,
+                    HandlerType = args.Handler.GetType(),
+                    args.ExecutionTime
+                });
+                _log.Error(
+                    $"Ran {args.Handler}, took {args.ExecutionTime.TotalMilliseconds}ms, but FAILED.",
+                    args.Exception);
             };
             return invoker;
         }

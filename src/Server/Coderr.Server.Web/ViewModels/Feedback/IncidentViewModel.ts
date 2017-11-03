@@ -54,7 +54,6 @@ module codeRR.Feedback {
             const query = new GetIncidentFeedback(ctx.routeData["incidentId"]);
             CqsClient.query<GetIncidentFeedbackResult>(query)
                 .done(result => {
-                    console.log(result);
                     this.ctx.render(result, IncidentViewModel.directives);
                     ctx.resolve();
                 });

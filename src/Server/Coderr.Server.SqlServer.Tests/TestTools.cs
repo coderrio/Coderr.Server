@@ -24,15 +24,22 @@ namespace codeRR.Server.SqlServer.Tests
         public TestTools()
         {
             ConfigStore = new TestConfigStore();
+            CanDropDatabase = true;
         }
 
         public ConfigurationStore ConfigStore { get; private set; }
 
+        public bool CanDropDatabase { get; set; }
 
         public void Dispose()
         {
             if (_dbName == null)
                 return;
+            if (!CanDropDatabase)
+            {
+                Console.WriteLine("Do not delete " + _dbName);
+                return;
+            }
 
             using (var con = ConnectionFactory.OpenConnection())
             {
@@ -51,7 +58,7 @@ namespace codeRR.Server.SqlServer.Tests
 
                 var report = new ErrorReportEntity(applicationId, Guid.NewGuid().ToString("N"), DateTime.UtcNow,
                     new ErrorReportException(new Exception("mofo")),
-                    new List<ErrorReportContext> {new ErrorReportContext("Maps", new Dictionary<string, string>())});
+                    new List<ErrorReportContext> { new ErrorReportContext("Maps", new Dictionary<string, string>()) });
                 report.Title = "Missing here";
                 report.Init(report.GenerateHashCodeIdentifier());
 
@@ -69,7 +76,7 @@ namespace codeRR.Server.SqlServer.Tests
         {
             using (var con = ConnectionFactory.OpenConnection())
             {
-                _dbName = "T" + Guid.NewGuid().ToString("N");
+                _dbName = "CdrTest" + Guid.NewGuid().ToString("N").Substring(0, 8);
                 con.ExecuteNonQuery("CREATE Database " + _dbName);
                 con.ChangeDatabase(_dbName);
                 var schemaTool = new SchemaManager(() => con);
@@ -107,10 +114,10 @@ namespace codeRR.Server.SqlServer.Tests
         protected void CreateUserAndApplication(IAdoNetUnitOfWork uow, out int accountId, out int applicationId)
         {
             var accountRepos = new AccountRepository(uow);
-            var account = new Account("arne", "123456") {Email = "arne@som.com"};
+            var account = new Account("arne", "123456") { Email = "arne@som.com" };
             accountRepos.Create(account);
             var userRepos = new UserRepository(uow);
-            var user = new User(account.Id, "arne") {EmailAddress = "arne@som.com"};
+            var user = new User(account.Id, "arne") { EmailAddress = "arne@som.com" };
             userRepos.CreateAsync(user).GetAwaiter().GetResult();
 
             var appRepos = new ApplicationRepository(uow);

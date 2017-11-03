@@ -20,7 +20,6 @@ var codeRR;
                 var query = new GetIncidentFeedback(ctx.routeData["incidentId"]);
                 CqsClient.query(query)
                     .done(function (result) {
-                    console.log(result);
                     _this.ctx.render(result, IncidentViewModel.directives);
                     ctx.resolve();
                 });

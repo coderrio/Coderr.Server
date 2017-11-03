@@ -27,8 +27,6 @@ module codeRR.Incident {
         assignedToName: string;
 
         constructor(appScope) {
-            console.log(appScope);
-
         }
 
 

@@ -15,7 +15,6 @@ var codeRR;
                 this.isIgnored = false;
                 this.isAssigned = false;
                 this.isNew = true;
-                console.log(appScope);
             }
             IncidentViewModel.prototype.getTitle = function () {
                 codeRR.Applications.Navigation.pageTitle = "Incident '" + this.name + "'";

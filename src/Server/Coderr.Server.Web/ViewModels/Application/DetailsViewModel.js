@@ -9,7 +9,6 @@ var codeRR;
         var DetailsViewModel = (function () {
             function DetailsViewModel() {
                 this.chartDays = 30;
-                this.totalIncidentCount = 0;
                 this.firstRender = true;
             }
             DetailsViewModel.prototype.getTitle = function () {
@@ -45,7 +44,6 @@ var codeRR;
                 CqsClient.query(appQuery)
                     .done(function (info) {
                     Yo.GlobalConfig.applicationScope["application"] = info;
-                    _this.totalIncidentCount = info.TotalIncidentCount;
                     _this.applicationName = info.Name;
                     firstIsRun = true;
                     if (chartResult != null) {
@@ -120,6 +118,7 @@ var codeRR;
                         }
                     }
                 };
+                dto.ShowClientButton = dto.TotalIncidentCount > 0;
                 this.ctx.render(dto, directives);
             };
             DetailsViewModel.prototype.renderChart = function (result) {

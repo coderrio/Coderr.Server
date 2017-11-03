@@ -30,8 +30,6 @@ module codeRR.Application {
             return this.applicationName;
         }
 
-        totalIncidentCount = 0;
-
         activate(ctx: Griffin.Yo.Spa.ViewModels.IActivationContext) {
             this.incidentTable = new IncidentTableViewModel(ctx);
             this.ctx = ctx;
@@ -60,7 +58,6 @@ module codeRR.Application {
                 .done(info => {
                     Yo.GlobalConfig.applicationScope["application"] = info;
 
-                    this.totalIncidentCount = info.TotalIncidentCount;
                     this.applicationName = info.Name;
                     firstIsRun = true;
                     if (chartResult != null) {
@@ -141,6 +138,7 @@ module codeRR.Application {
                     }
                 }
             };
+            (<any>dto).ShowClientButton = dto.TotalIncidentCount > 0;
             this.ctx.render(dto, directives);
         }
 

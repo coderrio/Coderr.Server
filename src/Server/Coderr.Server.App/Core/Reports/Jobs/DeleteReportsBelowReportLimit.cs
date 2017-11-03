@@ -44,7 +44,7 @@ namespace codeRR.Server.App.Core.Reports.Jobs
             {
                 var config = _configStore.Load<ReportConfig>();
                 if (config == null)
-                    return 5000;
+                    return 1;
                 return config.MaxReportsPerIncident;
             }
         }
@@ -53,47 +53,45 @@ namespace codeRR.Server.App.Core.Reports.Jobs
         public void Execute()
         {
             // find incidents with too many reports.
-            var incidentsToTruncate = new List<int>();
+            var incidentsToTruncate = new List<Tuple<int, int>>();
             using (var cmd = _unitOfWork.CreateCommand())
             {
                 cmd.CommandText =
-                    @"SELECT TOP 10 Id FROM Incidents WHERE ReportCount > @max ORDER BY ReportCount DESC";
+                    @"SELECT TOP(5) IncidentId, count(Id)
+                        FROM ErrorReports
+                        GROUP BY IncidentId
+                        HAVING Count(IncidentId) > @max
+                        ORDER BY count(Id) DESC";
                 cmd.AddParameter("max", MaxReportsPerIncident);
                 using (var reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        incidentsToTruncate.Add((int) reader[0]);
+                        incidentsToTruncate.Add(new Tuple<int, int>((int)reader[0], (int)reader[1]));
                     }
                 }
             }
 
-            foreach (var incidentId in incidentsToTruncate)
+            foreach (var incidentIdAndCount in incidentsToTruncate)
             {
+                var rowsToDelete = Math.Min(1000, incidentIdAndCount.Item2 - MaxReportsPerIncident);
                 using (var cmd = _unitOfWork.CreateCommand())
                 {
-                    var sql = @"DELETE FROM ErrorReports WHERE IncidentId = @id AND Id <= (SELECT Id 
-FROM ErrorReports
-WHERE IncidentId = @id
-ORDER BY Id DESC
-OFFSET {0} ROWS
-FETCH NEXT 1 ROW ONLY)";
-                    cmd.CommandText = string.Format(sql, MaxReportsPerIncident);
-                    cmd.AddParameter("id", incidentId);
+                    var sql = $@"With RowsToDelete AS
+                                (
+                                    SELECT TOP {rowsToDelete} Id
+                                    FROM ErrorReports 
+                                    WHERE IncidentId = {incidentIdAndCount.Item1}
+                                    ORDER BY ID ASC
+                                )
+                                DELETE FROM RowsToDelete";
+                    cmd.CommandText = sql;
                     cmd.CommandTimeout = 90;
                     var rows = cmd.ExecuteNonQuery();
                     if (rows > 0)
                     {
-                        _logger.Debug("Deleted the oldest " + rows + " reports for incident " + incidentId);
+                        _logger.Debug("Deleted the oldest " + rows + " reports for incident " + incidentIdAndCount);
                     }
-                }
-
-                using (var cmd = _unitOfWork.CreateCommand())
-                {
-                    cmd.CommandText =
-                        @"UPDATE Incidents SET ReportCount = (SELECT count(Id) FROM ErrorReports WHERE IncidentId = @id) WHERE Id = @id";
-                    cmd.AddParameter("id", incidentId);
-                    cmd.ExecuteNonQuery();
                 }
             }
         }
