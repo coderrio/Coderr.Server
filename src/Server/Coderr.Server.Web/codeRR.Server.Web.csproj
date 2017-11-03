@@ -94,17 +94,17 @@
     <Reference Include="Coderr.Client, Version=1.0.6.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Coderr.Client.1.0.6\lib\net451\Coderr.Client.dll</HintPath>
     </Reference>
-    <Reference Include="Coderr.Client.AspNet.Mvc5, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Coderr.Client.AspNet.Mvc5.1.0.4\lib\net451\Coderr.Client.AspNet.Mvc5.dll</HintPath>
+    <Reference Include="Coderr.Client.AspNet.Mvc5, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Coderr.Client.AspNet.Mvc5.1.0.5\lib\net451\Coderr.Client.AspNet.Mvc5.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetCqs, Version=2.0.3.8, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetCqs.2.0.3.8\lib\net452\DotNetCqs.dll</HintPath>
+    <Reference Include="DotNetCqs, Version=2.0.3.9, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetCqs.2.0.3.9\lib\net452\DotNetCqs.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetCqs.Queues.AdoNet, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetCqs.Queues.AdoNet.1.0.0.1\lib\net452\DotNetCqs.Queues.AdoNet.dll</HintPath>
+    <Reference Include="DotNetCqs.Queues.AdoNet, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetCqs.Queues.AdoNet.1.0.1\lib\net452\DotNetCqs.Queues.AdoNet.dll</HintPath>
     </Reference>
-    <Reference Include="Griffin.Container, Version=1.1.7.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Griffin.Container.1.1.7\lib\net452\Griffin.Container.dll</HintPath>
+    <Reference Include="Griffin.Container, Version=1.1.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Griffin.Container.1.1.8\lib\net452\Griffin.Container.dll</HintPath>
     </Reference>
     <Reference Include="Griffin.Container.Mvc5, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Griffin.Container.Mvc5.1.0.2\lib\net40\Griffin.Container.Mvc5.dll</HintPath>
@@ -434,15 +434,17 @@
     <Content Include="fonts\Material-Design-Iconic-Font.woff" />
     <Content Include="fonts\Material-Design-Iconic-Font.woff2" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
-    <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\dashboard\fastclick.js" />
     <Content Include="Scripts\dashboard\jquery.app.js" />
-    <Content Include="Scripts\jquery-3.1.1.js" />
-    <Content Include="Scripts\jquery-3.1.1.min.js" />
-    <Content Include="Scripts\jquery-3.1.1.slim.js" />
-    <Content Include="Scripts\jquery-3.1.1.slim.min.js" />
+    <None Include="Scripts\jquery-3.2.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.2.1.js" />
+    <Content Include="Scripts\jquery-3.2.1.min.js" />
+    <Content Include="Scripts\jquery-3.2.1.slim.js" />
+    <Content Include="Scripts\jquery-3.2.1.slim.min.js" />
+    <Content Include="Scripts\jquery-3.2.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.2.1.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
@@ -537,8 +539,6 @@
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
     </None>
-    <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
-    <Content Include="Scripts\jquery-3.1.1.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

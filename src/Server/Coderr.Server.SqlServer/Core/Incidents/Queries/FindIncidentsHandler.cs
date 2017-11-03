@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Data.Common;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using codeRR.Server.Api.Core.Incidents;
 using codeRR.Server.Api.Core.Incidents.Queries;
@@ -100,12 +99,12 @@ namespace codeRR.Server.SqlServer.Core.Incidents.Queries
 
                 if (query.MinDate > DateTime.MinValue)
                 {
-                    sqlQuery += " AND Incidents.UpdatedAtUtc >= @minDate";
+                    sqlQuery += " AND Incidents.LastReportAtUtc >= @minDate";
                     cmd.AddParameter("minDate", query.MinDate);
                 }
                 if (query.MaxDate < DateTime.MaxValue)
                 {
-                    sqlQuery += " AND Incidents.UpdatedAtUtc <= @maxDate";
+                    sqlQuery += " AND Incidents.LastReportAtUtc <= @maxDate";
                     cmd.AddParameter("maxDate", query.MaxDate);
                 }
 
@@ -118,9 +117,9 @@ namespace codeRR.Server.SqlServer.Core.Incidents.Queries
                 if (query.SortType == IncidentOrder.Newest)
                 {
                     if (query.SortAscending)
-                        sqlQuery += " ORDER BY UpdatedAtUtc";
+                        sqlQuery += " ORDER BY LastReportAtUtc";
                     else
-                        sqlQuery += " ORDER BY UpdatedAtUtc DESC";
+                        sqlQuery += " ORDER BY LastReportAtUtc DESC";
                 }
                 else if (query.SortType == IncidentOrder.MostReports)
                 {

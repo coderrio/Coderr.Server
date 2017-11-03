@@ -118,7 +118,7 @@ var codeRR;
                         }
                     }
                 };
-                dto.ShowClientButton = dto.TotalIncidentCount > 0;
+                dto.gotIncidents = dto.TotalIncidentCount > 0;
                 this.ctx.render(dto, directives);
             };
             DetailsViewModel.prototype.renderChart = function (result) {

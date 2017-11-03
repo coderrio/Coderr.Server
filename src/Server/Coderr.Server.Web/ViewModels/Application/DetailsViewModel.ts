@@ -138,7 +138,7 @@ module codeRR.Application {
                     }
                 }
             };
-            (<any>dto).ShowClientButton = dto.TotalIncidentCount > 0;
+            (<any>dto).gotIncidents = dto.TotalIncidentCount > 0;
             this.ctx.render(dto, directives);
         }
 
