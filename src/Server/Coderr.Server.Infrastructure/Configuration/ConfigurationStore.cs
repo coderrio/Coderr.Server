@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using codeRR.Server.Infrastructure.Configuration.Database;
 
 namespace codeRR.Server.Infrastructure.Configuration
 {

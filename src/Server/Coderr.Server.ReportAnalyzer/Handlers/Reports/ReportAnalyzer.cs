@@ -62,7 +62,10 @@ namespace codeRR.Server.ReportAnalyzer.Handlers.Reports
             }
             catch (Exception ex)
             {
-                _logger.Fatal("Failed to store report " + JsonConvert.SerializeObject(report), ex);
+                var reportJson = JsonConvert.SerializeObject(report);
+                if (reportJson.Length > 1000000)
+                    reportJson = reportJson.Substring(0, 100000) + "[....]";
+                _logger.Fatal("Failed to init report " + reportJson, ex);
                 return;
             }
 

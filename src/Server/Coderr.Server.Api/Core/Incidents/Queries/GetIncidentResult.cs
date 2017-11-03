@@ -127,6 +127,10 @@ namespace codeRR.Server.Api.Core.Incidents.Queries
         /// </summary>
         public int ReportCount { get; set; }
 
+        /// <summary>
+        /// When we received the last report for this incident.
+        /// </summary>
+        public DateTime LastReportReceivedAtUtc { get; set; }
 
         /// <summary>
         ///     Generated hash code

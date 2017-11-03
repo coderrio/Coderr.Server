@@ -7,13 +7,13 @@ using System.Security.Authentication;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using codeRR.Server.Infrastructure;
+using codeRR.Server.App.Core.Reports.Config;
+using codeRR.Server.Infrastructure.Configuration;
 using codeRR.Server.ReportAnalyzer.Inbound.Models;
 using codeRR.Server.ReportAnalyzer.LibContracts;
 using DotNetCqs;
 using DotNetCqs.Queues;
 using Griffin.Data;
-using Griffin.Data.Mapper;
 using log4net;
 using Newtonsoft.Json;
 
@@ -24,20 +24,23 @@ namespace codeRR.Server.ReportAnalyzer.Inbound
     /// </summary>
     public class SaveReportHandler
     {
-        private readonly IAdoNetUnitOfWork _unitOfWork;
+        private readonly List<Func<NewReportDTO, bool>> _filters = new List<Func<NewReportDTO, bool>>();
         private readonly ILog _logger = LogManager.GetLogger(typeof(SaveReportHandler));
         private readonly IMessageQueue _queue;
-        private readonly List<Func<NewReportDTO, bool>> _filters = new List<Func<NewReportDTO, bool>>();
+        private readonly IAdoNetUnitOfWork _unitOfWork;
+        private readonly int _maxSizeForJsonErrorReport;
 
         /// <summary>
         ///     Creates a new instance of <see cref="SaveReportHandler" />.
         /// </summary>
         /// <param name="queue">Queue to store inbound reports in</param>
         /// <exception cref="ArgumentNullException">queueProvider;connectionFactory</exception>
-        public SaveReportHandler(IMessageQueue queue, IAdoNetUnitOfWork unitOfWork)
+        public SaveReportHandler(IMessageQueue queue, IAdoNetUnitOfWork unitOfWork, ConfigurationStore configStore)
         {
             _unitOfWork = unitOfWork;
             _queue = queue ?? throw new ArgumentNullException(nameof(queue));
+            var config= configStore.Load<ReportConfig>();
+            _maxSizeForJsonErrorReport = config?.MaxReportJsonSize ?? 1000000;
         }
 
         public void AddFilter(Func<NewReportDTO, bool> filter)
@@ -46,7 +49,8 @@ namespace codeRR.Server.ReportAnalyzer.Inbound
             _filters.Add(filter);
         }
 
-        public async Task BuildReportAsync(ClaimsPrincipal user, string appKey, string signatureProvidedByTheClient, string remoteAddress,
+        public async Task BuildReportAsync(ClaimsPrincipal user, string appKey, string signatureProvidedByTheClient,
+            string remoteAddress,
             byte[] reportBody)
         {
             if (!Guid.TryParse(appKey, out var tempKey))
@@ -70,6 +74,8 @@ namespace codeRR.Server.ReportAnalyzer.Inbound
             }
 
             var report = DeserializeBody(reportBody);
+            if (report == null)
+                return;
 
             // correct incorrect clients
             if (report.CreatedAtUtc > DateTime.UtcNow)
@@ -130,6 +136,10 @@ namespace codeRR.Server.ReportAnalyzer.Inbound
                 json = Encoding.UTF8.GetString(body);
             }
 
+            // protection against very large error reports.
+            if (json.Length > _maxSizeForJsonErrorReport)
+                return null;
+
             //to support clients that still use the OneTrueError client library.
             json = json.Replace("OneTrueError", "codeRR");
 
@@ -160,7 +170,6 @@ namespace codeRR.Server.ReportAnalyzer.Inbound
                     };
                 }
             }
-
         }
 
         private async Task StoreInvalidReportAsync(string appKey, string sig, string remoteAddress, byte[] reportBody)
@@ -168,7 +177,7 @@ namespace codeRR.Server.ReportAnalyzer.Inbound
             try
             {
                 //TODO: Make something generic.
-                using (var cmd = (SqlCommand)_unitOfWork.CreateCommand())
+                using (var cmd = (SqlCommand) _unitOfWork.CreateCommand())
                 {
                     cmd.CommandText =
                         @"INSERT INTO InvalidReports(appkey, signature, reportbody, errormessage, createdatutc)
@@ -185,7 +194,6 @@ namespace codeRR.Server.ReportAnalyzer.Inbound
                     cmd.AddParameter("createdatutc", DateTime.UtcNow);
                     await cmd.ExecuteNonQueryAsync();
                 }
-
             }
             catch (Exception ex)
             {
@@ -206,7 +214,7 @@ namespace codeRR.Server.ReportAnalyzer.Inbound
             catch (Exception ex)
             {
                 _logger.Error(
-                    "Failed to StoreReport: " + JsonConvert.SerializeObject(new { model = report }), ex);
+                    "Failed to StoreReport: " + JsonConvert.SerializeObject(new {model = report}), ex);
             }
             return Task.FromResult<object>(null);
         }

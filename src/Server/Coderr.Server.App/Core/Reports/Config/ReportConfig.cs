@@ -9,6 +9,16 @@ namespace codeRR.Server.App.Core.Reports.Config
     public class ReportConfig : IConfigurationSection
     {
         /// <summary>
+        ///     Maximum number of bytes that a uncompressed JSON report can be
+        /// </summary>
+        /// <remarks>
+        ///     <para>
+        ///         Used to filter out reports that are too large.
+        ///     </para>
+        /// </remarks>
+        public int MaxReportJsonSize { get; set; }
+
+        /// <summary>
         ///     Max number of reports per incident
         /// </summary>
         /// <remarks>
@@ -24,11 +34,7 @@ namespace codeRR.Server.App.Core.Reports.Config
         /// </remarks>
         public int RetentionDays { get; set; }
 
-
-        string IConfigurationSection.SectionName
-        {
-            get { return "ReportConfig"; }
-        }
+        string IConfigurationSection.SectionName => "ReportConfig";
 
         IDictionary<string, string> IConfigurationSection.ToDictionary()
         {
@@ -38,6 +44,8 @@ namespace codeRR.Server.App.Core.Reports.Config
         void IConfigurationSection.Load(IDictionary<string, string> settings)
         {
             this.AssignProperties(settings);
+            if (MaxReportJsonSize == 0)
+                MaxReportJsonSize = 1000000;
         }
     }
 }

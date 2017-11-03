@@ -149,7 +149,7 @@ var codeRR;
                             return momentsAgo(value);
                         }
                     },
-                    UpdatedAtUtc: {
+                    LastReportReceivedAtUtc: {
                         text: function (value) {
                             return momentsAgo(value);
                         }

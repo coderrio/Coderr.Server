@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using codeRR.Server.Infrastructure;
+using codeRR.Server.Infrastructure.Configuration;
 using codeRR.Server.ReportAnalyzer.Inbound;
 using codeRR.Server.Web.Areas.Receiver.Helpers;
 using codeRR.Server.Web.Areas.Receiver.Models;
@@ -24,15 +25,17 @@ namespace codeRR.Server.Web.Areas.Receiver.Controllers
         private static readonly SamplingCounter _samplingCounter = new SamplingCounter();
         private readonly ILog _logger = LogManager.GetLogger(typeof(ReportController));
         private readonly IMessageQueue _messageQueue;
+        private readonly ConfigurationStore _configStore;
 
         static ReportController()
         {
             _samplingCounter.Load();
         }
 
-        public ReportController(IMessageQueueProvider queueProvider, IAdoNetUnitOfWork unitOfWork)
+        public ReportController(IMessageQueueProvider queueProvider, IAdoNetUnitOfWork unitOfWork, ConfigurationStore configStore)
         {
             _unitOfWork = unitOfWork;
+            _configStore = configStore;
             _messageQueue = queueProvider.Open("Reports");
         }
 
@@ -51,7 +54,7 @@ namespace codeRR.Server.Web.Areas.Receiver.Controllers
         [HttpPost, Route("receiver/report/{appKey}")]
         public async Task<HttpResponseMessage> Post(string appKey, string sig)
         {
-            if (HttpContext.Current.Request.InputStream.Length > 20000000)
+            if (HttpContext.Current.Request.InputStream.Length > 2000000)
             {
                 return await KillLargeReportAsync(appKey);
             }
@@ -64,7 +67,7 @@ namespace codeRR.Server.Web.Areas.Receiver.Controllers
             {
                 var buffer = new byte[HttpContext.Current.Request.InputStream.Length];
                 HttpContext.Current.Request.InputStream.Read(buffer, 0, buffer.Length);
-                var handler = new SaveReportHandler(_messageQueue, _unitOfWork);
+                var handler = new SaveReportHandler(_messageQueue, _unitOfWork, _configStore);
                 await handler.BuildReportAsync(User as ClaimsPrincipal, appKey, sig, Request.GetClientIpAddress(), buffer);
                 return Request.CreateResponse(HttpStatusCode.OK);
             }

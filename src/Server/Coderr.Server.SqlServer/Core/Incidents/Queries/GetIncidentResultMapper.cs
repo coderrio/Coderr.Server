@@ -25,6 +25,10 @@ namespace codeRR.Server.SqlServer.Core.Incidents.Queries
             Property(x => x.Solution)
                 .ToPropertyValue(x => EntitySerializer.Deserialize<IncidentSolution>(x)?.Description);
 
+            Property(x => x.LastReportReceivedAtUtc)
+                .ToPropertyValue(DbConverters.ToEntityDate)
+                .ColumnName("LastReportAtUtc");
+
             Property(x => x.IsSolved).Ignore();
             Property(x => x.IsIgnored).Ignore();
 

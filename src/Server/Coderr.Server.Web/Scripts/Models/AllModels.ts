@@ -762,19 +762,20 @@ module codeRR.Core.Incidents.Queries {
     export class GetIncidentResult {
         public static TYPE_NAME: string = 'GetIncidentResult';
         public ApplicationId: number;
+        public AssignedAtUtc: any;
+        public AssignedTo: string;
+        public AssignedToId: number;
         public ContextCollections: string[];
         public CreatedAtUtc: any;
         public DayStatistics: codeRR.Core.Incidents.Queries.ReportDay[];
         public Description: string;
         public FeedbackCount: number;
-        public AssignedToId: number;
         public FullName: string;
         public HashCodeIdentifier: string;
         public Id: number;
+        public IncidentState: number;
         public IsIgnored: boolean;
         public IsReOpened: boolean;
-        public AssignedTo: string;
-        public AssignedAtUtc: any;
         public IsSolutionShared: boolean;
         public IsSolved: boolean;
         public PreviousSolutionAtUtc: any;

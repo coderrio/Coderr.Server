@@ -166,7 +166,7 @@ class IncidentTableViewModel implements Griffin.WebApp.IPagerSubscriber {
                     return value;
                 }
             },
-            LastUpdateAtUtc: {
+            LastReportReceivedAtUtc: {
                 text(value) {
                     return momentsAgo(value);
                 }

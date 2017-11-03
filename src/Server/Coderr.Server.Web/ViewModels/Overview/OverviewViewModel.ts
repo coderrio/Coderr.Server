@@ -167,7 +167,7 @@ module codeRR.Overview {
                             return momentsAgo(value);
                         }
                     },
-                    LastUpdateAtUtc: {
+                    LastReportReceivedAtUtc: {
                         text(value) {
                             return momentsAgo(value);
                         }

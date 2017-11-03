@@ -141,7 +141,7 @@ var IncidentTableViewModel = (function () {
                     return value;
                 }
             },
-            LastUpdateAtUtc: {
+            LastReportReceivedAtUtc: {
                 text: function (value) {
                     return momentsAgo(value);
                 }

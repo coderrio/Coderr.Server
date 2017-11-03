@@ -54,7 +54,7 @@ namespace codeRR.Server.Api.Core.Incidents.Queries
         public bool IsReOpened { get; set; }
 
         /// <summary>
-        ///     When the last report was received (or when the last user action was made)
+        ///     When someone updated this incident (assigned/closed etc).
         /// </summary>
         public DateTime LastUpdateAtUtc { get; set; }
 
@@ -67,5 +67,10 @@ namespace codeRR.Server.Api.Core.Incidents.Queries
         ///     Total number of received reports (increased even if the number of stored reports are at the limit)
         /// </summary>
         public int ReportCount { get; set; }
+
+        /// <summary>
+        /// When we recieved the last report.
+        /// </summary>
+        public DateTime LastReportReceivedAtUtc { get; set; }
     }
 }

@@ -24,6 +24,10 @@ namespace codeRR.Server.SqlServer.Core.Incidents.Queries
             destination.IsReOpened = source["IsReopened"].Equals(1);
             destination.ReportCount = (int) source["ReportCount"];
             destination.LastUpdateAtUtc = (DateTime) source["UpdatedAtUtc"];
+
+            var value = source["LastReportAtUtc"];
+            destination.LastReportReceivedAtUtc = (DateTime) (value is DBNull ? destination.LastUpdateAtUtc : value);
+
             destination.CreatedAtUtc = (DateTime) source["CreatedAtUtc"];
         }
     }

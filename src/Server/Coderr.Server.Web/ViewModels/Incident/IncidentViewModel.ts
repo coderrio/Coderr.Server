@@ -180,7 +180,7 @@ module codeRR.Incident {
                         return momentsAgo(value);
                     }
                 },
-                UpdatedAtUtc: {
+                LastReportReceivedAtUtc: {
                     text(value) {
                         return momentsAgo(value);
                     }
