@@ -113,20 +113,15 @@ namespace codeRR.Server.Web.Controllers
             {
                 var identity = await _accountService.ActivateAccount(this.ClaimsUser(), id);
                 SignIn(identity);
-                return Redirect("~/#/welcome");
+                return Redirect(new ClaimsPrincipal(identity).IsSysAdmin()
+                    ? "~/#/welcome/admin/"
+                    : "~/#/welcome/user/");
             }
             catch (Exception err)
             {
                 ModelState.AddModelError("", err.Message);
                 return View();
             }
-        }
-
-        public ActionResult Activated()
-        {
-            var config = _configStore.Load<BaseConfiguration>();
-            ViewBag.DashboardUrl = config.BaseUrl + "/welcome";
-            return View();
         }
 
         public ActionResult ActivationRequested()

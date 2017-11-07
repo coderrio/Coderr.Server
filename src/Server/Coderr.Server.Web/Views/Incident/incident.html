@@ -31,7 +31,7 @@
                         <a class="dropdown-item" id="assignToMe" data-title="Assign incident to yourself" data-if="IsNew">
                             <span class="fa fa-share"></span> Assign to me
                         </a>
-                        <a class="dropdown-item" href="#/application/:applicationId/incident/:incidentId/close" data-title="This incident have been corrected and should not generate any more reports" data-if="IsAssigned">
+                        <a class="dropdown-item" href="#/application/:applicationId/incident/:incidentId/close" data-title="This incident have been corrected and should not generate any more reports" data-unless="IsSolved">
                             <span class="fa fa-check"></span> Close
                         </a>
                         <a class="dropdown-item" href="#/application/:applicationId/incident/:incidentId/ignore" data-title="Do not trigger notifications or show this incident as active, no matter how many reports it receive." data-unless="IsIgnored">
@@ -48,12 +48,16 @@
 
     <div class="row sexy">
         <div class="col" style="max-width: 55%">
+            <div data-if="IsSolved" class="card-box">
+                <h5 class="text-muted">Solution</h5>
+                <div data-name="Solution"></div>
+            </div>
+
             <div class="card-box">
                 <div data-if="vm.isAssigned" class="text-muted pull-right">
                     <em>Assigned to <span data-name="AssignedTo"></span></em>
                 </div>
-
-                <h5>Stacktrace</h5>
+                <h5 class="text-muted">Stacktrace</h5>
                 <pre style="padding: 20px 10px 20px 10px; text-wrap: normal; max-width: 100%;"><code data-name="StackTrace"></code></pre>
                 <div data-collection="Tags">
                     <a data-name="[]" class="" href=""></a>

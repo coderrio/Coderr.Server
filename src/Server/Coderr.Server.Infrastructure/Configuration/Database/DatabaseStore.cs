@@ -15,7 +15,7 @@ namespace codeRR.Server.Infrastructure.Configuration.Database
     /// </remarks>
     public class DatabaseStore : ConfigurationStore
     {
-        private readonly Dictionary<Type, Wrapper> _items = new Dictionary<Type, Wrapper>();
+        private static readonly Dictionary<Type, Wrapper> _cachedItems = new Dictionary<Type, Wrapper>();
         private readonly Func<IDbConnection> _connectionFactory;
 
         public DatabaseStore(Func<IDbConnection> connectionFactory)
@@ -30,13 +30,8 @@ namespace codeRR.Server.Infrastructure.Configuration.Database
         /// <returns>Category if found; otherwise <c>null</c>.</returns>
         public override T Load<T>()
         {
-            lock (_items)
-            {
-                if (_items.TryGetValue(typeof(T), out var t) && !t.HasExpired())
-                {
-                    return (T)t.Value;
-                }
-            }
+            if (TryGetCachedItem(out T tValue))
+                return tValue;
 
             var section = new T();
             using (var connection = OpenConnectionFor<T>())
@@ -99,7 +94,7 @@ namespace codeRR.Server.Infrastructure.Configuration.Database
         }
 
         /// <summary>
-        /// Allow connections to be created by another peep.
+        ///     Allow connections to be created by another peep.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns>open connection</returns>
@@ -109,7 +104,7 @@ namespace codeRR.Server.Infrastructure.Configuration.Database
         }
 
         /// <summary>
-        /// Allow connections to be created by another peep.
+        ///     Allow connections to be created by another peep.
         /// </summary>
         /// <param name="configClassType">A <c>IConfigurationSection</c> type</param>
         /// <returns>open connection</returns>
@@ -119,12 +114,27 @@ namespace codeRR.Server.Infrastructure.Configuration.Database
             return _connectionFactory();
         }
 
-        private void SetCache(IConfigurationSection section)
+        protected virtual void SetCache(IConfigurationSection section)
         {
-            lock (_items)
+            lock (_cachedItems)
             {
-                _items[section.GetType()] = new Wrapper {AddedAtUtc = DateTime.UtcNow, Value = section};
+                _cachedItems[section.GetType()] = new Wrapper {AddedAtUtc = DateTime.UtcNow, Value = section};
             }
+        }
+
+        protected virtual bool TryGetCachedItem<T>(out T tValue)
+        {
+            lock (_cachedItems)
+            {
+                if (_cachedItems.TryGetValue(typeof(T), out var t) && !t.HasExpired())
+                {
+                    tValue = (T) t.Value;
+                    return true;
+                }
+            }
+
+            tValue = default(T);
+            return false;
         }
 
         private class Wrapper

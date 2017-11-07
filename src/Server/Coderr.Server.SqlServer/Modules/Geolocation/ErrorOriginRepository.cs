@@ -18,12 +18,17 @@ namespace codeRR.Server.SqlServer.Modules.Geolocation
             _unitOfWork = unitOfWork;
         }
 
-        public async Task CreateAsync(ErrorOrigin command, int applicationId, int incidentId, int reportId)
+        public async Task CreateAsync(ErrorOrigin entity, int applicationId, int incidentId, int reportId)
         {
+            if (entity == null) throw new ArgumentNullException(nameof(entity));
+            if (applicationId <= 0) throw new ArgumentOutOfRangeException(nameof(applicationId));
+            if (incidentId <= 0) throw new ArgumentOutOfRangeException(nameof(incidentId));
+            if (reportId <= 0) throw new ArgumentOutOfRangeException(nameof(reportId));
+
             using (var cmd = (DbCommand) _unitOfWork.CreateCommand())
             {
                 cmd.CommandText = "SELECT Id FROM ErrorOrigins WHERE IpAddress = @ip";
-                cmd.AddParameter("ip", command.IpAddress);
+                cmd.AddParameter("ip", entity.IpAddress);
                 var id = await cmd.ExecuteScalarAsync();
                 if (id is int)
                 {
@@ -37,16 +42,16 @@ namespace codeRR.Server.SqlServer.Modules.Geolocation
                 cmd.CommandText = "INSERT INTO ErrorOrigins (IpAddress, CountryCode, CountryName, RegionCode, RegionName, City, ZipCode, Latitude, Longitude, CreatedAtUtc) "
                                   +
                                   "VALUES (@IpAddress, @CountryCode, @CountryName, @RegionCode, @RegionName, @City, @ZipCode, @Latitude, @Longitude, @CreatedAtUtc);select cast(SCOPE_IDENTITY() as int);";
-                cmd.AddParameter("IpAddress", command.IpAddress);
-                cmd.AddParameter("CountryCode", command.CountryCode);
-                cmd.AddParameter("CountryName", command.CountryName);
-                cmd.AddParameter("RegionCode", command.RegionCode);
-                cmd.AddParameter("RegionName", command.RegionName);
-                cmd.AddParameter("City", command.City);
-                cmd.AddParameter("ZipCode", command.ZipCode);
+                cmd.AddParameter("IpAddress", entity.IpAddress);
+                cmd.AddParameter("CountryCode", entity.CountryCode);
+                cmd.AddParameter("CountryName", entity.CountryName);
+                cmd.AddParameter("RegionCode", entity.RegionCode);
+                cmd.AddParameter("RegionName", entity.RegionName);
+                cmd.AddParameter("City", entity.City);
+                cmd.AddParameter("ZipCode", entity.ZipCode);
                 //cmd.AddParameter("Point", SqlGeography.Point(command.Latitude, command.Longitude, 4326));
-                cmd.AddParameter("Latitude", command.Latitude);
-                cmd.AddParameter("Longitude", command.Longitude);
+                cmd.AddParameter("Latitude", entity.Latitude);
+                cmd.AddParameter("Longitude", entity.Longitude);
                 cmd.AddParameter("CreatedAtUtc", DateTime.UtcNow);
                 var id = (int) await cmd.ExecuteScalarAsync();
                 await CreateReportInfoAsync(id, applicationId, incidentId, reportId);

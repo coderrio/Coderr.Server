@@ -10,6 +10,7 @@ module codeRR.Incident {
     import ApplicationService = codeRR.Applications.ApplicationService;
     import ReOpenIncident = codeRR.Core.Incidents.Commands.ReOpenIncident;
     import AssignIncident = Core.Incidents.Commands.AssignIncident;
+    declare function marked(markdown: string);
 
     export class IncidentViewModel implements PagerSubscriber, Griffin.Yo.Spa.ViewModels.IViewModel {
         private static UP = "fa-chevron-up";
@@ -48,6 +49,10 @@ module codeRR.Incident {
                     this.isAssigned = response.AssignedToId != null;
                     this.isNew = response.AssignedToId == null && !response.IsSolved && !response.IsIgnored;
                     this.assignedToName = response.AssignedTo;
+
+                    if (response.IsSolved) {
+                        response.Solution = marked(response.Solution);
+                    }
 
                     this.name = response.Description;
                     this.id = response.Id;

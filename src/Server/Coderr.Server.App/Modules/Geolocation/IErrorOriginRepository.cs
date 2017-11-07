@@ -15,13 +15,13 @@ namespace codeRR.Server.App.Modules.Geolocation
         /// <summary>
         ///     Create a new entry
         /// </summary>
-        /// <param name="origin">origin</param>
+        /// <param name="entity">origin</param>
         /// <param name="applicationId">Application that we received a report for</param>
         /// <param name="incidentId">incident that the report belongs to</param>
         /// <param name="reportId">report received that we got a location for</param>
         /// <returns>task</returns>
         /// <exception cref="ArgumentNullException">origin</exception>
-        Task CreateAsync(ErrorOrigin origin, int applicationId, int incidentId, int reportId);
+        Task CreateAsync(ErrorOrigin entity, int applicationId, int incidentId, int reportId);
 
         /// <summary>
         ///     Find all origins for a specific incident

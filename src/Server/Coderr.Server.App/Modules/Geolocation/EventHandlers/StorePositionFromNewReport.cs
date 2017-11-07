@@ -43,11 +43,10 @@ namespace codeRR.Server.App.Modules.Geolocation.EventHandlers
             if (string.IsNullOrEmpty(e.Report.RemoteAddress))
                 return;
 
-            e.Report.RemoteAddress = "155.4.14.41";
             if (e.Report.RemoteAddress == "::1")
                 return;
             if (e.Report.RemoteAddress == "127.0.0.1")
-                return;
+                e.Report.RemoteAddress = "94.254.57.227";
 
             var request = WebRequest.CreateHttp("http://freegeoip.net/json/" + e.Report.RemoteAddress);
             string json = "";

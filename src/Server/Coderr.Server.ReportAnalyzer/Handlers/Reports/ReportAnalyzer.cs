@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Security.Claims;
 using codeRR.Server.Api.Core.Incidents;
 using codeRR.Server.Api.Core.Incidents.Events;
 using codeRR.Server.Api.Core.Reports;
@@ -21,9 +20,9 @@ namespace codeRR.Server.ReportAnalyzer.Handlers.Reports
     [Component(Lifetime = Lifetime.Scoped)]
     public class ReportAnalyzer
     {
-        private readonly IMessageBus _messageBus;
         private readonly HashCodeGenerator _hashCodeGenerator;
         private readonly ILog _logger = LogManager.GetLogger(typeof(ReportAnalyzer));
+        private readonly IMessageBus _messageBus;
         private readonly IAnalyticsRepository _repository;
 
         /// <summary>
@@ -32,7 +31,8 @@ namespace codeRR.Server.ReportAnalyzer.Handlers.Reports
         /// <param name="hashCodeGenerator">Used to identify is this is a new unique exception</param>
         /// <param name="messageBus">to publish the <see cref="ReportAddedToIncident" /> event</param>
         /// <param name="repository">repos</param>
-        public ReportAnalyzer(HashCodeGenerator hashCodeGenerator, IMessageBus messageBus, IAnalyticsRepository repository)
+        public ReportAnalyzer(HashCodeGenerator hashCodeGenerator, IMessageBus messageBus,
+            IAnalyticsRepository repository)
         {
             _hashCodeGenerator = hashCodeGenerator;
             _messageBus = messageBus;
@@ -44,7 +44,7 @@ namespace codeRR.Server.ReportAnalyzer.Handlers.Reports
         /// </summary>
         /// <param name="report">report</param>
         /// <exception cref="ArgumentNullException">report</exception>
-        public void Analyze(ClaimsPrincipal user, ErrorReportEntity report)
+        public void Analyze(IMessageContext context, ErrorReportEntity report)
         {
             if (report == null) throw new ArgumentNullException("report");
 
@@ -96,7 +96,7 @@ namespace codeRR.Server.ReportAnalyzer.Handlers.Reports
                 {
                     isReOpened = true;
                     incident.ReOpen();
-                    _messageBus.SendAsync(user, new IncidentReOpened(incident.ApplicationId, incident.Id,
+                    context.SendAsync(new IncidentReOpened(incident.ApplicationId, incident.Id,
                         incident.CreatedAtUtc));
                 }
 
@@ -123,7 +123,7 @@ namespace codeRR.Server.ReportAnalyzer.Handlers.Reports
             sw.Start();
             _logger.Debug("Publishing now: " + report.ClientReportId);
             var e = new ReportAddedToIncident(summary, ConvertToCoreReport(report), isReOpened);
-            _messageBus.SendAsync(user, e);
+            context.SendAsync(e);
             if (sw.ElapsedMilliseconds > 200)
                 _logger.Debug("Publish took " + sw.ElapsedMilliseconds);
             sw.Stop();
@@ -135,7 +135,6 @@ namespace codeRR.Server.ReportAnalyzer.Handlers.Reports
                 return new IncidentBeingAnalyzed(entity);
 
             if (entity.Exception.Name == "AggregateException")
-            {
                 try
                 {
                     var exception = entity.Exception;
@@ -151,15 +150,13 @@ namespace codeRR.Server.ReportAnalyzer.Handlers.Reports
                 catch (Exception)
                 {
                 }
-            }
 
             if (entity.Exception.Name == "ReflectionTypeLoadException")
-            {
                 try
                 {
                     var item = JObject.Parse(entity.Exception.Everything);
                     var i = new IncidentBeingAnalyzed(entity);
-                    var items = (JObject)item["LoaderExceptions"];
+                    var items = (JObject) item["LoaderExceptions"];
                     var exception = items.First;
 
 
@@ -172,7 +169,6 @@ namespace codeRR.Server.ReportAnalyzer.Handlers.Reports
                 catch (Exception)
                 {
                 }
-            }
 
             return new IncidentBeingAnalyzed(entity);
         }
@@ -210,9 +206,7 @@ namespace codeRR.Server.ReportAnalyzer.Handlers.Reports
                 ReportVersion = "1"
             };
             if (report.Exception != null)
-            {
                 dto.Exception = ConvertToCoreException(report.Exception);
-            }
             return dto;
         }
     }

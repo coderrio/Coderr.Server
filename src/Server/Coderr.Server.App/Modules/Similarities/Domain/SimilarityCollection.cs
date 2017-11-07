@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using codeRR.Server.Api.Core.Reports;
 
 namespace codeRR.Server.App.Modules.Similarities.Domain
 {
     /// <summary>
-    ///     A collection corresponding to <see cref="ContextCollectionDTO" />, but where value usage have been analysed.
+    ///     A collection corresponding to <see cref="ContextCollectionDTO" />, but where value usage have been analyzed.
     /// </summary>
     [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix",
         Justification = "Namespace is named 'Similarities'.")]
@@ -68,9 +69,19 @@ namespace codeRR.Server.App.Modules.Similarities.Domain
             if (propertyName == null) throw new ArgumentNullException("propertyName");
             if (adaptedValue == null) throw new ArgumentNullException("adaptedValue");
 
-            var item =
-                _items.FirstOrDefault(
-                    x => x.PropertyName.Equals(propertyName, StringComparison.OrdinalIgnoreCase));
+            Similarity item = null;
+
+            // ReSharper disable once ForCanBeConvertedToForeach
+            // ReSharper disable once LoopCanBeConvertedToQuery
+            for (var i = 0; i < _items.Count; i++)
+            {
+                if (_items[i].PropertyName != propertyName)
+                    continue;
+
+                item = _items[i];
+                break;
+            }
+
             if (item == null)
             {
                 item = new Similarity(propertyName);

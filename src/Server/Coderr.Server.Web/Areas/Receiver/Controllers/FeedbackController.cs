@@ -64,7 +64,7 @@ namespace codeRR.Server.Web.Areas.Receiver.Controllers
                         ReportVersion = "1"
                     };
 
-                    await session.EnqueueAsync(User as ClaimsPrincipal, new Message(dto));
+                    await session.EnqueueAsync(ReportController.CreateReporterPrincipal(), new Message(dto));
                     await session.SaveChanges();
                 }
             }

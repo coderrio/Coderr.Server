@@ -108,7 +108,7 @@ namespace codeRR.Server.SqlServer.Core.Applications
                 cmd.AddParameter("id", id);
                 var item = await cmd.FirstOrDefaultAsync<Application>();
                 if (item == null)
-                    throw new EntityNotFoundException(id.ToString(), cmd);
+                    throw new EntityNotFoundException("Failed to find application with id " + id, cmd);
 
                 return item;
             }

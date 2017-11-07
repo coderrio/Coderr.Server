@@ -480,7 +480,6 @@
     <Content Include="Views\Account\Accept.cshtml" />
     <Content Include="Views\Account\Accepted.html" />
     <Content Include="Views\Account\Activate.cshtml" />
-    <Content Include="Views\Account\Activated.cshtml" />
     <Content Include="Views\Account\ActivationRequested.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
@@ -560,6 +559,7 @@
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\moment\moment.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\morris.js\morris.js.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\simplemde\simplemde.d.ts" />
     <TypeScriptCompile Include="ViewModels\Account\AcceptedViewModel.ts" />
     <TypeScriptCompile Include="ViewModels\Account\SettingsViewModel.ts" />
     <TypeScriptCompile Include="ViewModels\Account\WelcomeViewModel.ts" />

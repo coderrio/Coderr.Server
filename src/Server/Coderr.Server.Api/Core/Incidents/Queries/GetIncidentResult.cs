@@ -138,7 +138,7 @@ namespace codeRR.Server.Api.Core.Incidents.Queries
         public string ReportHashCode { get; private set; }
 
         /// <summary>
-        ///     How the devs solved it.
+        ///     How the incident was solved (the last time)
         /// </summary>
         public string Solution { get; set; }
 

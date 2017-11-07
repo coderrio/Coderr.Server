@@ -34,7 +34,7 @@ namespace codeRR.Server.ReportAnalyzer.Handlers
                 {
                     RemoteAddress = message.RemoteAddress
                 };
-                _analyzer.Analyze(context.Principal, entity);
+                _analyzer.Analyze(context, entity);
             }
             catch (Exception ex)
             {

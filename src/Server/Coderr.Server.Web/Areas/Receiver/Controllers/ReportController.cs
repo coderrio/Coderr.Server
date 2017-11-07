@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Data;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Security.Authentication;
@@ -7,7 +7,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using codeRR.Server.Infrastructure;
 using codeRR.Server.Infrastructure.Configuration;
 using codeRR.Server.ReportAnalyzer.Inbound;
 using codeRR.Server.Web.Areas.Receiver.Helpers;
@@ -21,25 +20,27 @@ namespace codeRR.Server.Web.Areas.Receiver.Controllers
     [AllowAnonymous]
     public class ReportController : ApiController
     {
-        private readonly IAdoNetUnitOfWork _unitOfWork;
         private static readonly SamplingCounter _samplingCounter = new SamplingCounter();
+        private readonly ConfigurationStore _configStore;
         private readonly ILog _logger = LogManager.GetLogger(typeof(ReportController));
         private readonly IMessageQueue _messageQueue;
-        private readonly ConfigurationStore _configStore;
+        private readonly IAdoNetUnitOfWork _unitOfWork;
 
         static ReportController()
         {
             _samplingCounter.Load();
         }
 
-        public ReportController(IMessageQueueProvider queueProvider, IAdoNetUnitOfWork unitOfWork, ConfigurationStore configStore)
+        public ReportController(IMessageQueueProvider queueProvider, IAdoNetUnitOfWork unitOfWork,
+            ConfigurationStore configStore)
         {
             _unitOfWork = unitOfWork;
             _configStore = configStore;
             _messageQueue = queueProvider.Open("Reports");
         }
 
-        [HttpGet, Route("receiver/report/")]
+        [HttpGet]
+        [Route("receiver/report/")]
         public HttpResponseMessage Index()
         {
             var content = new StringContent("Hello world 2");
@@ -51,13 +52,12 @@ namespace codeRR.Server.Web.Areas.Receiver.Controllers
             return resp;
         }
 
-        [HttpPost, Route("receiver/report/{appKey}")]
+        [HttpPost]
+        [Route("receiver/report/{appKey}")]
         public async Task<HttpResponseMessage> Post(string appKey, string sig)
         {
             if (HttpContext.Current.Request.InputStream.Length > 2000000)
-            {
                 return await KillLargeReportAsync(appKey);
-            }
 
             if (!_samplingCounter.CanAccept(appKey))
                 return Request.CreateResponse(HttpStatusCode.OK);
@@ -68,7 +68,8 @@ namespace codeRR.Server.Web.Areas.Receiver.Controllers
                 var buffer = new byte[HttpContext.Current.Request.InputStream.Length];
                 HttpContext.Current.Request.InputStream.Read(buffer, 0, buffer.Length);
                 var handler = new SaveReportHandler(_messageQueue, _unitOfWork, _configStore);
-                await handler.BuildReportAsync(User as ClaimsPrincipal, appKey, sig, Request.GetClientIpAddress(), buffer);
+                var principal = CreateReporterPrincipal();
+                await handler.BuildReportAsync(principal, appKey, sig, Request.GetClientIpAddress(), buffer);
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
             catch (InvalidCredentialException ex)
@@ -78,7 +79,7 @@ namespace codeRR.Server.Web.Areas.Receiver.Controllers
             catch (HttpException ex)
             {
                 _logger.InfoFormat(ex.Message);
-                return Request.CreateErrorResponse((HttpStatusCode)ex.GetHttpCode(), ex.Message);
+                return Request.CreateErrorResponse((HttpStatusCode) ex.GetHttpCode(), ex.Message);
             }
             catch (Exception exception)
             {
@@ -87,14 +88,22 @@ namespace codeRR.Server.Web.Areas.Receiver.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exception);
             }
         }
-#pragma warning disable 1998
-        private async Task<HttpResponseMessage> KillLargeReportAsync(string appKey)
-#pragma warning restore 1998
+
+        internal static ClaimsPrincipal CreateReporterPrincipal()
+        {
+            var principal = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, "ReportReceiver"),
+                new Claim(ClaimTypes.NameIdentifier, "0")
+            }));
+            return principal;
+        }
+        private Task<HttpResponseMessage> KillLargeReportAsync(string appKey)
         {
             _logger.Error(appKey + "Too large report: " + HttpContext.Current.Request.InputStream.Length + " from " +
                           Request.GetClientIpAddress());
             //TODO: notify
-            return Request.CreateResponse(HttpStatusCode.OK);
+            return Task.FromResult(Request.CreateResponse(HttpStatusCode.OK));
         }
     }
 }

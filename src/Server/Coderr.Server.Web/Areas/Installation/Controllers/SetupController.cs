@@ -31,7 +31,7 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
                 {
                     displayError = 1
                 });
-            return Redirect("~/?#/welcome");
+            return Redirect("~/?#/welcome/admin/");
         }
 
         public ActionResult Basics()

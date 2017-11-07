@@ -32,6 +32,9 @@ var codeRR;
                     _this.isAssigned = response.AssignedToId != null;
                     _this.isNew = response.AssignedToId == null && !response.IsSolved && !response.IsIgnored;
                     _this.assignedToName = response.AssignedTo;
+                    if (response.IsSolved) {
+                        response.Solution = marked(response.Solution);
+                    }
                     _this.name = response.Description;
                     _this.id = response.Id;
                     _this.applicationId = response.ApplicationId;

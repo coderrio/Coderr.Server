@@ -71,7 +71,7 @@ namespace codeRR.Server.App.Modules.Triggers.Domain
         /// <param name="name">Property name</param>
         public void AddOrUpdateProperty(string name)
         {
-            if (Properties.Any(x => x.Equals(name, StringComparison.OrdinalIgnoreCase)))
+            if (Properties.Contains(name))
                 return;
 
             IsUpdated = true;

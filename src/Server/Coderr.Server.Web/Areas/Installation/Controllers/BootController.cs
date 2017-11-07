@@ -20,7 +20,7 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
         public ActionResult NoInstallation()
         {
             if (Request.Url.AbsolutePath.EndsWith("/setup/activate", StringComparison.OrdinalIgnoreCase))
-                return Redirect("~/?#/welcome");
+                return Redirect("~/?#/welcome/admin/");
             return View();
         }
 

@@ -13,6 +13,8 @@ module codeRR.Incident {
     export class CloseViewModel implements Griffin.Yo.Spa.ViewModels.IViewModel {
         private app: ApplicationInfoResult;
         private context: ActivationContext;
+        private solutionEditor: SimpleMDE;
+        private userTextEditor: SimpleMDE;
 
         getTitle(): string {
             return "Close incident";
@@ -39,6 +41,8 @@ module codeRR.Incident {
             P.when(incidentPromise, appPromise)
                 .then(result => {
                     context.resolve();
+                    this.solutionEditor = new SimpleMDE({ element: $("#solution")[0] });
+                    this.userTextEditor = new SimpleMDE({ element: $("#UserText")[0] });
                 });
 
             context.handle.click("#saveSolution", evt => this.onCloseIncident());
@@ -58,29 +62,26 @@ module codeRR.Incident {
         }
 
         onCloseIncident() {
-            const solution = this.context.select.one('[name="solution"]') as HTMLInputElement;
-
-            const closeCmd = new CloseIncident(solution.value, this.incidentId);
+            var solution = this.solutionEditor.value();
+            const closeCmd = new CloseIncident(solution, this.incidentId);
 
             const sendMessage = this.context.select.one("sendCustomerMessage") as HTMLInputElement;
-            console.log(sendMessage);
             if (sendMessage.checked) {
                 const subject = (this.context.select.one('[name="UserSubject"]') as HTMLInputElement);
-                const text = (this.context.select.one('[name="UserText"]') as HTMLInputElement);
-                if (subject.value.length === 0 || text.value.length === 0) {
+                const notificationText = this.userTextEditor.value();
+                if (subject.value.length === 0 || notificationText.length === 0) {
                     alert("You specified that you wanted to send a notification to your users, but you have not specified subject or body of the message.");
                     return;
                 }
-                closeCmd.NotificationText = text.value;
+                closeCmd.NotificationText = notificationText;
                 closeCmd.CanSendNotification = true;
                 closeCmd.NotificationTitle = subject.value;
             }
-
             CqsClient.command(closeCmd);
 
             //seems like everything is not updated otherwise.
             setTimeout(() => {
-                    window.location.hash = `#/application/${this.context.routeData["applicationId"]}/`;
+                    window.location.hash = `#/application/${this.context.routeData["applicationId"]}/incident/${this.incidentId}/`;
                     humane.log("Incident has been closed.");
 
                 },
