@@ -63,6 +63,19 @@ namespace codeRR.Server.SqlServer.Modules.Versions
             return _uow.FirstOrDefaultAsync<ApplicationVersion>(new {ApplicationId = applicationId, Version = version});
         }
 
+        public async Task<IList<ApplicationVersion>> FindForIncidentAsync(int incidentId)
+        {
+            using (var cmd = _uow.CreateDbCommand())
+            {
+                cmd.CommandText = @"select ApplicationVersions.*
+                                      FROM IncidentVersions
+                                      JOIN ApplicationVersions ON (IncidentVersions.VersionId = ApplicationVersions.Id)
+                                      WHERE IncidentVersions.IncidentId = @incidentId";
+                cmd.AddParameter("incidentId", incidentId);
+                return await cmd.ToListAsync<ApplicationVersion>();
+            }
+        }
+
         public async Task UpdateAsync(ApplicationVersionMonth month)
         {
             await _uow.UpdateAsync(month);

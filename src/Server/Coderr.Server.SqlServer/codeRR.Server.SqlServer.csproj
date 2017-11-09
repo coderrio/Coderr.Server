@@ -14,6 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Coderr.Server.Api\codeRR.Server.Api.csproj" />
     <ProjectReference Include="..\Coderr.Server.App\codeRR.Server.App.csproj" />
+    <ProjectReference Include="..\Coderr.Server.PluginApi\Coderr.Server.PluginApi.csproj" />
     <ProjectReference Include="..\Coderr.Server.ReportAnalyzer\codeRR.Server.ReportAnalyzer.csproj" />
   </ItemGroup>
   <ItemGroup>

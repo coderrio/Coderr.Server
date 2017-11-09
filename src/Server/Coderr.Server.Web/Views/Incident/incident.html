@@ -2,8 +2,18 @@
     .sexy > div {
         display: inline !important;
     }
-    .codl {
-        display: inline-block;
+
+    .facts table td {
+        padding-left: 10px;
+    }
+
+    .facts td:first-child {
+        white-space: nowrap;
+        text-align: right;
+    }
+
+    .facts td:last-child {
+        width: 99%;
     }
 </style>
 <div id="IncidentView">
@@ -49,89 +59,54 @@
     <div class="row sexy">
         <div class="col" style="max-width: 55%">
             <div data-if="IsSolved" class="card-box">
-                <h5 class="text-muted">Solution</h5>
+                <h4 class="text-muted">Solution</h4>
                 <div data-name="Solution"></div>
             </div>
 
             <div class="card-box">
-                <div data-if="vm.isAssigned" class="text-muted pull-right">
-                    <em>Assigned to <span data-name="AssignedTo"></span></em>
-                </div>
-                <h5 class="text-muted">Stacktrace</h5>
-                <pre style="padding: 20px 10px 20px 10px; text-wrap: normal; max-width: 100%;"><code data-name="StackTrace"></code></pre>
+                <h4 class="text-muted">Stacktrace</h4>
+                <pre style="padding: 20px 10px 20px 10px; text-wrap: normal; max-width: 100%; max-height: 50vh; overflow: scroll"><code data-name="StackTrace"></code></pre>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card-box tilebox-two facts">
+                <h4 class="text-muted">Quick facts</h4>
+                <table class="w-100">
+                    <tbody data-collection="Facts">
+                    <tr>
+                        <td><span data-name="Title"></span> <span data-name="Description" class="fa fa-info-circle text-info"></span></td>
+                        <td data-name="Value"></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <hr/>
                 <div data-collection="Tags">
                     <a data-name="[]" class="" href=""></a>
                 </div>
             </div>
-        </div>
-        <div class="col">
-            <div>
-                <div class="card-box">
-                    <div id="legend" class="text-center">
-                        <h4 class="header-title m-t-0 m-b-20">Report trend</h4>
-                    </div>
-                    <div>
-                        <div id="myChart" style="height: 200px"></div>
-                    </div>
-                    <div class="text-center">
-                        <form id="refresh-chart" style="display: inline">
-                            <input type="radio" name="range" value="30" checked="checked" /> month
-                            <input type="radio" name="range" value="7" /> week
-                            <input type="radio" name="range" value="1" /> day
-                        </form>
-                    </div>
+            <div class="card-box">
+                <div id="legend" class="text-center">
+                    <h4 class="header-title m-b-20">Report trend</h4>
                 </div>
-            </div>
-            <div class="codl">
-                <div class="card-box tilebox-three">
-                    <div class="text-right">
-                        <h6 class="text-dark text-uppercase m-b-15 m-t-10">Report count</h6>
-                        <h5 class="m-b-10">
-                            <span data-name="ReportCount"></span>
-                        </h5>
-                    </div>
+                <div>
+                    <div id="myChart" style="height: 200px"></div>
                 </div>
-            </div>
-            <div class="codl">
-                <div class="card-box tilebox-three">
-                    <div class="text-right">
-                        <h6 class="text-dark text-uppercase m-b-15 m-t-10">Last report</h6>
-                        <h5 class="m-b-10">
-                            <span data-name="LastReportReceivedAtUtc"></span>
-                        </h5>
-                    </div>
-                </div>
-            </div>
-
-            <div class="codl">
-                <div class="card-box tilebox-three" title="Number of users that want status updates">
-                    <div class="text-right">
-                        <h6 class="text-dark text-uppercase m-b-15 m-t-10">Subscribers</h6>
-                        <h5 class="m-b-10">
-                            <span data-name="WaitingUserCount"></span>
-                        </h5>
-                    </div>
-                </div>
-            </div>
-
-            <div class="codl">
-                <div class="card-box tilebox-three">
-                    <div class="text-right">
-                        <h6 class="text-dark text-uppercase m-b-15 m-t-10">Feedback count</h6>
-                        <h5 class="m-b-10">
-                            <span data-name="FeedbackCount"></span>
-                        </h5>
-                    </div>
+                <div class="text-center">
+                    <form id="refresh-chart">
+                        <input type="radio" name="range" value="30" checked="checked" /> month
+                        <input type="radio" name="range" value="7" /> week
+                        <input type="radio" name="range" value="1" /> day
+                    </form>
                 </div>
             </div>
 
         </div>
-       
+
     </div>
 
     <div class="row">
         <div class="col-lg-12">
-            <h2 id="Reports">Reports</h2>
+            <h4 id="Reports">Reports</h4>
             <div class="card-box">
                 <table id="reportsTable" class="table table-striped">
                     <thead>

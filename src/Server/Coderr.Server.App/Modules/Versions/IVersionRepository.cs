@@ -29,7 +29,7 @@ namespace codeRR.Server.App.Modules.Versions
         Task CreateAsync(ApplicationVersion entity);
 
         /// <summary>
-        ///     Get monhtly exception report
+        ///     Get monthly exception report
         /// </summary>
         /// <param name="applicationId">Application id</param>
         /// <param name="year">Year, four digits</param>
@@ -41,7 +41,7 @@ namespace codeRR.Server.App.Modules.Versions
         Task<ApplicationVersionMonth> FindMonthForApplicationAsync(int applicationId, int year, int month);
 
         /// <summary>
-        ///     Hämta version
+        ///     Get version
         /// </summary>
         /// <param name="applicationId">id for the application that we want to fetch a version for</param>
         /// <param name="version">Version (<c>"1.0.0"</c>)</param>
@@ -49,6 +49,16 @@ namespace codeRR.Server.App.Modules.Versions
         /// <exception cref="ArgumentNullException">applicationId;version</exception>
         /// <exception cref="DbException">Failed to query DB</exception>
         Task<ApplicationVersion> FindVersionAsync(int applicationId, string version);
+
+        /// <summary>
+        ///     Get version
+        /// </summary>
+        /// <param name="incidentId">Incident to get versions for</param>
+        /// <returns>version if found; otherwise <c>null</c></returns>
+        /// <exception cref="ArgumentNullException">applicationId;version</exception>
+        /// <exception cref="DbException">Failed to query DB</exception>
+        Task<IList<ApplicationVersion>> FindForIncidentAsync(int incidentId);
+
 
         /// <summary>
         ///     Update an existing monthly report

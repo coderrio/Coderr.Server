@@ -13,8 +13,9 @@ namespace codeRR.Server.SqlServer.Core.Incidents.Queries
             : base("Incidents")
         {
             Property(x => x.DayStatistics).Ignore();
-            Property(x => x.WaitingUserCount).Ignore();
-            Property(x => x.FeedbackCount).Ignore();
+            Property(x => x.SuggestedSolutions).Ignore();
+            Property(x => x.Facts).Ignore();
+            Property(x => x.HighlightedContextData).Ignore();
             Property(x => x.Tags).Ignore();
             Property(x => x.ContextCollections).Ignore();
             Property(x => x.IncidentState)

@@ -179,6 +179,20 @@ module codeRR.Incident {
             if (dto.IsIgnored) {
                 dto.Tags.push("ignored");
             }
+            dto.Facts.push({
+                Title: "Last report",
+                Value: momentsAgo(dto.LastReportReceivedAtUtc),
+                Description: "When we received the last report",
+                Url: ''
+            });
+            if (this.isAssigned) {
+                dto.Facts.push({
+                    Title: "Assigned to",
+                    Value: dto.AssignedTo,
+                    Description: "User that is currently working with this incident",
+                    Url: ''
+                });
+            }
             const directives = {
                 CreatedAtUtc: {
                     text(value) {
@@ -210,7 +224,18 @@ module codeRR.Incident {
                             return `http://stackoverflow.com/search?q=%5B${value}%5D+${dto.Description}`;
                         return null;
                     }
+                },
+                Facts: {
+                    Description: {
+                        text(value) {
+                            return '';
+                        },
+                        title(value) {
+                            return value;
+                        }
+                    }
                 }
+
 
             };
             this.ctx.render(dto, directives);

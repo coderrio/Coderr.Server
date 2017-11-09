@@ -867,6 +867,20 @@ var codeRR;
                 }());
                 GetIncidentStatisticsResult.TYPE_NAME = 'GetIncidentStatisticsResult';
                 Queries.GetIncidentStatisticsResult = GetIncidentStatisticsResult;
+                var HighlightedContextData = (function () {
+                    function HighlightedContextData() {
+                    }
+                    return HighlightedContextData;
+                }());
+                HighlightedContextData.TYPE_NAME = 'HighlightedContextData';
+                Queries.HighlightedContextData = HighlightedContextData;
+                var QuickFact = (function () {
+                    function QuickFact() {
+                    }
+                    return QuickFact;
+                }());
+                QuickFact.TYPE_NAME = 'QuickFact';
+                Queries.QuickFact = QuickFact;
                 var ReportDay = (function () {
                     function ReportDay() {
                     }
@@ -874,6 +888,13 @@ var codeRR;
                 }());
                 ReportDay.TYPE_NAME = 'ReportDay';
                 Queries.ReportDay = ReportDay;
+                var SuggestedIncidentSolution = (function () {
+                    function SuggestedIncidentSolution() {
+                    }
+                    return SuggestedIncidentSolution;
+                }());
+                SuggestedIncidentSolution.TYPE_NAME = 'SuggestedIncidentSolution';
+                Queries.SuggestedIncidentSolution = SuggestedIncidentSolution;
             })(Queries = Incidents.Queries || (Incidents.Queries = {}));
         })(Incidents = Core.Incidents || (Core.Incidents = {}));
     })(Core = codeRR.Core || (codeRR.Core = {}));

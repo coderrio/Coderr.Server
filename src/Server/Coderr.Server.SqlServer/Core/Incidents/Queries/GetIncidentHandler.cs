@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using codeRR.Server.Api.Core.Incidents.Queries;
+using Coderr.Server.PluginApi;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
@@ -13,11 +13,21 @@ namespace codeRR.Server.SqlServer.Core.Incidents.Queries
     [Component]
     public class GetIncidentHandler : IQueryHandler<GetIncident, GetIncidentResult>
     {
+        private readonly IEnumerable<IQuickfactProvider> _quickfactProviders;
+        private readonly IEnumerable<IHighlightedContextDataProvider> _highlightedContextDataProviders;
+        private readonly IEnumerable<ISolutionProvider> _solutionProviders;
         private readonly IAdoNetUnitOfWork _unitOfWork;
 
-        public GetIncidentHandler(IAdoNetUnitOfWork unitOfWork)
+        public GetIncidentHandler(IAdoNetUnitOfWork unitOfWork, 
+            IEnumerable<IQuickfactProvider> quickfactProviders,
+            IEnumerable<IHighlightedContextDataProvider> highlightedContextDataProviders,
+            IEnumerable<ISolutionProvider> solutionProviders
+            )
         {
             _unitOfWork = unitOfWork;
+            _quickfactProviders = quickfactProviders;
+            _highlightedContextDataProviders = highlightedContextDataProviders;
+            _solutionProviders = solutionProviders;
         }
 
         public async Task<GetIncidentResult> HandleAsync(IMessageContext context, GetIncident query)
@@ -33,9 +43,38 @@ namespace codeRR.Server.SqlServer.Core.Incidents.Queries
             var tags = GetTags(query.IncidentId);
             result.Tags = tags.ToArray();
 
+            var facts = new List<QuickFact>
+            {
+                new QuickFact
+                {
+                    Title = "Report Count",
+                    Description = "Number of reports since this incident was discovered",
+                    Value = result.ReportCount.ToString()
+                }
+            };
+
             await GetContextCollectionNames(result);
             await GetReportStatistics(result);
-            await GetStatSummary(query, result);
+            await GetStatSummary(query, facts);
+
+            var contextData = new List<HighlightedContextData>();
+            var solutions = new List<SuggestedIncidentSolution>();
+            foreach (var provider in _quickfactProviders)
+            {
+                await provider.AssignAsync(query.IncidentId, facts);
+            }
+            foreach (var provider in _highlightedContextDataProviders)
+            {
+                await provider.CollectAsync(query.IncidentId, contextData);
+            }
+            foreach (var provider in _solutionProviders)
+            {
+                await provider.SuggestSolutionAsync(query.IncidentId, solutions);
+            }
+
+            result.Facts = facts.ToArray();
+            result.SuggestedSolutions = solutions.ToArray();
+            result.HighlightedContextData = contextData.ToArray();
             return result;
         }
 
@@ -90,7 +129,7 @@ group by cast(createdatutc as date)";
             }
         }
 
-        private async Task GetStatSummary(GetIncident query, GetIncidentResult result)
+        private async Task GetStatSummary(GetIncident query, ICollection<QuickFact> facts)
         {
             using (var cmd = _unitOfWork.CreateDbCommand())
             {
@@ -111,19 +150,26 @@ AND IncidentId = @incidentId;";
                 using (var reader = await cmd.ExecuteReaderAsync())
                 {
                     if (!await reader.ReadAsync())
-                    {
                         throw new InvalidOperationException("Expected to be able to read result 1.");
-                    }
 
-                    result.WaitingUserCount = reader.GetInt32(0);
+                    facts.Add(new QuickFact
+                    {
+                        Title = "Subscribed users",
+                        Description =
+                            "Number of users that are waiting on a notification when the incident have been solved.",
+                        Value = reader.GetInt32(0).ToString()
+                    });
 
                     await reader.NextResultAsync();
                     if (!await reader.ReadAsync())
-                    {
                         throw new InvalidOperationException("Expected to be able to read result 2.");
-                    }
 
-                    result.FeedbackCount = reader.GetInt32(0);
+                    facts.Add(new QuickFact
+                    {
+                        Title = "Bug reports",
+                        Description = "Number of bug reports written by users.",
+                        Value = reader.GetInt32(0).ToString()
+                    });
                 }
             }
         }

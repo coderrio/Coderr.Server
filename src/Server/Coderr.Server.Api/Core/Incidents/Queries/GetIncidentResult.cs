@@ -61,9 +61,9 @@ namespace codeRR.Server.Api.Core.Incidents.Queries
         }
 
         /// <summary>
-        ///     Number of users that have written what they did when the error occurred.
+        ///     facts
         /// </summary>
-        public int FeedbackCount { get; set; }
+        public QuickFact[] Facts { get; set; }
 
         /// <summary>
         ///     Full name of the exception message.
@@ -113,6 +113,11 @@ namespace codeRR.Server.Api.Core.Incidents.Queries
         public bool IsSolved => IncidentState == 3;
 
         /// <summary>
+        ///     When we received the last report for this incident.
+        /// </summary>
+        public DateTime LastReportReceivedAtUtc { get; set; }
+
+        /// <summary>
         ///     Solution written last time (if <see cref="IsReOpened" /> is <c>true</c>).
         /// </summary>
         public DateTime PreviousSolutionAtUtc { get; set; }
@@ -122,15 +127,11 @@ namespace codeRR.Server.Api.Core.Incidents.Queries
         /// </summary>
         public DateTime ReOpenedAtUtc { get; set; }
 
-        /// <summary>
-        ///     Number of received reports.
-        /// </summary>
-        public int ReportCount { get; set; }
 
         /// <summary>
-        /// When we received the last report for this incident.
+        ///     Number of reports received to date.
         /// </summary>
-        public DateTime LastReportReceivedAtUtc { get; set; }
+        public int ReportCount { get; set; }
 
         /// <summary>
         ///     Generated hash code
@@ -162,9 +163,7 @@ namespace codeRR.Server.Api.Core.Incidents.Queries
         /// </summary>
         public DateTime UpdatedAtUtc { get; private set; }
 
-        /// <summary>
-        ///     Number of users that have supplied their email address
-        /// </summary>
-        public int WaitingUserCount { get; set; }
+        public SuggestedIncidentSolution[] SuggestedSolutions { get; set; }
+        public HighlightedContextData[] HighlightedContextData { get; set; }
     }
 }

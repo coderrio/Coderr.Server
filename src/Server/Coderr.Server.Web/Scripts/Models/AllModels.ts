@@ -731,6 +731,7 @@ module codeRR.Core.Incidents.Queries {
         public LastUpdateAtUtc: any;
         public Name: string;
         public ReportCount: number;
+        public LastReportReceivedAtUtc: any;
         public constructor(id: number, name: string) {
             this.Id = id;
             this.Name = name;
@@ -769,7 +770,7 @@ module codeRR.Core.Incidents.Queries {
         public CreatedAtUtc: any;
         public DayStatistics: codeRR.Core.Incidents.Queries.ReportDay[];
         public Description: string;
-        public FeedbackCount: number;
+        public Facts: codeRR.Core.Incidents.Queries.QuickFact[];
         public FullName: string;
         public HashCodeIdentifier: string;
         public Id: number;
@@ -778,6 +779,7 @@ module codeRR.Core.Incidents.Queries {
         public IsReOpened: boolean;
         public IsSolutionShared: boolean;
         public IsSolved: boolean;
+        public LastReportReceivedAtUtc: any;
         public PreviousSolutionAtUtc: any;
         public ReOpenedAtUtc: any;
         public ReportCount: number;
@@ -787,7 +789,8 @@ module codeRR.Core.Incidents.Queries {
         public StackTrace: string;
         public Tags: string[];
         public UpdatedAtUtc: any;
-        public WaitingUserCount: number;
+        public SuggestedSolutions: codeRR.Core.Incidents.Queries.SuggestedIncidentSolution[];
+        public HighlightedContextData: codeRR.Core.Incidents.Queries.HighlightedContextData[];
     }
 
     export class GetIncidentStatistics {
@@ -802,10 +805,32 @@ module codeRR.Core.Incidents.Queries {
         public Values: number[];
     }
 
+    export class HighlightedContextData {
+        public static TYPE_NAME: string = 'HighlightedContextData';
+        public Description: string;
+        public Name: string;
+        public Url: string;
+        public Value: string[];
+    }
+
+    export class QuickFact {
+        public static TYPE_NAME: string = 'QuickFact';
+        public Description: string;
+        public Title: string;
+        public Url: string;
+        public Value: string;
+    }
+
     export class ReportDay {
         public static TYPE_NAME: string = 'ReportDay';
         public Count: number;
         public Date: any;
+    }
+
+    export class SuggestedIncidentSolution {
+        public static TYPE_NAME: string = 'SuggestedIncidentSolution';
+        public Reason: string;
+        public SuggestedSolution: string;
     }
 
 }

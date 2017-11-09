@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "codeRR.Server.Web", "Coderr.Server.Web\codeRR.Server.Web.csproj", "{0476895C-6A61-4DE1-B06B-E8BF496FB651}"
 EndProject
@@ -21,9 +21,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "codeRR.Server.Infrastructur
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "codeRR.Server.Api.Client", "Coderr.Server.Api.Client\codeRR.Server.Api.Client.csproj", "{017F8863-3DE0-4AD2-9ED3-5ACB87BBBCD0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "codeRR.Server.Api.Client.Tests", "Coderr.Server.Api.Client.Tests\codeRR.Server.Api.Client.Tests.csproj", "{62989500-31BC-44FA-97CA-84F484C6F1AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "codeRR.Server.Api.Client.Tests", "Coderr.Server.Api.Client.Tests\codeRR.Server.Api.Client.Tests.csproj", "{62989500-31BC-44FA-97CA-84F484C6F1AA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "codeRR.Server.ReportAnalyzer.Tests", "Coderr.Server.ReportAnalyzer.Tests\codeRR.Server.ReportAnalyzer.Tests.csproj", "{421C787A-079B-4A88-A6C5-1ACD9A7C6A7E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coderr.Server.PluginApi", "Coderr.Server.PluginApi\Coderr.Server.PluginApi.csproj", "{47A845A0-FCC2-46F1-A553-0F7110BDDBEA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +77,10 @@ Global
 		{421C787A-079B-4A88-A6C5-1ACD9A7C6A7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{421C787A-079B-4A88-A6C5-1ACD9A7C6A7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{421C787A-079B-4A88-A6C5-1ACD9A7C6A7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47A845A0-FCC2-46F1-A553-0F7110BDDBEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47A845A0-FCC2-46F1-A553-0F7110BDDBEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47A845A0-FCC2-46F1-A553-0F7110BDDBEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47A845A0-FCC2-46F1-A553-0F7110BDDBEA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

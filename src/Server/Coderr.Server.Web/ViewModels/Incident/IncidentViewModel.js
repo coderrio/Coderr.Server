@@ -146,6 +146,20 @@ var codeRR;
                 if (dto.IsIgnored) {
                     dto.Tags.push("ignored");
                 }
+                dto.Facts.push({
+                    Title: "Last report",
+                    Value: momentsAgo(dto.LastReportReceivedAtUtc),
+                    Description: "When we received the last report",
+                    Url: ''
+                });
+                if (this.isAssigned) {
+                    dto.Facts.push({
+                        Title: "Assigned to",
+                        Value: dto.AssignedTo,
+                        Description: "User that is currently working with this incident",
+                        Url: ''
+                    });
+                }
                 var directives = {
                     CreatedAtUtc: {
                         text: function (value) {
@@ -175,6 +189,16 @@ var codeRR;
                             if (value.substr(0, 2) !== 'v-' && value !== "ignored" && value !== "solved")
                                 return "http://stackoverflow.com/search?q=%5B" + value + "%5D+" + dto.Description;
                             return null;
+                        }
+                    },
+                    Facts: {
+                        Description: {
+                            text: function (value) {
+                                return '';
+                            },
+                            title: function (value) {
+                                return value;
+                            }
                         }
                     }
                 };
