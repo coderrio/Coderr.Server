@@ -65,9 +65,10 @@ namespace codeRR.Server.Web.Services
                         Lifetime.Singleton);
                     registrar.RegisterConcrete<ScopedQueryBus>();
                     registrar.RegisterService(CreateMessageInvoker, Lifetime.Scoped);
-                    registrar.RegisterService(x=> CreateQueueListener(x, "Messaging"), Lifetime.Singleton);
-                    registrar.RegisterService(x => CreateQueueListener(x, "Reports"), Lifetime.Singleton);
-                    registrar.RegisterService(x => CreateQueueListener(x, "Feedback"), Lifetime.Singleton);
+
+                    registrar.RegisterService(x=> CreateQueueListener(x, "Messaging", "Messaging"), Lifetime.Singleton);
+                    registrar.RegisterService(x => CreateQueueListener(x, "Reports", "Messaging"), Lifetime.Singleton);
+                    registrar.RegisterService(x => CreateQueueListener(x, "Feedback", "Messaging"), Lifetime.Singleton);
                     registrar.RegisterService<IMessageQueueProvider>(x =>
                     {
                         return new AdoNetMessageQueueProvider(
@@ -165,24 +166,25 @@ namespace codeRR.Server.Web.Services
             return invoker;
         }
 
-        private QueueListener CreateQueueListener(IServiceLocator serviceLocator, string queueName)
+        private QueueListener CreateQueueListener(IServiceLocator locator, string inboundQueueName, string outboundQueueName)
         {
-
-            var queue = serviceLocator.Resolve<IMessageQueueProvider>().Open(queueName);
-            var listener = new QueueListener(queue, new GriffinHandlerScopeFactory(Container))
+            var provider = locator.Resolve<IMessageQueueProvider>();
+            var inboundQueue = provider.Open(inboundQueueName);
+            var outboundQueue = inboundQueueName == outboundQueueName ? inboundQueue : provider.Open(outboundQueueName);
+            var listener = new QueueListener(inboundQueue, outboundQueue, new GriffinHandlerScopeFactory(Container))
             {
                 RetryAttempts = new[]
                     {TimeSpan.FromMilliseconds(500), TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2)},
-                Logger = s => _log.Info(s)
+                Logger = Logga
             };
             listener.PoisonMessageDetected += (sender, args) =>
             {
                 Err.Report(args.Exception, new {args.Message});
-                _log.Error(queueName + " Poison message: " + args.Message.Body, args.Exception);
+                _log.Error(inboundQueueName + " Poison message: " + args.Message.Body, args.Exception);
             };
             listener.ScopeCreated += (sender, args) =>
             {
-                _log.Debug(queueName + " Running " + args.Message.Body + ", Credentials: " +
+                _log.Debug(inboundQueueName + " Running " + args.Message.Body + ", Credentials: " +
                            args.Principal.ToFriendlyString());
             };
             listener.ScopeClosing += (sender, args) =>
@@ -194,6 +196,11 @@ namespace codeRR.Server.Web.Services
                 }
             };
             return listener;
+        }
+
+        private void Logga(LogLevel level, string queuenameormessagename, string message)
+        {
+            
         }
 
         private void LetPluginsRegisterServices(ContainerRegistrar registrar)

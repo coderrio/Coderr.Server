@@ -39,10 +39,16 @@ namespace codeRR.Server.App.Core.Incidents.Jobs
             using (var cmd = _unitOfWork.CreateDbCommand())
             {
                 cmd.CommandText =
-                    $@"DELETE TOP(1000) Incidents WHERE Id IN (select Incidents.Id
-                        FROM Incidents 
-                        LEFT JOIN ErrorReports ON (ErrorReports.IncidentId = Incidents.Id)
-                        WHERE ErrorReports.Id IS NULL) AND State <> {(int)IncidentState.Ignored}";
+                    $@"DELETE TOP(1000) Incidents 
+                        WHERE Id IN 
+                       (
+                            SELECT Incidents.Id
+                            FROM Incidents WITH(NOLOCK)
+                            LEFT JOIN ErrorReports WITH(NOLOCK) ON (ErrorReports.IncidentId = Incidents.Id)
+                            WHERE ErrorReports.Id IS NULL
+                        ) 
+                        AND State <> {(int)IncidentState.Ignored} OR LastReportAtUtc < @yesterday";
+                cmd.AddParameter("yesterday", DateTime.Today.AddDays(-1));
                 var rows = await cmd.ExecuteNonQueryAsync();
                 if (rows > 0)
                 {

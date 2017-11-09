@@ -46,8 +46,14 @@ var Griffin;
                 this.pageSize = pageSize;
                 var i = 1;
                 this.pages = new Array();
-                for (i = 1; i <= this.pageCount; i++)
-                    this.pages.push(new PagerPage(i, i === currentPage));
+                if (this.pageCount > 10) {
+                    this.partialPages = true;
+                    this.generateDynamicPaging();
+                }
+                else {
+                    for (i = 1; i <= this.pageCount; i++)
+                        this.pages.push(new PagerPage(i, i === currentPage));
+                }
                 if (this.parent) {
                     this.draw(this.parent);
                 }
@@ -59,35 +65,57 @@ var Griffin;
                 this._subscribers.push(subscriber);
             };
             Pager.prototype.moveNext = function () {
-                if (this.currentPage < this.pageCount) {
+                if (this.currentPage >= this.pageCount) {
+                    return;
+                }
+                if (this.partialPages) {
+                    this.currentPage += 1;
+                    this.generateDynamicPaging();
+                    this.draw(this.parent);
+                }
+                else {
                     this.pages[this.currentPage - 1].deselect();
                     this.currentPage += 1;
                     this.pages[this.currentPage - 1].select();
-                    if (this.currentPage === this.pageCount) {
-                        this.nextItem.style.display = "none";
-                    }
-                    this.prevItem.style.display = "";
-                    this.notify();
                 }
+                if (this.currentPage === this.pageCount) {
+                    this.nextItem.style.display = "none";
+                }
+                this.prevItem.style.display = "";
+                this.notify();
             };
             Pager.prototype.movePrevious = function () {
-                if (this.currentPage > 1) {
+                if (this.currentPage <= 1) {
+                    return;
+                }
+                if (this.partialPages) {
+                    this.currentPage += 1;
+                    this.generateDynamicPaging();
+                    this.draw(this.parent);
+                }
+                else {
                     this.pages[this.currentPage - 1].deselect();
                     this.currentPage -= 1;
                     this.pages[this.currentPage - 1].select();
-                    if (this.currentPage === 1) {
-                        this.prevItem.style.display = "none";
-                    }
-                    else {
-                    }
-                    this.nextItem.style.display = "";
-                    this.notify();
                 }
+                if (this.currentPage === 1) {
+                    this.prevItem.style.display = "none";
+                }
+                this.nextItem.style.display = "";
+                this.notify();
             };
             Pager.prototype.goto = function (pageNumber) {
-                this.pages[this.currentPage - 1].deselect();
-                this.currentPage = pageNumber;
-                this.pages[this.currentPage - 1].select();
+                console.log(pageNumber, this.partialPages);
+                if (this.partialPages) {
+                    this.currentPage = pageNumber;
+                    this.generateDynamicPaging();
+                    this.draw(this.parent);
+                }
+                else {
+                    this.pages[this.currentPage - 1].deselect();
+                    this.currentPage = pageNumber;
+                    this.pages[this.currentPage - 1].select();
+                }
                 if (this.currentPage === 1 || this.pageCount === 1) {
                     this.prevItem.style.display = "none";
                 }
@@ -101,6 +129,23 @@ var Griffin;
                     this.nextItem.style.display = "";
                 }
                 this.notify();
+            };
+            Pager.prototype.generateDynamicPaging = function () {
+                this.pages = [];
+                var firstPage = this.currentPage - 4;
+                if (firstPage < 1)
+                    firstPage = 1;
+                else
+                    this.pages.push(new PagerPage(1, false));
+                console.log(firstPage);
+                var lastPage = firstPage + 9;
+                if (lastPage > this.pageCount)
+                    lastPage = this.pageCount;
+                var i;
+                for (i = firstPage; i <= lastPage; i++)
+                    this.pages.push(new PagerPage(i, i === this.currentPage));
+                if (lastPage < this.pageCount)
+                    this.pages.push(new PagerPage(this.pageCount, false));
             };
             Pager.prototype.createListItem = function (title, callback) {
                 var btn = document.createElement("a");
@@ -134,6 +179,10 @@ var Griffin;
                     if (!containerIdOrElement)
                         throw new Error("No element was specified");
                     this.parent = containerIdOrElement;
+                }
+                while (this.parent.childElementCount > 0) {
+                    console.log('remv');
+                    this.parent.firstElementChild.remove();
                 }
                 var self = this;
                 var ul = document.createElement("ul");

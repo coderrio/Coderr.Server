@@ -86,7 +86,7 @@ namespace codeRR.Server.SqlServer.Core.Feedback
             {
                 using (var cmd = (DbCommand) _unitOfWork.CreateCommand())
                 {
-                    cmd.CommandText = "SELECT Id, ApplicationId, IncidentId FROM ErrorReports WHERE ";
+                    cmd.CommandText = "SELECT Id, ApplicationId, IncidentId FROM ErrorReports WITH(NOLOCK) WHERE ";
                     if (item.ErrorId != null)
                     {
                         cmd.CommandText += "ErrorId = @id";

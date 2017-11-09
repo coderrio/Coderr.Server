@@ -78,7 +78,7 @@ namespace codeRR.Server.App.Modules.Geolocation.EventHandlers
             }
             catch (Exception exception)
             {
-                _logger.Error("Failed to store location: " + json, exception);
+                _logger.Error($"Failed to store location for incident {e.Incident.Id}/report {e.Report.Id}: {json}", exception);
             }
         }
     }

@@ -1,7 +1,7 @@
 ﻿/// <reference path="typings/jquery/jquery.d.ts" />
 /// <reference path="Promise.ts" />
 module Griffin.WebApp {
-   
+
     export interface IPagerSubscriber {
         onPager(pager: Pager): void;
     }
@@ -35,6 +35,7 @@ module Griffin.WebApp {
         private nextItem: HTMLElement;
         private prevItem: HTMLElement;
         private parent: HTMLElement;
+        private partialPages: boolean;
 
         constructor(public currentPage: number, public pageSize: number, public totalNumberOfItems: number) {
             this.update(currentPage, pageSize, totalNumberOfItems);
@@ -57,8 +58,14 @@ module Griffin.WebApp {
             this.pageSize = pageSize;
             let i = 1;
             this.pages = new Array();
-            for (i = 1; i <= this.pageCount; i++)
-                this.pages.push(new PagerPage(i, i === currentPage));
+
+            if (this.pageCount > 10) {
+                this.partialPages = true;
+                this.generateDynamicPaging();
+            } else {
+                for (i = 1; i <= this.pageCount; i++)
+                    this.pages.push(new PagerPage(i, i === currentPage));
+            }
 
             if (this.parent) {
                 this.draw(this.parent);
@@ -74,40 +81,63 @@ module Griffin.WebApp {
         }
 
         moveNext() {
-            if (this.currentPage < this.pageCount) {
+            if (this.currentPage >= this.pageCount) {
+                return;
+            }
+            if (this.partialPages) {
+                this.currentPage += 1;
+                this.generateDynamicPaging();
+                this.draw(this.parent);
+            } else {
                 this.pages[this.currentPage - 1].deselect();
                 this.currentPage += 1;
                 this.pages[this.currentPage - 1].select();
-
-                if (this.currentPage === this.pageCount) {
-                    this.nextItem.style.display = "none";
-                }
-                this.prevItem.style.display = "";
-
-                this.notify();
             }
+
+
+            if (this.currentPage === this.pageCount) {
+                this.nextItem.style.display = "none";
+            }
+            this.prevItem.style.display = "";
+
+            this.notify();
+
         }
 
         movePrevious() {
-            if (this.currentPage > 1) {
+            if (this.currentPage <= 1) {
+                return;
+            }
+
+            if (this.partialPages) {
+                this.currentPage += 1;
+                this.generateDynamicPaging();
+                this.draw(this.parent);
+            } else {
                 this.pages[this.currentPage - 1].deselect();
                 this.currentPage -= 1;
                 this.pages[this.currentPage - 1].select();
-
-                if (this.currentPage === 1) {
-                    this.prevItem.style.display = "none";
-                } else {
-
-                }
-                this.nextItem.style.display = "";
-                this.notify();
             }
+
+            if (this.currentPage === 1) {
+                this.prevItem.style.display = "none";
+            }
+
+            this.nextItem.style.display = "";
+            this.notify();
         }
 
         goto(pageNumber: number) {
-            this.pages[this.currentPage - 1].deselect();
-            this.currentPage = pageNumber;
-            this.pages[this.currentPage - 1].select();
+            console.log(pageNumber, this.partialPages);
+            if (this.partialPages) {
+                this.currentPage = pageNumber;
+                this.generateDynamicPaging();
+                this.draw(this.parent);
+            } else {
+                this.pages[this.currentPage - 1].deselect();
+                this.currentPage = pageNumber;
+                this.pages[this.currentPage - 1].select();
+            }
 
             if (this.currentPage === 1 || this.pageCount === 1) {
                 this.prevItem.style.display = "none";
@@ -124,12 +154,31 @@ module Griffin.WebApp {
             this.notify();
         }
 
+        private generateDynamicPaging() {
+            this.pages = [];
+            var firstPage = this.currentPage - 4;
+            if (firstPage < 1)
+                firstPage = 1;
+            else
+                this.pages.push(new PagerPage(1, false));
+            console.log(firstPage);
+            var lastPage = firstPage + 9;
+            if (lastPage > this.pageCount)
+                lastPage = this.pageCount;
+
+            var i;
+            for (i = firstPage; i <= lastPage; i++)
+                this.pages.push(new PagerPage(i, i === this.currentPage));
+
+            if (lastPage < this.pageCount)
+                this.pages.push(new PagerPage(this.pageCount, false));
+        }
         private createListItem(title: string, callback: () => void): HTMLElement {
             const btn = document.createElement("a");
             btn.innerHTML = title;
             btn.className = Pager.LINK_CLASS;
             btn.addEventListener("click",
-                function(e) {
+                function (e) {
                     e.preventDefault();
                     callback();
                 });
@@ -142,13 +191,13 @@ module Griffin.WebApp {
         private deactivateAll() {
             this.prevItem.classList.remove(Pager.LI_ACTIVE_CLASS);
             this.nextItem.classList.remove(Pager.LI_ACTIVE_CLASS);
-            this.pages.forEach(function(item) {
+            this.pages.forEach(function (item) {
                 item.selected = false;
                 item.listItem.classList.remove(Pager.LI_ACTIVE_CLASS);
             });
         }
 
-        draw(containerIdOrElement: string|HTMLElement): void {
+        draw(containerIdOrElement: string | HTMLElement): void {
             if (typeof containerIdOrElement === "string") {
                 this.parent = document.getElementById(containerIdOrElement);
                 if (!this.parent)
@@ -158,6 +207,11 @@ module Griffin.WebApp {
                     throw new Error("No element was specified");
                 this.parent = containerIdOrElement;
             }
+
+            while (this.parent.childElementCount > 0) {
+                console.log('remv');
+                this.parent.firstElementChild.remove();
+            }
             var self = this;
 
             var ul = document.createElement("ul");
@@ -165,7 +219,7 @@ module Griffin.WebApp {
 
             //prev
             var li = this.createListItem("&lt;&lt; Previous",
-                function() {
+                function () {
                     self.movePrevious();
                 });
             ul.appendChild(li);
@@ -179,7 +233,7 @@ module Griffin.WebApp {
             //pages
             this.pages.forEach(item => {
                 var li = this.createListItem(item.pageNumber.toString(),
-                    function() {
+                    function () {
                         self.goto(item.pageNumber);
                     });
                 item.listItem = li;
@@ -191,7 +245,7 @@ module Griffin.WebApp {
 
             //next
             var li = this.createListItem("Next &gt;&gt;",
-                function() {
+                function () {
                     self.moveNext();
                 });
             li.className = Pager.LI_CLASS;
@@ -211,7 +265,7 @@ module Griffin.WebApp {
 
         private notify(): void {
             var self = this;
-            this._subscribers.forEach(function(item) {
+            this._subscribers.forEach(function (item) {
                 item.onPager.apply(item, [self]);
             });
         }

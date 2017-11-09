@@ -44,7 +44,7 @@ namespace codeRR.Server.App.Core.Reports.Jobs
             {
                 var config = _configStore.Load<ReportConfig>();
                 if (config == null)
-                    return 1;
+                    return 100;
                 return config.MaxReportsPerIncident;
             }
         }
@@ -74,7 +74,8 @@ namespace codeRR.Server.App.Core.Reports.Jobs
 
             foreach (var incidentIdAndCount in incidentsToTruncate)
             {
-                var rowsToDelete = Math.Min(1000, incidentIdAndCount.Item2 - MaxReportsPerIncident);
+                //do not delete more then 500 at a time.
+                var rowsToDelete = Math.Min(500, incidentIdAndCount.Item2 - MaxReportsPerIncident);
                 using (var cmd = _unitOfWork.CreateCommand())
                 {
                     var sql = $@"With RowsToDelete AS
