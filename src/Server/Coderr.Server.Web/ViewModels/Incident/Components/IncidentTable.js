@@ -18,6 +18,7 @@ var IncidentTableViewModel = (function () {
         query.IsNew = true;
         if (applicationId != null) {
             query.ApplicationId = applicationId;
+            this.applicationId = applicationId;
         }
         if (applicationVersion != null) {
             query.Version = applicationVersion;
@@ -166,6 +167,9 @@ var IncidentTableViewModel = (function () {
         var _this = this;
         if (pageNumber === void 0) { pageNumber = 0; }
         var query = new codeRR.Core.Incidents.Queries.FindIncidents();
+        if (this.applicationId != null) {
+            query.ApplicationId = this.applicationId;
+        }
         query.SortType = this.sortType;
         query.SortAscending = this.sortAscending;
         if (this.incidentType === "closed") {
