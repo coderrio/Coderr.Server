@@ -12,7 +12,6 @@ namespace codeRR.Server.Web.Areas.Admin
             new MenuItem("Api keys", "~/admin/apikeys/"),
             new MenuItem("Applications", "~/admin/application/"),
             new MenuItem("Mail settings", "~/admin/messaging/email/"),
-            new MenuItem("Message queues", "~/admin/queues/"),
             new MenuItem("Report settings", "~/admin/reporting/")
         };
 
