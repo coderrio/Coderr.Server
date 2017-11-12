@@ -28,6 +28,7 @@ class IncidentTableViewModel implements Griffin.WebApp.IPagerSubscriber {
         query.IsNew = true;
         if (applicationId != null) {
             query.ApplicationId = applicationId;
+            this.applicationId = applicationId;
         }
         if (applicationVersion != null) {
             query.Version = applicationVersion;
@@ -190,6 +191,11 @@ class IncidentTableViewModel implements Griffin.WebApp.IPagerSubscriber {
 
     private loadItems(pageNumber: number = 0): void {
         const query = new codeRR.Core.Incidents.Queries.FindIncidents();
+
+        if (this.applicationId != null) {
+            query.ApplicationId = this.applicationId;
+        }
+
         query.SortType = this.sortType;
         query.SortAscending = this.sortAscending;
         if (this.incidentType === "closed") {
