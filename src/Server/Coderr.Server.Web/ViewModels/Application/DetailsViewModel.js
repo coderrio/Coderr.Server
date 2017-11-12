@@ -25,6 +25,7 @@ var codeRR;
                 this.ctx = ctx;
                 this.applicationId = ctx.routeData["applicationId"];
                 var self = this;
+                var isRun2 = false;
                 var firstIsRun = false;
                 var chartResult = null;
                 var chartRendering = function (result) {
@@ -87,7 +88,6 @@ var codeRR;
                 query.Version = this.filterVersion;
                 CqsClient.query(query)
                     .done(function (response) {
-                    console.log('overview', response);
                     _this.updateChart(response);
                     _this.ctx.render(response);
                 });
@@ -135,7 +135,7 @@ var codeRR;
                 }
                 $("#myChart").html("");
                 this.chartOptions = {
-                    element: "myChart",
+                    element: $("#myChart")[0],
                     data: data,
                     xkey: "date",
                     ykeys: ["Reports", "Incidents"],

@@ -26,7 +26,6 @@ var IncidentTableViewModel = (function () {
             .done(function (response) {
             var itemsElem = _this.ctx.viewContainer.querySelector("#incidentTable");
             _this.renderTable(itemsElem, response);
-            _this.ctx.resolve();
             _this.pager = new Griffin.WebApp.Pager(response.PageNumber, 20, response.TotalCount);
             _this.pager.subscribe(_this);
             _this.pager.draw(_this.ctx.select.one("#pager"));

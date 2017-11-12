@@ -37,12 +37,9 @@ class IncidentTableViewModel implements Griffin.WebApp.IPagerSubscriber {
 
                 var itemsElem = this.ctx.viewContainer.querySelector("#incidentTable") as HTMLElement;
                 this.renderTable(itemsElem, response);
-                this.ctx.resolve();
-
                 this.pager = new Griffin.WebApp.Pager(response.PageNumber, 20, response.TotalCount);
                 this.pager.subscribe(this);
                 this.pager.draw(this.ctx.select.one("#pager"));
-
             });
 
         this.ctx.handle.click("#btnClosed", e => this.onBtnClosed(e));

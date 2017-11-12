@@ -209,8 +209,7 @@ module Griffin.WebApp {
             }
 
             while (this.parent.childElementCount > 0) {
-                console.log('remv');
-                this.parent.firstElementChild.remove();
+                this.parent.removeChild(this.parent.firstElementChild);
             }
             var self = this;
 

@@ -35,7 +35,7 @@ module codeRR.Application {
             this.ctx = ctx;
             this.applicationId = ctx.routeData["applicationId"];
             var self = this;
-
+            var isRun2 = false;
             var firstIsRun = false;
             var chartResult: Core.Applications.Queries.GetApplicationOverviewResult = null;
             var chartRendering = (result: Core.Applications.Queries.GetApplicationOverviewResult) => {
@@ -106,7 +106,6 @@ module codeRR.Application {
             query.Version = this.filterVersion;
             CqsClient.query<Core.Applications.Queries.GetApplicationOverviewResult>(query)
                 .done(response => {
-                    console.log('overview', response);
                     this.updateChart(response);
                     this.ctx.render(response);
                 });
@@ -157,7 +156,7 @@ module codeRR.Application {
 
             $("#myChart").html("");
             this.chartOptions = {
-                element: "myChart",
+                element: $("#myChart")[0],
                 data: data,
                 xkey: "date",
                 ykeys: ["Reports", "Incidents"],
