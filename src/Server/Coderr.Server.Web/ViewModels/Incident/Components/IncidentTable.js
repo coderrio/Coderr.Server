@@ -10,7 +10,7 @@ var IncidentTableViewModel = (function () {
         this.sortAscending = false;
         this.ctx = ctx;
     }
-    IncidentTableViewModel.prototype.load = function (applicationId, applicationVersion) {
+    IncidentTableViewModel.prototype.load = function (applicationId, applicationVersion, callback) {
         var _this = this;
         var query = new codeRR.Core.Incidents.Queries.FindIncidents();
         query.PageNumber = 1;
@@ -30,6 +30,9 @@ var IncidentTableViewModel = (function () {
             _this.pager = new Griffin.WebApp.Pager(response.PageNumber, 20, response.TotalCount);
             _this.pager.subscribe(_this);
             _this.pager.draw(_this.ctx.select.one("#pager"));
+            if (callback) {
+                callback();
+            }
         });
         this.ctx.handle.click("#btnClosed", function (e) { return _this.onBtnClosed(e); });
         this.ctx.handle.click("#btnNew", function (e) { return _this.onBtnNew(e); });
@@ -135,7 +138,7 @@ var IncidentTableViewModel = (function () {
             },
             ApplicationName: {
                 href: function (params, dto) {
-                    return "#application/" + dto.ApplicationId + "/";
+                    return "#/application/" + dto.ApplicationId + "/";
                 },
                 text: function (value) {
                     return value;

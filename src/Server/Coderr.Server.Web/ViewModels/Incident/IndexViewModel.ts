@@ -13,7 +13,6 @@ module codeRR.Incident {
         private tableModel: IncidentTableViewModel;
 
         constructor(dto: any) {
-            console.log(dto);
         }
 
 
@@ -42,7 +41,10 @@ module codeRR.Incident {
         activate(ctx: Griffin.Yo.Spa.ViewModels.IActivationContext) {
             this.ctx = ctx;
             this.tableModel = new IncidentTableViewModel(ctx);
-            this.tableModel.load(this.ctx.routeData['applicationId']);
+            this.tableModel.load(this.ctx.routeData['applicationId'], null, function() {
+                ctx.resolve();    
+            });
+            
         }
 
         deactivate() {

@@ -8,7 +8,6 @@ var codeRR;
         var ApplicationService = codeRR.Applications.ApplicationService;
         var IndexViewModel = (function () {
             function IndexViewModel(dto) {
-                console.log(dto);
             }
             IndexViewModel.prototype.getTitle = function () {
                 var appId = this.ctx.routeData['applicationId'];
@@ -33,7 +32,9 @@ var codeRR;
             IndexViewModel.prototype.activate = function (ctx) {
                 this.ctx = ctx;
                 this.tableModel = new IncidentTableViewModel(ctx);
-                this.tableModel.load(this.ctx.routeData['applicationId']);
+                this.tableModel.load(this.ctx.routeData['applicationId'], null, function () {
+                    ctx.resolve();
+                });
             };
             IndexViewModel.prototype.deactivate = function () {
             };

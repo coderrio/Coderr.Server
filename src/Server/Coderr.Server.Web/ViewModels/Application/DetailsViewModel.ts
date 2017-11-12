@@ -35,7 +35,6 @@ module codeRR.Application {
             this.ctx = ctx;
             this.applicationId = ctx.routeData["applicationId"];
             var self = this;
-            var isRun2 = false;
             var firstIsRun = false;
             var chartResult: Core.Applications.Queries.GetApplicationOverviewResult = null;
             var chartRendering = (result: Core.Applications.Queries.GetApplicationOverviewResult) => {

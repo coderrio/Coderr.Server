@@ -1284,6 +1284,9 @@ var Griffin;
                 }
                 ViewRenderer.prototype.renderElement = function (element, data, directives) {
                     if (directives === void 0) { directives = {}; }
+                    if (element instanceof SVGSVGElement) {
+                        return;
+                    }
                     var elementName = this.getName(element);
                     if (elementName) {
                         this.log('renderElement', this.getName(element));

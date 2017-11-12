@@ -25,7 +25,6 @@ var codeRR;
                 this.ctx = ctx;
                 this.applicationId = ctx.routeData["applicationId"];
                 var self = this;
-                var isRun2 = false;
                 var firstIsRun = false;
                 var chartResult = null;
                 var chartRendering = function (result) {
