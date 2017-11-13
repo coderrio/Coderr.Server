@@ -28,8 +28,8 @@ obj/
 _ReSharper*/
 [Tt]est[Rr]esult*
 */packages/*/
-src/*/.vs/*
-src/*/packages/*/
+**/.vs/*
+**/packages/*/
 src/Tools/MarkdownToNamespaceDoc/packages/*/
 src/Tools/TsGenerator/.vs/*
 src/Help/*

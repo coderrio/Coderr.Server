@@ -9,7 +9,7 @@ namespace codeRR.Server.Web.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        private IQueryBus _queryBus;
+        private readonly IQueryBus _queryBus;
 
         public HomeController(IQueryBus queryBus1)
         {
@@ -22,10 +22,10 @@ namespace codeRR.Server.Web.Controllers
             if (apps.Length == 0)
                 return RedirectToAction("Application", "Wizard");
 
+            if (!Request.Path.EndsWith("/"))
+                return Redirect(Request.Path + "/");
+
             return View();
         }
-
- 
-
     }
 }
