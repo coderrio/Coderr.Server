@@ -97,11 +97,11 @@
     <Reference Include="Coderr.Client.AspNet.Mvc5, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Coderr.Client.AspNet.Mvc5.1.0.5\lib\net451\Coderr.Client.AspNet.Mvc5.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetCqs, Version=2.0.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetCqs.2.0.4\lib\net452\DotNetCqs.dll</HintPath>
+    <Reference Include="DotNetCqs, Version=2.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetCqs.2.0.5\lib\net452\DotNetCqs.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetCqs.Queues.AdoNet, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetCqs.Queues.AdoNet.1.0.2\lib\net452\DotNetCqs.Queues.AdoNet.dll</HintPath>
+    <Reference Include="DotNetCqs.Queues.AdoNet, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetCqs.Queues.AdoNet.1.0.3\lib\net452\DotNetCqs.Queues.AdoNet.dll</HintPath>
     </Reference>
     <Reference Include="Griffin.Container, Version=1.1.8.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Griffin.Container.1.1.8\lib\net452\Griffin.Container.dll</HintPath>
