@@ -301,6 +301,7 @@ namespace codeRR.Server.Web.Controllers
         }
 
 
+        [Authorize]
         public async Task<ActionResult> UpdateSession(string returnUrl = null)
         {
             var getApps = new GetApplicationList { AccountId = User.GetAccountId() };

@@ -7,6 +7,9 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/css/tether.min.css" />
     <link rel="stylesheet" href="@Url.Content("~/Content/bootstrap.min.css")">
+    <script>
+        window.API_URL = '@ApiUrl';
+    </script>
     @Styles.Render("~/Content/css")
     @RenderSection("css", false)
     <style>
@@ -23,6 +26,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/app")
+    <script src="@Url.Content("~/Scripts/Promise.js")"></script>
+    <script src="@Url.Content("~/Scripts/CqsClient.js")"></script>
     @RenderSection("scripts", false)
 </body>
 </html>

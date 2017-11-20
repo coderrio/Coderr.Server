@@ -22,7 +22,11 @@ namespace codeRR.Server.SqlServer.Core.Applications.Queries
             {
                 cmd.CommandText = "SELECT Id FROM Applications WHERE AppKey = @appKey";
                 cmd.AddParameter("appKey", query.ApplicationKey);
-                return new GetApplicationIdByKeyResult {Id = (int) await cmd.ExecuteScalarAsync()};
+                var result = await cmd.ExecuteScalarAsync();
+                if (result == null)
+                    return null;
+
+                return new GetApplicationIdByKeyResult {Id = (int)result };
             }
         }
     }

@@ -22,8 +22,8 @@
             {
                 <p>It's time to create an application. "Application", in codeRR language, means an error reporting entity. </p>
                 <p>
-                    If you have a client/server based product named "l33tApp" you would typically create two applications in codeRR: 
-                        
+                    If you have a client/server based product named "l33tApp" you would typically create two applications in codeRR:
+
                 </p>
                 <ul>
                     <li>l33tApp Client</li>
@@ -35,16 +35,90 @@
                     Specify the name of your first application, you'll be able to add more applications later.
                 </p>
             }
-            <form method="post">
+            <form method="post" id="createMyAppForm">
                 <div class="form-group">
                     <input type="text" name="Name" placeholder="Application name" class="form-control" />
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">Create</button>
-                    <a href="http://discuss.coderrapp.com" target="_self">Help</a> | 
+                    <a href="http://discuss.coderrapp.com" target="_self">Help</a> |
                     <a href="@Url.Content("~/")#/">Exit wizard</a>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+@section scripts
+{
+    <script>
+        function createMyApplication(name, callback) {
+            var hostType = 'DesktopApplication';
+
+            var client = new Griffin.Net.HttpClient();
+            client.get(window.API_URL + '/guid')
+                .done(function (response) {
+                    var appKey = response.body;
+                    var cmd = new codeRR.Core.Applications.Commands.CreateApplication(name, hostType);
+                    cmd.ApplicationKey = appKey;
+                    Griffin.Cqs.CqsClient.command(cmd)
+                        .done(function () {
+                            callback(appKey);
+                        })
+                        .fail(function (rejection) {
+                            console.log(rejection.message);
+                        });
+                });
+        }
+
+        function checkForApplication(appKey, foundCallback, notFoundCallback) {
+            var query = new codeRR.Core.Applications.Queries.GetApplicationIdByKey(appKey);
+            Griffin.Cqs.CqsClient.query(query)
+                .done(function (result) {
+                    console.log(result);
+                    if (result != null) {
+                        foundCallback(result);
+                    } else {
+                        notFoundCallback();
+                    }
+
+                    //$('#appName').val('');
+                    //var appUrl = '#/application/' + result.Id + '/';
+                    //window.location = window.WEB_SITE + '/account/UpdateSession?returnUrl=' + encodeURIComponent(window.WEB_ROOT + appUrl);
+                });
+        }
+
+        var timer = null;
+        var attemptsLeft = 5;
+        $('#createMyAppForm').submit(function(e) {
+            e.preventDefault();
+            var name = $('input[name="Name"]', this).val();
+            createMyApplication(name,
+                function (appKey) {
+                    timer = setInterval(function() {
+
+                            checkForApplication(appKey,
+                                function(app) {
+                                    clearInterval(timer);
+                                    var nextPage = '@Url.Content("~/#/application/")' + app.Id + '/';
+                                    if (@ViewBag.FirstApplication.ToString().ToLower() == false) {
+                                        nextPage = '@Url.Action("Packages")?applicationId=' + app.Id;
+                                    }
+                                    window.location = '@Url.Content("~/account/UpdateSession")?returnUrl=' +
+                                        encodeURIComponent(nextPage);
+                                },
+                                function() {
+                                    attemptsLeft--;
+                                    if (attemptsLeft <= 0) {
+                                        clearInterval(timer);
+                                        humane.log('Failed to create application :(');
+                                    }
+                                });
+                        },
+                        500);
+
+                });
+        });
+
+    </script>
+}
