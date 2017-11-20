@@ -7,13 +7,13 @@ var codeRR;
     (function (Applications) {
         var Yo = Griffin.Yo;
         var CqsClient = Griffin.Cqs.CqsClient;
-        var MenuItem = (function () {
+        var MenuItem = /** @class */ (function () {
             function MenuItem() {
             }
             return MenuItem;
         }());
         Applications.MenuItem = MenuItem;
-        var Navigation = (function () {
+        var Navigation = /** @class */ (function () {
             function Navigation() {
             }
             Navigation.breadcrumbs = function (items) {
@@ -54,7 +54,7 @@ var codeRR;
             return Navigation;
         }());
         Applications.Navigation = Navigation;
-        var ApplicationService = (function () {
+        var ApplicationService = /** @class */ (function () {
             function ApplicationService() {
             }
             //private static cache: ICache = new WindowCache();
@@ -78,7 +78,7 @@ var codeRR;
             return ApplicationService;
         }());
         Applications.ApplicationService = ApplicationService;
-        var WindowCache = (function () {
+        var WindowCache = /** @class */ (function () {
             function WindowCache() {
                 this.id = WindowCache.cacheCounter++;
                 //window["codeRRCache"+this.id] = 
@@ -92,9 +92,9 @@ var codeRR;
             WindowCache.prototype.exists = function (key) {
                 return this.items.hasOwnProperty(key);
             };
+            WindowCache.cacheCounter = 0;
             return WindowCache;
         }());
-        WindowCache.cacheCounter = 0;
         Applications.WindowCache = WindowCache;
     })(Applications = codeRR.Applications || (codeRR.Applications = {}));
 })(codeRR || (codeRR = {}));

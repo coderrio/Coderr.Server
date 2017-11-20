@@ -4,7 +4,7 @@ var Griffin;
 (function (Griffin) {
     var Cqs;
     (function (Cqs) {
-        var CqsClient = (function () {
+        var CqsClient = /** @class */ (function () {
             function CqsClient() {
             }
             CqsClient.query = function (query) {

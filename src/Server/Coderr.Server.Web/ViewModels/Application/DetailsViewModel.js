@@ -6,7 +6,7 @@ var codeRR;
     (function (Application) {
         var CqsClient = Griffin.Cqs.CqsClient;
         var Yo = Griffin.Yo;
-        var DetailsViewModel = (function () {
+        var DetailsViewModel = /** @class */ (function () {
             function DetailsViewModel() {
                 this.chartDays = 30;
                 this.firstRender = true;

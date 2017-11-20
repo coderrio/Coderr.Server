@@ -2,7 +2,7 @@ var codeRR;
 (function (codeRR) {
     var Account;
     (function (Account) {
-        var WelcomeViewModel = (function () {
+        var WelcomeViewModel = /** @class */ (function () {
             function WelcomeViewModel() {
             }
             WelcomeViewModel.prototype.getTitle = function () { return "Welcome"; };

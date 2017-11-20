@@ -4,7 +4,7 @@ var codeRR;
 (function (codeRR) {
     var Application;
     (function (Application) {
-        var InstallationViewModel = (function () {
+        var InstallationViewModel = /** @class */ (function () {
             function InstallationViewModel() {
             }
             InstallationViewModel.prototype.getTitle = function () { return "Installation instructions"; };

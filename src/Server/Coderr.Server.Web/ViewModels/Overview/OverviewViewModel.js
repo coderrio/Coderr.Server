@@ -10,7 +10,7 @@ var codeRR;
         var Pager = Griffin.WebApp.Pager;
         var FindIncidents = codeRR.Core.Incidents.Queries.FindIncidents;
         var GetApplicationList = codeRR.Core.Applications.Queries.GetApplicationList;
-        var OverviewViewModel = (function () {
+        var OverviewViewModel = /** @class */ (function () {
             function OverviewViewModel() {
                 this._sortType = IncidentOrder.Newest;
                 this._sortAscending = false;
@@ -309,10 +309,10 @@ var codeRR;
                 }
                 this.chart.setData(data, true);
             };
+            OverviewViewModel.UP = "fa-chevron-up";
+            OverviewViewModel.DOWN = "fa-chevron-down";
             return OverviewViewModel;
         }());
-        OverviewViewModel.UP = "fa-chevron-up";
-        OverviewViewModel.DOWN = "fa-chevron-down";
         Overview.OverviewViewModel = OverviewViewModel;
     })(Overview = codeRR.Overview || (codeRR.Overview = {}));
 })(codeRR || (codeRR = {}));

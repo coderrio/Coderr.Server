@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -71,10 +72,10 @@ namespace codeRR.Server.Web.Services
                     registrar.RegisterService(x => CreateQueueListener(x, "Feedback", "Messaging"), Lifetime.Singleton);
                     registrar.RegisterService<IMessageQueueProvider>(x =>
                     {
-                        return new AdoNetMessageQueueProvider(
-                            () => DbConnectionFactory.Open(Startup.ConnectionStringName, true),
-                            new MessagingSerializer(typeof(AdoNetMessageDto))
-                        );
+                        Func<IDbConnection> dbFactory = () => DbConnectionFactory.Open(Startup.ConnectionStringName, true);
+                        var serializer = new MessagingSerializer(typeof(AdoNetMessageDto));
+                        var provider = new AdoNetMessageQueueProvider(dbFactory, serializer);
+                        return provider;
                     }, Lifetime.Singleton);
 
                     // let us guard it since it runs events in the background.
@@ -82,7 +83,8 @@ namespace codeRR.Server.Web.Services
                     //service.AddService(typeof(IApplicationService));
                 }, Startup.ConfigurationStore);
 
-                Container.ResolveAll<QueueListener>()
+                var listeners = Container.ResolveAll<QueueListener>().ToArray();
+                listeners
                     .ForEach(x => x
                         .RunAsync(_shutdownToken.Token)
                         .ContinueWith(OnStopped)
@@ -175,6 +177,7 @@ namespace codeRR.Server.Web.Services
             {
                 RetryAttempts = new[]
                     {TimeSpan.FromMilliseconds(500), TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2)},
+                MessageInvokerFactory = scope => new MessageInvoker(scope),
                 Logger = Logga
             };
             listener.PoisonMessageDetected += (sender, args) =>

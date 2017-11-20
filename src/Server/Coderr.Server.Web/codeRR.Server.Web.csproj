@@ -45,7 +45,7 @@
     <OutputPath>bin\</OutputPath>
   </PropertyGroup>
   <PropertyGroup>
-    <TypeScriptToolsVersion>2.3</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>2.5</TypeScriptToolsVersion>
     <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
     <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
     <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
@@ -91,17 +91,17 @@
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Coderr.Client, Version=1.0.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Coderr.Client.1.0.6\lib\net451\Coderr.Client.dll</HintPath>
+    <Reference Include="Coderr.Client, Version=1.0.12.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Coderr.Client.1.0.12\lib\net451\Coderr.Client.dll</HintPath>
     </Reference>
     <Reference Include="Coderr.Client.AspNet.Mvc5, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Coderr.Client.AspNet.Mvc5.1.0.5\lib\net451\Coderr.Client.AspNet.Mvc5.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetCqs, Version=2.0.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetCqs.2.0.5\lib\net452\DotNetCqs.dll</HintPath>
+    <Reference Include="DotNetCqs, Version=2.0.7.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetCqs.2.0.7\lib\net452\DotNetCqs.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetCqs.Queues.AdoNet, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetCqs.Queues.AdoNet.1.0.3\lib\net452\DotNetCqs.Queues.AdoNet.dll</HintPath>
+    <Reference Include="DotNetCqs.Queues.AdoNet, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetCqs.Queues.AdoNet.1.0.4\lib\net452\DotNetCqs.Queues.AdoNet.dll</HintPath>
     </Reference>
     <Reference Include="Griffin.Container, Version=1.1.8.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Griffin.Container.1.1.8\lib\net452\Griffin.Container.dll</HintPath>

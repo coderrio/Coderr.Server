@@ -35,7 +35,7 @@
                     Specify the name of your first application, you'll be able to add more applications later.
                 </p>
             }
-            <form method="post" id="createMyAppForm">
+            <form id="createMyAppForm">
                 <div class="form-group">
                     <input type="text" name="Name" placeholder="Application name" class="form-control" />
                 </div>
@@ -75,7 +75,6 @@
             var query = new codeRR.Core.Applications.Queries.GetApplicationIdByKey(appKey);
             Griffin.Cqs.CqsClient.query(query)
                 .done(function (result) {
-                    console.log(result);
                     if (result != null) {
                         foundCallback(result);
                     } else {
@@ -98,17 +97,17 @@
                     timer = setInterval(function() {
 
                             checkForApplication(appKey,
-                                function(app) {
-                                    clearInterval(timer);
+                                function (app) {
                                     var nextPage = '@Url.Content("~/#/application/")' + app.Id + '/';
-                                    if (@ViewBag.FirstApplication.ToString().ToLower() == false) {
+                                    if (@ViewBag.FirstApplication.ToString().ToLower()) {
                                         nextPage = '@Url.Action("Packages")?applicationId=' + app.Id;
                                     }
                                     window.location = '@Url.Content("~/account/UpdateSession")?returnUrl=' +
                                         encodeURIComponent(nextPage);
                                 },
                                 function() {
-                                    attemptsLeft--;
+                                    attemptsLeft = attemptsLeft - 1;
+                                    console.log(attemptsLeft);
                                     if (attemptsLeft <= 0) {
                                         clearInterval(timer);
                                         humane.log('Failed to create application :(');
