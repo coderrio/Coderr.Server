@@ -75,15 +75,11 @@
             var query = new codeRR.Core.Applications.Queries.GetApplicationIdByKey(appKey);
             Griffin.Cqs.CqsClient.query(query)
                 .done(function (result) {
-                    if (result != null) {
-                        foundCallback(result);
-                    } else {
+                    if (!result) {
                         notFoundCallback();
+                    } else {
+                        foundCallback(result);
                     }
-
-                    //$('#appName').val('');
-                    //var appUrl = '#/application/' + result.Id + '/';
-                    //window.location = window.WEB_SITE + '/account/UpdateSession?returnUrl=' + encodeURIComponent(window.WEB_ROOT + appUrl);
                 });
         }
 

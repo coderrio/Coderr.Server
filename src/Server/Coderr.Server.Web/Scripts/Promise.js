@@ -120,7 +120,7 @@ var P;
 
         The Promise<Value> instance is a proxy to the Deferred<Value> instance.
     */
-    var PromiseI = /** @class */ (function () {
+    var PromiseI = (function () {
         function PromiseI(deferred) {
             this.deferred = deferred;
         }
@@ -159,7 +159,7 @@ var P;
     /**
         Implementation of a deferred.
     */
-    var DeferredI = /** @class */ (function () {
+    var DeferredI = (function () {
         function DeferredI() {
             this._resolved = function (_) { };
             this._rejected = function (_) { };
@@ -281,7 +281,7 @@ var P;
         return new IteratorI(f);
     }
     P.iterator = iterator;
-    var IteratorI = /** @class */ (function () {
+    var IteratorI = (function () {
         function IteratorI(f) {
             this.f = f;
             this.current = undefined;

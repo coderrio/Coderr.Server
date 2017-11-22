@@ -6,7 +6,7 @@ var codeRR;
     (function (Application) {
         var ApplicationVersions = codeRR.Modules.Versions.Queries.GetApplicationVersions;
         var CqsClient = Griffin.Cqs.CqsClient;
-        var VersionsViewModel = /** @class */ (function () {
+        var VersionsViewModel = (function () {
             function VersionsViewModel() {
             }
             VersionsViewModel.prototype.getTitle = function () { return "Application versions"; };

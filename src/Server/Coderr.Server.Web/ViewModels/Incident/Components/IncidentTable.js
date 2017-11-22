@@ -3,7 +3,7 @@ var CqsClient = Griffin.Cqs.CqsClient;
 var Yo = Griffin.Yo;
 var Pager = Griffin.WebApp.Pager;
 var IncidentOrder = codeRR.Core.Incidents.IncidentOrder;
-var IncidentTableViewModel = /** @class */ (function () {
+var IncidentTableViewModel = (function () {
     function IncidentTableViewModel(ctx) {
         this.sortType = IncidentOrder.Newest;
         this.incidentType = "new";
@@ -204,8 +204,8 @@ var IncidentTableViewModel = /** @class */ (function () {
             window.scrollTo(0, yPos);
         });
     };
-    IncidentTableViewModel.UP = "fa fa-chevron-up";
-    IncidentTableViewModel.DOWN = "fa fa-chevron-down";
     return IncidentTableViewModel;
 }());
+IncidentTableViewModel.UP = "fa fa-chevron-up";
+IncidentTableViewModel.DOWN = "fa fa-chevron-down";
 //# sourceMappingURL=IncidentTable.js.map

@@ -10,7 +10,7 @@ var codeRR;
         var Pager = Griffin.WebApp.Pager;
         var ReOpenIncident = codeRR.Core.Incidents.Commands.ReOpenIncident;
         var AssignIncident = codeRR.Core.Incidents.Commands.AssignIncident;
-        var IncidentViewModel = /** @class */ (function () {
+        var IncidentViewModel = (function () {
             function IncidentViewModel(appScope) {
                 this.isIgnored = false;
                 this.isAssigned = false;
@@ -247,10 +247,10 @@ var codeRR;
                     _this.chart.setData(data, true);
                 });
             };
-            IncidentViewModel.UP = "fa-chevron-up";
-            IncidentViewModel.DOWN = "fa-chevron-down";
             return IncidentViewModel;
         }());
+        IncidentViewModel.UP = "fa-chevron-up";
+        IncidentViewModel.DOWN = "fa-chevron-down";
         Incident.IncidentViewModel = IncidentViewModel;
     })(Incident = codeRR.Incident || (codeRR.Incident = {}));
 })(codeRR || (codeRR = {}));

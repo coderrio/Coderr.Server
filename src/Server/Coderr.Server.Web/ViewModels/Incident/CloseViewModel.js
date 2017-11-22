@@ -9,7 +9,7 @@ var codeRR;
         var ApplicationService = codeRR.Applications.ApplicationService;
         var GetIncident = codeRR.Core.Incidents.Queries.GetIncident;
         var CloseIncident = codeRR.Core.Incidents.Commands.CloseIncident;
-        var CloseViewModel = /** @class */ (function () {
+        var CloseViewModel = (function () {
             function CloseViewModel() {
             }
             CloseViewModel.prototype.getTitle = function () {

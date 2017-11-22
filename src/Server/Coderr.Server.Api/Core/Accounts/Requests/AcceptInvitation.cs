@@ -7,6 +7,7 @@ namespace codeRR.Server.Api.Core.Accounts.Requests
     /// <summary>
     ///     You must create an account before accepting the invitation
     /// </summary>
+    [Command]
     public class AcceptInvitation
     {
         /// <summary>

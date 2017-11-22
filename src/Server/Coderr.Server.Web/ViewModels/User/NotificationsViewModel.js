@@ -7,7 +7,7 @@ var codeRR;
         var cqs = Griffin.Cqs.CqsClient;
         var GetUserSettings = codeRR.Core.Users.Queries.GetUserSettings;
         var CqsClient = Griffin.Cqs.CqsClient;
-        var NotificationsViewModel = /** @class */ (function () {
+        var NotificationsViewModel = (function () {
             function NotificationsViewModel() {
             }
             NotificationsViewModel.prototype.saveSettings_click = function (e) {

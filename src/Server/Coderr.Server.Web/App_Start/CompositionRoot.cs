@@ -30,10 +30,13 @@ namespace codeRR.Server.Web
         public void Build(Action<ContainerRegistrar> action, ConfigurationStore configStore)
         {
             var builder = new ContainerRegistrar();
+
+            //need to invoke first to allow plugins to override default behaviour
+            action(builder);
+
             builder.RegisterComponents(Lifetime.Scoped, Assembly.GetExecutingAssembly());
             builder.RegisterService(CreateConnection, Lifetime.Scoped);
             builder.RegisterService(CreateTaskInvoker, Lifetime.Singleton);
-            action(builder);
 
             RegisterBuiltInComponents(builder);
             RegisterQueues(builder);

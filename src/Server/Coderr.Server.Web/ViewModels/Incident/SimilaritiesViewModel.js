@@ -10,7 +10,7 @@ var codeRR;
         var CqsClient = Griffin.Cqs.CqsClient;
         var ViewRenderer = Griffin.Yo.Views.ViewRenderer;
         var Similarities = codeRR.Modules.ContextData;
-        var SimilaritiesViewModel = /** @class */ (function () {
+        var SimilaritiesViewModel = (function () {
             function SimilaritiesViewModel() {
             }
             SimilaritiesViewModel.prototype.activate = function (context) {
@@ -107,9 +107,9 @@ var codeRR;
                     }
                 });
             };
-            SimilaritiesViewModel.VIEW_NAME = "SimilaritiesView";
             return SimilaritiesViewModel;
         }());
+        SimilaritiesViewModel.VIEW_NAME = "SimilaritiesView";
         Incident.SimilaritiesViewModel = SimilaritiesViewModel;
     })(Incident = codeRR.Incident || (codeRR.Incident = {}));
 })(codeRR || (codeRR = {}));

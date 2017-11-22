@@ -12,6 +12,7 @@ namespace codeRR.Server.Api.Core.Accounts.Requests
     ///         Done when the user knows the current one but want to switch. Otherwise use <see cref="RequestPasswordReset" />.
     ///     </para>
     /// </remarks>
+    [Command]
     public class ChangePassword
     {
         /// <summary>

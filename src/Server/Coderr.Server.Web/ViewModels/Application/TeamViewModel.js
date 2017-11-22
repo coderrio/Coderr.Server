@@ -5,7 +5,7 @@ var codeRR;
     (function (Application) {
         var CqsClient = Griffin.Cqs.CqsClient;
         var RemoveTeamMember = codeRR.Core.Applications.Commands.RemoveTeamMember;
-        var TeamViewModel = /** @class */ (function () {
+        var TeamViewModel = (function () {
             function TeamViewModel() {
             }
             TeamViewModel.prototype.getTitle = function () {

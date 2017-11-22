@@ -8,7 +8,7 @@ var codeRR;
     (function (Report) {
         var CqsClient = Griffin.Cqs.CqsClient;
         var ApplicationService = codeRR.Applications.ApplicationService;
-        var ReportViewModel = /** @class */ (function () {
+        var ReportViewModel = (function () {
             function ReportViewModel() {
             }
             ReportViewModel.prototype.renderView = function () {

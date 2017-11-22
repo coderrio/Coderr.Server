@@ -16,7 +16,7 @@ module codeRR.Overview {
         private static DOWN = "fa-chevron-down";
         private _sortType: IncidentOrder = IncidentOrder.Newest;
         private _sortAscending = false;
-        private _incidentType = "active";
+        private _incidentType = "new";
         private _ctx: Griffin.Yo.Spa.ViewModels.IActivationContext;
         private chartOptions: morris.ILineOptions;
         private chart: morris.GridChart;

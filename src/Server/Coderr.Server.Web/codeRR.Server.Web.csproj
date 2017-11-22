@@ -45,7 +45,7 @@
     <OutputPath>bin\</OutputPath>
   </PropertyGroup>
   <PropertyGroup>
-    <TypeScriptToolsVersion>2.5</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>2.3</TypeScriptToolsVersion>
     <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
     <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
     <TypeScriptJSXEmit>None</TypeScriptJSXEmit>

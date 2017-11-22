@@ -1,14 +1,14 @@
 var codeRR;
 (function (codeRR) {
     ;
-    var Dataset = /** @class */ (function () {
+    var Dataset = (function () {
         function Dataset() {
         }
         return Dataset;
     }());
     codeRR.Dataset = Dataset;
     ;
-    var LineData = /** @class */ (function () {
+    var LineData = (function () {
         function LineData() {
         }
         return LineData;

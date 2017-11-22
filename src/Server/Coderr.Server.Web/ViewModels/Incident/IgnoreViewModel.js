@@ -9,7 +9,7 @@ var codeRR;
         var ApplicationService = codeRR.Applications.ApplicationService;
         var GetIncident = codeRR.Core.Incidents.Queries.GetIncident;
         var IgnoreIncident = codeRR.Core.Incidents.Commands.IgnoreIncident;
-        var IgnoreViewModel = /** @class */ (function () {
+        var IgnoreViewModel = (function () {
             function IgnoreViewModel() {
             }
             IgnoreViewModel.prototype.getTitle = function () {

@@ -2,7 +2,7 @@ var codeRR;
 (function (codeRR) {
     var Account;
     (function (Account) {
-        var AcceptedViewModel = /** @class */ (function () {
+        var AcceptedViewModel = (function () {
             function AcceptedViewModel() {
             }
             AcceptedViewModel.prototype.getTitle = function () { return "Invitation accepted"; };
