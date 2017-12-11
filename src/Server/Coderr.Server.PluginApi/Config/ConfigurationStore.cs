@@ -1,10 +1,15 @@
 ﻿using System;
 
-namespace codeRR.Server.Infrastructure.Configuration
+namespace Coderr.Server.PluginApi.Config
 {
     /// <summary>
-    ///     Defines how settings should be persisted and loaded.
+    ///     Used to modify config settings.
     /// </summary>
+    /// <remarks>
+    ///     <para>
+    ///         Use dependency injection (<see cref="IConfiguration{T}" />) to access the configuration.
+    ///     </para>
+    /// </remarks>
     public abstract class ConfigurationStore
     {
         /// <summary>

@@ -29,13 +29,13 @@ namespace codeRR.Server.Infrastructure.Configuration
                 throw new ArgumentException($"Failed to find key '{name}' in dictionary.");
             }
 
-            if (bool.TryParse(value, out var boolValue))
-                return boolValue;
-
-            if (defaultValue != null)
+            if (defaultValue != null && value == null)
                 return defaultValue.Value;
 
-            throw new FormatException($"Failed to convert '{name}' from value '{value}' to a boolean.");
+            if (!bool.TryParse(value, out var boolValue))
+                throw new FormatException($"Failed to convert '{name}' from value '{value}' to a boolean.");
+
+            return boolValue;
         }
 
         /// <summary>
@@ -59,14 +59,13 @@ namespace codeRR.Server.Infrastructure.Configuration
                 throw new ArgumentException($"Failed to find key '{name}' in dictionary.");
             }
 
-
-            if (int.TryParse(value, out var intValue))
-                return intValue;
-
-            if (defaultValue != null)
+            if (value == null && defaultValue != null)
                 return defaultValue.Value;
 
-            throw new FormatException($"Failed to convert '{name}' from value '{value}' to an integer.");
+            if (!int.TryParse(value, out var intValue))
+                throw new FormatException($"Failed to convert '{name}' from value '{value}' to an integer.");
+
+            return intValue;
         }
 
         /// <summary>

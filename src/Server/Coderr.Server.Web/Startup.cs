@@ -25,6 +25,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using codeRR.Client;
+using Coderr.Server.PluginApi.Config;
 using Owin;
 
 [assembly: OwinStartup(typeof(Startup))]
@@ -133,9 +134,9 @@ namespace codeRR.Server.Web
                     Err.Configuration.ContextProviders.Add(new CustomerInfoProvider(
                         errorTrackingConfig.ContactEmail,
                         errorTrackingConfig.InstallationId));
-                //Err.Configuration.Credentials(uri,
-                //    "2b3002d3ab3e4a57ad45cff2210221ab",
-                //    "f381a5c9797f49bd8a3238b892d02806");
+                Err.Configuration.Credentials(uri,
+                    "2b3002d3ab3e4a57ad45cff2210221ab",
+                    "f381a5c9797f49bd8a3238b892d02806");
                 GlobalConfiguration.Configuration.Services.Add(typeof(IExceptionLogger), new WebApiLogger());
             }
             else

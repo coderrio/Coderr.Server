@@ -10,6 +10,8 @@ using codeRR.Server.Infrastructure.Configuration;
 using codeRR.Server.ReportAnalyzer;
 using codeRR.Server.SqlServer.Core.Users;
 using codeRR.Server.Web.IoC;
+using codeRR.Server.Web.Services;
+using Coderr.Server.PluginApi.Config;
 using Griffin.Container;
 using Griffin.Container.Mvc5;
 using Griffin.Data;
@@ -17,11 +19,6 @@ using log4net;
 
 namespace codeRR.Server.Web
 {
-    public interface IConfiguration<out TConfigType>
-    {
-        TConfigType Value { get; }
-    }
-
     public class CompositionRoot
     {
         public static IContainer Container;
@@ -31,7 +28,7 @@ namespace codeRR.Server.Web
         {
             var builder = new ContainerRegistrar();
 
-            //need to invoke first to allow plugins to override default behaviour
+            //need to invoke first to allow plug-ins to override default behavior.
             action(builder);
 
             builder.RegisterComponents(Lifetime.Scoped, Assembly.GetExecutingAssembly());
@@ -45,6 +42,7 @@ namespace codeRR.Server.Web
             builder.RegisterService(x => x);
             builder.RegisterConcrete<AnalysisDbContext>();
             builder.RegisterInstance(configStore);
+            builder.RegisterType(typeof(IConfiguration<>), typeof(ConfigWrapper<>), Lifetime.Transient);
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
             builder.RegisterControllers(Assembly.GetExecutingAssembly());
 

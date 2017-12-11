@@ -2,6 +2,7 @@
 using codeRR.Server.App.Core.Reports.Config;
 using codeRR.Server.Infrastructure.Configuration;
 using codeRR.Server.Web.Areas.Admin.Models;
+using Coderr.Server.PluginApi.Config;
 using log4net;
 
 namespace codeRR.Server.Web.Areas.Admin.Controllers

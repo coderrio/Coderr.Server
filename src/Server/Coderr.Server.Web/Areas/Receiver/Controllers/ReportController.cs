@@ -11,6 +11,7 @@ using codeRR.Server.Infrastructure.Configuration;
 using codeRR.Server.ReportAnalyzer.Inbound;
 using codeRR.Server.Web.Areas.Receiver.Helpers;
 using codeRR.Server.Web.Areas.Receiver.Models;
+using Coderr.Server.PluginApi.Config;
 using DotNetCqs.Queues;
 using Griffin.Data;
 using log4net;

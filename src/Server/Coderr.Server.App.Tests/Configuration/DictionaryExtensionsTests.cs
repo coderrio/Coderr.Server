@@ -39,7 +39,7 @@ namespace codeRR.Server.App.Tests.Configuration
         {
             var dict = new Dictionary<string, string> {{"Usable", "Vlue"}};
 
-            Action actual = () => dict.GetBoolean("hey!");
+            Action actual = () => dict.GetBoolean("hey!", null);
 
             actual.ShouldThrow<ArgumentException>().Which.Message.Contains("hey!");
         }
@@ -74,7 +74,7 @@ namespace codeRR.Server.App.Tests.Configuration
         {
             var dict = new Dictionary<string, string> {{"Length", "Vlue"}};
 
-            Action actual = () => dict.GetInteger("hey!");
+            Action actual = () => dict.GetInteger("hey!", null);
 
             actual.ShouldThrow<ArgumentException>().Which.Message.Contains("hey!");
         }

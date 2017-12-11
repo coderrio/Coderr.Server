@@ -11,6 +11,7 @@ using codeRR.Server.App.Core.Reports.Config;
 using codeRR.Server.Infrastructure.Configuration;
 using codeRR.Server.ReportAnalyzer.Inbound.Models;
 using codeRR.Server.ReportAnalyzer.LibContracts;
+using Coderr.Server.PluginApi.Config;
 using DotNetCqs;
 using DotNetCqs.Queues;
 using Griffin.Data;

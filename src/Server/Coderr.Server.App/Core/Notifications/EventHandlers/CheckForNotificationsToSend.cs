@@ -4,6 +4,7 @@ using codeRR.Server.Api.Core.Incidents.Events;
 using codeRR.Server.App.Core.Notifications.Tasks;
 using codeRR.Server.App.Core.Users;
 using codeRR.Server.Infrastructure.Configuration;
+using Coderr.Server.PluginApi.Config;
 using DotNetCqs;
 using Griffin.Container;
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using Coderr.Server.PluginApi.Config;
 using Griffin.Data;
 
 namespace codeRR.Server.Infrastructure.Configuration.Database
@@ -51,8 +52,9 @@ namespace codeRR.Server.Infrastructure.Configuration.Database
                             items[name] = value;
                         }
 
+                        // all config classes should have defaults.
                         if (items.Count == 0)
-                            return default(T);
+                            return new T(); 
 
                         section.Load(items);
                     }

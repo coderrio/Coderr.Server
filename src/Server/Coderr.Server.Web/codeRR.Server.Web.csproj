@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.Net.Compilers.2.6.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.6.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
-  <Import Project="..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -77,6 +77,10 @@
       <Name>codeRR.Server.Infrastructure</Name>
       <Project>{A78A50DA-C9D7-47F2-8528-D7EE39D91924}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\Coderr.Server.PluginApi\Coderr.Server.PluginApi.csproj">
+      <Project>{47A845A0-FCC2-46F1-A553-0F7110BDDBEA}</Project>
+      <Name>Coderr.Server.PluginApi</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Coderr.Server.ReportAnalyzer\codeRR.Server.ReportAnalyzer.csproj">
       <Name>codeRR.Server.ReportAnalyzer</Name>
       <Project>{29FBF805-CAFD-426A-A576-9756D375BF18}</Project>
@@ -91,8 +95,8 @@
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Coderr.Client, Version=1.0.12.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Coderr.Client.1.0.12\lib\net451\Coderr.Client.dll</HintPath>
+    <Reference Include="Coderr.Client, Version=1.0.14.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Coderr.Client.1.0.14\lib\net452\Coderr.Client.dll</HintPath>
     </Reference>
     <Reference Include="Coderr.Client.AspNet.Mvc5, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Coderr.Client.AspNet.Mvc5.1.0.5\lib\net451\Coderr.Client.AspNet.Mvc5.dll</HintPath>
@@ -103,8 +107,8 @@
     <Reference Include="DotNetCqs.Queues.AdoNet, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetCqs.Queues.AdoNet.1.0.4\lib\net452\DotNetCqs.Queues.AdoNet.dll</HintPath>
     </Reference>
-    <Reference Include="Griffin.Container, Version=1.1.8.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Griffin.Container.1.1.8\lib\net452\Griffin.Container.dll</HintPath>
+    <Reference Include="Griffin.Container, Version=1.1.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Griffin.Container.1.1.9\lib\net452\Griffin.Container.dll</HintPath>
     </Reference>
     <Reference Include="Griffin.Container.Mvc5, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Griffin.Container.Mvc5.1.0.2\lib\net40\Griffin.Container.Mvc5.dll</HintPath>
@@ -232,6 +236,7 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\CompositionRoot.cs" />
+    <Compile Include="App_Start\Services\ConfigWrapper.cs" />
     <Compile Include="App_Start\Cqs\GriffinHandlerResolverAdapter.cs" />
     <Compile Include="App_Start\Cqs\JsonFormatter.cs" />
     <Compile Include="App_Start\Cqs\Metadata.cs" />
@@ -621,8 +626,8 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.6.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.6.0\build\Microsoft.Net.Compilers.props'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

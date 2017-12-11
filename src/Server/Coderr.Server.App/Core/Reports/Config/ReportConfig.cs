@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using codeRR.Server.Infrastructure.Configuration;
+using Coderr.Server.PluginApi.Config;
 
 namespace codeRR.Server.App.Core.Reports.Config
 {

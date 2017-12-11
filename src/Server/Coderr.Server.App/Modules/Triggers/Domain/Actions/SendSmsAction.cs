@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using codeRR.Server.App.Configuration;
 using codeRR.Server.Infrastructure.Configuration;
+using Coderr.Server.PluginApi.Config;
 using log4net;
 using Newtonsoft.Json;
 

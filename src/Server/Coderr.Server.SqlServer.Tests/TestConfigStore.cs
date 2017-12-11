@@ -1,4 +1,5 @@
 ﻿using codeRR.Server.Infrastructure.Configuration;
+using Coderr.Server.PluginApi.Config;
 
 namespace codeRR.Server.SqlServer.Tests
 {

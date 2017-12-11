@@ -7,7 +7,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="DotNetCqs" Version="2.0.7" />
-    <PackageReference Include="Griffin.Container" Version="1.1.8" />
+    <PackageReference Include="Griffin.Container" Version="1.1.9" />
     <PackageReference Include="Griffin.Framework" Version="2.0.0-alpha01" />
     <PackageReference Include="log4net" Version="2.0.8" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />

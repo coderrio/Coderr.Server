@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using codeRR.Server.Api.Core.Incidents.Queries;
 using Coderr.Server.PluginApi;
+using Coderr.Server.PluginApi.Incidents;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;

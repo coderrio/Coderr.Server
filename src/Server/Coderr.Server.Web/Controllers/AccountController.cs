@@ -17,6 +17,7 @@ using codeRR.Server.App.Core.Accounts;
 using codeRR.Server.Infrastructure.Configuration;
 using codeRR.Server.Infrastructure.Security;
 using codeRR.Server.Web.Models.Account;
+using Coderr.Server.PluginApi.Config;
 using DotNetCqs;
 using Griffin.Data;
 using log4net;

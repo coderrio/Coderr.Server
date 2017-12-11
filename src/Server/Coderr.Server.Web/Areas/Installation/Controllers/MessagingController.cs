@@ -2,6 +2,7 @@
 using codeRR.Server.App.Modules.Messaging.Commands;
 using codeRR.Server.Infrastructure.Configuration;
 using codeRR.Server.Web.Areas.Installation.Models;
+using Coderr.Server.PluginApi.Config;
 
 namespace codeRR.Server.Web.Areas.Installation.Controllers
 {

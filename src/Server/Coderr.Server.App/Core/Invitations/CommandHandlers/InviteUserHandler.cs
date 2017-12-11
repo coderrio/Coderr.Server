@@ -13,6 +13,7 @@ using codeRR.Server.App.Core.Applications;
 using codeRR.Server.App.Core.Users;
 using codeRR.Server.Infrastructure.Configuration;
 using codeRR.Server.Infrastructure.Security;
+using Coderr.Server.PluginApi.Config;
 using DotNetCqs;
 using DotNetCqs.DependencyInjection;
 using Griffin.Container;

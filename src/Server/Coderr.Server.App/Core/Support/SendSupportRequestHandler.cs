@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using codeRR.Server.Api.Core.Support;
 using codeRR.Server.App.Configuration;
 using codeRR.Server.Infrastructure.Configuration;
+using Coderr.Server.PluginApi.Config;
 using DotNetCqs;
 using Griffin.Container;
 

@@ -1,6 +1,7 @@
 using System;
 using codeRR.Server.App.Configuration;
 using codeRR.Server.Infrastructure.Configuration;
+using Coderr.Server.PluginApi.Config;
 
 namespace codeRR.Server.App.Tests
 {

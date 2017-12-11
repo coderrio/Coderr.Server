@@ -8,6 +8,7 @@ using codeRR.Server.Api.Core.Messaging.Commands;
 using codeRR.Server.App.Configuration;
 using codeRR.Server.App.Core.Notifications;
 using codeRR.Server.Infrastructure.Configuration;
+using Coderr.Server.PluginApi.Config;
 using DotNetCqs;
 using Griffin.Container;
 

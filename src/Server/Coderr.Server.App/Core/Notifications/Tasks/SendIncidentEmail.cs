@@ -6,6 +6,7 @@ using codeRR.Server.Api.Core.Messaging.Commands;
 using codeRR.Server.Api.Core.Reports;
 using codeRR.Server.App.Configuration;
 using codeRR.Server.Infrastructure.Configuration;
+using Coderr.Server.PluginApi.Config;
 using DotNetCqs;
 
 namespace codeRR.Server.App.Core.Notifications.Tasks

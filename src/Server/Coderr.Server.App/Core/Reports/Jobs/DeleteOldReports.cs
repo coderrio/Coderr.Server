@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using codeRR.Server.App.Core.Reports.Config;
 using codeRR.Server.Infrastructure.Configuration;
+using Coderr.Server.PluginApi.Config;
 using Griffin.ApplicationServices;
 using Griffin.Container;
 using Griffin.Data;
@@ -18,17 +19,17 @@ namespace codeRR.Server.App.Core.Reports.Jobs
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(DeleteOldReports));
         private readonly IAdoNetUnitOfWork _unitOfWork;
-        private ConfigurationStore _configStore;
+        private readonly IConfiguration<ReportConfig> _reportConfig;
 
         /// <summary>
         ///     Creates a new instance of <see cref="DeleteOldReports" />.
         /// </summary>
         /// <param name="unitOfWork">Used for SQL queries</param>
-        public DeleteOldReports(IAdoNetUnitOfWork unitOfWork, ConfigurationStore configStore)
+        public DeleteOldReports(IAdoNetUnitOfWork unitOfWork, IConfiguration<ReportConfig> reportConfig)
         {
             if (unitOfWork == null) throw new ArgumentNullException("unitOfWork");
             _unitOfWork = unitOfWork;
-            _configStore = configStore;
+            _reportConfig = reportConfig;
         }
 
         /// <summary>
@@ -36,7 +37,7 @@ namespace codeRR.Server.App.Core.Reports.Jobs
         /// </summary>
         public int MaxReportsPerIncident
         {
-            get { return _configStore.Load<ReportConfig>().MaxReportsPerIncident; }
+            get { return _reportConfig.Value.MaxReportsPerIncident; }
         }
 
         /// <summary>
@@ -46,8 +47,7 @@ namespace codeRR.Server.App.Core.Reports.Jobs
         {
             get
             {
-                var config = _configStore.Load<ReportConfig>();
-                return config != null ? config.RetentionDays : 90;
+                return _reportConfig.Value.RetentionDays;
             }
         }
 

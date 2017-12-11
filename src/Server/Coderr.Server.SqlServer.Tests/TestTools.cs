@@ -12,6 +12,7 @@ using codeRR.Server.SqlServer.Analysis;
 using codeRR.Server.SqlServer.Core.Accounts;
 using codeRR.Server.SqlServer.Core.Applications;
 using codeRR.Server.SqlServer.Core.Users;
+using Coderr.Server.PluginApi.Config;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 

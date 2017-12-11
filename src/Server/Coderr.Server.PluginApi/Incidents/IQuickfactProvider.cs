@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using codeRR.Server.Api.Core.Incidents.Queries;
 
-namespace Coderr.Server.PluginApi
+namespace Coderr.Server.PluginApi.Incidents
 {
     public interface IQuickfactProvider
     {

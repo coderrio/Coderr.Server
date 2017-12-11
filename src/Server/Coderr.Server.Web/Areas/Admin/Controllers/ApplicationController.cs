@@ -10,6 +10,7 @@ using codeRR.Server.App.Modules.Versions.Config;
 using codeRR.Server.Infrastructure.Configuration;
 using codeRR.Server.Web.Areas.Admin.Models.Applications;
 using codeRR.Server.Web.Controllers;
+using Coderr.Server.PluginApi.Config;
 using DotNetCqs;
 
 namespace codeRR.Server.Web.Areas.Admin.Controllers

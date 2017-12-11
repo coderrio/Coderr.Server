@@ -4,6 +4,7 @@ using codeRR.Server.App.Configuration;
 using codeRR.Server.Infrastructure;
 using codeRR.Server.Infrastructure.Configuration;
 using codeRR.Server.Web.Areas.Admin.Models;
+using Coderr.Server.PluginApi.Config;
 
 namespace codeRR.Server.Web.Areas.Admin.Controllers
 {

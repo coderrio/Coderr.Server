@@ -2,6 +2,7 @@
 using codeRR.Server.App.Modules.Tagging;
 using codeRR.Server.App.Modules.Versions.Config;
 using codeRR.Server.Infrastructure.Configuration;
+using Coderr.Server.PluginApi.Config;
 using Griffin.Container;
 
 namespace codeRR.Server.App.Modules.Versions.Events

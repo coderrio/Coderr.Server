@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using codeRR.Server.Infrastructure.Configuration;
+using Coderr.Server.PluginApi.Config;
 
 namespace codeRR.Server.App.Modules.Versions.Config
 {

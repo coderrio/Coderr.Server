@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using codeRR.Server.App.Core.Reports.Config;
 using codeRR.Server.Infrastructure.Configuration;
+using Coderr.Server.PluginApi.Config;
 using Griffin.ApplicationServices;
 using Griffin.Container;
 using Griffin.Data;

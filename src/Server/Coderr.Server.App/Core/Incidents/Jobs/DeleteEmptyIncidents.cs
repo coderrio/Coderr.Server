@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
+using codeRR.Server.App.Core.Reports.Config;
+using Coderr.Server.PluginApi.Config;
 using Griffin.ApplicationServices;
 using Griffin.Container;
 using Griffin.Data;
@@ -22,15 +24,17 @@ namespace codeRR.Server.App.Core.Incidents.Jobs
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(DeleteEmptyIncidents));
         private readonly IAdoNetUnitOfWork _unitOfWork;
+        private readonly IConfiguration<ReportConfig> _reportConfiguration;
 
         /// <summary>
         ///     Creates a new instance of <see cref="DeleteEmptyIncidents" />.
         /// </summary>
         /// <param name="unitOfWork">Used for SQL queries</param>
-        public DeleteEmptyIncidents(IAdoNetUnitOfWork unitOfWork)
+        public DeleteEmptyIncidents(IAdoNetUnitOfWork unitOfWork, IConfiguration<ReportConfig> reportConfiguration)
         {
             if (unitOfWork == null) throw new ArgumentNullException("unitOfWork");
             _unitOfWork = unitOfWork;
+            this._reportConfiguration = reportConfiguration;
         }
 
         /// <inheritdoc />
@@ -40,15 +44,13 @@ namespace codeRR.Server.App.Core.Incidents.Jobs
             {
                 cmd.CommandText =
                     $@"DELETE TOP(1000) Incidents 
-                        WHERE Id IN 
-                       (
-                            SELECT Incidents.Id
-                            FROM Incidents WITH(NOLOCK)
-                            LEFT JOIN ErrorReports WITH(NOLOCK) ON (ErrorReports.IncidentId = Incidents.Id)
-                            WHERE ErrorReports.Id IS NULL
-                        ) 
-                        AND State <> {(int)IncidentState.Ignored} OR LastReportAtUtc < @yesterday";
-                cmd.AddParameter("yesterday", DateTime.Today.AddDays(-1));
+                       WHERE LastReportAtUtc < @retentionDays";
+
+                // Wait until no reports have been received for the specified report save time
+                // and then make sure during another period that no new reports have been received.
+                var incidentRetention = _reportConfiguration.Value.RetentionDays * 2;
+
+                cmd.AddParameter("retentionDays", DateTime.Today.AddDays(-incidentRetention));
                 var rows = await cmd.ExecuteNonQueryAsync();
                 if (rows > 0)
                 {

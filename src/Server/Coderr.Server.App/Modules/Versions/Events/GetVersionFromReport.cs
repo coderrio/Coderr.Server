@@ -6,6 +6,7 @@ using codeRR.Server.Api.Core.Notifications;
 using codeRR.Server.App.Modules.Versions.Config;
 using codeRR.Server.Infrastructure.Configuration;
 using codeRR.Server.Infrastructure.Security;
+using Coderr.Server.PluginApi.Config;
 using DotNetCqs;
 using Griffin.Container;
 

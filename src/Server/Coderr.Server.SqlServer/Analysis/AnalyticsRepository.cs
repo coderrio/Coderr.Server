@@ -10,6 +10,7 @@ using codeRR.Server.ReportAnalyzer.Domain.Incidents;
 using codeRR.Server.ReportAnalyzer.Domain.Reports;
 using codeRR.Server.ReportAnalyzer.Scanners;
 using codeRR.Server.SqlServer.Tools;
+using Coderr.Server.PluginApi.Config;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
