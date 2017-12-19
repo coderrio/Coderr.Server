@@ -57,6 +57,11 @@ namespace codeRR.Server.Api.Core.Messaging
         public EmailAddress[] Recipients { get; set; }
 
         /// <summary>
+        /// Whom should replies be sent to.
+        /// </summary>
+        public EmailAddress ReplyTo { get; set; }
+
+        /// <summary>
         ///     Attachments and/or inline images.
         /// </summary>
         public IList<EmailResource> Resources { get; set; }

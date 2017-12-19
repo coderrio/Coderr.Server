@@ -2,9 +2,10 @@
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using codeRR.Server.Api.Core.Accounts.Queries;
 using codeRR.Server.Api.Core.Support;
 using codeRR.Server.App.Configuration;
-using codeRR.Server.Infrastructure.Configuration;
+using codeRR.Server.Infrastructure.Security;
 using Coderr.Server.PluginApi.Config;
 using DotNetCqs;
 using Griffin.Container;
@@ -39,6 +40,11 @@ namespace codeRR.Server.App.Core.Support
             var claim = context.Principal.FindFirst(ClaimTypes.Email);
             if (claim != null)
                 email = claim.Value;
+            else
+            {
+                var user = await context.QueryAsync(new GetAccountById(context.Principal.GetAccountId()));
+                email = user.Email;
+            }
 
             string installationId = null;
             if (email == null)

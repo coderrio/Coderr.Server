@@ -7,7 +7,7 @@ var codeRR;
     var Incident;
     (function (Incident) {
         var CqsClient = Griffin.Cqs.CqsClient;
-        var OriginsViewModel = (function () {
+        var OriginsViewModel = /** @class */ (function () {
             function OriginsViewModel() {
             }
             OriginsViewModel.prototype.getTitle = function () {

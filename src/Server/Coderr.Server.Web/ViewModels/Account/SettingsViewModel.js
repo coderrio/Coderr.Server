@@ -6,14 +6,14 @@ var codeRR;
         var CqsClient = Griffin.Cqs.CqsClient;
         var GetUserSettings = codeRR.Core.Users.Queries.GetUserSettings;
         var ChangePassword = codeRR.Core.Accounts.Requests.ChangePassword;
-        var AccountSettings = (function () {
+        var AccountSettings = /** @class */ (function () {
             function AccountSettings() {
                 this.notifyNewIncident = true;
             }
             return AccountSettings;
         }());
         Account.AccountSettings = AccountSettings;
-        var SettingsViewModel = (function () {
+        var SettingsViewModel = /** @class */ (function () {
             function SettingsViewModel() {
             }
             SettingsViewModel.load = function () {

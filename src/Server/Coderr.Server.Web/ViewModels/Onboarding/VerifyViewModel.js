@@ -4,7 +4,7 @@ var codeRR;
 (function (codeRR) {
     var Onboarding;
     (function (Onboarding) {
-        var VerifyViewModel = (function () {
+        var VerifyViewModel = /** @class */ (function () {
             function VerifyViewModel() {
             }
             VerifyViewModel.prototype.getTitle = function () { return "Onboarding"; };

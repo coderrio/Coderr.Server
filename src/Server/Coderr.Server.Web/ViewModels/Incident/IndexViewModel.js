@@ -6,7 +6,7 @@ var codeRR;
     var Incident;
     (function (Incident) {
         var ApplicationService = codeRR.Applications.ApplicationService;
-        var IndexViewModel = (function () {
+        var IndexViewModel = /** @class */ (function () {
             function IndexViewModel(dto) {
             }
             IndexViewModel.prototype.getTitle = function () {

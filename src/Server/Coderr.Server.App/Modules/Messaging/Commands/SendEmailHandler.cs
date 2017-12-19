@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Net;
 using System.Net.Mail;
 using System.Net.Mime;
@@ -7,7 +6,6 @@ using System.Threading.Tasks;
 using codeRR.Server.Api.Core.Accounts.Queries;
 using codeRR.Server.Api.Core.Messaging.Commands;
 using codeRR.Server.App.Configuration;
-using codeRR.Server.Infrastructure.Configuration;
 using codeRR.Server.Infrastructure.Net;
 using Coderr.Server.PluginApi.Config;
 using DotNetCqs;
@@ -38,10 +36,16 @@ namespace codeRR.Server.App.Modules.Messaging.Commands
                 From = new MailAddress(baseConfig.SupportEmail),
                 Subject = command.EmailMessage.Subject
             };
+            if (command.EmailMessage.ReplyTo != null)
+            {
+                var address = new MailAddress(command.EmailMessage.ReplyTo.Address,command.EmailMessage.ReplyTo.Name);
+                email.ReplyToList.Add(address);
+            }
+                
+
             foreach (var recipient in command.EmailMessage.Recipients)
             {
-                int accountId;
-                if (int.TryParse(recipient.Address, out accountId))
+                if (int.TryParse(recipient.Address, out var accountId))
                 {
                     var query = new GetAccountEmailById(accountId);
                     var emailAddress = await context.QueryAsync(query);
@@ -69,6 +73,7 @@ namespace codeRR.Server.App.Modules.Messaging.Commands
                 await resource.Content.CopyToAsync(linkedResource.ContentStream);
                 av.LinkedResources.Add(linkedResource);
             }
+
             email.AlternateViews.Add(av);
             await client.SendMailAsync(email);
         }

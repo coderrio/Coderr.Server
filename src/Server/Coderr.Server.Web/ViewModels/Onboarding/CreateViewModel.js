@@ -5,7 +5,7 @@ var codeRR;
     (function (Onboarding) {
         var GetApplicationList = codeRR.Core.Applications.Queries.GetApplicationList;
         var CreateApplication = codeRR.Core.Applications.Commands.CreateApplication;
-        var CreateViewModel = (function () {
+        var CreateViewModel = /** @class */ (function () {
             function CreateViewModel() {
             }
             CreateViewModel.prototype.getTitle = function () { return "Onboarding"; };

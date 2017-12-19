@@ -3,7 +3,7 @@ var Griffin;
     /**
      * The main mother of all editors.
      */
-    var Editor = (function () {
+    var Editor = /** @class */ (function () {
         /**
          * Create a new editor
          * @param elementOrId either an HTML id (without hash) or a HTMLTextAreaElement.
@@ -235,7 +235,7 @@ var Griffin;
         return Editor;
     }());
     Griffin.Editor = Editor;
-    var ConfirmDialogs = (function () {
+    var ConfirmDialogs = /** @class */ (function () {
         function ConfirmDialogs() {
         }
         ConfirmDialogs.prototype.image = function (context, callback) {
@@ -259,7 +259,7 @@ var Griffin;
         return ConfirmDialogs;
     }());
     Griffin.ConfirmDialogs = ConfirmDialogs;
-    var BoostrapDialogs = (function () {
+    var BoostrapDialogs = /** @class */ (function () {
         function BoostrapDialogs() {
         }
         BoostrapDialogs.prototype.image = function (context, callback) {
@@ -316,7 +316,7 @@ var Griffin;
         return BoostrapDialogs;
     }());
     Griffin.BoostrapDialogs = BoostrapDialogs;
-    var MarkdownToolbar = (function () {
+    var MarkdownToolbar = /** @class */ (function () {
         function MarkdownToolbar(parser) {
             this.parser = parser;
         }
@@ -550,7 +550,7 @@ var Griffin;
         return MarkdownToolbar;
     }());
     Griffin.MarkdownToolbar = MarkdownToolbar;
-    var TextSelector = (function () {
+    var TextSelector = /** @class */ (function () {
         function TextSelector(elementOrId) {
             if (typeof elementOrId === "string") {
                 this.element = document.getElementById(elementOrId);

@@ -10,7 +10,7 @@ var codeRR;
     (function (Feedback) {
         var CqsClient = Griffin.Cqs.CqsClient;
         var OverviewFeedback = codeRR.Web.Feedback.Queries.GetFeedbackForDashboardPage;
-        var OverviewViewModel = (function () {
+        var OverviewViewModel = /** @class */ (function () {
             function OverviewViewModel() {
             }
             OverviewViewModel.prototype.getTitle = function () {
@@ -33,40 +33,40 @@ var codeRR;
             };
             OverviewViewModel.prototype.deactivate = function () {
             };
-            return OverviewViewModel;
-        }());
-        OverviewViewModel.renderDirectives = {
-            Items: {
-                Message: {
-                    html: function (value) {
-                        return nl2br(value);
-                    }
-                },
-                Title: {
-                    style: function () {
-                        return '';
-                    },
-                    html: function (value, dto) {
-                        console.log(dto);
-                        return "Reported for <a href=\"#/application/" + dto.ApplicationId + "/feedback\">" + dto.ApplicationName + "</a> " + momentsAgo(dto.WrittenAtUtc);
-                    }
-                },
-                EmailAddress: {
-                    text: function (value) {
-                        return value;
-                    },
-                    href: function (value) {
-                        return "mailto:" + value;
-                    },
-                    style: function (value) {
-                        if (!value) {
-                            return "display:none";
+            OverviewViewModel.renderDirectives = {
+                Items: {
+                    Message: {
+                        html: function (value) {
+                            return nl2br(value);
                         }
-                        return "color: #ee99ee";
+                    },
+                    Title: {
+                        style: function () {
+                            return '';
+                        },
+                        html: function (value, dto) {
+                            console.log(dto);
+                            return "Reported for <a href=\"#/application/" + dto.ApplicationId + "/feedback\">" + dto.ApplicationName + "</a> " + momentsAgo(dto.WrittenAtUtc);
+                        }
+                    },
+                    EmailAddress: {
+                        text: function (value) {
+                            return value;
+                        },
+                        href: function (value) {
+                            return "mailto:" + value;
+                        },
+                        style: function (value) {
+                            if (!value) {
+                                return "display:none";
+                            }
+                            return "color: #ee99ee";
+                        }
                     }
                 }
-            }
-        };
+            };
+            return OverviewViewModel;
+        }());
         Feedback.OverviewViewModel = OverviewViewModel;
     })(Feedback = codeRR.Feedback || (codeRR.Feedback = {}));
 })(codeRR || (codeRR = {}));

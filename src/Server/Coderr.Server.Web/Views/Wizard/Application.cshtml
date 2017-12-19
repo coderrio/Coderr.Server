@@ -74,6 +74,10 @@
         function checkForApplication(appKey, foundCallback, notFoundCallback) {
             var query = new codeRR.Core.Applications.Queries.GetApplicationIdByKey(appKey);
             Griffin.Cqs.CqsClient.query(query)
+                .fail(function (rejection) {
+                    console.log(rejection.message);
+                    clearInterval(timer);
+                })
                 .done(function (result) {
                     if (!result) {
                         notFoundCallback();
@@ -103,7 +107,6 @@
                                 },
                                 function() {
                                     attemptsLeft = attemptsLeft - 1;
-                                    console.log(attemptsLeft);
                                     if (attemptsLeft <= 0) {
                                         clearInterval(timer);
                                         humane.log('Failed to create application :(');

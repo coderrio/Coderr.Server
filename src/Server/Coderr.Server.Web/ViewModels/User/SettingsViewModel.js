@@ -6,7 +6,7 @@ var codeRR;
     (function (User) {
         var cqs = Griffin.Cqs.CqsClient;
         var CqsClient = Griffin.Cqs.CqsClient;
-        var SettingsViewModel = (function () {
+        var SettingsViewModel = /** @class */ (function () {
             function SettingsViewModel() {
             }
             SettingsViewModel.prototype.changePassword_click = function (e) {

@@ -8,7 +8,7 @@ var codeRR;
     (function (Feedback) {
         var CqsClient = Griffin.Cqs.CqsClient;
         var ApplicationService = codeRR.Applications.ApplicationService;
-        var ApplicationViewModel = (function () {
+        var ApplicationViewModel = /** @class */ (function () {
             function ApplicationViewModel() {
                 this.renderDirectives = {
                     Items: {

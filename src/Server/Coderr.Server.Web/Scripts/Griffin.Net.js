@@ -4,7 +4,7 @@ var Griffin;
     var Net;
     (function (Net) {
         ;
-        var HttpRequest = (function () {
+        var HttpRequest = /** @class */ (function () {
             function HttpRequest(httpMethod, url) {
                 this.url = url;
                 this.httpMethod = httpMethod;
@@ -14,20 +14,20 @@ var Griffin;
         }());
         Net.HttpRequest = HttpRequest;
         ;
-        var CorsRequest = (function () {
+        var CorsRequest = /** @class */ (function () {
             function CorsRequest() {
             }
             return CorsRequest;
         }());
         Net.CorsRequest = CorsRequest;
-        var HttpResponse = (function () {
+        var HttpResponse = /** @class */ (function () {
             function HttpResponse() {
             }
             return HttpResponse;
         }());
         Net.HttpResponse = HttpResponse;
         ;
-        var HttpRejection = (function () {
+        var HttpRejection = /** @class */ (function () {
             function HttpRejection(response) {
                 this.message = response.statusReason;
                 this.Reponse = response;
@@ -35,7 +35,7 @@ var Griffin;
             return HttpRejection;
         }());
         Net.HttpRejection = HttpRejection;
-        var QueryString = (function () {
+        var QueryString = /** @class */ (function () {
             function QueryString() {
             }
             QueryString.parse = function (str) {
@@ -81,7 +81,7 @@ var Griffin;
             return QueryString;
         }());
         Net.QueryString = QueryString;
-        var HttpClient = (function () {
+        var HttpClient = /** @class */ (function () {
             function HttpClient() {
             }
             HttpClient.prototype.get = function (url, queryString, headers) {
@@ -227,9 +227,9 @@ var Griffin;
                 }
                 return response;
             };
+            HttpClient.REDIRECT_401_TO = "/account/login";
             return HttpClient;
         }());
-        HttpClient.REDIRECT_401_TO = "/account/login";
         Net.HttpClient = HttpClient;
     })(Net = Griffin.Net || (Griffin.Net = {}));
 })(Griffin || (Griffin = {})); // ReSharper restore InconsistentNaming

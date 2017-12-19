@@ -9,7 +9,7 @@ var codeRR;
         var CqsClient = Griffin.Cqs.CqsClient;
         var GetIncidentFeedback = codeRR.Web.Feedback.Queries.GetIncidentFeedback;
         var ApplicationService = codeRR.Applications.ApplicationService;
-        var IncidentViewModel = (function () {
+        var IncidentViewModel = /** @class */ (function () {
             function IncidentViewModel() {
             }
             IncidentViewModel.prototype.activate = function (ctx) {
@@ -46,39 +46,39 @@ var codeRR;
             IncidentViewModel.prototype.getTitle = function () {
                 return "Incident";
             };
-            return IncidentViewModel;
-        }());
-        IncidentViewModel.directives = {
-            Items: {
-                Message: {
-                    html: function (value) {
-                        return nl2br(value);
-                    }
-                },
-                Title: {
-                    style: function () {
-                        return "color:#ccc";
-                    },
-                    html: function (value, dto) {
-                        return "Written " + momentsAgo(dto.WrittenAtUtc);
-                    }
-                },
-                EmailAddress: {
-                    text: function (value) {
-                        return value;
-                    },
-                    href: function (value) {
-                        return "mailto:" + value;
-                    },
-                    style: function (value) {
-                        if (!value) {
-                            return "display:none";
+            IncidentViewModel.directives = {
+                Items: {
+                    Message: {
+                        html: function (value) {
+                            return nl2br(value);
                         }
-                        return "color: #ee99ee";
+                    },
+                    Title: {
+                        style: function () {
+                            return "color:#ccc";
+                        },
+                        html: function (value, dto) {
+                            return "Written " + momentsAgo(dto.WrittenAtUtc);
+                        }
+                    },
+                    EmailAddress: {
+                        text: function (value) {
+                            return value;
+                        },
+                        href: function (value) {
+                            return "mailto:" + value;
+                        },
+                        style: function (value) {
+                            if (!value) {
+                                return "display:none";
+                            }
+                            return "color: #ee99ee";
+                        }
                     }
                 }
-            }
-        };
+            };
+            return IncidentViewModel;
+        }());
         Feedback.IncidentViewModel = IncidentViewModel;
     })(Feedback = codeRR.Feedback || (codeRR.Feedback = {}));
 })(codeRR || (codeRR = {}));

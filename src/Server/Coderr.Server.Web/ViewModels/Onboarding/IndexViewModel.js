@@ -4,7 +4,7 @@ var codeRR;
 (function (codeRR) {
     var Onboarding;
     (function (Onboarding) {
-        var IndexViewModel = (function () {
+        var IndexViewModel = /** @class */ (function () {
             function IndexViewModel() {
             }
             IndexViewModel.prototype.getTitle = function () { return "Installation instructions"; };

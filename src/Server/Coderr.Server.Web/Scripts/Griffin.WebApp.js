@@ -4,7 +4,7 @@ var Griffin;
 (function (Griffin) {
     var WebApp;
     (function (WebApp) {
-        var PagerPage = (function () {
+        var PagerPage = /** @class */ (function () {
             function PagerPage(pageNumber, selected) {
                 this.pageNumber = pageNumber;
                 this.selected = selected;
@@ -20,7 +20,7 @@ var Griffin;
             return PagerPage;
         }());
         WebApp.PagerPage = PagerPage;
-        var Pager = (function () {
+        var Pager = /** @class */ (function () {
             function Pager(currentPage, pageSize, totalNumberOfItems) {
                 this.currentPage = currentPage;
                 this.pageSize = pageSize;
@@ -240,12 +240,12 @@ var Griffin;
                     this.draw(this.parent);
                 }
             };
+            Pager.LI_ACTIVE_CLASS = "active";
+            Pager.UL_CLASS = "pagination";
+            Pager.LI_CLASS = "page-item";
+            Pager.LINK_CLASS = "page-link";
             return Pager;
         }());
-        Pager.LI_ACTIVE_CLASS = "active";
-        Pager.UL_CLASS = "pagination";
-        Pager.LI_CLASS = "page-item";
-        Pager.LINK_CLASS = "page-link";
         WebApp.Pager = Pager;
     })(WebApp = Griffin.WebApp || (Griffin.WebApp = {}));
 })(Griffin || (Griffin = {}));

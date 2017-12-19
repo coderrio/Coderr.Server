@@ -1,4 +1,4 @@
-var IncidentNavigation = (function () {
+var IncidentNavigation = /** @class */ (function () {
     function IncidentNavigation() {
     }
     IncidentNavigation.set = function (routeData, subTitle, subAction) {
