@@ -10,7 +10,6 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using codeRR.Server.App.Configuration;
 using codeRR.Server.Infrastructure;
-using codeRR.Server.Infrastructure.Configuration;
 using codeRR.Server.Infrastructure.Configuration.Database;
 using codeRR.Server.Infrastructure.Security;
 using codeRR.Server.SqlServer.Core.Users;
@@ -25,6 +24,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using codeRR.Client;
+using codeRR.Server.SqlServer.Tools;
 using Coderr.Server.PluginApi.Config;
 using Owin;
 
@@ -38,12 +38,11 @@ namespace codeRR.Server.Web
 
         public Startup()
         {
-            ConnectionStringName = ConfigurationManager.AppSettings["ConnectionStringName"] ?? "Db";
             _serviceRunner = new ServiceRunner();
-            ConfigurationStore = new DatabaseStore(() => DbConnectionFactory.Open(ConnectionStringName, true));
+            ConfigurationStore = new DatabaseStore(() => DbConnectionFactory.Open(ConnectionString, true));
         }
 
-        public static string ConnectionStringName { get; private set; }
+        public static ConnectionStringSettings ConnectionString => ConnectionStringHelper.GetConnectionString();
 
         public static ConfigurationStore ConfigurationStore { get; private set; }
 

@@ -1,7 +1,6 @@
-﻿using System.Configuration;
-using System.Data;
+﻿using System.Data;
 using System.Data.SqlClient;
-using codeRR.Server.Infrastructure;
+using codeRR.Server.SqlServer.Tools;
 using Griffin.Data;
 
 namespace codeRR.Server.SqlServer.Tests
@@ -12,7 +11,7 @@ namespace codeRR.Server.SqlServer.Tests
         {
             var connection = new SqlConnection
             {
-                ConnectionString = ConfigurationManager.ConnectionStrings["Db"].ConnectionString
+                ConnectionString = ConnectionStringHelper.GetConnectionString().ConnectionString
             };
             connection.Open();
             return new AdoNetUnitOfWork(connection, true);
@@ -22,7 +21,7 @@ namespace codeRR.Server.SqlServer.Tests
         {
             var connection = new SqlConnection
             {
-                ConnectionString = ConfigurationManager.ConnectionStrings["Db"].ConnectionString
+                ConnectionString = ConnectionStringHelper.GetConnectionString().ConnectionString
             };
             connection.Open();
             return connection;

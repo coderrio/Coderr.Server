@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using codeRR.Server.App.Configuration;
 using codeRR.Server.Infrastructure;
-using codeRR.Server.Infrastructure.Configuration;
 using codeRR.Server.Web.Areas.Installation.Models;
 using Coderr.Server.PluginApi.Config;
 
@@ -131,7 +130,7 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
         {
             try
             {
-                DbConnectionFactory.Open(Startup.ConnectionStringName, true);
+                DbConnectionFactory.Open(Startup.ConnectionString, true);
             }
             catch
             {

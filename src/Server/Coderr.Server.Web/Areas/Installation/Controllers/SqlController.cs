@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Configuration;
 using System.Web.Mvc;
 using codeRR.Server.Infrastructure;
+using codeRR.Server.SqlServer.Tools;
 
 namespace codeRR.Server.Web.Areas.Installation.Controllers
 {
@@ -19,7 +19,7 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
         [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult Index()
         {
-            var constr = ConfigurationManager.ConnectionStrings["Db"];
+            var constr = ConnectionStringHelper.GetConnectionString();
             if (!string.IsNullOrEmpty(constr?.ConnectionString))
             {
                 ViewBag.ConnectionString = constr.ConnectionString ?? "";
@@ -29,7 +29,6 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
                 ViewBag.ConnectionString = "";
                 ViewBag.NextLink = "";
             }
-
 
             return View();
         }
@@ -77,7 +76,7 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
         {
             try
             {
-                var constr = ConfigurationManager.ConnectionStrings["Db"];
+                var constr = ConnectionStringHelper.GetConnectionString();
                 SetupTools.DbTools.CheckConnectionString(constr?.ConnectionString);
                 return Content(@"{ ""result"": ""ok"" }", "application/json");
             }
