@@ -31,7 +31,7 @@ namespace codeRR.Server.App.Modules.Versions.Events
         private string GetVersionAssemblyName(int applicationId)
         {
             var config = _configStore.Load<ApplicationVersionConfig>();
-            return config == null ? null : config.GetAssemblyName(applicationId);
+            return config.GetAssemblyName(applicationId);
         }
 
 

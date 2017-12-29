@@ -90,18 +90,19 @@ namespace codeRR.Server.App.Core.Accounts.CommandHandlers
             var account = await _repository.GetByUserNameAsync(userName);
 
             var config = _configStore.Load<BaseConfiguration>();
+            var email = config.SupportEmail;
             //TODO: HTML email
             var msg = new EmailMessage
             {
-                TextBody = @"Hello!
+                TextBody = $@"Hello!
 
-Someone (you?) tried to create an account with the same information as your account. 
+Someone (you?) tried to create an account with the same login as your account. 
 
 If it was you, you can request a new password from the login page. Otherwise, 
-contact us so that we can investigate: help@coderrapp.com
+contact us so that we can investigate: {email}
 
-Cheerio,
-  codeRR Team",
+Regards,
+  Support team",
                 Subject = "codeRR registration"
             };
             msg.Recipients = new[] { new EmailAddress(account.Email) };

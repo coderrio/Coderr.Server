@@ -105,7 +105,7 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
                 return View(model);
 
             //null if this is the first time we run
-            var config = _configStore.Load<ApplicationVersionConfig>() ?? new ApplicationVersionConfig();
+            var config = _configStore.Load<ApplicationVersionConfig>();
             config.AddOrUpdate(model.ApplicationId, model.SelectedAssembly);
             _configStore.Store(config);
 

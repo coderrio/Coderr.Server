@@ -187,7 +187,7 @@ namespace codeRR.Server.Web.Controllers
             }
             else
             {
-                _logger.Debug("Reply to " + cqsObject.GetType().Name + ": [emptry response]");
+                _logger.Debug("Reply to " + cqsObject.GetType().Name + ": [empty response]");
                 reply.StatusCode = HttpStatusCode.NoContent;
             }
 

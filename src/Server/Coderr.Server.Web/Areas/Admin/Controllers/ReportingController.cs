@@ -23,10 +23,10 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
         {
             var model = new ReportingViewModel();
             var settings = _configStore.Load<ReportConfig>();
-            if (settings == null || settings.MaxReportsPerIncident == 0)
+            if (settings.MaxReportsPerIncident == 0)
                 return View(model);
 
-            _logger.Debug("Display acess: " + settings.MaxReportsPerIncident + " from " + _configStore.GetHashCode());
+            _logger.Debug("Display access: " + settings.MaxReportsPerIncident + " from " + _configStore.GetHashCode());
             model.MaxReportsPerIncident = settings.MaxReportsPerIncident;
             model.RetentionDays= settings.RetentionDays;
             return View(model);

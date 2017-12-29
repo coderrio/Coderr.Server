@@ -20,7 +20,7 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
         {
             var model = new EmailViewModel();
             var settings = _configStore.Load<DotNetSmtpSettings>();
-            if (settings == null || string.IsNullOrEmpty(settings.SmtpHost))
+            if (string.IsNullOrEmpty(settings.SmtpHost))
                 return View(model);
 
             model.AccountName = settings.AccountName;

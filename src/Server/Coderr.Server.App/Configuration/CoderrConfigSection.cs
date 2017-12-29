@@ -9,6 +9,11 @@ namespace codeRR.Server.App.Configuration
     /// </summary>
     public sealed class codeRRConfigSection : IConfigurationSection
     {
+        public codeRRConfigSection()
+        {
+            ActivateTracking = true;
+        }
+
         /// <summary>
         ///     Allow us to track exceptions in OTE.
         /// </summary>

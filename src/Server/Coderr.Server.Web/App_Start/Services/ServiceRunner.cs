@@ -36,10 +36,16 @@ namespace codeRR.Server.Web.Services
         private readonly CompositionRoot _compositionRoot = new CompositionRoot();
         private readonly ILog _log = LogManager.GetLogger(typeof(ServiceRunner));
         private readonly PluginManager _pluginManager = new PluginManager();
+        private readonly CancellationTokenSource _shutdownToken = new CancellationTokenSource();
         private ApplicationServiceManager _appManager;
         private BackgroundJobManager _backgroundJobManager;
         private PluginConfiguration _pluginConfiguration;
-        private readonly CancellationTokenSource _shutdownToken = new CancellationTokenSource();
+        private AdoNetMessageQueueProvider _queueProvider;
+
+        public ServiceRunner()
+        {
+            _queueProvider = CreateQueueProvider();
+        }
 
         public IContainer Container => CompositionRoot.Container;
 
@@ -61,22 +67,19 @@ namespace codeRR.Server.Web.Services
                 {
                     LetPluginsRegisterServices(registrar);
 
-                    registrar.RegisterService<IMessageBus>(
-                        x => new SingleInstanceMessageBus(x.Resolve<IMessageQueueProvider>().Open("Messaging")),
-                        Lifetime.Singleton);
+                    registrar.RegisterService<IMessageBus>(x =>
+                    {
+                        var queue = x.Resolve<IMessageQueueProvider>().Open("Messaging");
+                        var bus = new SingleInstanceMessageBus(queue);
+                        return bus;
+                    }, Lifetime.Singleton);
                     registrar.RegisterConcrete<ScopedQueryBus>();
                     registrar.RegisterService(CreateMessageInvoker, Lifetime.Scoped);
 
-                    registrar.RegisterService(x=> CreateQueueListener(x, "Messaging", "Messaging"), Lifetime.Singleton);
+                    registrar.RegisterService(x => CreateQueueListener(x, "Messaging", "Messaging"), Lifetime.Singleton);
                     registrar.RegisterService(x => CreateQueueListener(x, "Reports", "Messaging"), Lifetime.Singleton);
                     registrar.RegisterService(x => CreateQueueListener(x, "Feedback", "Messaging"), Lifetime.Singleton);
-                    registrar.RegisterService<IMessageQueueProvider>(x =>
-                    {
-                        Func<IDbConnection> dbFactory = () => DbConnectionFactory.Open(Startup.ConnectionStringName, true);
-                        var serializer = new MessagingSerializer(typeof(AdoNetMessageDto));
-                        var provider = new AdoNetMessageQueueProvider(dbFactory, serializer);
-                        return provider;
-                    }, Lifetime.Singleton);
+                    registrar.RegisterInstance<IMessageQueueProvider>(_queueProvider);
 
                     // let us guard it since it runs events in the background.
                     //var service = registrar.Registrations.First(x => x.Implements(typeof(IMessageBus)));
@@ -136,7 +139,7 @@ namespace codeRR.Server.Web.Services
 
         private IMessageInvoker CreateMessageInvoker(IServiceLocator x)
         {
-            var scope = new GriffinContainerScopeAdapter((IChildContainer) x);
+            var scope = new GriffinContainerScopeAdapter((IChildContainer)x);
             var invoker = new MessageInvoker(scope);
             invoker.HandlerMissing += (sender, args) =>
             {
@@ -147,7 +150,7 @@ namespace codeRR.Server.Web.Services
                 }
                 catch (Exception ex)
                 {
-                    Err.Report(ex, new {args.Message});
+                    Err.Report(ex, new { args.Message });
                 }
             };
             invoker.HandlerInvoked += (sender, args) =>
@@ -168,7 +171,8 @@ namespace codeRR.Server.Web.Services
             return invoker;
         }
 
-        private QueueListener CreateQueueListener(IServiceLocator locator, string inboundQueueName, string outboundQueueName)
+        private QueueListener CreateQueueListener(IServiceLocator locator, string inboundQueueName,
+            string outboundQueueName)
         {
             var provider = locator.Resolve<IMessageQueueProvider>();
             var inboundQueue = provider.Open(inboundQueueName);
@@ -182,7 +186,7 @@ namespace codeRR.Server.Web.Services
             };
             listener.PoisonMessageDetected += (sender, args) =>
             {
-                Err.Report(args.Exception, new {args.Message});
+                Err.Report(args.Exception, new { args.Message });
                 _log.Error(inboundQueueName + " Poison message: " + args.Message.Body, args.Exception);
             };
             listener.ScopeCreated += (sender, args) =>
@@ -201,15 +205,22 @@ namespace codeRR.Server.Web.Services
             return listener;
         }
 
-        private void Logga(LogLevel level, string queuenameormessagename, string message)
+        private AdoNetMessageQueueProvider CreateQueueProvider()
         {
-            
+            Func<IDbConnection> dbFactory = () => DbConnectionFactory.Open(Startup.ConnectionStringName, true);
+            var serializer = new MessagingSerializer(typeof(AdoNetMessageDto));
+            var provider = new AdoNetMessageQueueProvider(dbFactory, serializer);
+            return provider;
         }
 
         private void LetPluginsRegisterServices(ContainerRegistrar registrar)
         {
             _pluginConfiguration = new PluginConfiguration(registrar);
             _pluginManager.ConfigurePlugins(_pluginConfiguration);
+        }
+
+        private void Logga(LogLevel level, string queuenameormessagename, string message)
+        {
         }
 
 
@@ -229,7 +240,7 @@ namespace codeRR.Server.Web.Services
 
         private void OnJobFailed(object sender, BackgroundJobFailedEventArgs e)
         {
-            Err.Report(e.Exception, new{JobType = e.Job?.GetType().FullName});
+            Err.Report(e.Exception, new { JobType = e.Job?.GetType().FullName });
             _log.Error("Failed to execute " + e.Job, e.Exception);
         }
 

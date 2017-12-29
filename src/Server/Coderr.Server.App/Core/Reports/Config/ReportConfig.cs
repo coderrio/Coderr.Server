@@ -10,6 +10,21 @@ namespace codeRR.Server.App.Core.Reports.Config
     public class ReportConfig : IConfigurationSection
     {
         /// <summary>
+        ///     Creates a new instance of <see cref="ReportConfig" />
+        /// </summary>
+        /// <remarks>
+        ///     <para>
+        ///         Sets default of MaxReportJsonSize to 2000000, MaxReportsPerIncident to 500 and RetentionDays to 90.
+        ///     </para>
+        /// </remarks>
+        public ReportConfig()
+        {
+            MaxReportJsonSize = 2000000;
+            MaxReportsPerIncident = 500;
+            RetentionDays = 90;
+        }
+
+        /// <summary>
         ///     Maximum number of bytes that a uncompressed JSON report can be
         /// </summary>
         /// <remarks>

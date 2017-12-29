@@ -22,7 +22,7 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
         {
             var model = new BasicsViewModel();
             var config = _configStore.Load<BaseConfiguration>();
-            if (config != null)
+            if (config.BaseUrl != null)
             {
                 model.BaseUrl = config.BaseUrl.ToString();
                 model.SupportEmail = config.SupportEmail;
@@ -65,7 +65,7 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
         {
             var model = new ErrorTrackingViewModel();
             var config = _configStore.Load<codeRRConfigSection>();
-            if (config != null)
+            if (!string.IsNullOrEmpty(model.ContactEmail))
             {
                 model.ContactEmail = config.ContactEmail;
             }

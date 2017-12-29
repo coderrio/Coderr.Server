@@ -126,7 +126,7 @@ namespace codeRR.Server.Web
         private static void ConfigureErrorTracking(ConfigurationStore configStore)
         {
             var errorTrackingConfig = configStore.Load<codeRRConfigSection>();
-            if (errorTrackingConfig != null && errorTrackingConfig.ActivateTracking)
+            if (errorTrackingConfig.ActivateTracking)
             {
                 var uri = new Uri("https://report.coderrapp.com");
                 if (!string.IsNullOrEmpty(errorTrackingConfig.ContactEmail) ||

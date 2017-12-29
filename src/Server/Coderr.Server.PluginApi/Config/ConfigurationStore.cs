@@ -3,7 +3,7 @@
 namespace Coderr.Server.PluginApi.Config
 {
     /// <summary>
-    ///     Used to modify config settings.
+    ///     Used to modify configuration settings.
     /// </summary>
     /// <remarks>
     ///     <para>

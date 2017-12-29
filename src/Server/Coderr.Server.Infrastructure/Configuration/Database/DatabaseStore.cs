@@ -52,7 +52,7 @@ namespace codeRR.Server.Infrastructure.Configuration.Database
                             items[name] = value;
                         }
 
-                        // all config classes should have defaults.
+                        // all configuration classes should have defaults.
                         if (items.Count == 0)
                             return new T(); 
 
