@@ -8,7 +8,6 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using codeRR.Server.App.Core.Reports.Config;
-using codeRR.Server.Infrastructure.Configuration;
 using codeRR.Server.ReportAnalyzer.Inbound.Models;
 using codeRR.Server.ReportAnalyzer.LibContracts;
 using Coderr.Server.PluginApi.Config;
@@ -40,8 +39,8 @@ namespace codeRR.Server.ReportAnalyzer.Inbound
         {
             _unitOfWork = unitOfWork;
             _queue = queue ?? throw new ArgumentNullException(nameof(queue));
-            var config= configStore.Load<ReportConfig>();
-            _maxSizeForJsonErrorReport = config?.MaxReportJsonSize ?? 1000000;
+            var config = configStore.Load<ReportConfig>();
+            _maxSizeForJsonErrorReport = config.MaxReportJsonSize;
         }
 
         public void AddFilter(Func<NewReportDTO, bool> filter)
@@ -141,7 +140,7 @@ namespace codeRR.Server.ReportAnalyzer.Inbound
             if (json.Length > _maxSizeForJsonErrorReport)
                 return null;
 
-            //to support clients that still use the OneTrueError client library.
+            // to support clients that still use the OneTrueError client library.
             json = json.Replace("OneTrueError", "codeRR");
 
             return JsonConvert.DeserializeObject<NewReportDTO>(json,

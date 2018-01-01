@@ -2,7 +2,6 @@
 using System.Web.Mvc;
 using codeRR.Server.App.Configuration;
 using codeRR.Server.Infrastructure;
-using codeRR.Server.Infrastructure.Configuration;
 using codeRR.Server.Web.Areas.Admin.Models;
 using Coderr.Server.PluginApi.Config;
 
@@ -34,8 +33,7 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
                 model.BaseUrl = Request.Url.ToString().Replace("installation/setup/basics/", "");
                 ViewBag.NextLink = "";
             }
-
-
+            
             return View(model);
         }
 
@@ -94,7 +92,7 @@ namespace codeRR.Server.Web.Areas.Admin.Controllers
         {
             try
             {
-                DbConnectionFactory.Open(Startup.ConnectionStringName, true);
+                DbConnectionFactory.Open(Startup.ConnectionString, true);
             }
             catch
             {

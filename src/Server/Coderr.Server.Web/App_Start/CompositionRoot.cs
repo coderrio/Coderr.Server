@@ -6,7 +6,6 @@ using System.Web.Mvc;
 using codeRR.Server.App;
 using codeRR.Server.App.Configuration;
 using codeRR.Server.Infrastructure;
-using codeRR.Server.Infrastructure.Configuration;
 using codeRR.Server.ReportAnalyzer;
 using codeRR.Server.SqlServer.Core.Users;
 using codeRR.Server.Web.IoC;
@@ -56,7 +55,7 @@ namespace codeRR.Server.Web
 
         private IAdoNetUnitOfWork CreateConnection(IServiceLocator arg)
         {
-            var con = DbConnectionFactory.Open(Startup.ConnectionStringName, true);
+            var con = DbConnectionFactory.Open(Startup.ConnectionString, true);
             return new AdoNetUnitOfWork(con, true, IsolationLevel.RepeatableRead);
         }
 

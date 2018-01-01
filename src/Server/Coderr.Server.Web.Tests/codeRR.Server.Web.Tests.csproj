@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net452</TargetFramework>
+    <AssemblyName>codeRR.Server.Web.Tests</AssemblyName>
+    <RootNamespace>codeRR.Server.Web.Tests</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Coderr.Client" Version="1.0.14" />
+    <PackageReference Include="Selenium.Support" Version="3.8.0" />
+    <PackageReference Include="Selenium.WebDriver" Version="3.8.0" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="2.34.0" />
+    <PackageReference Include="xunit" Version="2.3.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Coderr.Server.App\codeRR.Server.App.csproj" />
+    <ProjectReference Include="..\Coderr.Server.SqlServer.Tests\codeRR.Server.SqlServer.Tests.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="applicationhost.config">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>applicationhost.tt</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="applicationhost.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>applicationhost.config</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+</Project>
