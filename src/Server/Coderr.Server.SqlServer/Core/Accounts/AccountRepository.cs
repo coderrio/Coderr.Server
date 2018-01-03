@@ -33,6 +33,7 @@ namespace codeRR.Server.SqlServer.Core.Accounts
         public async Task CreateAsync(Account account)
         {
             await _uow.InsertAsync(account);
+            _uow.SaveChanges();
         }
 
         /// <inheritdoc />
