@@ -180,13 +180,15 @@ namespace codeRR.Server.Web.Controllers
             {
                 _logger.Error("Failed to authenticate", err);
                 ModelState.AddModelError("", err.Message);
-                return View();
+                model.Password = "";
+                return View(model);
             }
             catch (Exception exception)
             {
                 _logger.Error("Failed to authenticate", exception);
                 ModelState.AddModelError("", "Failed to authenticate");
-                return View();
+                model.Password = "";
+                return View(model);
             }
         }
 
