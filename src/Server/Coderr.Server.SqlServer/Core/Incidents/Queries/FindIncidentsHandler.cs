@@ -61,6 +61,10 @@ namespace codeRR.Server.SqlServer.Core.Incidents.Queries
                         .Where(x => x.Type == CoderrClaims.Application)
                         .Select(x => x.Value)
                         .ToArray();
+                    if(appIds.Length <= 0)
+                    {
+                        appIds = new string[] { "-1" };
+                    }
                     sqlQuery += $" {startWord} Applications.Id IN({string.Join(",", appIds)})";
                 }
 
