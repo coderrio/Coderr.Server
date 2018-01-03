@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using codeRR.Server.App.Core.Applications;
+using codeRR.Server.SqlServer.Core.Users;
 using codeRR.Server.SqlServer.Tests;
 using codeRR.Server.Web.Tests.Helpers;
 using codeRR.Server.Web.Tests.Helpers.Selenium;
+using Griffin.Data.Mapper;
 using OpenQA.Selenium;
 
 namespace codeRR.Server.Web.Tests.Integration.Fixtures
@@ -22,10 +24,17 @@ namespace codeRR.Server.Web.Tests.Integration.Fixtures
 
         public CommunityServerFixture()
         {
+            //Init mapper.
+            var provider = new AssemblyScanningMappingProvider();
+            provider.Scan(typeof(UserMapper).Assembly);
+            EntityMappingProvider.Provider = provider;
+
+
+
             var databaseName = $"coderrWebTest{DateTime.Now:yyyyMMddHHmmss}";
             var connectionString = ConfigurationManager.ConnectionStrings["Db"].ConnectionString.Replace("{databaseName}", databaseName);
 
-            _testTools = new TestTools {CanDropDatabase = false};
+            _testTools = new TestTools {CanDropDatabase = true};
             _testTools.CreateAndInitializeDatabase(AppDomain.CurrentDomain.BaseDirectory, databaseName, connectionString, BaseUrl);
             _testTools.CreateUserAndApplication(out int accountId, out int applicationId);
             _testTools.ActivateAccount(accountId);

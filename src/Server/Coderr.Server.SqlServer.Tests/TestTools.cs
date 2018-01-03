@@ -18,6 +18,8 @@ using Coderr.Server.PluginApi.Config;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 
+//using Griffin.Data.Mapper;
+
 namespace codeRR.Server.SqlServer.Tests
 {
     public class TestTools : IDisposable

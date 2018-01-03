@@ -5,10 +5,22 @@ var codeRR;
     (function (Application) {
         var CqsClient = Griffin.Cqs.CqsClient;
         var RemoveTeamMember = codeRR.Core.Applications.Commands.RemoveTeamMember;
+        var ApplicationService = codeRR.Applications.ApplicationService;
         var TeamViewModel = /** @class */ (function () {
             function TeamViewModel() {
             }
             TeamViewModel.prototype.getTitle = function () {
+                var appId = this.context.routeData['applicationId'];
+                var app = new ApplicationService();
+                app.get(appId)
+                    .then(function (result) {
+                    var bc = [
+                        { href: "/application/" + appId + "/", title: result.Name },
+                        { href: "/application/" + appId + "/team", title: 'Team members' }
+                    ];
+                    codeRR.Applications.Navigation.breadcrumbs(bc);
+                    codeRR.Applications.Navigation.pageTitle = 'Team members';
+                });
                 return "Team members";
             };
             TeamViewModel.prototype.activate = function (context) {

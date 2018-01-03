@@ -3,6 +3,7 @@
 module codeRR.Application {
     import CqsClient = Griffin.Cqs.CqsClient;
     import RemoveTeamMember = codeRR.Core.Applications.Commands.RemoveTeamMember;
+    import ApplicationService = Applications.ApplicationService;
 
     export class TeamViewModel implements Griffin.Yo.Spa.ViewModels.IViewModel {
         private context: Griffin.Yo.Spa.ViewModels.IActivationContext;
@@ -10,8 +11,19 @@ module codeRR.Application {
         private data: Core.Applications.Queries.GetApplicationTeamResult;
 
         getTitle(): string {
-            return "Team members";
+            var appId = this.context.routeData['applicationId'];
+            var app = new ApplicationService();
+            app.get(appId)
+                .then(result => {
+                    var bc: Applications.IBreadcrumb[] = [
+                        { href: `/application/${appId}/`, title: result.Name },
+                        { href: `/application/${appId}/team`, title: 'Team members' }
+                    ];
+                    Applications.Navigation.breadcrumbs(bc);
+                    Applications.Navigation.pageTitle = 'Team members';
+                });
 
+            return "Team members";
         }
 
         activate(context: Griffin.Yo.Spa.ViewModels.IActivationContext): void {
