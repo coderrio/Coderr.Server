@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using codeRR.Server.SqlServer.Core.Accounts;
 using codeRR.Server.SqlServer.Tests.Helpers;
 using codeRR.Server.Web.Tests.Helpers;
 using codeRR.Server.Web.Tests.Helpers.Selenium;
 using codeRR.Server.Web.Tests.Helpers.xUnit;
+using Griffin.Data.Mapper;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.Extensions;
 using Xunit;
@@ -16,10 +18,14 @@ namespace codeRR.Server.Web.Tests
     {
         private static readonly IisExpressHelper _iisExpress;
         private static readonly DatabaseManager _databaseManager = new DatabaseManager();
-        private bool _disposed;
 
         static WebTest()
         {
+            var mapper = new AssemblyScanningMappingProvider();
+            mapper.Scan(typeof(AccountRepository).Assembly);
+            EntityMappingProvider.Provider = mapper;
+
+
             _databaseManager.CreateEmptyDatabase();
             _databaseManager.InitSchema();
 
@@ -40,12 +46,13 @@ namespace codeRR.Server.Web.Tests
 
 
             TestData = new TestDataManager(_databaseManager.OpenConnection);
+            WebDriver = DriverFactory.Create(BrowserType.Chrome);
+            AppDomain.CurrentDomain.DomainUnload += (o, e) => { DisposeWebDriver(); };
         }
 
         protected WebTest()
         {
-            WebDriver = DriverFactory.Create(BrowserType.Chrome);
-            AppDomain.CurrentDomain.DomainUnload += (o, e) => { Dispose(); };
+
             TestData.ResetDatabase(_iisExpress.BaseUrl);
         }
 
@@ -54,14 +61,11 @@ namespace codeRR.Server.Web.Tests
 
         public static TestDataManager TestData { get; }
 
-        public IWebDriver WebDriver { get; private set; }
+        public static IWebDriver WebDriver { get; private set; }
 
 
-        public void Dispose()
+        private static void DisposeWebDriver()
         {
-            if (_disposed)
-                return;
-            _disposed = true;
             try
             {
                 WebDriver.Quit();
@@ -70,6 +74,7 @@ namespace codeRR.Server.Web.Tests
             catch
             {
             }
+
             WebDriver.Dispose();
         }
 
