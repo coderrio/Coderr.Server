@@ -12,7 +12,6 @@ using Xunit;
 namespace codeRR.Server.Web.Tests
 {
     [TestCaseOrderer("codeRR.Server.Web.Tests.Helpers.xUnit.TestCaseOrderer", "codeRR.Server.Web.Tests")]
-    //[EnsureTestEnvironment]
     public abstract class WebTest
     {
         private static readonly IisExpressHelper _iisExpress;
@@ -31,7 +30,6 @@ namespace codeRR.Server.Web.Tests
             };
 
             _iisExpress = new IisExpressHelper();
-            EnsureTestEnvironmentAttribute.helper = _iisExpress;
             _iisExpress = new IisExpressHelper
             {
                 ConfigPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "applicationhost.config"),
@@ -48,7 +46,6 @@ namespace codeRR.Server.Web.Tests
         {
             WebDriver = DriverFactory.Create(BrowserType.Chrome);
             AppDomain.CurrentDomain.DomainUnload += (o, e) => { Dispose(); };
-
             TestData.ResetDatabase(_iisExpress.BaseUrl);
         }
 

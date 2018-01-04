@@ -22,4 +22,8 @@
 	  <Reference Include="System.Configuration" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Core\Invitations\" />
+	</ItemGroup>
+
 </Project>

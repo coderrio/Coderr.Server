@@ -16,6 +16,7 @@ namespace codeRR.Server.Web.Tests.Tests
                 var sut = new ConfigureApplicationPage(WebDriver)
                     .CreateApplication(string.Empty);
 
+                //TODO: Verify error message
                 sut.VerifyIsCurrentPage();
 
                 Logout();
