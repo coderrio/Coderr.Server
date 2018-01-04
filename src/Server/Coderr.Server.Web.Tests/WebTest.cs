@@ -14,12 +14,10 @@ using Xunit;
 namespace codeRR.Server.Web.Tests
 {
     [TestCaseOrderer("codeRR.Server.Web.Tests.Helpers.xUnit.TestCaseOrderer", "codeRR.Server.Web.Tests")]
-    //[EnsureTestEnvironment]
     public abstract class WebTest
     {
         private static readonly IisExpressHelper _iisExpress;
         private static readonly DatabaseManager _databaseManager = new DatabaseManager();
-        private bool _disposed;
 
         static WebTest()
         {
@@ -37,7 +35,6 @@ namespace codeRR.Server.Web.Tests
             };
 
             _iisExpress = new IisExpressHelper();
-            EnsureTestEnvironmentAttribute.helper = _iisExpress;
             _iisExpress = new IisExpressHelper
             {
                 ConfigPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "applicationhost.config"),
@@ -48,12 +45,12 @@ namespace codeRR.Server.Web.Tests
             _iisExpress.Start("codeRR.Server.Web");
 
             TestData = new TestDataManager(_databaseManager.OpenConnection);
+            WebDriver = DriverFactory.Create(BrowserType.Chrome);
+            AppDomain.CurrentDomain.DomainUnload += (o, e) => { DisposeWebDriver(); };
         }
 
         protected WebTest()
         {
-            WebDriver = DriverFactory.Create(BrowserType.Chrome);
-            AppDomain.CurrentDomain.DomainUnload += (o, e) => { Dispose(); };
 
             TestData.ResetDatabase(_iisExpress.BaseUrl);
         }
@@ -62,13 +59,11 @@ namespace codeRR.Server.Web.Tests
 
         public static TestDataManager TestData { get; }
 
-        public IWebDriver WebDriver { get; private set; }
+        public static IWebDriver WebDriver { get; private set; }
 
-        public void Dispose()
+
+        private static void DisposeWebDriver()
         {
-            if (_disposed)
-                return;
-            _disposed = true;
             try
             {
                 WebDriver.Quit();
@@ -77,6 +72,7 @@ namespace codeRR.Server.Web.Tests
             catch
             {
             }
+
             WebDriver.Dispose();
         }
 

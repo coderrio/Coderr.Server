@@ -186,7 +186,7 @@ namespace codeRR.Server.Web.Services
             };
             listener.PoisonMessageDetected += (sender, args) =>
             {
-                Err.Report(args.Exception, new { args.Message });
+                //Err.Report(args.Exception, new { args.Message });
                 _log.Error(inboundQueueName + " Poison message: " + args.Message.Body, args.Exception);
             };
             listener.ScopeCreated += (sender, args) =>

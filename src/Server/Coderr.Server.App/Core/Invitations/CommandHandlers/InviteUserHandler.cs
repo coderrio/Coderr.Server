@@ -1,8 +1,5 @@
-﻿using System;
-using System.Configuration;
-using System.Linq;
+﻿using System.Linq;
 using System.Security;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using codeRR.Server.Api.Core.Applications.Events;
 using codeRR.Server.Api.Core.Invitations.Commands;
@@ -11,11 +8,9 @@ using codeRR.Server.Api.Core.Messaging.Commands;
 using codeRR.Server.App.Configuration;
 using codeRR.Server.App.Core.Applications;
 using codeRR.Server.App.Core.Users;
-using codeRR.Server.Infrastructure.Configuration;
 using codeRR.Server.Infrastructure.Security;
 using Coderr.Server.PluginApi.Config;
 using DotNetCqs;
-using DotNetCqs.DependencyInjection;
 using Griffin.Container;
 using log4net;
 

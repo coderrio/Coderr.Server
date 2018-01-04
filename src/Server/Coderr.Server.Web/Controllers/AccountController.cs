@@ -14,8 +14,10 @@ using codeRR.Server.Api.Core.Applications.Queries;
 using codeRR.Server.Api.Core.Invitations.Queries;
 using codeRR.Server.App.Configuration;
 using codeRR.Server.App.Core.Accounts;
+using codeRR.Server.Infrastructure;
 using codeRR.Server.Infrastructure.Configuration;
 using codeRR.Server.Infrastructure.Security;
+using codeRR.Server.SqlServer.Core.Accounts;
 using codeRR.Server.Web.Models.Account;
 using Coderr.Server.PluginApi.Config;
 using DotNetCqs;
@@ -95,6 +97,16 @@ namespace codeRR.Server.Web.Controllers
             };
 
             var identity = await _accountService.AcceptInvitation(this.ClaimsUser(), cmd);
+
+            //TODO: Remove hack.
+            // HERE since the message queue starts to process the events
+            // before we are done with them. We need some way to stack up the publishing
+            // until the current handler is done.
+            //
+            // can't use a message handler since we need a result from the invitation accept.
+            // so that we can construct a new identity
+            _uow.SaveChanges();
+
             if (identity == null)
             {
                 ModelState.AddModelError("",
@@ -103,9 +115,9 @@ namespace codeRR.Server.Web.Controllers
                 return View(new AcceptViewModel());
             }
 
-          
+
             SignIn(identity);
-            return Redirect("~/#/account/accepted");
+            return RedirectToAction("UpdateSession", new { returnUrl = "/#/account/accepted" });
         }
 
         public async Task<ActionResult> Activate(string id)
@@ -169,7 +181,7 @@ namespace codeRR.Server.Web.Controllers
                     return View(model);
                 }
 
-             
+
                 SignIn(principal);
 
                 if (model.ReturnUrl != null && model.ReturnUrl.StartsWith("/"))
