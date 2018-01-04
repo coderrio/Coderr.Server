@@ -92,14 +92,19 @@ namespace codeRR.Server.SqlServer
             return highestVersion;
         }
 
-        public void UpgradeDatabaseSchema()
+        /// <summary>
+        /// Upgrade schema
+        /// </summary>
+        /// <param name="toVersion">-1 = latest version</param>
+        public void UpgradeDatabaseSchema(int toVersion = -1)
         {
-            var latestSchemaVersion = GetLatestSchemaVersion();
+            if (toVersion == -1)
+                toVersion = GetLatestSchemaVersion();
             var currentSchema = GetCurrentSchemaVersion();
             if (currentSchema < 1)
                 currentSchema = 1;
 
-            for (var version = currentSchema + 1; version <= latestSchemaVersion; version++)
+            for (var version = currentSchema + 1; version <= toVersion; version++)
             {
                 var schema = GetSchema(version);
                 using (var con = _connectionFactory())

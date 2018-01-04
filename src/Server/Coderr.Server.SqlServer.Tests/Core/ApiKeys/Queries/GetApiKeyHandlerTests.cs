@@ -9,20 +9,19 @@ using DotNetCqs;
 using FluentAssertions;
 using Griffin.Data;
 using NSubstitute;
+using NSubstitute.Core;
 using Xunit;
 
 namespace codeRR.Server.SqlServer.Tests.Core.ApiKeys.Queries
 {
-    [Collection(MapperInit.NAME)]
-    public class GetApiKeyHandlerTests : IDisposable
+
+    public class GetApiKeyHandlerTests : IntegrationTest
     {
         private Application _application;
         private readonly ApiKey _existingEntity;
-        private readonly IAdoNetUnitOfWork _uow;
 
         public GetApiKeyHandlerTests()
         {
-            _uow = ConnectionFactory.Create();
             GetApplication();
 
             _existingEntity = new ApiKey
@@ -35,24 +34,30 @@ namespace codeRR.Server.SqlServer.Tests.Core.ApiKeys.Queries
             };
 
             _existingEntity.Add(_application.Id);
-            var repos = new ApiKeyRepository(_uow);
-            repos.CreateAsync(_existingEntity).Wait();
+            using (var uow = CreateUnitOfWork())
+            {
+                var repos = new ApiKeyRepository(uow);
+                repos.CreateAsync(_existingEntity).GetAwaiter().GetResult();
+                uow.SaveChanges();
+            }
+
         }
 
-        public void Dispose()
-        {
-            _uow.Dispose();
-        }
 
 
         [Fact]
-        public async void should_Be_able_to_fetch_existing_key_by_id()
+        public async void Should_Be_able_to_fetch_existing_key_by_id()
         {
             var query = new GetApiKey(_existingEntity.Id);
             var context = Substitute.For<IMessageContext>();
 
-            var sut = new GetApiKeyHandler(_uow);
-            var result = await sut.HandleAsync(context, query);
+            GetApiKeyResult result;
+            using (var uow = CreateUnitOfWork())
+            {
+                var sut = new GetApiKeyHandler(uow);
+                result = await sut.HandleAsync(context, query);
+                uow.SaveChanges();
+            }
 
             result.Should().NotBeNull();
             result.GeneratedKey.Should().Be(_existingEntity.GeneratedKey);
@@ -63,17 +68,22 @@ namespace codeRR.Server.SqlServer.Tests.Core.ApiKeys.Queries
 
         private void GetApplication()
         {
-            var repos = new ApplicationRepository(_uow);
-            var id = _uow.ExecuteScalar("SELECT TOP 1 Id FROM Applications");
-            if (id is DBNull || id is null)
+            using (var uow = CreateUnitOfWork())
             {
-                _application = new Application(10, "AppTen");
-                repos.CreateAsync(_application).Wait();
+                var repos = new ApplicationRepository(uow);
+                var id = uow.ExecuteScalar("SELECT TOP 1 Id FROM Applications");
+                if (id is DBNull || id is null)
+                {
+                    _application = new Application(10, "AppTen");
+                    repos.CreateAsync(_application).GetAwaiter().GetResult();
+                }
+                else
+                {
+                    _application = repos.GetByIdAsync((int)id).Result;
+                }
+                uow.SaveChanges();
             }
-            else
-            {
-                _application = repos.GetByIdAsync((int) id).Result;
-            }
+
         }
     }
 }

@@ -14,16 +14,14 @@ using Xunit;
 
 namespace codeRR.Server.SqlServer.Tests.Core.ApiKeys.Commands
 {
-    [Collection(MapperInit.NAME)]
-    public class DeleteApiKeyHandlerTests : IDisposable
+
+    public class DeleteApiKeyHandlerTests : IntegrationTest
     {
         private int _applicationId;
         private readonly ApiKey _existingEntity;
-        private readonly IAdoNetUnitOfWork _uow;
 
         public DeleteApiKeyHandlerTests()
         {
-            _uow = ConnectionFactory.Create();
             GetApplicationId();
 
             _existingEntity = new ApiKey
@@ -36,27 +34,30 @@ namespace codeRR.Server.SqlServer.Tests.Core.ApiKeys.Commands
             };
 
             _existingEntity.Add(_applicationId);
-            var repos = new ApiKeyRepository(_uow);
-            repos.CreateAsync(_existingEntity).Wait();
+            using (var uow = CreateUnitOfWork())
+            {
+                var repos = new ApiKeyRepository(uow);
+                repos.CreateAsync(_existingEntity).GetAwaiter().GetResult();
+                uow.SaveChanges();
+            }
         }
-
-        public void Dispose()
-        {
-            _uow.Dispose();
-        }
-
         [Fact]
         public async Task Should_be_able_to_delete_key_by_ApiKey()
         {
             var cmd = new DeleteApiKey(_existingEntity.GeneratedKey);
             var context = Substitute.For<IMessageContext>();
 
-            var sut = new DeleteApiKeyHandler(_uow);
-            await sut.HandleAsync(context, cmd);
+            using (var uow = CreateUnitOfWork())
+            {
+                var sut = new DeleteApiKeyHandler(uow);
+                await sut.HandleAsync(context, cmd);
 
-            var count = _uow.ExecuteScalar("SELECT cast(count(*) as int) FROM ApiKeys WHERE Id = @id",
-                new {id = _existingEntity.Id});
-            count.Should().Be(0);
+                var count = uow.ExecuteScalar("SELECT cast(count(*) as int) FROM ApiKeys WHERE Id = @id",
+                    new { id = _existingEntity.Id });
+                count.Should().Be(0);
+                uow.SaveChanges();
+            }
+
         }
 
         [Fact]
@@ -65,25 +66,38 @@ namespace codeRR.Server.SqlServer.Tests.Core.ApiKeys.Commands
             var cmd = new DeleteApiKey(_existingEntity.Id);
             var context = Substitute.For<IMessageContext>();
 
-            var sut = new DeleteApiKeyHandler(_uow);
-            await sut.HandleAsync(context, cmd);
+            using (var uow = CreateUnitOfWork())
+            {
+                var sut = new DeleteApiKeyHandler(uow);
+                await sut.HandleAsync(context, cmd);
 
-            var count = _uow.ExecuteScalar("SELECT cast(count(*) as int) FROM ApiKeys WHERE Id = @id",
-                new {id = _existingEntity.Id});
-            count.Should().Be(0);
+                var count = uow.ExecuteScalar("SELECT cast(count(*) as int) FROM ApiKeys WHERE Id = @id",
+                    new { id = _existingEntity.Id });
+                count.Should().Be(0);
+                uow.SaveChanges();
+            }
+
         }
 
         private void GetApplicationId()
         {
-            var repos = new ApplicationRepository(_uow);
-            var id = _uow.ExecuteScalar("SELECT TOP 1 Id FROM Applications");
-            if (id is DBNull || id is null)
+            if (_applicationId != 0)
+                return;
+
+            using (var uow = CreateUnitOfWork())
             {
-                repos.CreateAsync(new Application(10, "AppTen")).Wait();
-                _applicationId = (int) _uow.ExecuteScalar("SELECT TOP 1 Id FROM Applications");
+                var repos = new ApplicationRepository(uow);
+                var id = uow.ExecuteScalar("SELECT TOP 1 Id FROM Applications");
+                if (id is DBNull || id is null)
+                {
+                    repos.CreateAsync(new Application(10, "AppTen")).Wait();
+                    _applicationId = (int)uow.ExecuteScalar("SELECT TOP 1 Id FROM Applications");
+                }
+                else
+                    _applicationId = (int)id;
+                uow.SaveChanges();
             }
-            else
-                _applicationId = (int) id;
+
         }
     }
 }

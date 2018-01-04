@@ -14,21 +14,14 @@ using Xunit;
 
 namespace codeRR.Server.SqlServer.Tests.Core.ApiKeys.Commands
 {
-    [Collection(MapperInit.NAME)]
-    public class CreateApiKeyHandlerTests : IDisposable
+
+    public class CreateApiKeyHandlerTests : IntegrationTest
     {
         private int _applicationId;
-        private readonly IAdoNetUnitOfWork _uow;
 
         public CreateApiKeyHandlerTests()
         {
-            _uow = ConnectionFactory.Create();
             GetApplicationId();
-        }
-
-        public void Dispose()
-        {
-            _uow.Dispose();
         }
 
         [Fact]
@@ -38,43 +31,63 @@ namespace codeRR.Server.SqlServer.Tests.Core.ApiKeys.Commands
             var bus = Substitute.For<IMessageBus>();
             var ctx = Substitute.For<IMessageContext>();
 
-            var sut = new CreateApiKeyHandler(_uow, bus);
-            await sut.HandleAsync(ctx, cmd);
+            using (var uow = CreateUnitOfWork())
+            {
+                var sut = new CreateApiKeyHandler(uow, bus);
+                await sut.HandleAsync(ctx, cmd);
 
-            var repos = new ApiKeyRepository(_uow);
-            var generated = await repos.GetByKeyAsync(cmd.ApiKey);
-            generated.Should().NotBeNull();
-            generated.Claims.Should().NotBeEmpty("because keys without appIds are universal");
+                var repos = new ApiKeyRepository(uow);
+                var generated = await repos.GetByKeyAsync(cmd.ApiKey);
+                generated.Should().NotBeNull();
+                generated.Claims.Should().NotBeEmpty("because keys without appIds are universal");
+
+                uow.SaveChanges();
+            }
+
         }
 
         [Fact]
         public async Task Should_be_able_to_Create_key()
         {
             var cmd = new CreateApiKey("Mofo", Guid.NewGuid().ToString("N"), Guid.NewGuid().ToString("N"),
-                new[] {_applicationId});
+                new[] { _applicationId });
             var bus = Substitute.For<IMessageBus>();
             var ctx = Substitute.For<IMessageContext>();
 
-            var sut = new CreateApiKeyHandler(_uow, bus);
-            await sut.HandleAsync(ctx, cmd);
+            using (var uow = CreateUnitOfWork())
+            {
 
-            var repos = new ApiKeyRepository(_uow);
-            var generated = await repos.GetByKeyAsync(cmd.ApiKey);
-            generated.Should().NotBeNull();
-            generated.Claims.First().Value.Should().BeEquivalentTo(_applicationId.ToString());
+                var sut = new CreateApiKeyHandler(uow, bus);
+                await sut.HandleAsync(ctx, cmd);
+
+                var repos = new ApiKeyRepository(uow);
+                var generated = await repos.GetByKeyAsync(cmd.ApiKey);
+                generated.Should().NotBeNull();
+                generated.Claims.First().Value.Should().BeEquivalentTo(_applicationId.ToString());
+                uow.SaveChanges();
+            }
         }
 
         private void GetApplicationId()
         {
-            var repos = new ApplicationRepository(_uow);
-            var id = _uow.ExecuteScalar("SELECT TOP 1 Id FROM Applications");
-            if (id is DBNull || id is null)
+            if (_applicationId != 0)
+                return;
+
+            using (var uow = CreateUnitOfWork())
             {
-                repos.CreateAsync(new Application(10, "AppTen")).Wait();
-                _applicationId = (int) _uow.ExecuteScalar("SELECT TOP 1 Id FROM Applications");
+
+                var repos = new ApplicationRepository(uow);
+                var id = uow.ExecuteScalar("SELECT TOP 1 Id FROM Applications");
+                if (id is DBNull || id is null)
+                {
+                    repos.CreateAsync(new Application(10, "AppTen")).GetAwaiter().GetResult();
+                    _applicationId = (int)uow.ExecuteScalar("SELECT TOP 1 Id FROM Applications");
+                }
+                else
+                    _applicationId = (int)id;
+                uow.SaveChanges();
             }
-            else
-                _applicationId = (int) id;
+
         }
     }
 }

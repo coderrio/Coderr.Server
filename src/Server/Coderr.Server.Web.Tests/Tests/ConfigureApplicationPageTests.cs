@@ -1,20 +1,11 @@
-﻿using codeRR.Server.Web.Tests.Integration.Fixtures;
-using codeRR.Server.Web.Tests.Integration.Pages;
+﻿using codeRR.Server.Web.Tests.Pages;
 using Xunit;
 
-namespace codeRR.Server.Web.Tests.Integration.Tests
+namespace codeRR.Server.Web.Tests.Tests
 {
-    [Collection("CommunityServerCollection")]
     [Trait("Category", "Integration")]
-    public class ConfigureApplicationPageTests : CommunityServerTestBase
+    public class ConfigureApplicationPageTests : LoggedInTest
     {
-        private readonly CommunityServerFixture _fixture;
-
-        public ConfigureApplicationPageTests(CommunityServerFixture fixture) : base(fixture)
-        {
-            _fixture = fixture;
-        }
-
         [Fact]
         public void Should_not_be_able_to_create_application_without_name_specified()
         {
@@ -22,7 +13,7 @@ namespace codeRR.Server.Web.Tests.Integration.Tests
             {
                 Login();
 
-                var sut = new ConfigureApplicationPage(_fixture.WebDriver)
+                var sut = new ConfigureApplicationPage(WebDriver)
                     .CreateApplication(string.Empty);
 
                 sut.VerifyIsCurrentPage();
@@ -40,12 +31,12 @@ namespace codeRR.Server.Web.Tests.Integration.Tests
 
                 var applicationName = "TestApplication";
 
-                var sut = new ConfigureApplicationPage(_fixture.WebDriver)
+                var sut = new ConfigureApplicationPage(WebDriver)
                     .CreateApplication(applicationName);
 
                 sut.VerifySuccessfullyCreatedApplication(applicationName);
 
-                var homePage = new HomePage(_fixture.WebDriver);
+                var homePage = new HomePage(WebDriver);
                 homePage.NavigateToPage();
                 homePage.VerifyIsCurrentPage();
 

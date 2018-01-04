@@ -11,11 +11,10 @@ using Xunit;
 
 namespace codeRR.Server.SqlServer.Tests.Core.ApiKeys.Queries
 {
-    [Collection(MapperInit.NAME)]
-    public class ListApiKeysHandlerTests : IDisposable
+
+    public class ListApiKeysHandlerTests : IntegrationTest
     {
         private readonly ApiKey _existingEntity;
-        private readonly IAdoNetUnitOfWork _uow;
 
         public ListApiKeysHandlerTests()
         {
@@ -28,27 +27,33 @@ namespace codeRR.Server.SqlServer.Tests.Core.ApiKeys.Queries
                 CreatedAtUtc = DateTime.UtcNow
             };
             _existingEntity.Add(22);
-            _uow = ConnectionFactory.Create();
-            _uow.Insert(_existingEntity);
+            using (var uow = CreateUnitOfWork())
+            {
+                uow.Insert(_existingEntity);
+                uow.SaveChanges();
+            }
+
         }
 
-        public void Dispose()
-        {
-            _uow.Dispose();
-        }
 
         [Fact]
-        public async void should_be_able_to_load_a_key()
+        public async void Should_be_able_to_load_a_key()
         {
             var query = new ListApiKeys();
             var context = Substitute.For<IMessageContext>();
 
-            var sut = new ListApiKeysHandler(_uow);
-            var result = await sut.HandleAsync(context, query);
+            ListApiKeysResult result;
+            using (var uow = CreateUnitOfWork())
+            {
+                var sut = new ListApiKeysHandler(uow);
+                result = await sut.HandleAsync(context, query);
+                uow.SaveChanges();
+
+            }
 
             result.Keys.Should().NotBeEmpty();
-            AssertionExtensions.Should((string) result.Keys[0].ApiKey).Be(_existingEntity.GeneratedKey);
-            AssertionExtensions.Should((string) result.Keys[0].ApplicationName).Be(_existingEntity.ApplicationName);
+            AssertionExtensions.Should((string)result.Keys[0].ApiKey).Be(_existingEntity.GeneratedKey);
+            AssertionExtensions.Should((string)result.Keys[0].ApplicationName).Be(_existingEntity.ApplicationName);
         }
     }
 }

@@ -25,10 +25,11 @@ namespace codeRR.Server.App.Core.Reports.Jobs
         ///     Creates a new instance of <see cref="DeleteOldReports" />.
         /// </summary>
         /// <param name="unitOfWork">Used for SQL queries</param>
+        /// <param name="reportConfig"></param>
+        /// <exception cref="ArgumentNullException"></exception>
         public DeleteOldReports(IAdoNetUnitOfWork unitOfWork, IConfiguration<ReportConfig> reportConfig)
         {
-            if (unitOfWork == null) throw new ArgumentNullException("unitOfWork");
-            _unitOfWork = unitOfWork;
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             _reportConfig = reportConfig;
         }
 

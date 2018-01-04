@@ -3,7 +3,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 using OpenQA.Selenium.Support.UI;
 
-namespace codeRR.Server.Web.Tests.Integration.Pages
+namespace codeRR.Server.Web.Tests.Pages
 {
     public class BasePage
     {

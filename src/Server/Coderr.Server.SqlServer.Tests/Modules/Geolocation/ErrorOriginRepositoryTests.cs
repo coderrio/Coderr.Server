@@ -6,33 +6,28 @@ using Xunit;
 
 namespace codeRR.Server.SqlServer.Tests.Modules.Geolocation
 {
-    [Collection(MapperInit.NAME)]
-    public class ErrorOriginRepositoryTests : IDisposable
+    public class ErrorOriginRepositoryTests : IntegrationTest
     {
-        private readonly TestTools _testTools = new TestTools();
+        private int _reportId;
+        private int _incidentId;
 
         public ErrorOriginRepositoryTests()
         {
-            _testTools.CreateDatabase();
-            _testTools.ToLatestVersion();
+            ResetDatabase();
+            CreateReportAndIncident(out _reportId, out _incidentId);
         }
 
         [Fact]
         public async Task Can_store_origin()
         {
             var origin = new ErrorOrigin("127.0.0.1", 934.934, 28.282);
-            var uow = _testTools.CreateUnitOfWork();
-            _testTools.CreateBasicData();
-
-            var handler = new ErrorOriginRepository(uow);
-            await handler.CreateAsync(origin, 1, 1, 1);
-
-            uow.Dispose();
+            using (var uow = CreateUnitOfWork())
+            {
+                var handler = new ErrorOriginRepository(uow);
+                await handler.CreateAsync(origin, FirstApplicationId, _incidentId, _reportId);
+                uow.SaveChanges();
+            }
         }
-
-        public void Dispose()
-        {
-            _testTools?.Dispose();
-        }
+        
     }
 }

@@ -1,112 +1,79 @@
 ﻿using System;
+using codeRR.Server.SqlServer.Tests.Helpers;
 using FluentAssertions;
 using Griffin.Data.Mapper;
 using Xunit;
 
 namespace codeRR.Server.SqlServer.Tests
 {
-    public class SchemaManagerTests : IDisposable
+    public class SchemaManagerTests
     {
         public const int LatestVersion = 3;
-        readonly TestTools _testTools = new TestTools();
 
-        public SchemaManagerTests()
-        {
-            _testTools.CreateDatabase();
-        }
-
-     
         [Fact]
         public void Should_report_upgradable_if_schema_version_is_less()
         {
-            SetVersion(1);
-        
-            var sut = new SchemaManager(() => _testTools.OpenConnection());
-            var actual = sut.CanSchemaBeUpgraded();
+            using (var dbMgr = new DatabaseManager())
+            {
+                dbMgr.UpdateToLatestVestion = false;
+                dbMgr.CreateEmptyDatabase();
+                dbMgr.InitSchema();
+                dbMgr.UpdateSchema(1);
 
-            actual.Should().BeTrue();
+                var sut = new SchemaManager(() => dbMgr.OpenConnection());
+                var actual = sut.CanSchemaBeUpgraded();
+
+                actual.Should().BeTrue();
+            }
+
         }
 
         [Fact]
         public void Should_not_report_upgradable_if_schema_version_is_same()
         {
-            _testTools.ToLatestVersion();
+            using (var dbMgr = new DatabaseManager())
+            {
+                dbMgr.UpdateToLatestVestion = false;
+                dbMgr.CreateEmptyDatabase();
+                dbMgr.InitSchema();
+                dbMgr.UpdateSchema(-1);
 
-            var sut = new SchemaManager(() => _testTools.OpenConnection());
-            var actual = sut.CanSchemaBeUpgraded();
+                var sut = new SchemaManager(() => dbMgr.OpenConnection());
+                var actual = sut.CanSchemaBeUpgraded();
 
-            actual.Should().BeFalse();
+                actual.Should().BeFalse();
+            }
         }
 
         [Fact]
         public void Should_report_upgradable_if_schema_table_is_missing()
         {
+            using (var dbMgr = new DatabaseManager())
+            {
+                dbMgr.UpdateToLatestVestion = false;
+                dbMgr.CreateEmptyDatabase();
 
-            var sut = new SchemaManager(() => _testTools.OpenConnection());
-            var actual = sut.CanSchemaBeUpgraded();
+                var sut = new SchemaManager(() => dbMgr.OpenConnection());
+                var actual = sut.CanSchemaBeUpgraded();
 
-            actual.Should().BeTrue();
+                actual.Should().BeTrue();
+            }
         }
 
         [Fact]
         public void Should_be_able_to_upgrade_schema()
         {
-
-            var sut = new SchemaManager(() => _testTools.OpenConnection());
-            sut.UpgradeDatabaseSchema();
-
-
-        }
-
-
-        [Fact]
-        public void Should_be_able_to_upgrade_database()
-        {
-            using (var tools = new TestTools())
+            using (var dbMgr = new DatabaseManager())
             {
-                tools.CreateDatabase();
+                dbMgr.UpdateToLatestVestion = false;
+                dbMgr.CreateEmptyDatabase();
+                dbMgr.InitSchema();
 
-                var sut = new SchemaManager(tools.OpenConnection);
+                var sut = new SchemaManager(() => dbMgr.OpenConnection());
                 sut.UpgradeDatabaseSchema();
+
             }
         }
 
-
-        private void SetVersion(int version)
-        {
-            using (var con = SqlServerTools.OpenConnection())
-            {
-                con.ExecuteNonQuery("UPDATE DatabaseSchema SET Version = @version", new {version = version});
-            }
-        }
-
-        private void EnsureSchemaTable()
-        {
-            using (var con = SqlServerTools.OpenConnection())
-            {
-                con.ExecuteNonQuery(@"
-IF OBJECT_ID(N'dbo.[DatabaseSchema]', N'U') IS NULL
-BEGIN
-	CREATE TABLE [dbo].[DatabaseSchema] (
-        [Version] int not null default 1
-	);
-	INSERT INTO DatabaseSchema VALUES(1);
-END
-");
-            }
-        }
-
-        private void DropSchemaTable()
-        {
-            using (var con = _testTools.OpenConnection())
-            {
-                con.ExecuteNonQuery(@"DROP TABLE [dbo].[DatabaseSchema]");
-            }
-        }
-
-        public void Dispose()
-        {
-            _testTools?.Dispose();
-        }
     }
 }

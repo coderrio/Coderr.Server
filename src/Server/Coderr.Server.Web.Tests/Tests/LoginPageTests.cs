@@ -1,26 +1,18 @@
-﻿using codeRR.Server.Web.Tests.Integration.Fixtures;
-using codeRR.Server.Web.Tests.Integration.Pages;
+﻿using codeRR.Server.Web.Tests.Pages;
 using Xunit;
 
-namespace codeRR.Server.Web.Tests.Integration.Tests
+namespace codeRR.Server.Web.Tests.Tests
 {
-    [Collection("CommunityServerCollection")]
+    
     [Trait("Category", "Integration")]
-    public class LoginPageTests : CommunityServerTestBase
+    public class LoginPageTests : LoggedInTest
     {
-        private readonly CommunityServerFixture _fixture;
-
-        public LoginPageTests(CommunityServerFixture fixture) : base(fixture)
-        {
-            _fixture = fixture;
-        }
-
         [Fact]
         public void Should_not_be_able_to_login_with_empty_username()
         {
             UITest(() =>
             {
-                var sut = new LoginPage(_fixture.WebDriver)
+                var sut = new LoginPage(WebDriver)
                     .LoginWithNoUserNameSpecified();
 
                 Assert.IsType<LoginPage>(sut);
@@ -33,7 +25,7 @@ namespace codeRR.Server.Web.Tests.Integration.Tests
         {
             UITest(() =>
             {
-                var sut = new LoginPage(_fixture.WebDriver)
+                var sut = new LoginPage(WebDriver)
                     .LoginWithNoPasswordSpecified();
 
                 Assert.IsType<LoginPage>(sut);
@@ -46,7 +38,7 @@ namespace codeRR.Server.Web.Tests.Integration.Tests
         {
             UITest(() =>
             {
-                var sut = new LoginPage(_fixture.WebDriver)
+                var sut = new LoginPage(WebDriver)
                     .LoginWithWrongPasswordSpecified();
 
                 Assert.IsType<LoginPage>(sut);
@@ -59,7 +51,7 @@ namespace codeRR.Server.Web.Tests.Integration.Tests
         {
             UITest(() =>
             {
-                var sut = new LoginPage(_fixture.WebDriver)
+                var sut = new LoginPage(WebDriver)
                     .LoginWithValidCredentials();
 
                 Assert.IsType<HomePage>(sut);
