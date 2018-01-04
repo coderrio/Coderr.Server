@@ -1,5 +1,4 @@
 ﻿using System;
-using codeRR.Server.Api.Core.Incidents.Queries;
 using codeRR.Server.SqlServer.Core.Accounts;
 using codeRR.Server.SqlServer.Tests.Helpers;
 using Griffin.Data;

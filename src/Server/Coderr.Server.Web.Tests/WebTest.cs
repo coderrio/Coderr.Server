@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using codeRR.Server.SqlServer.Core.Accounts;
 using codeRR.Server.SqlServer.Tests.Helpers;
 using codeRR.Server.Web.Tests.Helpers;
 using codeRR.Server.Web.Tests.Helpers.Selenium;
 using codeRR.Server.Web.Tests.Helpers.xUnit;
+using Griffin.Data.Mapper;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.Extensions;
 using Xunit;
@@ -21,6 +23,10 @@ namespace codeRR.Server.Web.Tests
 
         static WebTest()
         {
+            var mapper = new AssemblyScanningMappingProvider();
+            mapper.Scan(typeof(AccountRepository).Assembly);
+            EntityMappingProvider.Provider = mapper;
+
             _databaseManager.CreateEmptyDatabase();
             _databaseManager.InitSchema();
 
@@ -35,11 +41,11 @@ namespace codeRR.Server.Web.Tests
             _iisExpress = new IisExpressHelper
             {
                 ConfigPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "applicationhost.config"),
-                EnvironmentVariables =
-                    new Dictionary<string, string> { { "coderr_ConnectionString", _databaseManager.ConnectionString } }
+
+                // Pass on connectionstring to codeRR.Server.Web during testing, overriding connectionstring in web.config
+                EnvironmentVariables = new Dictionary<string, string> { { "coderr_ConnectionString", _databaseManager.ConnectionString } }
             };
             _iisExpress.Start("codeRR.Server.Web");
-
 
             TestData = new TestDataManager(_databaseManager.OpenConnection);
         }
@@ -52,13 +58,11 @@ namespace codeRR.Server.Web.Tests
             TestData.ResetDatabase(_iisExpress.BaseUrl);
         }
 
-
         public string ServerUrl => _iisExpress.BaseUrl;
 
         public static TestDataManager TestData { get; }
 
         public IWebDriver WebDriver { get; private set; }
-
 
         public void Dispose()
         {
