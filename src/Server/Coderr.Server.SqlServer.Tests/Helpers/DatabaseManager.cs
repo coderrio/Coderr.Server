@@ -22,7 +22,7 @@ namespace codeRR.Server.SqlServer.Tests.Helpers
         public DatabaseManager(string databaseName = null)
         {
             var instanceId = Interlocked.Increment(ref InstanceCounter);
-            _databaseName = databaseName ?? $"coderTest{DateTime.Now:MMddHHmmss}_{instanceId}";
+            _databaseName = databaseName ?? $"coderrTest{DateTime.Now:MMddHHmmss}_{instanceId}";
             Console.WriteLine("DBNMAE: " + _databaseName);
             ConnectionString = ConnectionStringHelper.GetConnectionString().ConnectionString
                 .Replace("{databaseName}", _databaseName);
@@ -46,8 +46,6 @@ namespace codeRR.Server.SqlServer.Tests.Helpers
         public void CreateEmptyDatabase()
         {
             Debug.WriteLine("*****DBNAME: " + ConnectionString);
-            var builder = new SqlConnectionStringBuilder(ConnectionString);
-            Environment.SetEnvironmentVariable("coderr_ConnectionString", $"Data Source={builder.DataSource}");
 
             using (var con = OpenConnection(_masterConString))
             {

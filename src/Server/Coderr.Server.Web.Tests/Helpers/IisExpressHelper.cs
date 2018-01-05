@@ -60,11 +60,10 @@ namespace codeRR.Server.Web.Tests.Helpers
             SetDefaultsWhereNecessary();
 
             if (!File.Exists(ExePath))
-                throw new FileNotFoundException("Path to IIS Express executable is invalid: '" + ExePath + "'.");
+                throw new FileNotFoundException($"Path to IIS Express executable is invalid: '{ExePath}'.");
 
             if (string.IsNullOrEmpty(ConfigPath) || !File.Exists(ConfigPath))
-                throw new FileNotFoundException("Path to IIS Express configuration file is invalid: '" + ConfigPath +
-                                                "'.");
+                throw new FileNotFoundException($"Path to IIS Express configuration file is invalid: '{ConfigPath}'.");
 
             var iisExpressThread = new Thread(() => StartIisExpress(p => _process = p, site)) {IsBackground = true};
             iisExpressThread.Start();
@@ -76,9 +75,9 @@ namespace codeRR.Server.Web.Tests.Helpers
                 Thread.Sleep(200);
                 attemptsLeft--;
             }
+
             if (_process == null)
                 throw new InvalidOperationException("Failed to start IIS express");
-
         }
 
         /// <summary>
@@ -155,7 +154,6 @@ namespace codeRR.Server.Web.Tests.Helpers
             if (!isRunning)
                 throw new InvalidOperationException("Failed to receive data from IIS ex");
            
-
             action(process);
         }
     }
