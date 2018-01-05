@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 using codeRR.Client;
-using codeRR.Server.Web.Tests.Helpers;
 using codeRR.Server.Web.Tests.Pages;
 using Xunit;
 

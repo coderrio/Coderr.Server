@@ -4,7 +4,6 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Threading;
-using codeRR.Server.SqlServer.Tools;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 
@@ -40,12 +39,12 @@ namespace codeRR.Server.SqlServer.Tests.Helpers
                 .Replace("{databaseName}", _databaseName);
             _masterConString = connectionStringTemplateProvider()
                 .Replace("{databaseName}", "master");
-            UpdateToLatestVestion = true;
+            UpdateToLatestVersion = true;
         }
 
         public string ConnectionString { get; }
 
-        public bool UpdateToLatestVestion { get; set; }
+        public bool UpdateToLatestVersion { get; set; }
 
         public void Dispose()
         {
@@ -93,7 +92,7 @@ namespace codeRR.Server.SqlServer.Tests.Helpers
             {
                 var schemaManager = new SchemaManager(OpenConnection);
                 schemaManager.CreateInitialStructure();
-                if (UpdateToLatestVestion)
+                if (UpdateToLatestVersion)
                     schemaManager.UpgradeDatabaseSchema();
             }
             catch (SqlException ex)

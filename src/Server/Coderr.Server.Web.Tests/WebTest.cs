@@ -5,7 +5,6 @@ using codeRR.Server.SqlServer.Core.Accounts;
 using codeRR.Server.SqlServer.Tests.Helpers;
 using codeRR.Server.Web.Tests.Helpers;
 using codeRR.Server.Web.Tests.Helpers.Selenium;
-using codeRR.Server.Web.Tests.Helpers.xUnit;
 using Griffin.Data.Mapper;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.Extensions;
@@ -34,7 +33,6 @@ namespace codeRR.Server.Web.Tests
                 _databaseManager.Dispose();
             };
 
-            _iisExpress = new IisExpressHelper();
             _iisExpress = new IisExpressHelper
             {
                 ConfigPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "applicationhost.config"),
@@ -51,7 +49,6 @@ namespace codeRR.Server.Web.Tests
 
         protected WebTest()
         {
-
             TestData.ResetDatabase(_iisExpress.BaseUrl);
         }
 
@@ -60,7 +57,6 @@ namespace codeRR.Server.Web.Tests
         public static TestDataManager TestData { get; }
 
         public static IWebDriver WebDriver { get; private set; }
-
 
         private static void DisposeWebDriver()
         {
