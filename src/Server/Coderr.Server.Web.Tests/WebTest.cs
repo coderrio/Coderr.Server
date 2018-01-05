@@ -25,7 +25,6 @@ namespace codeRR.Server.Web.Tests
             mapper.Scan(typeof(AccountRepository).Assembly);
             EntityMappingProvider.Provider = mapper;
 
-
             _databaseManager.CreateEmptyDatabase();
             _databaseManager.InitSchema();
 
@@ -39,11 +38,11 @@ namespace codeRR.Server.Web.Tests
             _iisExpress = new IisExpressHelper
             {
                 ConfigPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "applicationhost.config"),
-                EnvironmentVariables =
-                    new Dictionary<string, string> { { "coderr_ConnectionString", _databaseManager.ConnectionString } }
+
+                // Pass on connectionstring to codeRR.Server.Web during testing, overriding connectionstring in web.config
+                EnvironmentVariables = new Dictionary<string, string> { { "coderr_ConnectionString", _databaseManager.ConnectionString } }
             };
             _iisExpress.Start("codeRR.Server.Web");
-
 
             TestData = new TestDataManager(_databaseManager.OpenConnection);
             WebDriver = DriverFactory.Create(BrowserType.Chrome);
@@ -55,7 +54,6 @@ namespace codeRR.Server.Web.Tests
 
             TestData.ResetDatabase(_iisExpress.BaseUrl);
         }
-
 
         public string ServerUrl => _iisExpress.BaseUrl;
 

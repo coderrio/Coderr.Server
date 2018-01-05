@@ -34,7 +34,7 @@ namespace codeRR.Server.SqlServer.Tests.Helpers
             }
 
             var instanceId = Interlocked.Increment(ref InstanceCounter);
-            _databaseName = databaseName ?? $"coderTest{DateTime.Now:MMddHHmmss}_{instanceId}";
+            _databaseName = databaseName ?? $"coderrTest{DateTime.Now:MMddHHmmss}_{instanceId}";
             Console.WriteLine("DBNMAE: " + _databaseName);
             ConnectionString = connectionStringTemplateProvider()
                 .Replace("{databaseName}", _databaseName);

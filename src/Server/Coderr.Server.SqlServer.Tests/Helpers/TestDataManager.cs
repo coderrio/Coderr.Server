@@ -66,7 +66,6 @@ namespace codeRR.Server.SqlServer.Tests.Helpers
             }
         }
 
-
         /// <summary>
         ///     Creates an incident and a report.
         /// </summary>
