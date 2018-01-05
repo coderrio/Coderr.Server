@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
@@ -19,14 +20,25 @@ namespace codeRR.Server.SqlServer.Tests.Helpers
         private bool _deleted;
         private readonly string _masterConString;
 
-        public DatabaseManager(string databaseName = null)
+        public DatabaseManager(string databaseName = null, Func<string> connectionStringTemplateProvider = null)
         {
+            if (connectionStringTemplateProvider == null)
+            {
+                connectionStringTemplateProvider = () =>
+                {
+                    var conString = ConfigurationManager.ConnectionStrings["Db"];
+                    if (conString == null)
+                        throw new ConfigurationErrorsException("Failed to find connectionstring 'Db'.");
+                    return conString.ConnectionString;
+                };
+            }
+
             var instanceId = Interlocked.Increment(ref InstanceCounter);
             _databaseName = databaseName ?? $"coderTest{DateTime.Now:MMddHHmmss}_{instanceId}";
             Console.WriteLine("DBNMAE: " + _databaseName);
-            ConnectionString = ConnectionStringHelper.GetConnectionString().ConnectionString
+            ConnectionString = connectionStringTemplateProvider()
                 .Replace("{databaseName}", _databaseName);
-            _masterConString = ConnectionStringHelper.GetConnectionString().ConnectionString
+            _masterConString = connectionStringTemplateProvider()
                 .Replace("{databaseName}", "master");
             UpdateToLatestVestion = true;
         }
@@ -46,8 +58,8 @@ namespace codeRR.Server.SqlServer.Tests.Helpers
         public void CreateEmptyDatabase()
         {
             Debug.WriteLine("*****DBNAME: " + ConnectionString);
-            var builder = new SqlConnectionStringBuilder(ConnectionString);
-            Environment.SetEnvironmentVariable("coderr_ConnectionString", $"Data Source={builder.DataSource}");
+            //var builder = new SqlConnectionStringBuilder(ConnectionString);
+            Environment.SetEnvironmentVariable("coderr_ConnectionString", ConnectionString);
 
             using (var con = OpenConnection(_masterConString))
             {
@@ -86,7 +98,7 @@ namespace codeRR.Server.SqlServer.Tests.Helpers
             }
             catch (SqlException ex)
             {
-                throw new DataException(_databaseName + " schema init failed.", ex);
+                throw new DataException(_databaseName + " [" + ConnectionString + "] schema init failed.", ex);
             }
         }
 

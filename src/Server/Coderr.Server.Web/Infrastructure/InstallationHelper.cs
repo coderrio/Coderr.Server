@@ -9,7 +9,7 @@ namespace codeRR.Server.Web.Infrastructure
         public static bool IsInstallationRequired()
         {
             return ConfigurationManager.AppSettings["Configured"] != "true" ||
-                   string.IsNullOrEmpty(ConnectionStringHelper.GetConnectionString().ConnectionString);
+                   string.IsNullOrEmpty(ConfigurationManager.ConnectionStrings["Db"]?.ConnectionString);
         }
         
         public static void UpdateConnectionString(string name, string value)

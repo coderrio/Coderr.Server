@@ -39,10 +39,8 @@ namespace codeRR.Server.Web
         public Startup()
         {
             _serviceRunner = new ServiceRunner();
-            ConfigurationStore = new DatabaseStore(() => DbConnectionFactory.Open(ConnectionString, true));
+            ConfigurationStore = new DatabaseStore(() => DbConnectionFactory.Open(true));
         }
-
-        public static ConnectionStringSettings ConnectionString => ConnectionStringHelper.GetConnectionString();
 
         public static ConfigurationStore ConfigurationStore { get; private set; }
 

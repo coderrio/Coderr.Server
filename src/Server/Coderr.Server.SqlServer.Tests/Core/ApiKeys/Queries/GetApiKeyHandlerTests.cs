@@ -68,10 +68,13 @@ namespace codeRR.Server.SqlServer.Tests.Core.ApiKeys.Queries
 
         private void GetApplication()
         {
+            if (_application != null)
+                return;
+
             using (var uow = CreateUnitOfWork())
             {
                 var repos = new ApplicationRepository(uow);
-                var id = uow.ExecuteScalar("SELECT TOP 1 Id FROM Applications");
+                var id = uow.ExecuteScalar("SELECT TOP 1 Id FROM Applications WITH (ReadPast)");
                 if (id is DBNull || id is null)
                 {
                     _application = new Application(10, "AppTen");

@@ -31,7 +31,7 @@ namespace codeRR.Server.Web
             action(builder);
 
             builder.RegisterComponents(Lifetime.Scoped, Assembly.GetExecutingAssembly());
-            builder.RegisterService(CreateConnection, Lifetime.Scoped);
+            builder.RegisterService(CreateUnitOfWork, Lifetime.Scoped);
             builder.RegisterService(CreateTaskInvoker, Lifetime.Singleton);
 
             RegisterBuiltInComponents(builder);
@@ -53,9 +53,9 @@ namespace codeRR.Server.Web
             Container = new GriffinContainerAdapter(ioc);
         }
 
-        private IAdoNetUnitOfWork CreateConnection(IServiceLocator arg)
+        private IAdoNetUnitOfWork CreateUnitOfWork(IServiceLocator arg)
         {
-            var con = DbConnectionFactory.Open(Startup.ConnectionString, true);
+            var con = DbConnectionFactory.Open(true);
             return new AdoNetUnitOfWork(con, true, IsolationLevel.RepeatableRead);
         }
 

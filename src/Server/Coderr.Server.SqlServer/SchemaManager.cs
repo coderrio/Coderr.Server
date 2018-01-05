@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using log4net;
 
 namespace codeRR.Server.SqlServer
 {
@@ -11,6 +12,7 @@ namespace codeRR.Server.SqlServer
     {
         private readonly Func<IDbConnection> _connectionFactory;
         private const string SchemaNamespace = "codeRR.Server.SqlServer.Schema";
+        private ILog _logger = LogManager.GetLogger(typeof(SchemaManager));
 
         public SchemaManager(Func<IDbConnection> connectionFactory)
         {
@@ -27,9 +29,13 @@ namespace codeRR.Server.SqlServer
             return embeddedSchema > version;
         }
 
+        private bool invoked = false;
 
         public void CreateInitialStructure()
         {
+            if (invoked)
+                throw new InvalidOperationException("Invoked");
+            invoked = true;
             using (var con = _connectionFactory())
             {
                 var resourceName = $"{SchemaNamespace}.Database.sql";
@@ -40,6 +46,7 @@ namespace codeRR.Server.SqlServer
                 {
                     cmd.Transaction = transaction;
                     cmd.CommandText = sql;
+                    Console.WriteLine("CON " + con.ConnectionString + " SQL: " + sql);
                     cmd.ExecuteNonQuery();
                     transaction.Commit();
                 }

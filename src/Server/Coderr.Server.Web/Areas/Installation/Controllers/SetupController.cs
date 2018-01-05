@@ -130,7 +130,7 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
         {
             try
             {
-                DbConnectionFactory.Open(Startup.ConnectionString, true);
+                DbConnectionFactory.Open(true);
             }
             catch
             {

@@ -207,7 +207,7 @@ namespace codeRR.Server.Web.Services
 
         private AdoNetMessageQueueProvider CreateQueueProvider()
         {
-            Func<IDbConnection> dbFactory = () => DbConnectionFactory.Open(Startup.ConnectionString, true);
+            Func<IDbConnection> dbFactory = () => DbConnectionFactory.Open(true);
             var serializer = new MessagingSerializer(typeof(AdoNetMessageDto));
             var provider = new AdoNetMessageQueueProvider(dbFactory, serializer);
             return provider;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using codeRR.Server.SqlServer.Tests.Helpers;
 using FluentAssertions;
 using Griffin.Data.Mapper;
@@ -13,6 +14,7 @@ namespace codeRR.Server.SqlServer.Tests
         [Fact]
         public void Should_report_upgradable_if_schema_version_is_less()
         {
+            Thread.Sleep(1000);
             using (var dbMgr = new DatabaseManager())
             {
                 dbMgr.UpdateToLatestVestion = false;
@@ -31,6 +33,7 @@ namespace codeRR.Server.SqlServer.Tests
         [Fact]
         public void Should_not_report_upgradable_if_schema_version_is_same()
         {
+            Thread.Sleep(1000);
             using (var dbMgr = new DatabaseManager())
             {
                 dbMgr.UpdateToLatestVestion = false;
@@ -48,6 +51,7 @@ namespace codeRR.Server.SqlServer.Tests
         [Fact]
         public void Should_report_upgradable_if_schema_table_is_missing()
         {
+            Thread.Sleep(1000);
             using (var dbMgr = new DatabaseManager())
             {
                 dbMgr.UpdateToLatestVestion = false;
@@ -63,6 +67,7 @@ namespace codeRR.Server.SqlServer.Tests
         [Fact]
         public void Should_be_able_to_upgrade_schema()
         {
+            Thread.Sleep(1000);
             using (var dbMgr = new DatabaseManager())
             {
                 dbMgr.UpdateToLatestVestion = false;

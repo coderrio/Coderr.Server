@@ -87,11 +87,11 @@ namespace codeRR.Server.SqlServer.Tests.Core.ApiKeys.Commands
             using (var uow = CreateUnitOfWork())
             {
                 var repos = new ApplicationRepository(uow);
-                var id = uow.ExecuteScalar("SELECT TOP 1 Id FROM Applications");
+                var id = uow.ExecuteScalar("SELECT TOP 1 Id FROM Applications WITH (ReadPast)");
                 if (id is DBNull || id is null)
                 {
                     repos.CreateAsync(new Application(10, "AppTen")).Wait();
-                    _applicationId = (int)uow.ExecuteScalar("SELECT TOP 1 Id FROM Applications");
+                    _applicationId = (int)uow.ExecuteScalar("SELECT TOP 1 Id FROM Applications WITH (ReadPast)");
                 }
                 else
                     _applicationId = (int)id;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
@@ -11,6 +12,11 @@ namespace codeRR.Server.SqlServer
     /// <summary>
     ///     MS Sql Server specific implementation of the database tools.
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// These tools should only be used during setup and updates.
+    /// </para>
+    /// </remarks>
     public class SqlServerTools : ISetupDatabaseTools
     {
         private readonly SchemaManager _schemaManager;
@@ -26,8 +32,8 @@ namespace codeRR.Server.SqlServer
         {
             get
             {
-                var connectionString = ConnectionStringHelper.GetConnectionString();
-                return !string.IsNullOrEmpty(connectionString?.ConnectionString);
+                var conString = GetConnectionString(false);
+                return !string.IsNullOrEmpty(conString?.ConnectionString);
             }
         }
 
@@ -107,9 +113,18 @@ namespace codeRR.Server.SqlServer
             return con;
         }
 
-        public static IDbConnection OpenConnection()
+        protected ConnectionStringSettings GetConnectionString(bool throwOnError = true)
         {
-            var conStr = ConnectionStringHelper.GetConnectionString();
+            var db = ConfigurationManager.ConnectionStrings["Db"];
+            if (db == null && throwOnError)
+                throw new ConfigurationErrorsException("The connectionString 'Db' is missing in web.config.");
+
+            return db;
+        }
+
+        private IDbConnection OpenConnection()
+        {
+            var conStr = GetConnectionString();
             var provider = DbProviderFactories.GetFactory(conStr.ProviderName);
             var connection = provider.CreateConnection();
             connection.ConnectionString = conStr.ConnectionString;
