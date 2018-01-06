@@ -33,9 +33,15 @@ namespace codeRR.Server.Web.Tests
                 _databaseManager.Dispose();
             };
 
+            var configPath =
+                Path.Combine(Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\")),
+                    "applicationhost.config");
+
+            Console.WriteLine($"Path to IIS Express configuration file '{configPath}'");
+
             _iisExpress = new IisExpressHelper
             {
-                ConfigPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "applicationhost.config"),
+                ConfigPath = configPath,
 
                 // Pass on connectionstring to codeRR.Server.Web during testing, overriding connectionstring in web.config
                 EnvironmentVariables = new Dictionary<string, string> { { "coderr_ConnectionString", _databaseManager.ConnectionString } }
