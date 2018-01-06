@@ -3,9 +3,11 @@ using codeRR.Server.SqlServer.Core.Accounts;
 using codeRR.Server.SqlServer.Tests.Helpers;
 using Griffin.Data;
 using Griffin.Data.Mapper;
+using Xunit.Abstractions;
 
 namespace codeRR.Server.SqlServer.Tests
 {
+    [Log]
     public class IntegrationTest : IDisposable
     {
         private static DatabaseManager _databaseManager;
@@ -33,9 +35,9 @@ namespace codeRR.Server.SqlServer.Tests
             mapper.Scan(typeof(AccountRepository).Assembly);
             EntityMappingProvider.Provider = mapper;
         }
-
-        public IntegrationTest()
+        public IntegrationTest(ITestOutputHelper output)
         {
+            LogAttribute.Logger = output;
             _testDataManager = new TestDataManager(_databaseManager.OpenConnection);
         }
 

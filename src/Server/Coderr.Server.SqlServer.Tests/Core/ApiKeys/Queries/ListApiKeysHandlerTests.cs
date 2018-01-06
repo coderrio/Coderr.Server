@@ -8,6 +8,7 @@ using Griffin.Data;
 using Griffin.Data.Mapper;
 using NSubstitute;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace codeRR.Server.SqlServer.Tests.Core.ApiKeys.Queries
 {
@@ -16,7 +17,7 @@ namespace codeRR.Server.SqlServer.Tests.Core.ApiKeys.Queries
     {
         private readonly ApiKey _existingEntity;
 
-        public ListApiKeysHandlerTests()
+        public ListApiKeysHandlerTests(ITestOutputHelper helper) : base(helper)
         {
             _existingEntity = new ApiKey
             {

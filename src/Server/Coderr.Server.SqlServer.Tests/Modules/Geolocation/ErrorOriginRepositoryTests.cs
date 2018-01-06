@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using codeRR.Server.App.Modules.Geolocation;
 using codeRR.Server.SqlServer.Modules.Geolocation;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace codeRR.Server.SqlServer.Tests.Modules.Geolocation
 {
@@ -11,7 +12,7 @@ namespace codeRR.Server.SqlServer.Tests.Modules.Geolocation
         private int _reportId;
         private int _incidentId;
 
-        public ErrorOriginRepositoryTests()
+        public ErrorOriginRepositoryTests(ITestOutputHelper helper) : base(helper)
         {
             ResetDatabase();
             CreateReportAndIncident(out _reportId, out _incidentId);

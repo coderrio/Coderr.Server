@@ -11,6 +11,7 @@ using Griffin.Data;
 using NSubstitute;
 using NSubstitute.Core;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace codeRR.Server.SqlServer.Tests.Core.ApiKeys.Queries
 {
@@ -20,7 +21,7 @@ namespace codeRR.Server.SqlServer.Tests.Core.ApiKeys.Queries
         private Application _application;
         private readonly ApiKey _existingEntity;
 
-        public GetApiKeyHandlerTests()
+        public GetApiKeyHandlerTests(ITestOutputHelper helper):base(helper)
         {
             GetApplication();
 

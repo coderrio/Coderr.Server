@@ -11,6 +11,7 @@ using FluentAssertions;
 using Griffin.Data;
 using NSubstitute;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace codeRR.Server.SqlServer.Tests.Core.ApiKeys.Commands
 {
@@ -19,7 +20,7 @@ namespace codeRR.Server.SqlServer.Tests.Core.ApiKeys.Commands
     {
         private int _applicationId;
 
-        public CreateApiKeyHandlerTests()
+        public CreateApiKeyHandlerTests(ITestOutputHelper helper) : base(helper)
         {
             GetApplicationId();
         }

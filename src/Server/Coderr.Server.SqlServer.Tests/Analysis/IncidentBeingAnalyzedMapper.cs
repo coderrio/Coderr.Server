@@ -5,12 +5,13 @@ using codeRR.Server.ReportAnalyzer.Domain.Incidents;
 using codeRR.Server.ReportAnalyzer.Domain.Reports;
 using codeRR.Server.SqlServer.Analysis;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace codeRR.Server.SqlServer.Tests.Analysis
 {
     public class IncidentBeingAnalyzedMapperTests : IntegrationTest
     {
-        public IncidentBeingAnalyzedMapperTests()
+        public IncidentBeingAnalyzedMapperTests(ITestOutputHelper helper) : base(helper)
         {
             ResetDatabase();
         }
