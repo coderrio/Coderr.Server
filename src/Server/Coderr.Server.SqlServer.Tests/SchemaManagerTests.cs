@@ -1,8 +1,6 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using codeRR.Server.SqlServer.Tests.Helpers;
 using FluentAssertions;
-using Griffin.Data.Mapper;
 using Xunit;
 
 namespace codeRR.Server.SqlServer.Tests
@@ -17,7 +15,7 @@ namespace codeRR.Server.SqlServer.Tests
             Thread.Sleep(1000);
             using (var dbMgr = new DatabaseManager())
             {
-                dbMgr.UpdateToLatestVestion = false;
+                dbMgr.UpdateToLatestVersion = false;
                 dbMgr.CreateEmptyDatabase();
                 dbMgr.InitSchema();
                 dbMgr.UpdateSchema(1);
@@ -27,7 +25,6 @@ namespace codeRR.Server.SqlServer.Tests
 
                 actual.Should().BeTrue();
             }
-
         }
 
         [Fact]
@@ -36,7 +33,7 @@ namespace codeRR.Server.SqlServer.Tests
             Thread.Sleep(1000);
             using (var dbMgr = new DatabaseManager())
             {
-                dbMgr.UpdateToLatestVestion = false;
+                dbMgr.UpdateToLatestVersion = false;
                 dbMgr.CreateEmptyDatabase();
                 dbMgr.InitSchema();
                 dbMgr.UpdateSchema(-1);
@@ -54,7 +51,7 @@ namespace codeRR.Server.SqlServer.Tests
             Thread.Sleep(1000);
             using (var dbMgr = new DatabaseManager())
             {
-                dbMgr.UpdateToLatestVestion = false;
+                dbMgr.UpdateToLatestVersion = false;
                 dbMgr.CreateEmptyDatabase();
 
                 var sut = new SchemaManager(() => dbMgr.OpenConnection());
@@ -70,15 +67,13 @@ namespace codeRR.Server.SqlServer.Tests
             Thread.Sleep(1000);
             using (var dbMgr = new DatabaseManager())
             {
-                dbMgr.UpdateToLatestVestion = false;
+                dbMgr.UpdateToLatestVersion = false;
                 dbMgr.CreateEmptyDatabase();
                 dbMgr.InitSchema();
 
                 var sut = new SchemaManager(() => dbMgr.OpenConnection());
                 sut.UpgradeDatabaseSchema();
-
             }
         }
-
     }
 }

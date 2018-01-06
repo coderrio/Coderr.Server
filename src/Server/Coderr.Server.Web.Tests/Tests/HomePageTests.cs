@@ -3,7 +3,6 @@ using Xunit;
 
 namespace codeRR.Server.Web.Tests.Tests
 {
-    
     [Trait("Category", "Integration")]
     public class HomePageTests : LoggedInTest
     {
