@@ -15,7 +15,7 @@ namespace codeRR.Server.Web.Tests.Helpers
         /// </summary>
         public string AppPool { get; set; }
 
-        public string BaseUrl => "http://localhost:50473/";
+        public string BaseUrl => "http://localhost:50473/coderr/";
 
         /// <summary>
         ///     Path to the IIS Express configuration file. Defaults to
