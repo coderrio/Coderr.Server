@@ -10,6 +10,8 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Support.Extensions;
 using Xunit;
 
+[assembly: CollectionBehavior(CollectionBehavior.CollectionPerAssembly)]
+
 namespace codeRR.Server.Web.Tests
 {
     [TestCaseOrderer("codeRR.Server.Web.Tests.Helpers.xUnit.TestCaseOrderer", "codeRR.Server.Web.Tests")]
