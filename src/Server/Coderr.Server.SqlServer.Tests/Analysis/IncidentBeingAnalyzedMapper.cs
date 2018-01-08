@@ -13,6 +13,7 @@ namespace codeRR.Server.SqlServer.Tests.Analysis
     {
         public IncidentBeingAnalyzedMapperTests(ITestOutputHelper helper) : base(helper)
         {
+            helper.WriteLine("Hello world");
             ResetDatabase();
         }
 

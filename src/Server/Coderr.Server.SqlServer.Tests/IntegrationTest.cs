@@ -1,9 +1,15 @@
 ﻿using System;
+using System.IO;
 using codeRR.Server.SqlServer.Core.Accounts;
 using codeRR.Server.SqlServer.Tests.Helpers;
+using codeRR.Server.SqlServer.Tests.Xunit;
 using Griffin.Data;
 using Griffin.Data.Mapper;
+using log4net;
+using log4net.Config;
+using Xunit;
 using Xunit.Abstractions;
+[assembly: TestFramework("codeRR.Server.SqlServer.Tests.Xunit.XunitTestFrameworkWithAssemblyFixture", "codeRR.Server.SqlServer.Tests")]
 
 namespace codeRR.Server.SqlServer.Tests
 {
@@ -17,6 +23,13 @@ namespace codeRR.Server.SqlServer.Tests
 
         static IntegrationTest()
         {
+            var path2 = AppDomain.CurrentDomain.BaseDirectory;
+            XmlConfigurator.ConfigureAndWatch(new FileInfo(Path.Combine(path2, "log4net.config")));
+            var logger = LogManager.GetLogger(typeof(IntegrationTest));
+            logger.Info("Loaded");
+
+            
+
             AppDomain.CurrentDomain.DomainUnload += (o, e) =>
             {
                 if (_databaseManager == null)
@@ -35,9 +48,11 @@ namespace codeRR.Server.SqlServer.Tests
             mapper.Scan(typeof(AccountRepository).Assembly);
             EntityMappingProvider.Provider = mapper;
         }
+
         public IntegrationTest(ITestOutputHelper output)
         {
             LogAttribute.Logger = output;
+            MethodLogger.OutputHelper = output;
             _testDataManager = new TestDataManager(_databaseManager.OpenConnection);
         }
 
