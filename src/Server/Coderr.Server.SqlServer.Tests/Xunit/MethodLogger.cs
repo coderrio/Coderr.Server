@@ -18,7 +18,7 @@ namespace codeRR.Server.SqlServer.Tests.Xunit
             _diagnosticMessageSink = diagnosticMessageSink;
         }
 
-        protected override Task<RunSummary> RunTestMethodAsync(ITestMethod testMethod, IReflectionMethodInfo method, IEnumerable<IXunitTestCase> testCases,
+        protected override async Task<RunSummary> RunTestMethodAsync(ITestMethod testMethod, IReflectionMethodInfo method, IEnumerable<IXunitTestCase> testCases,
             object[] constructorArguments)
         {
             try
@@ -27,12 +27,21 @@ namespace codeRR.Server.SqlServer.Tests.Xunit
                 _logger.Info($"Running {testMethod.TestClass.Class.Name}.{testMethod.Method.Name}");
                 _diagnosticMessageSink.OnMessage(
                     new DiagnosticMessage($"Running {testMethod.TestClass.Class.Name}.{testMethod.Method.Name}"));
-                var result= base.RunTestMethodAsync(testMethod, method, testCases, constructorArguments);
+
+                var t = base.RunTestMethodAsync(testMethod, method, testCases, constructorArguments);
+                var delay = Task.Delay(5000);
+                await Task.WhenAny(t, delay);
+                if (!t.IsCompleted)
+                {
+                    throw new TimeoutException($"Timeout: {testMethod.TestClass.Class.Name}.{testMethod.Method.Name}");
+                }
+
+                //var result= await base.RunTestMethodAsync(testMethod, method, testCases, constructorArguments);
                 OutputHelper?.WriteLine($"..completed {testMethod.TestClass.Class.Name}.{testMethod.Method.Name}");
                 _logger.Info(".. completed " + testMethod.TestClass.Class.Name + "." + testMethod.Method.Name);
                 _diagnosticMessageSink.OnMessage(
                     new DiagnosticMessage($".. completed {testMethod.TestClass.Class.Name}.{testMethod.Method.Name}"));
-                return result;
+                return t.Result;
             }
             catch (Exception e)
             {
