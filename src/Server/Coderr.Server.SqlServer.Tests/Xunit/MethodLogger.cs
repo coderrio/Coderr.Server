@@ -23,10 +23,7 @@ namespace codeRR.Server.SqlServer.Tests.Xunit
         {
             try
             {
-                OutputHelper?.WriteLine($"Running {testMethod.TestClass.Class.Name}.{testMethod.Method.Name}");
                 _logger.Info($"Running {testMethod.TestClass.Class.Name}.{testMethod.Method.Name}");
-                _diagnosticMessageSink.OnMessage(
-                    new DiagnosticMessage($"Running {testMethod.TestClass.Class.Name}.{testMethod.Method.Name}"));
 
                 var t = base.RunTestMethodAsync(testMethod, method, testCases, constructorArguments);
                 var delay = Task.Delay(5000);
@@ -37,18 +34,12 @@ namespace codeRR.Server.SqlServer.Tests.Xunit
                 }
 
                 //var result= await base.RunTestMethodAsync(testMethod, method, testCases, constructorArguments);
-                OutputHelper?.WriteLine($"..completed {testMethod.TestClass.Class.Name}.{testMethod.Method.Name}");
                 _logger.Info(".. completed " + testMethod.TestClass.Class.Name + "." + testMethod.Method.Name);
-                _diagnosticMessageSink.OnMessage(
-                    new DiagnosticMessage($".. completed {testMethod.TestClass.Class.Name}.{testMethod.Method.Name}"));
                 return t.Result;
             }
             catch (Exception e)
             {
-                OutputHelper?.WriteLine($"..failed {testMethod.TestClass.Class.Name}.{testMethod.Method.Name}");
                 _logger.Info(".. failed " + testMethod.TestClass.Class.Name + "." + testMethod.Method.Name, e);
-                _diagnosticMessageSink.OnMessage(
-                    new DiagnosticMessage($".. failed {testMethod.TestClass.Class.Name}.{testMethod.Method.Name} failed: " + e));
                 throw;
             }
             
