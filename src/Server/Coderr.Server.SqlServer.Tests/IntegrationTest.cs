@@ -13,7 +13,6 @@ using Xunit.Abstractions;
 
 namespace codeRR.Server.SqlServer.Tests
 {
-    [Log]
     public class IntegrationTest : IDisposable
     {
         private static DatabaseManager _databaseManager;
@@ -51,8 +50,6 @@ namespace codeRR.Server.SqlServer.Tests
 
         public IntegrationTest(ITestOutputHelper output)
         {
-            LogAttribute.Logger = output;
-            MethodLogger.OutputHelper = output;
             _testDataManager = new TestDataManager(_databaseManager.OpenConnection);
         }
 
