@@ -128,8 +128,14 @@ namespace codeRR.Server.Web.Tests.Helpers
             };
 
             if (EnvironmentVariables != null)
+            {
                 foreach (var environmentVariable in EnvironmentVariables)
+                {
+                    Console.WriteLine($"Setting environment variable '{environmentVariable.Key}' to '{environmentVariable.Value}'");
+
                     process.StartInfo.EnvironmentVariables[environmentVariable.Key] = environmentVariable.Value;
+                }
+            }
 
             process.OutputDataReceived += (sender, args) =>
             {

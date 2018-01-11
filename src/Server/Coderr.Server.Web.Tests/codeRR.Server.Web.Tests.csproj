@@ -21,6 +21,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="System.Web" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="applicationhost.config">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

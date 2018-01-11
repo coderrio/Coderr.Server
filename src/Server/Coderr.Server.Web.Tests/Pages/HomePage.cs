@@ -6,7 +6,7 @@ namespace codeRR.Server.Web.Tests.Pages
 {
     public class HomePage : BasePage
     {
-        public HomePage(IWebDriver webDriver) : base(webDriver, "", "MyTestApp")
+        public HomePage(IWebDriver webDriver) : base(webDriver, "", "Overview")
         {
         }
 
@@ -15,6 +15,18 @@ namespace codeRR.Server.Web.Tests.Pages
 
         [FindsBy(How = How.Id, Using = "pageTitle")]
         public IWebElement PageTitle { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//a/span[.=' Dashboard ']")]
+        public IWebElement NavigationDashboard { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//a[.='Overview']")]
+        public IWebElement NavigationDashboardOverview { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//a[.='Incidents']")]
+        public IWebElement NavigationDashboardIncidents { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//a[.='Feedback']")]
+        public IWebElement NavigationDashboardFeedback { get; set; }
 
         public bool HasApplicationInNavigation(string applicationName)
         {
