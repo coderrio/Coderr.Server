@@ -41,7 +41,7 @@ namespace codeRR.Server.Web.Tests
             // Disables database migration in codeRR.Server.Web project, should be up-to-date already
             // SchemaUpdateModule does not handle coderr_ConnectionString environment variable
             // This should only be run on build server due to changes in web.config
-            if (Environment.GetEnvironmentVariable("BUILD_SERVER") != null)
+            if (Environment.GetEnvironmentVariable("TF_BUILD") != null)
             {
                 DisableDatabaseMigrations();
             }
@@ -62,7 +62,7 @@ namespace codeRR.Server.Web.Tests
             _iisExpress.Start("codeRR.Server.Web");
 
             // Warmup request only on build server
-            if (Environment.GetEnvironmentVariable("BUILD_SERVER") != null)
+            if (Environment.GetEnvironmentVariable("TF_BUILD") != null)
             {
                 var webClient = new WebClient();
                 webClient.DownloadString(_iisExpress.BaseUrl);

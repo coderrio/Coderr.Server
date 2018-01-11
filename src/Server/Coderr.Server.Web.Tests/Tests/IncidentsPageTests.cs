@@ -9,7 +9,7 @@ namespace codeRR.Server.Web.Tests.Tests
     [Trait("Category", "Integration")]
     public class IncidentsPageTests : LoggedInTest
     {
-        [Fact]
+        [Fact(Skip = "Needs more work")]
         public void Should_be_able_to_report_error_with_client_lib_and_error_shows_up_in_incidents()
         {
             UITest(() =>
