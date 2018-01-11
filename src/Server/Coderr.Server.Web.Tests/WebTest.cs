@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
+using System.Net;
+using System.Web.Configuration;
 using codeRR.Server.SqlServer.Core.Accounts;
 using codeRR.Server.SqlServer.Tests.Helpers;
 using codeRR.Server.Web.Tests.Helpers;
@@ -35,6 +38,14 @@ namespace codeRR.Server.Web.Tests
                 _databaseManager.Dispose();
             };
 
+            // Disables database migration in codeRR.Server.Web project, should be up-to-date already
+            // SchemaUpdateModule does not handle coderr_ConnectionString environment variable
+            // This should only be run on build server due to changes in web.config
+            if (Environment.GetEnvironmentVariable("BUILD_SERVER") != null)
+            {
+                DisableDatabaseMigrations();
+            }
+
             var configPath =
                 Path.Combine(Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\")),
                     "applicationhost.config");
@@ -50,9 +61,42 @@ namespace codeRR.Server.Web.Tests
             };
             _iisExpress.Start("codeRR.Server.Web");
 
+            // Warmup request only on build server
+            if (Environment.GetEnvironmentVariable("BUILD_SERVER") != null)
+            {
+                var webClient = new WebClient();
+                webClient.DownloadString(_iisExpress.BaseUrl);
+            }
+
             TestData = new TestDataManager(_databaseManager.OpenConnection);
             WebDriver = DriverFactory.Create(BrowserType.Chrome);
             AppDomain.CurrentDomain.DomainUnload += (o, e) => { DisposeWebDriver(); };
+        }
+
+        /// <summary>
+        /// Disables database migration in codeRR.Server.Web project
+        /// </summary>
+        private static void DisableDatabaseMigrations()
+        {
+            var webConfigFilename =
+                Path.Combine(
+                    Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\codeRR.Server.Web\")),
+                    "web.config");
+
+            Console.WriteLine($"Setting DisableMigrations=true in '{webConfigFilename}'");
+
+            // Prevent SchemaUpdateModule from running
+            var configFile = new FileInfo(webConfigFilename);
+            var vdm = new VirtualDirectoryMapping(configFile.DirectoryName, true, configFile.Name);
+            var wcfm = new WebConfigurationFileMap();
+            wcfm.VirtualDirectories.Add("/", vdm);
+            var configuration = WebConfigurationManager.OpenMappedWebConfiguration(wcfm, "/");
+            var appSettings = configuration.AppSettings.Settings;
+            if (appSettings["DisableMigrations"] == null)
+                appSettings.Add("DisableMigrations", "true");
+            else
+                appSettings["DisableMigrations"].Value = "true";
+            configuration.Save();
         }
 
         protected WebTest()

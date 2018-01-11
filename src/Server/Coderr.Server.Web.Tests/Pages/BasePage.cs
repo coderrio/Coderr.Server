@@ -35,6 +35,11 @@ namespace codeRR.Server.Web.Tests.Pages
                 Wait.Until(ExpectedConditions.UrlContains(Url));
         }
 
+        public void WaitForTitle(string title)
+        {
+            Wait.Until(ExpectedConditions.TitleIs(title));
+        }
+
         public void DeleteCookies()
         {
             WebDriver.Manage().Cookies.DeleteAllCookies();
