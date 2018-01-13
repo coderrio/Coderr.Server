@@ -7,7 +7,7 @@ namespace codeRR.Server.Web.Tests.Tests
     public class HomePageTests : LoggedInTest
     {
         [Fact]
-        public void Should_be_able_to_navigate_to_application()
+        public void Should_be_able_to_navigate_to_myfirstapp_application()
         {
             UITest(() =>
             {
@@ -16,9 +16,9 @@ namespace codeRR.Server.Web.Tests.Tests
                 var sut = new HomePage(WebDriver);
                 sut.NavigateToPage();
 
-                sut.FirstApplication.Click();
+                sut.NavigationMyTestApp.Click();
 
-                sut.VerifyNavigatedToFirstApplication();
+                sut.VerifyNavigatedToMyTestApp();
 
                 Logout();
             });
