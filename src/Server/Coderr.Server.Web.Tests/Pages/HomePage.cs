@@ -11,7 +11,7 @@ namespace codeRR.Server.Web.Tests.Pages
         }
 
         [FindsBy(How = How.XPath, Using = "//a/span[.=' MyTestApp ']")]
-        public IWebElement FirstApplication { get; set; }
+        public IWebElement NavigationMyTestApp { get; set; }
 
         [FindsBy(How = How.Id, Using = "pageTitle")]
         public IWebElement PageTitle { get; set; }
@@ -41,9 +41,9 @@ namespace codeRR.Server.Web.Tests.Pages
             Wait.Until(ExpectedConditions.TitleIs("Overview"));
         }
 
-        public void VerifyNavigatedToFirstApplication()
+        public void VerifyNavigatedToMyTestApp()
         {
-            Wait.Until(ExpectedConditions.TextToBePresentInElement(PageTitle, Title));
+            Wait.Until(ExpectedConditions.TextToBePresentInElement(PageTitle, "MyTestApp"));
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using codeRR.Server.SqlServer.Tests.Models;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 using OpenQA.Selenium.Support.UI;
@@ -11,7 +12,9 @@ namespace codeRR.Server.Web.Tests.Pages
         protected WebDriverWait Wait;
         protected string BaseUrl { get; }
         protected string Url { get; set; }
-        protected string Title { get; }
+        public string Title { get; }
+
+        protected readonly TestUser TestUser = WebTest.TestUser;
 
         public BasePage(IWebDriver webDriver, string url, string title)
         {

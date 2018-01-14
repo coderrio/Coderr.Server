@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Net;
 using System.Web.Configuration;
 using codeRR.Server.SqlServer.Core.Accounts;
 using codeRR.Server.SqlServer.Tests.Helpers;
+using codeRR.Server.SqlServer.Tests.Models;
 using codeRR.Server.Web.Tests.Helpers;
 using codeRR.Server.Web.Tests.Helpers.Selenium;
 using Griffin.Data.Mapper;
@@ -41,7 +41,7 @@ namespace codeRR.Server.Web.Tests
             // Disables database migration in codeRR.Server.Web project, should be up-to-date already
             // SchemaUpdateModule does not handle coderr_ConnectionString environment variable
             // This should only be run on build server due to changes in web.config
-            if (Environment.GetEnvironmentVariable("BUILD_SERVER") != null)
+            if (Environment.GetEnvironmentVariable("TF_BUILD") != null)
             {
                 DisableDatabaseMigrations();
             }
@@ -62,13 +62,16 @@ namespace codeRR.Server.Web.Tests
             _iisExpress.Start("codeRR.Server.Web");
 
             // Warmup request only on build server
-            if (Environment.GetEnvironmentVariable("BUILD_SERVER") != null)
+            if (Environment.GetEnvironmentVariable("TF_BUILD") != null)
             {
                 var webClient = new WebClient();
                 webClient.DownloadString(_iisExpress.BaseUrl);
             }
 
-            TestData = new TestDataManager(_databaseManager.OpenConnection);
+            TestUser = new TestUser {Username = "TestUser", Password = "123456", Email = "TestUser@coderrapp.com"};
+
+            TestData = new TestDataManager(_databaseManager.OpenConnection) { TestUser = TestUser };
+
             WebDriver = DriverFactory.Create(BrowserType.Chrome);
             AppDomain.CurrentDomain.DomainUnload += (o, e) => { DisposeWebDriver(); };
         }
@@ -109,6 +112,8 @@ namespace codeRR.Server.Web.Tests
         public static TestDataManager TestData { get; }
 
         public static IWebDriver WebDriver { get; private set; }
+
+        public static TestUser TestUser { get; set; }
 
         private static void DisposeWebDriver()
         {
