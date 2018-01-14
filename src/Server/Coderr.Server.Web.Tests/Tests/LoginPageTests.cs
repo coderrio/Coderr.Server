@@ -1,4 +1,5 @@
 ﻿using codeRR.Server.Web.Tests.Pages;
+using codeRR.Server.Web.Tests.Pages.Account;
 using Xunit;
 
 namespace codeRR.Server.Web.Tests.Tests

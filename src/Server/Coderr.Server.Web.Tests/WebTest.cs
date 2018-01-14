@@ -5,6 +5,7 @@ using System.Net;
 using System.Web.Configuration;
 using codeRR.Server.SqlServer.Core.Accounts;
 using codeRR.Server.SqlServer.Tests.Helpers;
+using codeRR.Server.SqlServer.Tests.Models;
 using codeRR.Server.Web.Tests.Helpers;
 using codeRR.Server.Web.Tests.Helpers.Selenium;
 using Griffin.Data.Mapper;
@@ -67,7 +68,10 @@ namespace codeRR.Server.Web.Tests
                 webClient.DownloadString(_iisExpress.BaseUrl);
             }
 
-            TestData = new TestDataManager(_databaseManager.OpenConnection);
+            TestUser = new TestUser {Username = "TestUser", Password = "123456", Email = "TestUser@coderrapp.com"};
+
+            TestData = new TestDataManager(_databaseManager.OpenConnection) { TestUser = TestUser };
+
             WebDriver = DriverFactory.Create(BrowserType.Chrome);
             AppDomain.CurrentDomain.DomainUnload += (o, e) => { DisposeWebDriver(); };
         }
@@ -108,6 +112,8 @@ namespace codeRR.Server.Web.Tests
         public static TestDataManager TestData { get; }
 
         public static IWebDriver WebDriver { get; private set; }
+
+        public static TestUser TestUser { get; set; }
 
         private static void DisposeWebDriver()
         {

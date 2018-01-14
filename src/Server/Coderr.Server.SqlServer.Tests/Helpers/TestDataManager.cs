@@ -12,6 +12,7 @@ using codeRR.Server.SqlServer.Analysis;
 using codeRR.Server.SqlServer.Core.Accounts;
 using codeRR.Server.SqlServer.Core.Applications;
 using codeRR.Server.SqlServer.Core.Users;
+using codeRR.Server.SqlServer.Tests.Models;
 using Coderr.Server.PluginApi.Config;
 using Griffin.Data;
 using Griffin.Data.Mapper;
@@ -37,6 +38,8 @@ namespace codeRR.Server.SqlServer.Tests.Helpers
         ///     </para>
         /// </remarks>
         public int AccountId { get; private set; }
+
+        public TestUser TestUser { get; set; }
 
         public Application Application { get; private set; }
 
@@ -119,7 +122,7 @@ namespace codeRR.Server.SqlServer.Tests.Helpers
                 }
 
                 var sql = $@"INSERT INTO Settings (Section, Name, Value) VALUES
-('BaseConfig', 'AllowRegistrations', 'False'), 
+('BaseConfig', 'AllowRegistrations', 'True'), 
 ('BaseConfig', 'BaseUrl', '{baseUrl}'), 
 ('BaseConfig', 'SenderEmail', 'webtests@coderrapp.com'), 
 ('BaseConfig', 'SupportEmail', 'webtests@coderrapp.com'), 
@@ -184,11 +187,11 @@ namespace codeRR.Server.SqlServer.Tests.Helpers
         protected void CreateUserAndApplication(IAdoNetUnitOfWork uow, out int accountId, out int applicationId)
         {
             var accountRepos = new AccountRepository(uow);
-            var account = new Account("arne", "123456") {Email = "arne@som.com"};
+            var account = new Account(TestUser.Username, TestUser.Password) {Email = TestUser.Email};
             account.Activate();
             accountRepos.Create(account);
             var userRepos = new UserRepository(uow);
-            var user = new User(account.Id, "arne") {EmailAddress = "arne@som.com"};
+            var user = new User(account.Id, TestUser.Username) {EmailAddress =TestUser.Email};
             userRepos.CreateAsync(user).GetAwaiter().GetResult();
 
             var appRepos = new ApplicationRepository(uow);

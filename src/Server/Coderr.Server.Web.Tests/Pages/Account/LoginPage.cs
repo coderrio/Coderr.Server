@@ -2,14 +2,11 @@
 using OpenQA.Selenium.Support.PageObjects;
 using OpenQA.Selenium.Support.UI;
 
-namespace codeRR.Server.Web.Tests.Pages
+namespace codeRR.Server.Web.Tests.Pages.Account
 {
     public class LoginPage : BasePage
     {
-        private const string UserName = "arne";
-        private const string Password = "123456";
-
-        public LoginPage(IWebDriver webDriver) : base(webDriver, "Account/Login", "Login - codeRR")
+        public LoginPage(IWebDriver webDriver) : base(webDriver, (string) "Account/Login", (string) "Login - codeRR")
         {
         }
 
@@ -27,10 +24,10 @@ namespace codeRR.Server.Web.Tests.Pages
             NavigateToPage();
 
             UserNameField.Clear();
-            UserNameField.SendKeys(UserName);
+            UserNameField.SendKeys(TestUser.Username);
 
             PasswordField.Clear();
-            PasswordField.SendKeys(Password);
+            PasswordField.SendKeys(TestUser.Password);
 
             SignInButton.Click();
 
@@ -59,7 +56,7 @@ namespace codeRR.Server.Web.Tests.Pages
             UserNameField.SendKeys("NonExistingUsername");
 
             PasswordField.Clear();
-            PasswordField.SendKeys(Password);
+            PasswordField.SendKeys(TestUser.Password);
 
             SignInButton.Click();
 
@@ -73,7 +70,7 @@ namespace codeRR.Server.Web.Tests.Pages
             UserNameField.Clear();
 
             PasswordField.Clear();
-            PasswordField.SendKeys(Password);
+            PasswordField.SendKeys(TestUser.Password);
 
             SignInButton.Click();
 
@@ -98,7 +95,7 @@ namespace codeRR.Server.Web.Tests.Pages
             NavigateToPage();
 
             UserNameField.Clear();
-            UserNameField.SendKeys(UserName);
+            UserNameField.SendKeys(TestUser.Username);
 
             PasswordField.Clear();
 
@@ -112,10 +109,10 @@ namespace codeRR.Server.Web.Tests.Pages
             NavigateToPage();
 
             UserNameField.Clear();
-            UserNameField.SendKeys(UserName);
+            UserNameField.SendKeys(TestUser.Username);
 
             PasswordField.Clear();
-            PasswordField.SendKeys(Password.Substring(1));
+            PasswordField.SendKeys(TestUser.Password.Substring(1));
 
             SignInButton.Click();
 

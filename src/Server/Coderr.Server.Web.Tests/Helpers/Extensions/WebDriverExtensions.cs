@@ -20,10 +20,29 @@ namespace codeRR.Server.Web.Tests.Helpers.Extensions
             return present;
         }
 
+        public static bool ElementIsPresent(this IWebDriver driver, IWebElement element)
+        {
+            var present = false;
+            try
+            {
+                present = element.Displayed;
+            }
+            catch (NoSuchElementException)
+            {
+            }
+            return present;
+        }
+
         public static bool WaitUntilElementIsPresent(this IWebDriver driver, By by, int timeout = 5)
         {
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeout));
             return wait.Until(d => d.ElementIsPresent(by));
+        }
+
+        public static bool WaitUntilElementIsPresent(this IWebDriver driver, IWebElement element, int timeout = 5)
+        {
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeout));
+            return wait.Until(d => d.ElementIsPresent(element));
         }
 
         public static string WaitUntilTitleEquals(this IWebDriver driver, string title, int timeout = 5)
