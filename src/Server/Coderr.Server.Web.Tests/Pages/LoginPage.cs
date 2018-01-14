@@ -37,6 +37,35 @@ namespace codeRR.Server.Web.Tests.Pages
             return new HomePage(WebDriver);
         }
 
+        public LoginPage LoginWithNonExistingUserWithoutPasswordSpecified()
+        {
+            NavigateToPage();
+
+            UserNameField.Clear();
+            UserNameField.SendKeys("NonExistingUsername");
+
+            PasswordField.Clear();
+
+            SignInButton.Click();
+
+            return this;
+        }
+
+        public LoginPage LoginWithNonExistingUserWithPasswordSpecified()
+        {
+            NavigateToPage();
+
+            UserNameField.Clear();
+            UserNameField.SendKeys("NonExistingUsername");
+
+            PasswordField.Clear();
+            PasswordField.SendKeys(Password);
+
+            SignInButton.Click();
+
+            return this;
+        }
+
         public LoginPage LoginWithNoUserNameSpecified()
         {
             NavigateToPage();
@@ -45,6 +74,19 @@ namespace codeRR.Server.Web.Tests.Pages
 
             PasswordField.Clear();
             PasswordField.SendKeys(Password);
+
+            SignInButton.Click();
+
+            return this;
+        }
+
+        public LoginPage LoginWithNoUserNameAndNoPasswordSpecified()
+        {
+            NavigateToPage();
+
+            UserNameField.Clear();
+
+            PasswordField.Clear();
 
             SignInButton.Click();
 

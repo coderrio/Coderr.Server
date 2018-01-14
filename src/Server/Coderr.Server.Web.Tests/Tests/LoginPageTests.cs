@@ -33,6 +33,45 @@ namespace codeRR.Server.Web.Tests.Tests
         }
 
         [Fact]
+        public void Should_not_be_able_to_login_with_empty_username_and_empty_password()
+        {
+            UITest(() =>
+            {
+                var sut = new LoginPage(WebDriver)
+                    .LoginWithNoUserNameAndNoPasswordSpecified();
+
+                Assert.IsType<LoginPage>(sut);
+                sut.VerifyIsCurrentPage();
+            });
+        }
+
+        [Fact]
+        public void Should_not_be_able_to_login_with_non_existing_user()
+        {
+            UITest(() =>
+            {
+                var sut = new LoginPage(WebDriver)
+                    .LoginWithNonExistingUserWithPasswordSpecified();
+
+                Assert.IsType<LoginPage>(sut);
+                sut.VerifyIsCurrentPage();
+            });
+        }
+
+        [Fact]
+        public void Should_not_be_able_to_login_with_non_existing_user_with_empty_password()
+        {
+            UITest(() =>
+            {
+                var sut = new LoginPage(WebDriver)
+                    .LoginWithNonExistingUserWithoutPasswordSpecified();
+
+                Assert.IsType<LoginPage>(sut);
+                sut.VerifyIsCurrentPage();
+            });
+        }
+
+        [Fact]
         public void Should_not_be_able_to_login_with_wrong_password()
         {
             UITest(() =>
