@@ -6,7 +6,7 @@ namespace codeRR.Server.Web.Tests.Pages.Account
 {
     public class LoginPage : BasePage
     {
-        public LoginPage(IWebDriver webDriver) : base(webDriver, (string) "Account/Login", (string) "Login - codeRR")
+        public LoginPage(IWebDriver webDriver) : base(webDriver, "Account/Login", "Login - codeRR")
         {
         }
 
@@ -19,19 +19,19 @@ namespace codeRR.Server.Web.Tests.Pages.Account
         [FindsBy(How = How.Id, Using = "Password")]
         public IWebElement PasswordField { get; set; }
 
-        public HomePage LoginWithValidCredentials()
+        public IPage LoginWithValidCredentials(string userName, string password)
         {
             NavigateToPage();
 
             UserNameField.Clear();
-            UserNameField.SendKeys(TestUser.Username);
+            UserNameField.SendKeys(userName);
 
             PasswordField.Clear();
-            PasswordField.SendKeys(TestUser.Password);
+            PasswordField.SendKeys(password);
 
             SignInButton.Click();
 
-            return new HomePage(WebDriver);
+            return PageHelper.ResolvePage(WebDriver);
         }
 
         public LoginPage LoginWithNonExistingUserWithoutPasswordSpecified()

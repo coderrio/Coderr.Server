@@ -1,38 +1,11 @@
 ﻿using System;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
-using Xunit.Sdk;
 
 namespace codeRR.Server.Web.Tests.Helpers.Extensions
 {
     public static class WebDriverExtensions
     {
-        public static bool ElementIsPresent(this IWebDriver driver, By by)
-        {
-            var present = false;
-            try
-            {
-                present = driver.FindElement(by).Displayed;
-            }
-            catch (NoSuchElementException)
-            {
-            }
-            return present;
-        }
-
-        public static bool ElementIsPresent(this IWebDriver driver, IWebElement element)
-        {
-            var present = false;
-            try
-            {
-                present = element.Displayed;
-            }
-            catch (NoSuchElementException)
-            {
-            }
-            return present;
-        }
-
         public static bool WaitUntilElementIsPresent(this IWebDriver driver, By by, int timeout = 5)
         {
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeout));
@@ -58,6 +31,32 @@ namespace codeRR.Server.Web.Tests.Helpers.Extensions
             }
 
             return driver.Title;
+        }
+
+        private static bool ElementIsPresent(this IWebDriver driver, By by)
+        {
+            var present = false;
+            try
+            {
+                present = driver.FindElement(by).Displayed;
+            }
+            catch (NoSuchElementException)
+            {
+            }
+            return present;
+        }
+
+        private static bool ElementIsPresent(this IWebDriver driver, IWebElement element)
+        {
+            var present = false;
+            try
+            {
+                present = element.Displayed;
+            }
+            catch (NoSuchElementException)
+            {
+            }
+            return present;
         }
     }
 }

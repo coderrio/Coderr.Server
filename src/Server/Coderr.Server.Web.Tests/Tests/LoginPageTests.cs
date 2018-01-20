@@ -91,10 +91,10 @@ namespace codeRR.Server.Web.Tests.Tests
             UITest(() =>
             {
                 var sut = new LoginPage(WebDriver)
-                    .LoginWithValidCredentials();
+                    .LoginWithValidCredentials(TestData.TestUser.Username, TestData.TestUser.Password);
 
                 Assert.IsType<HomePage>(sut);
-                sut.VerifyIsCurrentPage();
+                ((HomePage)sut).VerifyIsCurrentPage();
 
                 Logout();
             });

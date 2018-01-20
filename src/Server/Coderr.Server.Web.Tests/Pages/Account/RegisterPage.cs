@@ -7,7 +7,7 @@ namespace codeRR.Server.Web.Tests.Pages.Account
 {
     public class RegisterPage : BasePage
     {
-        public RegisterPage(IWebDriver webDriver) : base(webDriver, (string) "Account/Register", (string) "Register account - codeRR")
+        public RegisterPage(IWebDriver webDriver) : base(webDriver, "Account/Register", "Register account - codeRR")
         {
         }
 

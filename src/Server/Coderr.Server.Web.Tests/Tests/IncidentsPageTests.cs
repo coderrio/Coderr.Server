@@ -7,15 +7,18 @@ using Xunit;
 namespace codeRR.Server.Web.Tests.Tests
 {
     [Trait("Category", "Integration")]
-    public class IncidentsPageTests : LoggedInTest
+    public class IncidentsPageTests : LoggedInTest, IDisposable
     {
+        public IncidentsPageTests()
+        {
+            Login();
+        }
+
         [Fact]
         public void Should_be_able_to_report_error_with_client_lib_and_error_shows_up_in_incidents()
         {
             UITest(() =>
             {
-                Login();
-
                 var url = new Uri(ServerUrl);
                 Err.Configuration.Credentials(url, TestData.Application.AppKey, TestData.Application.SharedSecret);
                 Err.Report(new ArgumentNullException("id"), new { SampleData = "Context example" });
@@ -27,9 +30,12 @@ namespace codeRR.Server.Web.Tests.Tests
                 sut.NavigateToPage();
 
                 sut.VerifyIncidentReported();
-
-                Logout();
             });
+        }
+
+        public void Dispose()
+        {
+            Logout();
         }
     }
 }
