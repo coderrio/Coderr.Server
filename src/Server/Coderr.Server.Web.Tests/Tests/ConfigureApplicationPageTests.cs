@@ -1,25 +1,27 @@
-﻿using codeRR.Server.Web.Tests.Pages;
+﻿using System;
+using codeRR.Server.Web.Tests.Pages;
 using Xunit;
 
 namespace codeRR.Server.Web.Tests.Tests
 {
     [Trait("Category", "Integration")]
-    public class ConfigureApplicationPageTests : LoggedInTest
+    public class ConfigureApplicationPageTests : LoggedInTest, IDisposable
     {
+        public ConfigureApplicationPageTests()
+        {
+            Login();
+        }
+
         [Fact]
         public void Should_not_be_able_to_create_application_without_name_specified()
         {
             UITest(() =>
             {
-                Login();
-
                 var sut = new ConfigureApplicationPage(WebDriver)
                     .CreateApplication(string.Empty);
 
                 //TODO: Verify error message
                 sut.VerifyIsCurrentPage();
-
-                Logout();
             });
         }
 
@@ -28,8 +30,6 @@ namespace codeRR.Server.Web.Tests.Tests
         {
             UITest(() =>
             {
-                Login();
-
                 var applicationName = "TestApplication";
 
                 var sut = new ConfigureApplicationPage(WebDriver)
@@ -42,9 +42,12 @@ namespace codeRR.Server.Web.Tests.Tests
                 homePage.VerifyIsCurrentPage();
 
                 homePage.HasApplicationInNavigation(applicationName);
-
-                Logout();
             });
+        }
+
+        public void Dispose()
+        {
+            Logout();
         }
     }
 }

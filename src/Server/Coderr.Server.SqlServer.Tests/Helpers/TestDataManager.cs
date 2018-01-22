@@ -109,6 +109,26 @@ namespace codeRR.Server.SqlServer.Tests.Helpers
             }
         }
 
+        public void CreateUser(TestUser testUser, int applicationId)
+        {
+            using (var uow = CreateUnitOfWork())
+            {
+                var accountRepos = new AccountRepository(uow);
+                var account = new Account(testUser.Username, testUser.Password) { Email = testUser.Email };
+                account.Activate();
+                accountRepos.Create(account);
+                var userRepos = new UserRepository(uow);
+                var user = new User(account.Id, testUser.Username) { EmailAddress = testUser.Email };
+                userRepos.CreateAsync(user).GetAwaiter().GetResult();
+
+                var appRepos = new ApplicationRepository(uow);
+                var member = new ApplicationTeamMember(applicationId, account.Id, "Admin");
+                appRepos.CreateAsync(member).GetAwaiter().GetResult();
+
+                uow.SaveChanges();
+            }
+        }
+
         private void EnsureServerSettings(string baseUrl)
         {
             using (var con = _connectionFactory())
