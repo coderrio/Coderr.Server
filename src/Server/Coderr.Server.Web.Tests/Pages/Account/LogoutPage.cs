@@ -4,7 +4,7 @@ namespace codeRR.Server.Web.Tests.Pages.Account
 {
     public class LogoutPage : BasePage
     {
-        public LogoutPage(IWebDriver webDriver) : base(webDriver, (string) "Account/Logout", (string) "")
+        public LogoutPage(IWebDriver webDriver) : base(webDriver, "Account/Logout", "")
         {
         }
 

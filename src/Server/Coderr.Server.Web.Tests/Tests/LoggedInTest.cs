@@ -6,14 +6,15 @@ namespace codeRR.Server.Web.Tests.Tests
 {
     public class LoggedInTest : WebTest
     {
-        public HomePage Login()
+        public IPage Login()
+        {
+            return Login(TestData.TestUser.Username, TestData.TestUser.Password);
+        }
+
+        public IPage Login(string userName, string password)
         {
             var page = new LoginPage(WebDriver)
-                .LoginWithValidCredentials();
-
-            Assert.IsType<HomePage>(page);
-
-            page.VerifyIsCurrentPage();
+                .LoginWithValidCredentials(userName, password);
 
             return page;
         }

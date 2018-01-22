@@ -5,7 +5,7 @@ namespace codeRR.Server.Web.Tests.Pages.Account
 {
     public class ActivationRequestedPage : BasePage
     {
-        public ActivationRequestedPage(IWebDriver webDriver) : base(webDriver, (string) "Account/ActivationRequested", (string) "Account registered - codeRR")
+        public ActivationRequestedPage(IWebDriver webDriver) : base(webDriver, "Account/ActivationRequested", "Account registered - codeRR")
         {
         }
 

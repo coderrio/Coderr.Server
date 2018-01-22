@@ -6,12 +6,12 @@ using OpenQA.Selenium.Support.UI;
 
 namespace codeRR.Server.Web.Tests.Pages
 {
-    public class BasePage
+    public class BasePage : IPage
     {
         protected IWebDriver WebDriver;
         protected WebDriverWait Wait;
         protected string BaseUrl { get; }
-        protected string Url { get; set; }
+        public string Url { get; set; }
         public string Title { get; }
 
         protected readonly TestUser TestUser = WebTest.TestUser;
