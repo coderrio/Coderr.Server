@@ -33,7 +33,7 @@ namespace codeRR.Server.SqlServer.Modules.Tagging
             }
         }
 
-        public async Task<IReadOnlyList<Tag>> GetTagsAsync(int incidentId)
+        public async Task<IReadOnlyList<Tag>> GetIncidentTagsAsync(int incidentId)
         {
             using (var cmd = _adoNetUnitOfWork.CreateDbCommand())
             {
@@ -45,6 +45,29 @@ namespace codeRR.Server.SqlServer.Modules.Tagging
                     while (await reader.ReadAsync())
                     {
                         var tag = new Tag((string) reader["TagName"], (int) reader["OrderNumber"]);
+                        tags.Add(tag);
+                    }
+                    return tags;
+                }
+            }
+        }
+
+        public async Task<IReadOnlyList<Tag>> GetApplicationTagsAsync(int applicationId)
+        {
+            using (var cmd = _adoNetUnitOfWork.CreateDbCommand())
+            {
+                cmd.CommandText = @"select TagName, min(OrderNumber)
+                                    FROM IncidentTags
+                                    INNER JOIN Incidents ON (IncidentTags.IncidentId=Incidents.Id)
+                                    WHERE Incidents.ApplicationId = @id
+                                    GROUP BY TagName";
+                cmd.AddParameter("id", applicationId);
+                using (var reader = await cmd.ExecuteReaderAsync())
+                {
+                    var tags = new List<Tag>();
+                    while (await reader.ReadAsync())
+                    {
+                        var tag = new Tag((string) reader[0], (int) reader[1]);
                         tags.Add(tag);
                     }
                     return tags;

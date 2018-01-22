@@ -30,7 +30,7 @@ namespace codeRR.Server.App.Modules.Tagging.Handlers
         /// <inheritdoc />
         public async Task HandleAsync(IMessageContext context, IncidentReOpened e)
         {
-            var tags = await _repository.GetTagsAsync(e.IncidentId);
+            var tags = await _repository.GetIncidentTagsAsync(e.IncidentId);
             if (tags.Any(x => x.Name == "incident-reopened"))
                 return;
 

@@ -19,11 +19,19 @@ namespace codeRR.Server.App.Modules.Tagging
         Task AddAsync(int incidentId, Tag[] tags);
 
         /// <summary>
-        ///     Get a list of tag
+        ///     Get a list of tags for a specific incident
         /// </summary>
         /// <param name="incidentId">incident to get tags for</param>
         /// <returns>List of tags (or an empty list)</returns>
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        Task<IReadOnlyList<Tag>> GetTagsAsync(int incidentId);
+        Task<IReadOnlyList<Tag>> GetIncidentTagsAsync(int incidentId);
+
+        /// <summary>
+        ///     Get a list of tags for an application
+        /// </summary>
+        /// <param name="applicationId">application to get tags for</param>
+        /// <returns>List of tags (or an empty list)</returns>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+        Task<IReadOnlyList<Tag>> GetApplicationTagsAsync(int applicationId);
     }
 }

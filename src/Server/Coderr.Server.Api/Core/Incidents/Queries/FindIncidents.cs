@@ -95,5 +95,7 @@ namespace codeRR.Server.Api.Core.Incidents.Queries
         ///     Version (in the form of a version string i.e. "1.2.1")
         /// </summary>
         public string Version { get; set; }
+
+        public string[] Tags { get; set; }
     }
 }

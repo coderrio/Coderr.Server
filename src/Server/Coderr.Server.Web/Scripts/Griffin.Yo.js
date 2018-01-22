@@ -1489,6 +1489,7 @@ var Griffin;
                             
                             continue;
                         }
+                        console.log(data, key, dir, directives);
                         var value = directives[key].apply(element, [data, this.dtoStack[this.dtoStack.length - 2]]);
                         if (key === "html") {
                             isDirectiveValueSpecified = true;

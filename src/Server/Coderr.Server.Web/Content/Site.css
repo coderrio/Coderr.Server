@@ -33,3 +33,9 @@
   display: inline-block;
   margin-left: 10px;
 }
+a.search-tag:focus, a.search-tag:active {
+    color: #ffffff;
+}
+a.label-dark:hover {
+    color: #999999;
+}

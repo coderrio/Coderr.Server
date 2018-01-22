@@ -43,6 +43,26 @@ namespace codeRR.Server.SqlServer.Core.Incidents.Queries
                     cmd.AddParameter("versionId", versionId);
                     startWord = " AND ";
                 }
+                if (query.Tags != null && query.Tags.Length > 0 && query.ApplicationId > 0)
+                {
+                    var ourSql= @" join IncidentTags on (Incidents.Id=IncidentTags.IncidentId AND IncidentTags.Id IN (
+                                    SELECT MAX(IncidentTags.Id)
+                                    FROM IncidentTags 
+                                    WHERE TagName IN ({0}) 
+                                    AND IncidentTags.IncidentId=Incidents.Id
+                                    GROUP BY IncidentId 
+                                    HAVING Count(IncidentTags.Id) = {1}
+                                    ))
+";
+                    var ps = "";
+                    for (int i = 0; i < query.Tags.Length; i++)
+                    {
+                        ps += $"@tag{i}, ";
+                        cmd.AddParameter($"@tag{i}", query.Tags[i]);
+                    }
+
+                    sqlQuery += string.Format(ourSql, ps.Remove(ps.Length - 2, 2), query.Tags.Length);
+                }
 
                 if (query.ApplicationId > 0)
                 {

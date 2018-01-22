@@ -9,18 +9,18 @@ using Griffin.Container;
 namespace codeRR.Server.App.Modules.Tagging.Handlers
 {
     [Component]
-    internal class GetTagsForIncidentHandler : IQueryHandler<GetTagsForIncident, TagDTO[]>
+    internal class GetTagsForApplicationHandler : IQueryHandler<GetTagsForApplication, TagDTO[]>
     {
         private readonly ITagsRepository _repository;
 
-        public GetTagsForIncidentHandler(ITagsRepository repository)
+        public GetTagsForApplicationHandler(ITagsRepository repository)
         {
             _repository = repository;
         }
 
-        public async Task<TagDTO[]> HandleAsync(IMessageContext context, GetTagsForIncident query)
+        public async Task<TagDTO[]> HandleAsync(IMessageContext context, GetTagsForApplication query)
         {
-            return (await _repository.GetIncidentTagsAsync(query.IncidentId)).Select(ConvertTag).ToArray();
+            return (await _repository.GetApplicationTagsAsync(query.ApplicationId)).Select(ConvertTag).ToArray();
         }
 
         private TagDTO ConvertTag(Tag arg)

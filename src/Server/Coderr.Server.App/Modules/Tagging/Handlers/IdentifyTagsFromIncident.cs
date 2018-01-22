@@ -40,7 +40,7 @@ namespace codeRR.Server.App.Modules.Tagging.Handlers
         public async Task HandleAsync(IMessageContext context, ReportAddedToIncident e)
         {
             _logger.Debug("Checking tags..");
-            var tags = await _repository.GetTagsAsync(e.Incident.Id);
+            var tags = await _repository.GetIncidentTagsAsync(e.Incident.Id);
             var ctx = new TagIdentifierContext(e.Report, tags);
             var identifiers = _tagIdentifierProvider.GetIdentifiers(ctx);
             foreach (var identifier in identifiers)

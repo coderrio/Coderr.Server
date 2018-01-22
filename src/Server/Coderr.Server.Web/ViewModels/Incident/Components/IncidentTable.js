@@ -8,6 +8,7 @@ var IncidentTableViewModel = /** @class */ (function () {
         this.sortType = IncidentOrder.Newest;
         this.incidentType = "new";
         this.sortAscending = false;
+        this.tags = [];
         this.ctx = ctx;
     }
     IncidentTableViewModel.prototype.load = function (applicationId, applicationVersion, callback) {
@@ -34,6 +35,43 @@ var IncidentTableViewModel = /** @class */ (function () {
                 callback();
             }
         });
+        if (applicationId > 0) {
+            var tagsQuery = new codeRR.Modules.Tagging.Queries.GetTagsForApplication(applicationId);
+            CqsClient.query(tagsQuery)
+                .done(function (response) {
+                var directives = {
+                    Name: {
+                        href: function (data) {
+                            return data;
+                        },
+                        html: function (data) {
+                            return data;
+                        }
+                    },
+                    OrderNumber: {
+                        html: function (data) {
+                        }
+                    }
+                };
+                _this.ctx.render({ tags: response }, directives);
+            });
+            var self = this;
+            $('body').on('click', '.search-tag', function (e) {
+                e.preventDefault();
+                if ($(this).hasClass('label-primary')) {
+                    $(this).addClass('label-dark').removeClass('label-primary');
+                }
+                else {
+                    $(this).addClass('label-primary').removeClass('label-dark');
+                }
+                self.tags = [];
+                $('.search-tag.label-primary').each(function (e) {
+                    self.tags.push($(this).text());
+                });
+                self.pager.reset();
+                self.loadItems();
+            });
+        }
         this.ctx.handle.click("#btnClosed", function (e) { return _this.onBtnClosed(e); });
         this.ctx.handle.click("#btnNew", function (e) { return _this.onBtnNew(e); });
         this.ctx.handle.click("#btnActive", function (e) { return _this.onBtnActive(e); });
@@ -191,6 +229,9 @@ var IncidentTableViewModel = /** @class */ (function () {
         }
         else {
             query.PageNumber = pageNumber;
+        }
+        if (this.tags.length > 0) {
+            query.Tags = this.tags;
         }
         var searchBox = this.ctx.select.one('freeText');
         if (searchBox.value.length >= 3)

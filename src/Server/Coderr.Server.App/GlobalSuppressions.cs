@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 [assembly:
     SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope = "member",
         Target =
-            "codeRR.App.Modules.Tagging.Handlers.GetTagsForIncidentHandler.#.ctor(codeRR.App.Modules.Tagging.ITagsRepository)"
+            "codeRR.App.Modules.Tagging.Handlers.GetTagsForApplicationHandler.#.ctor(codeRR.App.Modules.Tagging.ITagsRepository)"
         )]
 [assembly:
     SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope = "member",

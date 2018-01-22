@@ -283,6 +283,14 @@ module codeRR.Modules.Tagging {
 
 }
 module codeRR.Modules.Tagging.Queries {
+    export class GetTagsForApplication {
+        public static TYPE_NAME: string = 'GetTagsForApplication';
+        public ApplicationId: number;
+        public constructor(applicationId: number) {
+            this.ApplicationId = applicationId;
+        }
+    }
+
     export class GetTagsForIncident {
         public static TYPE_NAME: string = 'GetTagsForIncident';
         public IncidentId: number;
@@ -593,6 +601,7 @@ module codeRR.Core.Messaging {
         public static TYPE_NAME: string = 'EmailMessage';
         public HtmlBody: string;
         public Recipients: codeRR.Core.Messaging.EmailAddress[];
+        public ReplyTo: codeRR.Core.Messaging.EmailAddress;
         public Resources: codeRR.Core.Messaging.EmailResource[];
         public Subject: string;
         public TextBody: string;
@@ -711,6 +720,7 @@ module codeRR.Core.Incidents.Queries {
         public SortAscending: boolean;
         public SortType: codeRR.Core.Incidents.IncidentOrder;
         public Version: string;
+        public Tags: string[];
     }
 
     export class FindIncidentsResult {

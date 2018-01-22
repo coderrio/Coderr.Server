@@ -320,6 +320,14 @@ var codeRR;
         (function (Tagging) {
             var Queries;
             (function (Queries) {
+                var GetTagsForApplication = /** @class */ (function () {
+                    function GetTagsForApplication(applicationId) {
+                        this.ApplicationId = applicationId;
+                    }
+                    GetTagsForApplication.TYPE_NAME = 'GetTagsForApplication';
+                    return GetTagsForApplication;
+                }());
+                Queries.GetTagsForApplication = GetTagsForApplication;
                 var GetTagsForIncident = /** @class */ (function () {
                     function GetTagsForIncident(incidentId) {
                         this.IncidentId = incidentId;

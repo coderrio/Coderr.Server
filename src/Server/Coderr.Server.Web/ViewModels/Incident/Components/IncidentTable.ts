@@ -15,6 +15,7 @@ class IncidentTableViewModel implements Griffin.WebApp.IPagerSubscriber {
     private ctx: Griffin.Yo.Spa.ViewModels.IActivationContext;
     private applicationId?: number;
     private freeText: string;
+    private tags: string[] = [];
 
     constructor(ctx: Griffin.Yo.Spa.ViewModels.IActivationContext) {
         this.ctx = ctx;
@@ -46,6 +47,47 @@ class IncidentTableViewModel implements Griffin.WebApp.IPagerSubscriber {
                 }
             });
 
+        if (applicationId > 0) {
+            var tagsQuery = new codeRR.Modules.Tagging.Queries.GetTagsForApplication(applicationId);
+            CqsClient.query<codeRR.Modules.Tagging.TagDTO[]>(tagsQuery)
+                .done(response => {
+                    var directives = {
+                        Name: {
+                            href(data) {
+                                return data;
+                            },
+                            html(data) {
+                                return data;
+                            }
+                        },
+                        OrderNumber: {
+                            html(data) {
+                            }
+                        }
+                    };
+                    this.ctx.render({ tags: response }, directives);
+                });
+
+            var self = this;
+            $('body').on('click', '.search-tag', function (e) {
+                e.preventDefault();
+                if ($(this).hasClass('label-primary')) {
+                    $(this).addClass('label-dark').removeClass('label-primary');
+                } else {
+                    $(this).addClass('label-primary').removeClass('label-dark');
+                }
+                
+                self.tags = [];
+                $('.search-tag.label-primary').each(function(e) {
+                    self.tags.push($(this).text());
+                });
+
+                self.pager.reset();
+                self.loadItems();
+            });
+        }
+
+
         this.ctx.handle.click("#btnClosed", e => this.onBtnClosed(e));
         this.ctx.handle.click("#btnNew", e => this.onBtnNew(e));
         this.ctx.handle.click("#btnActive", e => this.onBtnActive(e));
@@ -72,7 +114,7 @@ class IncidentTableViewModel implements Griffin.WebApp.IPagerSubscriber {
     onPager(pager: Pager): void {
         this.loadItems(pager.currentPage);
     }
-    
+
     private onBtnClosed(e: Event) {
         e.preventDefault();
         this.incidentType = "closed";
@@ -214,6 +256,9 @@ class IncidentTableViewModel implements Griffin.WebApp.IPagerSubscriber {
             query.PageNumber = this.pager.currentPage;
         } else {
             query.PageNumber = pageNumber;
+        }
+        if (this.tags.length > 0) {
+            query.Tags = this.tags;
         }
         var searchBox = <HTMLInputElement>this.ctx.select.one('freeText');
         if (searchBox.value.length >= 3)
