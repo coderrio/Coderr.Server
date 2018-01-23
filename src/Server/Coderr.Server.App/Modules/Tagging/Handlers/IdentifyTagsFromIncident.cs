@@ -62,23 +62,31 @@ namespace codeRR.Server.App.Modules.Tagging.Handlers
         {
             foreach (var collection in e.Report.ContextCollections)
             {
-                if (!collection.Properties.TryGetValue("OneTrueTags", out var tagsStr)
-                    && !collection.Properties.TryGetValue("ErrTags", out tagsStr))
-                    continue;
-
-                try
+                // Comma seperated tags
+                if (collection.Properties.TryGetValue("OneTrueTags", out var tagsStr)
+                    && collection.Properties.TryGetValue("ErrTags", out tagsStr))
                 {
-                    var tags = tagsStr.Split(',');
-                    foreach (var tag in tags)
+                    try
                     {
-                        ctx.AddTag(tag, 1);
+                        var tags = tagsStr.Split(',');
+                        foreach (var tag in tags)
+                        {
+                            ctx.AddTag(tag, 1);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Error(
+                            "Failed to parse tags from '" + collection.Name + "', invalid tag string: '" + tagsStr + "'.",
+                            ex);
                     }
                 }
-                catch (Exception ex)
+
+                //Tag array
+                foreach (var property in collection.Properties)
                 {
-                    _logger.Error(
-                        "Failed to parse tags from '" + collection.Name + "', invalid tag string: '" + tagsStr + "'.",
-                        ex);
+                    if (property.Key.StartsWith("ErrTags["))
+                        ctx.AddTag(property.Value, 1);
                 }
             }
         }
