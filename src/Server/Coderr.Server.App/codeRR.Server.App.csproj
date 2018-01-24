@@ -11,7 +11,7 @@
     <PackageReference Include="Griffin.Container" Version="1.1.9" />
     <PackageReference Include="Griffin.Framework" Version="2.0.0-alpha01" />
     <PackageReference Include="log4net" Version="2.0.8" />
-    <PackageReference Include="MarkdownSharp" Version="1.13.0.0" />
+    <PackageReference Include="Markdig" Version="0.14.9" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="UAParser" Version="3.0.0" />
   </ItemGroup>

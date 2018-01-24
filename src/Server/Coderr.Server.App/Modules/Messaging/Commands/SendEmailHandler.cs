@@ -10,6 +10,7 @@ using codeRR.Server.Infrastructure.Net;
 using Coderr.Server.PluginApi.Config;
 using DotNetCqs;
 using Griffin.Container;
+using Markdig;
 
 namespace codeRR.Server.App.Modules.Messaging.Commands
 {
@@ -41,7 +42,8 @@ namespace codeRR.Server.App.Modules.Messaging.Commands
                 var address = new MailAddress(command.EmailMessage.ReplyTo.Address,command.EmailMessage.ReplyTo.Name);
                 email.ReplyToList.Add(address);
             }
-                
+
+            var markdownHtml = Markdown.ToHtml(command.EmailMessage.TextBody ?? "");
 
             foreach (var recipient in command.EmailMessage.Recipients)
             {
@@ -54,13 +56,16 @@ namespace codeRR.Server.App.Modules.Messaging.Commands
                 else
                     email.To.Add(new MailAddress(recipient.Address, recipient.Name));
             }
-            if (string.IsNullOrEmpty(command.EmailMessage.HtmlBody))
+            if (string.IsNullOrEmpty(command.EmailMessage.HtmlBody) && markdownHtml == command.EmailMessage.TextBody)
             {
                 email.Body = command.EmailMessage.TextBody;
                 email.IsBodyHtml = false;
                 await client.SendMailAsync(email);
                 return;
             }
+
+            if (string.IsNullOrEmpty(command.EmailMessage.HtmlBody))
+                command.EmailMessage.HtmlBody = markdownHtml;
 
             var av = AlternateView.CreateAlternateViewFromString(command.EmailMessage.HtmlBody, null,
                 MediaTypeNames.Text.Html);

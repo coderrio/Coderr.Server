@@ -4,7 +4,6 @@ using System.Text;
 using codeRR.Server.App.Modules.Messaging.Templating.Formatting;
 using ColorCode;
 using Griffin.Container;
-using MarkdownSharp;
 
 namespace codeRR.Server.App.Modules.Messaging.Templating
 {
@@ -78,8 +77,7 @@ namespace codeRR.Server.App.Modules.Messaging.Templating
 
         private static string Markdown(string template)
         {
-            var md = new Markdown(new MarkdownOptions {AutoHyperlink = true, AutoNewLines = true});
-            return md.Transform(template);
+            return Markdig.Markdown.ToHtml(template);
         }
     }
 }

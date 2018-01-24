@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using codeRR.Server.Api.Core.Incidents.Commands;
 using codeRR.Server.Api.Core.Messaging;
@@ -49,21 +51,17 @@ namespace codeRR.Server.App.Core.Incidents.Commands
                 !string.IsNullOrEmpty(command.NotificationText))
             {
                 var emails = await _feedbackRepository.GetEmailAddressesAsync(command.IncidentId);
-                var emailMessage = new EmailMessage(emails)
+                if (emails.Any())
                 {
-                    Subject = command.NotificationTitle,
-                    TextBody = command.NotificationText
-                };
-                var sendMessage = new SendEmail(emailMessage);
-                await context.SendAsync(sendMessage);
+                    var emailMessage = new EmailMessage(emails)
+                    {
+                        Subject = command.NotificationTitle,
+                        TextBody = command.NotificationText
+                    };
+                    var sendMessage = new SendEmail(emailMessage);
+                    await context.SendAsync(sendMessage);
+                }
             }
-
-            //var reports = _reportsRepository.GetAll(incident.Reports.Select(x => x.ReportId).ToArray());
-            //foreach (var report in reports)
-            //{
-            //    report.Solve(command.Solution);
-            //    _reportsRepository.Update(report);
-            //}
 
             await _repository.UpdateAsync(incident);
         }

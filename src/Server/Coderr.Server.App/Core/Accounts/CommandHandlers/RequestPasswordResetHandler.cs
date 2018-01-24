@@ -17,13 +17,13 @@ namespace codeRR.Server.App.Core.Accounts.CommandHandlers
     internal class RequestPasswordResetHandler : IMessageHandler<RequestPasswordReset>
     {
         private readonly IAccountRepository _accountRepository;
+        private readonly BaseConfiguration _baseConfig;
         private readonly ILog _logger = LogManager.GetLogger(typeof(RequestPasswordResetHandler));
-        private ConfigurationStore _configStore;
 
-        public RequestPasswordResetHandler(IAccountRepository accountRepository, ConfigurationStore configStore)
+        public RequestPasswordResetHandler(IAccountRepository accountRepository, BaseConfiguration baseConfig)
         {
             _accountRepository = accountRepository;
-            _configStore = configStore;
+            _baseConfig = baseConfig;
         }
 
         public async Task HandleAsync(IMessageContext context, RequestPasswordReset command)
@@ -38,7 +38,6 @@ namespace codeRR.Server.App.Core.Accounts.CommandHandlers
             account.RequestPasswordReset();
             await _accountRepository.UpdateAsync(account);
 
-            var config = _configStore.Load<BaseConfiguration>();
             var cmd = new SendTemplateEmail("Password reset", "ResetPassword")
             {
                 To = account.Email,
@@ -46,8 +45,8 @@ namespace codeRR.Server.App.Core.Accounts.CommandHandlers
                     new
                     {
                         AccountName = account.UserName,
-                        ResetLink = //TODO: Remove app settings dependency
-                            config.BaseUrl + "/password/reset/" +
+                        ResetLink = 
+                            _baseConfig.BaseUrl + "/password/reset/" +
                             account.ActivationKey
                     },
                 Subject = "Reset password"
