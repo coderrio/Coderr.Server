@@ -95,8 +95,9 @@ var codeRR;
                 var _this = this;
                 var data = [];
                 for (var i = 0; i < stats.length; ++i) {
+                    //TODO: Why don't we get the same format here as in the other stat DTO
                     var dataItem = {
-                        date: stats[i].Date,
+                        date: stats[i].Date.substr(0, 10),
                         Reports: stats[i].Count
                     };
                     data.push(dataItem);
@@ -106,6 +107,7 @@ var codeRR;
                     element: 'myChart',
                     data: data,
                     xkey: 'date',
+                    xLabels: "day",
                     ykeys: ['Reports'],
                     labels: ['Reports'],
                     lineColors: ['#0094DA']

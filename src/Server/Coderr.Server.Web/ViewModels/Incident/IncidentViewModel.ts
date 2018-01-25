@@ -125,8 +125,9 @@ module codeRR.Incident {
         private renderInitialChart(chartElement: HTMLCanvasElement, stats: ReportDay[]) {
             var data = [];
             for (let i = 0; i < stats.length; ++i) {
+                //TODO: Why don't we get the same format here as in the other stat DTO
                 const dataItem = {
-                    date: stats[i].Date,
+                    date: stats[i].Date.substr(0,10),
                     Reports: stats[i].Count
                 };
                 data.push(dataItem);
@@ -136,6 +137,7 @@ module codeRR.Incident {
                 element: 'myChart',
                 data: data,
                 xkey: 'date',
+                xLabels: "day",
                 ykeys: ['Reports'],
                 labels: ['Reports'],
                 lineColors: ['#0094DA']

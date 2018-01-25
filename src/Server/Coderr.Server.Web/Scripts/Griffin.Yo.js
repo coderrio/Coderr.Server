@@ -1333,7 +1333,7 @@ var Griffin;
                         else if (data && data.hasOwnProperty(elementName)) {
                             data = data[elementName];
                         }
-                        console.log(elementName, data, directives);
+
                         data = this.runDirectives(element, data);
                         if (directives) {
                             if (this.applyEmbeddedDirectives(element, data, directives)) {
