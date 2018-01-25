@@ -56,5 +56,6 @@ namespace codeRR.Server.ReportAnalyzer
         /// <param name="incidentAnalysis">incident to persist</param>
         /// <exception cref="ArgumentNullException">incentAnalysis</exception>
         void UpdateIncident(IncidentBeingAnalyzed incidentAnalysis);
+
     }
 }

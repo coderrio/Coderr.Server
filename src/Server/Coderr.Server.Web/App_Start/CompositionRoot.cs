@@ -33,13 +33,14 @@ namespace codeRR.Server.Web
             builder.RegisterComponents(Lifetime.Scoped, Assembly.GetExecutingAssembly());
             builder.RegisterService(CreateUnitOfWork, Lifetime.Scoped);
             builder.RegisterService(CreateTaskInvoker, Lifetime.Singleton);
+            builder.RegisterService(CreateConnection, Lifetime.Transient);
 
             RegisterBuiltInComponents(builder);
             RegisterQueues(builder);
 
             builder.RegisterService(x => Container, Lifetime.Singleton);
             builder.RegisterService(x => x);
-            builder.RegisterConcrete<AnalysisDbContext>();
+            builder.RegisterService(CreateAnalysisDbContext);
             builder.RegisterInstance(configStore);
             builder.RegisterType(typeof(IConfiguration<>), typeof(ConfigWrapper<>), Lifetime.Transient);
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
@@ -53,10 +54,9 @@ namespace codeRR.Server.Web
             Container = new GriffinContainerAdapter(ioc);
         }
 
-        private IAdoNetUnitOfWork CreateUnitOfWork(IServiceLocator arg)
+        private AnalysisDbContext CreateAnalysisDbContext(IServiceLocator arg)
         {
-            var con = DbConnectionFactory.Open(true);
-            return new AdoNetUnitOfWork(con, true, IsolationLevel.RepeatableRead);
+            return new AnalysisDbContext(() => DbConnectionFactory.Open(true));
         }
 
         private IScopedTaskInvoker CreateTaskInvoker(IServiceLocator arg)
@@ -70,11 +70,24 @@ namespace codeRR.Server.Web
             return invoker;
         }
 
+        private IAdoNetUnitOfWork CreateUnitOfWork(IServiceLocator arg)
+        {
+            var con = DbConnectionFactory.Open(true);
+            return new AdoNetUnitOfWork(con, true, IsolationLevel.RepeatableRead);
+        }
+
+        private IDbConnection CreateConnection(IServiceLocator arg)
+        {
+            return DbConnectionFactory.Open(true);
+        }
+
+
         private void RegisterBuiltInComponents(ContainerRegistrar builder)
         {
             builder.RegisterComponents(Lifetime.Scoped, typeof(AppType).Assembly);
             builder.RegisterComponents(Lifetime.Scoped, typeof(UserRepository).Assembly);
-            builder.RegisterComponents(Lifetime.Scoped, typeof(ReportAnalyzer.Handlers.Reports.ReportAnalyzer).Assembly);
+            builder.RegisterComponents(Lifetime.Scoped,
+                typeof(ReportAnalyzer.Handlers.Reports.ReportAnalyzer).Assembly);
         }
 
         private void RegisterQueues(ContainerRegistrar builder)

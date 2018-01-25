@@ -240,14 +240,29 @@ namespace codeRR.Server.Web.Services
 
         private void OnJobFailed(object sender, BackgroundJobFailedEventArgs e)
         {
-            Err.Report(e.Exception, new { JobType = e.Job?.GetType().FullName });
             _log.Error("Failed to execute " + e.Job, e.Exception);
+            try
+            {
+                Err.Report(e.Exception, new {JobType = e.Job?.GetType().FullName});
+            }
+            catch (Exception ex)
+            {
+                _log.Error("Failed to report.", ex);
+            }
+            
         }
 
         private void OnServiceFailed(object sender, ApplicationServiceFailedEventArgs e)
         {
-            Err.Report(e.Exception, new { JobType = e.ApplicationService?.GetType().FullName });
             _log.Error("Failed to execute " + e.ApplicationService, e.Exception);
+            try
+            {
+                Err.Report(e.Exception, new { JobType = e.ApplicationService?.GetType().FullName });
+            }
+            catch (Exception exception)
+            {
+                _log.Error("Failed to report.", exception);
+            }
         }
 
         private void OnStopped(Task obj)

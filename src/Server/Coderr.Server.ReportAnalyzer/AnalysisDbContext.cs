@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using codeRR.Server.Infrastructure;
+using codeRR.Server.ReportAnalyzer.Domain.Reports;
 using Griffin.Data;
 
 namespace codeRR.Server.ReportAnalyzer
@@ -12,17 +13,15 @@ namespace codeRR.Server.ReportAnalyzer
     {
         private readonly Func<IDbConnection> _connectionFactory;
         private IDbConnection _con;
-        private IAdoNetUnitOfWork _unitOfWork;
+        private OurUnitOfWork _unitOfWork;
 
         public AnalysisDbContext(Func<IDbConnection> connectionFactory)
         {
             _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
         }
 
-        public AnalysisDbContext(IAdoNetUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
-        }
+
+        public IDbTransaction Transaction => ((OurUnitOfWork) UnitOfWork).Transaction;
 
         /// <summary>
         ///     Open and valid connection
@@ -45,12 +44,17 @@ namespace codeRR.Server.ReportAnalyzer
         /// </summary>
         /// <exception cref="DataException">Connection failed.</exception>
         public IAdoNetUnitOfWork UnitOfWork => _unitOfWork
-                                               ?? (_unitOfWork = new AdoNetUnitOfWork(Connection, false));
+                                               ?? (_unitOfWork = new OurUnitOfWork(Connection, false));
 
         public void Dispose()
         {
             _unitOfWork?.Dispose();
             _con?.Dispose();
+        }
+
+        public void SaveChanges()
+        {
+            _unitOfWork?.SaveChanges();
         }
     }
 }

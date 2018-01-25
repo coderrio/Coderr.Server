@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Data.Common;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using codeRR.Server.Api.Core.Incidents;
 using codeRR.Server.Api.Core.Incidents.Queries;
 using codeRR.Server.App.Core.Incidents;
+using codeRR.Server.App.Modules.Messaging.Templating.Formatting;
 using codeRR.Server.Infrastructure.Security;
 using DotNetCqs;
 using Griffin.Container;
@@ -25,7 +27,7 @@ namespace codeRR.Server.SqlServer.Core.Incidents.Queries
 
         public async Task<FindIncidentsResult> HandleAsync(IMessageContext context, FindIncidents query)
         {
-            using (var cmd = (DbCommand) _uow.CreateCommand())
+            using (var cmd = (DbCommand)_uow.CreateCommand())
             {
                 var sqlQuery = @"SELECT {0}
                                     FROM Incidents 
@@ -36,16 +38,16 @@ namespace codeRR.Server.SqlServer.Core.Incidents.Queries
                 {
                     var versionId =
                         _uow.ExecuteScalar("SELECT Id FROM ApplicationVersions WHERE Version = @version",
-                            new {version = query.Version});
+                            new { version = query.Version });
 
                     sqlQuery += " JOIN IncidentVersions ON (Incidents.Id = IncidentVersions.IncidentId)" +
                                 " WHERE IncidentVersions.VersionId = @versionId";
                     cmd.AddParameter("versionId", versionId);
                     startWord = " AND ";
                 }
-                if (query.Tags != null && query.Tags.Length > 0 && query.ApplicationId > 0)
+                if (query.Tags != null && query.Tags.Length > 0)
                 {
-                    var ourSql= @" join IncidentTags on (Incidents.Id=IncidentTags.IncidentId AND IncidentTags.Id IN (
+                    var ourSql = @" join IncidentTags on (Incidents.Id=IncidentTags.IncidentId AND IncidentTags.Id IN (
                                     SELECT MAX(IncidentTags.Id)
                                     FROM IncidentTags 
                                     WHERE TagName IN ({0}) 
@@ -64,16 +66,40 @@ namespace codeRR.Server.SqlServer.Core.Incidents.Queries
                     sqlQuery += string.Format(ourSql, ps.Remove(ps.Length - 2, 2), query.Tags.Length);
                 }
 
-                if (query.ApplicationId > 0)
+                if (!string.IsNullOrEmpty(query.ContextCollectionPropertyValue)
+                    || !string.IsNullOrEmpty(query.ContextCollectionName)
+                    || !string.IsNullOrEmpty(query.ContextCollectionPropertyName))
                 {
-                    if (!context.Principal.IsApplicationMember(query.ApplicationId)
-                        && !context.Principal.IsSysAdmin()
-                        && !context.Principal.IsApplicationAdmin(query.ApplicationId))
-                        throw new UnauthorizedAccessException(
-                            "You are not a member of application " + query.ApplicationId);
+                    var where = AddContextProperty(cmd, "", "Name", "ContextName", query.ContextCollectionName);
+                    where += AddContextProperty(cmd, where, "PropertyName", "ContextPropertyName", query.ContextCollectionPropertyName);
+                    where += AddContextProperty(cmd, where, "Value", "ContextPropertyValue", query.ContextCollectionPropertyValue);
+                    if (where.EndsWith(" AND "))
+                        where = where.Remove(where.Length - 5, 5);
+                    var ourSql =
+                        $@"with ContextSearch (IncidentId) 
+                        as (
+                            select distinct(IncidentId)
+                            from ErrorReports
+                            join ErrorReportCollectionProperties ON (ErrorReports.Id = ErrorReportCollectionProperties.ReportId)
+                            WHERE {where}
+                        )
+";
+                    sqlQuery = ourSql + sqlQuery + " join ContextSearch ON (Incidents.Id = ContextSearch.IncidentId)\r\n";
+                }
 
-                    sqlQuery += $" {startWord} Applications.Id = @id";
-                    cmd.AddParameter("id", query.ApplicationId);
+                if (query.ApplicationIds != null && query.ApplicationIds.Length > 0)
+                {
+                    foreach (var applicationId in query.ApplicationIds)
+                    {
+                        if (!context.Principal.IsApplicationMember(applicationId)
+                            && !context.Principal.IsSysAdmin()
+                            && !context.Principal.IsApplicationAdmin(applicationId))
+                            throw new UnauthorizedAccessException(
+                                "You are not a member of application " + applicationId);
+                    }
+
+                    var ids = string.Join(",", query.ApplicationIds);
+                    sqlQuery += $" {startWord} Applications.Id IN ({ids})";
                 }
                 else if (!context.Principal.IsSysAdmin())
                 {
@@ -84,7 +110,7 @@ namespace codeRR.Server.SqlServer.Core.Incidents.Queries
                     sqlQuery += $" {startWord} Applications.Id IN({string.Join(",", appIds)})";
                 }
 
-                if (query.FreeText != null)
+                if (!string.IsNullOrWhiteSpace(query.FreeText))
                 {
                     sqlQuery += @" AND (
                                     Incidents.Id IN 
@@ -98,7 +124,7 @@ namespace codeRR.Server.SqlServer.Core.Incidents.Queries
                     cmd.AddParameter("FreeText", $"%{query.FreeText}%");
                 }
 
-                
+
 
                 sqlQuery += " AND (";
                 if (query.IsIgnored)
@@ -111,6 +137,7 @@ namespace codeRR.Server.SqlServer.Core.Incidents.Queries
                     sqlQuery += $"State = {(int)IncidentState.Active} OR ";
                 if (query.ReOpened)
                     sqlQuery += "IsReOpened = 1 OR ";
+
 
                 if (sqlQuery.EndsWith("OR "))
                     sqlQuery = sqlQuery.Remove(sqlQuery.Length - 4) + ") ";
@@ -127,6 +154,14 @@ namespace codeRR.Server.SqlServer.Core.Incidents.Queries
                     sqlQuery += " AND Incidents.LastReportAtUtc <= @maxDate";
                     cmd.AddParameter("maxDate", query.MaxDate);
                 }
+
+                if (query.AccountId > 0)
+                {
+                    sqlQuery += "AND AssignedToId = @assignedTo";
+                    cmd.AddParameter("assignedTo", query.AccountId);
+                }
+
+
 
                 //count first;
                 cmd.CommandText = string.Format(sqlQuery, "count(Incidents.Id)");
@@ -152,9 +187,8 @@ namespace codeRR.Server.SqlServer.Core.Incidents.Queries
                     "Incidents.*, Applications.Id as ApplicationId, Applications.Name as ApplicationName");
                 if (query.PageNumber > 0)
                 {
-                    var offset = (query.PageNumber - 1)*query.ItemsPerPage;
-                    cmd.CommandText += string.Format(@" OFFSET {0} ROWS FETCH NEXT {1} ROWS ONLY", offset,
-                        query.ItemsPerPage);
+                    var offset = (query.PageNumber - 1) * query.ItemsPerPage;
+                    cmd.CommandText += $@" OFFSET {offset} ROWS FETCH NEXT {query.ItemsPerPage} ROWS ONLY";
                 }
                 var items = await cmd.ToListAsync<FindIncidentsResultItem>();
 
@@ -163,9 +197,27 @@ namespace codeRR.Server.SqlServer.Core.Incidents.Queries
                     Items = items.ToArray(),
                     PageNumber = query.PageNumber,
                     PageSize = query.ItemsPerPage,
-                    TotalCount = (int) count
+                    TotalCount = (int)count
                 };
             }
+        }
+
+        protected string AddContextProperty(DbCommand cmd, string sql, string sqlColumnName, string sqlParameterName, string value)
+        {
+            if (string.IsNullOrEmpty(value))
+                return "";
+
+            if (value.Contains("*"))
+            {
+                sql += $" {sqlColumnName} LIKE @{sqlParameterName}";
+                cmd.AddParameter(sqlParameterName, value.Replace("*", "%"));
+            }
+            else
+            {
+                sql += $" {sqlColumnName} = @{sqlParameterName}";
+                cmd.AddParameter(sqlParameterName, value);
+            }
+            return sql + " AND ";
         }
     }
 }
