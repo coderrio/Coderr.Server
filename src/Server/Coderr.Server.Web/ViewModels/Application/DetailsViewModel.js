@@ -110,10 +110,11 @@ var codeRR;
                     },
                     Versions: {
                         text: function (value, dto) {
-                            return "v" + dto;
+                            console.log('doing: ' + value);
+                            return "v" + value;
                         },
                         "data-value": function (value, dto) {
-                            return dto;
+                            return value;
                         }
                     }
                 };

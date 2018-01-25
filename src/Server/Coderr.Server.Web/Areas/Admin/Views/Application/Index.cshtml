@@ -10,17 +10,19 @@
         </p>
         <table id="applications" class="table table-striped">
             <thead>
-                <tr><th>Name</th><th>Options</th></tr>
+                <tr>
+                    <th>Name</th>
+                    <th>&nbsp;</th>
+                </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
-            {
+                {
                     <tr>
                         <td>@item.Name</td>
                         <td>
-                            <a class="btn btn-outline-primary" href="@Url.Action("Edit", new {id=item.Id})" data-name="@item.Name">Rename</a>
-                            <a class="btn btn-outline-primary" href="@Url.Action("Versions", new {id=item.Id})" data-name="@item.Name" title="Select the assembly which contains the application version">Version assembly</a>
-                            <a class="btn btn-outline-danger" href="#@item.Id" data-name="@item.Name">Delete</a>
+                            <a class="btn btn-outline-primary" href="@Url.Action("Edit", new {id=item.Id})" data-name="@item.Name"><i class="fa fa-edit"></i></a>
+                            <a class="btn btn-outline-danger" href="#@item.Id" data-name="@item.Name"><i class="fa fa-trash"></i></a>
                         </td>
                     </tr>
                 }

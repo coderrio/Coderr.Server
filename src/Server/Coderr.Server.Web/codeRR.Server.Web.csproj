@@ -539,7 +539,6 @@
     <Content Include="Views\Wizard\ConfigurePackage.cshtml" />
     <Content Include="Views\Wizard\Validate.cshtml" />
     <Content Include="Areas\Installation\Views\Setup\Completed.cshtml" />
-    <Content Include="Areas\Admin\Views\Application\Versions.cshtml" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>

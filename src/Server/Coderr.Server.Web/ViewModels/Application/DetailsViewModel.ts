@@ -129,10 +129,11 @@ module codeRR.Application {
                 },
                 Versions: {
                     text(value, dto) {
-                        return "v" +dto;
+                        console.log('doing: ' + value)
+                        return "v" +value;
                     },
                     "data-value"(value, dto) {
-                        return dto;
+                        return value;
                     }
                 }
             };

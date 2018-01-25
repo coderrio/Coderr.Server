@@ -76,6 +76,24 @@ namespace codeRR.Server.SqlServer.Modules.Versions
             }
         }
 
+        public void SaveIncidentVersion(int incidentId, int versionId)
+        {
+            var sql = @"INSERT INTO IncidentVersions (IncidentId, VersionId)
+                        SELECT @incidentId, @versionId
+                        WHERE NOT EXISTS (
+                            select IncidentId
+                              from IncidentVersions 
+                              WHERE VersionId=@versionId
+                        )";
+            using (var cmd = _uow.CreateDbCommand())
+            {
+                cmd.CommandText = sql;
+                cmd.AddParameter("incidentId", incidentId);
+                cmd.AddParameter("versionId", versionId);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
         public async Task UpdateAsync(ApplicationVersionMonth month)
         {
             await _uow.UpdateAsync(month);

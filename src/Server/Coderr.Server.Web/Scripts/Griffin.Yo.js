@@ -1327,9 +1327,13 @@ var Griffin;
                         }
                     }
                     else if (element.childElementCount === 0 && elementName) {
-                        if (data && data.hasOwnProperty(elementName)) {
+                        if (elementName === '[]') {
+                            data = data;
+                        }
+                        else if (data && data.hasOwnProperty(elementName)) {
                             data = data[elementName];
                         }
+                        console.log(elementName, data, directives);
                         data = this.runDirectives(element, data);
                         if (directives) {
                             if (this.applyEmbeddedDirectives(element, data, directives)) {
@@ -1436,7 +1440,6 @@ var Griffin;
                             var ctx = { element: element, data: data, dto: this.dtoStack[this.dtoStack.length - 2] };
                             result = this.evalInContext(value, ctx);
                         }
-                        console('show?', result)
                         if (result) {
                             this.log('unless(show)');
                             element.style.display = "";

@@ -11,11 +11,11 @@ using Griffin.Container;
 namespace codeRR.Server.App.Modules.Versions
 {
     [Component]
-    class QuickFactsProvider : IQuickfactProvider
+    class VersionQuickFactProvider : IQuickfactProvider
     {
         private IVersionRepository _repository;
 
-        public QuickFactsProvider(IVersionRepository repository)
+        public VersionQuickFactProvider(IVersionRepository repository)
         {
             _repository = repository;
         }
@@ -25,11 +25,6 @@ namespace codeRR.Server.App.Modules.Versions
             var versions = await _repository.FindForIncidentAsync(incidentId);
             if (!versions.Any())
             {
-                facts.Add(new QuickFact
-                {
-                    Title = "Versions",
-                    Value = "<em class=\"text-muted\">(This feature is activated in admin)</em>"
-                });
                 return;
             }
 
