@@ -16,7 +16,8 @@ namespace codeRR.Server.SqlServer.Analysis
                 .ToColumnValue(EntitySerializer.Serialize);
 
             Property(x => x.ContextInfo)
-                .Ignore();
+                .ToPropertyValue(x => null)
+                .ToColumnValue(x => "");
 
             Property(x => x.ClientReportId)
                 .ColumnName("ErrorId");

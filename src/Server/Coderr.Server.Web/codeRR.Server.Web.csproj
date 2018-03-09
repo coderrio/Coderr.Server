@@ -306,8 +306,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Infrastructure\AllowMvcCorsAttribute.cs" />
-    <Compile Include="Infrastructure\AllowCorsAttribute.cs" />
     <Compile Include="Infrastructure\Auth\ApiKeyAuthenticator.cs" />
     <Compile Include="Infrastructure\Auth\AuthenticationFailureResult.cs" />
     <Compile Include="Infrastructure\Auth\SignalRAuthenticateAttribute.cs" />

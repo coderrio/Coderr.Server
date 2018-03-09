@@ -63,7 +63,6 @@ namespace codeRR.Server.Web
             LoadCustomAuthenticationMiddleware(app);
             app.Map("", ConfigureWebApi);
             
-            GlobalFilters.Filters.Add(new AllowCrossSiteMvcJsonAttribute());
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
 
             if (IsConfigured)
@@ -148,7 +147,6 @@ namespace codeRR.Server.Web
         {
             var config = new HttpConfiguration();
 
-            config.Filters.Add(new AllowCrossSiteJsonAttribute());
             ConfigureApiKeyAuthentication(config.Filters);
             inner.UseCookieAuthentication(new CookieAuthenticationOptions
             {

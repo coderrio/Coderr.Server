@@ -74,21 +74,27 @@ namespace codeRR.Server.SqlServer.Tests.Helpers
         /// </summary>
         public void CreateReportAndIncident(out int reportId, out int incidentId)
         {
+            ErrorReportEntity report;
             using (var uow = CreateUnitOfWork())
             {
                 CreateUserAndApplication(uow, out var accountId, out var applicationId);
 
-                var report = new ErrorReportEntity(applicationId, Guid.NewGuid().ToString("N"), DateTime.UtcNow,
+                report = new ErrorReportEntity(applicationId, Guid.NewGuid().ToString("N"), DateTime.UtcNow,
                         new ErrorReportException(new Exception("mofo")),
                         new List<ErrorReportContext>
                         {
                             new ErrorReportContext("Maps", new Dictionary<string, string>())
                         })
-                    {Title = "Missing here"};
+                { Title = "Missing here" };
                 report.Init(report.GenerateHashCodeIdentifier());
 
+                uow.SaveChanges();
+            }
+
+            using (var dbContext = new AnalysisDbContext(_connectionFactory))
+            {
                 var incident = new IncidentBeingAnalyzed(report);
-                var incRepos = new AnalyticsRepository(new AnalysisDbContext(uow), ConfigStore);
+                var incRepos = new AnalyticsRepository(dbContext, ConfigStore);
                 incRepos.CreateIncident(incident);
                 incidentId = incident.Id;
 
@@ -96,8 +102,10 @@ namespace codeRR.Server.SqlServer.Tests.Helpers
                 incRepos.CreateReport(report);
                 reportId = report.Id;
 
-                uow.SaveChanges();
+                dbContext.SaveChanges();
             }
+
+
         }
 
         public void CreateUserAndApplication(out int accountId, out int applicationId)
@@ -207,15 +215,15 @@ namespace codeRR.Server.SqlServer.Tests.Helpers
         protected void CreateUserAndApplication(IAdoNetUnitOfWork uow, out int accountId, out int applicationId)
         {
             var accountRepos = new AccountRepository(uow);
-            var account = new Account(TestUser.Username, TestUser.Password) {Email = TestUser.Email};
+            var account = new Account(TestUser.Username, TestUser.Password) { Email = TestUser.Email };
             account.Activate();
             accountRepos.Create(account);
             var userRepos = new UserRepository(uow);
-            var user = new User(account.Id, TestUser.Username) {EmailAddress =TestUser.Email};
+            var user = new User(account.Id, TestUser.Username) { EmailAddress = TestUser.Email };
             userRepos.CreateAsync(user).GetAwaiter().GetResult();
 
             var appRepos = new ApplicationRepository(uow);
-            var app = new Application(account.Id, "MyTestApp") {ApplicationType = TypeOfApplication.DesktopApplication};
+            var app = new Application(account.Id, "MyTestApp") { ApplicationType = TypeOfApplication.DesktopApplication };
             appRepos.CreateAsync(app).GetAwaiter().GetResult();
             var member = new ApplicationTeamMember(app.Id, account.Id, "Admin");
             appRepos.CreateAsync(member).GetAwaiter().GetResult();
@@ -224,9 +232,9 @@ namespace codeRR.Server.SqlServer.Tests.Helpers
             applicationId = app.Id;
         }
 
-        private IAdoNetUnitOfWork CreateUnitOfWork()
+        private OurUnitOfWork CreateUnitOfWork()
         {
-            return new AdoNetUnitOfWork(_connectionFactory(), true);
+            return new OurUnitOfWork(_connectionFactory(), true);
         }
     }
 }

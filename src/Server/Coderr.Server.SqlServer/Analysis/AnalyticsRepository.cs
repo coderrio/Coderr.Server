@@ -133,14 +133,14 @@ namespace codeRR.Server.SqlServer.Analysis
                 collections.Add(data);
             }
 
+            _unitOfWork.Insert(report);
+
             var cols = string.Join(", ", collections);
             var inboound = new InboundCollection
             {
                 JsonData = $"[{cols}]",
                 ReportId = report.Id
             };
-
-            _unitOfWork.Insert(report);
             _unitOfWork.Insert(inboound);
         }
 

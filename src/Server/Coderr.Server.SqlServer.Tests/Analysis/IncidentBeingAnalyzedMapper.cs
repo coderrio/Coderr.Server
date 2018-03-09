@@ -28,10 +28,10 @@ namespace codeRR.Server.SqlServer.Tests.Analysis
             };
             report.Init(report.GenerateHashCodeIdentifier());
 
-            using (var uow = CreateUnitOfWork())
+            using (var uow = new AnalysisDbContext(OpenConnection))
             {
                 var incident = new IncidentBeingAnalyzed(report);
-                var incRepos = new AnalyticsRepository(new AnalysisDbContext(uow), new TestConfigStore());
+                var incRepos = new AnalyticsRepository(uow, new TestConfigStore());
                 incRepos.CreateIncident(incident);
                 report.IncidentId = incident.Id;
                 incRepos.CreateReport(report);

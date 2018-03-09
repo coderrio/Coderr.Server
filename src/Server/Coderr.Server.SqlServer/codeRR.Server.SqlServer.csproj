@@ -23,4 +23,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Schema\*.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="Schema\Update.v9.sql" />
+  </ItemGroup>
 </Project>

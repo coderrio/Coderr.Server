@@ -11,6 +11,8 @@ namespace codeRR.Server.SqlServer.Analysis.Jobs
     {
         public InboundCollectionMapper() : base("ErrorReportCollectionInbound")
         {
+            Property(x => x.JsonData)
+                .ColumnName("Body");
 
         }
     }

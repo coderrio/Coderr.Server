@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Threading;
+using codeRR.Server.ReportAnalyzer;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 
@@ -66,9 +67,9 @@ namespace codeRR.Server.SqlServer.Tests.Helpers
             }
         }
 
-        public IAdoNetUnitOfWork CreateUnitOfWork()
+        public OurUnitOfWork CreateUnitOfWork()
         {
-            return new AdoNetUnitOfWork(OpenConnection(), true);
+            return new OurUnitOfWork(OpenConnection(), true);
         }
 
         public void DeleteDatabase()

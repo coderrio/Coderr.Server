@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Data;
 using System.IO;
+using codeRR.Server.ReportAnalyzer;
 using codeRR.Server.SqlServer.Core.Accounts;
 using codeRR.Server.SqlServer.Tests.Helpers;
+using codeRR.Server.SqlServer.Tests.Models;
 using codeRR.Server.SqlServer.Tests.Xunit;
 using Griffin.Data;
 using Griffin.Data.Mapper;
@@ -51,6 +54,12 @@ namespace codeRR.Server.SqlServer.Tests
         public IntegrationTest(ITestOutputHelper output)
         {
             _testDataManager = new TestDataManager(_databaseManager.OpenConnection);
+            _testDataManager.TestUser = new TestUser()
+            {
+                Email = "test@somewhere.com",
+                Password = "123456",
+                Username = "admin"
+            };
         }
 
         public int FirstApplicationId => _testDataManager.ApplicationId;
@@ -61,10 +70,16 @@ namespace codeRR.Server.SqlServer.Tests
             Dispose(true);
         }
 
-        protected IAdoNetUnitOfWork CreateUnitOfWork()
+        protected OurUnitOfWork CreateUnitOfWork()
         {
             return _databaseManager.CreateUnitOfWork();
         }
+
+        protected IDbConnection OpenConnection()
+        {
+            return _databaseManager.OpenConnection();
+        }
+
 
         protected virtual void Dispose(bool isBeingDisposed)
         {
