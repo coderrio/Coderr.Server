@@ -38,8 +38,9 @@ namespace codeRR.Server.SqlServer.Analysis.Jobs
 
         public async Task Execute()
         {
-
-            using (var bulkCopy = new SqlBulkCopy((SqlConnection)_dbContext.Connection, SqlBulkCopyOptions.Default, (SqlTransaction)_dbContext.Transaction))
+            //TODO: Remove once all processing is in a seperate library.
+            var uow = (OurUnitOfWork) _dbContext.UnitOfWork;
+            using (var bulkCopy = new SqlBulkCopy((SqlConnection)_dbContext.Connection, SqlBulkCopyOptions.Default, (SqlTransaction)uow.Transaction))
             {
                 bulkCopy.DestinationTableName = "ErrorReportCollectionProperties";
                 bulkCopy.ColumnMappings.Add("ReportId", "ReportId");

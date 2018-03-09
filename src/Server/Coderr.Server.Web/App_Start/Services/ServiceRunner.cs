@@ -9,6 +9,7 @@ using codeRR.Client;
 using codeRR.Server.Infrastructure;
 using codeRR.Server.Infrastructure.Messaging;
 using codeRR.Server.Infrastructure.Security;
+using codeRR.Server.ReportAnalyzer;
 using codeRR.Server.Web.Cqs;
 using codeRR.Server.Web.Infrastructure;
 using codeRR.Server.Web.IoC;
@@ -196,11 +197,11 @@ namespace codeRR.Server.Web.Services
             };
             listener.ScopeClosing += (sender, args) =>
             {
-                if (args.Exception == null)
-                {
-                    var all = args.Scope.ResolveDependency<IAdoNetUnitOfWork>().ToList();
-                    all[0].SaveChanges();
-                }
+                if (args.Exception != null)
+                    return;
+
+                var all = args.Scope.ResolveDependency<IAdoNetUnitOfWork>().ToList();
+                all[0].SaveChanges();
             };
             return listener;
         }
@@ -243,13 +244,13 @@ namespace codeRR.Server.Web.Services
             _log.Error("Failed to execute " + e.Job, e.Exception);
             try
             {
-                Err.Report(e.Exception, new {JobType = e.Job?.GetType().FullName});
+                Err.Report(e.Exception, new { JobType = e.Job?.GetType().FullName });
             }
             catch (Exception ex)
             {
                 _log.Error("Failed to report.", ex);
             }
-            
+
         }
 
         private void OnServiceFailed(object sender, ApplicationServiceFailedEventArgs e)

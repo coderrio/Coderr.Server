@@ -13,15 +13,19 @@ namespace codeRR.Server.ReportAnalyzer
     {
         private readonly Func<IDbConnection> _connectionFactory;
         private IDbConnection _con;
-        private OurUnitOfWork _unitOfWork;
+        private IAdoNetUnitOfWork _unitOfWork;
 
-        public AnalysisDbContext(Func<IDbConnection> connectionFactory)
+
+        public AnalysisDbContext(IAdoNetUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
+
+        protected AnalysisDbContext(Func<IDbConnection> connectionFactory)
         {
             _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
         }
 
-
-        public IDbTransaction Transaction => ((OurUnitOfWork) UnitOfWork).Transaction;
 
         /// <summary>
         ///     Open and valid connection

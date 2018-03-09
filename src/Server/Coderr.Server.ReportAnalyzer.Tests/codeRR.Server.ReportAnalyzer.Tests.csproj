@@ -5,10 +5,10 @@
 		<AssemblyName>Coderr.Server.ReportAnalyzer.Tests</AssemblyName>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.6.1" />
 		<PackageReference Include="xunit" Version="2.3.1" />
 		<PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
-		<PackageReference Include="FluentAssertions" Version="4.19.4" />
+		<PackageReference Include="FluentAssertions" Version="5.1.2" />
 		<PackageReference Include="NSubstitute" Version="3.1.0" />
 	</ItemGroup>
 	<ItemGroup>

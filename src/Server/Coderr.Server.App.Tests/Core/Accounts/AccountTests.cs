@@ -47,7 +47,7 @@ namespace codeRR.Server.App.Tests.Core.Accounts
 
             Action actual = () => sut.Login("ping");
 
-            actual.ShouldThrow<AuthenticationException>();
+            actual.Should().Throw<AuthenticationException>();
         }
 
         [Fact]
@@ -83,7 +83,7 @@ namespace codeRR.Server.App.Tests.Core.Accounts
             sut.Login("pong");
             Action actual = () => sut.Login("ping");
 
-            actual.ShouldThrow<AuthenticationException>();
+            actual.Should().Throw<AuthenticationException>();
             sut.AccountState.Should().Be(AccountState.Locked);
         }
 

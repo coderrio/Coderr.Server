@@ -41,7 +41,7 @@ namespace codeRR.Server.App.Tests.Configuration
 
             Action actual = () => dict.GetBoolean("hey!", null);
 
-            actual.ShouldThrow<ArgumentException>().Which.Message.Contains("hey!");
+            actual.Should().Throw<ArgumentException>().Which.Message.Contains("hey!");
         }
 
         [Fact]
@@ -62,7 +62,7 @@ namespace codeRR.Server.App.Tests.Configuration
 
             Action actual = () => dict.GetBoolean("Usable");
 
-            actual.ShouldThrow<FormatException>().Which.Message.Contains("Vlue");
+            actual.Should().Throw<FormatException>().Which.Message.Contains("Vlue");
         }
 
         #endregion
@@ -76,7 +76,7 @@ namespace codeRR.Server.App.Tests.Configuration
 
             Action actual = () => dict.GetInteger("hey!", null);
 
-            actual.ShouldThrow<ArgumentException>().Which.Message.Contains("hey!");
+            actual.Should().Throw<ArgumentException>().Which.Message.Contains("hey!");
         }
 
         [Fact]
@@ -97,7 +97,7 @@ namespace codeRR.Server.App.Tests.Configuration
 
             Action actual = () => dict.GetInteger("Usable");
 
-            actual.ShouldThrow<FormatException>().Which.Message.Contains("Vlue");
+            actual.Should().Throw<FormatException>().Which.Message.Contains("Vlue");
         }
 
         #endregion

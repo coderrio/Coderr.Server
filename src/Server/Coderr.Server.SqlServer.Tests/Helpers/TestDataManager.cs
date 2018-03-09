@@ -91,7 +91,7 @@ namespace codeRR.Server.SqlServer.Tests.Helpers
                 uow.SaveChanges();
             }
 
-            using (var dbContext = new AnalysisDbContext(_connectionFactory))
+            using (var dbContext = new AnalysisDbContext(CreateUnitOfWork()))
             {
                 var incident = new IncidentBeingAnalyzed(report);
                 var incRepos = new AnalyticsRepository(dbContext, ConfigStore);

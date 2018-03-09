@@ -28,7 +28,7 @@ namespace codeRR.Server.SqlServer.Tests.Analysis
             };
             report.Init(report.GenerateHashCodeIdentifier());
 
-            using (var uow = new AnalysisDbContext(OpenConnection))
+            using (var uow = new AnalysisDbContext(CreateUnitOfWork()))
             {
                 var incident = new IncidentBeingAnalyzed(report);
                 var incRepos = new AnalyticsRepository(uow, new TestConfigStore());

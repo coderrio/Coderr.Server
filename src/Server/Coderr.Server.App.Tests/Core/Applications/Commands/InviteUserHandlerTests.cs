@@ -70,7 +70,7 @@ namespace codeRR.Server.App.Tests.Core.Applications.Commands
 
             Func<Task> actual = async () => await _sut.HandleAsync(_context, cmd);
 
-            actual.ShouldThrow<SecurityException>();
+            actual.Should().Throw<SecurityException>();
         }
 
         [Fact]

@@ -56,7 +56,7 @@ namespace codeRR.Server.Web
 
         private AnalysisDbContext CreateAnalysisDbContext(IServiceLocator arg)
         {
-            return new AnalysisDbContext(() => DbConnectionFactory.Open(true));
+            return new AnalysisDbContext(arg.Resolve<IAdoNetUnitOfWork>());
         }
 
         private IScopedTaskInvoker CreateTaskInvoker(IServiceLocator arg)
