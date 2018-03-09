@@ -39,7 +39,10 @@ namespace codeRR.Server.SqlServer.Web.Overview
                 query.NumberOfDays = 30;
             var labels = CreateTimeLabels(query);
 
-            if (!context.Principal.FindAll(x => x.Type == CoderrClaims.Application).Any())
+            var isSysAdmin = context.Principal.IsSysAdmin();
+            var gotApps = context.Principal.FindAll(x => x.Type == CoderrClaims.Application).Any();
+
+            if (!isSysAdmin && !gotApps)
             {
                 return new GetOverviewResult()
                 {
@@ -49,11 +52,32 @@ namespace codeRR.Server.SqlServer.Web.Overview
                 };
             }
 
-            var appIds = context.Principal
-                .FindAll(x => x.Type == CoderrClaims.Application)
-                .Select(x => int.Parse(x.Value).ToString())
-                .ToList();
-            ApplicationIds = string.Join(",", appIds);
+            if (isSysAdmin)
+            {
+                var appIds = new List<int>();
+                using (var cmd = _unitOfWork.CreateCommand())
+                {
+                    cmd.CommandText = "SELECT id FROM Applications";
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            appIds.Add(reader.GetInt32(0));
+                        }
+                    }
+                }
+                ApplicationIds = string.Join(",", appIds);
+            }
+            else
+            {
+                var appIds = context.Principal
+                    .FindAll(x => x.Type == CoderrClaims.Application)
+                    .Select(x => int.Parse(x.Value).ToString())
+                    .ToList();
+                ApplicationIds = string.Join(",", appIds);
+            }
+
+           
 
             if (query.NumberOfDays == 1)
                 return await GetTodaysOverviewAsync(query);
@@ -61,6 +85,7 @@ namespace codeRR.Server.SqlServer.Web.Overview
             var apps = new Dictionary<int, GetOverviewApplicationResult>();
             var startDate = DateTime.Today.AddDays(-query.NumberOfDays);
             var result = new GetOverviewResult();
+            result.Days = query.NumberOfDays;
             using (var cmd = _unitOfWork.CreateDbCommand())
             {
                 cmd.CommandText = $@"select Applications.Id, Applications.Name, cte.Date, cte.Count

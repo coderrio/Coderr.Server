@@ -23,13 +23,49 @@ namespace codeRR.Server.Api.Core.Incidents.Queries
             ItemsPerPage = 20;
         }
 
+
         /// <summary>
-        ///     0 = find for all applications
+        ///     Find incidents assigned to the specified user
+        /// </summary>
+        public int AccountId { get; set; }
+
+        /// <summary>
+        ///     Empty = find for all applications
         /// </summary>
         /// <value>
         ///     The application identifier.
         /// </value>
-        public int ApplicationId { get; set; }
+        public int[] ApplicationIds { get; set; }
+
+        /// <summary>
+        ///     Find an incident with a specific collection
+        /// </summary>
+        /// <remarks>
+        ///     <para>
+        ///         Wildcard search is allowed, i.e. "http*"
+        ///     </para>
+        /// </remarks>
+        public string ContextCollectionName { get; set; }
+
+        /// <summary>
+        ///     Find an incident with a specific property
+        /// </summary>
+        /// <remarks>
+        ///     <para>
+        ///         Wildcard search is allowed, i.e. "http*"
+        ///     </para>
+        /// </remarks>
+        public string ContextCollectionPropertyName { get; set; }
+
+        /// <summary>
+        ///     Find an incident with a specific property value
+        /// </summary>
+        /// <remarks>
+        ///     <para>
+        ///         Wildcard search is allowed, i.e. "http*"
+        ///     </para>
+        /// </remarks>
+        public string ContextCollectionPropertyValue { get; set; }
 
         /// <summary>
         ///     Will be searched in incident.message and report.stacktrace.
@@ -92,10 +128,13 @@ namespace codeRR.Server.Api.Core.Incidents.Queries
         public IncidentOrder SortType { get; set; }
 
         /// <summary>
+        ///     Incident should have all the specified tags
+        /// </summary>
+        public string[] Tags { get; set; }
+
+        /// <summary>
         ///     Version (in the form of a version string i.e. "1.2.1")
         /// </summary>
         public string Version { get; set; }
-
-        public string[] Tags { get; set; }
     }
 }

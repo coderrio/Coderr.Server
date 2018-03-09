@@ -9,6 +9,7 @@ using codeRR.Server.ReportAnalyzer;
 using codeRR.Server.ReportAnalyzer.Domain.Incidents;
 using codeRR.Server.ReportAnalyzer.Domain.Reports;
 using codeRR.Server.ReportAnalyzer.Scanners;
+using codeRR.Server.SqlServer.Analysis.Jobs;
 using codeRR.Server.SqlServer.Tools;
 using Coderr.Server.PluginApi.Config;
 using DotNetCqs;
@@ -26,6 +27,7 @@ namespace codeRR.Server.SqlServer.Analysis
         private readonly ILog _logger = LogManager.GetLogger(typeof(AnalyticsRepository));
         private readonly ReportDtoConverter _reportDtoConverter = new ReportDtoConverter();
         private readonly IAdoNetUnitOfWork _unitOfWork;
+        private const int MaxCollectionSize = 2000000;
 
         public AnalyticsRepository(AnalysisDbContext dbContext, ConfigurationStore configurationStore)
         {
@@ -111,8 +113,35 @@ namespace codeRR.Server.SqlServer.Analysis
                     report.Title = report.Title.Substring(0, 100);
             }
 
+            var collections = new List<string>();
+            foreach (var context in report.ContextInfo)
+            {
+                var data = EntitySerializer.Serialize(context);
+                if (data.Length > MaxCollectionSize)
+                {
+                    var tooLargeCtx = new ErrorReportContext(context.Name,
+                        new Dictionary<string, string>()
+                        {
+                            {
+                                "Error",
+                                $"This collection was larger ({data.Length}bytes) than the threshold of {MaxCollectionSize}bytes"
+                            }
+                        });
+
+                    data = EntitySerializer.Serialize(tooLargeCtx);
+                }
+                collections.Add(data);
+            }
+
+            var cols = string.Join(", ", collections);
+            var inboound = new InboundCollection
+            {
+                JsonData = $"[{cols}]",
+                ReportId = report.Id
+            };
 
             _unitOfWork.Insert(report);
+            _unitOfWork.Insert(inboound);
         }
 
         public string GetAppName(int applicationId)

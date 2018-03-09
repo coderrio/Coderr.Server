@@ -52,6 +52,38 @@ namespace codeRR.Server.SqlServer.Modules.Tagging
             }
         }
 
+        public async Task<IReadOnlyList<Tag>> GetTagsAsync(int? applicationId, int? incidentId)
+        {
+            using (var cmd = _adoNetUnitOfWork.CreateDbCommand())
+            {
+                cmd.CommandText = @"select TagName, min(OrderNumber)
+                                    FROM IncidentTags
+                                    INNER JOIN Incidents ON (IncidentTags.IncidentId=Incidents.Id)";
+                if (incidentId != null)
+                {
+                    cmd.CommandText += " WHERE Incidents.Id = @incidentId";
+                    cmd.AddParameter("@incidentId", incidentId.Value);
+                }
+                else if (applicationId != null)
+                {
+                    cmd.CommandText += " WHERE Incidents.ApplicationId = @applicationId";
+                    cmd.AddParameter("appId", applicationId.Value);
+                }
+                
+                cmd.CommandText += " GROUP BY TagName";
+                using (var reader = await cmd.ExecuteReaderAsync())
+                {
+                    var tags = new List<Tag>();
+                    while (await reader.ReadAsync())
+                    {
+                        var tag = new Tag((string) reader[0], (int) reader[1]);
+                        tags.Add(tag);
+                    }
+                    return tags;
+                }
+            }
+        }
+
         public async Task<IReadOnlyList<Tag>> GetApplicationTagsAsync(int applicationId)
         {
             using (var cmd = _adoNetUnitOfWork.CreateDbCommand())

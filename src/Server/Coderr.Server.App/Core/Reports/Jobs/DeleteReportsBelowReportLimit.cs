@@ -59,7 +59,7 @@ namespace codeRR.Server.App.Core.Reports.Jobs
             {
                 cmd.CommandText =
                     @"SELECT TOP(5) IncidentId, count(Id)
-                        FROM ErrorReports
+                        FROM ErrorReports WITH (ReadPast)
                         GROUP BY IncidentId
                         HAVING Count(IncidentId) > @max
                         ORDER BY count(Id) DESC";
@@ -82,9 +82,8 @@ namespace codeRR.Server.App.Core.Reports.Jobs
                     var sql = $@"With RowsToDelete AS
                                 (
                                     SELECT TOP {rowsToDelete} Id
-                                    FROM ErrorReports 
+                                    FROM ErrorReports WITH (ReadPast)
                                     WHERE IncidentId = {incidentIdAndCount.Item1}
-                                    ORDER BY ID ASC
                                 )
                                 DELETE FROM RowsToDelete";
                     cmd.CommandText = sql;

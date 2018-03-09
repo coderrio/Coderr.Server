@@ -26,6 +26,7 @@ namespace codeRR.Server.Web.Areas.Receiver.Controllers
         private readonly ILog _logger = LogManager.GetLogger(typeof(ReportController));
         private readonly IMessageQueue _messageQueue;
         private readonly IAdoNetUnitOfWork _unitOfWork;
+        private const int MaxSizeCompressedReport = 5000000;
 
         static ReportController()
         {
@@ -57,7 +58,7 @@ namespace codeRR.Server.Web.Areas.Receiver.Controllers
         [Route("receiver/report/{appKey}")]
         public async Task<HttpResponseMessage> Post(string appKey, string sig)
         {
-            if (HttpContext.Current.Request.InputStream.Length > 2000000)
+            if (HttpContext.Current.Request.InputStream.Length > MaxSizeCompressedReport)
                 return await KillLargeReportAsync(appKey);
 
             if (!_samplingCounter.CanAccept(appKey))

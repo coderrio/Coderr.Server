@@ -1,4 +1,15 @@
-﻿using System;
+﻿using codeRR.Server.Api.Core.Applications.Commands;
+using codeRR.Server.Api.Core.Applications.Queries;
+using codeRR.Server.Infrastructure.Messaging;
+using codeRR.Server.Infrastructure.Security;
+using codeRR.Server.Web.Infrastructure.Cqs;
+using codeRR.Server.Web.Models;
+using DotNetCqs;
+using Griffin;
+using log4net;
+using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security;
+using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -10,19 +21,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using codeRR.Server.Api.Core.Applications.Commands;
-using codeRR.Server.Infrastructure.Messaging;
-using codeRR.Server.Infrastructure.Security;
-using codeRR.Server.Web.Infrastructure.Cqs;
-using DotNetCqs;
-using Griffin;
-using log4net;
-using Microsoft.AspNet.Identity;
-using Microsoft.Owin.Security;
 
 namespace codeRR.Server.Web.Controllers
 {
-    [System.Web.Http.Authorize]
+    [Authorize]
     public class CqsController : ApiController
     {
         private readonly IMessageBus _messageBus;
@@ -42,7 +44,7 @@ namespace codeRR.Server.Web.Controllers
                 .GetMethods(BindingFlags.Public | BindingFlags.Instance)
                 .First(x => x.Name == "QueryAsync" && x.GetParameters().Length == 2);
 
-            _sendMethod = typeof(IMessageBus).GetMethod("SendAsync", new Type[]{typeof(ClaimsPrincipal), typeof(object)});
+            _sendMethod = typeof(IMessageBus).GetMethod("SendAsync", new Type[] { typeof(ClaimsPrincipal), typeof(object) });
         }
 
         public CqsController(IMessageBus messageBus, IQueryBus queryBus)
@@ -51,10 +53,23 @@ namespace codeRR.Server.Web.Controllers
             _queryBus = queryBus;
         }
 
+        [Route("api/authenticate"), Route("authenticate"), HttpPost]
+        public async Task<AuthenticatedUser> Authenticate()
+        {
+            var q = new GetApplicationList {AccountId = User.GetAccountId()};
+            var result = await _queryBus.QueryAsync((ClaimsPrincipal)User, q);
 
-        [Route("api/cqs")]
+            return new AuthenticatedUser
+            {
+                AccountId = User.GetAccountId(),
+                UserName = User.Identity.Name,
+                Applications = result
+            };
+        }
+
         [HttpGet]
         [HttpPost]
+        [Route("api/cqs")]
         [Route("cqs")]
         public async Task<HttpResponseMessage> Cqs()
         {
@@ -201,7 +216,7 @@ namespace codeRR.Server.Web.Controllers
             var method = _queryMethod.MakeGenericMethod(replyType);
             try
             {
-                var result = method.Invoke(_queryBus, new[] {User, dto});
+                var result = method.Invoke(_queryBus, new[] { User, dto });
                 var task = (Task)result;
                 await task;
                 return ((dynamic)task).Result;

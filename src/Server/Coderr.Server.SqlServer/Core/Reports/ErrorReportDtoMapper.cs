@@ -9,10 +9,11 @@ namespace codeRR.Server.SqlServer.Core.Reports
         public ErrorReportDtoMapper()
             : base("ErrorReports")
         {
-            Property(x => x.ContextCollections)
-                .ColumnName("ContextInfo")
-                .ToColumnValue(EntitySerializer.Serialize)
-                .ToPropertyValue(colValue => EntitySerializer.Deserialize<ContextCollectionDTO[]>((string) colValue));
+            //Property(x => x.ContextCollections)
+            //    .ColumnName("ContextInfo")
+            //    .ToColumnValue(EntitySerializer.Serialize)
+            //    .ToPropertyValue(colValue => EntitySerializer.Deserialize<ContextCollectionDTO[]>((string) colValue));
+            Property(x => x.ContextCollections).Ignore();
 
             Property(x => x.ReportVersion).Ignore();
 

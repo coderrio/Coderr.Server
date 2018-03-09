@@ -163,7 +163,7 @@ namespace codeRR.Server.Web.Controllers
         {
             var query = new FindIncidents
             {
-                ApplicationId = model.ApplicationId
+                ApplicationIds = new []{model.ApplicationId}
             };
             var result = await _queryBus.QueryAsync(this.ClaimsUser(), query);
             if (result.TotalCount == 0)

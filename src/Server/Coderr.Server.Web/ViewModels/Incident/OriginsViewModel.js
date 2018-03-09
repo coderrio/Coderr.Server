@@ -17,18 +17,18 @@ var codeRR;
                 this.context = context;
                 IncidentNavigation.set(context.routeData, 'Report origins', 'origins');
                 context.resolve();
-                var js = document.createElement("script");
-                js.type = "text/javascript";
-                js
-                    .src =
-                    "https://maps.googleapis.com/maps/api/js?key=AIzaSyBleXqcxCLRwuhcXk-3904HaJt9Vd1-CZc&libraries=visualization";
-                this.context.viewContainer.appendChild(js);
                 //var myLatLng = { lat: -25.363, lng: 131.044 };
                 //var marker = new google.maps.Marker({
                 //    position: myLatLng,
                 //    map: map,
                 //    title: 'Hello World!'
                 //});
+                var js = document.createElement("script");
+                js.type = "text/javascript";
+                js
+                    .src =
+                    "https://maps.googleapis.com/maps/api/js?key=AIzaSyBleXqcxCLRwuhcXk-3904HaJt9Vd1-CZc&libraries=visualization";
+                this.context.viewContainer.appendChild(js);
                 js.onload = function (e) {
                     var mapDiv = context.select.one("#map");
                     var map = new google.maps.Map(mapDiv, {

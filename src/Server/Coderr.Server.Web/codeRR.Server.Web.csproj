@@ -95,11 +95,12 @@
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Coderr.Client, Version=1.0.14.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Coderr.Client.1.0.14\lib\net452\Coderr.Client.dll</HintPath>
+    <Reference Include="Coderr.Client, Version=1.0.18.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Coderr.Client.1.0.18\lib\net452\Coderr.Client.dll</HintPath>
     </Reference>
-    <Reference Include="Coderr.Client.AspNet.Mvc5, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Coderr.Client.AspNet.Mvc5">
       <HintPath>..\packages\Coderr.Client.AspNet.Mvc5.1.0.5\lib\net451\Coderr.Client.AspNet.Mvc5.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DotNetCqs, Version=2.0.7.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetCqs.2.0.7\lib\net452\DotNetCqs.dll</HintPath>
@@ -305,6 +306,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\AllowMvcCorsAttribute.cs" />
+    <Compile Include="Infrastructure\AllowCorsAttribute.cs" />
     <Compile Include="Infrastructure\Auth\ApiKeyAuthenticator.cs" />
     <Compile Include="Infrastructure\Auth\AuthenticationFailureResult.cs" />
     <Compile Include="Infrastructure\Auth\SignalRAuthenticateAttribute.cs" />
@@ -329,6 +332,7 @@
     <Compile Include="Models\Account\ResetPasswordViewModel.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\AuthenticatedUser.cs" />
     <Compile Include="Models\Wizard\ApplicationViewModel.cs" />
     <Compile Include="Models\Wizard\ConfigurePackageViewModel.cs" />
     <Compile Include="Models\Wizard\HelpViewModel.cs" />
@@ -546,6 +550,7 @@
     <Content Include="tsconfig.json" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="app\Applications\Components\" />
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Receiver\Views\Shared\" />
   </ItemGroup>
@@ -554,6 +559,9 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="app\Application.ts" />
+    <TypeScriptCompile Include="app\Applications\Index.ts" />
+    <TypeScriptCompile Include="app\Applications\Application.ts" />
+    <TypeScriptCompile Include="app\Index.ts" />
     <TypeScriptCompile Include="Scripts\CqsClient.ts" />
     <TypeScriptCompile Include="Scripts\Griffin.Editor.ts" />
     <TypeScriptCompile Include="Scripts\Griffin.Net.ts" />
