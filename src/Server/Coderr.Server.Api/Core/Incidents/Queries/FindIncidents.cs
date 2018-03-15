@@ -27,7 +27,7 @@ namespace codeRR.Server.Api.Core.Incidents.Queries
         /// <summary>
         ///     Find incidents assigned to the specified user
         /// </summary>
-        public int AccountId { get; set; }
+        public int AssignedToId { get; set; }
 
         /// <summary>
         ///     Empty = find for all applications

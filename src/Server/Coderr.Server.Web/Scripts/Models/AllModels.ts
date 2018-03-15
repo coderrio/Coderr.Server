@@ -721,6 +721,7 @@ module codeRR.Core.Incidents.Queries {
         public SortType: codeRR.Core.Incidents.IncidentOrder;
         public Version: string;
         public Tags: string[];
+        public AssignedToId: number;
     }
 
     export class FindIncidentsResult {

@@ -46,7 +46,7 @@ namespace codeRR.Server.SqlServer.Analysis.Jobs
                 _importer.Clear();
             }
 
-            _dbContext.SaveChanges();
+         //   _dbContext.SaveChanges();
         }
 
 

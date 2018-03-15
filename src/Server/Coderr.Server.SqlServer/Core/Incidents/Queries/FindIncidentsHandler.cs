@@ -155,10 +155,10 @@ namespace codeRR.Server.SqlServer.Core.Incidents.Queries
                     cmd.AddParameter("maxDate", query.MaxDate);
                 }
 
-                if (query.AccountId > 0)
+                if (query.AssignedToId > 0)
                 {
                     sqlQuery += "AND AssignedToId = @assignedTo";
-                    cmd.AddParameter("assignedTo", query.AccountId);
+                    cmd.AddParameter("assignedTo", query.AssignedToId);
                 }
 
 

@@ -34,7 +34,7 @@ namespace codeRR.Server.SqlServer.Analysis.Jobs
                 var reportIds = new List<int>();
                 using (var cmd = _analysisDbContext.UnitOfWork.CreateDbCommand())
                 {
-                    cmd.CommandText = "SELECT TOP(10) Id, ContextInfo FROM ErrorReports WHERE ContextInfo != ''";
+                    cmd.CommandText = "SELECT TOP(10) Id, ContextInfo FROM ErrorReports WHERE cast([ContextInfo] as nvarchar(max)) != ''";
                     using (var reader = await cmd.ExecuteReaderAsync())
                     {
                         while (await reader.ReadAsync())
@@ -70,8 +70,6 @@ namespace codeRR.Server.SqlServer.Analysis.Jobs
                     }
                 }
             }
-
-            _analysisDbContext.SaveChanges();
         }
     }
 }

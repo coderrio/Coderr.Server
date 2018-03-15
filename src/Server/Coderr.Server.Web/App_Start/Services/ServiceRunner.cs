@@ -229,12 +229,13 @@ namespace codeRR.Server.Web.Services
         {
             try
             {
-                e.Scope.Resolve<IAdoNetUnitOfWork>().SaveChanges();
+                if (e.Successful)
+                    e.Scope.Resolve<IAdoNetUnitOfWork>().SaveChanges();
             }
             catch (Exception exception)
             {
-                Err.Report(e.Exception);
-                _log.Error("Failed to close scope. Err: " + exception, e.Exception);
+                Err.Report(exception);
+                _log.Error("Failed to close scope.", exception);
             }
         }
 
