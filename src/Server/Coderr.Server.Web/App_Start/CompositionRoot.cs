@@ -73,7 +73,7 @@ namespace codeRR.Server.Web
         private IAdoNetUnitOfWork CreateUnitOfWork(IServiceLocator arg)
         {
             var con = DbConnectionFactory.Open(true);
-            return new AdoNetUnitOfWork(con, true, IsolationLevel.RepeatableRead);
+            return new OurUnitOfWork(con, true);
         }
 
         private IDbConnection CreateConnection(IServiceLocator arg)

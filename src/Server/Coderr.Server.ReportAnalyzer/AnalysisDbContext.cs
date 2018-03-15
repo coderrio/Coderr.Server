@@ -35,9 +35,17 @@ namespace codeRR.Server.ReportAnalyzer
         {
             get
             {
+                if (_unitOfWork is OurUnitOfWork ourUnitOfWork)
+                {
+                    return ourUnitOfWork.Transaction.Connection;
+                }
+                if (_unitOfWork != null && _con == null)
+                {
+                    throw new NotSupportedException("Got a unit of work but not a connection");
+                }
+
                 if (_con != null)
                     return _con;
-
                 _con = _connectionFactory();
                 return _con;
             }

@@ -43,10 +43,11 @@ namespace codeRR.Server.SqlServer.Analysis.Jobs
                     break;
 
                 await DeleteImportedRows(collections);
+                await _importer.Execute();
                 _importer.Clear();
             }
 
-         //   _dbContext.SaveChanges();
+            _dbContext.SaveChanges();
         }
 
 

@@ -70,6 +70,8 @@ namespace codeRR.Server.SqlServer.Analysis.Jobs
                     }
                 }
             }
+
+            _analysisDbContext.SaveChanges();
         }
     }
 }

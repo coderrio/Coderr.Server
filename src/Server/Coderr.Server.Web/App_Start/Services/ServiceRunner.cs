@@ -133,7 +133,7 @@ namespace codeRR.Server.Web.Services
             _backgroundJobManager = new BackgroundJobManager(CompositionRoot.Container);
             _backgroundJobManager.JobFailed += OnJobFailed;
             _backgroundJobManager.StartInterval = TimeSpan.FromSeconds(Debugger.IsAttached ? 0 : 10);
-            _backgroundJobManager.ExecuteInterval = TimeSpan.FromMinutes(3);
+            _backgroundJobManager.ExecuteInterval = TimeSpan.FromSeconds(30);
 
             _backgroundJobManager.ScopeClosing += OnBackgroundJobScopeClosing;
         }

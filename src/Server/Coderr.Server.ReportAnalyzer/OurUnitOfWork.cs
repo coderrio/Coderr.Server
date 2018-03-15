@@ -36,6 +36,9 @@ namespace codeRR.Server.ReportAnalyzer
 
         public void SaveChanges()
         {
+            if (Transaction == null)
+                return;
+
             Transaction.Commit();
             Transaction.Dispose();
             Transaction = null;
