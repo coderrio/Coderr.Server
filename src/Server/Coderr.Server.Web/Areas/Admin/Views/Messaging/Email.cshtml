@@ -27,7 +27,7 @@
             </div>
             <div class="form-group">
                 @Html.LabelFor(x => x.AccountPassword, new { @class = "control-label" })
-                @Html.TextBoxFor(x => x.AccountPassword, new { @class = "form-control", placeholder = "Password for the above account", autocomplete = "new-password" })
+                @Html.PasswordFor(x => x.AccountPassword, new { @class = "form-control", placeholder = "Password for the above account", autocomplete = "new-password" })
             </div>
             <div class="form-group">
                 <label class="control-label">Password verification</label>
