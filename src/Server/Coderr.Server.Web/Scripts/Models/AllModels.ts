@@ -706,7 +706,7 @@ module codeRR.Core.Incidents {
 module codeRR.Core.Incidents.Queries {
     export class FindIncidents {
         public static TYPE_NAME: string = 'FindIncidents';
-        public ApplicationId: number;
+        public ApplicationIds: number[];
         public FreeText: string;
         public IsAssigned: boolean;
         public IsClosed: boolean;

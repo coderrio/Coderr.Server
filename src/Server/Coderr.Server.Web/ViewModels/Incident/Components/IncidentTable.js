@@ -18,7 +18,7 @@ var IncidentTableViewModel = /** @class */ (function () {
         query.ItemsPerPage = 20;
         query.IsNew = true;
         if (applicationId != null) {
-            query.ApplicationId = applicationId;
+            query.ApplicationIds = [applicationId];
             this.applicationId = applicationId;
         }
         if (applicationVersion != null) {
@@ -208,7 +208,7 @@ var IncidentTableViewModel = /** @class */ (function () {
         if (pageNumber === void 0) { pageNumber = 0; }
         var query = new codeRR.Core.Incidents.Queries.FindIncidents();
         if (this.applicationId != null) {
-            query.ApplicationId = this.applicationId;
+            query.ApplicationIds = [this.applicationId];
         }
         query.SortType = this.sortType;
         query.SortAscending = this.sortAscending;

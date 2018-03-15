@@ -28,7 +28,7 @@ class IncidentTableViewModel implements Griffin.WebApp.IPagerSubscriber {
         query.ItemsPerPage = 20;
         query.IsNew = true;
         if (applicationId != null) {
-            query.ApplicationId = applicationId;
+            query.ApplicationIds = [applicationId];
             this.applicationId = applicationId;
         }
         if (applicationVersion != null) {
@@ -238,7 +238,7 @@ class IncidentTableViewModel implements Griffin.WebApp.IPagerSubscriber {
         const query = new codeRR.Core.Incidents.Queries.FindIncidents();
 
         if (this.applicationId != null) {
-            query.ApplicationId = this.applicationId;
+            query.ApplicationIds = [this.applicationId];
         }
 
         query.SortType = this.sortType;
