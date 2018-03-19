@@ -1,4 +1,4 @@
-namespace codeRR.Server.Api.Core.Applications.Queries
+namespace Coderr.Server.Api.Core.Applications.Queries
 {
     /// <summary>
     ///     Result for <see cref="GetApplicationIdByKey" />.

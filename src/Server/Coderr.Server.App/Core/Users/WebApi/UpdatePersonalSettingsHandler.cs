@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Users.Commands;
-using codeRR.Server.App.Core.Accounts;
+using Coderr.Server.Api.Core.Users.Commands;
+using Coderr.Server.Domain.Core.Account;
+using Coderr.Server.Domain.Core.User;
 using DotNetCqs;
 using Griffin.Container;
 
-namespace codeRR.Server.App.Core.Users.WebApi
+namespace Coderr.Server.App.Core.Users.WebApi
 {
     /// <summary>
     ///     Handler for <see cref="UpdatePersonalSettings" />.
     /// </summary>
-    [Component]
     public class UpdatePersonalSettingsHandler : IMessageHandler<UpdatePersonalSettings>
     {
         private readonly IUserRepository _userRepository;

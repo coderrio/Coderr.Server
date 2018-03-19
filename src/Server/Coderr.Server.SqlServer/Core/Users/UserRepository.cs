@@ -1,13 +1,13 @@
 ﻿using System.Data.Common;
 using System.Threading.Tasks;
-using codeRR.Server.App.Core.Users;
+using Coderr.Server.Domain.Core.User;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 
-namespace codeRR.Server.SqlServer.Core.Users
+namespace Coderr.Server.SqlServer.Core.Users
 {
-    [Component]
+    [ContainerService]
     public class UserRepository : IUserRepository
     {
         private readonly IAdoNetUnitOfWork _uow;

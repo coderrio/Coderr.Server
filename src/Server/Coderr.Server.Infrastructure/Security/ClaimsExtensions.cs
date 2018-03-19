@@ -4,10 +4,10 @@ using System.Security.Authentication;
 using System.Security.Claims;
 using System.Security.Principal;
 
-namespace codeRR.Server.Infrastructure.Security
+namespace Coderr.Server.Infrastructure.Security
 {
     /// <summary>
-    ///     Our codeRR specific extensions for claims handling.
+    ///     Our Coderr specific extensions for claims handling.
     /// </summary>
     public static class ClaimsExtensions
     {

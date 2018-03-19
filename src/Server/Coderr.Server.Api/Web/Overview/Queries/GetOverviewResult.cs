@@ -1,4 +1,4 @@
-﻿namespace codeRR.Server.Api.Web.Overview.Queries
+﻿namespace Coderr.Server.Api.Web.Overview.Queries
 {
     /// <summary>
     ///     Result for <see cref="GetOverview" />.

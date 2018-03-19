@@ -1,12 +1,11 @@
 ﻿using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Applications.Queries;
+using Coderr.Server.Api.Core.Applications.Queries;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
 
-namespace codeRR.Server.SqlServer.Core.Applications.Queries
+namespace Coderr.Server.SqlServer.Core.Applications.Queries
 {
-    [Component]
     public class GetApplicationIdByKeyHandler : IQueryHandler<GetApplicationIdByKey, GetApplicationIdByKeyResult>
     {
         private readonly IAdoNetUnitOfWork _uow;

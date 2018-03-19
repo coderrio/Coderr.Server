@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Applications.Queries;
+using Coderr.Server.Api.Core.Applications.Queries;
+using Coderr.Server.Domain.Core.Applications;
 using DotNetCqs;
 using Griffin.Container;
 
-namespace codeRR.Server.App.Core.Applications.QueryHandlers
+namespace Coderr.Server.App.Core.Applications.QueryHandlers
 {
-    [Component]
     internal class GetApplicationTeamHandler : IQueryHandler<GetApplicationTeam, GetApplicationTeamResult>
     {
         private readonly IApplicationRepository _applicationRepository;

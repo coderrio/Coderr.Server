@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
-using codeRR.Server.Infrastructure.Configuration;
+using Coderr.Server.Infrastructure.Configuration;
 using Coderr.Server.PluginApi.Config;
 
-namespace codeRR.Server.App.Modules.Messaging.Commands
+namespace Coderr.Server.App.Modules.Messaging.Commands
 {
     /// <summary>
     ///     Used to configure the <c>SmtpClient</c> which is part of .NET

@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Incidents.Queries;
-using Coderr.Server.PluginApi;
+using Coderr.Server.Api.Core.Incidents.Queries;
 using Coderr.Server.PluginApi.Incidents;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 
-namespace codeRR.Server.SqlServer.Core.Incidents.Queries
+namespace Coderr.Server.SqlServer.Core.Incidents.Queries
 {
-    [Component]
     public class GetIncidentHandler : IQueryHandler<GetIncident, GetIncidentResult>
     {
         private readonly IEnumerable<IQuickfactProvider> _quickfactProviders;

@@ -1,8 +1,8 @@
 ﻿using System;
-using DotNetCqs;
+
 // ReSharper disable All
 
-namespace codeRR.Server.Api.Core.Applications.Events
+namespace Coderr.Server.Api.Core.Applications.Events
 {
     /// <summary>
     ///     Published when a new application have been created by a user.

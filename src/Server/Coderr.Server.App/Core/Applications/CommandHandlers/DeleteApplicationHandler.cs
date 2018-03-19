@@ -1,13 +1,12 @@
-﻿using System.Security.Claims;
-using System.Threading.Tasks;
-using codeRR.Server.Api.Core.ApiKeys.Commands;
-using codeRR.Server.Api.Core.Applications.Commands;
-using codeRR.Server.Api.Core.Applications.Events;
-using codeRR.Server.Infrastructure.Security;
+﻿using System.Threading.Tasks;
+using Coderr.Server.Api.Core.Applications.Commands;
+using Coderr.Server.Api.Core.Applications.Events;
+using Coderr.Server.Domain.Core.Applications;
+using Coderr.Server.Infrastructure.Security;
 using DotNetCqs;
 using Griffin.Container;
 
-namespace codeRR.Server.App.Core.Applications.CommandHandlers
+namespace Coderr.Server.App.Core.Applications.CommandHandlers
 {
     /// <summary>
     ///     Handler for <see cref="DeleteApplication" />.

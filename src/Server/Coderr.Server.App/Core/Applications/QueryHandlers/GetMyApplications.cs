@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Applications;
-using codeRR.Server.Api.Core.Applications.Queries;
-using codeRR.Server.App.Core.Accounts;
+using Coderr.Server.Api.Core.Applications;
+using Coderr.Server.Api.Core.Applications.Queries;
+using Coderr.Server.Domain.Core.Account;
+using Coderr.Server.Domain.Core.Applications;
 using DotNetCqs;
 using Griffin.Container;
 
-namespace codeRR.Server.App.Core.Applications.QueryHandlers
+namespace Coderr.Server.App.Core.Applications.QueryHandlers
 {
     /// <summary>
     ///     Handler for <see cref="GetApplicationInfo" />.
     /// </summary>
-    [Component]
     public class GetApplicationListHandler : IQueryHandler<GetApplicationList, ApplicationListItem[]>
     {
         private readonly IApplicationRepository _applicationRepository;

@@ -1,4 +1,4 @@
-namespace codeRR.Server.Api.Core.Incidents
+namespace Coderr.Server.Api.Core.Incidents
 {
     /// <summary>
     ///     How incidents should be ordered in a list

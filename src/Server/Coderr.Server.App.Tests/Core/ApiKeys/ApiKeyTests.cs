@@ -1,10 +1,10 @@
 ﻿using System.Linq;
-using codeRR.Server.App.Core.ApiKeys;
-using codeRR.Server.Infrastructure.Security;
+using Coderr.Server.App.Core.ApiKeys;
+using Coderr.Server.Infrastructure.Security;
 using FluentAssertions;
 using Xunit;
 
-namespace codeRR.Server.App.Tests.Core.ApiKeys
+namespace Coderr.Server.App.Tests.Core.ApiKeys
 {
     public class ApiKeyTests
     {

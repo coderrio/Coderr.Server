@@ -1,4 +1,4 @@
-﻿namespace codeRR.Server.Infrastructure
+﻿namespace Coderr.Server.Infrastructure
 {
     public interface IUrlHelper
     {

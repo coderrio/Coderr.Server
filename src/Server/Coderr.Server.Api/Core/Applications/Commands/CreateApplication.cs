@@ -1,8 +1,6 @@
 ﻿using System;
-using codeRR.Server.Api.Core.Accounts.Requests;
-using DotNetCqs;
 
-namespace codeRR.Server.Api.Core.Applications.Commands
+namespace Coderr.Server.Api.Core.Applications.Commands
 {
     /// <summary>
     ///     Create a new application.

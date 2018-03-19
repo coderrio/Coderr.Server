@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Accounts.Queries;
+using Coderr.Server.Api.Core.Accounts.Queries;
+using Coderr.Server.Domain.Core.Account;
 using DotNetCqs;
 using Griffin.Container;
 
-namespace codeRR.Server.App.Core.Accounts.Queries
+namespace Coderr.Server.App.Core.Accounts.Queries
 {
     /// <summary>
     ///     Handler of <see cref="FindAccountByUserName" />.
     /// </summary>
-    [Component]
     public class FindAccountByUserNameHandler : IQueryHandler<FindAccountByUserName, FindAccountByUserNameResult>
     {
         private readonly IAccountRepository _repository;

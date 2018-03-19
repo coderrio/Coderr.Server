@@ -1,37 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Security.Authentication;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Routing;
-using codeRR.Server.Api.Core.Accounts.Commands;
-using codeRR.Server.Api.Core.Accounts.Requests;
-using codeRR.Server.Api.Core.Applications;
-using codeRR.Server.Api.Core.Applications.Queries;
-using codeRR.Server.Api.Core.Invitations.Queries;
-using codeRR.Server.App.Configuration;
-using codeRR.Server.App.Core.Accounts;
-using codeRR.Server.Infrastructure;
-using codeRR.Server.Infrastructure.Configuration;
-using codeRR.Server.Infrastructure.Security;
-using codeRR.Server.SqlServer.Core.Accounts;
-using codeRR.Server.Web.Models.Account;
+using Coderr.Server.Api.Core.Accounts.Commands;
+using Coderr.Server.Api.Core.Accounts.Requests;
+using Coderr.Server.Api.Core.Applications;
+using Coderr.Server.Api.Core.Applications.Queries;
+using Coderr.Server.Api.Core.Invitations.Queries;
+using Coderr.Server.App.Core.Accounts;
+using Coderr.Server.Infrastructure.Configuration;
+using Coderr.Server.Infrastructure.Security;
 using Coderr.Server.PluginApi.Config;
+using Coderr.Server.Web2.Infrastrucutre;
+using Coderr.Server.Web2.Models;
+using Coderr.Server.Web2.Models.Accounts;
 using DotNetCqs;
 using Griffin.Data;
 using log4net;
-using Microsoft.AspNet.Identity;
-using Microsoft.Owin.Security;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.IdentityModel.Protocols;
 
-namespace codeRR.Server.Web.Controllers
+namespace Coderr.Server.Web2.Controllers
 {
     /// <summary>
     ///     TODO: Break out logic
     /// </summary>
-    [AllowAnonymous]
+    [AllowAnonymous, Route("account")]
     public class AccountController : Controller
     {
         private readonly IAccountService _accountService;
@@ -40,6 +39,7 @@ namespace codeRR.Server.Web.Controllers
         private IMessageBus _messageBus;
         private IQueryBus _queryBus;
         private ConfigurationStore _configStore;
+        public static string LoginUrl = null;
 
         public AccountController(IAccountService accountService, IMessageBus messageBus, IAdoNetUnitOfWork uow, IQueryBus queryBus, ConfigurationStore configStore)
         {
@@ -55,8 +55,7 @@ namespace codeRR.Server.Web.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [Route("account/accept/{id}")]
-        [HttpGet]
+        [HttpGet("accept/{id}")]
         public async Task<ActionResult> Accept(string id)
         {
             try
@@ -76,14 +75,13 @@ namespace codeRR.Server.Web.Controllers
             }
             catch (Exception exception)
             {
-                ModelState.AddModelError("", exception);
+                ModelState.AddModelError("", exception.Message);
                 _logger.Error("Failed ot launch", exception);
                 return View(new AcceptViewModel());
             }
         }
 
-        [HttpPost]
-        [Route("account/accept")]
+        [HttpPost("accept")]
         public async Task<ActionResult> Accept(AcceptViewModel model)
         {
             if (!ModelState.IsValid)
@@ -116,16 +114,17 @@ namespace codeRR.Server.Web.Controllers
             }
 
 
-            SignIn(identity);
+            await SignInAsync(identity);
             return RedirectToAction("UpdateSession", new { returnUrl = "/#/account/accepted" });
         }
 
+        [HttpGet("activate/{id}")]
         public async Task<ActionResult> Activate(string id)
         {
             try
             {
                 var identity = await _accountService.ActivateAccount(this.ClaimsUser(), id);
-                SignIn(identity);
+                await SignInAsync(identity);
                 return Redirect(new ClaimsPrincipal(identity).IsSysAdmin()
                     ? "~/#/welcome/admin/"
                     : "~/#/welcome/user/");
@@ -137,36 +136,35 @@ namespace codeRR.Server.Web.Controllers
             }
         }
 
+        [HttpGet("activation/requested")]
         public ActionResult ActivationRequested()
         {
             return View();
         }
 
-        public ActionResult Index()
-        {
-            return View();
-        }
-
+        [HttpGet("login")]
         public ActionResult Login()
         {
             var config = _configStore.Load<BaseConfiguration>();
             var model = new LoginViewModel
             {
-                AllowRegistrations = config.AllowRegistrations != false
+                AllowRegistrations = config.AllowRegistrations != false,
+                ReturnUrl = Request.Query["ReturnUrl"]
             };
 
-            var url = ConfigurationManager.AppSettings["LoginUrl"];
-            if (url != null && url != Request.Url.AbsolutePath)
-                return Redirect(url);
+            //TODO: Validate in Live
+            if (LoginUrl != null && LoginUrl != Request.Path)
+                return Redirect(LoginUrl);
 
             return View(model);
         }
 
-        [HttpPost]
+        [HttpPost("login")]
         public async Task<ActionResult> Login(LoginViewModel model)
         {
             var config = _configStore.Load<BaseConfiguration>();
             model.AllowRegistrations = config.AllowRegistrations != false;
+            model.ReturnUrl = Request.Query["ReturnUrl"];
 
             if (!ModelState.IsValid)
                 return View(model);
@@ -182,11 +180,11 @@ namespace codeRR.Server.Web.Controllers
                 }
 
 
-                SignIn(principal);
+                await SignInAsync(principal);
 
                 if (model.ReturnUrl != null && model.ReturnUrl.StartsWith("/"))
                     return Redirect(model.ReturnUrl);
-                return Redirect("~/#/");
+                return Redirect("~/");
             }
             catch (AuthenticationException err)
             {
@@ -202,21 +200,21 @@ namespace codeRR.Server.Web.Controllers
             }
         }
 
+        [HttpGet("logout")]
         public ActionResult Logout()
         {
-            HttpContext.GetOwinContext().Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            Session.Abandon();
-
+            HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return Redirect("~/");
         }
 
+        [HttpGet("register")]
         public ActionResult Register()
         {
             return View();
         }
 
 
-        [HttpPost]
+        [HttpPost("register")]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
             var config = _configStore.Load<BaseConfiguration>();
@@ -260,14 +258,13 @@ namespace codeRR.Server.Web.Controllers
             return RedirectToAction("ActivationRequested");
         }
 
-        [Route("password/request/reset")]
+        [HttpGet("password/request/reset")]
         public ActionResult RequestPasswordReset()
         {
             return View();
         }
 
-        [Route("password/request/reset")]
-        [HttpPost]
+        [HttpPost("password/request/reset")]
         public async Task<ActionResult> RequestPasswordReset(RequestPasswordResetViewModel model)
         {
             if (!ModelState.IsValid)
@@ -285,8 +282,7 @@ namespace codeRR.Server.Web.Controllers
             return View(new ResetPasswordViewModel { ActivationKey = activationKey });
         }
 
-        [Route("password/reset")]
-        [HttpPost]
+        [HttpPost("password/reset")]
         public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
         {
             if (!ModelState.IsValid)
@@ -313,17 +309,15 @@ namespace codeRR.Server.Web.Controllers
             return RedirectToAction("Login", drDictionary);
         }
 
-
-        [Authorize]
+        [Authorize, HttpGet("update/session"), HttpPost("update/session")]
         public async Task<ActionResult> UpdateSession(string returnUrl = null)
         {
             var getApps = new GetApplicationList { AccountId = User.GetAccountId() };
-            var apps = await _queryBus.QueryAsync(getApps);
-            var ctx = Request.GetOwinContext();
-            ctx.Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            var apps = await _queryBus.QueryAsync((ClaimsPrincipal)User, getApps);
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
             var identity = CreateIdentity(User.GetAccountId(), User.Identity.Name, User.IsSysAdmin(), apps);
-            SignIn(identity);
+            await SignInAsync(identity);
 
             if (returnUrl != null)
                 return Redirect(returnUrl);
@@ -350,22 +344,22 @@ namespace codeRR.Server.Web.Controllers
             var roles = isSysAdmin || accountId == 1 ? new[] { CoderrClaims.RoleSysAdmin } : new string[0];
             var context = new PrincipalFactoryContext(accountId, userName, roles)
             {
-                AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
+                AuthenticationType = CookieAuthenticationDefaults.AuthenticationScheme,
                 Claims = claims.ToArray()
             };
             return (ClaimsIdentity)PrincipalFactory.CreateAsync(context).Result.Identity;
         }
 
-        private void SignIn(ClaimsIdentity identity)
+        private async Task SignInAsync(ClaimsIdentity identity)
         {
             var props = new AuthenticationProperties
             {
                 IsPersistent = true,
-                ExpiresUtc = DateTimeOffset.UtcNow.AddDays(14)
+                ExpiresUtc = DateTimeOffset.UtcNow.AddDays(14),
             };
-            var ctx = Request.GetOwinContext();
-            var mvcIdentity = new ClaimsIdentity(identity.Claims, DefaultAuthenticationTypes.ApplicationCookie);
-            ctx.Authentication.SignIn(props, mvcIdentity);
+            var mvcIdentity = new ClaimsIdentity(identity.Claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(mvcIdentity);
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, props);
         }
     }
 }

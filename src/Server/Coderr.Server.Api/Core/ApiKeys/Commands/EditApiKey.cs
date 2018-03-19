@@ -1,7 +1,8 @@
 ﻿using System;
+
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
 
-namespace codeRR.Server.Api.Core.ApiKeys.Commands
+namespace Coderr.Server.Api.Core.ApiKeys.Commands
 {
     /// <summary>
     ///     Create a new api key

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using codeRR.Server.Api.Core.Reports;
+using Coderr.Server.Api.Core.Reports;
 
-namespace codeRR.Server.App.Core.Reports
+namespace Coderr.Server.App.Core.Reports
 {
     /// <summary>
     ///     Repository result

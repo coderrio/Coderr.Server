@@ -1,4 +1,4 @@
-﻿namespace codeRR.Server.Infrastructure.Plugins
+﻿namespace Coderr.Server.Infrastructure.Plugins
 {
     /// <summary>
     ///     Will move to the definition in Microsoft.Extensions soon

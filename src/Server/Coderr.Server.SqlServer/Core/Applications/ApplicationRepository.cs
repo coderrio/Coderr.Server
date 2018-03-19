@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
-using codeRR.Server.App.Core.Applications;
-using codeRR.Server.App.Core.Users;
+using Coderr.Server.Domain.Core.Applications;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 
-namespace codeRR.Server.SqlServer.Core.Applications
+namespace Coderr.Server.SqlServer.Core.Applications
 {
-    [Component]
+    [ContainerService]
     public class ApplicationRepository : IApplicationRepository
     {
         private readonly IAdoNetUnitOfWork _uow;

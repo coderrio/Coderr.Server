@@ -1,6 +1,4 @@
-﻿using DotNetCqs;
-
-namespace codeRR.Server.Api.Core.Users.Commands
+﻿namespace Coderr.Server.Api.Core.Users.Commands
 {
     /// <summary>
     ///     Update user notifications

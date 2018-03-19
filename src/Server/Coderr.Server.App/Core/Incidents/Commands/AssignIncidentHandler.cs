@@ -1,16 +1,16 @@
 ﻿using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Incidents.Commands;
-using codeRR.Server.Api.Core.Incidents.Events;
-using codeRR.Server.Infrastructure.Security;
+using Coderr.Server.Api.Core.Incidents.Commands;
+using Coderr.Server.Api.Core.Incidents.Events;
+using Coderr.Server.Domain.Core.Incidents;
+using Coderr.Server.Infrastructure.Security;
 using DotNetCqs;
 using Griffin.Container;
 
-namespace codeRR.Server.App.Core.Incidents.Commands
+namespace Coderr.Server.App.Core.Incidents.Commands
 {
     /// <summary>
     ///     Handler for <see cref="AssignIncident" />
     /// </summary>
-    [Component]
     public class AssignIncidentHandler : IMessageHandler<AssignIncident>
     {
         private readonly IIncidentRepository _repository;

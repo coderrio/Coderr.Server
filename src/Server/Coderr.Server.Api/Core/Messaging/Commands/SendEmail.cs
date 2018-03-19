@@ -1,7 +1,6 @@
 ﻿using System;
-using DotNetCqs;
 
-namespace codeRR.Server.Api.Core.Messaging.Commands
+namespace Coderr.Server.Api.Core.Messaging.Commands
 {
     /// <summary>
     ///     Send an email.

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Security.Claims;
 
-namespace codeRR.Server.App.Tests
+namespace Coderr.Server.App.Tests
 {
     class PrincipalHelper
     {

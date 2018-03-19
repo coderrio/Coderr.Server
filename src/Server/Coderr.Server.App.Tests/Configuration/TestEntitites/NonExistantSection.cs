@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using codeRR.Server.Infrastructure.Configuration;
+using Coderr.Server.Infrastructure.Configuration;
 using Coderr.Server.PluginApi.Config;
 
-namespace codeRR.Server.App.Tests.Configuration.TestEntitites
+namespace Coderr.Server.App.Tests.Configuration.TestEntitites
 {
     public class NonExistantSection : IConfigurationSection
     {

@@ -1,6 +1,6 @@
 using System;
 
-namespace codeRR.Server.Api.Core.Accounts.Queries
+namespace Coderr.Server.Api.Core.Accounts.Queries
 {
     /// <summary>
     ///     Result for <see cref="FindAccountByUserName" />.

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace codeRR.Server.Api
+namespace Coderr.Server.Api
 {
     /// <summary>
     /// Used to mark classes as DTOs (to be able to index and process them)

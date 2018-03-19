@@ -1,4 +1,4 @@
-﻿namespace codeRR.Server.Api.Modules.Triggers.Queries
+﻿namespace Coderr.Server.Api.Modules.Triggers.Queries
 {
     /// <summary>
     ///     Result item for <see cref="GetContextCollectionMetadata" />

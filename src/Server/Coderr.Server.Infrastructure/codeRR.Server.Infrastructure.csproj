@@ -1,22 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net452;netstandard2.0</TargetFrameworks>
-    <RootNamespace>codeRR.Server.Infrastructure</RootNamespace>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <RootNamespace>Coderr.Server.Infrastructure</RootNamespace>
     <AssemblyName>Coderr.Server.Infrastructure</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="DotNetCqs" Version="2.0.8" />
+    <PackageReference Include="DotNetCqs" Version="2.0.9" />
     <PackageReference Include="Griffin.Container" Version="1.1.9" />
     <PackageReference Include="Griffin.Framework" Version="2.0.0-alpha01" />
     <PackageReference Include="log4net" Version="2.0.8" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Coderr.Server.Api\codeRR.Server.Api.csproj" />
+    <ProjectReference Include="..\Coderr.Server.Api\Coderr.Server.Api.csproj" />
     <ProjectReference Include="..\Coderr.Server.PluginApi\Coderr.Server.PluginApi.csproj" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net452'">
     <Reference Include="System.Configuration" />
     <Reference Include="System.Messaging" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
+      <Version>2.0.0</Version>
+    </PackageReference>
   </ItemGroup>
 </Project>

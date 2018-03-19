@@ -1,0 +1,86 @@
+<template>
+    <div id="IncidentSearchView">
+        <div class="row mb-2">
+            <div class="col-lg-12">
+                <a href="#" class="btn btn-light" v-on:click.prevent="$router.back()">&lt;&lt; Back ...</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h3>{{incident.FullName}}: {{incident.Description}}</h3>
+                        <pre><code>{{incident.StackTrace}}
+</code></pre>
+                        <div class="tags">
+                            <span v-for="tag in incident.Tags" class="badge badge-dark">{{tag}}</span>
+                            <span class="badge badge-dark" v-if="isIgnored">incident-ignored</span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="position-relative">
+                            <h3>Report history</h3>
+                            <div class="ct-chart">
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        Quick facts
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-borderless">
+                            <tr v-for="fact in incident.Facts">
+                                <th>{{fact.Title}}</th>
+                                <td>{{fact.Value}}</td>
+                            </tr>
+                            <tr>
+                                <th>Created</th>
+                                <td>{{incident.CreatedAtUtc|ago}}</td>
+                            </tr>
+                            <tr>
+                                <th>Last report</th>
+                                <td>{{incident.LastReportReceivedAtUtc|ago}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="">
+                    <button class="btn btn-primary" v-on:click.prevent="assignToMe">Assign to me</button>
+                    <button class="btn btn-primary" v-on:click.prevent="assignToSomeoneElse">Assign to ..</button>
+                    <button class="btn btn-primary" v-on:click.prevent="close">Close incident</button>
+                    <button class="btn btn-primary" v-on:click.prevent="ignore" v-if="!isIgnored">Ignore incident</button>
+                </div>
+
+            </div>
+        </div>
+        <div id="assignToModal" style="display:none">
+            <div class="modal-body">
+                <div v-for="user in team" class="mb-2">
+                    <button class="btn btn-primary btn-block" v-on:click.prevent="assignTo(user.id, $event)" :value="user.id" data-dismiss="modal">
+                        {{user.name}}
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="CloseBody">
+            <textarea style="display: none" id="CloseArea" class="w-100" rows="10" placeholder="How did you solve the error?" autofocus="autofocus"></textarea>
+        </div>
+    </div>
+</template>
+
+
+<style src="./Incident.css" />
+<script src="./Incident.ts"></script>

@@ -1,16 +1,15 @@
 ﻿using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Accounts.Commands;
-using codeRR.Server.Api.Core.Accounts.Events;
-using codeRR.Server.Api.Core.Messaging.Commands;
-using codeRR.Server.App.Core.Accounts;
-using codeRR.Server.App.Core.Accounts.CommandHandlers;
-using codeRR.Server.Infrastructure.Configuration;
+using Coderr.Server.Api.Core.Accounts.Commands;
+using Coderr.Server.Api.Core.Accounts.Events;
+using Coderr.Server.Api.Core.Messaging.Commands;
+using Coderr.Server.App.Core.Accounts.CommandHandlers;
+using Coderr.Server.Domain.Core.Account;
 using DotNetCqs;
 using FluentAssertions;
 using NSubstitute;
 using Xunit;
 
-namespace codeRR.Server.App.Tests.Core.Accounts.CommandHandlers
+namespace Coderr.Server.App.Tests.Core.Accounts.CommandHandlers
 {
     public class RegisterAccountHandlerTests
     {

@@ -4,14 +4,14 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Client.Json;
+using Coderr.Server.Api.Client.Json;
 using DotNetCqs;
 using Newtonsoft.Json;
 
-namespace codeRR.Server.Api.Client
+namespace Coderr.Server.Api.Client
 {
     /// <summary>
-    ///     Client for the codeRR server API
+    ///     Client for the Coderr server API
     /// </summary>
     public class ServerApiClient : IMessageBus, IQueryBus
     {
@@ -69,9 +69,9 @@ namespace codeRR.Server.Api.Client
         /// <summary>
         ///     Open a channel
         /// </summary>
-        /// <param name="uri">Root URL to the codeRR web</param>
-        /// <param name="apiKey">API key from the administration area in codeRR web</param>
-        /// <param name="sharedSecret">Shared secret from the administration area in codeRR web</param>
+        /// <param name="uri">Root URL to the Coderr web</param>
+        /// <param name="apiKey">API key from the administration area in Coderr web</param>
+        /// <param name="sharedSecret">Shared secret from the administration area in Coderr web</param>
         public void Open(Uri uri, string apiKey, string sharedSecret)
         {
             _apiKey = apiKey ?? throw new ArgumentNullException(nameof(apiKey));

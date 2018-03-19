@@ -1,11 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
-using codeRR.Server.App.Modules.Geolocation;
-using codeRR.Server.SqlServer.Modules.Geolocation;
+﻿using System.Threading.Tasks;
+using Coderr.Server.Domain.Modules.ErrorOrigins;
+using Coderr.Server.SqlServer.Modules.Geolocation;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace codeRR.Server.SqlServer.Tests.Modules.Geolocation
+namespace Coderr.Server.SqlServer.Tests.Modules.Geolocation
 {
     public class ErrorOriginRepositoryTests : IntegrationTest
     {

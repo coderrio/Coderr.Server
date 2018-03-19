@@ -1,4 +1,4 @@
-﻿namespace codeRR.Server.Api.Core.Users
+﻿namespace Coderr.Server.Api.Core.Users
 {
     /// <summary>
     ///     Type of notification to use

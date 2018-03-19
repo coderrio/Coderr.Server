@@ -1,11 +1,12 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Accounts.Events;
-using codeRR.Server.Api.Core.Applications.Events;
+using Coderr.Server.Api.Core.Accounts.Events;
+using Coderr.Server.Api.Core.Applications.Events;
+using Coderr.Server.Domain.Core.Applications;
 using DotNetCqs;
 using Griffin.Container;
 
-namespace codeRR.Server.App.Core.Applications.EventHandlers
+namespace Coderr.Server.App.Core.Applications.EventHandlers
 {
     [Component(RegisterAsSelf = true)]
     internal class UpdateTeamOnInvitationAccepted : IMessageHandler<InvitationAccepted>

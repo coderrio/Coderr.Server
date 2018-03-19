@@ -2,15 +2,15 @@
 using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
-using codeRR.Server.App.Modules.Triggers.Domain;
-using codeRR.Server.SqlServer.Tools;
+using Coderr.Server.ReportAnalyzer.Triggers;
+using Coderr.Server.SqlServer.Tools;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 
-namespace codeRR.Server.SqlServer.Modules.Triggers
+namespace Coderr.Server.SqlServer.Modules.Triggers
 {
-    [Component]
+    [ContainerService]
     public class TriggerRepository : ITriggerRepository
     {
         private readonly IAdoNetUnitOfWork _unitOfWork;

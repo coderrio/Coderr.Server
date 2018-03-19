@@ -1,30 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using System.Web.Mvc;
-using codeRR.Server.Api.Core.Applications.Queries;
-using DotNetCqs;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
-namespace codeRR.Server.Web.Controllers
+namespace Coderr.Server.Web2.Controllers
 {
     [Authorize]
     public class HomeController : Controller
     {
-        private readonly IQueryBus _queryBus;
-
-        public HomeController(IQueryBus queryBus1)
+        [HttpGet]
+        public IActionResult Index()
         {
-            _queryBus = queryBus1;
-        }
-
-        public async Task<ActionResult> Index()
-        {
-            var apps = await _queryBus.QueryAsync(this.ClaimsUser(), new GetApplicationList());
-            if (apps.Length == 0)
-                return RedirectToAction("Application", "Wizard");
-
-            if (!Request.Path.EndsWith("/"))
-                return Redirect(Request.Path + "/");
-
             return View();
         }
     }

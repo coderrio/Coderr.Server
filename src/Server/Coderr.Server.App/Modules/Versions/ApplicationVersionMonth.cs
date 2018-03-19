@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.Server.App.Modules.Versions
+namespace Coderr.Server.App.Modules.Versions
 {
     /// <summary>
     ///     Tracks number of incidents/reports for a specific year/month

@@ -1,14 +1,15 @@
 ﻿using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Applications.Commands;
+using Coderr.Server.Api;
+using Coderr.Server.Api.Core.Applications.Commands;
+using Coderr.Server.Domain.Core.Applications;
 using DotNetCqs;
 using Griffin.Container;
 
-namespace codeRR.Server.App.Core.Applications.CommandHandlers
+namespace Coderr.Server.App.Core.Applications.CommandHandlers
 {
     /// <summary>
     ///     Used to update application name and applicationType.
     /// </summary>
-    [Component]
     public class UpdateApplicationHandler : IMessageHandler<UpdateApplication>
     {
         private readonly IApplicationRepository _repository;
@@ -28,7 +29,10 @@ namespace codeRR.Server.App.Core.Applications.CommandHandlers
             var app = await _repository.GetByIdAsync(command.ApplicationId);
             app.Name = command.Name;
             if (command.TypeOfApplication != null)
-                app.ApplicationType = command.TypeOfApplication.Value;
+            {
+                app.ApplicationType =  command.TypeOfApplication.Value.ConvertEnum<TypeOfApplication>();
+            }
+                
             await _repository.UpdateAsync(app);
         }
     }

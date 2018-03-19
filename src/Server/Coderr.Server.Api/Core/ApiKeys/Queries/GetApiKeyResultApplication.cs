@@ -1,4 +1,4 @@
-﻿namespace codeRR.Server.Api.Core.ApiKeys.Queries
+﻿namespace Coderr.Server.Api.Core.ApiKeys.Queries
 {
     /// <summary>
     ///     An allowed application for <see cref="GetApiKeyResult" />.

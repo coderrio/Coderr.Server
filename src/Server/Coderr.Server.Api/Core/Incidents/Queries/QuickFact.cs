@@ -1,4 +1,4 @@
-﻿namespace codeRR.Server.Api.Core.Incidents.Queries
+﻿namespace Coderr.Server.Api.Core.Incidents.Queries
 {
     /// <summary>
     ///     Quick fact for incidents.

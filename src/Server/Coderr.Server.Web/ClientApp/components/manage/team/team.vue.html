@@ -1,0 +1,45 @@
+<template>
+    <div class="mt-4">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">Application team</div>
+                    <div class="card-body">
+                        <table class="table table-borderless">
+                            <tr v-for="member in members">
+                                <td>
+                                    {{member.UserName}}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">Pending invites</div>
+                    <div class="card-body">
+                        <table class="table table-borderless" v-if="invites.length > 0">
+                            <tr v-for="member in invites">
+                                <td>
+                                    {{member.EmailAddress}}
+                                </td>
+                            </tr>
+                        </table>
+                        <div v-if="invites.length == 0">
+                            <em>(No pending invites)</em>
+                        </div>
+                        <hr />
+                        <h4>Send invite</h4>
+                        <input type="email" class="form-control" name="inviteEmail" placeholder="Email address" style="display: inline; width: auto;" />
+                        <input type="submit" value="Invite member" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+
+<style src="./team.css" />
+<script src="./team.ts"></script>

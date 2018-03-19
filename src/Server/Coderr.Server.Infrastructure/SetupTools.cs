@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace codeRR.Server.Infrastructure
+﻿namespace Coderr.Server.Infrastructure
 {
     public static class SetupTools
     {

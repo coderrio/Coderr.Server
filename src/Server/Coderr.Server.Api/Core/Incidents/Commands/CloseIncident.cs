@@ -1,7 +1,6 @@
 ﻿using System;
-using DotNetCqs;
 
-namespace codeRR.Server.Api.Core.Incidents.Commands
+namespace Coderr.Server.Api.Core.Incidents.Commands
 {
     /// <summary>
     ///     Close incident (i.e. we have corrected the issue)

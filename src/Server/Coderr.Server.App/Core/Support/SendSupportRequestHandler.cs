@@ -2,25 +2,24 @@
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Accounts.Queries;
-using codeRR.Server.Api.Core.Support;
-using codeRR.Server.App.Configuration;
-using codeRR.Server.Infrastructure.Security;
+using Coderr.Server.Api.Core.Accounts.Queries;
+using Coderr.Server.Api.Core.Support;
+using Coderr.Server.Infrastructure.Configuration;
+using Coderr.Server.Infrastructure.Security;
 using Coderr.Server.PluginApi.Config;
 using DotNetCqs;
 using Griffin.Container;
 
-namespace codeRR.Server.App.Core.Support
+namespace Coderr.Server.App.Core.Support
 {
     /// <summary>
-    ///     Sends a support request to the codeRR Team.
+    ///     Sends a support request to the Coderr Team.
     /// </summary>
     /// <remarks>
     ///     <para>
     ///         You must have bought commercial support or registered to get 30 days of free support.
     ///     </para>
     /// </remarks>
-    [Component]
     public class SendSupportRequestHandler : IMessageHandler<SendSupportRequest>
     {
         private ConfigurationStore _configStore;

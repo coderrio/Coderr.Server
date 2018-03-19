@@ -3,18 +3,17 @@ using System.Net;
 using System.Net.Mail;
 using System.Net.Mime;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Accounts.Queries;
-using codeRR.Server.Api.Core.Messaging.Commands;
-using codeRR.Server.App.Configuration;
-using codeRR.Server.Infrastructure.Net;
+using Coderr.Server.Api.Core.Accounts.Queries;
+using Coderr.Server.Api.Core.Messaging.Commands;
+using Coderr.Server.Infrastructure.Configuration;
+using Coderr.Server.Infrastructure.Net;
 using Coderr.Server.PluginApi.Config;
 using DotNetCqs;
 using Griffin.Container;
 using Markdig;
 
-namespace codeRR.Server.App.Modules.Messaging.Commands
+namespace Coderr.Server.App.Modules.Messaging.Commands
 {
-    [Component]
     internal class SendEmailHandler : IMessageHandler<SendEmail>
     {
         private ConfigurationStore _configStore;

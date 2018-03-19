@@ -1,4 +1,4 @@
-﻿namespace codeRR.Server.Api.Web.Overview.Queries
+﻿namespace Coderr.Server.Api.Web.Overview.Queries
 {
     /// <summary>
     ///     Stats for the last X days, part of <see cref="GetOverviewResult" />.

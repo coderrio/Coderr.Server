@@ -1,6 +1,4 @@
-﻿using DotNetCqs;
-
-namespace codeRR.Server.Api.Core.Support
+﻿namespace Coderr.Server.Api.Core.Support
 {
     /// <summary>
     ///     Send a support request to 1TCompany AB

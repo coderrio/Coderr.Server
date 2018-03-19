@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.Server.App.Core.Feedback
+namespace Coderr.Server.App.Core.Feedback
 {
     /// <summary>
     ///     Feedback written by the user when an exception was thrown

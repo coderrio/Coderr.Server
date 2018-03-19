@@ -1,0 +1,51 @@
+<template>
+    <div class="FeedbackView">
+        <div class="row">
+            <div class="col">
+                <h2>
+                    Feedback
+                </h2>
+            </div>
+            <hr />
+        </div>
+        <div class="row">
+            <div class="col" v-if="feedbackList.length == 0">
+                <div class="card">
+                    <div class="card-body">
+                        <h3>No feedback has been given.</h3>
+                        <p>This page can contain error descriptions written by your users when this error occurr.</p>
+                        <p>Either write your own error page or activate one of your built in ones.</p>
+                        <pre><code>//Example for ASP.NET MVC5
+Err.Configuration.UserInteraction.AskForFeedback = true;
+Err.Configuration.DisplayErrorPages();
+</code></pre>
+                        <p>You can read more in our <a href="">documentation</a>.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col" v-for="feedback in feedbackList">
+                <div class="card">
+                    <div class="card-body">
+                        <div>
+                            {{feedback}}
+                        </div>
+                        <div>
+                        </div>
+                    </div>
+                    <div class="card-footer" v-if="feedback.email">
+                        <a :href="'mailto:' + feedback.email">{{feedback.email}}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <router-link :to="{ name: 'analyzeIncident', params: { incidentId: incidentId }}" class="btn btn-primary">&lt;&lt; Back to incident..</router-link>
+            </div>
+        </div>
+    </div>
+</template>
+
+
+<style src="./feedback.css" />
+<script src="./feedback.ts"></script>

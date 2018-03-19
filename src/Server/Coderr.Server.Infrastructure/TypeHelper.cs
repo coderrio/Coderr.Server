@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace codeRR.Server.Infrastructure
+namespace Coderr.Server.Infrastructure
 {
     /// <summary>
     ///     Reflection helper.

@@ -6,7 +6,7 @@ using log4net;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace codeRR.Server.SqlServer.Tests.Xunit
+namespace Coderr.Server.SqlServer.Tests.Xunit
 {
     public class MethodLogger: XunitTestClassRunner
     {

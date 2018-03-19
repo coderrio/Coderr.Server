@@ -1,21 +1,18 @@
 ﻿using System;
 using System.Data.Common;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Incidents;
-using codeRR.Server.Api.Core.Incidents.Queries;
-using codeRR.Server.App.Core.Incidents;
-using codeRR.Server.App.Modules.Messaging.Templating.Formatting;
-using codeRR.Server.Infrastructure.Security;
+using Coderr.Server.Api.Core.Incidents;
+using Coderr.Server.Api.Core.Incidents.Queries;
+using Coderr.Server.Domain.Core.Incidents;
+using Coderr.Server.Infrastructure.Security;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 
-namespace codeRR.Server.SqlServer.Core.Incidents.Queries
+namespace Coderr.Server.SqlServer.Core.Incidents.Queries
 {
-    [Component]
     public class FindIncidentsHandler : IQueryHandler<FindIncidents, FindIncidentsResult>
     {
         private readonly IAdoNetUnitOfWork _uow;
@@ -155,10 +152,10 @@ namespace codeRR.Server.SqlServer.Core.Incidents.Queries
                     cmd.AddParameter("maxDate", query.MaxDate);
                 }
 
-                if (query.AccountId > 0)
+                if (query.AssignedToId > 0)
                 {
                     sqlQuery += "AND AssignedToId = @assignedTo";
-                    cmd.AddParameter("assignedTo", query.AccountId);
+                    cmd.AddParameter("assignedTo", query.AssignedToId);
                 }
 
 

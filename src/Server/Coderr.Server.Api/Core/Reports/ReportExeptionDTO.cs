@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace codeRR.Server.Api.Core.Reports
+namespace Coderr.Server.Api.Core.Reports
 {
     /// <summary>
     ///     Model used to wrap all information from an exception.

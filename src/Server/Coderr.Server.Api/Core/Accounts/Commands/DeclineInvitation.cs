@@ -1,7 +1,6 @@
 ﻿using System;
-using DotNetCqs;
 
-namespace codeRR.Server.Api.Core.Accounts.Commands
+namespace Coderr.Server.Api.Core.Accounts.Commands
 {
     /// <summary>
     ///     Invited person do not want to accept the invitation

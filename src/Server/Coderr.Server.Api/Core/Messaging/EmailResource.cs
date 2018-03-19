@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace codeRR.Server.Api.Core.Messaging
+namespace Coderr.Server.Api.Core.Messaging
 {
     /// <summary>
     ///     A resource attached to an email (typically an image)

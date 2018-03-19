@@ -4,25 +4,23 @@ using System.Linq;
 using System.Security.Authentication;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Accounts.Events;
-using codeRR.Server.Api.Core.Accounts.Requests;
-using codeRR.Server.Api.Core.Applications;
-using codeRR.Server.Api.Core.Applications.Queries;
-using codeRR.Server.App.Core.Applications;
-using codeRR.Server.App.Core.Invitations;
-using codeRR.Server.Infrastructure.Security;
+using Coderr.Server.Api.Core.Accounts.Events;
+using Coderr.Server.Api.Core.Accounts.Requests;
+using Coderr.Server.App.Core.Invitations;
+using Coderr.Server.Domain.Core.Account;
+using Coderr.Server.Domain.Core.Applications;
+using Coderr.Server.Infrastructure.Security;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using DotNetCqs;
-using Griffin.ApplicationServices;
-using Griffin.Container;
 using log4net;
 
-namespace codeRR.Server.App.Core.Accounts
+namespace Coderr.Server.App.Core.Accounts
 {
     /// <summary>
     ///     This is a service and not CQS object as the methods here are of RPC type which isn't really a good fit for commands
     ///     or queries.
     /// </summary>
-    [Component]
+    [ContainerService]
     public class AccountService : IAccountService
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(AccountService));

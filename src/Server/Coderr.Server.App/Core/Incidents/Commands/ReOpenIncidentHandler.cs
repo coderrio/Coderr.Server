@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Incidents.Commands;
-using codeRR.Server.Api.Core.Incidents.Events;
+using Coderr.Server.Api.Core.Incidents.Commands;
+using Coderr.Server.Domain.Core.Incidents;
 using DotNetCqs;
 using Griffin.Container;
 
-namespace codeRR.Server.App.Core.Incidents.Commands
+namespace Coderr.Server.App.Core.Incidents.Commands
 {
     /// <summary>
     /// Uses the incident repository and the domain entity to apply the change.
     /// </summary>
-    [Component]
     public class ReOpenIncidentHandler : IMessageHandler<ReOpenIncident>
     {
         private readonly IIncidentRepository _repository;

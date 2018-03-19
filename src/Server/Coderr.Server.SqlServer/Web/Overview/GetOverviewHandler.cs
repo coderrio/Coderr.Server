@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Web.Overview.Queries;
-using codeRR.Server.App.Core.Incidents;
-using codeRR.Server.Infrastructure.Security;
+using Coderr.Server.Api.Web.Overview.Queries;
+using Coderr.Server.Domain.Core.Incidents;
+using Coderr.Server.Infrastructure.Security;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
 
-namespace codeRR.Server.SqlServer.Web.Overview
+namespace Coderr.Server.SqlServer.Web.Overview
 {
-    [Component]
     internal class GetOverviewHandler : IQueryHandler<GetOverview, GetOverviewResult>
     {
         private readonly IAdoNetUnitOfWork _unitOfWork;

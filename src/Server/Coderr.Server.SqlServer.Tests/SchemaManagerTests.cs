@@ -1,9 +1,9 @@
 ﻿using System.Threading;
-using codeRR.Server.SqlServer.Tests.Helpers;
+using Coderr.Server.SqlServer.Tests.Helpers;
 using FluentAssertions;
 using Xunit;
 
-namespace codeRR.Server.SqlServer.Tests
+namespace Coderr.Server.SqlServer.Tests
 {
     public class SchemaManagerTests
     {

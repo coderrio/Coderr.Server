@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Accounts.Commands;
-using codeRR.Server.Api.Core.Accounts.Events;
-using codeRR.Server.Api.Core.Messaging;
-using codeRR.Server.Api.Core.Messaging.Commands;
-using codeRR.Server.App.Configuration;
-using codeRR.Server.Infrastructure.Configuration;
+using Coderr.Server.Api.Core.Accounts.Commands;
+using Coderr.Server.Api.Core.Accounts.Events;
+using Coderr.Server.Api.Core.Messaging;
+using Coderr.Server.Api.Core.Messaging.Commands;
+using Coderr.Server.Domain.Core.Account;
+using Coderr.Server.Infrastructure.Configuration;
 using Coderr.Server.PluginApi.Config;
 using DotNetCqs;
 using Griffin.Container;
 using log4net;
 
-namespace codeRR.Server.App.Core.Accounts.CommandHandlers
+namespace Coderr.Server.App.Core.Accounts.CommandHandlers
 {
     /// <summary>
     ///     Register a new account.
@@ -21,7 +21,6 @@ namespace codeRR.Server.App.Core.Accounts.CommandHandlers
     ///         Will wait for activation before allowing the user to login.
     ///     </para>
     /// </remarks>
-    [Component]
     public class RegisterAccountHandler : IMessageHandler<RegisterAccount>
     {
         private readonly IAccountRepository _repository;
@@ -103,7 +102,7 @@ contact us so that we can investigate: {email}
 
 Regards,
   Support team",
-                Subject = "codeRR registration"
+                Subject = "Coderr registration"
             };
             msg.Recipients = new[] { new EmailAddress(account.Email) };
 
@@ -124,8 +123,8 @@ Your activation code is: {0}
 You can activate your account by clicking on: {1}/account/activate/{0}
 
 Good luck,
-  codeRR Team", account.ActivationKey, config.BaseUrl),
-                Subject = "codeRR activation"
+  Coderr Team", account.ActivationKey, config.BaseUrl),
+                Subject = "Coderr activation"
             };
             msg.Recipients = new[] { new EmailAddress(account.Email) };
 

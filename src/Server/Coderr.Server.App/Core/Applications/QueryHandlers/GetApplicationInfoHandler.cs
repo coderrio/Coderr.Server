@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core;
-using codeRR.Server.Api.Core.Applications;
-using codeRR.Server.Api.Core.Applications.Queries;
-using codeRR.Server.App.Core.Incidents;
-using codeRR.Server.App.Modules.Versions;
+using Coderr.Server.Api;
+using Coderr.Server.Api.Core.Applications.Queries;
+using Coderr.Server.App.Modules.Versions;
+using Coderr.Server.Domain.Core.Applications;
+using Coderr.Server.Domain.Core.Incidents;
 using DotNetCqs;
 using Griffin.Container;
+using TypeOfApplication = Coderr.Server.Api.Core.Applications.TypeOfApplication;
 
-namespace codeRR.Server.App.Core.Applications.QueryHandlers
+namespace Coderr.Server.App.Core.Applications.QueryHandlers
 {
     /// <summary>
     ///     Handler for <see cref="GetApplicationInfo" />.
     /// </summary>
-    [Component]
     public class GetApplicationInfoHandler : IQueryHandler<GetApplicationInfo, GetApplicationInfoResult>
     {
         private readonly IIncidentRepository _incidentRepository;

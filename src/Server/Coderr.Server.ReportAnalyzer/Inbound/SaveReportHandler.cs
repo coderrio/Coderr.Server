@@ -1,23 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Security.Authentication;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using codeRR.Server.App.Core.Reports.Config;
-using codeRR.Server.ReportAnalyzer.Inbound.Models;
-using codeRR.Server.ReportAnalyzer.LibContracts;
-using Coderr.Server.PluginApi.Config;
+using Coderr.Server.ReportAnalyzer.Abstractions.ErrorReports;
+using Coderr.Server.ReportAnalyzer.Inbound.Commands;
+using Coderr.Server.ReportAnalyzer.Inbound.Models;
 using DotNetCqs;
 using DotNetCqs.Queues;
 using Griffin.Data;
 using log4net;
 using Newtonsoft.Json;
 
-namespace codeRR.Server.ReportAnalyzer.Inbound
+namespace Coderr.Server.ReportAnalyzer.Inbound
 {
     /// <summary>
     ///     Validates inbound report and store it in our internal queue for analysis.
@@ -35,12 +33,11 @@ namespace codeRR.Server.ReportAnalyzer.Inbound
         /// </summary>
         /// <param name="queue">Queue to store inbound reports in</param>
         /// <exception cref="ArgumentNullException">queueProvider;connectionFactory</exception>
-        public SaveReportHandler(IMessageQueue queue, IAdoNetUnitOfWork unitOfWork, ConfigurationStore configStore)
+        public SaveReportHandler(IMessageQueue queue, IAdoNetUnitOfWork unitOfWork, IReportConfig reportConfig)
         {
             _unitOfWork = unitOfWork;
             _queue = queue ?? throw new ArgumentNullException(nameof(queue));
-            var config = configStore.Load<ReportConfig>();
-            _maxSizeForJsonErrorReport = config.MaxReportJsonSize;
+            _maxSizeForJsonErrorReport = reportConfig.MaxReportJsonSize;
         }
 
         public void AddFilter(Func<NewReportDTO, bool> filter)
@@ -141,7 +138,7 @@ namespace codeRR.Server.ReportAnalyzer.Inbound
                 return null;
 
             // to support clients that still use the OneTrueError client library.
-            json = json.Replace("OneTrueError", "codeRR");
+            json = json.Replace("OneTrueError", "Coderr");
 
             return JsonConvert.DeserializeObject<NewReportDTO>(json,
                 new JsonSerializerSettings
@@ -185,7 +182,7 @@ namespace codeRR.Server.ReportAnalyzer.Inbound
                     cmd.AddParameter("appKey", appKey);
                     cmd.AddParameter("signature", sig);
                     var p = cmd.CreateParameter();
-                    p.SqlDbType = SqlDbType.Image;
+                    p.SqlDbType = System.Data.SqlDbType.Image;
                     p.ParameterName = "reportbody";
                     p.Value = reportBody;
                     cmd.Parameters.Add(p);

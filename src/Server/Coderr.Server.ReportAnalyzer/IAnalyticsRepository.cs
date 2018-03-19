@@ -1,8 +1,8 @@
 ﻿using System;
-using codeRR.Server.ReportAnalyzer.Domain.Incidents;
-using codeRR.Server.ReportAnalyzer.Domain.Reports;
+using Coderr.Server.Domain.Core.ErrorReports;
+using Coderr.Server.ReportAnalyzer.Incidents;
 
-namespace codeRR.Server.ReportAnalyzer
+namespace Coderr.Server.ReportAnalyzer
 {
     /// <summary>
     ///     Repository (think CQRS write side in this case. yay!)

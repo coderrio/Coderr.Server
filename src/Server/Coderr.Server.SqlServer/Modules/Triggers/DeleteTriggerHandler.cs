@@ -1,13 +1,12 @@
 ﻿using System.Data.Common;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Modules.Triggers.Commands;
+using Coderr.Server.Api.Modules.Triggers.Commands;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
 
-namespace codeRR.Server.SqlServer.Modules.Triggers
+namespace Coderr.Server.SqlServer.Modules.Triggers
 {
-    [Component]
     public class DeleteTriggerHandler : IMessageHandler<DeleteTrigger>
     {
         private readonly IAdoNetUnitOfWork _uow;

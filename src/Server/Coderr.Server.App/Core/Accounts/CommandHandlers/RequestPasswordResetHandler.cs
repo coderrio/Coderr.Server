@@ -1,19 +1,17 @@
 ﻿using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Accounts.Commands;
-using codeRR.Server.Api.Core.Messaging.Commands;
-using codeRR.Server.App.Configuration;
-using codeRR.Server.Infrastructure.Configuration;
-using Coderr.Server.PluginApi.Config;
+using Coderr.Server.Api.Core.Accounts.Commands;
+using Coderr.Server.Api.Core.Messaging.Commands;
+using Coderr.Server.Domain.Core.Account;
+using Coderr.Server.Infrastructure.Configuration;
 using DotNetCqs;
 using Griffin.Container;
 using log4net;
 
-namespace codeRR.Server.App.Core.Accounts.CommandHandlers
+namespace Coderr.Server.App.Core.Accounts.CommandHandlers
 {
     /// <summary>
     ///     Handler for <see cref="RequestPasswordReset" />.
     /// </summary>
-    [Component]
     internal class RequestPasswordResetHandler : IMessageHandler<RequestPasswordReset>
     {
         private readonly IAccountRepository _accountRepository;

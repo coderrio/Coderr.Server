@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace codeRR.Server.Infrastructure.Security
+namespace Coderr.Server.Infrastructure.Security
 {
     /// <summary>
     ///     Creates the security principal that is used by the system

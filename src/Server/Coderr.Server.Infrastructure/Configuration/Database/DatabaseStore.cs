@@ -4,7 +4,7 @@ using System.Data;
 using Coderr.Server.PluginApi.Config;
 using Griffin.Data;
 
-namespace codeRR.Server.Infrastructure.Configuration.Database
+namespace Coderr.Server.Infrastructure.Configuration.Database
 {
     /// <summary>
     ///     Uses a DB to store configuration.

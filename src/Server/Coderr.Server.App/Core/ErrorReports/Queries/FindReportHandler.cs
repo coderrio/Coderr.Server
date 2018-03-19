@@ -4,13 +4,13 @@
 //using DotNetCqs;
 //using Griffin.Container;
 //using log4net;
-//using codeRR.Core.Api.Reports;
-//using codeRR.Core.Api.Reports.Queries;
-//using codeRR.Core.Reports;
+//using Coderr.Core.Api.Reports;
+//using Coderr.Core.Api.Reports.Queries;
+//using Coderr.Core.Reports;
 
-//namespace codeRR.Core.ErrorReports.Queries
+//namespace Coderr.Core.ErrorReports.Queries
 //{
-//    [Component]
+//    [ContainerService]
 //    internal class FindReportHandler : IQueryHandler<GetReport, GetReportResult>
 //    {
 //        private readonly IReportsRepository _repository;

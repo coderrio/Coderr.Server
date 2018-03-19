@@ -1,0 +1,13 @@
+/*.router-link-exact-active {
+    color: #ffffff;
+}
+
+.dropdown-menu .router-link-exact-active {
+    color: #333333;
+    font-weight: bold;
+}
+
+.bg-light .router-link-exact-active {
+    color: #333333;
+    font-weight: bold;
+}*/

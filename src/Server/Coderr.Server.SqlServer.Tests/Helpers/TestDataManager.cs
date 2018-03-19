@@ -1,23 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using codeRR.Server.Api.Core.Applications;
-using codeRR.Server.App.Core.Accounts;
-using codeRR.Server.App.Core.Applications;
-using codeRR.Server.App.Core.Users;
-using codeRR.Server.ReportAnalyzer;
-using codeRR.Server.ReportAnalyzer.Domain.Incidents;
-using codeRR.Server.ReportAnalyzer.Domain.Reports;
-using codeRR.Server.SqlServer.Analysis;
-using codeRR.Server.SqlServer.Core.Accounts;
-using codeRR.Server.SqlServer.Core.Applications;
-using codeRR.Server.SqlServer.Core.Users;
-using codeRR.Server.SqlServer.Tests.Models;
+using Coderr.Server.Domain.Core.Account;
+using Coderr.Server.Domain.Core.Applications;
+using Coderr.Server.Domain.Core.ErrorReports;
+using Coderr.Server.Domain.Core.User;
 using Coderr.Server.PluginApi.Config;
+using Coderr.Server.ReportAnalyzer.Incidents;
+using Coderr.Server.SqlServer.Core.Accounts;
+using Coderr.Server.SqlServer.Core.Applications;
+using Coderr.Server.SqlServer.Core.Users;
+using Coderr.Server.SqlServer.ReportAnalyzer;
+using Coderr.Server.SqlServer.Tests.Models;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 
-namespace codeRR.Server.SqlServer.Tests.Helpers
+namespace Coderr.Server.SqlServer.Tests.Helpers
 {
     public class TestDataManager
     {
@@ -81,9 +79,9 @@ namespace codeRR.Server.SqlServer.Tests.Helpers
 
                 report = new ErrorReportEntity(applicationId, Guid.NewGuid().ToString("N"), DateTime.UtcNow,
                         new ErrorReportException(new Exception("mofo")),
-                        new List<ErrorReportContext>
+                        new List<ErrorReportContextCollection>
                         {
-                            new ErrorReportContext("Maps", new Dictionary<string, string>())
+                            new ErrorReportContextCollection("Maps", new Dictionary<string, string>())
                         })
                 { Title = "Missing here" };
                 report.Init(report.GenerateHashCodeIdentifier());
@@ -91,10 +89,10 @@ namespace codeRR.Server.SqlServer.Tests.Helpers
                 uow.SaveChanges();
             }
 
-            using (var dbContext = new AnalysisDbContext(CreateUnitOfWork()))
+            using (var dbContext = CreateUnitOfWork())
             {
                 var incident = new IncidentBeingAnalyzed(report);
-                var incRepos = new AnalyticsRepository(dbContext, ConfigStore);
+                var incRepos = new AnalyticsRepository(dbContext);
                 incRepos.CreateIncident(incident);
                 incidentId = incident.Id;
 
@@ -232,9 +230,9 @@ namespace codeRR.Server.SqlServer.Tests.Helpers
             applicationId = app.Id;
         }
 
-        private OurUnitOfWork CreateUnitOfWork()
+        private IAdoNetUnitOfWork CreateUnitOfWork()
         {
-            return new OurUnitOfWork(_connectionFactory(), true);
+            return new AdoNetUnitOfWork(_connectionFactory(), true);
         }
     }
 }

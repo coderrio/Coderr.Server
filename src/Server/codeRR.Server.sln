@@ -1,33 +1,35 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "codeRR.Server.Web", "Coderr.Server.Web\codeRR.Server.Web.csproj", "{0476895C-6A61-4DE1-B06B-E8BF496FB651}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coderr.Server.App", "Coderr.Server.App\Coderr.Server.App.csproj", "{5EF42A74-9323-49FA-A1F6-974D6DE77202}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "codeRR.Server.App", "Coderr.Server.App\codeRR.Server.App.csproj", "{5EF42A74-9323-49FA-A1F6-974D6DE77202}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coderr.Server.Api", "Coderr.Server.Api\Coderr.Server.Api.csproj", "{FC331A95-FCA4-4764-8004-0884665DD01F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "codeRR.Server.Api", "Coderr.Server.Api\codeRR.Server.Api.csproj", "{FC331A95-FCA4-4764-8004-0884665DD01F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coderr.Server.SqlServer", "Coderr.Server.SqlServer\Coderr.Server.SqlServer.csproj", "{B967BEEA-CDDD-4A83-A4F2-1C946099ED51}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "codeRR.Server.SqlServer", "Coderr.Server.SqlServer\codeRR.Server.SqlServer.csproj", "{B967BEEA-CDDD-4A83-A4F2-1C946099ED51}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coderr.Server.SqlServer.Tests", "Coderr.Server.SqlServer.Tests\Coderr.Server.SqlServer.Tests.csproj", "{502E6EC1-FF7D-4E1A-846E-D0E8A4EE9705}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "codeRR.Server.SqlServer.Tests", "Coderr.Server.SqlServer.Tests\codeRR.Server.SqlServer.Tests.csproj", "{502E6EC1-FF7D-4E1A-846E-D0E8A4EE9705}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coderr.Server.ReportAnalyzer", "Coderr.Server.ReportAnalyzer\Coderr.Server.ReportAnalyzer.csproj", "{29FBF805-CAFD-426A-A576-9756D375BF18}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "codeRR.Server.ReportAnalyzer", "Coderr.Server.ReportAnalyzer\codeRR.Server.ReportAnalyzer.csproj", "{29FBF805-CAFD-426A-A576-9756D375BF18}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coderr.Server.App.Tests", "Coderr.Server.App.Tests\Coderr.Server.App.Tests.csproj", "{9031CF08-2778-487B-8E11-2F45714875D1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "codeRR.Server.App.Tests", "Coderr.Server.App.Tests\codeRR.Server.App.Tests.csproj", "{9031CF08-2778-487B-8E11-2F45714875D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coderr.Server.Infrastructure", "Coderr.Server.Infrastructure\Coderr.Server.Infrastructure.csproj", "{A78A50DA-C9D7-47F2-8528-D7EE39D91924}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "codeRR.Server.Infrastructure", "Coderr.Server.Infrastructure\codeRR.Server.Infrastructure.csproj", "{A78A50DA-C9D7-47F2-8528-D7EE39D91924}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coderr.Server.Api.Client", "Coderr.Server.Api.Client\Coderr.Server.Api.Client.csproj", "{017F8863-3DE0-4AD2-9ED3-5ACB87BBBCD0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "codeRR.Server.Api.Client", "Coderr.Server.Api.Client\codeRR.Server.Api.Client.csproj", "{017F8863-3DE0-4AD2-9ED3-5ACB87BBBCD0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coderr.Server.Api.Client.Tests", "Coderr.Server.Api.Client.Tests\Coderr.Server.Api.Client.Tests.csproj", "{62989500-31BC-44FA-97CA-84F484C6F1AA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "codeRR.Server.Api.Client.Tests", "Coderr.Server.Api.Client.Tests\codeRR.Server.Api.Client.Tests.csproj", "{62989500-31BC-44FA-97CA-84F484C6F1AA}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "codeRR.Server.ReportAnalyzer.Tests", "Coderr.Server.ReportAnalyzer.Tests\codeRR.Server.ReportAnalyzer.Tests.csproj", "{421C787A-079B-4A88-A6C5-1ACD9A7C6A7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coderr.Server.ReportAnalyzer.Tests", "Coderr.Server.ReportAnalyzer.Tests\Coderr.Server.ReportAnalyzer.Tests.csproj", "{421C787A-079B-4A88-A6C5-1ACD9A7C6A7E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coderr.Server.PluginApi", "Coderr.Server.PluginApi\Coderr.Server.PluginApi.csproj", "{47A845A0-FCC2-46F1-A553-0F7110BDDBEA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "codeRR.Server.Web.Tests", "Coderr.Server.Web.Tests\codeRR.Server.Web.Tests.csproj", "{9382C347-C4C8-483F-A533-FBCBEA294637}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coderr.Server.ReportAnalyzer.Abstractions", "Coderr.Server.ReportAnalyzer.Abstractions\Coderr.Server.ReportAnalyzer.Abstractions.csproj", "{CA835337-B8F6-447F-8144-F69977363C45}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coderr.Server.Domain", "Coderr.Server.Domain\Coderr.Server.Domain.csproj", "{2971156C-327E-4EBD-BDF8-91772451F359}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coderr.Server.Web", "Coderr.Server.Web\Coderr.Server.Web.csproj", "{C3505B24-8213-45C1-BAAE-73AAA4B75955}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +37,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0476895C-6A61-4DE1-B06B-E8BF496FB651}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0476895C-6A61-4DE1-B06B-E8BF496FB651}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0476895C-6A61-4DE1-B06B-E8BF496FB651}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0476895C-6A61-4DE1-B06B-E8BF496FB651}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5EF42A74-9323-49FA-A1F6-974D6DE77202}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5EF42A74-9323-49FA-A1F6-974D6DE77202}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5EF42A74-9323-49FA-A1F6-974D6DE77202}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -83,10 +81,18 @@ Global
 		{47A845A0-FCC2-46F1-A553-0F7110BDDBEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47A845A0-FCC2-46F1-A553-0F7110BDDBEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47A845A0-FCC2-46F1-A553-0F7110BDDBEA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9382C347-C4C8-483F-A533-FBCBEA294637}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9382C347-C4C8-483F-A533-FBCBEA294637}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9382C347-C4C8-483F-A533-FBCBEA294637}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9382C347-C4C8-483F-A533-FBCBEA294637}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA835337-B8F6-447F-8144-F69977363C45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA835337-B8F6-447F-8144-F69977363C45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA835337-B8F6-447F-8144-F69977363C45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA835337-B8F6-447F-8144-F69977363C45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2971156C-327E-4EBD-BDF8-91772451F359}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2971156C-327E-4EBD-BDF8-91772451F359}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2971156C-327E-4EBD-BDF8-91772451F359}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2971156C-327E-4EBD-BDF8-91772451F359}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3505B24-8213-45C1-BAAE-73AAA4B75955}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3505B24-8213-45C1-BAAE-73AAA4B75955}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3505B24-8213-45C1-BAAE-73AAA4B75955}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3505B24-8213-45C1-BAAE-73AAA4B75955}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

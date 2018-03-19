@@ -1,17 +1,15 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Modules.Triggers.Queries;
-using codeRR.Server.App.Modules.Triggers.Domain;
+using Coderr.Server.Api.Modules.Triggers.Queries;
 using DotNetCqs;
 using Griffin.Container;
 
-namespace codeRR.Server.App.Modules.Triggers.Queries
+namespace Coderr.Server.App.Modules.Triggers.Queries
 {
     /// <summary>
     ///     Handler for <see cref="GetTrigger" />.
     /// </summary>
-    [Component]
     public class GetTriggerHandler : IQueryHandler<GetTrigger, GetTriggerDTO>
     {
         private readonly ITriggerRepository _repository;

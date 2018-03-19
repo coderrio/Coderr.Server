@@ -1,0 +1,83 @@
+<template>
+    <div class="navmenu">
+        <div class="navbar navbar-expand-md navbar-dark bg-primary">
+            <!--<a class="navbar-brand" href="#">Coderr</a>-->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="navbar-collapse collapse" v-if="onboarding">
+                <ul class="navbar-nav mr-auto" id="onboardingMenu">
+                <li class="nav-item">
+                    <router-link class="nav-link" to="/discover/" :exact="true" v-bind:class="{active: isDiscoverActive}">
+                        <span class="fa fa-magic"></span> Getting started with Coderr.
+                    </router-link>
+                </li>
+                </ul>
+            </div>
+                <div class="navbar-collapse collapse" v-if="!onboarding">
+                    <ul class="navbar-nav mr-auto" id="mainMenu">
+                        <li class="nav-item">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary dropdown-toggle" id="mnuCurrentApplication" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{currentApplicationName}}</button>
+                                <div class="dropdown-menu">
+                                    <router-link to="/discover" class="dropdown-item"><i class="fa fa-home"></i> All applications</router-link>
+                                    <div class="dropdown-divider"></div>
+                                    <div v-for="item in myApplications">
+                                        <router-link v-bind:to="item.url" class="dropdown-item"><i class="fa-desktop fa text-muted"></i> {{item.title}}</router-link>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <router-link class="nav-link" to="/discover/">
+                                <span class="fa fa-binoculars"></span> Discover
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link class="nav-link" to="/analyze/" id="AnalyzeMenu">
+                                <span class="fa fa-flask"></span> Analyze
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link class="nav-link" to="/deployment">
+                                <span class="fa fa-truck"></span> Deployment
+                            </router-link>
+                        </li>
+                    </ul>
+                    <div>
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <router-link :to="{name:'support'}" class="nav-link" title="Contact support">
+                                    <i class="fa fa-comment"></i>
+                                </router-link>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link" title="Administration">
+                                    <i class="fa fa-cog"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link" title="Log out">
+                                    <i class="fa fa-power-off"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+            <!--<div class="navbar-light navbar bg-light">
+        <ul class="nav">
+            <li class="nav-item" v-for="item in childMenu">
+                <router-link class="nav-link" v-bind:to="item.url">
+                    <span class="fa" v-bind:class="item.icon"></span> {{item.title}}
+                </router-link>
+            </li>
+        </ul>
+    </div>-->
+        </div>
+</template>
+
+<style src="./navmenu.css" />
+<script src="./navmenu.ts"></script>

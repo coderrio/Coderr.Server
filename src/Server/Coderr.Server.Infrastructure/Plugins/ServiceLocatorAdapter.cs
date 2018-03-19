@@ -1,6 +1,6 @@
 ﻿using Griffin.Container;
 
-namespace codeRR.Server.Infrastructure.Plugins
+namespace Coderr.Server.Infrastructure.Plugins
 {
     public class ServiceLocatorAdapter : IScopedServiceLocator
     {

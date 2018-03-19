@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace codeRR.Server.Infrastructure.Security
+namespace Coderr.Server.Infrastructure.Security
 {
     public class CoderrClaims
     {

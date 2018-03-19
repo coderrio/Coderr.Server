@@ -1,0 +1,115 @@
+<template>
+    <div class="row" id="IncidentSearchView">
+        <div class="col-lg-3">
+            <div class="card">
+                <div class="card-header">
+                    Filter
+                </div>
+                <div class="card-body">
+                    <input type="text" placeholder="Free text" class="form-control" v-model="freeText" />
+                    <div class="w-100">
+                        <button class="mt-1 btn btn-primary w-auto" v-on:click="search">Search</button>
+                        <button class="mt-1 btn" v-on:click="toggleFilterDisplay">Show more filters &gt;&gt;</button>
+                    </div>
+                    <div id="more-filters" v-bind:class="{more: !showFilters }">
+                        <hr />
+                        <div class="apps" v-if="showApplicationColumn">
+                            <h4>Applications</h4>
+                            <button class="btn btn-light" v-for="app in availableApplications" :data-app="app.id" @click="toggleApplication">
+                                {{ app.name }}
+                            </button>
+                            <hr />
+                        </div>
+                        <div class="tags">
+                            <h4>Tags</h4>
+                            <button class="btn btn-light" v-for="tag in availableTags" :data-tag="tag" @click="toggleTag">
+                                {{ tag }}
+                            </button>
+                            <hr />
+                        </div>
+                        <div class="state">
+                            <h4>Incident state</h4>
+                            <div class="row text-nowrap">
+                                <div class="col">
+                                    <button class="btn btn-light" v-on:click.prevent="toggleState(0, $event)">
+                                        New
+                                    </button>
+                                </div>
+                                <div class="col">
+                                    <button class="btn btn-light" v-on:click.prevent="toggleState(3, $event)">
+                                        Assigned
+                                    </button>
+                                </div>
+                                <div class="col">
+                                    <button class="btn btn-light" v-on:click.prevent="toggleState(1, $event)">
+                                        Closed
+                                    </button>
+                                </div>
+                                <div class="col">
+                                    <button class="btn btn-light" v-on:click.prevent="toggleState(2, $event)">
+                                        Ignored
+                                    </button>
+                                </div>
+                            </div>
+                            <hr />
+                        </div>
+                        <div class="tags">
+                            <h4>Context collection</h4>
+                            <input type="text" class="form-control rounded mb-1" placeholder="Collection name" v-model="contextCollectionName" />
+                            <input type="text" class="form-control rounded mb-1" placeholder="Property name" v-model="contextCollectionProperty" />
+                            <input type="text" class="form-control rounded mb-1" placeholder="Property value" v-model="contextCollectionPropertyValue" />
+                            <hr />
+                        </div>
+                        <button class="btn btn-primary w-100" v-on:click="search">Search</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card-body card">
+                <h2>Incidents</h2>
+                <div class="filters">
+
+                </div>
+                <table class="table w-100">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Name</th>
+                            <th v-if="showApplicationColumn">Application</th>
+                            <th>Created</th>
+                            <th>Last report</th>
+                            <th>Report count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="incident in incidents">
+                            <td>
+                                <router-link :to="{ name: 'discoverIncident', params: { applicationId: incident.ApplicationId, incidentId: incident.Id }}">{{ incident.Name }}</router-link>
+                            </td>
+                            <td v-if="showApplicationColumn">
+                                <router-link :to="{ name: 'application', params: { applicationId: incident.ApplicationId }}">{{incident.ApplicationName}}</router-link>
+                            </td>
+                            <td>
+                                {{ incident.CreatedAtUtc | ago }}
+                            </td>
+                            <td>
+                                {{ incident.LastReportReceivedAtUtc | ago }}
+                            </td>
+                            <td>
+                                {{ incident.ReportCount }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div id="CloseBody">
+            <textarea style="display: none" id="CloseArea" class="w-100" rows="10" placeholder="How did you solve the error?" autofocus="autofocus"></textarea>
+        </div>
+    </div>
+</template>
+
+
+<style src="./search.css" />
+<script src="./search.ts"></script>

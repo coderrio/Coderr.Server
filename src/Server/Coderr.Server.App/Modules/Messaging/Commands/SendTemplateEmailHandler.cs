@@ -1,18 +1,17 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Messaging;
-using codeRR.Server.Api.Core.Messaging.Commands;
-using codeRR.Server.App.Modules.Messaging.Templating;
+using Coderr.Server.Api.Core.Messaging;
+using Coderr.Server.Api.Core.Messaging.Commands;
+using Coderr.Server.App.Modules.Messaging.Templating;
 using DotNetCqs;
 using Griffin.Container;
 
-namespace codeRR.Server.App.Modules.Messaging.Commands
+namespace Coderr.Server.App.Modules.Messaging.Commands
 {
     /// <summary>
     ///     Send an email using a template.
     /// </summary>
-    [Component]
     public class SendTemplateEmailHandler : IMessageHandler<SendTemplateEmail>
     {
 

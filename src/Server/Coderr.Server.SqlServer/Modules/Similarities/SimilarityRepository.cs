@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using codeRR.Server.App.Modules.Similarities.Domain;
-using codeRR.Server.Infrastructure;
-using codeRR.Server.SqlServer.Modules.Similarities.Entities;
-using codeRR.Server.SqlServer.Tools;
+using Coderr.Server.Domain.Modules.Similarities;
+using Coderr.Server.Infrastructure;
+using Coderr.Server.ReportAnalyzer.Similarities.Handlers.Processing;
+using Coderr.Server.SqlServer.Modules.Similarities.Entities;
+using Coderr.Server.SqlServer.Tools;
 using Griffin.Container;
 using Griffin.Data;
 using log4net;
 
-namespace codeRR.Server.SqlServer.Modules.Similarities
+namespace Coderr.Server.SqlServer.Modules.Similarities
 {
-    [Component]
+    [ContainerService]
     public class SimilarityRepository : ISimilarityRepository
     {
         private readonly IAdoNetUnitOfWork _uow;

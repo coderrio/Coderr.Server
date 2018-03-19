@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Threading.Tasks;
 
-namespace codeRR.Server.App.Modules.Versions
+namespace Coderr.Server.App.Modules.Versions
 {
     /// <summary>
     ///     Repository definition to be able to persist information about application versions

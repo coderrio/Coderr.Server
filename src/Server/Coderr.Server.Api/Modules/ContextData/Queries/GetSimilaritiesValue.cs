@@ -1,6 +1,6 @@
 using System;
 
-namespace codeRR.Server.Api.Modules.ContextData.Queries
+namespace Coderr.Server.Api.Modules.ContextData.Queries
 {
     /// <summary>
     ///     A single value for <see cref="GetSimilaritiesSimilarity" />.

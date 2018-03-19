@@ -1,0 +1,14 @@
+.ReportsView .tags span {
+    margin-right: 5px;
+}
+.tags button {
+    margin-right: 5px;
+}
+
+.more {
+    display: none;
+}
+
+.ReportsView .contextCollections th, .ReportsView .contextCollections td {
+    padding: 0.15rem;
+}

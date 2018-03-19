@@ -1,4 +1,4 @@
-﻿namespace codeRR.Server.Api.Core.Applications
+﻿namespace Coderr.Server.Api.Core.Applications
 {
     /// <summary>
     ///     Kind of application that this is

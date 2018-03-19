@@ -1,0 +1,57 @@
+<template>
+    <div class="mt-4">
+        <div class="row">
+            <div class="col">
+                <h1>Welcome to Coderr!</h1>
+                <p class="lead">You have taken the first step towards painless error handling.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p>
+                    To get started, you need to configure your application.
+                    Select the .NET library that you are going to use.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        Available .NET libraries
+                    </div>
+                    <div class="card-body buttons">
+                        <button class="btn btn-light btn-block" v-for="lib in libraries" :data-lib="lib.libraryName" v-on:click.prevent="select(lib.libraryName)">
+                            {{lib.clientFolderName}}
+                        </button>
+                    </div>
+                </div>
+                <button class="btn btn-outline-primary btn-block" v-on:click.prevent="completedConfiguration">Configuration is complete &gt;&gt;</button>
+            </div>
+            <div class="col-md-8">
+                <div class="alert alert-warning" v-if="weAreInTrouble">
+                    <h3 class="alert-heading">No reported errors</h3>
+                    <div>
+                        <p>We couldn't find any reported errors. Do you need help?</p>
+                        <button class="btn btn-outline-danger btn-sm">Schedule a (free) demo with one of our developers</button>
+                        <a href="https://coderr.io/documentation/" target="_blank" class="btn btn-outline-danger btn-sm">Read the reporting errors guide</a>
+                        <a href="/" class="btn btn-outline-danger">Exit guide</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        Configuration instruction
+                    </div>
+                    <div class="card-body">
+                        <em v-if="!instruction">Select a library to the left</em>
+                        <div v-html="instruction"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+
+<style src="./home.css" />
+<script src="./home.ts"></script>

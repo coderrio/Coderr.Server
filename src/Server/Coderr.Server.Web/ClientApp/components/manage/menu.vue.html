@@ -1,0 +1,31 @@
+<template>
+    <div class="mb-3">
+        <div class="navbar-light navbar bg-light">
+            <ul class="nav">
+                <li class="nav-item">
+                    <router-link class="nav-link" :to="{name: 'manageApp', params: {applicationId: currentApplicationId }}">
+                        <span class="fa fa-cog"></span> Settings
+                    </router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link class="nav-link" :to="{name: 'manageTeam', params: {applicationId: currentApplicationId }}">
+                        <span class="fa fa-users"></span> Team
+                    </router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link class="nav-link" :to="{name: 'analyzeReport', params: {applicationId: currentApplicationId }}">
+                        <span class="fa fa-graduation-cap"></span> Prioritization
+                    </router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link class="nav-link" :to="{name: 'analyzeFeedback', params: {applicationId: currentApplicationId }}">
+                        <span class="fa fa-exchange-alt"></span> Api keys
+                    </router-link>
+                </li>
+            </ul>
+        </div>
+    </div>
+</template>
+
+<style src="./menu.css" />
+<script src="./menu.ts"></script>

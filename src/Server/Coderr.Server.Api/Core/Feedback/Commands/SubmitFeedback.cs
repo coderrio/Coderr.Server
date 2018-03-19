@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using DotNetCqs;
 
-namespace codeRR.Server.Api.Core.Feedback.Commands
+namespace Coderr.Server.Api.Core.Feedback.Commands
 {
     /// <summary>
     ///     A user that experienced an error have either followed the link to our website to submit an error or have entered it

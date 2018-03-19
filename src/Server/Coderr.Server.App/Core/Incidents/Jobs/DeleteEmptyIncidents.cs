@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
-using codeRR.Server.App.Core.Reports.Config;
+using Coderr.Server.App.Core.Reports.Config;
 using Coderr.Server.PluginApi.Config;
 using Griffin.ApplicationServices;
 using Griffin.Container;
 using Griffin.Data;
 using log4net;
 
-namespace codeRR.Server.App.Core.Incidents.Jobs
+namespace Coderr.Server.App.Core.Incidents.Jobs
 {
     /// <summary>
     ///     Delete incidents where all reports have been deleted (due to retention days).

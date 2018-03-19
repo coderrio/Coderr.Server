@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.Server.SqlServer
+namespace Coderr.Server.SqlServer
 {
     public static class DateTimeExtensions
     {

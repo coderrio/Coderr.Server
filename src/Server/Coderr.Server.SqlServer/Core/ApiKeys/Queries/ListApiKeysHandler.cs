@@ -1,12 +1,12 @@
 ﻿using System.Threading.Tasks;
-using codeRR.Server.Api.Core.ApiKeys.Queries;
-using codeRR.Server.SqlServer.Core.ApiKeys.Mappings;
+using Coderr.Server.Api.Core.ApiKeys.Queries;
+using Coderr.Server.SqlServer.Core.ApiKeys.Mappings;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 
-namespace codeRR.Server.SqlServer.Core.ApiKeys.Queries
+namespace Coderr.Server.SqlServer.Core.ApiKeys.Queries
 {
     [Component(RegisterAsSelf = true)]
     public class ListApiKeysHandler : IQueryHandler<ListApiKeys, ListApiKeysResult>

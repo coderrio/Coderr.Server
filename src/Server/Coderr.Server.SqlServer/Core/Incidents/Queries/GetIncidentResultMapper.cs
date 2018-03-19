@@ -1,11 +1,10 @@
 using System;
-using System.Collections.Generic;
-using codeRR.Server.Api.Core.Incidents.Queries;
-using codeRR.Server.App.Core.Incidents;
-using codeRR.Server.SqlServer.Tools;
+using Coderr.Server.Api.Core.Incidents.Queries;
+using Coderr.Server.Domain.Core.Incidents;
+using Coderr.Server.SqlServer.Tools;
 using Griffin.Data.Mapper;
 
-namespace codeRR.Server.SqlServer.Core.Incidents.Queries
+namespace Coderr.Server.SqlServer.Core.Incidents.Queries
 {
     public class GetIncidentResultMapper : CrudEntityMapper<GetIncidentResult>
     {

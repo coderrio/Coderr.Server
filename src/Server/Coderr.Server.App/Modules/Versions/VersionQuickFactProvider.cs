@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Incidents.Queries;
-using Coderr.Server.PluginApi;
+using Coderr.Server.Api.Core.Incidents.Queries;
 using Coderr.Server.PluginApi.Incidents;
 using Griffin.Container;
 
-namespace codeRR.Server.App.Modules.Versions
+namespace Coderr.Server.App.Modules.Versions
 {
-    [Component]
+    [ContainerService]
     class VersionQuickFactProvider : IQuickfactProvider
     {
         private IVersionRepository _repository;

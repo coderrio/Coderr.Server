@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace codeRR.Server.Api.Modules.Triggers.Queries
+namespace Coderr.Server.Api.Modules.Triggers.Queries
 {
     /// <summary>
     ///     Get metadata (context collection information)

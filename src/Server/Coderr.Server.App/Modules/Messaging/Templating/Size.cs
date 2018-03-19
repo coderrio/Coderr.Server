@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.Server.App.Modules.Messaging.Templating
+namespace Coderr.Server.App.Modules.Messaging.Templating
 {
     /// <summary>
     ///     Look at the size of that thing.

@@ -1,4 +1,4 @@
-﻿namespace codeRR.Server.Api.Core.Incidents.Queries
+﻿namespace Coderr.Server.Api.Core.Incidents.Queries
 {
     /// <summary>
     ///     Context data that can help the developer to directly understand why the exception happened.

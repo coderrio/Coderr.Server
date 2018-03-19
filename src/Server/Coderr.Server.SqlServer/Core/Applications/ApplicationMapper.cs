@@ -1,9 +1,8 @@
 ﻿using System;
-using codeRR.Server.Api.Core.Applications;
-using codeRR.Server.App.Core.Applications;
+using Coderr.Server.Domain.Core.Applications;
 using Griffin.Data.Mapper;
 
-namespace codeRR.Server.SqlServer.Core.Applications
+namespace Coderr.Server.SqlServer.Core.Applications
 {
     public class ApplicationMapper : CrudEntityMapper<Application>
     {

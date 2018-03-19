@@ -1,17 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Modules.ContextData.Queries;
-using codeRR.Server.Infrastructure;
-using codeRR.Server.SqlServer.Modules.Similarities.Entities;
+using Coderr.Server.Api.Modules.ContextData.Queries;
+using Coderr.Server.Infrastructure;
+using Coderr.Server.SqlServer.Modules.Similarities.Entities;
 using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
 using log4net;
 
-namespace codeRR.Server.SqlServer.Modules.Similarities.Queries
+namespace Coderr.Server.SqlServer.Modules.Similarities.Queries
 {
-    [Component]
     public class GetSimilaritiesHandler : IQueryHandler<GetSimilarities, GetSimilaritiesResult>
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(GetSimilaritiesHandler));

@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace codeRR.Server.Api.Modules.ErrorOrigins.Queries
+namespace Coderr.Server.Api.Modules.ErrorOrigins.Queries
 {
     /// <summary>
     ///     Get all error origins for the specified incident.

@@ -1,7 +1,7 @@
-﻿using codeRR.Server.App.Core.ApiKeys;
+﻿using Coderr.Server.App.Core.ApiKeys;
 using Griffin.Data.Mapper;
 
-namespace codeRR.Server.SqlServer.Core.ApiKeys.Mappings
+namespace Coderr.Server.SqlServer.Core.ApiKeys.Mappings
 {
     public class ApiKeyMapper : CrudEntityMapper<ApiKey>
     {

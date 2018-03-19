@@ -1,7 +1,6 @@
 ﻿using System;
-using DotNetCqs;
 
-namespace codeRR.Server.Api.Core.Accounts.Events
+namespace Coderr.Server.Api.Core.Accounts.Events
 {
     /// <summary>
     ///     Published when the user have clicked on the activation link in the registration email.

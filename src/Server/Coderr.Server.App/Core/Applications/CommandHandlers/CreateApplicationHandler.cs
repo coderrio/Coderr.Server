@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Applications;
-using codeRR.Server.Api.Core.Applications.Commands;
-using codeRR.Server.Api.Core.Applications.Events;
-using codeRR.Server.App.Core.Users;
-using codeRR.Server.Infrastructure.Security;
+using Coderr.Server.Api.Core.Applications.Commands;
+using Coderr.Server.Api.Core.Applications.Events;
+using Coderr.Server.Domain.Core.Applications;
+using Coderr.Server.Domain.Core.User;
 using DotNetCqs;
 using Griffin.Container;
 
-namespace codeRR.Server.App.Core.Applications.CommandHandlers
+namespace Coderr.Server.App.Core.Applications.CommandHandlers
 {
-    [Component]
     internal class CreateApplicationHandler : IMessageHandler<CreateApplication>
     {
         private readonly IApplicationRepository _repository;

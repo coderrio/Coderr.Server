@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using codeRR.Server.App.Core.Feedback;
+using Coderr.Server.App.Core.Feedback;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 
-namespace codeRR.Server.SqlServer.Core.Feedback
+namespace Coderr.Server.SqlServer.Core.Feedback
 {
-    [Component]
+    [ContainerService]
     public class FeedbackRepository : IFeedbackRepository
     {
         private readonly IAdoNetUnitOfWork _unitOfWork;

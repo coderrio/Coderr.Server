@@ -1,8 +1,8 @@
 ﻿using System;
-using codeRR.Server.App.Core.Accounts;
+using Coderr.Server.Domain.Core.Account;
 using Griffin.Data.Mapper;
 
-namespace codeRR.Server.SqlServer.Core.Accounts
+namespace Coderr.Server.SqlServer.Core.Accounts
 {
     public class AccountMapper : CrudEntityMapper<Account>
     {

@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
+using Coderr.Server.Domain.Modules.UserNotifications;
 
-namespace codeRR.Server.App.Core.Notifications
+namespace Coderr.Server.App.Core.Notifications
 {
     /// <summary>
     ///     Repository for notification settings
@@ -17,16 +18,7 @@ namespace codeRR.Server.App.Core.Notifications
         /// <returns>task</returns>
         /// <exception cref="ArgumentNullException">notificationSettings</exception>
         Task CreateAsync(UserNotificationSettings notificationSettings);
-
-        /// <summary>
-        ///     Check if there are any settings for the given application and the specified user.
-        /// </summary>
-        /// <param name="accountId">user</param>
-        /// <param name="applicationId">application</param>
-        /// <returns><c>true</c> if settings exists; otherwise <c>null</c>.</returns>
-        Task<bool> ExistsAsync(int accountId, int applicationId);
-
-
+        
         /// <summary>
         ///     Get application settings for all users.
         /// </summary>

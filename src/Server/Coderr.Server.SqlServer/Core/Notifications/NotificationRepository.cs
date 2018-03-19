@@ -2,14 +2,15 @@
 using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
-using codeRR.Server.App.Core.Notifications;
+using Coderr.Server.App.Core.Notifications;
+using Coderr.Server.Domain.Modules.UserNotifications;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 
-namespace codeRR.Server.SqlServer.Core.Notifications
+namespace Coderr.Server.SqlServer.Core.Notifications
 {
-    [Component]
+    [ContainerService]
     public class NotificationRepository : INotificationsRepository
     {
         private readonly IAdoNetUnitOfWork _unitOfWork;

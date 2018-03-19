@@ -1,0 +1,10 @@
+.IncidentView .tags span {
+    margin-right: 5px;
+}
+.tags button {
+    margin-right: 5px;
+}
+
+.more {
+    display: none;
+}

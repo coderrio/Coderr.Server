@@ -1,22 +1,22 @@
 ﻿using System;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Accounts;
-using codeRR.Server.Api.Core.Accounts.Commands;
-using codeRR.Server.Api.Core.Accounts.Events;
-using codeRR.Server.Api.Core.Messaging;
-using codeRR.Server.Api.Core.Messaging.Commands;
-using codeRR.Server.App.Configuration;
+using Coderr.Server.Api.Core.Accounts;
+using Coderr.Server.Api.Core.Accounts.Commands;
+using Coderr.Server.Api.Core.Accounts.Events;
+using Coderr.Server.Api.Core.Messaging;
+using Coderr.Server.Api.Core.Messaging.Commands;
+using Coderr.Server.Domain.Core.Account;
+using Coderr.Server.Infrastructure.Configuration;
 using Coderr.Server.PluginApi.Config;
 using DotNetCqs;
 using Griffin.Container;
 using log4net;
 
-namespace codeRR.Server.App.Core.Accounts.CommandHandlers
+namespace Coderr.Server.App.Core.Accounts.CommandHandlers
 {
     /// <summary>
     ///     Handler for <see cref="RegisterSimple" />.
     /// </summary>
-    [Component]
     internal class RegisterSimpleHandler : IMessageHandler<RegisterSimple>
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(RegisterSimpleHandler));
@@ -84,8 +84,8 @@ You can login using {0}/account/activate/{3}.
 We recommend that you change your password before doing something useful.
 
 Thanks,
-  The codeRR Team", config.BaseUrl, account.UserName, password, account.ActivationKey),
-                Subject = "codeRR activation"
+  The Coderr Team", config.BaseUrl, account.UserName, password, account.ActivationKey),
+                Subject = "Coderr activation"
             };
             msg.Recipients = new[] {new EmailAddress(account.Email)};
 

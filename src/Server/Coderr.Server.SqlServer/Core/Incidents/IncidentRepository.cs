@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Common;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Incidents;
-using codeRR.Server.App.Core.Incidents;
-using codeRR.Server.SqlServer.Tools;
+using Coderr.Server.Domain.Core.Incidents;
+using Coderr.Server.SqlServer.Tools;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 
-namespace codeRR.Server.SqlServer.Core.Incidents
+namespace Coderr.Server.SqlServer.Core.Incidents
 {
-    [Component]
+    [ContainerService]
     public class IncidentRepository : IIncidentRepository
     {
         private readonly IAdoNetUnitOfWork _uow;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace codeRR.Server.Infrastructure.Plugins
+namespace Coderr.Server.Infrastructure.Plugins
 {
     /// <summary>
     ///     Configuration possibilities for plugins
@@ -33,7 +33,7 @@ namespace codeRR.Server.Infrastructure.Plugins
         public abstract void RegisterService<TService>(Func<IScopedServiceLocator, TService> factoryMethod);
 
         /// <summary>
-        ///     Register services using the <c>[Component]</c> attribute from Griffin.Container.
+        ///     Register services using the <c>[ContainerService]</c> attribute from Griffin.Container.
         /// </summary>
         /// <param name="assembly"></param>
         public abstract void RegisterUsingComponentAttribute(Assembly assembly);

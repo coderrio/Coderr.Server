@@ -4,17 +4,15 @@ using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Reports;
-using codeRR.Server.Api.Core.Reports.Queries;
-using codeRR.Server.App.Core.Reports;
-using codeRR.Server.App.Core.Reports.Invalid;
+using Coderr.Server.Api.Core.Reports;
+using Coderr.Server.Domain.Core.ErrorReports;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 
-namespace codeRR.Server.SqlServer.Core.Reports
+namespace Coderr.Server.SqlServer.Core.Reports
 {
-    [Component]
+    [ContainerService]
     internal class ErrorReportRepository : IReportsRepository
     {
         private readonly IAdoNetUnitOfWork _uow;
@@ -23,35 +21,20 @@ namespace codeRR.Server.SqlServer.Core.Reports
         {
             _uow = uow ?? throw new ArgumentNullException(nameof(uow));
         }
-
-        public async Task CreateAsync(InvalidErrorReport entity)
+        
+        public async Task<ErrorReportEntity> GetAsync(int id)
         {
-            using (var cmd = (DbCommand)_uow.CreateCommand())
-            {
-                cmd.CommandText =
-                    @"INSERT INTO InvalidErrorReports (Id, AddedAtUtc, ApplicationId, Body, Exception) VALUES(@Id, @AddedAtUtc, @OrganizationId, @ApplicationId, @Body, @Exception)";
-                cmd.AddParameter("Id", entity.Id);
-                cmd.AddParameter("AddedAtUtc", entity.AddedAtUtc);
-                cmd.AddParameter("ApplicationId", entity.ApplicationId);
-                cmd.AddParameter("Body", entity.Report);
-                cmd.AddParameter("Exception", entity.Exception);
-                await cmd.ExecuteNonQueryAsync();
-            }
-        }
-
-        public async Task<ReportDTO> GetAsync(int id)
-        {
-            ReportDTO report;
+            ErrorReportEntity report;
             using (var cmd = (DbCommand)_uow.CreateCommand())
             {
                 cmd.CommandText =
                     "SELECT * FROM ErrorReports WHERE Id = @id";
 
                 cmd.AddParameter("id", id);
-                report = await cmd.FirstAsync<ReportDTO>();
+                report = await cmd.FirstAsync<ErrorReportEntity>();
             }
 
-            var collections = new List<ContextCollectionDTO>();
+            var collections = new List<ErrorReportContextCollection>();
             using (var cmd = (DbCommand)_uow.CreateCommand())
             {
                 cmd.CommandText =
@@ -70,10 +53,11 @@ namespace codeRR.Server.SqlServer.Core.Reports
 
                         if (collectionName != name)
                         {
-                            var collection = new ContextCollectionDTO(collectionName, properties);
+                            var collection = new ErrorReportContextCollection(collectionName, properties);
                             collections.Add(collection);
                             properties = new Dictionary<string, string>();
                             collectionName = name;
+                            report.Add(collection);
                         }
 
                         properties.Add(reader.GetString(1), reader.GetString(2));
@@ -81,11 +65,10 @@ namespace codeRR.Server.SqlServer.Core.Reports
                 }
             }
 
-            report.ContextCollections = collections.ToArray();
             return report;
         }
 
-        public async Task<ReportDTO> FindByErrorIdAsync(string errorId)
+        public async Task<ErrorReportEntity> FindByErrorIdAsync(string errorId)
         {
             using (var cmd = (DbCommand)_uow.CreateCommand())
             {
@@ -93,40 +76,40 @@ namespace codeRR.Server.SqlServer.Core.Reports
                     "SELECT * FROM ErrorReports WHERE ErrorId = @id";
 
                 cmd.AddParameter("id", errorId);
-                return await cmd.FirstOrDefaultAsync<ReportDTO>();
+                return await cmd.FirstOrDefaultAsync<ErrorReportEntity>();
             }
         }
 
-        public async Task<PagedReports> GetForIncidentAsync(int incidentId, int pageNumber, int pageSize)
-        {
-            using (var cmd = (DbCommand)_uow.CreateCommand())
-            {
-                cmd.AddParameter("incidentId", incidentId);
-                long totalRows = 0;
-                if (pageNumber > 0)
-                {
-                    cmd.CommandText =
-                        "SELECT count(*) FROM ErrorReports WHERE IncidentId = @incidentId";
-                    totalRows = (int)await cmd.ExecuteScalarAsync();
-                }
+        //public async Task<PagedReports> GetForIncidentAsync(int incidentId, int pageNumber, int pageSize)
+        //{
+        //    using (var cmd = (DbCommand)_uow.CreateCommand())
+        //    {
+        //        cmd.AddParameter("incidentId", incidentId);
+        //        long totalRows = 0;
+        //        if (pageNumber > 0)
+        //        {
+        //            cmd.CommandText =
+        //                "SELECT count(*) FROM ErrorReports WHERE IncidentId = @incidentId";
+        //            totalRows = (int)await cmd.ExecuteScalarAsync();
+        //        }
 
-                cmd.CommandText =
-                    "SELECT * FROM ErrorReports WHERE IncidentId = @incidentId ORDER BY CreatedAtUtc DESC";
-                if (pageNumber > 0)
-                {
-                    var offset = (pageNumber - 1) * pageSize;
-                    cmd.CommandText += string.Format(@" OFFSET {0} ROWS FETCH NEXT {1} ROWS ONLY", offset, pageSize);
-                }
+        //        cmd.CommandText =
+        //            "SELECT * FROM ErrorReports WHERE IncidentId = @incidentId ORDER BY CreatedAtUtc DESC";
+        //        if (pageNumber > 0)
+        //        {
+        //            var offset = (pageNumber - 1) * pageSize;
+        //            cmd.CommandText += string.Format(@" OFFSET {0} ROWS FETCH NEXT {1} ROWS ONLY", offset, pageSize);
+        //        }
 
-                //cmd.AddParameter("incidentId", incidentId);
-                var list = await cmd.ToListAsync<ReportDTO>();
-                return new PagedReports
-                {
-                    TotalCount = (int)totalRows,
-                    Reports = (IReadOnlyList<ReportDTO>)list
-                };
-            }
-        }
+        //        //cmd.AddParameter("incidentId", incidentId);
+        //        var list = await cmd.ToListAsync<ReportDTO>();
+        //        return new PagedReports
+        //        {
+        //            TotalCount = (int)totalRows,
+        //            Reports = (IReadOnlyList<ReportDTO>)list
+        //        };
+        //    }
+        //}
 
         [SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities")]
         public IEnumerable<ReportDTO> GetAll(int[] ids)

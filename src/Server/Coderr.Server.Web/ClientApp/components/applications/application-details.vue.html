@@ -1,0 +1,75 @@
+<template>
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="card">
+                <div class="card-header">
+                    {{ name }}
+                </div>
+                <div class="card-body">
+                    <!--<line-chart id="chart-1" :data="chartData"></line-chart>-->
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th>Report count</th>
+                                <td>{{ reportCount }}</td>
+                            </tr>
+                        <tr>
+                            <th>Versions</th>
+                            <td>
+                                <span v-for="v in versions">{{v}}</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card-body card">
+                <h2>Incidents {{ applicationId }}</h2>
+
+                <div class="filters">
+                    <!--<canvas id="mycanvas" count="2"></canvas>-->
+                    <!--<chartjs-line :datalabel="'first'" :linetension="0.3" target="mycanvas"></chartjs-line>
+    <chartjs-line :datalabel="'second'" :data="[50, 40, 90, 60]" target="mycanvas"></chartjs-line>-->
+                    <!--<line-chart :data="chartData"></line-chart>-->
+                    <canvas id="line-chart" width="800" height="450"></canvas>
+
+                </div>
+                <table class="table w-100">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Name</th>
+                            <th>Application</th>
+                            <th>Created</th>
+                            <th>Last report</th>
+                            <th>Report count</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <!--<tbody>
+                        <tr v-for="incident in incidents">
+                            <td>
+                                <router-link :to="{ name: 'incident', params: { applicationId: incident.applicationId, incidentId: incident.Id }}">{{ incident.Name }}</router-link>
+                            </td>
+                            <td>
+                                {{ incident.CreatedAtUtc | ago }}
+                            </td>
+                            <td>
+                                {{ incident.LastReportReceivedAtUtc | ago }}
+                            </td>
+                            <td>
+                                {{ incident.ReportCount }}
+                            </td>
+                        </tr>
+                    </tbody>-->
+                </table>
+            </div>
+        </div>
+    </div>
+</template>
+
+
+<style src="./application-details.css" />
+<script src="./application-details.ts"></script>

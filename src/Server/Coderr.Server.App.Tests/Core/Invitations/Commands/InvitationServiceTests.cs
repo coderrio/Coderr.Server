@@ -1,15 +1,16 @@
 ﻿using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Accounts.Events;
-using codeRR.Server.Api.Core.Accounts.Requests;
-using codeRR.Server.App.Core.Accounts;
-using codeRR.Server.App.Core.Applications;
-using codeRR.Server.App.Core.Invitations;
+using Coderr.Server.Api.Core.Accounts.Events;
+using Coderr.Server.Api.Core.Accounts.Requests;
+using Coderr.Server.App.Core.Accounts;
+using Coderr.Server.App.Core.Invitations;
+using Coderr.Server.Domain.Core.Account;
+using Coderr.Server.Domain.Core.Applications;
 using DotNetCqs;
 using FluentAssertions;
 using NSubstitute;
 using Xunit;
 
-namespace codeRR.Server.App.Tests.Core.Invitations.Commands
+namespace Coderr.Server.App.Tests.Core.Invitations.Commands
 {
     public class InvitationServiceTests
     {

@@ -1,186 +1,141 @@
 ﻿using System;
-using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.Security.Claims;
-using System.Web;
-using System.Web.Helpers;
-using System.Web.Http;
-using System.Web.Http.ExceptionHandling;
-using System.Web.Http.Filters;
-using System.Web.Mvc;
-using System.Web.Routing;
-using codeRR.Server.App.Configuration;
-using codeRR.Server.Infrastructure;
-using codeRR.Server.Infrastructure.Configuration.Database;
-using codeRR.Server.Infrastructure.Security;
-using codeRR.Server.SqlServer.Core.Users;
-using codeRR.Server.Web;
-using codeRR.Server.Web.Infrastructure;
-using codeRR.Server.Web.Infrastructure.Auth;
-using codeRR.Server.Web.Infrastructure.Logging;
-using codeRR.Server.Web.Services;
-using codeRR.Server.Web.Views;
-using Griffin.Data.Mapper;
-using Microsoft.AspNet.Identity;
-using Microsoft.Owin;
-using Microsoft.Owin.Security.Cookies;
-using codeRR.Client;
-using codeRR.Server.SqlServer.Tools;
+using System.Threading.Tasks;
+using Coderr.Server.Infrastructure.Boot;
+using Coderr.Server.Infrastructure.Configuration.Database;
+using Coderr.Server.Infrastructure.Messaging;
 using Coderr.Server.PluginApi.Config;
-using Owin;
+using Coderr.Server.Web2.Boot;
+using Coderr.Server.Web2.Boot.Adapters;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.SpaServices.Webpack;
+using Microsoft.Extensions.DependencyInjection;
+using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
-[assembly: OwinStartup(typeof(Startup))]
-
-namespace codeRR.Server.Web
+namespace Coderr.Server.Web2
 {
     public class Startup
     {
-        private readonly ServiceRunner _serviceRunner;
+        private readonly ModuleStarter _moduleStarter;
+        private IServiceProvider _serviceProvider;
 
-        public Startup()
+        public Startup(IConfiguration configuration)
         {
-            _serviceRunner = new ServiceRunner();
-            ConfigurationStore = new DatabaseStore(() => DbConnectionFactory.Open(true));
+            Configuration = configuration;
+            _moduleStarter = new ModuleStarter(configuration);
         }
 
-        public static ConfigurationStore ConfigurationStore { get; private set; }
+        public IConfiguration Configuration { get; }
 
-        private bool IsConfigured => ConfigurationManager.AppSettings["Configured"] == "true";
-
-        public void Configuration(IAppBuilder app)
+        /// <summary>
+        ///     Invoked after ConfigureServices.
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="env"></param>
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (!IsConfigured)
+            if (env.IsDevelopment())
             {
-                RouteConfig.RegisterInstallationRoutes(RouteTable.Routes);
-            }
-            else
-            {
-                ConfigureErrorTracking(ConfigurationStore);
-                ConfigureDataMapping();
-                _serviceRunner.Start(app);
-            }
-
-            ConfigureAuth(app);
-            LoadCustomAuthenticationMiddleware(app);
-            app.Map("", ConfigureWebApi);
-            
-            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-
-            if (IsConfigured)
-                RouteConfig.RegisterRoutes(RouteTable.Routes);
-        }
-
-        private static void ConfigureApiKeyAuthentication(HttpFilterCollection configFilters)
-        {
-            var configType = ConfigurationManager.AppSettings["ApiKeyAuthenticator"];
-            if (!string.IsNullOrEmpty(configType))
-            {
-                var instance = TypeHelper.CreateAssemblyObject(configType);
-                configFilters.Add((IFilter)instance);
-                return;
-            }
-
-            configFilters.Add(new ApiKeyAuthenticator());
-        }
-
-        private void ConfigureAuth(IAppBuilder app)
-        {
-            var type = ConfigurationManager.AppSettings["PrincipalFactoryType"];
-            if (type != null)
-            {
-                PrincipalFactory.Configure(type);
-            }
-
-            var provider = new CookieAuthenticationProvider
-            {
-                OnApplyRedirect = ctx =>
+                app.UseDeveloperExceptionPage();
+                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
                 {
-                    if (!IsApiRequest(ctx.Request) && !ctx.Request.Headers.ContainsKey("X-Requested-With"))
-                        ctx.Response.Redirect(ctx.RedirectUri);
-                }
-            };
+                    HotModuleReplacement = true
+                });
+            }
 
-            var loginUrl = "/Account/Login"; //VirtualPathUtility.ToAbsolute("~/Account/Login");
-            BaseViewPage.LoginUrl = loginUrl;
-            AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
-            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            app.UseStaticFiles();
+            app.UseAuthentication();
+            app.UseMvc(routes =>
             {
-                AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                ExpireTimeSpan = TimeSpan.FromDays(14),
-                LoginPath = new PathString(loginUrl),
-                Provider = provider,
-                SessionStore = new SessionStoreMediator()
+                routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                routes.MapSpaFallbackRoute(
+                    "spa-fallback",
+                    new { controller = "Home", action = "Index" });
             });
 
-            app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
-        }
-
-        private static void ConfigureDataMapping()
-        {
-            var provider = new AssemblyScanningMappingProvider();
-            provider.Scan(typeof(UserMapper).Assembly);
-            EntityMappingProvider.Provider = provider;
-        }
-
-        private static void ConfigureErrorTracking(ConfigurationStore configStore)
-        {
-            var errorTrackingConfig = configStore.Load<codeRRConfigSection>();
-            if (errorTrackingConfig.ActivateTracking)
+            _serviceProvider = app.ApplicationServices;
+            var context = new StartContext
             {
-                var uri = new Uri("https://report.coderrapp.com");
-                if (!string.IsNullOrEmpty(errorTrackingConfig.ContactEmail) ||
-                    !string.IsNullOrEmpty(errorTrackingConfig.InstallationId))
-                    Err.Configuration.ContextProviders.Add(new CustomerInfoProvider(
-                        errorTrackingConfig.ContactEmail,
-                        errorTrackingConfig.InstallationId));
-                Err.Configuration.Credentials(uri,
-                    "2b3002d3ab3e4a57ad45cff2210221ab",
-                    "f381a5c9797f49bd8a3238b892d02806");
-                GlobalConfiguration.Configuration.Services.Add(typeof(IExceptionLogger), new WebApiLogger());
+                ServiceProvider = app.ApplicationServices
+            };
+            _moduleStarter.Start(context);
+        }
+
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddMvc(options =>
+            {
+                
+            }).AddJsonOptions(jsonOptions =>
+            {
+                jsonOptions.SerializerSettings.ContractResolver = new IncludeNonPublicMembersContractResolver();
+            });
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+                {
+                    //options.ExpireTimeSpan = TimeSpan.FromDays(14);
+                    //options.p
+                    //options.Events.OnRedirectToLogin = HandleAuthenticationFailure;
+                    options.Events.OnValidatePrincipal = context =>
+                    {
+                        var principal = context.Principal;
+                        var str = context.Request.GetDisplayUrl() + ": " + context.Principal.Identity.IsAuthenticated;
+                        return Task.CompletedTask;
+                    };
+                });
+
+            _moduleStarter.ScanAssemblies(AppDomain.CurrentDomain.BaseDirectory);
+
+            RegisterConfigurationStores(services);
+
+            var configContext = new ConfigurationContext
+            {
+                Configuration = new ConfigurationWrapper(Configuration),
+                ConnectionFactory = OpenConnection,
+                Services = services,
+                ServiceProvider = () => _serviceProvider
+            };
+            _moduleStarter.Configure(configContext);
+        }
+        
+        private IServiceProvider GetLazyLoadedServiceProvider()
+        {
+            if (_serviceProvider == null)
+                throw new InvalidOperationException("It's not built yet.");
+
+            return _serviceProvider;
+        }
+
+        private Task HandleAuthenticationFailure(RedirectContext<CookieAuthenticationOptions> ctx)
+        {
+            if (ctx.Request.GetDisplayUrl().Contains("/api/"))
+            {
+                ctx.Response.StatusCode = 401;
             }
             else
             {
-                GlobalConfiguration.Configuration.Services.Add(typeof(IExceptionLogger), new WebApiLogger());
+                ctx.Response.StatusCode = 302;
             }
+
+            ctx.Response.Headers["Location"] = "/account/login/";
+            return Task.CompletedTask;
         }
 
-        private static void ConfigureWebApi(IAppBuilder inner)
+        private IDbConnection OpenConnection(ClaimsPrincipal arg)
         {
-            var config = new HttpConfiguration();
-
-            ConfigureApiKeyAuthentication(config.Filters);
-            inner.UseCookieAuthentication(new CookieAuthenticationOptions
-            {
-                AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                SessionStore = new SessionStoreMediator()
-            });
-
-            config.MessageHandlers.Add(new CompressedRequestHandler());
-            config.DependencyResolver = GlobalConfiguration.Configuration.DependencyResolver;
-            config.MapHttpAttributeRoutes();
-            //config.Routes.MapHttpRoute(
-            //    "DefaultApi",
-            //    "{controller}/{id}",
-            //    new {id = RouteParameter.Optional}
-            //);
-
-            inner.UseWebApi(config);
+            return DbConnectionConfig.OpenConnection();
         }
 
-        private static bool IsApiRequest(IOwinRequest request)
+        private void RegisterConfigurationStores(IServiceCollection services)
         {
-            var apiPath = VirtualPathUtility.ToAbsolute("~/api/");
-            return request.Uri.LocalPath.StartsWith(apiPath);
-        }
-
-        private static void LoadCustomAuthenticationMiddleware(IAppBuilder app)
-        {
-            var middlewareTypeStr = ConfigurationManager.AppSettings["AuthenticationMiddleware"];
-            if (middlewareTypeStr == null)
-                return;
-
-            var middlewareRegistrar = TypeHelper.CreateAssemblyObject(middlewareTypeStr);
-            if (middlewareRegistrar != null)
-                middlewareRegistrar.GetType().GetMethod("Register").Invoke(middlewareRegistrar, new object[] { app });
+            services.AddTransient(typeof(IConfiguration<>), typeof(ConfigWrapper<>));
+            services.AddTransient<ConfigurationStore>(x => new DatabaseStore(DbConnectionConfig.OpenConnection));
         }
     }
 }

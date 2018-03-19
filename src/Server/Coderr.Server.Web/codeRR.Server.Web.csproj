@@ -1,635 +1,72 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.Net.Compilers.2.7.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.7.0\build\Microsoft.Net.Compilers.props')" />
-  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <AssemblyName>Coderr.Server.Web</AssemblyName>
-    <IISExpressAnonymousAuthentication />
-    <IISExpressSSLPort />
-    <IISExpressUseClassicPipelineMode />
-    <IISExpressWindowsAuthentication />
-    <MvcBuildViews>true</MvcBuildViews>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-    <OutputType>Library</OutputType>
-    <ProductVersion />
-    <ProjectGuid>{0476895C-6A61-4DE1-B06B-E8BF496FB651}</ProjectGuid>
-    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
-    <RootNamespace>codeRR.Server.Web</RootNamespace>
-    <SchemaVersion>2.0</SchemaVersion>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <UseGlobalApplicationHostFile />
-    <UseIISExpress>true</UseIISExpress>
-    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
-    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
-    <Use64BitIISExpress />
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+    <IsPackable>false</IsPackable>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\</OutputPath>
-    <PublishDatabases>false</PublishDatabases>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup>
-    <TypeScriptToolsVersion>2.5</TypeScriptToolsVersion>
-    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
-    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
-    <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
-    <TypeScriptMapRoot />
-    <TypeScriptModuleKind>None</TypeScriptModuleKind>
-    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
-    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
-    <TypeScriptOutDir />
-    <TypeScriptOutFile />
-    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
-    <TypeScriptSourceMap>True</TypeScriptSourceMap>
-    <TypeScriptSourceRoot />
-    <TypeScriptTarget>ES5</TypeScriptTarget>
-  </PropertyGroup>
+
+  <!--<ItemGroup>
+    <Folder Include="ClientApp\components\analyze\applications\" />
+    <Folder Include="ClientApp\components\manage\application\" />
+  </ItemGroup>-->
+
   <ItemGroup>
-    <ProjectReference Include="..\Coderr.Server.Api.Client\codeRR.Server.Api.Client.csproj">
-      <Name>codeRR.Server.Api.Client</Name>
-      <Project>{017F8863-3DE0-4AD2-9ED3-5ACB87BBBCD0}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Coderr.Server.Api\codeRR.Server.Api.csproj">
-      <Name>codeRR.Server.Api</Name>
-      <Project>{FC331A95-FCA4-4764-8004-0884665DD01F}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Coderr.Server.App\codeRR.Server.App.csproj">
-      <Name>codeRR.Server.App</Name>
-      <Project>{5EF42A74-9323-49FA-A1F6-974D6DE77202}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Coderr.Server.Infrastructure\codeRR.Server.Infrastructure.csproj">
-      <Name>codeRR.Server.Infrastructure</Name>
-      <Project>{A78A50DA-C9D7-47F2-8528-D7EE39D91924}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Coderr.Server.PluginApi\Coderr.Server.PluginApi.csproj">
-      <Project>{47A845A0-FCC2-46F1-A553-0F7110BDDBEA}</Project>
-      <Name>Coderr.Server.PluginApi</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Coderr.Server.ReportAnalyzer\codeRR.Server.ReportAnalyzer.csproj">
-      <Name>codeRR.Server.ReportAnalyzer</Name>
-      <Project>{29FBF805-CAFD-426A-A576-9756D375BF18}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Coderr.Server.SqlServer\codeRR.Server.SqlServer.csproj">
-      <Name>codeRR.Server.SqlServer</Name>
-      <Project>{B967BEEA-CDDD-4A83-A4F2-1C946099ED51}</Project>
-    </ProjectReference>
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
+    <PackageReference Include="Griffin.Framework" Version="2.0.0-alpha01" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.0.3" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" />
   </ItemGroup>
+
   <ItemGroup>
-    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Coderr.Client, Version=1.0.18.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Coderr.Client.1.0.18\lib\net452\Coderr.Client.dll</HintPath>
-    </Reference>
-    <Reference Include="Coderr.Client.AspNet.Mvc5, Version=1.0.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Coderr.Client.AspNet.Mvc5.1.0.6\lib\net451\Coderr.Client.AspNet.Mvc5.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetCqs, Version=2.0.8.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetCqs.2.0.8\lib\net452\DotNetCqs.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetCqs.Queues.AdoNet, Version=1.0.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetCqs.Queues.AdoNet.1.0.6\lib\net452\DotNetCqs.Queues.AdoNet.dll</HintPath>
-    </Reference>
-    <Reference Include="Griffin.Container, Version=1.1.9.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Griffin.Container.1.1.9\lib\net452\Griffin.Container.dll</HintPath>
-    </Reference>
-    <Reference Include="Griffin.Container.Mvc5, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Griffin.Container.Mvc5.1.0.2\lib\net40\Griffin.Container.Mvc5.dll</HintPath>
-    </Reference>
-    <Reference Include="Griffin.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Griffin.Framework.2.0.0-alpha01\lib\net451\Griffin.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNet.Identity.Core">
-      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNet.Identity.Owin">
-      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.8.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.4.0.0\lib\net451\Microsoft.Owin.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.4.0.0\lib\net451\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Security, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.Security.4.0.0\lib\net451\Microsoft.Owin.Security.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Security.Cookies, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.4.0.0\lib\net451\Microsoft.Owin.Security.Cookies.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Security.Facebook, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.Security.Facebook.4.0.0\lib\net451\Microsoft.Owin.Security.Facebook.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Security.Google, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.Security.Google.4.0.0\lib\net451\Microsoft.Owin.Security.Google.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Security.MicrosoftAccount, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.Security.MicrosoftAccount.4.0.0\lib\net451\Microsoft.Owin.Security.MicrosoftAccount.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Security.OAuth, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.4.0.0\lib\net451\Microsoft.Owin.Security.OAuth.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Security.Twitter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.Security.Twitter.4.0.0\lib\net451\Microsoft.Owin.Security.Twitter.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Owin">
-      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http.Formatting, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.4\lib\net45\System.Net.Http.Formatting.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.Helpers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Http, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.4\lib\net45\System.Web.Http.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Http.Owin, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Owin.5.2.4\lib\net45\System.Web.Http.Owin.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Http.WebHost, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.4\lib\net45\System.Web.Http.WebHost.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Mvc, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.4\lib\net45\System.Web.Mvc.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Optimization">
-      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.4\lib\net45\System.Web.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.WebPages.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.3" />
   </ItemGroup>
+
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Management" />
-    <Reference Include="System.Messaging" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.WebRequest" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Abstractions" />
-    <Reference Include="System.Web.ApplicationServices" />
-    <Reference Include="System.Web.Entity" />
-    <Reference Include="System.Web.Routing" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
+    <ProjectReference Include="..\Coderr.Server.Api\Coderr.Server.Api.csproj" />
+    <ProjectReference Include="..\Coderr.Server.App\Coderr.Server.App.csproj" />
+    <ProjectReference Include="..\Coderr.Server.Domain\Coderr.Server.Domain.csproj" />
+    <ProjectReference Include="..\Coderr.Server.Infrastructure\Coderr.Server.Infrastructure.csproj" />
+    <ProjectReference Include="..\Coderr.Server.ReportAnalyzer\Coderr.Server.ReportAnalyzer.csproj" />
+    <ProjectReference Include="..\Coderr.Server.SqlServer\Coderr.Server.SqlServer.csproj" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="App_Start\BundleConfig.cs" />
-    <Compile Include="App_Start\CompositionRoot.cs" />
-    <Compile Include="App_Start\Services\ConfigWrapper.cs" />
-    <Compile Include="App_Start\Cqs\GriffinHandlerResolverAdapter.cs" />
-    <Compile Include="App_Start\Cqs\JsonFormatter.cs" />
-    <Compile Include="App_Start\Cqs\Metadata.cs" />
-    <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\IoC\GriffinContainerAdapter.cs" />
-    <Compile Include="App_Start\IoC\GriffinContainerScopeAdapter.cs" />
-    <Compile Include="App_Start\IoC\GriffinWebApiChildScope.cs" />
-    <Compile Include="App_Start\IoC\GriffinWebApiDependencyResolver2.cs" />
-    <Compile Include="App_Start\LogConfigurator.cs" />
-    <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Start\Services\ApplicationServiceManagerSettingsWithDefaultOn.cs" />
-    <Compile Include="App_Start\Services\ServiceRunner.cs" />
-    <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
-    <Compile Include="Areas\Admin\AdminMenu.cs" />
-    <Compile Include="Areas\Admin\Controllers\ApiKeysController.cs" />
-    <Compile Include="Areas\Admin\Controllers\ApplicationController.cs" />
-    <Compile Include="Areas\Admin\MenuItem.cs" />
-    <Compile Include="Areas\Admin\Models\Applications\ApplicationVersionViewModel.cs" />
-    <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
-    <Compile Include="Areas\Admin\Controllers\MessagingController.cs" />
-    <Compile Include="Areas\Admin\Controllers\ReportingController.cs" />
-    <Compile Include="Areas\Admin\Models\AccountViewModel.cs" />
-    <Compile Include="Areas\Admin\Models\ApiKeys\EditViewModel.cs" />
-    <Compile Include="Areas\Admin\Models\ApiKeys\CreateViewModel.cs" />
-    <Compile Include="Areas\Admin\Models\ApiKeys\ListViewModel.cs" />
-    <Compile Include="Areas\Admin\Models\ApiKeys\ListViewModelItem.cs" />
-    <Compile Include="Areas\Admin\Models\Applications\ApplicationViewModel.cs" />
-    <Compile Include="Areas\Admin\Models\Applications\EditViewModel.cs" />
-    <Compile Include="Areas\Admin\Models\BasicsViewModel.cs" />
-    <Compile Include="Areas\Admin\Models\EmailViewModel.cs" />
-    <Compile Include="Areas\Admin\Models\ErrorTrackingViewModel.cs" />
-    <Compile Include="Areas\Admin\Models\QueueViewModel.cs" />
-    <Compile Include="Areas\Admin\Models\ReportingViewModel.cs" />
-    <Compile Include="Areas\Installation\Controllers\AccountController.cs" />
-    <Compile Include="Areas\Installation\Controllers\BootController.cs" />
-    <Compile Include="Areas\Installation\Controllers\MessagingController.cs" />
-    <Compile Include="Areas\Installation\Controllers\SetupController.cs" />
-    <Compile Include="Areas\Installation\Controllers\SqlController.cs" />
-    <Compile Include="Areas\Installation\InstallationAreaRegistration.cs" />
-    <Compile Include="Areas\Installation\Models\AccountViewModel.cs" />
-    <Compile Include="Areas\Installation\Models\BasicsViewModel.cs" />
-    <Compile Include="Areas\Installation\Models\EmailViewModel.cs" />
-    <Compile Include="Areas\Installation\Models\ErrorTrackingViewModel.cs" />
-    <Compile Include="Areas\Installation\Models\QueueViewModel.cs" />
-    <Compile Include="Areas\Installation\Models\SupportViewModel.cs" />
-    <Compile Include="Areas\Installation\WizardStepInfo.cs" />
-    <Compile Include="Areas\Installation\WizardSteps.cs" />
-    <Compile Include="Areas\Receiver\Controllers\FeedbackController.cs" />
-    <Compile Include="Areas\Receiver\Controllers\ReportController.cs" />
-    <Compile Include="Areas\Receiver\Helpers\HttpRequestMessageExtensions.cs" />
-    <Compile Include="Areas\Receiver\Helpers\SamplingSettings.cs" />
-    <Compile Include="Areas\Receiver\Models\FeedbackModel.cs" />
-    <Compile Include="Areas\Receiver\Models\ReportValidator.cs" />
-    <Compile Include="Areas\Receiver\Models\SamplingCounter.cs" />
-    <Compile Include="Areas\Receiver\ReportingApi\NamespaceDoc.cs" />
-    <Compile Include="Areas\Receiver\ReportingApi\NewReportContextInfo.cs" />
-    <Compile Include="Areas\Receiver\ReportingApi\NewReportDTO.cs" />
-    <Compile Include="Areas\Receiver\ReportingApi\NewReportException.cs" />
-    <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\ControllerExtensions.cs" />
-    <Compile Include="Controllers\CqsController.cs" />
-    <Compile Include="Controllers\GuidController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\PageController.cs" />
-    <Compile Include="Controllers\WizardController.cs" />
-    <Compile Include="Global.asax.cs">
-      <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
-    <Compile Include="Infrastructure\Auth\ApiKeyAuthenticator.cs" />
-    <Compile Include="Infrastructure\Auth\AuthenticationFailureResult.cs" />
-    <Compile Include="Infrastructure\Auth\SignalRAuthenticateAttribute.cs" />
-    <Compile Include="Infrastructure\CompressedRequestHandler.cs" />
-    <Compile Include="Infrastructure\Cqs\CqsObjectMapper.cs" />
-    <Compile Include="Infrastructure\Cqs\MemoryQueue.cs" />
-    <Compile Include="Infrastructure\CustomerInfoProvider.cs" />
-    <Compile Include="Infrastructure\InstallationHelper.cs" />
-    <Compile Include="Infrastructure\Logging\LogAdapter.cs" />
-    <Compile Include="Infrastructure\Logging\LogManagerAdapter.cs" />
-    <Compile Include="Infrastructure\Logging\WebApiLogger.cs" />
-    <Compile Include="Infrastructure\PluginConfiguration.cs" />
-    <Compile Include="Infrastructure\PluginManager.cs" />
-    <Compile Include="Infrastructure\SchemaUpdateModule.cs" />
-    <Compile Include="Infrastructure\SessionStoreMediator.cs" />
-    <Compile Include="Infrastructure\TransactionalAttribute.cs" />
-    <Compile Include="Models\Account\AcceptViewModel.cs" />
-    <Compile Include="Models\Account\IsTrueAttribute.cs" />
-    <Compile Include="Models\Account\LoginViewmodel.cs" />
-    <Compile Include="Models\Account\RegisterViewModel.cs" />
-    <Compile Include="Models\Account\RequestPasswordResetViewModel.cs" />
-    <Compile Include="Models\Account\ResetPasswordViewModel.cs" />
-    <Compile Include="Models\AccountBindingModels.cs" />
-    <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\AuthenticatedUser.cs" />
-    <Compile Include="Models\Wizard\ApplicationViewModel.cs" />
-    <Compile Include="Models\Wizard\ConfigurePackageViewModel.cs" />
-    <Compile Include="Models\Wizard\HelpViewModel.cs" />
-    <Compile Include="Models\Wizard\PackagesViewModel.cs" />
-    <Compile Include="Models\Wizard\NugetPackage.cs" />
-    <Compile Include="Models\Wizard\ValidateViewModel.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Results\ChallengeResult.cs" />
-    <Compile Include="Startup.cs" />
-    <Compile Include="Views\BaseViewPage.cs" />
-    <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\Admin\Views\ApiKeys\Create.cshtml" />
-    <Content Include="Areas\Admin\Views\ApiKeys\Created.cshtml" />
-    <Content Include="Areas\Admin\Views\ApiKeys\Deleted.cshtml" />
-    <Content Include="Areas\Admin\Views\ApiKeys\Details.cshtml" />
-    <Content Include="Areas\Admin\Views\ApiKeys\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\Application\Deleted.cshtml" />
-    <Content Include="Areas\Admin\Views\Application\Edit.cshtml" />
-    <Content Include="Areas\Admin\Views\Application\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\Home\Basics.cshtml" />
-    <Content Include="Areas\Admin\Views\Home\ErrorTracking.cshtml" />
-    <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\Messaging\Email.cshtml" />
-    <Content Include="Areas\Admin\Views\Queues\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\Reporting\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\Admin\Views\Sql\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\Sql\Tables.cshtml" />
-    <Content Include="Areas\Admin\Views\web.config" />
-    <Content Include="Areas\Installation\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\Installation\Views\Account\Admin.cshtml" />
-    <Content Include="Areas\Installation\Views\Messaging\Email.cshtml" />
-    <Content Include="Areas\Installation\Views\Setup\Basics.cshtml" />
-    <Content Include="Areas\Installation\Views\Setup\ErrorTracking.cshtml" />
-    <Content Include="Areas\Installation\Views\Setup\Index.cshtml" />
-    <Content Include="Areas\Installation\Views\Setup\Support.cshtml" />
-    <Content Include="Areas\Installation\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\Installation\Views\Sql\Index.cshtml" />
-    <Content Include="Areas\Installation\Views\Sql\Tables.cshtml" />
-    <Content Include="Areas\Installation\Views\web.config" />
-    <Content Include="Areas\Receiver\ReadMe.md" />
-    <Content Include="Areas\Receiver\Views\web.config" />
-    <Content Include="Content\alertifyjs\alertify.css" />
-    <Content Include="Content\alertifyjs\alertify.min.css" />
-    <Content Include="Content\alertifyjs\alertify.rtl.css" />
-    <Content Include="Content\alertifyjs\alertify.rtl.min.css" />
-    <Content Include="Content\alertifyjs\themes\bootstrap.css" />
-    <Content Include="Content\alertifyjs\themes\bootstrap.min.css" />
-    <Content Include="Content\alertifyjs\themes\bootstrap.rtl.css" />
-    <Content Include="Content\alertifyjs\themes\bootstrap.rtl.min.css" />
-    <Content Include="Content\alertifyjs\themes\default.css" />
-    <Content Include="Content\alertifyjs\themes\default.min.css" />
-    <Content Include="Content\alertifyjs\themes\default.rtl.css" />
-    <Content Include="Content\alertifyjs\themes\default.rtl.min.css" />
-    <Content Include="Content\alertifyjs\themes\semantic.css" />
-    <Content Include="Content\alertifyjs\themes\semantic.min.css" />
-    <Content Include="Content\alertifyjs\themes\semantic.rtl.css" />
-    <Content Include="Content\alertifyjs\themes\semantic.rtl.min.css" />
-    <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\complete.css" />
-    <Content Include="Content\editor\bold.png" />
-    <Content Include="Content\editor\bullets.png" />
-    <Content Include="Content\editor\document_quote.png" />
-    <Content Include="Content\editor\h1.png" />
-    <Content Include="Content\editor\h2.png" />
-    <Content Include="Content\editor\h3.png" />
-    <Content Include="Content\editor\h4.png" />
-    <Content Include="Content\editor\h5.png" />
-    <Content Include="Content\editor\h6.png" />
-    <Content Include="Content\editor\help.png" />
-    <Content Include="Content\editor\italic.png" />
-    <Content Include="Content\editor\link.png" />
-    <Content Include="Content\editor\numbers.png" />
-    <Content Include="Content\editor\picture.png" />
-    <Content Include="Content\editor\source_code.png" />
-    <Content Include="Content\editor\underline.png" />
-    <Content Include="Content\font-awesome.min.css" />
-    <Content Include="Content\images\layout\logo.png" />
-    <Content Include="Content\images\layout\logo_min.png" />
-    <Content Include="fonts\fontawesome-webfont.svg" />
-    <Content Include="Content\humane.flatty.css" />
-    <Content Include="Content\morris.css" />
-    <Content Include="Content\Site.css">
-      <DependentUpon>Site.less</DependentUpon>
-    </Content>
-    <Content Include="Content\Site.less" />
-    <Content Include="Content\Site.min.css">
-      <DependentUpon>Site.less</DependentUpon>
-    </Content>
-    <Content Include="favicon.ico" />
-    <Content Include="fonts\Material-Design-Iconic-Font.svg" />
-    <Content Include="Global.asax" />
-    <Content Include="log4net.config">
+    <Content Update="log4net.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="packages.config">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Scripts\alertify.js" />
-    <Content Include="Scripts\alertify.min.js" />
-    <Content Include="Areas\Admin\Views\ApiKeys\Edit.cshtml" />
-    <Content Include="fonts\fontawesome-webfont.eot" />
-    <Content Include="fonts\fontawesome-webfont.ttf" />
-    <Content Include="fonts\fontawesome-webfont.woff" />
-    <Content Include="fonts\fontawesome-webfont.woff2" />
-    <Content Include="fonts\FontAwesome.otf" />
-    <Content Include="fonts\Material-Design-Iconic-Font.eot" />
-    <Content Include="fonts\Material-Design-Iconic-Font.ttf" />
-    <Content Include="fonts\Material-Design-Iconic-Font.woff" />
-    <Content Include="fonts\Material-Design-Iconic-Font.woff2" />
-    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\dashboard\fastclick.js" />
-    <Content Include="Scripts\dashboard\jquery.app.js" />
-    <None Include="Scripts\jquery-3.3.1.intellisense.js" />
-    <Content Include="Scripts\jquery-3.3.1.js" />
-    <Content Include="Scripts\jquery-3.3.1.min.js" />
-    <Content Include="Scripts\jquery-3.3.1.slim.js" />
-    <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
-    <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\moment.min.js" />
-    <Content Include="Scripts\popper.min.js" />
-    <Content Include="Scripts\_references.js" />
-    <Content Include="Scripts\Application.js" />
-    <Content Include="Scripts\Chart.min.js" />
-    <Content Include="Scripts\Griffin.Yo.es5.js">
-      <DependentUpon>Griffin.Yo.js</DependentUpon>
-    </Content>
-    <Content Include="Scripts\Griffin.Yo.es5.min.js">
-      <DependentUpon>Griffin.Yo.es5.js</DependentUpon>
-    </Content>
-    <Content Include="Scripts\Griffin.Yo.js" />
-    <Content Include="Scripts\Griffin.Yo.js.map" />
-    <Content Include="Scripts\humane.js" />
-    <Content Include="Scripts\marked.js" />
-    <Content Include="Scripts\marked.min.js" />
-    <Content Include="Scripts\Models\AllModels.js" />
-    <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Scripts\morris.min.js" />
-    <Content Include="Scripts\raphael-min.js" />
-    <Content Include="Views\Application\Versions.html" />
-    <Content Include="Views\Onboarding\Client.html" />
-    <Content Include="Views\Onboarding\Create.html" />
-    <Content Include="Views\Onboarding\Index.html" />
-    <Content Include="Views\Onboarding\Verify.html" />
-    <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Account\Accept.cshtml" />
-    <Content Include="Views\Account\Accepted.html" />
-    <Content Include="Views\Account\Activate.cshtml" />
-    <Content Include="Views\Account\ActivationRequested.cshtml" />
-    <Content Include="Views\Account\ChangePassword.cshtml" />
-    <Content Include="Views\Account\Index.cshtml" />
-    <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Account\PasswordRequestReceived.cshtml" />
-    <Content Include="Views\Account\PrivacyPolicy.cshtml" />
-    <Content Include="Views\Account\Register.cshtml" />
-    <Content Include="Views\Account\RequestPasswordReset.cshtml" />
-    <Content Include="Views\Account\ResetPassword.cshtml" />
-    <Content Include="Views\Account\Simple.cshtml" />
-    <Content Include="Views\Account\Welcome.html" />
-    <Content Include="Views\Application\_create.cshtml" />
-    <Content Include="Views\Application\Details.html" />
-    <Content Include="Views\Application\Installation.html" />
-    <Content Include="Views\Application\Team.html" />
-    <Content Include="Views\Feedback\Application.html" />
-    <Content Include="Views\Feedback\Incident.html" />
-    <Content Include="Views\Feedback\Overview.html" />
-    <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Boot\NoInstallation.cshtml" />
-    <Content Include="Views\Home\Welcome.html" />
-    <Content Include="Views\Incident\Close.html" />
-    <Content Include="Views\Incident\Ignore.html" />
-    <Content Include="Views\Incident\incident.html" />
-    <Content Include="Views\Incident\Index.html" />
-    <Content Include="Views\Incident\Origins.html" />
-    <Content Include="Views\Incident\Similarities.html" />
-    <Content Include="Views\Overview\Overview.html" />
-    <Content Include="Views\Report\Report.html" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Shared\_support.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\User\Notifications.html" />
-    <Content Include="Views\User\Settings.html" />
-    <Content Include="Views\Web.config" />
-    <Content Include="Web.config">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
-    <Content Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
-    <Content Include="Views\Shared\_Layout.NoAuth.cshtml" />
-    <Content Include="Views\Shared\_LeftMenu.cshtml" />
-    <Content Include="Views\Shared\_TopBar.cshtml" />
-    <Content Include="Views\Wizard\Application.cshtml" />
-    <Content Include="Views\Wizard\_Layout.cshtml" />
-    <Content Include="Views\Wizard\Packages.cshtml" />
-    <Content Include="Views\Wizard\ConfigurePackage.cshtml" />
-    <Content Include="Views\Wizard\Validate.cshtml" />
-    <Content Include="Areas\Installation\Views\Setup\Completed.cshtml" />
-    <None Include="compilerconfig.json" />
-    <None Include="compilerconfig.json.defaults">
-      <DependentUpon>compilerconfig.json</DependentUpon>
-    </None>
-    <Content Include="tsconfig.json" />
-    <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
-    <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="app\Applications\Components\" />
-    <Folder Include="App_Data\" />
-    <Folder Include="Areas\Receiver\Views\Shared\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
-  </ItemGroup>
-  <ItemGroup>
-    <TypeScriptCompile Include="app\Application.ts" />
-    <TypeScriptCompile Include="app\Applications\Index.ts" />
-    <TypeScriptCompile Include="app\Applications\Application.ts" />
-    <TypeScriptCompile Include="app\Index.ts" />
-    <TypeScriptCompile Include="Scripts\CqsClient.ts" />
-    <TypeScriptCompile Include="Scripts\Griffin.Editor.ts" />
-    <TypeScriptCompile Include="Scripts\Griffin.Net.ts" />
-    <TypeScriptCompile Include="Scripts\Griffin.WebApp.ts" />
-    <TypeScriptCompile Include="Scripts\Griffin.Yo.d.ts" />
-    <TypeScriptCompile Include="Scripts\Models\AllModels.ts" />
-    <TypeScriptCompile Include="Scripts\Promise.ts" />
-    <TypeScriptCompile Include="Scripts\typings\humane\humane.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\moment\moment.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\morris.js\morris.js.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\simplemde\simplemde.d.ts" />
-    <TypeScriptCompile Include="ViewModels\Account\AcceptedViewModel.ts" />
-    <TypeScriptCompile Include="ViewModels\Account\SettingsViewModel.ts" />
-    <TypeScriptCompile Include="ViewModels\Account\WelcomeViewModel.ts" />
-    <TypeScriptCompile Include="ViewModels\Application\DetailsViewModel.ts" />
-    <TypeScriptCompile Include="ViewModels\Application\VersionsViewModel.ts" />
-    <TypeScriptCompile Include="ViewModels\Application\InstallationViewModel.ts" />
-    <TypeScriptCompile Include="ViewModels\Application\TeamViewModel.ts" />
-    <TypeScriptCompile Include="ViewModels\ChartViewModel.ts" />
-    <TypeScriptCompile Include="ViewModels\Feedback\ApplicationViewModel.ts" />
-    <TypeScriptCompile Include="ViewModels\Feedback\IncidentViewModel.ts" />
-    <TypeScriptCompile Include="ViewModels\Feedback\OverviewViewModel.ts" />
-    <TypeScriptCompile Include="ViewModels\Home\WelcomeViewModel.ts" />
-    <TypeScriptCompile Include="ViewModels\Incident\CloseViewModel.ts" />
-    <TypeScriptCompile Include="ViewModels\Incident\Components\IncidentNavigation.ts" />
-    <TypeScriptCompile Include="ViewModels\Incident\Components\IncidentTable.ts" />
-    <TypeScriptCompile Include="ViewModels\Incident\IgnoreViewModel.ts" />
-    <TypeScriptCompile Include="ViewModels\Incident\IncidentViewModel.ts" />
-    <TypeScriptCompile Include="ViewModels\Incident\IndexViewModel.ts" />
-    <TypeScriptCompile Include="ViewModels\Incident\OriginsViewModel.ts" />
-    <TypeScriptCompile Include="ViewModels\Incident\SimilaritiesViewModel.ts" />
-    <TypeScriptCompile Include="ViewModels\Onboarding\ClientViewModel.ts" />
-    <TypeScriptCompile Include="ViewModels\Onboarding\CreateViewModel.ts" />
-    <TypeScriptCompile Include="ViewModels\Onboarding\IndexViewModel.ts" />
-    <TypeScriptCompile Include="ViewModels\Onboarding\VerifyViewModel.ts" />
-    <TypeScriptCompile Include="ViewModels\Overview\OverviewViewModel.ts" />
-    <TypeScriptCompile Include="ViewModels\Report\ReportViewModel.ts" />
-    <TypeScriptCompile Include="ViewModels\User\NotificationsViewModel.ts" />
-    <TypeScriptCompile Include="ViewModels\User\SettingsViewModel.ts" />
-  </ItemGroup>
-  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
-    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+
+  <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
+    <!-- Ensure Node.js is installed -->
+    <Exec Command="node --version" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+    </Exec>
+    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+
+    <!-- In development, the dist files won't exist on the first run or when cloning to
+         a different machine, so rebuild them if not already present. -->
+    <Message Importance="high" Text="Performing first-run Webpack build..." />
+    <Exec Command="node node_modules/webpack/bin/webpack.js --config webpack.config.vendor.js" />
+    <Exec Command="node node_modules/webpack/bin/webpack.js" />
   </Target>
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
-  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
-  <ProjectExtensions>
-    <VisualStudio>
-      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
-        <WebProjectProperties>
-          <UseIIS>True</UseIIS>
-          <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>50473</DevelopmentServerPort>
-          <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:50473/</IISUrl>
-          <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
-          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
-        </WebProjectProperties>
-      </FlavorProperties>
-    </VisualStudio>
-  </ProjectExtensions>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.7.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.7.0\build\Microsoft.Net.Compilers.props'))" />
+
+  <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+    <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+    <Exec Command="npm install" />
+    <Exec Command="node node_modules/webpack/bin/webpack.js --config webpack.config.vendor.js --env.prod" />
+    <Exec Command="node node_modules/webpack/bin/webpack.js --env.prod" />
+
+    <!-- Include the newly-built files in the publish output -->
+    <ItemGroup>
+      <DistFiles Include="wwwroot\dist\**" />
+      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+        <RelativePath>%(DistFiles.Identity)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </ResolvedFileToPublish>
+    </ItemGroup>
   </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target> -->
+
 </Project>

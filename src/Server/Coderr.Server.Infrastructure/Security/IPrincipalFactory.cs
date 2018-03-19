@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace codeRR.Server.Infrastructure.Security
+namespace Coderr.Server.Infrastructure.Security
 {
     /// <summary>
     ///     Allows us to create a claims principal without a dependency to ASP.NET Identity.

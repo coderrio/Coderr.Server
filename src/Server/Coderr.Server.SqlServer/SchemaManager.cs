@@ -6,12 +6,12 @@ using System.Linq;
 using System.Reflection;
 using log4net;
 
-namespace codeRR.Server.SqlServer
+namespace Coderr.Server.SqlServer
 {
     public class SchemaManager
     {
         private readonly Func<IDbConnection> _connectionFactory;
-        private const string SchemaNamespace = "codeRR.Server.SqlServer.Schema";
+        private const string SchemaNamespace = "Coderr.Server.SqlServer.Schema";
         private ILog _logger = LogManager.GetLogger(typeof(SchemaManager));
 
         public SchemaManager(Func<IDbConnection> connectionFactory)

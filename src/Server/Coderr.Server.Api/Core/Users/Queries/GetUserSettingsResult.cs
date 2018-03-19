@@ -1,4 +1,4 @@
-namespace codeRR.Server.Api.Core.Users.Queries
+namespace Coderr.Server.Api.Core.Users.Queries
 {
     /// <summary>
     ///     Result for <see cref="GetUserSettings" />

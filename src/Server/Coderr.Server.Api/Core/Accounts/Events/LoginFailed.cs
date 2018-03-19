@@ -1,7 +1,6 @@
 ﻿using System;
-using DotNetCqs;
 
-namespace codeRR.Server.Api.Core.Accounts.Events
+namespace Coderr.Server.Api.Core.Accounts.Events
 {
     /// <summary>
     ///     A login attempt failed

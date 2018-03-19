@@ -1,0 +1,63 @@
+<template>
+    <div class="mt-4">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">Api keys</div>
+                    <div class="card-body">
+                        <em>Partitions are used to prioritize incidents based in operational aspects that are important to you.</em>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Created for</th>
+                                <th>Key</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="key in keys">
+                                    <td>
+                                        {{key.ApplicationName}}
+                                    </td>
+                                    <td>
+                                        {{key.ApiKey}}
+                                    </td>
+                                    <td>
+                                        <router-link to="{name: 'manageAppKey', params: {applicationId: applicationId, apiKeyId: key.Id}}"><i class="fa fa-edit"></i></router-link>
+                                        <router-link to="{name: 'deleteAppKey', params: {applicationId: applicationId, apiKeyId: key.Id}}"><i class="fa fa-trash"></i></router-link>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">Pending invites</div>
+                    <div class="card-body">
+                        <table class="table table-borderless" v-if="invites.length > 0">
+                            <tr v-for="member in invites">
+                                <td>
+                                    {{member.EmailAddress}}
+                                </td>
+                            </tr>
+                        </table>
+                        <div v-if="invites.length == 0">
+                            <em>(No pending invites)</em>
+                        </div>
+                        <hr />
+                        <h4>Send invite</h4>
+                        <input type="email" class="form-control" name="inviteEmail" placeholder="Email address" style="display: inline; width: auto;" />
+                        <input type="submit" value="Invite member" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+
+<style src="./apikey.css" />
+<script src="./apikey.ts"></script>

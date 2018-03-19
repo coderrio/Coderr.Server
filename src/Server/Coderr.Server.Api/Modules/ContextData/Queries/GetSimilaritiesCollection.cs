@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace codeRR.Server.Api.Modules.ContextData.Queries
+namespace Coderr.Server.Api.Modules.ContextData.Queries
 {
     /// <summary>
     ///     Context collection for <see cref="GetSimilaritiesResult" />.

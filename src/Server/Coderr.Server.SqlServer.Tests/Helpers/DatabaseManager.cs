@@ -4,11 +4,10 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Threading;
-using codeRR.Server.ReportAnalyzer;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 
-namespace codeRR.Server.SqlServer.Tests.Helpers
+namespace Coderr.Server.SqlServer.Tests.Helpers
 {
     /// <summary>
     ///     Purpose of this class is to create and dispose the database.
@@ -67,9 +66,9 @@ namespace codeRR.Server.SqlServer.Tests.Helpers
             }
         }
 
-        public OurUnitOfWork CreateUnitOfWork()
+        public AdoNetUnitOfWork CreateUnitOfWork()
         {
-            return new OurUnitOfWork(OpenConnection(), true);
+            return new AdoNetUnitOfWork(OpenConnection(), true);
         }
 
         public void DeleteDatabase()

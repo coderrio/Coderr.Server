@@ -1,4 +1,4 @@
-﻿namespace codeRR.Server.Api.Modules.Tagging
+﻿namespace Coderr.Server.Api.Modules.Tagging
 {
     /// <summary>
     ///     A stack overflow tag

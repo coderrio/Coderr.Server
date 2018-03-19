@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Data;
-using codeRR.Server.Api.Core.Incidents;
+using Coderr.Server.Api.Core.Incidents;
 using Griffin.Data.Mapper;
 
-namespace codeRR.Server.SqlServer.Core.Incidents
+namespace Coderr.Server.SqlServer.Core.Incidents
 {
     public class IncidentSummaryMapper : IEntityMapper<IncidentSummaryDTO>
     {

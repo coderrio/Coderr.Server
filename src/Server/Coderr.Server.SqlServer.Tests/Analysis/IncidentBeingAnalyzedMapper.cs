@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using codeRR.Server.ReportAnalyzer;
-using codeRR.Server.ReportAnalyzer.Domain.Incidents;
-using codeRR.Server.ReportAnalyzer.Domain.Reports;
-using codeRR.Server.SqlServer.Analysis;
+using Coderr.Server.Domain.Core.ErrorReports;
+using Coderr.Server.ReportAnalyzer.Incidents;
+using Coderr.Server.SqlServer.ReportAnalyzer;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace codeRR.Server.SqlServer.Tests.Analysis
+namespace Coderr.Server.SqlServer.Tests.Analysis
 {
     public class IncidentBeingAnalyzedMapperTests : IntegrationTest
     {
@@ -22,16 +21,16 @@ namespace codeRR.Server.SqlServer.Tests.Analysis
         {
             var report = new ErrorReportEntity(FirstApplicationId, Guid.NewGuid().ToString("N"), DateTime.UtcNow,
                 new ErrorReportException(new Exception("mofo")),
-                new List<ErrorReportContext> {new ErrorReportContext("Maps", new Dictionary<string, string>())})
+                new List<ErrorReportContextCollection> {new ErrorReportContextCollection("Maps", new Dictionary<string, string>())})
             {
                 Title = "Missing here"
             };
             report.Init(report.GenerateHashCodeIdentifier());
 
-            using (var uow = new AnalysisDbContext(CreateUnitOfWork()))
+            using (var uow = CreateUnitOfWork())
             {
                 var incident = new IncidentBeingAnalyzed(report);
-                var incRepos = new AnalyticsRepository(uow, new TestConfigStore());
+                var incRepos = new AnalyticsRepository(uow);
                 incRepos.CreateIncident(incident);
                 report.IncidentId = incident.Id;
                 incRepos.CreateReport(report);

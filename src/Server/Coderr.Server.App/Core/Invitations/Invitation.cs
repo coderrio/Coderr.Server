@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace codeRR.Server.App.Core.Invitations
+namespace Coderr.Server.App.Core.Invitations
 {
     /// <summary>
     ///     Invitation to join this OTE installation

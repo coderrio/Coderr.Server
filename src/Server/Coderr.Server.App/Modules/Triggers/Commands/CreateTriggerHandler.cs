@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Modules.Triggers.Commands;
-using codeRR.Server.App.Modules.Triggers.Domain;
+using Coderr.Server.Api.Modules.Triggers.Commands;
 using DotNetCqs;
 using Griffin.Container;
 
-namespace codeRR.Server.App.Modules.Triggers.Commands
+namespace Coderr.Server.App.Modules.Triggers.Commands
 {
     /// <summary>
     ///     Handler for <see cref="CreateTrigger" />.
     /// </summary>
-    [Component]
     public class CreateTriggerHandler : IMessageHandler<CreateTrigger>
     {
         private readonly ITriggerRepository _repository;
