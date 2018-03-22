@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
 namespace Coderr.Server.Domain.Core.Feedback
@@ -23,5 +25,15 @@ namespace Coderr.Server.Domain.Core.Feedback
         /// <returns>task</returns>
         /// <exception cref="ArgumentNullException">feedback</exception>
         Task UpdateAsync(UserFeedback feedback);
+        
+        /// <summary>
+        ///     Get all email addresses associated with an incident
+        /// </summary>
+        /// <param name="incidentId">incident</param>
+        /// <returns>emails (or an emty list)</returns>
+        /// <exception cref="ArgumentOutOfRangeException">incidentId</exception>
+        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+        Task<IReadOnlyList<string>> GetEmailAddressesAsync(int incidentId);
+
     }
 }

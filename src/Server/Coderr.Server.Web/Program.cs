@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Coderr.Server.SqlServer.ReportAnalyzer;
+using Griffin.Data.Mapper;
 using log4net;
 using log4net.Config;
 using Microsoft.AspNetCore;
@@ -20,6 +22,10 @@ namespace Coderr.Server.Web2
         public static void Main(string[] args)
         {
             ConfigureLog4Net();
+            var provider = new AssemblyScanningMappingProvider();
+            provider.Scan(typeof(AnalyticsRepository).Assembly);
+            EntityMappingProvider.Provider = provider;
+
             BuildWebHost(args).Run();
         }
 

@@ -30,7 +30,7 @@ namespace Coderr.Server.Web2.Controllers
         {
             _unitOfWork = unitOfWork;
             _configStore = configStore;
-            _messageQueue = queueProvider.Open("Reports");
+            _messageQueue = queueProvider.Open("ErrorReports");
         }
 
         [HttpGet]

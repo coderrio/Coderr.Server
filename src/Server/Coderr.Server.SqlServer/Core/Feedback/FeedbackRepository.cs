@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Coderr.Server.App.Core.Feedback;
+using Coderr.Server.Domain.Core.Feedback;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
@@ -17,12 +17,12 @@ namespace Coderr.Server.SqlServer.Core.Feedback
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<FeedbackEntity> FindPendingAsync(string reportId)
+        public async Task<UserFeedback> FindPendingAsync(string reportId)
         {
-            return await _unitOfWork.FirstOrDefaultAsync<FeedbackEntity>(new {ErrorId = reportId});
+            return await _unitOfWork.FirstOrDefaultAsync<UserFeedback>(new {ErrorId = reportId});
         }
 
-        public async Task UpdateAsync(FeedbackEntity feedback)
+        public async Task UpdateAsync(UserFeedback feedback)
         {
             await _unitOfWork.UpdateAsync(feedback);
         }

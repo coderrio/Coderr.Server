@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
-using Coderr.Server.App.Modules.Versions;
+using Coderr.Server.Domain.Modules.ApplicationVersions;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
@@ -13,7 +13,7 @@ namespace Coderr.Server.SqlServer.Modules.Versions
     ///     ADO.NET based implementation of <see cref="IVersionRepository" />.
     /// </summary>
     [ContainerService]
-    public class VersionRepository : IVersionRepository
+    public class VersionRepository : IApplicationVersionRepository
     {
         private readonly IAdoNetUnitOfWork _uow;
 

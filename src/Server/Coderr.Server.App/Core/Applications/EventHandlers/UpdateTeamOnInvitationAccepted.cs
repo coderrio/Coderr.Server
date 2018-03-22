@@ -8,7 +8,6 @@ using Griffin.Container;
 
 namespace Coderr.Server.App.Core.Applications.EventHandlers
 {
-    [Component(RegisterAsSelf = true)]
     internal class UpdateTeamOnInvitationAccepted : IMessageHandler<InvitationAccepted>
     {
         private readonly IApplicationRepository _applicationRepository;

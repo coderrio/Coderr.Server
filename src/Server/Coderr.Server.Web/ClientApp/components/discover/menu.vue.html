@@ -11,6 +11,9 @@
                 <router-link tag="li" class="nav-item" :to="{name: 'findIncidents', params: {applicationId: currentApplicationId }}">
                     <a class="nav-link"><i class="fa fa-table"></i> Find incidents</a>
                 </router-link>
+                <router-link tag="li" class="nav-item" :to="{name: 'configureApplication', params: {applicationId: currentApplicationId }}" v-if="currentApplicationId">
+                    <a class="nav-link"><i class="fa fa-cog"></i> Configure your application</a>
+                </router-link>
             </ul>
         </div>
     </div>

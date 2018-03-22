@@ -11,7 +11,6 @@ namespace Coderr.Server.ReportAnalyzer.Tagging.Handlers
     /// <summary>
     ///     Adds a "incident-reopened" tag
     /// </summary>
-    [Component(RegisterAsSelf = true)]
     public class IncidentReopenedHandler : IMessageHandler<IncidentReOpened>
     {
         private readonly ITagsRepository _repository;

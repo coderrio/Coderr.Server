@@ -9,7 +9,6 @@ namespace Coderr.Server.App.Core.Users.EventHandlers
     /// <summary>
     ///     Responsible of creating an user entity when a new account is created.
     /// </summary>
-    [Component(RegisterAsSelf = true)]
     internal class CreateOnNewAccount : IMessageHandler<AccountActivated>
     {
         private readonly IUserRepository _userRepository;

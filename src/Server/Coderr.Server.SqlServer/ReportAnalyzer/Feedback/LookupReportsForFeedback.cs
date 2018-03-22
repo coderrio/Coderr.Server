@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Threading.Tasks;
-using Coderr.Server.App.Core.Feedback;
+using Coderr.Server.Domain.Core.Feedback;
 using Griffin.ApplicationServices;
 using Griffin.Data;
 using Griffin.Data.Mapper;
@@ -9,8 +9,6 @@ using log4net;
 
 namespace Coderr.Server.SqlServer.ReportAnalyzer.Feedback
 {
-    //TODO: invent some way to execute jobs for all customer databases.
-    //[Component(RegisterAsSelf = true)]
     public class LookupReportsForFeedback : IBackgroundJobAsync
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(LookupReportsForFeedback));
@@ -24,7 +22,7 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer.Feedback
 
         public async Task ExecuteAsync()
         {
-            var items = new List<FeedbackEntity>();
+            var items = new List<UserFeedback>();
             await GetPendingFeedback(items);
             await LookupReportInfo(items);
             foreach (var item in items)
@@ -62,13 +60,13 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer.Feedback
             }
         }
 
-        private async Task GetPendingFeedback(ICollection<FeedbackEntity> items)
+        private async Task GetPendingFeedback(ICollection<UserFeedback> items)
         {
             using (var cmd = (DbCommand) _unitOfWork.CreateCommand())
             {
                 cmd.CommandText =
                     "SELECT * FROM incidentfeedback WHERE IncidentId is null";
-                var myItems = await cmd.ToListAsync<FeedbackEntity>();
+                var myItems = await cmd.ToListAsync<UserFeedback>();
                 foreach (var item in myItems)
                 {
                     items.Add(item);
@@ -80,7 +78,7 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer.Feedback
             }
         }
 
-        private async Task LookupReportInfo(IEnumerable<FeedbackEntity> items)
+        private async Task LookupReportInfo(IEnumerable<UserFeedback> items)
         {
             foreach (var item in items)
             {

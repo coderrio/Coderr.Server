@@ -7,6 +7,8 @@ using Coderr.Server.Infrastructure.Boot;
 using Coderr.Server.Infrastructure.Configuration.Database;
 using Coderr.Server.Infrastructure.Messaging;
 using Coderr.Server.PluginApi.Config;
+using Coderr.Server.Web.Boot;
+using Coderr.Server.Web.Boot.Adapters;
 using Coderr.Server.Web2.Boot;
 using Coderr.Server.Web2.Boot.Adapters;
 using Microsoft.AspNetCore.Authentication;

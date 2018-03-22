@@ -12,7 +12,6 @@ namespace Coderr.Server.ReportAnalyzer.Tagging.Handlers
     /// <summary>
     ///     Scan through the error report to identify which libraries were used when the exception was thrown.
     /// </summary>
-    [Component(RegisterAsSelf = true)]
     public class IdentifyTagsFromIncident : IMessageHandler<ReportAddedToIncident>
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(IdentifyTagsFromIncident));

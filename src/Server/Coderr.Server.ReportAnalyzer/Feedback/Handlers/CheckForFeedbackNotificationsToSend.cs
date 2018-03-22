@@ -16,7 +16,6 @@ namespace Coderr.Server.ReportAnalyzer.Feedback.Handlers
     /// <summary>
     ///     Responsible of sending notifications when a new report have been analyzed.
     /// </summary>
-    [Component(RegisterAsSelf = true)]
     public class CheckForFeedbackNotificationsToSend :
         IMessageHandler<FeedbackAttachedToIncident>
     {

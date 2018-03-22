@@ -12,7 +12,6 @@ namespace Coderr.Server.ReportAnalyzer.Triggers.Handlers
     /// <summary>
     ///     Waits on the ReportAdded and then loads all notifications for the application that the report belongs to.
     /// </summary>
-    [Component(RegisterAsSelf = true)]
     public class TriggerFiltersOnReportAdded : IMessageHandler<ReportAddedToIncident>
     {
         private readonly ITriggerActionFactory _actionFactory;

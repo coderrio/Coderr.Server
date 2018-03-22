@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Coderr.Server.Api.Core.Incidents.Commands;
 using Coderr.Server.Api.Core.Messaging;
 using Coderr.Server.Api.Core.Messaging.Commands;
-using Coderr.Server.App.Core.Feedback;
+using Coderr.Server.Domain.Core.Feedback;
 using Coderr.Server.Domain.Core.Incidents;
 using DotNetCqs;
 using Griffin.Container;

@@ -110,7 +110,7 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer
             }
 
             var collections = new List<string>();
-            foreach (var context in report.ContextCollectionInfo)
+            foreach (var context in report.ContextCollections)
             {
                 var data = EntitySerializer.Serialize(context);
                 if (data.Length > MaxCollectionSize)

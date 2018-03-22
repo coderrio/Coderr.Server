@@ -85,6 +85,14 @@ namespace Coderr.Server.Domain.Core.Applications
         Task RemoveTeamMemberAsync(int applicationId, int userId);
 
         /// <summary>
+        ///     remove an invited member from an application
+        /// </summary>
+        /// <param name="applicationId">app</param>
+        /// <param name="invitedEmailAddress">address that the invitation was sent to</param>
+        /// <returns>task</returns>
+        Task RemoveTeamMemberAsync(int applicationId, string invitedEmailAddress);
+
+        /// <summary>
         ///     Update application member
         /// </summary>
         /// <param name="member">member</param>

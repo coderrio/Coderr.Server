@@ -15,7 +15,6 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer.Jobs
     /// <summary>
     ///     Migrates data to our new collection table.
     /// </summary>
-    [Component(RegisterAsSelf = true)]
     public class RemoveOldCollectionDataJob : IBackgroundJobAsync
     {
         private readonly Importer _importer;
@@ -36,7 +35,7 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer.Jobs
                 var reportIds = new List<int>();
                 using (var cmd = _unitOfWork.CreateDbCommand())
                 {
-                    cmd.CommandText = "SELECT TOP(10) Id, ContextInfo FROM ErrorReports WHERE ContextInfo != ''";
+                    cmd.CommandText = "SELECT TOP(10) Id, ContextInfo FROM ErrorReports WHERE cast([ContextInfo] as nvarchar(max)) != ''";
                     using (var reader = await cmd.ExecuteReaderAsync())
                     {
                         while (await reader.ReadAsync())
@@ -72,8 +71,6 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer.Jobs
                     }
                 }
             }
-
-            _unitOfWork.SaveChanges();
         }
     }
 }

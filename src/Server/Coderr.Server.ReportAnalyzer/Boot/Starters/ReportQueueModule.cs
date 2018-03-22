@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Reflection;
 using System.Security.Claims;
+using System.Threading;
+using System.Threading.Tasks;
 using codeRR.Client;
 using Coderr.Server.Infrastructure.Boot;
 using Coderr.Server.Infrastructure.Messaging;
@@ -25,6 +27,7 @@ namespace Coderr.Server.ReportAnalyzer.Boot.Starters
         private QueueListener _eventProcessor;
         private IMessageQueueProvider _messageQueueProvider;
         private QueueListener _reportListener;
+        private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
         public ReportQueueModule()
         {
@@ -85,6 +88,8 @@ namespace Coderr.Server.ReportAnalyzer.Boot.Starters
             };
             listener.ScopeCreated += (sender, args) =>
             {
+                args.Scope.ResolveDependency<ScopedPrincipal>().First().Principal = args.Principal;
+                
                 _logger.Debug(inboundQueueName + " Running " + args.Message.Body + ", Credentials: " +
                               args.Principal.ToFriendlyString());
             };
@@ -137,6 +142,22 @@ namespace Coderr.Server.ReportAnalyzer.Boot.Starters
                     args.Exception);
             };
             return invoker;
+        }
+
+        public void Start(StartContext context)
+        {
+            _reportListener.RunAsync(_cancellationTokenSource.Token).ContinueWith(HaveRun);
+            _eventProcessor.RunAsync(_cancellationTokenSource.Token).ContinueWith(HaveRun);
+        }
+
+        private void HaveRun(Task obj)
+        {
+            
+        }
+
+        public void Stop()
+        {
+            _cancellationTokenSource.Cancel();
         }
     }
 }

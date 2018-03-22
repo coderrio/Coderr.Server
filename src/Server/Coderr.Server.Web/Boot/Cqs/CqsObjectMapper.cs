@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Coderr.Server.Api;
+using Coderr.Server.Infrastructure.Messaging;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Coderr.Server.Web2.Boot.Cqs
 {
@@ -21,6 +23,13 @@ namespace Coderr.Server.Web2.Boot.Cqs
         private readonly Dictionary<string, Type> _cqsTypes =
             new Dictionary<string, Type>(StringComparer.OrdinalIgnoreCase);
 
+        private JsonSerializerSettings _jsonSerializerSettings = new JsonSerializerSettings
+        {
+            ContractResolver = new IncludeNonPublicMembersContractResolver(),
+            NullValueHandling = NullValueHandling.Ignore,
+            ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
+            Converters = new List<JsonConverter> {new StringEnumConverter()}
+        };
         public bool IsEmpty => _cqsTypes.Count == 0;
 
         /// <summary>
@@ -43,7 +52,7 @@ namespace Coderr.Server.Web2.Boot.Cqs
             if (string.IsNullOrEmpty(json))
                 json = "{}";
 
-            return JsonConvert.DeserializeObject(json, type);
+            return JsonConvert.DeserializeObject(json, type, _jsonSerializerSettings);
         }
 
         /// <summary>

@@ -72,7 +72,7 @@ namespace Coderr.Server.Domain.Core.ErrorReports
         /// <summary>
         ///     Context collection
         /// </summary>
-        public IReadOnlyList<ErrorReportContextCollection> ContextCollectionInfo
+        public IReadOnlyList<ErrorReportContextCollection> ContextCollections
         {
             get { return _collections; }
         }

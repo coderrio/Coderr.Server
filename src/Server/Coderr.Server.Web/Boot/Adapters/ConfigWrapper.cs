@@ -1,6 +1,6 @@
 ﻿using Coderr.Server.PluginApi.Config;
 
-namespace Coderr.Server.Web2.Boot.Adapters
+namespace Coderr.Server.Web.Boot.Adapters
 {
     public class ConfigWrapper<TConfigType> : IConfiguration<TConfigType>
         where TConfigType : IConfigurationSection, new()

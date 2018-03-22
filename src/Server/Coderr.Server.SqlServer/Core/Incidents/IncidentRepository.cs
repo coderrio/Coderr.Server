@@ -31,6 +31,7 @@ namespace Coderr.Server.SqlServer.Core.Incidents
                         UpdatedAtUtc = @UpdatedAtUtc,
                         Description = @Description,
                         Solution = @Solution,
+                        SolvedAtUtc = @solvedAt,
                         IsSolutionShared = @IsSolutionShared,
                         AssignedToId = @AssignedTo,
                         AssignedAtUtc = @AssignedAtUtc,
@@ -45,6 +46,7 @@ namespace Coderr.Server.SqlServer.Core.Incidents
                 cmd.AddParameter("State", (int)incident.State);
                 cmd.AddParameter("AssignedTo", incident.AssignedToId);
                 cmd.AddParameter("AssignedAtUtc", incident.AssignedAtUtc);
+                cmd.AddParameter("solvedAt", incident.SolvedAtUtc);
                 cmd.AddParameter("IgnoringReportsSinceUtc", incident.IgnoringReportsSinceUtc.ToDbNullable());
                 cmd.AddParameter("IgnoringRequestedBy", incident.IgnoringRequestedBy);
                 cmd.AddParameter("Solution",

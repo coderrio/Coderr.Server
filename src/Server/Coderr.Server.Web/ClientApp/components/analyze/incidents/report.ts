@@ -57,13 +57,13 @@ export default class AnalyzeReportComponent extends Vue {
         if (this.currentIndex < 0) {
             this.currentPage--;
             this.currentIndex = 0;
+            this.loadReports(this.incidentId, this.currentPage, false);
+        } else {
+            this.loadReport(this.reports[this.currentIndex].Id);
         }
-
-        this.loadReports(this.incidentId, this.currentPage, false);
     }
     
     nextReport() {
-        console.log('next2');
         this.currentIndex++;
         this.indexInTotalSet++;
         this.checkNavigationLinks();
@@ -164,7 +164,6 @@ export default class AnalyzeReportComponent extends Vue {
                         }
                     }
 
-                    this.totalCount = result.TotalCount;
                     this.checkNavigationLinks();
                 }
                 

@@ -11,7 +11,7 @@ using Griffin.Data.Mapper;
 namespace Coderr.Server.SqlServer.Core.Notifications
 {
     [ContainerService]
-    public class NotificationRepository : INotificationsRepository
+    public class NotificationRepository : INotificationsRepository, IUserNotificationsRepository
     {
         private readonly IAdoNetUnitOfWork _unitOfWork;
 

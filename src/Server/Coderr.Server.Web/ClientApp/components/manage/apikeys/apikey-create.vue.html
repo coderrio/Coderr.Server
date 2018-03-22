@@ -1,0 +1,68 @@
+<template>
+    <div class="mt-4">
+        <form @submit.prevent="saveKey">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>
+                        Create api key
+                    </h3>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">
+                            Settings
+                        </div>
+                        <div class="card-body">
+                            <table class="w-100">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            Name
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" v-model="forApplicationName" required="required" autofocus="autofocus" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">
+                            Allowed applications
+                        </div>
+                        <div class="card-body">
+                            <div v-for="item in availableApplications">
+                                <input type="checkbox" :id="'app' + item.id" :value="item.id" v-model="applications" />
+                                <label :for="'app' + item.id">
+                                    {{item.name}}
+                                </label>
+                            </div>
+                            <div class="mt-2">
+                                <em>Leave all check boxes unchecked to allow all applications.</em>
+                            </div>
+
+                            <hr />
+                            <em>You can use the <code>Coderr.Server.Api.Client</code> assembly to communicate using this key.</em>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-primary btn-block">Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</template>
+
+
+<style src="./apikey-create.css" />
+<script src="./apikey-create.ts"></script>

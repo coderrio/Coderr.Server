@@ -14,7 +14,6 @@ namespace Coderr.Server.ReportAnalyzer.Similarities.Handlers
     /// <summary>
     ///     Responsible of analyzing the reports Context Data to find similarities from all reports in an incident.
     /// </summary>
-    [Component(RegisterAsSelf = true)]
     public class UpdateSimilaritiesFromNewReport : IMessageHandler<ReportAddedToIncident>
     {
         private readonly AdapterRepository _adapterRepository = new AdapterRepository();
@@ -51,7 +50,6 @@ namespace Coderr.Server.ReportAnalyzer.Similarities.Handlers
             {
                 _logger.Debug("Finding for incident: " + e.Incident.Id);
                 var similaritiesReport = _similarityRepository.FindForIncident(e.Incident.Id);
-                var analyzer = new SimilarityAnalyzer(similaritiesReport);
 
                 step1 = sw2.ElapsedMilliseconds;
                 var isNew = false;
@@ -62,6 +60,7 @@ namespace Coderr.Server.ReportAnalyzer.Similarities.Handlers
                     isNew = true;
                 }
 
+                var analyzer = new SimilarityAnalyzer(similaritiesReport);
                 step2 = sw2.ElapsedMilliseconds;
                 analyzer.AddReport(e.Report, adapters);
 

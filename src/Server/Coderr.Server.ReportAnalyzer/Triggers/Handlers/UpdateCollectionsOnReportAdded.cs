@@ -11,7 +11,6 @@ namespace Coderr.Server.ReportAnalyzer.Triggers.Handlers
     /// <summary>
     ///     Responsible of creating context collection metadata for all reports that have been added to an incident.
     /// </summary>
-    [Component(RegisterAsSelf = true)]
     public class UpdateCollectionsOnReportAdded : IMessageHandler<ReportAddedToIncident>
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(UpdateCollectionsOnReportAdded));

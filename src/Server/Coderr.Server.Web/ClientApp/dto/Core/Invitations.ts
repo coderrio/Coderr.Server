@@ -15,3 +15,9 @@ export class InviteUser
     public EmailAddress: string;
     public Text: string;
 }
+export class DeleteInvitation
+{
+    public static TYPE_NAME: string = 'DeleteInvitation';
+    public ApplicationId: number;
+    public InvitedEmailAddress: string;
+}

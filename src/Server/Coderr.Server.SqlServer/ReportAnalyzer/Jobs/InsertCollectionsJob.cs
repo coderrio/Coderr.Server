@@ -15,7 +15,7 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer.Jobs
     /// <summary>
     ///     Takes inbound collections and do bulk insert on them
     /// </summary>
-    [Component(RegisterAsSelf = true)]
+    [ContainerService]
     public class InsertCollectionsJob : IBackgroundJobAsync
     {
         private readonly IAdoNetUnitOfWork _unitOfWork;
@@ -43,11 +43,10 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer.Jobs
                 if (!collections.Any())
                     break;
 
+                await _importer.Execute();
                 await DeleteImportedRows(collections);
                 _importer.Clear();
             }
-
-            _unitOfWork.SaveChanges();
         }
 
 

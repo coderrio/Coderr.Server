@@ -1,0 +1,20 @@
+<template>
+    <div class="CloseView">
+        <div class="row">
+            <div class="col">
+                <h2>Close incident</h2>
+                <div class="card">
+                    <div class="card-body rounded">
+                        <textarea class="form-control" v-model="solution" placeholder="How did you solve this error?" rows="10" id="solution" autofocus=""></textarea>
+                        <button class="btn btn-primary" v-on:click.prevent="close">Close incident</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</template>
+
+
+<style src="./close.css" />
+<script src="./close.ts"></script>

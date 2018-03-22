@@ -10,7 +10,6 @@ namespace Coderr.Server.App.Core.Notifications.EventHandlers
     /// <summary>
     ///     Will delete all reports for the given application
     /// </summary>
-    [Component(RegisterAsSelf = true)]
     public class ApplicationDeletedHandler : IMessageHandler<ApplicationDeleted>
     {
         private IAdoNetUnitOfWork _uow;

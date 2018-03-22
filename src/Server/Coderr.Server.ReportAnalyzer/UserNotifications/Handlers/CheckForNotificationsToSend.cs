@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Coderr.Server.Domain.Core.User;
 using Coderr.Server.Domain.Modules.UserNotifications;
 using Coderr.Server.Infrastructure.Configuration;
+using Coderr.Server.PluginApi.Config;
 using Coderr.Server.ReportAnalyzer.Abstractions.Incidents;
 using Coderr.Server.ReportAnalyzer.UserNotifications.Handlers.Tasks;
 using DotNetCqs;
@@ -27,11 +28,11 @@ namespace Coderr.Server.ReportAnalyzer.UserNotifications.Handlers
         /// <param name="notificationsRepository">To load notification configuration</param>
         /// <param name="userRepository">To load user info</param>
         public CheckForNotificationsToSend(IUserNotificationsRepository notificationsRepository,
-            IUserRepository userRepository, BaseConfiguration configuration)
+            IUserRepository userRepository, IConfiguration<BaseConfiguration> configuration)
         {
             _notificationsRepository = notificationsRepository;
             _userRepository = userRepository;
-            _configuration = configuration;
+            _configuration = configuration.Value;
         }
 
         /// <summary>

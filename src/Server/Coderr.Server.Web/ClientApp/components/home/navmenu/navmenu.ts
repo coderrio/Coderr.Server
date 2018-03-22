@@ -119,14 +119,25 @@ export default class NavMenuComponent extends Vue {
         if (this.$route.fullPath.indexOf('/onboarding/') !== -1) {
             this.onboarding = true;
         }
+    }
 
-
+    changeApplication(applicationId: number) {
+        console.log(applicationId);
+        if (this.$route.path.indexOf('/discover/') === 0) {
+            this.$router.push({ name: 'discoverForApplication', params: { applicationId: applicationId.toString() } });
+        } else if (this.$route.path.indexOf('/analyze') === 0) {
+            this.$router.push({ name: 'analyzeHome', params: { applicationId: applicationId.toString() } });
+        } else if (this.$route.path.indexOf("/deployment") === 0) {
+            this.$router.push({ name: 'deploymentHome', params: { applicationId: applicationId.toString() } });
+        } else if (this.$route.path.indexOf("/manage") === 0) {
+            this.$router.push({ name: 'manageApp', params: { applicationId: applicationId.toString() } });
+        }
 
     }
 
-    private askCallbacksForWhichMenu(route: Router.Route):string {
+    private askCallbacksForWhichMenu(route: Router.Route): string {
         var chosenMenu = "";
-        var ctx:IRouteNavigation = {
+        var ctx: IRouteNavigation = {
             routeName: <string>route.name,
             url: route.fullPath,
             setMenu: (menuName: string) => {
@@ -142,7 +153,7 @@ export default class NavMenuComponent extends Vue {
 
         return '';
     }
-   
+
     private onMenuChange(ctx: MessageContext) {
         var msg = <MenuApi.ChangeMenu>ctx.message.body;
         this.applyMenu(msg.menuName);
@@ -179,21 +190,22 @@ export default class NavMenuComponent extends Vue {
 
 
     private createAppMenuItem(applicationId: number, name: string): MenuApi.MenuItem {
-        const routeLocation: Router.Location =
-            { name: 'discoverForApplication', params: { 'applicationId': applicationId.toString() } };
-        const url = <string>this.$router.resolve(routeLocation).href;
+        if (!applicationId) {
+            throw new Error("Expected an applicationId.");
+        }
+
         const app: MenuApi.MenuItem =
-        {
-            title: name,
-            url: url,
-            tag: 'app:' + applicationId
-        };
+            {
+                title: name,
+                url: '',
+                tag: applicationId
+            };
         return app;
 
     }
     private getApplication(applicationId: number): MenuApi.MenuItem {
         for (var i = 0; i < this.myApplications.length; i++) {
-            if (this.myApplications[i].tag === `app:${applicationId}`) {
+            if (this.myApplications[i].tag === applicationId) {
                 return this.myApplications[i];
             }
         }

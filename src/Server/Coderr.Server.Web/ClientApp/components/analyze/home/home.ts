@@ -22,12 +22,12 @@ export default class AnalyzeHomeComponent extends Vue {
         }
         
 
-        var q3 = new FindIncidents();
-        q3.AssignedToId = 1;
-        AppRoot.Instance.apiClient.query<FindIncidentsResult>(q3)
+        AppRoot.Instance.incidentService.getMine()
             .then(result => {
-                if (result.Items.length > 0) {
-                    this.$router.push({ name: 'analyzeIncident', params: { incidentId: result.Items[0].Id.toString() } });
+                if (result.length > 0) {
+                    this.$router.push({ name: 'analyzeIncident', params: { incidentId: result[0].Id.toString() } });
+                } else {
+                    this.noIncidents = true;
                 }
             });
     }

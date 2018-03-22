@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Griffin.Container;
 
 namespace Coderr.Server.ReportAnalyzer.Tagging
@@ -10,23 +11,21 @@ namespace Coderr.Server.ReportAnalyzer.Tagging
     [ContainerService]
     public class IocIdentifierProvider : ITagIdentifierProvider
     {
-        private readonly IServiceLocator _serviceLocator;
+        private readonly ITagIdentifier[] _identifiers;
 
         /// <summary>
         ///     Creates a new instance of <see cref="IocIdentifierProvider" />.
         /// </summary>
-        /// <param name="serviceLocator">locator to use, typically a scoped one.</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public IocIdentifierProvider(IServiceLocator serviceLocator)
+        public IocIdentifierProvider(IEnumerable<ITagIdentifier> identifiers)
         {
-            if (serviceLocator == null) throw new ArgumentNullException("serviceLocator");
-            _serviceLocator = serviceLocator;
+            _identifiers = identifiers.ToArray();
         }
 
         /// <inheritdoc />
         public IEnumerable<ITagIdentifier> GetIdentifiers(TagIdentifierContext context)
         {
-            return _serviceLocator.ResolveAll<ITagIdentifier>();
+            return _identifiers;
         }
     }
 }

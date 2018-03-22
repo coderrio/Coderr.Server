@@ -14,7 +14,7 @@ namespace Coderr.Server.SqlServer.Core.Invitations
             Property(x => x.EmailToInvitedUser).ColumnName("Email");
             Property(x => x.Invitations)
                 .ToColumnValue(EntitySerializer.Serialize)
-                .ToPropertyValue(x => EntitySerializer.Deserialize<IList<ApplicationInvitation>>((string) x));
+                .ToPropertyValue(x => EntitySerializer.Deserialize<List<ApplicationInvitation>>((string) x));
         }
     }
 }

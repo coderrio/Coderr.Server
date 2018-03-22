@@ -29,7 +29,7 @@ namespace Coderr.Server.Web2.Controllers
         public FeedbackReceiverController(IMessageQueueProvider queueProvider, IApplicationRepository applicationRepository)
         {
             _applicationRepository = applicationRepository;
-            _queue = queueProvider.Open("Feedback");
+            _queue = queueProvider.Open("ErrorReports");
         }
 
         [HttpPost, Route("receiver/report/{appKey}/feedback")]

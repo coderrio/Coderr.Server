@@ -19,9 +19,21 @@ export interface IncidentAssigned {
     incidentId: number;
     userId: number;
 }
+export interface IncidentClosed {
+    incidentId: number;
+    userId: number;
+}
+
+export interface IncidentIgnored {
+    incidentId: number;
+    userId: number;
+}
+
 
 export class IncidentTopcis {
     static readonly Assigned = "/incidents/assigned";
+    static readonly Closed = "/incidents/closed";
+    static readonly Ignored = "/incidents/ignored";
 }
 
 export class IncidentService {
@@ -36,6 +48,14 @@ export class IncidentService {
         if (!apiClient) {
             throw new Error("apiClient is required.");
         }
+    }
+
+    async find(applicationId?: number): Promise<FindIncidentsResult> {
+        var q = new FindIncidents();
+        if (applicationId) {
+            q.ApplicationIds.push(applicationId);
+        }
+        return await AppRoot.Instance.apiClient.query<FindIncidentsResult>(q);
     }
 
     async assignToMe(incidentId: number) {
@@ -144,6 +164,19 @@ export class IncidentService {
         closeCmd.UserId = current.id;
         await this.apiClient.command(closeCmd);
 
+        for (var i = 0; i < this.myIncidents.length; i++) {
+            if (this.myIncidents[i].Id === incidentId) {
+                this.myIncidents.splice(i, 1);
+                break;
+            }
+        }
+
+        var msg: IncidentClosed = {
+            incidentId: incidentId,
+            userId: current.id
+        };
+        PubSubService.Instance.publish(IncidentTopcis.Closed, msg);
+
         const q = new GetIncidentForClosePage();
         q.IncidentId = incidentId;
         var result = await this.apiClient.query<GetIncidentForClosePageResult>(q);
@@ -216,18 +249,24 @@ export class IncidentService {
     }
 
 
-    async getMine(): Promise<FindIncidentsResultItem[]> {
+    async getMine(applicationId?: number): Promise<FindIncidentsResultItem[]> {
         if (this.myIncidents.length > 0 && this.haveFetchedMine) {
-            console.log('returning cached mine.');
+            if (applicationId) {
+                return this.myIncidents.filter(x => x.ApplicationId === applicationId.toString());
+            }
             return this.myIncidents;
         }
             
 
-        console.log('loading mine.');
         this.haveFetchedMine = true;
         var current = await AppRoot.Instance.loadCurrentUser();
         var query = new FindIncidents();
         query.AssignedToId = current.id;
+        query.IsClosed = false;
+        query.IsAssigned = true;
+        if (applicationId) {
+            query.ApplicationIds = [applicationId];
+        }
 
         var result = await this.apiClient.query<FindIncidentsResult>(query);
         result.Items.forEach(x => {
@@ -268,6 +307,20 @@ export class IncidentService {
         cmd.IncidentId = incidentId;
         cmd.UserId = current.id;
         await AppRoot.Instance.apiClient.command(cmd);
+
+        
+        for (var i = 0; i < this.myIncidents.length; i++) {
+            if (this.myIncidents[i].Id === incidentId) {
+                this.myIncidents.splice(i, 1);
+                break;
+            }
+        }
+
+        var msg: IncidentIgnored = {
+            incidentId: incidentId,
+            userId: current.id
+        };
+        PubSubService.Instance.publish(IncidentTopcis.Ignored, msg);
 
         var item = this.getFromCache(incidentId);
         if (item) {

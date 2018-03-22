@@ -1,0 +1,55 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net452</TargetFramework>
+    <AssemblyName>codeRR.Server.Web.Tests</AssemblyName>
+    <RootNamespace>codeRR.Server.Web.Tests</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Coderr.Client" Version="1.0.18" />
+    <PackageReference Include="Selenium.Support" Version="3.10.0" />
+    <PackageReference Include="Selenium.WebDriver" Version="3.10.0" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="2.36.0" />
+    <PackageReference Include="xunit" Version="2.3.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Coderr.Server.App\codeRR.Server.App.csproj" />
+    <ProjectReference Include="..\Coderr.Server.SqlServer.Tests\codeRR.Server.SqlServer.Tests.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Web" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="applicationhost.config">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>applicationhost.tt</DependentUpon>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="applicationhost.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>applicationhost.config</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TransformOnBuild>True</TransformOnBuild>
+    <TransformOutOfDateOnly>True</TransformOutOfDateOnly>
+  </PropertyGroup>
+  <!-- Since the default targets file (Sdk.targets in the .NET Core SDK) is now imported implicitly at the very end of the project, 
+       so you can't import the text templating targets after the default targets. This causes the BuildDependsOn variable, which is modified by the T4 targets, 
+       to be overwritten, so the TransformAll target doesn’t run before the Build target. 
+       Note that it will cause a MSBuild warning in the build output (MSB4011) because Sdk.targets is imported twice; you can safely ignore this warning. -->
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TextTemplating\Microsoft.TextTemplating.targets" />
+
+</Project>

@@ -38,6 +38,8 @@
     "localforage": "http://registry.npmjs.org/localforage/-/localforage-1.5.7.tgz",
     "moment": "https://registry.npmjs.org/moment/-/moment-2.20.1.tgz",
     "simplemde": "http://registry.npmjs.org/simplemde/-/simplemde-1.11.2.tgz",
-    "toastr": "http://registry.npmjs.org/toastr/-/toastr-2.1.4.tgz"
+    "toastr": "http://registry.npmjs.org/toastr/-/toastr-2.1.4.tgz",
+    "vee-validate": "^2.0.6",
+    "vuelidate": "^0.6.2"
   }
 }

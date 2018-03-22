@@ -10,7 +10,6 @@ namespace Coderr.Server.App.Core.ApiKeys.Events
     ///     Will either delete an entire apikey (if the only association is with the given application) or just remove the
     ///     application mapping.
     /// </summary>
-    [Component(RegisterAsSelf = true)]
     public class ApplicationDeletedHandler : IMessageHandler<ApplicationDeleted>
     {
         private readonly IApiKeyRepository _repository;

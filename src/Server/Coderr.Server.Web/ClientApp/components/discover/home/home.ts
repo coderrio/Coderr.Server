@@ -79,12 +79,10 @@ export default class DiscoverComponent extends Vue {
                 this.followers = result.StatSummary.Followers;
                 this.displayChartForApplication(result);
             });
-        var q3 = new FindIncidents();
-        q3.AssignedToId = 1;
-        q3.ApplicationIds = [applicationId];
-        AppRoot.Instance.apiClient.query<FindIncidentsResult>(q3)
+
+        AppRoot.Instance.incidentService.getMine(applicationId)
             .then(result => {
-                this.myIncidents = result.Items;
+                this.myIncidents = result;
             });
     }
 
@@ -100,11 +98,9 @@ export default class DiscoverComponent extends Vue {
                 this.displayChart(result);
             });
 
-        var q3 = new FindIncidents();
-        q3.AssignedToId = 1;
-        AppRoot.Instance.apiClient.query<FindIncidentsResult>(q3)
+        AppRoot.Instance.incidentService.getMine()
             .then(result => {
-                this.myIncidents = result.Items;
+                this.myIncidents = result;
             });
     }
 

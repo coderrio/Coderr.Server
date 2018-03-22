@@ -13,7 +13,6 @@ namespace Coderr.Server.SqlServer.Core.ApiKeys.Queries
     /// <summary>
     ///     Handler for <see cref="GetApiKey" />.
     /// </summary>
-    [Component(RegisterAsSelf = true)]
     public class GetApiKeyHandler : IQueryHandler<GetApiKey, GetApiKeyResult>
     {
         private static readonly MirrorMapper<GetApiKeyResultApplication> _appMapping =

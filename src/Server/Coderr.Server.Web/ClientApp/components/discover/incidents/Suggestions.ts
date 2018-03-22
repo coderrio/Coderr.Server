@@ -19,6 +19,7 @@ export default class SuggestionsComponent extends Vue {
 
     applicationId: number | null = 0;
     suggestions: ISuggestion[] = [];
+    showEmpty = false;
 
     created() {
         if (this.$route.params.applicationId) {
@@ -48,11 +49,12 @@ export default class SuggestionsComponent extends Vue {
                         applicationId: item.ApplicationId,
                         applicationName: item.ApplicationName,
                         incidentName: item.Name,
-                        reason: 'Oldest incident (' + new Date(item.CreatedAtUtc).toLocaleDateString() + ")"
+                        reason: 'Oldest incident (' + item.CreatedAtUtc.toLocaleDateString() + ")"
                     };
 
                     this.suggestions.push(suggestion);
                 }
+                this.showEmpty = x.Items.length === 0;
             });
 
         query.SortAscending = true;

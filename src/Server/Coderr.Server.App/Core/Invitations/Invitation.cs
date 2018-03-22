@@ -8,6 +8,8 @@ namespace Coderr.Server.App.Core.Invitations
     /// </summary>
     public class Invitation
     {
+        private List<ApplicationInvitation> _invitations = new List<ApplicationInvitation>();
+
         /// <summary>
         ///     Creates a new instance of <see cref="Invitation" />.
         /// </summary>
@@ -23,7 +25,6 @@ namespace Coderr.Server.App.Core.Invitations
             InvitedBy = userNameForInviter;
             InvitationKey = Guid.NewGuid().ToString("N");
             CreatedAtUtc = DateTime.UtcNow;
-            Invitations = new List<ApplicationInvitation>();
         }
 
         /// <summary>
@@ -31,7 +32,6 @@ namespace Coderr.Server.App.Core.Invitations
         /// </summary>
         protected Invitation()
         {
-            Invitations = new List<ApplicationInvitation>();
         }
 
         /// <summary>
@@ -62,7 +62,11 @@ namespace Coderr.Server.App.Core.Invitations
         ///         A new item is created for every application that the user is invited to.
         ///     </para>
         /// </remarks>
-        public IList<ApplicationInvitation> Invitations { get; private set; }
+        public IEnumerable<ApplicationInvitation> Invitations
+        {
+            get { return _invitations; }
+            private set { _invitations = new List<ApplicationInvitation>(value); }
+        }
 
         /// <summary>
         ///     Username of the user that sent the invitation
@@ -81,12 +85,18 @@ namespace Coderr.Server.App.Core.Invitations
             if (invitedByUser == null) throw new ArgumentNullException("invitedByUser");
             if (applicationId <= 0) throw new ArgumentOutOfRangeException("applicationId");
 
-            Invitations.Add(new ApplicationInvitation
+            _invitations.Add(new ApplicationInvitation
             {
                 ApplicationId = applicationId,
                 InvitedBy = invitedByUser,
                 InvitedAtUtc = DateTime.UtcNow
             });
+        }
+
+        public void Remove(int applicationId)
+        {
+            if (applicationId <= 0) throw new ArgumentOutOfRangeException(nameof(applicationId));
+            _invitations.RemoveAll(x => x.ApplicationId == applicationId);
         }
     }
 }

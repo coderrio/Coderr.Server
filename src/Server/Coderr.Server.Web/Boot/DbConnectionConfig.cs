@@ -1,10 +1,11 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
 using Coderr.Server.Infrastructure.Boot;
+using Coderr.Server.SqlServer;
 using Griffin.Data;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Coderr.Server.Web2.Boot
+namespace Coderr.Server.Web.Boot
 {
     public class DbConnectionConfig : ISystemModule
     {
@@ -16,7 +17,8 @@ namespace Coderr.Server.Web2.Boot
             context.Services.AddScoped<IAdoNetUnitOfWork>(x =>
             {
                 var con = OpenConnection();
-                return new AdoNetUnitOfWork(con, true);
+                var transaction = con.BeginTransaction();
+                return new UnitOfWorkWithTransaction((SqlTransaction)transaction);
             });
         }
 

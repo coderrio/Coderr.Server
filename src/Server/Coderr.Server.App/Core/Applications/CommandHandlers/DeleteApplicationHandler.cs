@@ -11,7 +11,6 @@ namespace Coderr.Server.App.Core.Applications.CommandHandlers
     /// <summary>
     ///     Handler for <see cref="DeleteApplication" />.
     /// </summary>
-    [Component(RegisterAsSelf = true)]
     public class DeleteApplicationHandler : IMessageHandler<DeleteApplication>
     {
         private readonly IApplicationRepository _repository;

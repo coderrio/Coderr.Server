@@ -18,25 +18,25 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
     /// <summary>
     ///     Runs analysis for the report.
     /// </summary>
-    [Component(Lifetime = Lifetime.Scoped)]
-    public class ReportAnalyzer
+    [ContainerService]
+    public class ReportAnalyzer : IReportAnalyzer
     {
-        private readonly HashCodeGenerator _hashCodeGenerator;
+        private readonly IHashCodeGenerator _hashCodeGenerator;
         private readonly ILog _logger = LogManager.GetLogger(typeof(ReportAnalyzer));
-        private readonly IMessageBus _messageBus;
         private readonly IAnalyticsRepository _repository;
 
         /// <summary>
         ///     Creates a new instance of <see cref="ReportAnalyzer" />.
         /// </summary>
         /// <param name="hashCodeGenerator">Used to identify is this is a new unique exception</param>
-        /// <param name="messageBus">to publish the <see cref="Coderr.Server.ReportAnalyzer.Abstractions.Incidents.ReportAddedToIncident" /> event</param>
+        /// <param name="messageBus">
+        ///     to publish the
+        ///     <see cref="Coderr.Server.ReportAnalyzer.Abstractions.Incidents.ReportAddedToIncident" /> event
+        /// </param>
         /// <param name="repository">repos</param>
-        public ReportAnalyzer(HashCodeGenerator hashCodeGenerator, IMessageBus messageBus,
-            IAnalyticsRepository repository)
+        public ReportAnalyzer(IHashCodeGenerator hashCodeGenerator, IAnalyticsRepository repository)
         {
             _hashCodeGenerator = hashCodeGenerator;
-            _messageBus = messageBus;
             _repository = repository;
         }
 
@@ -93,6 +93,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
                     _repository.UpdateIncident(incident);
                     return;
                 }
+
                 if (incident.IsClosed)
                 {
                     isReOpened = true;
@@ -145,6 +146,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
                     {
                         exception = exception.InnerException;
                     }
+
                     var incident = new IncidentBeingAnalyzed(entity, exception);
                     return incident;
                 }
@@ -198,7 +200,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
             {
                 ApplicationId = report.ApplicationId,
                 ContextCollections =
-                    report.ContextCollectionInfo.Select(x => new ContextCollectionDTO(x.Name, x.Properties)).ToArray(),
+                    report.ContextCollections.Select(x => new ContextCollectionDTO(x.Name, x.Properties)).ToArray(),
                 CreatedAtUtc = report.CreatedAtUtc,
                 Id = report.Id,
                 IncidentId = report.IncidentId,

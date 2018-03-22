@@ -1,56 +1,62 @@
 <template>
     <div class="mt-4">
         <div class="row">
-            <div class="col-lg-8">
+            <div class="col-md-12">
+                <h3>
+                    Api key for [{{forApplicationName}}]
+                    <router-link :to="{ name: 'editApiKey', params: { applicationId: applicationId, apiKey: apiKeyId }}"><i class="fa fa-edit"></i></router-link>
+                </h3>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
                 <div class="card">
-                    <div class="card-header">Api keys</div>
+                    <div class="card-header">
+                        Settings
+                    </div>
                     <div class="card-body">
-                        <em>Partitions are used to prioritize incidents based in operational aspects that are important to you.</em>
                         <table class="table">
-                            <thead>
-                            <tr>
-                                <th>Created for</th>
-                                <th>Key</th>
-                                <th>&nbsp;</th>
-                            </tr>
-                            </thead>
                             <tbody>
-                                <tr v-for="key in keys">
+                                <tr>
                                     <td>
-                                        {{key.ApplicationName}}
+                                        ApiKey
                                     </td>
                                     <td>
-                                        {{key.ApiKey}}
+                                        {{key}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        SharedSecret
                                     </td>
                                     <td>
-                                        <router-link to="{name: 'manageAppKey', params: {applicationId: applicationId, apiKeyId: key.Id}}"><i class="fa fa-edit"></i></router-link>
-                                        <router-link to="{name: 'deleteAppKey', params: {applicationId: applicationId, apiKeyId: key.Id}}"><i class="fa fa-trash"></i></router-link>
+                                        {{sharedSecret}}
                                     </td>
                                 </tr>
                             </tbody>
-                            
                         </table>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4">
+            <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">Pending invites</div>
+                    <div class="card-header">
+                        Allowed applications
+                    </div>
                     <div class="card-body">
-                        <table class="table table-borderless" v-if="invites.length > 0">
-                            <tr v-for="member in invites">
-                                <td>
-                                    {{member.EmailAddress}}
-                                </td>
-                            </tr>
-                        </table>
-                        <div v-if="invites.length == 0">
-                            <em>(No pending invites)</em>
+                        
+                        <ul>
+                            <li v-for="item in applications">
+                                {{item.ApplicationName}}
+                            </li>
+                        </ul>
+                        <div class="mt-2">
+                            <em>The api key is allowed to modify the following applications. (an empty list = all applications)</em>
                         </div>
                         <hr />
-                        <h4>Send invite</h4>
-                        <input type="email" class="form-control" name="inviteEmail" placeholder="Email address" style="display: inline; width: auto;" />
-                        <input type="submit" value="Invite member" class="btn btn-primary" />
+                        <em>You can use the <code>Coderr.Server.Api.Client</code> assembly to communicate using this key.</em>
+
                     </div>
                 </div>
             </div>

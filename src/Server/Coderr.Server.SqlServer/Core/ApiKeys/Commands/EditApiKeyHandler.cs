@@ -6,7 +6,6 @@ using Griffin.Data;
 
 namespace Coderr.Server.SqlServer.Core.ApiKeys.Commands
 {
-    [Component(RegisterAsSelf = true)]
     public class EditApiKeyHandler : IMessageHandler<EditApiKey>
     {
         private readonly IAdoNetUnitOfWork _unitOfWork;

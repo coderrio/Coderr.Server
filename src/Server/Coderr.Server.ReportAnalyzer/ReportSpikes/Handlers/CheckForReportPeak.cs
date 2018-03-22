@@ -7,6 +7,7 @@ using Coderr.Server.Api.Core.Messaging.Commands;
 using Coderr.Server.Domain.Modules.ReportSpikes;
 using Coderr.Server.Domain.Modules.UserNotifications;
 using Coderr.Server.Infrastructure.Configuration;
+using Coderr.Server.PluginApi.Config;
 using Coderr.Server.ReportAnalyzer.Abstractions.Incidents;
 using DotNetCqs;
 using Griffin.Container;
@@ -29,11 +30,11 @@ namespace Coderr.Server.ReportAnalyzer.ReportSpikes.Handlers
         /// <param name="repository">To check if spikes should be analyzed</param>
         /// <param name="spikeRepository">store/fetch information of current spikes.</param>
         /// <param name="baseConfiguration"></param>
-        public CheckForReportPeak(IUserNotificationsRepository repository, IReportSpikeRepository spikeRepository, BaseConfiguration baseConfiguration)
+        public CheckForReportPeak(IUserNotificationsRepository repository, IReportSpikeRepository spikeRepository, IConfiguration<BaseConfiguration> baseConfiguration)
         {
             _repository = repository;
             _spikeRepository = spikeRepository;
-            _baseConfiguration = baseConfiguration;
+            _baseConfiguration = baseConfiguration.Value;
         }
 
         /// <summary>

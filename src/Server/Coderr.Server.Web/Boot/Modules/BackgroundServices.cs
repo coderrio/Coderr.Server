@@ -55,7 +55,6 @@ namespace Coderr.Server.Web2.Boot.Modules
 
         private void OnServiceFailed(object sender, ApplicationServiceFailedEventArgs e)
         {
-            throw new NotImplementedException();
         }
     }
 }

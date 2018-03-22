@@ -4,7 +4,9 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import moment from "moment";
 import { AppRoot } from "./services/AppRoot"
+import VeeValidate from 'vee-validate';
 
+Vue.use(VeeValidate);
 Vue.use(VueRouter);
 
 Vue.filter("ago",
@@ -62,6 +64,10 @@ const routes = [
                 component: require("./components/discover/incidents/incident.vue.html")
             },
             {
+                name: "configureApplication",
+                path: "application/:applicationId/configuration",
+                component: require("./components/discover/application/configure.vue.html")
+            }, {
                 name: "discoverApplication",
                 path: "application/:applicationId/",
                 component: require("./components/discover/incidents/incident.vue.html")
@@ -108,6 +114,11 @@ const routes = [
                 component: require("./components/analyze/incidents/origins.vue.html")
             },
             {
+                name: "closeIncident",
+                path: "incident/:incidentId/close/",
+                component: require("./components/analyze/incidents/close.vue.html")
+            },
+            {
                 name: "analyzeFeedback",
                 path: "incident/:incidentId/feedback/",
                 component: require("./components/analyze/incidents/feedback.vue.html")
@@ -139,7 +150,12 @@ const routes = [
                 path: ":applicationId/team/",
                 component: require("./components/manage/team/team.vue.html")
             },
-        {
+            {
+                name: "managePartitions",
+                path: ":applicationId/partitions/",
+                component: require("./components/manage/partitions/partition.vue.html")
+            },
+            {
                 name: "manageApiKeys",
                 path: ":applicationId/apikeys/",
                 component: require("./components/manage/apikeys/apikeys.vue.html")
@@ -149,6 +165,16 @@ const routes = [
                 path: ":applicationId/apikeys/:apiKey",
                 component: require("./components/manage/apikeys/apikey.vue.html")
             },
+            {
+                name: "editApiKey",
+                path: ":applicationId/apikeys/:apiKey/edit",
+                component: require("./components/manage/apikeys/apikey-edit.vue.html")
+            },
+            {
+                name: "createApiKey",
+                path: ":applicationId/apikeys/create",
+                component: require("./components/manage/apikeys/apikey-create.vue.html")
+            }
         ]
     }
 ];
@@ -156,7 +182,6 @@ const routes = [
 var ourVue: Vue;
 AppRoot.Instance.loadCurrentUser()
     .then(user => {
-        console.log("got user", user);
         AppRoot.Instance.currentUser = user;
         ourVue = new Vue({
             el: "#app-root",

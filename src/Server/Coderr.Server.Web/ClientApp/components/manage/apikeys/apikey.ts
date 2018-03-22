@@ -1,7 +1,6 @@
 import { AppRoot } from "../../../services/AppRoot";
 import {
     GetApiKey, GetApiKeyResult, GetApiKeyResultApplication,
-    ListApiKeys, ListApiKeysResult, ListApiKeysResultItem
 } from "../../../dto/Core/ApiKeys";
 import { GetApplicationTeam, GetApplicationTeamResult, GetApplicationTeamResultInvitation, GetApplicationTeamMember } from "../../../dto/Core/Applications";
 import Vue from "vue";
@@ -9,20 +8,36 @@ import { Component } from "vue-property-decorator";
 
 
 @Component
-export default class ManageHomeComponent extends Vue {
+export default class ManageApiKeyComponent extends Vue {
+    apiKeyId: number = 0;
     applicationId: number = 0;
-    applicationName: string = "";
 
-    keys: ListApiKeysResultItem[] = [];
+    key: string = '';
+    sharedSecret: string = '';
+    
+    applications: GetApiKeyResultApplication[] = [];
+    forApplicationName: string = 'n/a';
 
     created() {
-        var appIdStr = this.$route.params.applicationId;
-        this.applicationId = parseInt(appIdStr, 10);
+        this.applicationId = parseInt(this.$route.params.applicationId, 10);
 
-        var q = new ListApiKeys();
-        AppRoot.Instance.apiClient.query<ListApiKeysResult>(q)
+        var q = new GetApiKey();
+        var value = this.$route.params.apiKey;
+        if (isNaN(<any>value)) {
+            q.ApiKey = value;
+        } else {
+            q.Id = parseInt(value, 10);
+        }
+
+        AppRoot.Instance.apiClient.query<GetApiKeyResult>(q)
             .then(x => {
-                this.keys = x.Keys;
+                this.apiKeyId = x.Id;
+                
+                this.applications = x.AllowedApplications;
+                this.forApplicationName = x.ApplicationName;
+
+                this.key = x.GeneratedKey;
+                this.sharedSecret = x.SharedSecret;
             });
 
     }

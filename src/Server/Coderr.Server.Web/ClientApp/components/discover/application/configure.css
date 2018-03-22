@@ -1,0 +1,73 @@
+.tags button {
+    margin-right: 5px;
+}
+
+.more {
+    display: none;
+}
+
+
+.card .card-body ul {
+    padding-left: 10px;
+}
+
+
+.coderr-chart {
+    margin-right: 40px;
+}
+
+    .coderr-chart .legend {
+        text-align: center;
+    }
+
+        .coderr-chart .legend > div {
+            display: inline-block;
+            padding-right: 20px;
+        }
+
+    .coderr-chart .ct-line {
+        stroke-width: 2px;
+    }
+
+    .coderr-chart .ct-point {
+        stroke-width: 6px;
+    }
+
+    .coderr-chart .legend .ct-point {
+        stroke-width: 10px;
+    }
+
+    .coderr-chart .ct-series-a .ct-line, .coderr-chart .ct-series-a .ct-point {
+        stroke: rgb(0, 148, 218);
+    }
+
+    .coderr-chart .ct-series-b .ct-line, .coderr-chart .ct-series-b .ct-point {
+        stroke: #2f4f4f;
+    }
+
+    .coderr-chart .ct-series-c .ct-line, .coderr-chart .ct-series-c .ct-point {
+        stroke: #DCE12E !important;
+    }
+
+    .coderr-chart .ct-series-d .ct-line, .coderr-chart .ct-series-d .ct-point {
+        stroke: #C28247 !important;
+    }
+
+    .coderr-chart .ct-series-e .ct-line, .coderr-chart .ct-series-e .ct-point {
+        stroke: #B82B19 !important;
+    }
+
+    .coderr-chart .ct-series-f .ct-line, .coderr-chart .ct-series-f .ct-point {
+        stroke: #1EC2A3 !important;
+    }
+
+.ct-label.ct-label.ct-horizontal {
+    position: relative;
+    justify-content: flex-end;
+    text-align: right;
+    transform: translate(100%, 40%) rotate(20deg);
+}
+
+svg.ct-chart-line, svg.ct-chart-line g.ct-labels, svg.ct-chart-line g.ct-labels span.ct-label {
+    overflow: visible;
+}

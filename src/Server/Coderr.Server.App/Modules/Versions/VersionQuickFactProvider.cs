@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Coderr.Server.Api.Core.Incidents.Queries;
+using Coderr.Server.Domain.Modules.ApplicationVersions;
 using Coderr.Server.PluginApi.Incidents;
 using Griffin.Container;
 
@@ -10,9 +11,9 @@ namespace Coderr.Server.App.Modules.Versions
     [ContainerService]
     class VersionQuickFactProvider : IQuickfactProvider
     {
-        private IVersionRepository _repository;
+        private IApplicationVersionRepository _repository;
 
-        public VersionQuickFactProvider(IVersionRepository repository)
+        public VersionQuickFactProvider(IApplicationVersionRepository repository)
         {
             _repository = repository;
         }

@@ -1,6 +1,6 @@
 import * as MenuApi from "../../services/menu/MenuApi";
 import { AppRoot } from "../../services/AppRoot";
-import { IncidentTopcis, IncidentAssigned } from "../../services/incidents/IncidentService";
+import { IncidentTopcis, IncidentAssigned, IncidentClosed, IncidentIgnored } from "../../services/incidents/IncidentService";
 import { PubSubService } from "../../services/PubSub";
 import Vue from 'vue';
 import { Component, Watch } from 'vue-property-decorator';
@@ -29,7 +29,13 @@ export default class AnalyzeMenuComponent extends Vue {
             return;
         }
 
-        var incidentId = parseInt(value);
+        var incidentId = 0;
+        if (!value) {
+            incidentId = <number>this.myIncidents[0].tag;
+        } else {
+            incidentId = parseInt(value, 10);
+        }
+        
         this.updateIncidentMenu(incidentId);
     }
 
@@ -42,18 +48,26 @@ export default class AnalyzeMenuComponent extends Vue {
                     this.myIncidents.push(item);
                 });
         });
+        PubSubService.Instance.subscribe(IncidentTopcis.Closed, x => {
+            var msg = <IncidentClosed>x.message.body;
+            this.removeIncident(msg.incidentId);
+        });
+        PubSubService.Instance.subscribe(IncidentTopcis.Ignored, x => {
+            var msg = <IncidentIgnored>x.message.body;
+            this.removeIncident(msg.incidentId);
+        });
         if (this.$route.params.incidentId) {
             this.currentIncidentId = parseInt(this.$route.params.incidentId, 10);
-            console.log('menu incident', this.currentIncidentId);
         }
 
         this.myIncidentsPromise = new Promise((resolve, reject) => {
-            console.log('load inciudent for menu');
             AppRoot.Instance.incidentService.getMine()
                 .then(mine => {
-                    console.log('Got mine', mine);
                     if (mine.length === 0) {
-                        //TODO: Navigate to screenshot.
+                        this.currentIncidentName = '(choose incident)';
+                        this.currentIncidentId = 0;
+                        resolve();
+                        return;
                     }
 
                     mine.forEach(myIncident => {
@@ -68,7 +82,7 @@ export default class AnalyzeMenuComponent extends Vue {
                         return;
                     }
 
-                    this.updateIncidentMenu(<number>this.currentIncidentId);
+                    this.updateIncidentMenu(this.currentIncidentId);
                     resolve();
                 });
         });
@@ -79,6 +93,7 @@ export default class AnalyzeMenuComponent extends Vue {
         if (!incidentId) {
             throw new Error('Expected an incidentId, got: ' + incidentId);
         }
+        console.log('navigate to: ' + incidentId);
 
         this.myIncidentsPromise
             .then(x => {
@@ -96,12 +111,13 @@ export default class AnalyzeMenuComponent extends Vue {
         var mnuItem: MenuApi.MenuItem = {
             title: title,
             url: route,
+            tag: incidentId
         };
         return mnuItem;
     }
 
     private async updateIncidentMenu(incidentId: number): Promise<null> {
-        console.log('requesting incident menu update')
+        console.log('requesting incident menu update=> ', incidentId)
         await this.myIncidentsPromise;
         let incident = await this.getIncident(incidentId);
         this.currentIncidentId = incidentId;
@@ -110,9 +126,29 @@ export default class AnalyzeMenuComponent extends Vue {
             title = title.substr(0, 15) + '[...]';
         }
         this.currentIncidentName = title;
+
+        // We've switched incident and need to update the URL
+        if (this.$route.params.incidentId !== incident.tag.toString()) {
+            this.$router.push({ name: 'analyzeIncident', params: { 'incidentId': incident.tag.toString() } });
+        }
+
         return null;
     }
 
+    private removeIncident(incidentId: number) {
+        if (!incidentId) {
+            throw new Error("We do not own " + incidentId);
+        }
+
+        for (var i = 0; i < this.myIncidents.length; i++) {
+            if (this.myIncidents[i].tag === incidentId) {
+                this.$delete(this.myIncidents, i);
+                //this.myIncidents.splice(i, 1);
+                break;
+            }
+        }
+        console.log('new list without ' + incidentId, this.myIncidents);
+    }
 
     private async getIncident(incidentId: number): Promise<MenuApi.MenuItem> {
         for (var i = 0; i < this.myIncidents.length; i++) {
@@ -124,7 +160,6 @@ export default class AnalyzeMenuComponent extends Vue {
 
         // Can happen when we just assigned a new incident to ourselves.
         var allMine = await AppRoot.Instance.incidentService.getMine();
-        console.log('checking items from service', allMine);
         var foundItem: MenuApi.MenuItem = null;
         allMine.forEach(myIncident => {
             if (myIncident.Id === incidentId) {

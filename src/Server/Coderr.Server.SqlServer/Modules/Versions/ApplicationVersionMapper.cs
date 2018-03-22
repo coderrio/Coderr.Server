@@ -1,4 +1,5 @@
 ﻿using Coderr.Server.App.Modules.Versions;
+using Coderr.Server.Domain.Modules.ApplicationVersions;
 using Griffin.Data.Mapper;
 
 namespace Coderr.Server.SqlServer.Modules.Versions

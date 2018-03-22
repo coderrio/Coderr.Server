@@ -21,5 +21,7 @@ namespace Coderr.Server.Api.Core.Applications.Queries
         ///     Account name
         /// </summary>
         public string UserName { get; set; }
+
+        public bool IsAdmin { get; set; }
     }
 }

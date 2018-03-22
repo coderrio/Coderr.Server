@@ -15,7 +15,8 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer
                 .ToPropertyValue(EntitySerializer.Deserialize<ErrorReportException>)
                 .ToColumnValue(EntitySerializer.Serialize);
 
-            Property(x => x.ContextCollectionInfo)
+            Property(x => x.ContextCollections)
+                .ColumnName("ContextInfo")
                 .ToPropertyValue(x => null)
                 .ToColumnValue(x => "");
 

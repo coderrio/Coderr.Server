@@ -5,7 +5,9 @@ using System.Linq;
 using System.Reflection;
 using Coderr.Server.ReportAnalyzer.Triggers.Actions;
 using Coderr.Server.ReportAnalyzer.Triggers.Handlers.Actions;
+using DotNetCqs.DependencyInjection;
 using Griffin.Container;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Coderr.Server.ReportAnalyzer.Triggers
 {
@@ -15,8 +17,10 @@ namespace Coderr.Server.ReportAnalyzer.Triggers
     [ContainerService]
     public class ServiceLocatorTriggerActionFactory : ITriggerActionFactory
     {
+        private readonly IServiceProvider _serviceProvider;
+        private readonly IHandlerScope _handlerScope;
         private static readonly Dictionary<string, Type> _actionTypes = new Dictionary<string, Type>();
-        private readonly IServiceLocator _serviceLocator;
+        private IServiceScope _serviceScope;
 
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline",
             Justification = "How on earth could I do that?")]
@@ -28,12 +32,10 @@ namespace Coderr.Server.ReportAnalyzer.Triggers
         /// <summary>
         ///     Creates a new instance of <see cref="ServiceLocatorTriggerActionFactory" />.
         /// </summary>
-        /// <param name="serviceLocator">IoC container</param>
         /// <exception cref="ArgumentNullException">serviceLocator</exception>
-        public ServiceLocatorTriggerActionFactory(IServiceLocator serviceLocator)
+        public ServiceLocatorTriggerActionFactory(IServiceProvider serviceProvider)
         {
-            if (serviceLocator == null) throw new ArgumentNullException("serviceLocator");
-            _serviceLocator = serviceLocator;
+            _serviceProvider = serviceProvider;
         }
 
         /// <summary>
@@ -48,7 +50,7 @@ namespace Coderr.Server.ReportAnalyzer.Triggers
             if (!_actionTypes.TryGetValue(actionName, out type))
                 throw new NotSupportedException("Do not support action of type " + actionName);
 
-            return (ITriggerAction) _serviceLocator.Resolve(type);
+            return (ITriggerAction) _serviceProvider.GetService(type);
         }
 
         /// <summary>

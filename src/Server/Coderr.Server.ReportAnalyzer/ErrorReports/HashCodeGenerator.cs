@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Coderr.Server.Domain.Core.ErrorReports;
 using Griffin.Container;
@@ -14,7 +16,7 @@ namespace Coderr.Server.ReportAnalyzer.ErrorReports
     ///     are based on the URI and not exception information
     /// </remarks>
     [ContainerService]
-    public class HashCodeGenerator
+    public class HashCodeGenerator : IHashCodeGenerator
     {
         private readonly IHashCodeSubGenerator[] _generators;
         private const string RemoveLineNumbersRegEx = @"^(.*)(:[\w]+ [\d]+)";
@@ -23,9 +25,9 @@ namespace Coderr.Server.ReportAnalyzer.ErrorReports
         ///     Creates a new instance of <see cref="HashCodeGenerator" />.
         /// </summary>
         /// <param name="generators">Specialized generators. treated as singletons.</param>
-        public HashCodeGenerator(IHashCodeSubGenerator[] generators)
+        public HashCodeGenerator(IEnumerable<IHashCodeSubGenerator> generators)
         {
-            _generators = generators;
+            _generators = generators.ToArray();
         }
 
         /// <summary>

@@ -3,6 +3,7 @@ using Coderr.Server.Api.Core.Accounts.Commands;
 using Coderr.Server.Api.Core.Messaging.Commands;
 using Coderr.Server.Domain.Core.Account;
 using Coderr.Server.Infrastructure.Configuration;
+using Coderr.Server.PluginApi.Config;
 using DotNetCqs;
 using Griffin.Container;
 using log4net;
@@ -18,10 +19,10 @@ namespace Coderr.Server.App.Core.Accounts.CommandHandlers
         private readonly BaseConfiguration _baseConfig;
         private readonly ILog _logger = LogManager.GetLogger(typeof(RequestPasswordResetHandler));
 
-        public RequestPasswordResetHandler(IAccountRepository accountRepository, BaseConfiguration baseConfig)
+        public RequestPasswordResetHandler(IAccountRepository accountRepository, IConfiguration<BaseConfiguration> baseConfig)
         {
             _accountRepository = accountRepository;
-            _baseConfig = baseConfig;
+            _baseConfig = baseConfig.Value;
         }
 
         public async Task HandleAsync(IMessageContext context, RequestPasswordReset command)

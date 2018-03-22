@@ -1,27 +1,19 @@
 <template>
-    <div class="mb-3">
+    <div class="mb-3" id="manageMenu">
         <div class="navbar-light navbar bg-light">
             <ul class="nav">
-                <li class="nav-item">
-                    <router-link class="nav-link" :to="{name: 'manageApp', params: {applicationId: currentApplicationId }}">
-                        <span class="fa fa-cog"></span> Settings
-                    </router-link>
-                </li>
-                <li class="nav-item">
-                    <router-link class="nav-link" :to="{name: 'manageTeam', params: {applicationId: currentApplicationId }}">
-                        <span class="fa fa-users"></span> Team
-                    </router-link>
-                </li>
-                <li class="nav-item">
-                    <router-link class="nav-link" :to="{name: 'analyzeReport', params: {applicationId: currentApplicationId }}">
-                        <span class="fa fa-graduation-cap"></span> Prioritization
-                    </router-link>
-                </li>
-                <li class="nav-item">
-                    <router-link class="nav-link" :to="{name: 'analyzeFeedback', params: {applicationId: currentApplicationId }}">
-                        <span class="fa fa-exchange-alt"></span> Api keys
-                    </router-link>
-                </li>
+                <router-link tag="li" class="nav-item" :to="{name: 'manageApp', params: {applicationId: currentApplicationId.toString() }}" exact>
+                    <a class="nav-link"><i class="fa fa-cog"></i> Settings</a>
+                </router-link>
+                <router-link tag="li" class="nav-item" :to="{name: 'manageAppTeam', params: {applicationId: currentApplicationId.toString() }}">
+                    <a class="nav-link"><i class="fa fa-users"></i> Security</a>
+                </router-link>
+                <router-link tag="li" class="nav-item" :to="{name: 'managePartitions', params: {applicationId: currentApplicationId.toString() }}">
+                    <a class="nav-link"><i class="fa fa-graduation-cap"></i> Prioritization</a>
+                </router-link>
+                <router-link tag="li" class="nav-item" :to="{name: 'manageApiKeys', params: {applicationId: currentApplicationId.toString() }}">
+                    <a class="nav-link"><i class="fa fa-exchange-alt"></i> Api keys</a>
+                </router-link>
             </ul>
         </div>
     </div>

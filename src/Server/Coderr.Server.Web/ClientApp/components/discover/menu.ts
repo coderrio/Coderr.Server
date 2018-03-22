@@ -1,6 +1,7 @@
 import * as MenuApi from "../../services/menu/MenuApi";
 import Vue from 'vue';
 import { Component, Watch } from 'vue-property-decorator';
+import {Route} from "vue-router";
 
 interface IRouteNavigation {
     routeName: string;
@@ -8,6 +9,7 @@ interface IRouteNavigation {
     setMenu(name: String): void;
 }
 type NavigationCallback = (context: IRouteNavigation) => void;
+
 
 @Component
 export default class DiscoverMenuComponent extends Vue {

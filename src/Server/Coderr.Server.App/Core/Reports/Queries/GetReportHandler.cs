@@ -33,7 +33,7 @@ namespace Coderr.Server.App.Core.Reports.Queries
         {
             var report = await _repository.GetAsync(query.ReportId);
             var collections = Enumerable.ToList((
-                from x in report.ContextCollectionInfo
+                from x in report.ContextCollections
                 where x.Properties.Count > 0
                 let properties = Enumerable.Select(x.Properties, y => new KeyValuePair(y.Key, y.Value))
                 select new GetReportResultContextCollection(x.Name, Enumerable.ToArray(properties))

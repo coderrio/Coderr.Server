@@ -8,7 +8,6 @@ using Griffin.Data.Mapper;
 
 namespace Coderr.Server.SqlServer.Core.ApiKeys.Queries
 {
-    [Component(RegisterAsSelf = true)]
     public class ListApiKeysHandler : IQueryHandler<ListApiKeys, ListApiKeysResult>
     {
         private readonly MirrorMapper<ListApiKeysResultItem> _mapper = new MirrorMapper<ListApiKeysResultItem>();

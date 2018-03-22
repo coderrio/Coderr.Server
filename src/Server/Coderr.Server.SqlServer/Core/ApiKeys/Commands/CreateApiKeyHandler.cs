@@ -8,7 +8,6 @@ using Griffin.Data;
 
 namespace Coderr.Server.SqlServer.Core.ApiKeys.Commands
 {
-    [Component(RegisterAsSelf = true)]
     public class CreateApiKeyHandler : IMessageHandler<CreateApiKey>
     {
         private readonly IAdoNetUnitOfWork _unitOfWork;

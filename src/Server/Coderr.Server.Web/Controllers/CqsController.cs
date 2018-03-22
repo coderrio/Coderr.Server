@@ -146,11 +146,12 @@ namespace Coderr.Server.Web2.Controllers
                     cqsReplyObject = await InvokeQuery(cqsObject);
                 else
                     await InvokeMessage(cqsObject);
-
+                _logger.Debug(".. pass1 " + cqsObject.GetType().Name);
                 if (cqsReplyObject != null)
                     RestrictOnApplicationId(cqsReplyObject);
 
                 await HandleSecurityPrincipalUpdates();
+                _logger.Debug(".. completed " + cqsObject.GetType().Name);
             }
             catch (AggregateException e1)
             {

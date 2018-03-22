@@ -16,9 +16,10 @@
                 </div>
             </div>
         </div>
-        <div class="col" v-if="suggestions.length == 0">
+        <div class="col" v-if="showEmpty">
             <h2>We got no suggestions</h2>
-            <p class="lead"><a href="https://coderr.io/documentation/?utm_source=oss">Report</a> a few exceptions to get suggestions here.</p>
+            <p class="lead">Report a few exceptions to get suggestions here. </p>
+            <p>Read our <a href="https://coderr.io/documentation/?utm_source=oss">reporting guide</a> to take full advantage of Coderr.</p>
         </div>
     </div>
 </template>

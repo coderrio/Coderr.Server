@@ -201,7 +201,7 @@ export class AppRoot {
                 throw Error("Failed to find modal body " + modalContext.contentId);
             ourBody = el.innerHTML;
         } else {
-            ourBody = <string>modalContext.htmlContent;
+            ourBody = `<div>${modalContext.htmlContent}</div>`;
         }
 
         const body = <HTMLDivElement>myModal.querySelector('.modal-body');
@@ -234,12 +234,14 @@ export class AppRoot {
                 if (modalContext.onClosingModal) {
                     modalContext.onClosingModal(id, 'submit');
                 }
+                bsModal.modal('hide');
                 resolve({ pressedButtonName: 'submit', modalId: id, pressedButton: <HTMLButtonElement>e.target });
             });
             $('.btn-secondary').click(e => {
                 if (modalContext.onClosingModal) {
                     modalContext.onClosingModal(id, 'cancel');
                 }
+                bsModal.modal('hide');
                 reject({ pressedButtonName: 'cancel', modalId: id, pressedButton: <HTMLButtonElement>e.target });
             });
 

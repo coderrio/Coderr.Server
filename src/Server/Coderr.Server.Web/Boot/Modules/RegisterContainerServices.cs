@@ -4,6 +4,7 @@ using System.Reflection;
 using Coderr.Server.App.Core.Accounts;
 using Coderr.Server.Infrastructure.Boot;
 using Coderr.Server.SqlServer;
+using Griffin.ApplicationServices;
 using Griffin.Container;
 using Microsoft.Extensions.DependencyInjection;
 using ContainerServiceAttribute = Coderr.Server.ReportAnalyzer.Abstractions.ContainerServiceAttribute;
@@ -29,36 +30,43 @@ namespace Coderr.Server.Web2.Boot.Modules
                 .ToList();
             foreach (var containerService in containerServices)
             {
-                var interfaces = containerService.GetInterfaces();
-                if (interfaces.Length != 1)
-                    Debugger.Break();
+                var interfaces = containerService.GetInterfaces().ToList();
+                var griffinAttribute = containerService.GetCustomAttribute<Griffin.Container.ContainerServiceAttribute>();
+                var ourAttribute = containerService.GetCustomAttribute<ContainerServiceAttribute>();
 
-                var attr = containerService.GetCustomAttribute<ContainerServiceAttribute>();
-                if (attr != null)
-                {
-                    if (attr.IsSingleInstance)
-                        context.Services.AddSingleton(interfaces[0], containerService);
-                    else if (attr.IsTransient)
-                        context.Services.AddTransient(interfaces[0], containerService);
-                    else
-                        context.Services.AddScoped(interfaces[0], containerService);
-                }
-                var attr2 = containerService.GetCustomAttribute<Griffin.Container.ContainerServiceAttribute>();
-                if (attr2 == null)
-                    continue;
+                // Register as self 
+                // is required to be able to execute them
+                if (interfaces.Any(x => typeof(IBackgroundJobAsync).IsAssignableFrom(x) || typeof(IBackgroundJob).IsAssignableFrom(x)))
+                    interfaces.Add(containerService);
 
-                switch (attr2.Lifetime)
+                foreach (var @interface in interfaces)
                 {
-                    case ContainerLifetime.SingleInstance:
-                        context.Services.AddSingleton(interfaces[0], containerService);
-                        break;
-                    case ContainerLifetime.Transient:
-                        context.Services.AddTransient(interfaces[0], containerService);
-                        break;
-                    default:
-                        context.Services.AddScoped(interfaces[0], containerService);
-                        break;
+                    if (ourAttribute != null)
+                    {
+                        if (ourAttribute.IsSingleInstance)
+                            context.Services.AddSingleton(@interface, containerService);
+                        else if (ourAttribute.IsTransient)
+                            context.Services.AddTransient(@interface, containerService);
+                        else
+                            context.Services.AddScoped(@interface, containerService);
+                    }
+                    if (griffinAttribute == null)
+                        continue;
+
+                    switch (griffinAttribute.Lifetime)
+                    {
+                        case ContainerLifetime.SingleInstance:
+                            context.Services.AddSingleton(@interface, containerService);
+                            break;
+                        case ContainerLifetime.Transient:
+                            context.Services.AddTransient(@interface, containerService);
+                            break;
+                        default:
+                            context.Services.AddScoped(@interface, containerService);
+                            break;
+                    }
                 }
+
             }
         }
 

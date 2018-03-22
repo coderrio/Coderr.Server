@@ -32,7 +32,8 @@ namespace Coderr.Server.App.Core.Applications.QueryHandlers
                 {
                     JoinedAtUtc = DateTime.UtcNow,
                     UserId = x.AccountId,
-                    UserName = x.UserName
+                    UserName = x.UserName,
+                    IsAdmin = x.Roles.Any(y => y == "Admin")
                 }).ToArray()
             };
             return result;

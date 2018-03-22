@@ -1,17 +1,34 @@
 <template>
     <div class="mt-4">
         <div class="row">
-            <div class="col-lg-8">
+            <div class="col-lg-8 members">
                 <div class="card">
-                    <div class="card-header">Application team</div>
+                    <div class="card-header">Application security</div>
                     <div class="card-body">
-                        <table class="table table-borderless">
-                            <tr v-for="member in members">
+                        <h3>Admins</h3>
+                        <table class="">
+                            <tr v-for="admin in admins">
                                 <td>
-                                    {{member.UserName}}
+                                    {{admin.name}}
+                                </td>
+                                <td>
+                                    <a href="#" @click.prevent="removeAdmin(admin.id)" title="Downgrade to regular member"><i class="fa fa-hand-point-down text-warning"></i></a>
                                 </td>
                             </tr>
                         </table>
+                        <h3>Members</h3>
+                        <table class="">
+                            <tr v-for="member in members">
+                                <td>
+                                    {{member.name}}
+                                </td>
+                                <td>
+                                    <a href="#" @click.prevent="addAdmin(member.id)" title="Make admin"><i class="fa fa-hand-point-up text-success"></i></a>
+                                    <a href="#" @click.prevent="removeMember(member.id)"><i class="fa fa-trash text-danger"></i></a>
+                                </td>
+                            </tr>
+                        </table>
+
                     </div>
                 </div>
             </div>
@@ -23,6 +40,9 @@
                             <tr v-for="member in invites">
                                 <td>
                                     {{member.EmailAddress}}
+                                </td>
+                                <td>
+                                    <a href="#" @click.prevent="removeInvitation(member.EmailAddress)"><i class="fa fa-trash"></i></a>
                                 </td>
                             </tr>
                         </table>

@@ -7,6 +7,7 @@ using DotNetCqs;
 using Griffin.Container;
 using Griffin.Data;
 using Griffin.Data.Mapper;
+using log4net;
 
 namespace Coderr.Server.SqlServer.Core.Incidents.Queries
 {
@@ -16,6 +17,7 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
         private readonly IEnumerable<IHighlightedContextDataProvider> _highlightedContextDataProviders;
         private readonly IEnumerable<ISolutionProvider> _solutionProviders;
         private readonly IAdoNetUnitOfWork _unitOfWork;
+        private ILog _logger = LogManager.GetLogger(typeof(GetIncidentHandler));
 
         public GetIncidentHandler(IAdoNetUnitOfWork unitOfWork, 
             IEnumerable<IQuickfactProvider> quickfactProviders,
@@ -31,16 +33,19 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
 
         public async Task<GetIncidentResult> HandleAsync(IMessageContext context, GetIncident query)
         {
+            _logger.Info("GetIncident step 1");
             var sql =
                 "SELECT Incidents.*, Users.Username as AssignedTo " +
-                " FROM Incidents " +
-                " LEFT JOIN Users ON (AssignedToId = Users.AccountId) " +
+                " FROM Incidents WITH (ReadPast)" +
+                " LEFT JOIN Users WITH (ReadPast) ON (AssignedToId = Users.AccountId) " +
                 " WHERE Incidents.Id = @id";
 
             var result = await _unitOfWork.FirstAsync<GetIncidentResult>(sql, new {Id = query.IncidentId});
+            _logger.Info("GetIncident step 2");
 
             var tags = GetTags(query.IncidentId);
             result.Tags = tags.ToArray();
+            _logger.Info("GetIncident step 3");
 
             var facts = new List<QuickFact>
             {
@@ -52,9 +57,14 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
                 }
             };
 
+
+            _logger.Info("GetIncident step 4");
             await GetContextCollectionNames(result);
+            _logger.Info("GetIncident step 5");
             await GetReportStatistics(result);
+            _logger.Info("GetIncident step 6");
             await GetStatSummary(query, facts);
+            _logger.Info("GetIncident step 7");
 
             var contextData = new List<HighlightedContextData>();
             var solutions = new List<SuggestedIncidentSolution>();
@@ -70,6 +80,7 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
             {
                 await provider.SuggestSolutionAsync(query.IncidentId, solutions);
             }
+            _logger.Info("GetIncident step 8");
 
             result.Facts = facts.ToArray();
             result.SuggestedSolutions = solutions.ToArray();

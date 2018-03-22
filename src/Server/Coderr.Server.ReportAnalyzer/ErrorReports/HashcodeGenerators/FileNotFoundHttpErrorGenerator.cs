@@ -35,8 +35,8 @@ namespace Coderr.Server.ReportAnalyzer.ErrorReports.HashcodeGenerators
         /// <exception cref="ArgumentNullException">entity</exception>
         public string GenerateHashCode(ErrorReportEntity entity)
         {
-            var props = entity.ContextCollectionInfo.FirstOrDefault(x => x.Name == "ExceptionProperties")
-                        ?? entity.ContextCollectionInfo.FirstOrDefault(x => x.Name == "Properties");
+            var props = entity.ContextCollections.FirstOrDefault(x => x.Name == "ExceptionProperties")
+                        ?? entity.ContextCollections.FirstOrDefault(x => x.Name == "Properties");
             if (props == null)
             {
                 _logger.Error("Failed to find ExceptionProperties collection for entity " + entity.Id);
@@ -48,7 +48,7 @@ namespace Coderr.Server.ReportAnalyzer.ErrorReports.HashcodeGenerators
                 return null;
             var statusCode = int.Parse(value);
 
-            var headerProps = entity.ContextCollectionInfo.FirstOrDefault(x => x.Name == "HttpHeaders");
+            var headerProps = entity.ContextCollections.FirstOrDefault(x => x.Name == "HttpHeaders");
             if (headerProps == null)
             {
                 _logger.Error("Failed to find HttpHeaders collection for entity " + entity.Id);

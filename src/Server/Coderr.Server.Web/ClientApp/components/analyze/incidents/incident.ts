@@ -1,4 +1,5 @@
 import { PubSubService } from "../../../services/PubSub";
+import { ApplicationMember } from "../../../services/applications/ApplicationService";
 import { ApiClient } from '../../../services/ApiClient';
 import { AppRoot } from '../../../services/AppRoot';
 import { GetIncidentResult, GetIncidentStatistics, GetIncidentStatisticsResult } from "../../../dto/Core/Incidents";
@@ -13,6 +14,7 @@ export default class AnalyzeIncidentComponent extends Vue {
     private static activeBtnTheme: string = 'btn-dark';
     private apiClient: ApiClient = new ApiClient('http://localhost:50473/cqs/');
     private static readonly selectCollectionTitle: string = '(select collection)';
+    private team: ApplicationMember[] = [];
 
     name = '';
     incident = new GetIncidentResult();
@@ -51,11 +53,24 @@ export default class AnalyzeIncidentComponent extends Vue {
     }
 
     reAssign() {
-
+        AppRoot.modal({
+            contentId: 'assignToModal',
+            showFooter: false
+        }).then(result => {
+            var value = result.pressedButton.value;
+            var accountId = parseInt(value, 10);
+            var member = <ApplicationMember>this.team.find((x, index) => x.id === accountId);
+            AppRoot.Instance.incidentService
+                .assign(this.incident.Id, accountId, member.name)
+                .then(x => AppRoot.notify('Incident have been assigned', 'fa-check'));
+        });
     }
 
     closeIncident() {
-
+        AppRoot.Instance.incidentService.showClose(this.incident.Id, "CloseBody")
+            .then(x => {
+                this.$router.push({ name: "analyzeHome" });
+            });
     }
 
     addToTfs() {
@@ -63,12 +78,15 @@ export default class AnalyzeIncidentComponent extends Vue {
     }
 
     private loadIncident(id: number) {
+        console.log('loading')
         AppRoot.Instance.incidentService.get(id)
             .then(incident => {
                 this.incident = incident;
-                //incident.ContextCollections;
-                //incident.
-                //this.incident.Tags
+                console.log('done');
+                AppRoot.Instance.applicationService.getTeam(incident.ApplicationId)
+                    .then(x => {
+                        this.team = x;
+                    });
             });
 
         var q = new GetReportList();

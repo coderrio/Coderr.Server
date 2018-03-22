@@ -38,7 +38,7 @@ namespace Coderr.Server.SqlServer.Core.Applications
                 cmd.AddParameter("userId", accountId);
                 using (var reader = await cmd.ExecuteReaderAsync())
                 {
-                    List<UserApplication> apps = new List<UserApplication>();
+                    var apps = new List<UserApplication>();
                     while (await reader.ReadAsync())
                     {
                         var a = new UserApplication
@@ -49,8 +49,20 @@ namespace Coderr.Server.SqlServer.Core.Applications
                         };
                         apps.Add(a);
                     }
+
                     return apps.ToArray();
                 }
+            }
+        }
+
+        public async Task RemoveTeamMemberAsync(int applicationId, string invitedEmailAddress)
+        {
+            using (var cmd = (DbCommand) _uow.CreateCommand())
+            {
+                cmd.CommandText = "DELETE FROM ApplicationMembers WHERE ApplicationId=@appId AND EmailAddress = @email";
+                cmd.AddParameter("appId", applicationId);
+                cmd.AddParameter("email", invitedEmailAddress);
+                await cmd.ExecuteNonQueryAsync();
             }
         }
 
@@ -163,12 +175,6 @@ namespace Coderr.Server.SqlServer.Core.Applications
             }
         }
 
-        public async Task DeleteAsync(Application application)
-        {
-            if (application == null) throw new ArgumentNullException("application");
-            await DeleteAsync(application.Id);
-        }
-
         public async Task UpdateAsync(Application entity)
         {
             await _uow.UpdateAsync(entity);
@@ -176,13 +182,19 @@ namespace Coderr.Server.SqlServer.Core.Applications
 
         public async Task RemoveTeamMemberAsync(int applicationId, int userId)
         {
-            using (var cmd = (DbCommand)_uow.CreateCommand())
+            using (var cmd = (DbCommand) _uow.CreateCommand())
             {
                 cmd.CommandText = "DELETE FROM ApplicationMembers WHERE ApplicationId=@appId AND AccountId = @userId";
                 cmd.AddParameter("appId", applicationId);
                 cmd.AddParameter("userId", userId);
                 await cmd.ExecuteNonQueryAsync();
             }
+        }
+
+        public async Task DeleteAsync(Application application)
+        {
+            if (application == null) throw new ArgumentNullException("application");
+            await DeleteAsync(application.Id);
         }
     }
 }

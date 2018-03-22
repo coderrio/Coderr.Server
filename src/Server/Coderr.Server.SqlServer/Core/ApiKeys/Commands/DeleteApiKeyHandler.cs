@@ -7,7 +7,6 @@ using Griffin.Data;
 
 namespace Coderr.Server.SqlServer.Core.ApiKeys.Commands
 {
-    [Component(RegisterAsSelf = true)]
     public class DeleteApiKeyHandler : IMessageHandler<DeleteApiKey>
     {
         private readonly IAdoNetUnitOfWork _unitOfWork;

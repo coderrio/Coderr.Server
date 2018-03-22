@@ -15,7 +15,6 @@ namespace Coderr.Server.ReportAnalyzer.ErrorOrigins.Handlers
     /// <summary>
     ///     Responsible of looking up geographic position of the IP address that delivered the report.
     /// </summary>
-    [Component(RegisterAsSelf = true)]
     public class StorePositionFromNewReport : IMessageHandler<ReportAddedToIncident>
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(StorePositionFromNewReport));

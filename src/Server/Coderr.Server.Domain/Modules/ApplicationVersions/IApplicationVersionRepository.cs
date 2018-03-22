@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Threading.Tasks;
 
@@ -25,6 +26,15 @@ namespace Coderr.Server.Domain.Modules.ApplicationVersions
         Task CreateAsync(ApplicationVersion entity);
 
         /// <summary>
+        ///     Get version
+        /// </summary>
+        /// <param name="incidentId">Incident to get versions for</param>
+        /// <returns>version if found; otherwise <c>null</c></returns>
+        /// <exception cref="ArgumentNullException">applicationId;version</exception>
+        /// <exception cref="DbException">Failed to query DB</exception>
+        Task<IList<ApplicationVersion>> FindForIncidentAsync(int incidentId);
+
+        /// <summary>
         ///     Get monthly exception report
         /// </summary>
         /// <param name="applicationId">Application id</param>
@@ -45,6 +55,13 @@ namespace Coderr.Server.Domain.Modules.ApplicationVersions
         /// <exception cref="ArgumentNullException">applicationId;version</exception>
         /// <exception cref="DbException">Failed to query DB</exception>
         Task<ApplicationVersion> FindVersionAsync(int applicationId, string version);
+
+        /// <summary>
+        ///     Find all versions that we've received error reports for.
+        /// </summary>
+        /// <param name="appId">application id</param>
+        /// <returns>versions</returns>
+        Task<IEnumerable<string>> FindVersionsAsync(int appId);
 
         /// <summary>
         ///     Save version (ignore if it have already been stored).
