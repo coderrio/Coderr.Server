@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "Installation - Completed";
+}
+<div class="container">
+    <div class="col-lg-12">
+
+        <h2>Congratulations!</h2>
+
+        <p>The setup is now completed. You need to deactive this configuration guide for security reasons.</p>
+        <p>
+            Change the <code>Installation/Configured</code> setting to <code>true</code> in appsettings.json. 
+        </p>
+        <p>
+            Once done, restart the application pool to allow all background services to start.
+        </p>
+        @if (ViewBag.DisplayError)
+        {
+            <h3>Error!</h3>
+            <div style="color: #990000; font-weight: bolder">
+                Change appsettings.json.
+            </div>
+        }
+        @Html.Raw(ViewBag.PrevStep)
+    </div>
+</div>

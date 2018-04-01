@@ -8,7 +8,7 @@
 create table IncidentHistory
 (
     Id int not null identity primary key,
-    IncidentId int not null constraint FK_IncidentEnvironment_Incidents REFERENCES Incidents(Id) ON DELETE CASCADE,
+    IncidentId int not null constraint FK_IncidentHistory_Incidents REFERENCES Incidents(Id) ON DELETE CASCADE,
     CreatedAtUtc datetime not null,
     AccountId int NULL, -- for system entries
     State int not null,

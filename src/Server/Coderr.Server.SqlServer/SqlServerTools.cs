@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
 using Coderr.Server.Abstractions;
 using Coderr.Server.Infrastructure;
@@ -16,38 +17,41 @@ namespace Coderr.Server.SqlServer
     /// </remarks>
     public class SqlServerTools : ISetupDatabaseTools
     {
-        private readonly IConnectionFactory _connectionFactory;
+        private readonly Func<IDbConnection> _connectionFactory;
         private readonly SchemaManager _schemaManager;
 
-        public SqlServerTools(IConnectionFactory connectionFactory)
+        public SqlServerTools(Func<IDbConnection> connectionFactory)
         {
             _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
-            _schemaManager = new SchemaManager(_connectionFactory.OpenConnection);
+            _schemaManager = new SchemaManager(_connectionFactory);
         }
 
         internal static string DbName { get; set; }
-
-        private bool IsConnectionConfigured => _connectionFactory.IsConfigured;
-
+        
         /// <summary>
         ///     Checks if the tables exists and are for the current DB schema.
         /// </summary>
         public bool GotUpToDateTables()
         {
-            if (!IsConnectionConfigured)
-                return false;
-
-            using (var con = _connectionFactory.OpenConnection())
+            try
             {
-                using (var cmd = con.CreateCommand())
+                using (var con = _connectionFactory())
                 {
-                    cmd.CommandText = "SELECT OBJECT_ID(N'dbo.[Accounts]', N'U')";
-                    var result = cmd.ExecuteScalar();
+                    using (var cmd = con.CreateCommand())
+                    {
+                        cmd.CommandText = "SELECT OBJECT_ID(N'dbo.[Accounts]', N'U')";
+                        var result = cmd.ExecuteScalar();
 
-                    //null for SQL Express and DbNull for SQL Server
-                    return result != null && !(result is DBNull);
+                        //null for SQL Express and DbNull for SQL Server
+                        return result != null && !(result is DBNull);
+                    }
                 }
             }
+            catch (Exception)
+            {
+                return false;
+            }
+            
         }
 
         /// <summary>
@@ -75,9 +79,14 @@ namespace Coderr.Server.SqlServer
 
         IDbConnection ISetupDatabaseTools.OpenConnection()
         {
-            return _connectionFactory.OpenConnection();
+            return _connectionFactory();
         }
 
-        
+        public void TestConnection(string connectionString)
+        {
+            var con = new SqlConnection(connectionString);
+            con.Open();
+            con.Dispose();
+        }
     }
 }

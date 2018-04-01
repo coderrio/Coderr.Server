@@ -29,5 +29,7 @@ namespace Coderr.Server.Infrastructure
         /// </summary>
         /// <returns>Connection</returns>
         IDbConnection OpenConnection();
+
+        void TestConnection(string connectionString);
     }
 }

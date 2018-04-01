@@ -1,0 +1,57 @@
+﻿@model codeRR.Server.Web.Areas.Installation.Models.EmailViewModel
+@{
+    ViewBag.Title = "Installation - Email configuration";
+}
+<div class="container">
+    <div class="col-lg-8 offset-lg-2 col-md-12">
+
+        <h2>Email configuration</h2>
+        <p>
+            codeRR can send email notifcations upon different types of events (and password resets etc). To do this, we need
+            to have a SMTP account for mailing.
+        </p>
+        <form method="post" action="@Url.Action("Email")" class="form">
+            @Html.ValidationSummary(false)
+            <div class="form-group">
+                @Html.LabelFor(x => x.SmtpHost, new {@class = "control-label"})
+                @Html.TextBoxFor(x => x.SmtpHost, new {@class = "form-control", placeholder = "IP Address or host name"})
+                @Html.CheckBoxFor(x => x.UseSSL) Use SSL
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(x => x.PortNumber, new {@class = "control-label"})
+                @Html.TextBoxFor(x => x.PortNumber, new {@class = "form-control", placeholder = "Port number. Typically 25 for SMTP and 587 for ESMTPS. Consult your mail server configuration."})
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(x => x.AccountName, new {@class = "control-label"})
+                @Html.TextBoxFor(x => x.AccountName, new {@class = "form-control", placeholder = "SMTP Server account name (empty = no authentication)", autocomplete = "new-password" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(x => x.AccountPassword, new {@class = "control-label"})
+                @Html.TextBoxFor(x => x.AccountPassword, new {@class = "form-control", placeholder = "Password for the above account", autocomplete = "new-password" })
+            </div>
+            <div class="form-group">
+                <label class="control-label">Password verification</label>
+                <!--https://stackoverflow.com/questions/15738259/disabling-chrome-autofill-->
+                <input type="password" placeholder="Re-enter the password for verification" id="Password2" class="form-control" autocomplete="new-password"/>
+                <div class="text-danger" id="PasswordError"></div>
+            </div>
+            <br/>
+            @Html.Raw(ViewBag.PrevLink)
+            <input type="submit" class="btn btn-primary" value="Save"/>
+            @Html.Raw(ViewBag.NextLink)
+        </form>
+    </div>
+</div>
+@section scripts
+{
+    <script>
+        $("#Password2")
+            .keyup(function(e) {
+                if ($('#AccountPassword').val() != $('#Password2').val()) {
+                    $('#PasswordError').html("Passwords to not match.");
+                } else {
+                    $('#PasswordError').html("");
+                }
+            })
+    </script>
+}

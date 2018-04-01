@@ -7,8 +7,11 @@ using System.Threading.Tasks;
 using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Abstractions.Config;
 using Coderr.Server.Abstractions.Security;
+using Coderr.Server.Infrastructure;
 using Coderr.Server.Infrastructure.Configuration.Database;
 using Coderr.Server.Infrastructure.Messaging;
+using Coderr.Server.SqlServer;
+using Coderr.Server.Web.Areas.Installation;
 using Coderr.Server.Web.Boot;
 using Coderr.Server.Web.Boot.Adapters;
 using Coderr.Server.Web.Controllers;
@@ -30,10 +33,14 @@ namespace Coderr.Server.Web
         private readonly ModuleStarter _moduleStarter;
         private IServiceProvider _serviceProvider;
 
+        private bool IsConfigured => Configuration["Installation/IsConfigured"] == "true";
+
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
             _moduleStarter = new ModuleStarter(configuration);
+            //InstallAuthorizationFilter.Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -59,11 +66,19 @@ namespace Coderr.Server.Web
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                    name: "areas",
+                    template: "{area:exists}/{controller=Setup}/{action=Index}/{id?}"
+                );
+
                 routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
                 routes.MapSpaFallbackRoute(
                     "spa-fallback",
                     new { controller = "Home", action = "Index" });
             });
+
+            if (!IsConfigured)
+                return;
 
             _serviceProvider = app.ApplicationServices;
             var context = new StartContext
@@ -75,27 +90,30 @@ namespace Coderr.Server.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc(options =>
-            {
-
-            }).AddJsonOptions(jsonOptions =>
-            {
-                jsonOptions.SerializerSettings.ContractResolver = new IncludeNonPublicMembersContractResolver();
-            });
+            services.AddMvc(options => { options.Filters.Add<InstallAuthorizationFilter>(); })
+                .AddJsonOptions(jsonOptions =>
+                {
+                    jsonOptions.SerializerSettings.ContractResolver = new IncludeNonPublicMembersContractResolver();
+                });
 
             var authenticationBuilder = services.AddAuthentication("Cookies");
             authenticationBuilder.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
             {
-                    //options.ExpireTimeSpan = TimeSpan.FromDays(14);
-                    //options.p
-                    //options.Events.OnRedirectToLogin = HandleAuthenticationFailure;
-                    options.Events.OnValidatePrincipal = context =>
-                {
-                    var principal = context.Principal;
-                    var str = context.Request.GetDisplayUrl() + ": " + context.Principal.Identity.IsAuthenticated;
-                    return Task.CompletedTask;
-                };
+                //options.ExpireTimeSpan = TimeSpan.FromDays(14);
+                //options.p
+                //options.Events.OnRedirectToLogin = HandleAuthenticationFailure;
+                options.Events.OnValidatePrincipal = context =>
+            {
+                var principal = context.Principal;
+                var str = context.Request.GetDisplayUrl() + ": " + context.Principal.Identity.IsAuthenticated;
+                return Task.CompletedTask;
+            };
             });
+
+            if (!IsConfigured)
+            {
+                RegisterInstallationConfiguration(services);
+            }
 
             _moduleStarter.ScanAssemblies(AppDomain.CurrentDomain.BaseDirectory);
 
@@ -111,6 +129,14 @@ namespace Coderr.Server.Web
                 ServiceProvider = () => _serviceProvider
             };
             _moduleStarter.Configure(configContext);
+        }
+
+        private void RegisterInstallationConfiguration(IServiceCollection services)
+        {
+            SetupTools.DbTools = new SqlServerTools(() => OpenConnection(CoderrClaims.SystemPrincipal));
+            var store = new DatabaseStore(() => OpenConnection(CoderrClaims.SystemPrincipal));
+            services.AddSingleton<ConfigurationStore>(store);
+            services.Configure<InstallationOptions>(Configuration.GetSection("Installation"));
         }
 
         private IServiceProvider GetLazyLoadedServiceProvider()

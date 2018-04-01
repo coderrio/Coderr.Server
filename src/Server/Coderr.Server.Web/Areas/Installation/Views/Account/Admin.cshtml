@@ -1,0 +1,70 @@
+﻿@model codeRR.Server.Web.Areas.Installation.Models.AccountViewModel
+@{
+    ViewBag.Title = "Installation - Account";
+}
+<div class="container">
+    <div class="col-lg-6">
+
+        <h2>Account creation</h2>
+        <p>You need to create an account to be able to login. You can at a later point invite other users to codeRR.</p>
+        @if (ViewBag.AlreadyCreated)
+        {
+            <div class="alert alert-info">
+                Account have already been created.
+            </div>
+            @Html.Raw(ViewBag.PrevLink)
+            @Html.Raw(ViewBag.NextLink)
+        }
+        else
+        {
+            <form method="post" action="@Url.Action("Admin")" style="width: 100%" class="form">
+                @Html.ValidationSummary(false)
+                <div class="form-group">
+                    <label class="control-label">
+                        Username
+                    </label>
+                    <input type="text"
+                           name="UserName" class="form-control" value="@Model.UserName" autocomplete="off"/>
+                </div>
+                <div class="form-group">
+                    <label for="EmailAddress">
+                        Email address
+                    </label>
+                    <input type="email" id="EmailAddress" name="EmailAddress" class="form-control" value="@Model.EmailAddress"/>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" name="Password" id="Password" class="form-control" value="@Model.Password" autocomplete="off"/>
+                </div>
+                <div class="form-group">
+                    <label>Password verification</label>
+                    <input type="password" name="Password2" id="Password2" class="form-control" placeholder="Re-enter the password for verification." autocomplete="off"/>
+                    <div class="text-danger" id="PasswordError"></div>
+                </div>
+                <br/>
+                @Html.Raw(ViewBag.PrevLink)
+                <input type="submit" class="btn btn-primary" value="Save"/>
+                @Html.Raw(ViewBag.NextLink)
+            </form>
+        }
+        @if (ViewBag.Exception != null)
+        {
+            <h2>Error</h2>
+            <pre>@ViewBag.Exception</pre>
+        }
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+        $("#Password2")
+            .keyup(function(e) {
+                if ($('#Password').val() != $('#Password2').val()) {
+                    $('#PasswordError').html("Passwords to not match.");
+                } else {
+                    $('#PasswordError').html("");
+                }
+            })
+    </script>
+}

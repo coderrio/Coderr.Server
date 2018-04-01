@@ -1,0 +1,56 @@
+﻿@model codeRR.Server.Web.Areas.Installation.Models.ErrorTrackingViewModel
+@{
+    ViewBag.Title = "Installation - Error tracking";
+}
+<div class="container">
+    <div class="col-lg-12">
+
+        <h2>Error tracking</h2>
+        <p>
+            To correct bugs faster we have activated codeRR in the community server. By completing this
+            setup, you allow us to collect error information (i.e. bugs in codeRR Community Server) and send it to our own hosted service.
+        </p>
+        <p>
+            You can optionally enter your email address to get notifications when the errors in your
+            installation have been corrected and released. 
+        </p>
+        <p>
+            <em>(We might also contact you if we need more information
+                about the error)</em>
+        </p>
+        <form method="post" action="@Url.Action("Errors")" style="width: 100%" class="form">
+            @Html.ValidationSummary(false)
+            <div class="form-group disabled suboption">
+                @Html.LabelFor(x => x.ContactEmail, new {@class = "control-label"})
+                @Html.TextBoxFor(x => x.ContactEmail, new {@class = "form-control", placeholder = "Your email address"})
+            </div>
+            <br/>
+            @Html.Raw(ViewBag.PrevLink)
+            <input type="submit" class="btn btn-primary" value="Save"/>
+            @Html.Raw(ViewBag.NextLink)
+        </form>
+    </div>
+</div>
+@section scripts
+{
+    <script>
+        $('#ActivateTracking')
+            .click(function() {
+                if ($('.suboption').is('.disabled')) {
+                    $('.suboption').removeClass('disabled');
+                    $('.suboption input').prop('disabled', false);
+                    $('.suboption label').prop('disabled', false);
+                } else {
+                    $('.suboption').addClass('disabled');
+                    $('.suboption input').prop('disabled', true);
+                    $('.suboption label').prop('disabled', true);
+                }
+
+            });
+        if ($('#ActivateTracking').is(':checked')) {
+            $('.suboption').removeClass('disabled');
+            $('.suboption input').prop('disabled', false);
+            $('.suboption label').prop('disabled', false);
+        }
+    </script>
+}
