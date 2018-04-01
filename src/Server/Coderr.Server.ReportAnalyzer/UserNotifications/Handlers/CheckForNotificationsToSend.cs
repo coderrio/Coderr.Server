@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Coderr.Server.Abstractions.Boot;
+using Coderr.Server.Abstractions.Config;
 using Coderr.Server.Domain.Core.User;
 using Coderr.Server.Domain.Modules.UserNotifications;
 using Coderr.Server.Infrastructure.Configuration;
-using Coderr.Server.PluginApi.Config;
 using Coderr.Server.ReportAnalyzer.Abstractions.Incidents;
 using Coderr.Server.ReportAnalyzer.UserNotifications.Handlers.Tasks;
 using DotNetCqs;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 
 namespace Coderr.Server.ReportAnalyzer.UserNotifications.Handlers
 {

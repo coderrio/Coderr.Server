@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using Griffin.Data;
+using log4net;
 
 namespace Coderr.Server.SqlServer
 {
@@ -10,6 +11,9 @@ namespace Coderr.Server.SqlServer
     /// </summary>
     public class UnitOfWorkWithTransaction : IAdoNetUnitOfWork
     {
+        private ILog _logger = LogManager.GetLogger(typeof(UnitOfWorkWithTransaction));
+
+
         public UnitOfWorkWithTransaction(SqlTransaction transaction)
         {
             Transaction = transaction;
@@ -21,11 +25,14 @@ namespace Coderr.Server.SqlServer
         {
             if (Transaction == null)
                 return;
+
+            _logger.Info("Rolling back " + GetHashCode());
             var connection = Transaction.Connection;
             Transaction.Rollback();
             Transaction.Dispose();
             Transaction = null;
             connection.Dispose();
+            _logger.Info("Rolled back " + GetHashCode());
         }
 
         public void SaveChanges()
@@ -46,7 +53,7 @@ namespace Coderr.Server.SqlServer
 
         public void Execute(string sql, object parameters)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
 }

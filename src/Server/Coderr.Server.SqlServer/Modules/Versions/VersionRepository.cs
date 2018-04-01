@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
+using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Domain.Modules.ApplicationVersions;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 

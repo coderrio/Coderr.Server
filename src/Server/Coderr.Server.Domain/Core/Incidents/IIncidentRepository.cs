@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Coderr.Server.Domain.Core.Incidents
@@ -8,6 +9,8 @@ namespace Coderr.Server.Domain.Core.Incidents
     /// </summary>
     public interface IIncidentRepository
     {
+        Task<IList<Incident>> GetAllAsync(IEnumerable<int> incidentIds);
+
         /// <summary>
         ///     Get incident
         /// </summary>

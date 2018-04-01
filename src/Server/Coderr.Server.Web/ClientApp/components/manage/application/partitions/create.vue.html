@@ -1,0 +1,49 @@
+<template>
+    <div class="mt-4 PartitionVue">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">Create a new partition</div>
+                    <div class="card-body">
+                        <form @submit.prevent="createPartition">
+                            <div class="form-group">
+                                <label>
+                                    Title
+                                </label>
+                                <input type="text" v-model="title" class="form-control" placeholder="Title (display name)" required="required" />
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    Partition key
+                                </label>
+                                <input type="text" v-model="partitionKey" class="form-control" placeholder=""  required="required" />
+                                <span class="form-text">The property name in the client library when reporting errors. Read this <a href="https://coderr.io/documentation/client/partitions/">guide</a> for more information.<br/>If the partition is named "Users", the key would typically be "userId".</span>
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    Number of items (Optional)
+                                </label>
+                                <input type="number" v-model="numberOfItems" class="form-control" placeholder="" />
+                                <span class="form-text">If the partition is "Users", then this is the amount of users that you have in your system. The quality of Coderr's prioritization is much better when this field is specified.</span>
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    Weight
+                                </label>
+                                <input type="number" v-model="weight" class="form-control" value="1" placeholder=""  required="required"  />
+                                <span class="form-text">The weight compared to other partitions. Those with more weight is more important than those with less weight.<br />1 = default</span>
+                            </div>
+                            <div>
+                                <input type="submit" class="btn btn-primary btn-block" value="Create" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+
+<style src="./create.css"></style>
+<script src="./create.ts"></script>

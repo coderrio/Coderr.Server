@@ -1,5 +1,6 @@
 ﻿using System;
-using Griffin.Container;
+using Coderr.Server.Abstractions.Boot;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 
 namespace Coderr.Server.ReportAnalyzer.Tagging.Identifiers
 {

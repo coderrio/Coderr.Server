@@ -51,6 +51,9 @@ export default class IncidentSearchComponent extends Vue {
     contextCollectionProperty: string = '';
     contextCollectionPropertyValue: string = '';
 
+    //for the close dialog
+    currentIncidentId = 0;
+
     created() {
         //fetch in created since we do not need the DOM
         var promise = new Promise<any>(resolve => {
@@ -96,7 +99,6 @@ export default class IncidentSearchComponent extends Vue {
         this.readyPromises$.push(readyPromise);
         Promise.all(this.readyPromises$)
             .then(resolve => {
-                console.log(this, this.$route, this.$route.params);
                 if (this.$route.params.applicationId) {
                     var id = parseInt(this.$route.params.applicationId, 10);
                     if (id > 0) {
@@ -105,6 +107,7 @@ export default class IncidentSearchComponent extends Vue {
                 }
                 this.highlightActiveApps();
                 this.highlightActiveTags();
+                this.highlightIncidentState(this.incidentState);
                 this.search(true);
             });
     }
@@ -188,7 +191,7 @@ export default class IncidentSearchComponent extends Vue {
 
         AppRoot.Instance.apiClient.query<FindIncidentsResult>(query)
             .then(result => {
-                this.incidents.length = 0;
+                this.incidents.splice(0);
                 result.Items.forEach(item => {
                     var entity: Incident = {
                         ApplicationId: parseInt(item.ApplicationId, 10),
@@ -201,6 +204,7 @@ export default class IncidentSearchComponent extends Vue {
                     };
                     this.incidents.push(entity);
                 });
+
             });
     }
 
@@ -212,51 +216,16 @@ export default class IncidentSearchComponent extends Vue {
     }
 
     close(incidentId: number) {
-        AppRoot.modal({
-            title: 'Close incident',
-            contentId: '#CloseBody',
-        }).then(x => {
-            var modal = <HTMLDivElement>document.getElementById(x.modalId);
-            var area = <HTMLTextAreaElement>modal.querySelector('textarea');
-            var reason = area.value;
-
-            this.incidentService$.close(incidentId, reason)
-                .then(numberOfFollowers => {
-                    AppRoot.notify('Incident have been closed');
-
-                    if (numberOfFollowers <= 0)
-                        return;
-
-                    AppRoot.modal({
-                        title: 'Incident have followers',
-                        htmlContent:
-                        'Incident have users following it. We strongly recommend that you use Coderr to send them a status update saying that the error is corrected.',
-                        submitButtonText: 'Draft an update'
-                    }).then(result => {
-                        this.$router.push({
-                            name: 'incidentStatusUpdate',
-                            params: {
-                                'incidentId': incidentId.toString(),
-                                'closed': 'true'
-                            }
-                        });
-                    });
-
-                });
-        })
+        this.currentIncidentId = incidentId;
+        AppRoot.Instance.incidentService.showClose(incidentId, "CloseBody")
+            .then(x => {
+                //this.$router.push({ name: "analyzeHome" });
+            });
 
     }
 
     private toggleState(state: number, e: MouseEvent) {
-        var buttons = document.querySelectorAll('#IncidentSearchView .state button');
-        for (var i = 0; i < buttons.length; ++i) {
-            buttons[i].classList.add('btn-light');
-            buttons[i].classList.remove('btn-dark');
-        }
-
-        var elem = <HTMLElement>e.target;
-        elem.classList.add('btn-dark');
-        this.incidentState = state;
+        this.highlightIncidentState(state);
     }
 
     private highlightActiveTags() {
@@ -273,6 +242,22 @@ export default class IncidentSearchComponent extends Vue {
             elem.classList.remove('btn-light');
             elem.classList.add('btn-dark');
         });
+    }
+
+    private highlightIncidentState(incidentState: number) {
+        var buttons = document.querySelectorAll('#IncidentSearchView .state button');
+        for (var i = 0; i < buttons.length; ++i) {
+            var button = <HTMLButtonElement>buttons[i];
+
+            button.classList.add('btn-light');
+            button.classList.remove('btn-dark');
+
+            if (button.value === incidentState.toString()) {
+                button.classList.add('btn-dark');
+            }
+        }
+
+        this.incidentState = incidentState;
     }
 
 

@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Threading.Tasks;
+using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Domain.Core.Incidents;
 using Coderr.Server.SqlServer.Tools;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 
@@ -45,8 +47,8 @@ namespace Coderr.Server.SqlServer.Core.Incidents
                 cmd.AddParameter("Description", incident.Description);
                 cmd.AddParameter("State", (int)incident.State);
                 cmd.AddParameter("AssignedTo", incident.AssignedToId);
-                cmd.AddParameter("AssignedAtUtc", incident.AssignedAtUtc);
-                cmd.AddParameter("solvedAt", incident.SolvedAtUtc);
+                cmd.AddParameter("AssignedAtUtc", (object)incident.AssignedAtUtc ?? DBNull.Value);
+                cmd.AddParameter("solvedAt", incident.SolvedAtUtc.ToDbNullable());
                 cmd.AddParameter("IgnoringReportsSinceUtc", incident.IgnoringReportsSinceUtc.ToDbNullable());
                 cmd.AddParameter("IgnoringRequestedBy", incident.IgnoringRequestedBy);
                 cmd.AddParameter("Solution",
@@ -65,6 +67,21 @@ namespace Coderr.Server.SqlServer.Core.Incidents
                 cmd.AddParameter("ApplicationId", applicationId);
                 var result = (int) await cmd.ExecuteScalarAsync();
                 return result;
+            }
+        }
+
+        public Task<IList<Incident>> GetAllAsync(IEnumerable<int> incidentIds)
+        {
+            if (incidentIds == null) throw new ArgumentNullException(nameof(incidentIds));
+            var ids = string.Join(",", incidentIds);
+            if (ids == "")
+                throw new ArgumentException("No incident IDs were specified.", nameof(incidentIds));
+
+            using (var cmd = (DbCommand)_uow.CreateCommand())
+            {
+                cmd.CommandText =
+                    $"SELECT * FROM Incidents WHERE Id IN ({ids})";
+                return cmd.ToListAsync(new IncidentMapper());
             }
         }
 

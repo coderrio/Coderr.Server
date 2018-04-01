@@ -17,6 +17,7 @@ export default class AnalyzeIncidentComponent extends Vue {
     private team: ApplicationMember[] = [];
 
     name = '';
+    incidentId = 0;
     incident = new GetIncidentResult();
     isEmpty: boolean = false;
     reports: GetReportListResultItem[] = [];
@@ -42,7 +43,7 @@ export default class AnalyzeIncidentComponent extends Vue {
             let incidentId = parseInt(this.$route.params.incidentId, 10);
             this.loadIncident(incidentId);
         }
-        
+
     }
 
     @Watch('$route.params.incidentId')
@@ -78,7 +79,7 @@ export default class AnalyzeIncidentComponent extends Vue {
     }
 
     private loadIncident(id: number) {
-        console.log('loading')
+        this.incidentId = id;
         AppRoot.Instance.incidentService.get(id)
             .then(incident => {
                 this.incident = incident;
@@ -118,6 +119,10 @@ export default class AnalyzeIncidentComponent extends Vue {
             });
     }
 
+    private embedScreenshots() {
+
+    }
+
     private loadCollection(name: string) {
         if (name === AnalyzeIncidentComponent.selectCollectionTitle || name === '') {
             name = this.currentReport.ContextCollections[0].Name;
@@ -125,11 +130,26 @@ export default class AnalyzeIncidentComponent extends Vue {
 
         for (var i = 0; i < this.currentReport.ContextCollections.length; i++) {
             var col = this.currentReport.ContextCollections[i];
+            for (var j = 0; j < col.Properties.length; j++) {
+                var prop = col.Properties[j];
+                prop.Value = prop.Value.replace(/;;/g, "\r\n</br>");
+            }
+
             if (col.Name === name) {
                 this.currentCollection = col;
                 this.currentCollectionName = name;
+                if (name === "Screenshots") {
+                    for (var j = 0; j < this.currentCollection.Properties.length; j++) {
+                        var kvp = this.currentCollection.Properties[j];
+                        if (kvp.Value.substr(0, 1) !== '<') {
+                            kvp.Value = '<img src="data:image/png;base64, ' + kvp.Value + '" />';
+                        }
+                    }
+                }
                 return;
             }
+
+
         }
 
     }

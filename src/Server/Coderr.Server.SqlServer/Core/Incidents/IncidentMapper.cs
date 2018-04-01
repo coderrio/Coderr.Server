@@ -20,6 +20,10 @@ namespace Coderr.Server.SqlServer.Core.Incidents
                 .ToColumnValue(DbConverters.ToNullableSqlDate)
                 .ToPropertyValue(DbConverters.ToEntityDate);
 
+            Property(x => x.ReopenedAtUtc)
+                .ToColumnValue(DbConverters.ToNullableSqlDate)
+                .ToPropertyValue(DbConverters.ToEntityDate);
+
             Property(x => x.Solution)
                 .ToColumnValue(DbConverters.SerializeEntity)
                 .ToPropertyValue(EntitySerializer.Deserialize<IncidentSolution>);

@@ -11,7 +11,7 @@
         New = 0,
 
         /// <summary>
-        ///     Incident should be fixed
+        ///     Incident should be fixed (assigned)
         /// </summary>
         Active = 1,
 
@@ -29,6 +29,11 @@
         /// <summary>
         ///     Incident have been corrected.
         /// </summary>
-        Closed = 3
+        Closed = 3,
+
+        /// <summary>
+        /// We received a new error report on a closed incident (used in history table)
+        /// </summary>
+        ReOpened = 4,
     }
 }

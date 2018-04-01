@@ -1,8 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
-using IConfiguration = Coderr.Server.Infrastructure.Boot.IConfiguration;
-using IConfigurationSection = Coderr.Server.Infrastructure.Boot.IConfigurationSection;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Extensions.Configuration;
+using IConfiguration = Coderr.Server.Abstractions.Boot.IConfiguration;
+using IConfigurationSection = Coderr.Server.Abstractions.Boot.IConfigurationSection;
 
-namespace Coderr.Server.Web2.Boot.Adapters
+namespace Coderr.Server.Web.Boot.Adapters
 {
     public class ConfigurationWrapper : IConfiguration
     {
@@ -14,6 +16,11 @@ namespace Coderr.Server.Web2.Boot.Adapters
         }
 
         public string this[string name] => _config[name];
+
+        public IEnumerable<IConfigurationSection> GetChildren()
+        {
+            return _config.GetChildren().Select(x => new ConfigurationSectionWrapper(x));
+        }
 
         public IConfigurationSection GetSection(string name)
         {

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Coderr.Server.Api.Core.Applications.Queries;
 using Coderr.Server.Domain.Core.Incidents;
 using DotNetCqs;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 
 namespace Coderr.Server.SqlServer.Core.Applications.Queries

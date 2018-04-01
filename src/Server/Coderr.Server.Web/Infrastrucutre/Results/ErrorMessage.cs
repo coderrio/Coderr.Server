@@ -1,4 +1,4 @@
-﻿namespace Coderr.Server.Web2.Infrastrucutre.Results
+﻿namespace Coderr.Server.Web.Infrastrucutre.Results
 {
     public class ErrorMessage
     {

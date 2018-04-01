@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using Coderr.Server.Abstractions.Boot;
+using Coderr.Server.Abstractions.Incidents;
 using Coderr.Server.Api.Core.Incidents.Queries;
 using Coderr.Server.Domain.Modules.ApplicationVersions;
-using Coderr.Server.PluginApi.Incidents;
-using Griffin.Container;
 
 namespace Coderr.Server.App.Modules.Versions
 {
@@ -18,15 +17,15 @@ namespace Coderr.Server.App.Modules.Versions
             _repository = repository;
         }
 
-        public async Task AssignAsync(int incidentId, ICollection<QuickFact> facts)
+        public async Task CollectAsync(QuickFactContext context)
         {
-            var versions = await _repository.FindForIncidentAsync(incidentId);
+            var versions = await _repository.FindForIncidentAsync(context.IncidentId);
             if (!versions.Any())
             {
                 return;
             }
 
-            facts.Add(new QuickFact
+            context.CollectedFacts.Add(new QuickFact
             {
                 Title = "Versions",
                 Description = "Application versions that this incident have been detected in.",

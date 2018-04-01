@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Coderr.Server.Domain.Modules.Tags;
 using Coderr.Server.ReportAnalyzer.Abstractions.Incidents;
 using DotNetCqs;
-using Griffin.Container;
 using log4net;
 
 namespace Coderr.Server.ReportAnalyzer.Tagging.Handlers

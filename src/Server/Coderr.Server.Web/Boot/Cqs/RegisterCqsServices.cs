@@ -7,12 +7,12 @@ using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using codeRR.Client;
+using Coderr.Server.Abstractions.Boot;
+using Coderr.Server.Abstractions.Security;
 using Coderr.Server.App.Core.Accounts;
-using Coderr.Server.Infrastructure.Boot;
 using Coderr.Server.Infrastructure.Messaging;
-using Coderr.Server.Infrastructure.Security;
 using Coderr.Server.SqlServer;
-using Coderr.Server.Web2.Boot.Adapters;
+using Coderr.Server.Web.Boot.Adapters;
 using DotNetCqs;
 using DotNetCqs.Bus;
 using DotNetCqs.DependencyInjection;
@@ -24,9 +24,9 @@ using log4net;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 
-namespace Coderr.Server.Web2.Boot.Cqs
+namespace Coderr.Server.Web.Boot.Cqs
 {
-    public class RegisterCqsServices : ISystemModule
+    public class RegisterCqsServices : IAppModule
     {
         private readonly ILog _log = LogManager.GetLogger(typeof(RegisterCqsServices));
         private readonly ClaimsPrincipal _systemPrincipal;
@@ -39,7 +39,7 @@ namespace Coderr.Server.Web2.Boot.Cqs
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Role, CoderrClaims.RoleSystem),
+                new Claim(ClaimTypes.Role, CoderrRoles.System),
                 new Claim(ClaimTypes.Name, "System")
             };
             var identity = new ClaimsIdentity(claims);
@@ -52,10 +52,12 @@ namespace Coderr.Server.Web2.Boot.Cqs
         public void Configure(ConfigurationContext context)
         {
             var assembly = typeof(IAccountService).Assembly;
-            ConfigureAssembly(assembly, context);
+            context.Services.RegisterContainerServices(assembly);
+            context.Services.RegisterMessageHandlers(assembly);
 
             assembly = typeof(SqlServerTools).Assembly;
-            ConfigureAssembly(assembly, context);
+            context.Services.RegisterContainerServices(assembly);
+            context.Services.RegisterMessageHandlers(assembly);
 
             context.Services.AddSingleton<IMessageQueueProvider>(CreateQueueProvider(context));
             context.Services.AddSingleton<IMessageBus>(x =>
@@ -87,19 +89,6 @@ namespace Coderr.Server.Web2.Boot.Cqs
             _messagingQueueListenerTask.Wait(10000);
         }
 
-
-        private void ConfigureAssembly(Assembly assembly, ConfigurationContext context)
-        {
-            foreach (var type in assembly.GetTypes())
-            {
-                var ifs = type.GetInterfaces();
-                var ourInterface = ifs.FirstOrDefault(x => x.Name.Contains("QueryHandler"))
-                                   ?? ifs.FirstOrDefault(x => x.Name.Contains("MessageHandler"));
-                if (ourInterface != null)
-                    context.Services.AddScoped(ourInterface, type);
-            }
-        }
-
         private QueueListener ConfigureQueueListener(ConfigurationContext context, string inboundQueueName,
             string outboundQueueName)
         {
@@ -122,6 +111,7 @@ namespace Coderr.Server.Web2.Boot.Cqs
             };
             listener.ScopeCreated += (sender, args) =>
             {
+                args.Scope.ResolveDependency<IPrincipalAccessor>().First().Principal = args.Principal;
                 _log.Debug(inboundQueueName + " Running " + args.Message.Body + ", Credentials: " +
                            args.Principal.ToFriendlyString());
             };
@@ -201,15 +191,7 @@ namespace Coderr.Server.Web2.Boot.Cqs
             var invoker = new MessageInvoker(arg);
             invoker.HandlerMissing += (sender, args) =>
             {
-                try
-                {
-                    throw new NoHandlerRegisteredException(
-                        "Failed to find a handler for " + args.Message.Body.GetType());
-                }
-                catch (Exception ex)
-                {
-                    Err.Report(ex, new {args.Message});
-                }
+               _log.Warn("Handler missing for " + args.Message.Body.GetType());
             };
             invoker.HandlerInvoked += (sender, args) =>
             {

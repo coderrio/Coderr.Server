@@ -6,7 +6,7 @@ using Coderr.Server.ReportAnalyzer.Abstractions.Incidents;
 using Coderr.Server.ReportAnalyzer.Similarities.Adapters.Runner;
 using Coderr.Server.ReportAnalyzer.Similarities.Handlers.Processing;
 using DotNetCqs;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using log4net;
 
 namespace Coderr.Server.ReportAnalyzer.Similarities.Handlers

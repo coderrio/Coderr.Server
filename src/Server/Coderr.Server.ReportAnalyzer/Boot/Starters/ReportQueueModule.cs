@@ -5,11 +5,12 @@ using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using codeRR.Client;
-using Coderr.Server.Infrastructure.Boot;
+using Coderr.Server.Abstractions.Security;
 using Coderr.Server.Infrastructure.Messaging;
-using Coderr.Server.Infrastructure.Security;
+using Coderr.Server.ReportAnalyzer.Abstractions;
+using Coderr.Server.ReportAnalyzer.Abstractions.Boot;
 using Coderr.Server.ReportAnalyzer.Boot.Adapters;
-using DotNetCqs;
+using DotNetCqs.Bus;
 using DotNetCqs.DependencyInjection;
 using DotNetCqs.MessageProcessor;
 using DotNetCqs.Queues;
@@ -20,14 +21,14 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Coderr.Server.ReportAnalyzer.Boot.Starters
 {
-    internal class ReportQueueModule
+    internal class ReportQueueModule : IReportAnalyzerModule
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(ReportQueueModule));
         private readonly ClaimsPrincipal _systemPrincipal;
+        private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
         private QueueListener _eventProcessor;
         private IMessageQueueProvider _messageQueueProvider;
         private QueueListener _reportListener;
-        private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
         public ReportQueueModule()
         {
@@ -39,6 +40,18 @@ namespace Coderr.Server.ReportAnalyzer.Boot.Starters
             ConfigureMessageQueueProvider(context);
             ConfigureListeners(context);
             ConfigureMessageHandlers(context);
+            CreateDomainQueue(context);
+        }
+
+        public void Start(StartContext context)
+        {
+            _reportListener.RunAsync(_cancellationTokenSource.Token).ContinueWith(HaveRun);
+            _eventProcessor.RunAsync(_cancellationTokenSource.Token).ContinueWith(HaveRun);
+        }
+
+        public void Stop()
+        {
+            _cancellationTokenSource.Cancel();
         }
 
         private void ConfigureListeners(ConfigurationContext context)
@@ -49,14 +62,8 @@ namespace Coderr.Server.ReportAnalyzer.Boot.Starters
 
         private void ConfigureMessageHandlers(ConfigurationContext context)
         {
-            var types = Assembly.GetExecutingAssembly().GetTypes()
-                .Where(y => y.GetInterfaces().Any(x => x.Name.Contains("IMessageHandler")))
-                .ToList();
-            foreach (var type in types)
-            {
-                context.Services.AddScoped(type, type);
-                context.Services.AddScoped(type.GetInterfaces()[0], type);
-            }
+            var assembly = Assembly.GetExecutingAssembly();
+            context.Services.RegisterMessageHandlers(assembly);
         }
 
         private void ConfigureMessageQueueProvider(ConfigurationContext context)
@@ -88,8 +95,8 @@ namespace Coderr.Server.ReportAnalyzer.Boot.Starters
             };
             listener.ScopeCreated += (sender, args) =>
             {
-                args.Scope.ResolveDependency<ScopedPrincipal>().First().Principal = args.Principal;
-                
+                args.Scope.ResolveDependency<IPrincipalAccessor>().First().Principal = args.Principal;
+
                 _logger.Debug(inboundQueueName + " Running " + args.Message.Body + ", Credentials: " +
                               args.Principal.ToFriendlyString());
             };
@@ -100,15 +107,35 @@ namespace Coderr.Server.ReportAnalyzer.Boot.Starters
 
                 var all = args.Scope.ResolveDependency<IAdoNetUnitOfWork>().ToList();
                 all[0].SaveChanges();
+
+                var queue = (DomainQueueWrapper) args.Scope.ResolveDependency<IDomainQueue>().First();
+                queue.SaveChanges();
             };
             listener.MessageInvokerFactory = MessageInvokerFactory;
             return listener;
         }
 
+        /// <summary>
+        ///     Writes to the message queue that the application is processing (publishing in the other bounded context)
+        /// </summary>
+        /// <param name="context"></param>
+        private void CreateDomainQueue(ConfigurationContext context)
+        {
+            context.Services.AddScoped<IDomainQueue>(x =>
+            {
+                var queue = _messageQueueProvider.Open("Messaging");
+                var messageBus = new ScopedMessageBus(queue);
+                return new DomainQueueWrapper(messageBus);
+            });
+        }
+
 
         private void DiagnosticLog(LogLevel level, string queueNameOrMessageName, string message)
         {
-            
+        }
+
+        private void HaveRun(Task obj)
+        {
         }
 
         private IMessageInvoker MessageInvokerFactory(IHandlerScope arg)
@@ -116,15 +143,8 @@ namespace Coderr.Server.ReportAnalyzer.Boot.Starters
             var invoker = new MessageInvoker(arg);
             invoker.HandlerMissing += (sender, args) =>
             {
-                try
-                {
-                    throw new NoHandlerRegisteredException(
-                        "Failed to find a handler for " + args.Message.Body.GetType());
-                }
-                catch (Exception ex)
-                {
-                    Err.Report(ex, new {args.Message});
-                }
+                _logger.Warn(
+                    "Failed to find a handler for " + args.Message.Body.GetType());
             };
             invoker.HandlerInvoked += (sender, args) =>
             {
@@ -142,22 +162,6 @@ namespace Coderr.Server.ReportAnalyzer.Boot.Starters
                     args.Exception);
             };
             return invoker;
-        }
-
-        public void Start(StartContext context)
-        {
-            _reportListener.RunAsync(_cancellationTokenSource.Token).ContinueWith(HaveRun);
-            _eventProcessor.RunAsync(_cancellationTokenSource.Token).ContinueWith(HaveRun);
-        }
-
-        private void HaveRun(Task obj)
-        {
-            
-        }
-
-        public void Stop()
-        {
-            _cancellationTokenSource.Cancel();
         }
     }
 }

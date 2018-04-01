@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using System.Security;
 using System.Threading.Tasks;
+using Coderr.Server.Abstractions.Config;
+using Coderr.Server.Abstractions.Security;
 using Coderr.Server.Api.Core.Applications.Events;
 using Coderr.Server.Api.Core.Invitations.Commands;
 using Coderr.Server.Api.Core.Messaging;
@@ -9,9 +11,8 @@ using Coderr.Server.Domain.Core.Applications;
 using Coderr.Server.Domain.Core.User;
 using Coderr.Server.Infrastructure.Configuration;
 using Coderr.Server.Infrastructure.Security;
-using Coderr.Server.PluginApi.Config;
 using DotNetCqs;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using log4net;
 
 namespace Coderr.Server.App.Core.Invitations.CommandHandlers

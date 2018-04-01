@@ -1,19 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using Coderr.Server.SqlServer.ReportAnalyzer;
 using Griffin.Data.Mapper;
 using log4net;
 using log4net.Config;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 
-namespace Coderr.Server.Web2
+namespace Coderr.Server.Web
 {
     public class Program
     {

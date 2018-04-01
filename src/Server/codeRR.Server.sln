@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coderr.Server.Api.Client.Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coderr.Server.ReportAnalyzer.Tests", "Coderr.Server.ReportAnalyzer.Tests\Coderr.Server.ReportAnalyzer.Tests.csproj", "{421C787A-079B-4A88-A6C5-1ACD9A7C6A7E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coderr.Server.PluginApi", "Coderr.Server.PluginApi\Coderr.Server.PluginApi.csproj", "{47A845A0-FCC2-46F1-A553-0F7110BDDBEA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coderr.Server.Abstractions", "Coderr.Server.Abstractions\Coderr.Server.Abstractions.csproj", "{47A845A0-FCC2-46F1-A553-0F7110BDDBEA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coderr.Server.ReportAnalyzer.Abstractions", "Coderr.Server.ReportAnalyzer.Abstractions\Coderr.Server.ReportAnalyzer.Abstractions.csproj", "{CA835337-B8F6-447F-8144-F69977363C45}"
 EndProject

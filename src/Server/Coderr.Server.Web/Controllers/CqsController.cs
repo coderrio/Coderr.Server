@@ -2,35 +2,32 @@
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 using System.Security.Authentication;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Coderr.Server.Abstractions.Security;
 using Coderr.Server.Api.Core.Applications.Commands;
 using Coderr.Server.Api.Core.Applications.Queries;
 using Coderr.Server.Infrastructure.Messaging;
-using Coderr.Server.Infrastructure.Security;
-using Coderr.Server.Web2.Boot.Cqs;
-using Coderr.Server.Web2.Infrastrucutre.Results;
-using Coderr.Server.Web2.Models.Users;
+using Coderr.Server.Web.Boot.Cqs;
+using Coderr.Server.Web.Infrastrucutre.Results;
+using Coderr.Server.Web.Models.Users;
 using DotNetCqs;
 using Griffin;
 using Griffin.Net.Protocols.Http;
 using log4net;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Authorization;
 
-namespace Coderr.Server.Web2.Controllers
+namespace Coderr.Server.Web.Controllers
 {
     [Authorize]
     public class CqsController : Controller
     {
-        private static readonly CqsObjectMapper _cqsObjectMapper = new CqsObjectMapper();
+        internal static readonly CqsObjectMapper _cqsObjectMapper = new CqsObjectMapper();
         private static readonly MessagingSerializer _serializer = new MessagingSerializer();
         private static readonly MethodInfo _queryMethod;
         private static readonly MethodInfo _sendMethod;
@@ -150,7 +147,7 @@ namespace Coderr.Server.Web2.Controllers
                 if (cqsReplyObject != null)
                     RestrictOnApplicationId(cqsReplyObject);
 
-                await HandleSecurityPrincipalUpdates();
+                //await HandleSecurityPrincipalUpdates();
                 _logger.Debug(".. completed " + cqsObject.GetType().Name);
             }
             catch (AggregateException e1)
@@ -217,21 +214,21 @@ namespace Coderr.Server.Web2.Controllers
             return pos == -1 ? msg : msg.Substring(0, pos);
         }
 
-        private async Task HandleSecurityPrincipalUpdates()
-        {
-            var gotUpdate = User.Identities.First().TryRemoveClaim(CoderrClaims.UpdateIdentity);
+        //private async Task HandleSecurityPrincipalUpdates()
+        //{
+        //    var gotUpdate = User.Identities.First().TryRemoveClaim(CoderrClaims.UpdateIdentity);
 
-            //to be sure that there are no other points in the flow that added the same claim
-            while (User.Identities.First().TryRemoveClaim(CoderrClaims.UpdateIdentity))
-            {
-            }
+        //    //to be sure that there are no other points in the flow that added the same claim
+        //    while (User.Identities.First().TryRemoveClaim(CoderrClaims.UpdateIdentity))
+        //    {
+        //    }
 
-            if (gotUpdate)
-            {
-                var usr = User;
-                SignIn(usr, CookieAuthenticationDefaults.AuthenticationScheme);
-            }
-        }
+        //    if (gotUpdate)
+        //    {
+        //        var usr = User;
+        //        SignIn(usr, CookieAuthenticationDefaults.AuthenticationScheme);
+        //    }
+        //}
 
         private async Task InvokeMessage(object dto)
         {
@@ -271,7 +268,7 @@ namespace Coderr.Server.Web2.Controllers
         {
             if (User.Identity.AuthenticationType != "ApiKey")
                 return;
-            if (User.IsInRole(CoderrClaims.RoleSysAdmin))
+            if (User.IsInRole(CoderrRoles.SysAdmin))
                 return;
 
             var prop = cqsObject.GetType().GetProperty("ApplicationId");

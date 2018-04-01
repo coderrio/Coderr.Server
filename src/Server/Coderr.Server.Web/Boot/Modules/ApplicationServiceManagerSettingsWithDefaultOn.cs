@@ -1,8 +1,8 @@
 ﻿using System;
-using Coderr.Server.Infrastructure.Boot;
+using Coderr.Server.Abstractions.Boot;
 using Griffin.ApplicationServices;
 
-namespace Coderr.Server.Web2.Boot.Modules
+namespace Coderr.Server.Web.Boot.Modules
 {
     /// <summary>
     ///     The default <c>AppConfigServiceSettings</c> will report off if the key is missing. We want the opposite.

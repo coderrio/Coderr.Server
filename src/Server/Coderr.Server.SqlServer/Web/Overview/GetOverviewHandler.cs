@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Coderr.Server.Abstractions.Security;
 using Coderr.Server.Api.Web.Overview.Queries;
 using Coderr.Server.Domain.Core.Incidents;
 using Coderr.Server.Infrastructure.Security;
 using DotNetCqs;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 
 namespace Coderr.Server.SqlServer.Web.Overview
@@ -75,7 +76,8 @@ namespace Coderr.Server.SqlServer.Web.Overview
                 ApplicationIds = string.Join(",", appIds);
             }
 
-           
+           if (!ApplicationIds.Any())
+               return new GetOverviewResult();
 
             if (query.NumberOfDays == 1)
                 return await GetTodaysOverviewAsync(query);

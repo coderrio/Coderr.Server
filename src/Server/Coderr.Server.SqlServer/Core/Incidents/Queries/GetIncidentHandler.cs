@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Coderr.Server.Abstractions.Incidents;
 using Coderr.Server.Api.Core.Incidents.Queries;
-using Coderr.Server.PluginApi.Incidents;
 using DotNetCqs;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 using log4net;
@@ -68,9 +68,10 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
 
             var contextData = new List<HighlightedContextData>();
             var solutions = new List<SuggestedIncidentSolution>();
+            var quickFactContext = new QuickFactContext(result.ApplicationId, query.IncidentId, facts);
             foreach (var provider in _quickfactProviders)
             {
-                await provider.AssignAsync(query.IncidentId, facts);
+                await provider.CollectAsync(quickFactContext);
             }
             foreach (var provider in _highlightedContextDataProviders)
             {

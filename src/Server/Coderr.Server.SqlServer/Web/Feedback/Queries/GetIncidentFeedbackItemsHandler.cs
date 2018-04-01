@@ -4,7 +4,7 @@ using System.Data.Common;
 using System.Threading.Tasks;
 using Coderr.Server.Api.Web.Feedback.Queries;
 using DotNetCqs;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 
 namespace Coderr.Server.SqlServer.Web.Feedback.Queries

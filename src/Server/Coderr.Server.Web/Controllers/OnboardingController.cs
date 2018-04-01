@@ -3,8 +3,8 @@ using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Coderr.Server.Abstractions.Config;
 using Coderr.Server.Infrastructure.Configuration;
-using Coderr.Server.PluginApi.Config;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Coderr.Server.Web.Controllers

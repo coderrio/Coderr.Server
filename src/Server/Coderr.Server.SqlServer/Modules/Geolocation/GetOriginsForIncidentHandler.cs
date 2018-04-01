@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
+using System.Data.Common;
 using System.Threading.Tasks;
 using Coderr.Server.Api.Modules.ErrorOrigins.Queries;
 using DotNetCqs;
-using Griffin.Container;
 using Griffin.Data;
-using Griffin.Data.Mapper;
 
 namespace Coderr.Server.SqlServer.Modules.Geolocation
 {
@@ -35,15 +34,32 @@ namespace Coderr.Server.SqlServer.Modules.Geolocation
         /// </returns>
         public async Task<GetOriginsForIncidentResult> HandleAsync(IMessageContext context, GetOriginsForIncident query)
         {
-            var ourItems = await _unitOfWork.ToListAsync<ErrorOrginListItem>("IncidentId = @0", query.IncidentId);
-            var items = from x in ourItems
-                select new GetOriginsForIncidentResultItem
+            using (var cmd = (DbCommand) _unitOfWork.CreateCommand())
+            {
+                cmd.CommandText = @"SELECT Longitude, Latitude, count(*) 
+                                    FROM ErrorOrigins eo
+                                    JOIN ErrorReportOrigins ON (eo.Id = ErrorReportOrigins.ErrorOriginId)
+                                    WHERE IncidentId = @id
+                                    GROUP BY IncidentId, Longitude, Latitude";
+                cmd.AddParameter("id", query.IncidentId);
+                using (var reader = await cmd.ExecuteReaderAsync())
                 {
-                    Longitude = x.Longitude,
-                    Latitude = x.Latitude,
-                    NumberOfErrorReports = x.NumberOfErrorReports
-                };
-            return new GetOriginsForIncidentResult {Items = items.ToArray()};
+                    var items = new List<GetOriginsForIncidentResultItem>();
+                    while (await reader.ReadAsync())
+                    {
+                        var item = new GetOriginsForIncidentResultItem
+                        {
+                            Longitude = (double) reader.GetDecimal(0),
+                            Latitude = (double) reader.GetDecimal(1),
+                            NumberOfErrorReports = reader.GetInt32(2)
+                        };
+                        items.Add(item);
+                    }
+
+                    return new GetOriginsForIncidentResult {Items = items.ToArray()};
+                    ;
+                }
+            }
         }
     }
 }

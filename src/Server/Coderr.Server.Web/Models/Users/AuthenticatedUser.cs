@@ -1,6 +1,6 @@
 ﻿using Coderr.Server.Api.Core.Applications;
 
-namespace Coderr.Server.Web2.Models.Users
+namespace Coderr.Server.Web.Models.Users
 {
     public class AuthenticatedUser
     {

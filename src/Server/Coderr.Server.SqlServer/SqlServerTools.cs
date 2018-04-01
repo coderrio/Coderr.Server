@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
+using Coderr.Server.Abstractions;
 using Coderr.Server.Infrastructure;
 
 namespace Coderr.Server.SqlServer
@@ -78,11 +79,5 @@ namespace Coderr.Server.SqlServer
         }
 
         
-    }
-
-    public interface IConnectionFactory
-    {
-        IDbConnection OpenConnection();
-        bool IsConfigured { get; set; }
     }
 }

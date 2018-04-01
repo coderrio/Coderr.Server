@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Security;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Coderr.Server.Abstractions.Security;
 using Coderr.Server.Api.Core.Applications.Events;
 using Coderr.Server.Api.Core.Invitations.Commands;
 using Coderr.Server.Api.Core.Messaging.Commands;
@@ -149,7 +150,7 @@ namespace Coderr.Server.App.Tests.Core.Applications.Commands
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Role, CoderrClaims.RoleSysAdmin),
+                new Claim(ClaimTypes.Role, CoderrRoles.SysAdmin),
                 new Claim(CoderrClaims.ApplicationAdmin, "1")
             };
             var identity = new ClaimsIdentity(claims);

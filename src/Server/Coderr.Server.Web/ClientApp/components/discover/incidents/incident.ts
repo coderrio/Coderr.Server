@@ -16,6 +16,7 @@ export default class IncidentComponent extends Vue {
     incidentId: number;
     incident: GetIncidentResult = new GetIncidentResult;
     isIgnored: boolean = false;
+    isClosed = false;
 
     team: ApplicationMember[] = [];
     created() {
@@ -25,6 +26,7 @@ export default class IncidentComponent extends Vue {
             .then(result => {
                 this.incident = result;
                 this.isIgnored = result.IsIgnored;
+                this.isClosed = result.IsSolved;
                 result.Facts = result.Facts.filter(v => v.Value !== '0');
 
                 this.displayChart(result.DayStatistics);
@@ -40,11 +42,18 @@ export default class IncidentComponent extends Vue {
     }
 
     ignore() {
-        AppRoot.Instance.incidentService.ignore(this.incidentId)
-            .then(x => {
-                AppRoot.notify('Incident marked as ignored.');
-                this.isIgnored = true;
-            });
+        AppRoot.modal({
+            title: "Ignore incident",
+            htmlContent:
+                "<p>This feature will hide incident from the search result and throw away all future error reports without analyzing them.</p><p><em>You can still find the incidents by explictly searching for ignored incidents on the search page.</em></p>",
+            submitButtonText: "Ignore reports"
+        }).then(x => {
+            AppRoot.Instance.incidentService.ignore(this.incidentId)
+                .then(x => {
+                    AppRoot.notify('Incident marked as ignored.');
+                    this.isIgnored = true;
+                });
+        });
     }
 
     assignToMe() {
@@ -71,6 +80,13 @@ export default class IncidentComponent extends Vue {
 
     mounted() {
 
+    }
+
+    close() {
+        AppRoot.Instance.incidentService.showClose(this.incidentId, "CloseDialog")
+            .then(result => {
+                this.isClosed = true;
+            });
     }
 
     private displayChart(days: ReportDay[]) {

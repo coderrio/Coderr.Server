@@ -121,13 +121,12 @@ export class AppRoot {
             });
     }
 
-    async loadState(name: string, component: any): Promise<any> {
+    async loadState(name: string, component: any): Promise<boolean> {
         var result = <any>await localForage.getItem(name);
-        if (!result)
-            return;
+        if (!result) 
+            return false;
 
         var data = result;
-
         for (var key in data) {
             if (data.hasOwnProperty(key)) {
                 let value = data[key];
@@ -142,6 +141,8 @@ export class AppRoot {
 
             }
         }
+
+        return true;
     }
 
     private static modalIdCounter = 1;
@@ -230,14 +231,15 @@ export class AppRoot {
         bsModal.modal('show');
 
         return new Promise<IModalResult>((resolve, reject) => {
-            $('.btn-primary').click(e => {
+            $('form', bsModal).submit(e => {
+                e.preventDefault();
                 if (modalContext.onClosingModal) {
                     modalContext.onClosingModal(id, 'submit');
                 }
                 bsModal.modal('hide');
                 resolve({ pressedButtonName: 'submit', modalId: id, pressedButton: <HTMLButtonElement>e.target });
             });
-            $('.btn-secondary').click(e => {
+            $('.btn-secondary', bsModal).click(e => {
                 if (modalContext.onClosingModal) {
                     modalContext.onClosingModal(id, 'cancel');
                 }

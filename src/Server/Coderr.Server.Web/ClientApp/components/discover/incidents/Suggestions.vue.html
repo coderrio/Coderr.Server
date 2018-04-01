@@ -3,14 +3,15 @@
         <div class="col" v-for="suggestion in suggestions">
             <div class="card">
                 <div class="card-header">
-                    {{ suggestion.reason }}
+                    {{ suggestion.incidentName }} <span class="text-muted">[{{suggestion.exceptionType}}]</span>
                 </div>
                 <div class="card-body">
-                    {{suggestion.incidentName}}
+                    <strong>Motivation: </strong>
+                    {{suggestion.reason}}
                     <div v-if="!applicationId">
-                        <router-link :to="{name: 'discoverApplication', params: {applicationId: suggestion.applicationId}}">{{suggestion.applicationName}}</router-link>
+                        Reported for: <router-link :to="{name: 'discoverApplication', params: {applicationId: suggestion.applicationId}}">{{suggestion.applicationName}}</router-link>
                     </div>
-                    <hr />
+                    <hr/>
                     <button class="btn btn-primary" v-on:click.prevent="assignToMe(suggestion.incidentId)">Assign to me</button>
                     <router-link :to="{name: 'suggestIncident', params: {applicationId: suggestion.applicationId, incidentId: suggestion.incidentId}}" cslass="btn btn-light">View</router-link>
                 </div>

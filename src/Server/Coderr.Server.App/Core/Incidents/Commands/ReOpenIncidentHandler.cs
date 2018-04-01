@@ -2,13 +2,13 @@
 using System.Threading.Tasks;
 using Coderr.Server.Api.Core.Incidents.Commands;
 using Coderr.Server.Domain.Core.Incidents;
+using Coderr.Server.Domain.Core.Incidents.Events;
 using DotNetCqs;
-using Griffin.Container;
 
 namespace Coderr.Server.App.Core.Incidents.Commands
 {
     /// <summary>
-    /// Uses the incident repository and the domain entity to apply the change.
+    ///     Uses the incident repository and the domain entity to apply the change.
     /// </summary>
     public class ReOpenIncidentHandler : IMessageHandler<ReOpenIncident>
     {
@@ -24,7 +24,7 @@ namespace Coderr.Server.App.Core.Incidents.Commands
         }
 
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public async Task HandleAsync(IMessageContext context, ReOpenIncident command)
         {
             var incident = await _repository.GetAsync(command.IncidentId);

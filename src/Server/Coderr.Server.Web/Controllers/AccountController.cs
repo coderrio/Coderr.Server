@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Authentication;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Coderr.Server.Abstractions.Config;
+using Coderr.Server.Abstractions.Security;
 using Coderr.Server.Api.Core.Accounts.Commands;
 using Coderr.Server.Api.Core.Accounts.Requests;
 using Coderr.Server.Api.Core.Applications;
@@ -11,10 +14,9 @@ using Coderr.Server.Api.Core.Invitations.Queries;
 using Coderr.Server.App.Core.Accounts;
 using Coderr.Server.Infrastructure.Configuration;
 using Coderr.Server.Infrastructure.Security;
-using Coderr.Server.PluginApi.Config;
-using Coderr.Server.Web2.Infrastrucutre;
-using Coderr.Server.Web2.Models;
-using Coderr.Server.Web2.Models.Accounts;
+using Coderr.Server.Web.Boot;
+using Coderr.Server.Web.Infrastrucutre;
+using Coderr.Server.Web.Models.Accounts;
 using DotNetCqs;
 using Griffin.Data;
 using log4net;
@@ -23,9 +25,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.IdentityModel.Protocols;
 
-namespace Coderr.Server.Web2.Controllers
+namespace Coderr.Server.Web.Controllers
 {
     /// <summary>
     ///     TODO: Break out logic
@@ -313,41 +314,34 @@ namespace Coderr.Server.Web2.Controllers
         public async Task<ActionResult> UpdateSession(string returnUrl = null)
         {
             var getApps = new GetApplicationList { AccountId = User.GetAccountId() };
-            var apps = await _queryBus.QueryAsync((ClaimsPrincipal)User, getApps);
+            var apps = await _queryBus.QueryAsync(User, getApps);
+
+            var currentClaims = User.Claims
+                .Where(x => x.Type != CoderrClaims.Application && x.Type != CoderrClaims.ApplicationAdmin)
+                .ToList();
+
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-            var identity = CreateIdentity(User.GetAccountId(), User.Identity.Name, User.IsSysAdmin(), apps);
+
+            foreach (var app in apps)
+            {
+                var claim = new Claim(CoderrClaims.Application, app.Id.ToString());
+                currentClaims.Add(claim);
+
+                if (app.IsAdmin)
+                {
+                    claim = new Claim(CoderrClaims.ApplicationAdmin, app.Id.ToString());
+                    currentClaims.Add(claim);
+                }
+            }
+
+            var identity = new ClaimsIdentity(currentClaims, "Cookies");
             await SignInAsync(identity);
 
             if (returnUrl != null)
                 return Redirect(returnUrl);
 
             return new EmptyResult();
-        }
-
-        private static ClaimsIdentity CreateIdentity(int accountId, string userName, bool isSysAdmin, ApplicationListItem[] apps)
-        {
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, accountId.ToString(), ClaimValueTypes.Integer32),
-                new Claim(ClaimTypes.Name, userName, ClaimValueTypes.String)
-            };
-            foreach (var app in apps)
-            {
-                claims.Add(new Claim(CoderrClaims.Application, app.Id.ToString(), ClaimValueTypes.Integer32));
-                claims.Add(new Claim(CoderrClaims.ApplicationName, app.Name, ClaimValueTypes.String));
-                if (app.IsAdmin)
-                    claims.Add(new Claim(CoderrClaims.ApplicationAdmin, app.Id.ToString(), ClaimValueTypes.Integer32));
-            }
-
-            //accountId == 1 for backwards compatibility (with version 1.0)
-            var roles = isSysAdmin || accountId == 1 ? new[] { CoderrClaims.RoleSysAdmin } : new string[0];
-            var context = new PrincipalFactoryContext(accountId, userName, roles)
-            {
-                AuthenticationType = CookieAuthenticationDefaults.AuthenticationScheme,
-                Claims = claims.ToArray()
-            };
-            return (ClaimsIdentity)PrincipalFactory.CreateAsync(context).Result.Identity;
         }
 
         private async Task SignInAsync(ClaimsIdentity identity)
@@ -357,8 +351,10 @@ namespace Coderr.Server.Web2.Controllers
                 IsPersistent = true,
                 ExpiresUtc = DateTimeOffset.UtcNow.AddDays(14),
             };
-            var mvcIdentity = new ClaimsIdentity(identity.Claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            var principal = new ClaimsPrincipal(mvcIdentity);
+            if (identity.AuthenticationType != CookieAuthenticationDefaults.AuthenticationScheme)
+                identity = new ClaimsIdentity(identity.Claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            var principal = new ClaimsPrincipal(identity);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, props);
         }
     }

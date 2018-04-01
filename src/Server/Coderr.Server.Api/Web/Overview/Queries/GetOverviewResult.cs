@@ -5,6 +5,13 @@
     /// </summary>
     public class GetOverviewResult
     {
+        public GetOverviewResult()
+        {
+            IncidentsPerApplication = new GetOverviewApplicationResult[0];
+            TimeAxisLabels = new string[0];
+            StatSummary = new OverviewStatSummary { };
+        }
+
         /// <summary>
         ///     1 = switch to hours for incidents and reports.
         /// </summary>

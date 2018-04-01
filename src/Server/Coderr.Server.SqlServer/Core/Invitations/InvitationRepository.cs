@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
+using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.App.Core.Invitations;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 

@@ -50,7 +50,7 @@
                                 <tbody>
                                 <tr v-for="prop in currentCollection.Properties">
                                     <th>{{prop.Key}}</th>
-                                    <td class="value">{{prop.Value}}</td>
+                                    <td class="value" v-html="prop.Value"></td>
                                 </tr>
                                 </tbody>
                             </table>

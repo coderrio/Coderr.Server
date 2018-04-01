@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Domain.Core.ErrorReports;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 
 namespace Coderr.Server.ReportAnalyzer.ErrorReports
 {

@@ -1,4 +1,4 @@
-﻿using Coderr.Server.PluginApi.Config;
+﻿using Coderr.Server.Abstractions.Config;
 
 namespace Coderr.Server.Web.Boot.Adapters
 {

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Security.Authentication;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Coderr.Server.Abstractions.Boot;
+using Coderr.Server.Abstractions.Security;
 using Coderr.Server.Api.Core.Accounts.Events;
 using Coderr.Server.Api.Core.Accounts.Requests;
 using Coderr.Server.App.Core.Invitations;
@@ -234,7 +236,6 @@ namespace Coderr.Server.App.Core.Accounts
             foreach (var app in apps)
             {
                 claims.Add(new Claim(CoderrClaims.Application, app.ApplicationId.ToString(), ClaimValueTypes.Integer32));
-                claims.Add(new Claim(CoderrClaims.ApplicationName, app.ApplicationName, ClaimValueTypes.String));
                 if (app.IsAdmin)
                     claims.Add(new Claim(CoderrClaims.ApplicationAdmin, app.ApplicationId.ToString(), ClaimValueTypes.Integer32));
             }
@@ -242,7 +243,7 @@ namespace Coderr.Server.App.Core.Accounts
 
             //accountId == 1 for backwards compatibility (with version 1.0)
             if (isSysAdmin || accountId == 1)
-                claims.Add(new Claim(ClaimTypes.Role, CoderrClaims.RoleSysAdmin));
+                claims.Add(new Claim(ClaimTypes.Role, CoderrRoles.SysAdmin));
 
             return new ClaimsIdentity(claims.ToArray());
         }

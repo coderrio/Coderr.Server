@@ -7,51 +7,6 @@ import { Component, Watch } from 'vue-property-decorator';
 import * as Router from "vue-router";
 
 
-class CoderrMenu {
-    discover: MenuApi.MenuItem = {
-        title: 'Discover',
-        url: '/discover/',
-
-        children: [
-            {
-                title: 'Discover',
-                url: '/discover/',
-                children: []
-            }
-        ]
-    };
-}
-
-var DiscoverMenu: MenuApi.MenuItem[] = [
-    {
-        title: 'Overview',
-        url: '/discover/:applicationId',
-    },
-    {
-        title: 'Suggestions',
-        url: '/discover/suggestions/:applicationId',
-    },
-    {
-        title: 'Find incidents',
-        url: '/discover/incidents/:applicationId',
-    }
-];
-
-var AnalyzeMenu: MenuApi.MenuItem[] = [
-    {
-        title: 'Current incident',
-        url: '/analyze/incident/:incidentId',
-    },
-    {
-        title: 'Context data',
-        url: '/analyze/incident/:incidentId/context',
-    },
-    {
-        title: 'Report origins',
-        url: '/analyze/incident/:incidentId/origins',
-    }
-];
-
 interface IRouteNavigation {
     routeName: string;
     url: string;
@@ -101,9 +56,11 @@ export default class NavMenuComponent extends Vue {
         });
 
         this.$router.beforeEach((to, from, next) => {
-            console.log(to, from);
             if (to.fullPath.indexOf('/onboarding/') === -1 && this.onboarding) {
                 this.onboarding = false;
+            }
+            if (to.fullPath.indexOf('/onboarding/') === 0 && !this.onboarding) {
+                this.onboarding = true;
             }
 
             next();
@@ -124,13 +81,13 @@ export default class NavMenuComponent extends Vue {
     changeApplication(applicationId: number) {
         console.log(applicationId);
         if (this.$route.path.indexOf('/discover/') === 0) {
-            this.$router.push({ name: 'discoverForApplication', params: { applicationId: applicationId.toString() } });
+            this.$router.push({ name: 'discover', params: { applicationId: applicationId.toString() } });
         } else if (this.$route.path.indexOf('/analyze') === 0) {
             this.$router.push({ name: 'analyzeHome', params: { applicationId: applicationId.toString() } });
         } else if (this.$route.path.indexOf("/deployment") === 0) {
             this.$router.push({ name: 'deploymentHome', params: { applicationId: applicationId.toString() } });
-        } else if (this.$route.path.indexOf("/manage") === 0) {
-            this.$router.push({ name: 'manageApp', params: { applicationId: applicationId.toString() } });
+        } else if (this.$route.path.indexOf("/manage/") === 0) {
+            this.$router.push({ name: 'manageAppSettings', params: { applicationId: applicationId.toString() } });
         }
 
     }
@@ -154,33 +111,6 @@ export default class NavMenuComponent extends Vue {
         return '';
     }
 
-    private onMenuChange(ctx: MessageContext) {
-        var msg = <MenuApi.ChangeMenu>ctx.message.body;
-        this.applyMenu(msg.menuName);
-    }
-
-    private applyMenu(name: string) {
-        var mnu = name === 'Discover' ? DiscoverMenu : AnalyzeMenu;
-
-        mnu.forEach(mnuItem => {
-            mnuItem.url = mnuItem.url.replace(/\:([a-zA-Z0-9]+)/gi,
-                (match, key) => {
-                    var value = this.$route.params[key];
-                    return value ? value : '';
-                });
-            this.childMenu = mnu;
-        });
-
-        if (mnu === DiscoverMenu) {
-            this.isDiscoverActive = true;
-            this.isDeploymentActive = false;
-            this.isAnalyzeActive = false;
-        } else {
-            this.isDiscoverActive = false;
-            this.isDeploymentActive = false;
-            this.isAnalyzeActive = true;
-        }
-    }
 
     private updateCurrent(applicationId: number) {
         var app = this.getApplication(applicationId);

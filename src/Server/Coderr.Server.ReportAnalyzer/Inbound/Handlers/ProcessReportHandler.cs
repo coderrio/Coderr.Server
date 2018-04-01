@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Coderr.Server.Domain.Core.ErrorReports;
 using Coderr.Server.ReportAnalyzer.Inbound.Commands;
 using DotNetCqs;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using log4net;
 
 namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers
@@ -20,7 +20,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers
         }
 
 
-        public Task HandleAsync(IMessageContext context, ProcessReport message)
+        public async Task HandleAsync(IMessageContext context, ProcessReport message)
         {
             try
             {
@@ -33,14 +33,12 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers
                 {
                     RemoteAddress = message.RemoteAddress
                 };
-                _analyzer.Analyze(context, entity);
+                await _analyzer.Analyze(context, entity);
             }
             catch (Exception ex)
             {
                 _logger.Error("Failed to analyze report ", ex);
             }
-
-            return Task.FromResult<object>(null);
         }
 
 

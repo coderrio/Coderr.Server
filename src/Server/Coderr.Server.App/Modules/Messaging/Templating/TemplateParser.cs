@@ -1,16 +1,17 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.App.Modules.Messaging.Templating.Formatting;
 using  ColorCode;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 
 namespace Coderr.Server.App.Modules.Messaging.Templating
 {
     /// <summary>
     ///     Used to parse texts (convert markdown and extras to HTML)
     /// </summary>
-    [ContainerService(ContainerLifetime.Transient)]
+    [ContainerService(IsTransient = true)]
     public class TemplateParser : ITemplateParser
     {
         /// <summary>

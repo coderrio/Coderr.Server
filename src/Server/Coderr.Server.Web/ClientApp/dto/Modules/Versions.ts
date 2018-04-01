@@ -17,3 +17,20 @@ export class GetApplicationVersionsResultItem
     public ReportCount: number;
     public Version: string;
 }
+export class GetVersionHistory
+{
+    public static TYPE_NAME: string = 'GetVersionHistory';
+    public ApplicationId: number;
+    public FromDate: Date;
+    public ToDate: Date;
+}
+export class GetVersionHistoryResult
+{
+    public Dates: string[];
+    public IncidentCounts: GetVersionHistorySeries[];
+    public ReportCounts: GetVersionHistorySeries[];
+}
+export class GetVersionHistorySeries {
+    Name: string;
+    Values: number[];
+}

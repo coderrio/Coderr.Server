@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Coderr.Server.Abstractions.Config;
 using Coderr.Server.Api.Core.Accounts;
 using Coderr.Server.Api.Core.Accounts.Commands;
 using Coderr.Server.Api.Core.Accounts.Events;
@@ -7,9 +8,8 @@ using Coderr.Server.Api.Core.Messaging;
 using Coderr.Server.Api.Core.Messaging.Commands;
 using Coderr.Server.Domain.Core.Account;
 using Coderr.Server.Infrastructure.Configuration;
-using Coderr.Server.PluginApi.Config;
 using DotNetCqs;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using log4net;
 
 namespace Coderr.Server.App.Core.Accounts.CommandHandlers

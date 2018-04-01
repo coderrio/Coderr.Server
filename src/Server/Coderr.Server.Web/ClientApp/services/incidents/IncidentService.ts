@@ -53,7 +53,7 @@ export class IncidentService {
     async find(applicationId?: number): Promise<FindIncidentsResult> {
         var q = new FindIncidents();
         if (applicationId) {
-            q.ApplicationIds.push(applicationId);
+            q.ApplicationIds = [applicationId];
         }
         return await AppRoot.Instance.apiClient.query<FindIncidentsResult>(q);
     }
@@ -70,43 +70,11 @@ export class IncidentService {
         cmd.AssignedBy = currentUser.id;
         await this.apiClient.command(cmd);
 
-        const item = this.getFromCache(incidentId);
-        if (item) {
-            item.AssignedTo = "me";
-            item.AssignedAtUtc = new Date();
-            item.AssignedToId = currentUser.id;
-
-            console.log('Got cached one');
-            let myItem = new FindIncidentsResultItem();
-            myItem.Id = item.Id;
-            myItem.ApplicationId = item.ApplicationId.toString();
-            myItem.CreatedAtUtc = item.CreatedAtUtc;
-            myItem.ReportCount = item.ReportCount;
-            myItem.LastReportReceivedAtUtc = item.LastReportReceivedAtUtc;
-            myItem.IsReOpened = item.IsReOpened;
-            myItem.Name = item.Description;
-            this.myIncidents.push(myItem);
-        } else {
-            console.log('fetchig incident..');
-            var incident = await this.get(incidentId);
-            console.log('got', incident);
-            let myItem = new FindIncidentsResultItem();
-            myItem.Id = incident.Id;
-            myItem.ApplicationId = incident.ApplicationId.toString();
-            myItem.CreatedAtUtc = incident.CreatedAtUtc;
-            myItem.ReportCount = incident.ReportCount;
-            myItem.LastReportReceivedAtUtc = incident.LastReportReceivedAtUtc;
-            myItem.IsReOpened = incident.IsReOpened;
-            myItem.Name = incident.Description;
-            this.myIncidents.push(myItem);
-        }
-
+        await this.addMyIncident(incidentId, "me", currentUser.id);
         var msg: IncidentAssigned = {
             incidentId: incidentId,
             userId: currentUser.id
         };
-        
-        console.log('publsing assigned event')
         PubSubService.Instance.publish(IncidentTopcis.Assigned, msg);
     }
 
@@ -114,7 +82,6 @@ export class IncidentService {
         if (!incidentId) {
             throw new Error("incidentId is required.");
         }
-
         
         const cmd = new AssignIncident();
         cmd.IncidentId = incidentId;
@@ -123,13 +90,7 @@ export class IncidentService {
         cmd.AssignedBy = current.id;
         await this.apiClient.command(cmd);
 
-        var item = this.getFromCache(incidentId);
-        if (item) {
-            item.AssignedTo = userName;
-            item.AssignedAtUtc = new Date();
-            item.AssignedToId = userId;
-        }
-
+        await this.addMyIncident(incidentId, userName, userId);
         var msg: IncidentAssigned = {
             incidentId: incidentId,
             userId: userId
@@ -142,7 +103,7 @@ export class IncidentService {
      * @param reason
      * @returns Number of users subscribing on status updates
      */
-    async close(incidentId: number, reason: string): Promise<number> {
+    async close(incidentId: number, reason: string, fixedInVersion?: string): Promise<number> {
         if (!incidentId) {
             throw new Error("incidentId is required.");
         }
@@ -156,12 +117,14 @@ export class IncidentService {
 
         item.IsSolved = true;
         item.Solution = reason;
+        item.SolvedAtUtc = new Date();
 
         const current = await AppRoot.Instance.loadCurrentUser();
         const closeCmd = new CloseIncident();
         closeCmd.IncidentId = incidentId;
         closeCmd.Solution = reason;
         closeCmd.UserId = current.id;
+        closeCmd.ApplicationVersion = fixedInVersion;
         await this.apiClient.command(closeCmd);
 
         for (var i = 0; i < this.myIncidents.length; i++) {
@@ -195,13 +158,16 @@ export class IncidentService {
         var modalResult = await AppRoot.modal({
             title: 'Close incident',
             contentId: '#CloseBody',
+            submitButtonText: 'Close incident'
         });
 
         var modal = <HTMLDivElement>document.getElementById(modalResult.modalId);
         var area = <HTMLTextAreaElement>modal.querySelector('textarea');
+        var versionBox = <HTMLInputElement>modal.querySelector('input[name="version"]');
+        var version = versionBox.value === '' ? null : versionBox.value;
         var reason = area.value;
 
-        var numberOfFollowers = await this.close(incidentId, reason);
+        var numberOfFollowers = await this.close(incidentId, reason, version);
         AppRoot.notify('Incident have been closed');
 
         if (numberOfFollowers <= 0) {
@@ -270,10 +236,23 @@ export class IncidentService {
 
         var result = await this.apiClient.query<FindIncidentsResult>(query);
         result.Items.forEach(x => {
-            this.myIncidents.push(x);
-        });
+            var found = false;
+            this.myIncidents.forEach(cached => {
+                console.log(' comparing ', cached, x);
+                if (cached.Id === x.Id) {
+                    found = true;
+                    return;
+                }
+            });
 
-        return result.Items;
+            if (!found) {
+                console.log('Adding ', x);
+                this.myIncidents.push(x);
+            }
+        });
+        console.log('Updated mine; ', this.myIncidents);
+
+        return this.myIncidents;
     }
 
     private getFromCache(id: number): GetIncidentResult | null {
@@ -327,4 +306,37 @@ export class IncidentService {
             item.IsIgnored = true;
         }
     }
+
+    private async addMyIncident(incidentId: number, assignedTo: string, assignedToId: number): Promise<null> {
+        const item = this.getFromCache(incidentId);
+        if (item) {
+            item.AssignedTo = assignedTo;
+            item.AssignedAtUtc = new Date();
+            item.AssignedToId = assignedToId;
+
+            let myItem = new FindIncidentsResultItem();
+            myItem.Id = item.Id;
+            myItem.ApplicationId = item.ApplicationId.toString();
+            myItem.CreatedAtUtc = item.CreatedAtUtc;
+            myItem.ReportCount = item.ReportCount;
+            myItem.LastReportReceivedAtUtc = item.LastReportReceivedAtUtc;
+            myItem.IsReOpened = item.IsReOpened;
+            myItem.Name = item.Description;
+            this.myIncidents.push(myItem);
+        } else {
+            var incident = await this.get(incidentId);
+            let myItem = new FindIncidentsResultItem();
+            myItem.Id = incident.Id;
+            myItem.ApplicationId = incident.ApplicationId.toString();
+            myItem.CreatedAtUtc = incident.CreatedAtUtc;
+            myItem.ReportCount = incident.ReportCount;
+            myItem.LastReportReceivedAtUtc = incident.LastReportReceivedAtUtc;
+            myItem.IsReOpened = incident.IsReOpened;
+            myItem.Name = incident.Description;
+            this.myIncidents.push(myItem);
+        }
+        console.log('Myincidetns arer assign:', this.myIncidents);
+        return null;
+    }
+    
 }

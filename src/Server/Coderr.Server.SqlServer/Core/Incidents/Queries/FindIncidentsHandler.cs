@@ -2,12 +2,13 @@
 using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
+using Coderr.Server.Abstractions.Security;
 using Coderr.Server.Api.Core.Incidents;
 using Coderr.Server.Api.Core.Incidents.Queries;
 using Coderr.Server.Domain.Core.Incidents;
 using Coderr.Server.Infrastructure.Security;
 using DotNetCqs;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 

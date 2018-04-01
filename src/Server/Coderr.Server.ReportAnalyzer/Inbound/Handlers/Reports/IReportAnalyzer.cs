@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Coderr.Server.Domain.Core.ErrorReports;
 using DotNetCqs;
 
@@ -11,6 +12,6 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
         /// </summary>
         /// <param name="report">report</param>
         /// <exception cref="ArgumentNullException">report</exception>
-        void Analyze(IMessageContext context, ErrorReportEntity report);
+        Task Analyze(IMessageContext context, ErrorReportEntity report);
     }
 }

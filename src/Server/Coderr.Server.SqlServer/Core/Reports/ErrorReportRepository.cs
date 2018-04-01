@@ -4,9 +4,10 @@ using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Api.Core.Reports;
 using Coderr.Server.Domain.Core.ErrorReports;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 
@@ -21,7 +22,7 @@ namespace Coderr.Server.SqlServer.Core.Reports
         {
             _uow = uow ?? throw new ArgumentNullException(nameof(uow));
         }
-        
+
         public async Task<ErrorReportEntity> GetAsync(int id)
         {
             ErrorReportEntity report;
@@ -43,25 +44,38 @@ namespace Coderr.Server.SqlServer.Core.Reports
                 cmd.AddParameter("id", id);
                 using (var reader = await cmd.ExecuteReaderAsync())
                 {
-                    string collectionName = null;
+                    string previousCollectionName = null;
                     var properties = new Dictionary<string, string>();
+                    string currentCollectionName = null;
                     while (await reader.ReadAsync())
                     {
-                        var name = reader.GetString(0);
-                        if (collectionName == null)
-                            collectionName = name;
+                        currentCollectionName = reader.GetString(0);
 
-                        if (collectionName != name)
+                        // We always want to add the context when the last propery have been found
+                        // so that all props are included.
+                        if (previousCollectionName == null)
+                            previousCollectionName = currentCollectionName;
+
+                        if (previousCollectionName != currentCollectionName)
                         {
-                            var collection = new ErrorReportContextCollection(collectionName, properties);
+                            var collection = new ErrorReportContextCollection(previousCollectionName ?? currentCollectionName, properties);
                             collections.Add(collection);
                             properties = new Dictionary<string, string>();
-                            collectionName = name;
+                            previousCollectionName = currentCollectionName;
                             report.Add(collection);
                         }
 
                         properties.Add(reader.GetString(1), reader.GetString(2));
                     }
+
+                    // When the last property is in a new collection
+                    if (currentCollectionName != null && collections.All(x => x.Name != currentCollectionName))
+                    {
+                        var collection = new ErrorReportContextCollection(previousCollectionName, properties);
+                        collections.Add(collection);
+                        report.Add(collection);
+                    }
+
                 }
             }
 

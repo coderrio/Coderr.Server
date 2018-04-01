@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Security.Authentication;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Coderr.Server.Abstractions.Config;
+using Coderr.Server.Abstractions.Security;
 using Coderr.Server.App.Core.Reports.Config;
-using Coderr.Server.PluginApi.Config;
 using Coderr.Server.ReportAnalyzer.Inbound;
-using Coderr.Server.Web2.Infrastrucutre.Results;
+using Coderr.Server.Web.Infrastrucutre.Results;
 using DotNetCqs.Queues;
 using Griffin.Data;
 using Griffin.Net.Protocols.Http;
 using log4net;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Coderr.Server.Web2.Controllers
+namespace Coderr.Server.Web.Controllers
 {
     public class ReportReceiverController : Controller
     {
@@ -92,7 +91,8 @@ namespace Coderr.Server.Web2.Controllers
             var principal = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
             {
                 new Claim(ClaimTypes.Name, "ReportReceiver"),
-                new Claim(ClaimTypes.NameIdentifier, "0")
+                new Claim(ClaimTypes.NameIdentifier, "0"),
+                new Claim(ClaimTypes.Role, CoderrRoles.System)
             }));
             return principal;
         }

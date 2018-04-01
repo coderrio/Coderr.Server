@@ -24,7 +24,7 @@ export default class ConfigureClientComponent extends Vue {
     reportUrl = "";
 
     noConnection = false;
-    gotNoIncidents = true;
+    gotNoIncidents = false;
 
     created() {
         this.applicationId = parseInt(this.$route.params.applicationId, 10);
@@ -67,7 +67,7 @@ export default class ConfigureClientComponent extends Vue {
                     this.gotNoIncidents = true;
                 } else {
                     this.$router.push({
-                        name: "discoverForApplication",
+                        name: "discover",
                         params: { applicationId: this.applicationId.toString() }
                     });
                 }
@@ -81,7 +81,9 @@ export default class ConfigureClientComponent extends Vue {
                 var client = new http.HttpClient();
                 client.get('/api/onboarding/library/' + libName + "/?appKey=" + app.appKey)
                     .then(response => {
-                        this.instruction = response.body;
+                        this.instruction = response.body
+                            .replace('yourAppKey', this.appKey)
+                            .replace('yourSharedSecret', this.sharedSecret);
                     });
             });
         var buttons = document.querySelectorAll('.buttons button');

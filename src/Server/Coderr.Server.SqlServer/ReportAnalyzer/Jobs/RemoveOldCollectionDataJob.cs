@@ -7,7 +7,7 @@ using Coderr.Server.Domain.Core.ErrorReports;
 using Coderr.Server.ReportAnalyzer;
 using Coderr.Server.SqlServer.Tools;
 using Griffin.ApplicationServices;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 
 namespace Coderr.Server.SqlServer.ReportAnalyzer.Jobs

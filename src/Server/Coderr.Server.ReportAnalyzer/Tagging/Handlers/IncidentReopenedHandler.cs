@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Coderr.Server.Domain.Core.Incidents;
+using Coderr.Server.Domain.Core.Incidents.Events;
 using Coderr.Server.Domain.Modules.Tags;
 using DotNetCqs;
-using Griffin.Container;
 
 namespace Coderr.Server.ReportAnalyzer.Tagging.Handlers
 {

@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Domain.Modules.Similarities;
 using Coderr.Server.Infrastructure;
 using Coderr.Server.ReportAnalyzer.Similarities.Handlers.Processing;
 using Coderr.Server.SqlServer.Modules.Similarities.Entities;
 using Coderr.Server.SqlServer.Tools;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 using log4net;
 

@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Coderr.Server.Domain.Core.ErrorReports;
 using Coderr.Server.Domain.Core.Incidents;
+using Coderr.Server.Domain.Core.Incidents.Events;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using Coderr.Server.ReportAnalyzer.Abstractions.ErrorReports;
 using Coderr.Server.ReportAnalyzer.Abstractions.Incidents;
 using Coderr.Server.ReportAnalyzer.ErrorReports;
 using Coderr.Server.ReportAnalyzer.Incidents;
 using DotNetCqs;
-using Griffin.Container;
 using log4net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -18,13 +21,14 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
     /// <summary>
     ///     Runs analysis for the report.
     /// </summary>
-    [ContainerService]
+    [Griffin.Container.ContainerService]
     public class ReportAnalyzer : IReportAnalyzer
     {
+        public const string AppAssemblyVersion = "AppAssemblyVersion";
         private readonly IHashCodeGenerator _hashCodeGenerator;
         private readonly ILog _logger = LogManager.GetLogger(typeof(ReportAnalyzer));
         private readonly IAnalyticsRepository _repository;
-
+        private IDomainQueue _domainQueue;
         /// <summary>
         ///     Creates a new instance of <see cref="ReportAnalyzer" />.
         /// </summary>
@@ -34,10 +38,11 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
         ///     <see cref="Coderr.Server.ReportAnalyzer.Abstractions.Incidents.ReportAddedToIncident" /> event
         /// </param>
         /// <param name="repository">repos</param>
-        public ReportAnalyzer(IHashCodeGenerator hashCodeGenerator, IAnalyticsRepository repository)
+        public ReportAnalyzer(IHashCodeGenerator hashCodeGenerator, IAnalyticsRepository repository, IDomainQueue domainQueue)
         {
             _hashCodeGenerator = hashCodeGenerator;
             _repository = repository;
+            _domainQueue = domainQueue;
         }
 
         /// <summary>
@@ -45,7 +50,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
         /// </summary>
         /// <param name="report">report</param>
         /// <exception cref="ArgumentNullException">report</exception>
-        public void Analyze(IMessageContext context, ErrorReportEntity report)
+        public async Task Analyze(IMessageContext context, ErrorReportEntity report)
         {
             if (report == null) throw new ArgumentNullException("report");
 
@@ -70,6 +75,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
                 return;
             }
 
+            var applicationVersion = GetVersionFromReport(report);
             var isReOpened = false;
             var firstLine = report.GenerateHashCodeIdentifier();
             var incident = _repository.FindIncidentForReport(report.ApplicationId, report.ReportHashCode, firstLine);
@@ -77,6 +83,14 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
             {
                 incident = BuildIncident(report);
                 _repository.CreateIncident(incident);
+
+                var evt = new IncidentCreated(incident.Id, incident.Description, incident.FullName)
+                {
+                    ApplicationVersion = applicationVersion
+                };
+
+                await _domainQueue.PublishAsync(context.Principal, evt);
+                await context.SendAsync(evt);
             }
             else
             {
@@ -96,10 +110,23 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
 
                 if (incident.IsClosed)
                 {
+                    if (incident.IsReportIgnored(applicationVersion))
+                    {
+                        _logger.Info("Ignored report since it's for a version less that the solution version: " + JsonConvert.SerializeObject(report));
+                        incident.WasJustIgnored();
+                        _repository.UpdateIncident(incident);
+                        return;
+                    }
+
                     isReOpened = true;
                     incident.ReOpen();
-                    context.SendAsync(new IncidentReOpened(incident.ApplicationId, incident.Id,
-                        incident.CreatedAtUtc));
+                    var evt = new IncidentReOpened(incident.ApplicationId, incident.Id,
+                        incident.CreatedAtUtc)
+                    {
+                        ApplicationVersion = applicationVersion
+                    };
+                    await context.SendAsync(evt);
+                    await _domainQueue.PublishAsync(context.Principal, evt);
                 }
 
                 incident.AddReport(report);
@@ -125,10 +152,21 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
             sw.Start();
             _logger.Debug("Publishing now: " + report.ClientReportId);
             var e = new ReportAddedToIncident(summary, ConvertToCoreReport(report), isReOpened);
-            context.SendAsync(e);
+            await context.SendAsync(e);
             if (sw.ElapsedMilliseconds > 200)
-                _logger.Debug("Publish took " + sw.ElapsedMilliseconds);
+                _logger.Debug("PublishAsync took " + sw.ElapsedMilliseconds);
             sw.Stop();
+        }
+
+        private string GetVersionFromReport(ErrorReportEntity report)
+        {
+            foreach (var contextCollection in report.ContextCollections)
+            {
+                if (contextCollection.Properties.TryGetValue(AppAssemblyVersion, out var version))
+                    return version;
+            }
+
+            return null;
         }
 
         private IncidentBeingAnalyzed BuildIncident(ErrorReportEntity entity)
@@ -159,7 +197,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
                 {
                     var item = JObject.Parse(entity.Exception.Everything);
                     var i = new IncidentBeingAnalyzed(entity);
-                    var items = (JObject) item["LoaderExceptions"];
+                    var items = (JObject)item["LoaderExceptions"];
                     var exception = items.First;
 
 

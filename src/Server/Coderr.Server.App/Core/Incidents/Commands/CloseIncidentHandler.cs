@@ -2,12 +2,12 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Coderr.Server.Api.Core.Incidents.Commands;
+using Coderr.Server.Api.Core.Incidents.Events;
 using Coderr.Server.Api.Core.Messaging;
 using Coderr.Server.Api.Core.Messaging.Commands;
 using Coderr.Server.Domain.Core.Feedback;
 using Coderr.Server.Domain.Core.Incidents;
 using DotNetCqs;
-using Griffin.Container;
 
 namespace Coderr.Server.App.Core.Incidents.Commands
 {
@@ -63,6 +63,10 @@ namespace Coderr.Server.App.Core.Incidents.Commands
             }
 
             await _repository.UpdateAsync(incident);
+
+            var closedEvt =
+                new IncidentClosed(incident.Id, command.UserId, command.Solution, command.ApplicationVersion);
+            await context.SendAsync(closedEvt);
         }
     }
 }

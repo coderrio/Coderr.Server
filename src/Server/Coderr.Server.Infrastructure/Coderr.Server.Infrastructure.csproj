@@ -12,7 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Coderr.Server.Api\Coderr.Server.Api.csproj" />
-    <ProjectReference Include="..\Coderr.Server.PluginApi\Coderr.Server.PluginApi.csproj" />
+    <ProjectReference Include="..\Coderr.Server.Abstractions\Coderr.Server.Abstractions.csproj" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net452'">
     <Reference Include="System.Configuration" />

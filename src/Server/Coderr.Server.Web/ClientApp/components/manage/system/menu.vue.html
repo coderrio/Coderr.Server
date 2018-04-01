@@ -1,0 +1,23 @@
+<template>
+    <div class="mb-3" id="manageMenu">
+        <div class="navbar-light navbar bg-light mr-auto">
+            <ul class="nav">
+                <router-link tag="li" class="nav-item" :to="{name: 'manageHome' }" exact>
+                    <a class="nav-link"><i class="fa fa-home"></i> Management overview</a>
+                </router-link>
+                <router-link tag="li" class="nav-item" :to="{name: 'manageApiKeys' }">
+                    <a class="nav-link"><i class="fa fa-exchange-alt"></i> Api keys</a>
+                </router-link>
+                <router-link tag="li" class="nav-item" :to="{name: 'manageApiKeys' }">
+                    <a class="nav-link"><i class="fa fa-credit-card"></i> Billing</a>
+                </router-link>
+            </ul>
+            <div class="">
+                hello
+            </div>
+        </div>
+    </div>
+</template>
+
+<style src="./menu.css" />
+<script src="./menu.ts"></script>

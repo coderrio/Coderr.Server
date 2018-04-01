@@ -6,7 +6,7 @@ using Coderr.Server.Api.Core.Applications.Queries;
 using Coderr.Server.Domain.Core.Account;
 using Coderr.Server.Domain.Core.Applications;
 using DotNetCqs;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 
 namespace Coderr.Server.App.Core.Applications.QueryHandlers
 {

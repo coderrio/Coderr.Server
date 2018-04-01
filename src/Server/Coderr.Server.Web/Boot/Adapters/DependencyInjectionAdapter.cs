@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Griffin.Container;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Coderr.Server.Web2.Boot.Adapters
+namespace Coderr.Server.Web.Boot.Adapters
 {
     public class DependencyInjectionAdapter : IContainer
     {

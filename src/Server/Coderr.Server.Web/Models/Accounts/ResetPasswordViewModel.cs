@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Coderr.Server.Web2.Models.Accounts
+namespace Coderr.Server.Web.Models.Accounts
 {
     public class ResetPasswordViewModel
     {

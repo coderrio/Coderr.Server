@@ -3,13 +3,13 @@ using System.Net;
 using System.Net.Mail;
 using System.Net.Mime;
 using System.Threading.Tasks;
+using Coderr.Server.Abstractions.Config;
 using Coderr.Server.Api.Core.Accounts.Queries;
 using Coderr.Server.Api.Core.Messaging.Commands;
 using Coderr.Server.Infrastructure.Configuration;
 using Coderr.Server.Infrastructure.Net;
-using Coderr.Server.PluginApi.Config;
 using DotNetCqs;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using Markdig;
 
 namespace Coderr.Server.App.Modules.Messaging.Commands

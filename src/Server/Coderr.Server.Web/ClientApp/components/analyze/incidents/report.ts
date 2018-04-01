@@ -115,7 +115,16 @@ export default class AnalyzeReportComponent extends Vue {
                 }
 
                 if (report.ContextCollections.length > 0) {
-                    this.currentCollectionName = report.ContextCollections[0].Name;
+                    var isFound = false;
+                    report.ContextCollections.forEach(col => {
+                        if (col.Name === this.currentCollectionName) {
+                            isFound = true;
+                        }
+                    });
+                    if (!isFound) {
+                        this.currentCollectionName = report.ContextCollections[0].Name;
+                    }
+                    
                     this.loadCollection(this.currentCollectionName);
                 } else {
                     this.currentCollection = new GetReportResultContextCollection();
@@ -177,9 +186,24 @@ export default class AnalyzeReportComponent extends Vue {
 
         for (var i = 0; i < this.contextCollections.length; i++) {
             var col = this.contextCollections[i];
+            for (var j = 0; j < col.Properties.length; j++) {
+                var prop = col.Properties[j];
+                prop.Value = prop.Value.replace(/;;/g, "\r\n</br>");
+            }
+
+
             if (col.Name === name) {
                 this.currentCollection = col;
                 this.currentCollectionName = name;
+
+                if (name === "Screenshots") {
+                    for (var j = 0; j < this.currentCollection.Properties.length; j++) {
+                        var kvp = this.currentCollection.Properties[j];
+                        if (kvp.Value.substr(0, 1) !== '<') {
+                            kvp.Value = '<img src="data:image/png;base64, ' + kvp.Value + '" />';
+                        }
+                    }
+                }
                 return;
             }
         }

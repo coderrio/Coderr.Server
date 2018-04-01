@@ -37,6 +37,19 @@
                     <hr />
                 </div>
             </div>
+            <div class="row" v-if="incident.Solution">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            Previous solution ({{incident.SolvedAtUtc|ago}})
+                        </div>
+                        <div class="card-body">
+                            <div v-html="incident.Solution"></div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
             <div class="row">
                 <div class="col-xl-8 col-lg-6">
                     <div class="card">
@@ -79,7 +92,7 @@
                                     </div>
                                 </div>
                                 <div class="dropdown" style="display: inline">
-                                    <button type="button" class="btn btn-light dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled="disabled" id="reportChooser">
+                                    <button type="button" class="btn btn-light dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="reportChooser">
                                         {{currentCollectionName}}
                                     </button>
                                     <div class="dropdown-menu">
@@ -95,7 +108,7 @@
                                     <tbody>
                                         <tr v-for="prop in currentCollection.Properties">
                                             <td>{{prop.Key}}</td>
-                                            <td>{{prop.Value}}</td>
+                                            <td v-html="prop.Value"></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -120,8 +133,9 @@
             </div>
         </div>
         <div id="CloseBody" style="display: none">
-            <textarea id="CloseArea" class="w-100" rows="10" placeholder="How did you solve the error?" autofocus="autofocus"></textarea>
-            <em><router-link :to="{name: 'closeIncident', params: { incidentId: incident.Id }}">Go to full screen editor</router-link></em>
+            <input type="text" name="version" class="form-control mb-3" size="10" placeholder="Which version is the error corrected in? (format: 1.2.10)" pattern="[0-9\.]*" title="You can use semantic versioning, including pre-releases, but must specify the release version here." />
+            <textarea id="CloseArea" class="w-100" rows="10" placeholder="How did you solve the error?" autofocus="autofocus" required="required"></textarea>
+            <em><router-link :to="{name: 'closeIncident', params: { incidentId: incidentId }}">Go to full screen editor</router-link></em>
         </div>
     </div>
 </template>

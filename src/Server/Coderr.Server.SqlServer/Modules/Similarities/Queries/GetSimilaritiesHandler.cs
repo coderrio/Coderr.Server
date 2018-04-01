@@ -5,7 +5,7 @@ using Coderr.Server.Api.Modules.ContextData.Queries;
 using Coderr.Server.Infrastructure;
 using Coderr.Server.SqlServer.Modules.Similarities.Entities;
 using DotNetCqs;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 using log4net;
 

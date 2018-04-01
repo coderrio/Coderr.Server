@@ -29,6 +29,11 @@ namespace Coderr.Server.Api.Core.Incidents.Commands
         }
 
         /// <summary>
+        ///     Which version that incident is solved in (like "1.2.1").
+        /// </summary>
+        public string ApplicationVersion { get; set; }
+
+        /// <summary>
         ///     Can send notifications to everyone which has reported exceptions through our system.
         /// </summary>
         public bool CanSendNotification { get; set; }

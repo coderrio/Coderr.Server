@@ -31,22 +31,22 @@
                             <h4>Incident state</h4>
                             <div class="row text-nowrap">
                                 <div class="col">
-                                    <button class="btn btn-light" v-on:click.prevent="toggleState(0, $event)">
+                                    <button class="btn btn-dark" v-model="incidentState" value="0" v-on:click.prevent="toggleState(0, $event)">
                                         New
                                     </button>
                                 </div>
                                 <div class="col">
-                                    <button class="btn btn-light" v-on:click.prevent="toggleState(3, $event)">
+                                    <button class="btn btn-light" v-model="incidentState" value="1" v-on:click.prevent="toggleState(1, $event)">
                                         Assigned
                                     </button>
                                 </div>
                                 <div class="col">
-                                    <button class="btn btn-light" v-on:click.prevent="toggleState(1, $event)">
+                                    <button class="btn btn-light" v-model="incidentState" value="3" v-on:click.prevent="toggleState(3, $event)">
                                         Closed
                                     </button>
                                 </div>
                                 <div class="col">
-                                    <button class="btn btn-light" v-on:click.prevent="toggleState(2, $event)">
+                                    <button class="btn btn-light" v-model="incidentState" value="2" v-on:click.prevent="toggleState(2, $event)">
                                         Ignored
                                     </button>
                                 </div>
@@ -104,8 +104,10 @@
                 </table>
             </div>
         </div>
-        <div id="CloseBody">
-            <textarea style="display: none" id="CloseArea" class="w-100" rows="10" placeholder="How did you solve the error?" autofocus="autofocus"></textarea>
+        <div id="CloseBody" style="display: none">
+            <input type="text" name="version" class="form-control mb-3" size="10" placeholder="Which version is the error corrected in? (format: 1.2.10)" pattern="[0-9\.]*" title="You can use semantic versioning, including pre-releases, but must specify the release version here." />
+            <textarea style="display: none" id="CloseArea" class="w-100" rows="10" placeholder="How did you solve the error?" autofocus="autofocus" required="required"></textarea>
+            <em><router-link :to="{name: 'closeIncident', params: { incidentId: currentIncidentId }}">Go to full screen editor</router-link></em>
         </div>
     </div>
 </template>

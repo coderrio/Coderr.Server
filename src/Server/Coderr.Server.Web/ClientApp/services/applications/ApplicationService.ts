@@ -4,7 +4,9 @@ import { AppRoot } from '../AppRoot';
 import {
     GetApplicationList, ApplicationListItem,
     GetApplicationTeam, GetApplicationTeamResult, GetApplicationTeamMember,
-    GetApplicationInfo, GetApplicationInfoResult
+    GetApplicationInfo, GetApplicationInfoResult,
+    CreateApplication, TypeOfApplication,
+    UpdateApplication
 } from "../../dto/Core/Applications"
 
 export class AppEvents {
@@ -53,9 +55,8 @@ export class AppLink {
     readonly name: string;
 }
 
-export class ApplicationToCreate {
+export interface ApplicationToCreate {
     name: string;
-    sharedSecret: string;
     appKey: string;
 }
 
@@ -114,6 +115,7 @@ export class ApplicationService {
     async get(appId: number): Promise<ApplicationSummary> {
         for (var i = 0; i < this.applications.length; i++) {
             if (this.applications[i].id === appId)
+                console.log('returning cahce', this.applications[i]);
                 return this.applications[i];
         }
 
@@ -131,15 +133,18 @@ export class ApplicationService {
         return summary;
     }
 
-    async create(application: ApplicationToCreate) {
-        if (application.sharedSecret == null) {
-            application.sharedSecret = Guid.newGuid();
-        }
-        if (application.appKey == null) {
-            application.appKey = Guid.newGuid();
+    async create(applicationName: string): Promise<string> {
+        if (!applicationName) {
+            throw new Error("Application name must be specified.");
         }
 
-        await this.apiClient.command(application);
+        var cmd = new CreateApplication();
+        cmd.Name = applicationName;
+        cmd.ApplicationKey = Guid.newGuid().replace(/\-/g, '');
+        cmd.TypeOfApplication = TypeOfApplication.DesktopApplication;
+
+        await this.apiClient.command(cmd);
+        return cmd.ApplicationKey;
     }
 
     async getTeam(id: number): Promise<ApplicationMember[]> {
@@ -160,5 +165,11 @@ export class ApplicationService {
         return members;
     }
 
+    update(applicationId: number, applicationName: string) {
+        var cmd = new UpdateApplication();
+        cmd.Name = applicationName;
+        cmd.ApplicationId = applicationId;
+        AppRoot.Instance.apiClient.command(cmd);
+    }
 }
 

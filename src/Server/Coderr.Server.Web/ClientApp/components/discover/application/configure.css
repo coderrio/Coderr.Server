@@ -61,7 +61,7 @@
         stroke: #1EC2A3 !important;
     }
 
-.ct-label.ct-label.ct-horizontal {
+.configure-view .ct-label.ct-label.ct-horizontal {
     position: relative;
     justify-content: flex-end;
     text-align: right;

@@ -3,7 +3,7 @@ using Coderr.Server.Api;
 using Coderr.Server.Api.Core.Applications.Commands;
 using Coderr.Server.Domain.Core.Applications;
 using DotNetCqs;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 
 namespace Coderr.Server.App.Core.Applications.CommandHandlers
 {

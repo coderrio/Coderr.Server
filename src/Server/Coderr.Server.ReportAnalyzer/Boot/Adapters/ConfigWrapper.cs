@@ -1,6 +1,6 @@
-﻿using Coderr.Server.PluginApi.Config;
+﻿using Coderr.Server.Abstractions.Config;
 
-namespace Coderr.Server.Web.Boot.Adapters
+namespace Coderr.Server.ReportAnalyzer.Boot.Adapters
 {
     public class ConfigWrapper<TConfigType> : IConfiguration<TConfigType>
         where TConfigType : IConfigurationSection, new()

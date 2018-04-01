@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using Coderr.Server.Abstractions.Config;
 using Coderr.Server.Infrastructure.Configuration;
-using Coderr.Server.PluginApi.Config;
 using Coderr.Server.ReportAnalyzer.Abstractions.ErrorReports;
 
 namespace Coderr.Server.App.Core.Reports.Config

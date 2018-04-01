@@ -9,7 +9,7 @@ declare var google: any;
 
 @Component
 export default class OriginsComponent extends Vue {
-    private apiClient: ApiClient = new ApiClient('http://localhost:50473/cqs/');
+    private apiClient: ApiClient = AppRoot.Instance.apiClient;
 
     mapScript: string = '';
 

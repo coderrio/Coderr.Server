@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Coderr.Server.Abstractions.Boot;
+using Coderr.Server.Abstractions.Config;
 using Coderr.Server.Api.Core.Messaging;
 using Coderr.Server.Api.Core.Messaging.Commands;
 using Coderr.Server.Domain.Modules.ReportSpikes;
 using Coderr.Server.Domain.Modules.UserNotifications;
 using Coderr.Server.Infrastructure.Configuration;
-using Coderr.Server.PluginApi.Config;
 using Coderr.Server.ReportAnalyzer.Abstractions.Incidents;
 using DotNetCqs;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 
 namespace Coderr.Server.ReportAnalyzer.ReportSpikes.Handlers
 {

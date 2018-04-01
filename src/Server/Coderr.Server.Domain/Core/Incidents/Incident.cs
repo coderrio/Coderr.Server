@@ -61,6 +61,11 @@ namespace Coderr.Server.Domain.Core.Incidents
         }
 
         /// <summary>
+        /// Exception type including namespace.
+        /// </summary>
+        public string FullName { get; set; }
+
+        /// <summary>
         ///     PK
         /// </summary>
         public int Id { get; private set; }

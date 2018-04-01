@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Coderr.Server.Api.Core.Accounts.Queries;
 using Coderr.Server.Domain.Core.Account;
 using DotNetCqs;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 
 namespace Coderr.Server.SqlServer.Core.Accounts.QueryHandlers
 {

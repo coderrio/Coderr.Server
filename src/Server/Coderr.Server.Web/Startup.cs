@@ -1,26 +1,29 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Coderr.Server.Infrastructure.Boot;
+using Coderr.Server.Abstractions.Boot;
+using Coderr.Server.Abstractions.Config;
+using Coderr.Server.Abstractions.Security;
 using Coderr.Server.Infrastructure.Configuration.Database;
 using Coderr.Server.Infrastructure.Messaging;
-using Coderr.Server.PluginApi.Config;
 using Coderr.Server.Web.Boot;
 using Coderr.Server.Web.Boot.Adapters;
-using Coderr.Server.Web2.Boot;
-using Coderr.Server.Web2.Boot.Adapters;
+using Coderr.Server.Web.Controllers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.SpaServices.Webpack;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
-namespace Coderr.Server.Web2
+namespace Coderr.Server.Web
 {
     public class Startup
     {
@@ -53,6 +56,7 @@ namespace Coderr.Server.Web2
 
             app.UseStaticFiles();
             app.UseAuthentication();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
@@ -73,30 +77,33 @@ namespace Coderr.Server.Web2
         {
             services.AddMvc(options =>
             {
-                
+
             }).AddJsonOptions(jsonOptions =>
             {
                 jsonOptions.SerializerSettings.ContractResolver = new IncludeNonPublicMembersContractResolver();
             });
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
-                {
+
+            var authenticationBuilder = services.AddAuthentication("Cookies");
+            authenticationBuilder.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+            {
                     //options.ExpireTimeSpan = TimeSpan.FromDays(14);
                     //options.p
                     //options.Events.OnRedirectToLogin = HandleAuthenticationFailure;
                     options.Events.OnValidatePrincipal = context =>
-                    {
-                        var principal = context.Principal;
-                        var str = context.Request.GetDisplayUrl() + ": " + context.Principal.Identity.IsAuthenticated;
-                        return Task.CompletedTask;
-                    };
-                });
+                {
+                    var principal = context.Principal;
+                    var str = context.Request.GetDisplayUrl() + ": " + context.Principal.Identity.IsAuthenticated;
+                    return Task.CompletedTask;
+                };
+            });
 
             _moduleStarter.ScanAssemblies(AppDomain.CurrentDomain.BaseDirectory);
 
+            services.AddScoped<IPrincipalAccessor, PrincipalWrapper>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             RegisterConfigurationStores(services);
 
-            var configContext = new ConfigurationContext
+            var configContext = new CqsObjectMapperConfigurationContext(CqsController._cqsObjectMapper)
             {
                 Configuration = new ConfigurationWrapper(Configuration),
                 ConnectionFactory = OpenConnection,
@@ -105,7 +112,7 @@ namespace Coderr.Server.Web2
             };
             _moduleStarter.Configure(configContext);
         }
-        
+
         private IServiceProvider GetLazyLoadedServiceProvider()
         {
             if (_serviceProvider == null)
@@ -131,13 +138,16 @@ namespace Coderr.Server.Web2
 
         private IDbConnection OpenConnection(ClaimsPrincipal arg)
         {
-            return DbConnectionConfig.OpenConnection();
+            var db = Configuration.GetConnectionString("Db");
+            var con = new SqlConnection(db);
+            con.Open();
+            return con;
         }
 
         private void RegisterConfigurationStores(IServiceCollection services)
         {
-            services.AddTransient(typeof(IConfiguration<>), typeof(ConfigWrapper<>));
-            services.AddTransient<ConfigurationStore>(x => new DatabaseStore(DbConnectionConfig.OpenConnection));
+            services.AddTransient(typeof(IConfiguration<>), typeof(Boot.Adapters.ConfigWrapper<>));
+            services.AddTransient<ConfigurationStore>(x => new DatabaseStore(() => OpenConnection(CoderrClaims.SystemPrincipal)));
         }
     }
 }

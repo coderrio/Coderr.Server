@@ -2,8 +2,8 @@
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Coderr.Server.Abstractions.Config;
 using Coderr.Server.Infrastructure.Configuration;
-using Coderr.Server.PluginApi.Config;
 using log4net;
 using Newtonsoft.Json;
 

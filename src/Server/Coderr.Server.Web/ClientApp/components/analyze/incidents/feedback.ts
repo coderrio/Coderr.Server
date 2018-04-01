@@ -12,7 +12,6 @@ interface IFeedback {
 
 @Component
 export default class AnalyzeFeedbackComponent extends Vue {
-    private static readonly selectCollectionTitle: string = '(select collection)';
 
     incidentId: number = 0;
     feedbackList: IFeedback[] = [];

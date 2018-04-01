@@ -2,13 +2,14 @@
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Coderr.Server.Abstractions.Config;
+using Coderr.Server.Abstractions.Security;
 using Coderr.Server.Api.Core.Accounts.Queries;
 using Coderr.Server.Api.Core.Support;
 using Coderr.Server.Infrastructure.Configuration;
 using Coderr.Server.Infrastructure.Security;
-using Coderr.Server.PluginApi.Config;
 using DotNetCqs;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 
 namespace Coderr.Server.App.Core.Support
 {

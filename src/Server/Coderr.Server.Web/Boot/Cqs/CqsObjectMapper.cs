@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Coderr.Server.Api;
 using Coderr.Server.Infrastructure.Messaging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Coderr.Server.Web2.Boot.Cqs
+namespace Coderr.Server.Web.Boot.Cqs
 {
     /// <summary>
     ///     Used to map objects that is received from other languages (i.e. using different techniques to identify the .NET
@@ -65,7 +66,14 @@ namespace Coderr.Server.Web2.Boot.Cqs
             if (cqsType.IsAbstract || cqsType.IsInterface)
                 return false;
 
-            return cqsType.GetCustomAttribute<MessageAttribute>(true) != null;
+
+            if (cqsType.GetCustomAttribute<MessageAttribute>(true) != null)
+                return true;
+
+            var attrs = cqsType.GetCustomAttributes()
+                .Select(x => x.GetType())
+                .Any(x => x.Name == "MessageAttribute" || x.Name == "CommandAttribute" || x.Name == "QueryAttribute");
+            return attrs;
         }
 
         /// <summary>

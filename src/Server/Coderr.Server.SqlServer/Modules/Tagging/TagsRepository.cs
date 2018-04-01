@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Domain.Modules.Tags;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 
 namespace Coderr.Server.SqlServer.Modules.Tagging

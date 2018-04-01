@@ -9,7 +9,7 @@
             <hr />
         </div>
         <div class="row">
-            <div class="col" v-if="feedbackList.length == 0">
+            <div class="col" v-show="feedbackList.length == 0" style="display: none">
                 <div class="card">
                     <div class="card-body">
                         <h3>No feedback has been given.</h3>
@@ -25,9 +25,12 @@ Err.Configuration.DisplayErrorPages();
             </div>
             <div class="col" v-for="feedback in feedbackList">
                 <div class="card">
+                    <div class="card-header">
+                        Written {{feedback.writtenAtUtc|ago}}
+                    </div>
                     <div class="card-body">
                         <div>
-                            {{feedback}}
+                            {{feedback.description}}
                         </div>
                         <div>
                         </div>

@@ -29,8 +29,17 @@ export default class AnalyzeMenuComponent extends Vue {
             return;
         }
 
+        //ignore subroutes to same incident.
+        if (this.currentIncidentId === parseInt(value, 10)) {
+            return;
+        }
+
         var incidentId = 0;
         if (!value) {
+            //Todo, we can arrive here when assigning the first incident.
+            if (this.myIncidents.length === 0) {
+                return;
+            }
             incidentId = <number>this.myIncidents[0].tag;
         } else {
             incidentId = parseInt(value, 10);
@@ -43,9 +52,11 @@ export default class AnalyzeMenuComponent extends Vue {
         PubSubService.Instance.subscribe(IncidentTopcis.Assigned, x => {
             var msg = <IncidentAssigned>x.message.body;
             AppRoot.Instance.incidentService.get(msg.incidentId)
-                .then(inc => {
-                    var item = this.createMenuItem(inc.Id, inc.Description);
-                    this.myIncidents.push(item);
+                .then(assignedIncident => {
+                    if (this.myIncidents.findIndex(menuItem => menuItem.tag === assignedIncident.Id) === -1) {
+                        var item = this.createMenuItem(assignedIncident.Id, assignedIncident.Description);
+                        this.myIncidents.push(item);
+                    }
                 });
         });
         PubSubService.Instance.subscribe(IncidentTopcis.Closed, x => {
@@ -56,6 +67,7 @@ export default class AnalyzeMenuComponent extends Vue {
             var msg = <IncidentIgnored>x.message.body;
             this.removeIncident(msg.incidentId);
         });
+
         if (this.$route.params.incidentId) {
             this.currentIncidentId = parseInt(this.$route.params.incidentId, 10);
         }
@@ -71,12 +83,13 @@ export default class AnalyzeMenuComponent extends Vue {
                     }
 
                     mine.forEach(myIncident => {
-                        var item = this.createMenuItem(myIncident.Id, myIncident.Name);
-                        this.myIncidents.push(item);
+                        if (!this.myIncidents.find(menuItem => menuItem.tag === myIncident.Id)) {
+                            var item = this.createMenuItem(myIncident.Id, myIncident.Name);
+                            this.myIncidents.push(item);
+                        }
                     });
 
-                    var currentIncidentId = this.$route.params.incidentId;
-                    if (!currentIncidentId) {
+                    if (!this.$route.params.incidentId) {
                         this.navigateToIncident(mine[0].Id);
                         resolve();
                         return;
@@ -93,7 +106,6 @@ export default class AnalyzeMenuComponent extends Vue {
         if (!incidentId) {
             throw new Error('Expected an incidentId, got: ' + incidentId);
         }
-        console.log('navigate to: ' + incidentId);
 
         this.myIncidentsPromise
             .then(x => {
@@ -117,19 +129,18 @@ export default class AnalyzeMenuComponent extends Vue {
     }
 
     private async updateIncidentMenu(incidentId: number): Promise<null> {
-        console.log('requesting incident menu update=> ', incidentId)
         await this.myIncidentsPromise;
-        let incident = await this.getIncident(incidentId);
+        let menuItem = await this.getIncident(incidentId);
         this.currentIncidentId = incidentId;
-        let title = incident.title;
+        let title = menuItem.title;
         if (title.length > 20) {
             title = title.substr(0, 15) + '[...]';
         }
         this.currentIncidentName = title;
 
         // We've switched incident and need to update the URL
-        if (this.$route.params.incidentId !== incident.tag.toString()) {
-            this.$router.push({ name: 'analyzeIncident', params: { 'incidentId': incident.tag.toString() } });
+        if (this.$route.params.incidentId !== menuItem.tag.toString()) {
+            this.$router.push({ name: 'analyzeIncident', params: { 'incidentId': menuItem.tag.toString() } });
         }
 
         return null;
@@ -153,7 +164,6 @@ export default class AnalyzeMenuComponent extends Vue {
     private async getIncident(incidentId: number): Promise<MenuApi.MenuItem> {
         for (var i = 0; i < this.myIncidents.length; i++) {
             if (this.myIncidents[i].url.indexOf(`/incident/${incidentId}`) !== -1) {
-                console.log('found existing incident menu item');
                 return this.myIncidents[i];
             }
         }
@@ -163,7 +173,6 @@ export default class AnalyzeMenuComponent extends Vue {
         var foundItem: MenuApi.MenuItem = null;
         allMine.forEach(myIncident => {
             if (myIncident.Id === incidentId) {
-                console.log('found match');
                 var item = this.createMenuItem(myIncident.Id, myIncident.Name);
                 this.myIncidents.push(item);
                 foundItem = item;

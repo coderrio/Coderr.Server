@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Coderr.Server.PluginApi.Config;
+using Coderr.Server.Abstractions.Config;
 
 namespace Coderr.Server.Infrastructure.Configuration
 {

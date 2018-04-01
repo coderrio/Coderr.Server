@@ -16,11 +16,14 @@
     <ProjectReference Include="..\Coderr.Server.App\Coderr.Server.App.csproj" />
     <ProjectReference Include="..\Coderr.Server.Domain\Coderr.Server.Domain.csproj" />
     <ProjectReference Include="..\Coderr.Server.Infrastructure\Coderr.Server.Infrastructure.csproj" />
-    <ProjectReference Include="..\Coderr.Server.PluginApi\Coderr.Server.PluginApi.csproj" />
+    <ProjectReference Include="..\Coderr.Server.Abstractions\Coderr.Server.Abstractions.csproj" />
     <ProjectReference Include="..\Coderr.Server.ReportAnalyzer.Abstractions\Coderr.Server.ReportAnalyzer.Abstractions.csproj" />
     <ProjectReference Include="..\Coderr.Server.ReportAnalyzer\Coderr.Server.ReportAnalyzer.csproj" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Schema\*.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Schema\Update.v10.sql" />
   </ItemGroup>
 </Project>

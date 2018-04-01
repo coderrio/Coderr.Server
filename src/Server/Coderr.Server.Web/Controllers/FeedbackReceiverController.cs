@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using codeRR.Client.Contracts;
@@ -17,9 +13,8 @@ using log4net;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
-namespace Coderr.Server.Web2.Controllers
+namespace Coderr.Server.Web.Controllers
 {
-    [Route("api/[controller]")]
     public class FeedbackReceiverController : Controller
     {
         private readonly IApplicationRepository _applicationRepository;

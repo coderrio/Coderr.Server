@@ -1,5 +1,6 @@
 ﻿using System;
 using Coderr.Server.Domain.Core.ErrorReports;
+using Coderr.Server.Infrastructure;
 
 namespace Coderr.Server.ReportAnalyzer.Incidents
 {
@@ -88,7 +89,7 @@ namespace Coderr.Server.ReportAnalyzer.Incidents
 
                 return _description;
             }
-            set { _description = value; }
+            set => _description = value;
         }
 
         /// <summary>
@@ -108,6 +109,21 @@ namespace Coderr.Server.ReportAnalyzer.Incidents
         public int Id { get; private set; }
 
         /// <summary>
+        ///     Version that this incident should not be ignored in
+        /// </summary>
+        /// <remarks>
+        ///     <para>
+        ///         Both used in close incident and ignore incident
+        ///     </para>
+        /// </remarks>
+        public string IgnoredUntilVersion { get; set; }
+
+        /// <summary>
+        ///     Incident have been solved (bug as been identified and corrected)
+        /// </summary>
+        public bool IsClosed => State == IncidentState.Closed;
+
+        /// <summary>
         ///     Incident is ignored, i.e. do not track any more reports or send any notifications.
         /// </summary>
         public bool IsIgnored => State == IncidentState.Ignored;
@@ -117,12 +133,7 @@ namespace Coderr.Server.ReportAnalyzer.Incidents
         /// </summary>
         public bool IsReOpened { get; set; }
 
-        public IncidentState State { get; private set; }
-
-        /// <summary>
-        ///     Incident have been solved (bug as been identified and corrected)
-        /// </summary>
-        public bool IsClosed => State == IncidentState.Closed;
+        public DateTime LastReportAtUtc { get; set; }
 
         /// <summary>
         ///     Set if incident was closed and a solution was written
@@ -156,13 +167,13 @@ namespace Coderr.Server.ReportAnalyzer.Incidents
         /// </summary>
         public string StackTrace { get; set; }
 
+        public IncidentState State { get; private set; }
+
 
         /// <summary>
         ///     Incident has been updated (received a new report or by an action by a user)
         /// </summary>
         public DateTime UpdatedAtUtc { get; private set; }
-
-        public DateTime LastReportAtUtc { get; set; }
 
         /// <summary>
         ///     Add another report.
@@ -179,11 +190,24 @@ namespace Coderr.Server.ReportAnalyzer.Incidents
                 FullName = entity.Exception.FullName;
                 StackTrace = entity.Exception.StackTrace;
             }
+
             if (LastReportAtUtc < entity.CreatedAtUtc)
                 LastReportAtUtc = entity.CreatedAtUtc;
 
 
             ReportCount++;
+        }
+
+        /// <summary>
+        ///     Check if this incident is ignored in the version that we received in the newest error report.
+        /// </summary>
+        /// <param name="applicationVersion"></param>
+        /// <returns></returns>
+        public bool IsReportIgnored(string applicationVersion)
+        {
+            if (applicationVersion == null) throw new ArgumentNullException(nameof(applicationVersion));
+            var comparer = new ApplicationVersionComparer();
+            return comparer.Compare(IgnoredUntilVersion, applicationVersion) < 0;
         }
 
         /// <summary>

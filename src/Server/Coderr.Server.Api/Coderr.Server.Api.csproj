@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net452</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <Version>1.1.0</Version>
     <RootNamespace>Coderr.Server.Api</RootNamespace>
     <AssemblyName>Coderr.Server.Api</AssemblyName>

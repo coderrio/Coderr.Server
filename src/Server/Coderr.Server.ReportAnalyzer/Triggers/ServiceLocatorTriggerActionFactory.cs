@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
+using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.ReportAnalyzer.Triggers.Actions;
 using Coderr.Server.ReportAnalyzer.Triggers.Handlers.Actions;
 using DotNetCqs.DependencyInjection;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Coderr.Server.ReportAnalyzer.Triggers

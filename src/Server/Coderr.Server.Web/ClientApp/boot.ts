@@ -8,11 +8,12 @@ import VeeValidate from 'vee-validate';
 
 Vue.use(VeeValidate);
 Vue.use(VueRouter);
+Vue.config.devtools = true;
 
 Vue.filter("ago",
     (value: string) => {
         if (!value) return "n/a";
-        return moment(value).fromNow();
+        return moment.utc(value).fromNow();
     });
 
 Vue.filter("niceTime",
@@ -31,6 +32,20 @@ Vue.filter("agoOrDate",
         return moment(value).fromNow();
     });
 
+Vue.filter("incidentState",
+    (value: string) => {
+        switch (value) {
+        case "0":
+            return "New";
+        case "1":
+            return "Assigned";
+        case "2":
+            return "Ignored";
+        case "3":
+            return "Closed";
+        }
+    });
+
 
 const routes = [
     {
@@ -45,12 +60,11 @@ const routes = [
     },
     {
         name: "application",
-        path: "/application/:applicationId/",
+        path: "/discover/application/:applicationId/",
         component: require("./components/applications/application-details.vue.html")
     },
     {
         path: "/discover/",
-        name: "discover",
         component: require("./components/discover/discover.vue.html"),
         children: [
             {
@@ -83,7 +97,7 @@ const routes = [
                 component: require("./components/discover/incidents/incident.vue.html")
             },
             {
-                name: "discoverForApplication",
+                name: "discover",
                 path: ":applicationId?",
                 component: require("./components/discover/home/home.vue.html")
             },
@@ -137,44 +151,88 @@ const routes = [
         ]
     },
     {
+        name: "manageApp",
         path: "/manage/application/",
-        component: require("./components/manage/manage.vue.html"),
+        component: require("./components/manage/application/app.vue.html"),
         children: [
             {
-                name: "manageApp",
+                name: "manageAppSettings",
                 path: ":applicationId/",
-                component: require("./components/manage/home/home.vue.html")
+                component: require("./components/manage/application/settings/settings.vue.html")
             },
             {
-                name: "manageAppTeam",
-                path: ":applicationId/team/",
-                component: require("./components/manage/team/team.vue.html")
+                name: "manageSecurity",
+                path: ":applicationId/security/",
+                component: require("./components/manage/application/security/security.vue.html")
             },
             {
                 name: "managePartitions",
                 path: ":applicationId/partitions/",
-                component: require("./components/manage/partitions/partition.vue.html")
+                component: require("./components/manage/application/partitions/partition.vue.html")
+            },
+            {
+                name: "createPartition",
+                path: ":applicationId/partition/create/",
+                component: require("./components/manage/application/partitions/create.vue.html")
+            },
+            {
+                name: "editPartition",
+                path: ":applicationId/partition/:partitionId/edit",
+                component: require("./components/manage/application/partitions/edit.vue.html")
+            }
+        ]
+    },
+    {
+        path: "/manage/",
+        component: require("./components/manage/system/manage.vue.html"),
+        children: [
+            {
+                name: "manageHome",
+                path: "",
+                component: require("./components/manage/system/home/home.vue.html"),
+            },
+            {
+                name: "createApp",
+                path: "application/create",
+                component: require("./components/manage/system/create/create.vue.html"),
             },
             {
                 name: "manageApiKeys",
-                path: ":applicationId/apikeys/",
-                component: require("./components/manage/apikeys/apikeys.vue.html")
+                path: "apikeys/",
+                component: require("./components/manage/system/apikeys/apikeys.vue.html")
             },
             {
                 name: "manageApiKey",
-                path: ":applicationId/apikeys/:apiKey",
-                component: require("./components/manage/apikeys/apikey.vue.html")
+                path: "apikey/:apiKey",
+                component: require("./components/manage/system/apikeys/apikey.vue.html")
             },
             {
                 name: "editApiKey",
-                path: ":applicationId/apikeys/:apiKey/edit",
-                component: require("./components/manage/apikeys/apikey-edit.vue.html")
+                path: "apikey/:apiKey/edit",
+                component: require("./components/manage/system/apikeys/apikey-edit.vue.html")
             },
             {
                 name: "createApiKey",
-                path: ":applicationId/apikeys/create",
-                component: require("./components/manage/apikeys/apikey-create.vue.html")
+                path: "apikeys/create",
+                component: require("./components/manage/system/apikeys/apikey-create.vue.html")
             }
+        ]
+    },
+    {
+        path: "/deployment/",
+        component: require("./components/deployment/deployment.vue.html"),
+        children: [
+            {
+                name: "deploymentHome",
+                path: ":applicationId?/",
+                component: require("./components/deployment/home/home.vue.html")
+            },
+            {
+                name: "deploymentVersion",
+                path: ":applicationId/version/:version",
+                component: require("./components/deployment/version/summary.vue.html")
+            }
+
         ]
     }
 ];

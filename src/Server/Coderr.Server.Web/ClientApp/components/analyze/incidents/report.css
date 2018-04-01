@@ -12,3 +12,8 @@
 .ReportsView .contextCollections th, .ReportsView .contextCollections td {
     padding: 0.15rem;
 }
+
+.contextCollections .card {
+    overflow-x: scroll;
+    overflow-y: auto
+}

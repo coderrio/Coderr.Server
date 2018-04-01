@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using DotNetCqs.DependencyInjection;
 using DotNetCqs.DependencyInjection.Microsoft;
 
-namespace Coderr.Server.Web2.Boot.Cqs
+namespace Coderr.Server.Web.Boot.Cqs
 {
     internal class ScopeWrapper : IHandlerScopeFactory
     {

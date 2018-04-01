@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
+using Coderr.Server.Abstractions.Config;
 using Coderr.Server.Infrastructure.Configuration;
-using Coderr.Server.PluginApi.Config;
 
 namespace Coderr.Server.App.Modules.Messaging.Commands
 {

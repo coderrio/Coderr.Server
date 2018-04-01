@@ -1,10 +1,11 @@
 ﻿using System.Threading.Tasks;
+using Coderr.Server.Abstractions.Security;
 using Coderr.Server.Api.Core.Applications.Commands;
 using Coderr.Server.Api.Core.Applications.Events;
 using Coderr.Server.Domain.Core.Applications;
 using Coderr.Server.Infrastructure.Security;
 using DotNetCqs;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 
 namespace Coderr.Server.App.Core.Applications.CommandHandlers
 {

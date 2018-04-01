@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Coderr.Server.Api.Modules.Triggers;
 using Coderr.Server.Api.Modules.Triggers.Queries;
 using DotNetCqs;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 

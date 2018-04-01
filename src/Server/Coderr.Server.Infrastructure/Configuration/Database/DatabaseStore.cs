@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using Coderr.Server.PluginApi.Config;
+using Coderr.Server.Abstractions.Config;
 using Griffin.Data;
 
 namespace Coderr.Server.Infrastructure.Configuration.Database

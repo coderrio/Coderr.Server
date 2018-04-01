@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Threading.Tasks;
+using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Domain.Modules.ErrorOrigins;
 using Coderr.Server.ReportAnalyzer.ErrorOrigins;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 
 namespace Coderr.Server.SqlServer.Modules.Geolocation

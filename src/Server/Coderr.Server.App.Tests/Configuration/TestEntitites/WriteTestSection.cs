@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Coderr.Server.PluginApi.Config;
+using Coderr.Server.Abstractions.Config;
 
 namespace Coderr.Server.App.Tests.Configuration.TestEntitites
 {

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using Coderr.Server.Abstractions.Config;
 using Coderr.Server.Domain.Core.Account;
 using Coderr.Server.Domain.Core.Applications;
 using Coderr.Server.Domain.Core.ErrorReports;
 using Coderr.Server.Domain.Core.User;
-using Coderr.Server.PluginApi.Config;
 using Coderr.Server.ReportAnalyzer.Incidents;
 using Coderr.Server.SqlServer.Core.Accounts;
 using Coderr.Server.SqlServer.Core.Applications;

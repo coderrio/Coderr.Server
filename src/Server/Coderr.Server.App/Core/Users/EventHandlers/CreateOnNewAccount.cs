@@ -2,7 +2,7 @@
 using Coderr.Server.Api.Core.Accounts.Events;
 using Coderr.Server.Domain.Core.User;
 using DotNetCqs;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 
 namespace Coderr.Server.App.Core.Users.EventHandlers
 {

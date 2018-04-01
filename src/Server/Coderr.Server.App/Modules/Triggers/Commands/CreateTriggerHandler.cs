@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Coderr.Server.Api.Modules.Triggers.Commands;
 using DotNetCqs;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 
 namespace Coderr.Server.App.Modules.Triggers.Commands
 {

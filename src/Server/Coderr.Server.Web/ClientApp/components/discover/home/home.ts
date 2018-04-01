@@ -1,13 +1,13 @@
-import { AppRoot } from '../../../services/AppRoot';
-import { GetOverview, GetOverviewResult } from '../../../dto/Web/Overview'
-import { FindIncidents, FindIncidentsResult, FindIncidentsResultItem } from '../../../dto/Core/Incidents'
-import { GetApplicationOverview, GetApplicationOverviewResult } from '../../../dto/Core/Applications'
-import * as Mine from '../../../dto/Common/Mine'
+import { AppRoot } from "../../../services/AppRoot";
+import { GetOverview, GetOverviewResult } from "../../../dto/Web/Overview"
+import { FindIncidentsResultItem } from "../../../dto/Core/Incidents"
+import { GetApplicationOverview, GetApplicationOverviewResult } from "../../../dto/Core/Applications"
+import * as Mine from "../../../dto/Common/Mine"
 import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
 import Chartist from "chartist";
-import 'chartist/dist/chartist.css';
-import * as moment from 'moment';
+import "chartist/dist/chartist.css";
+import * as moment from "moment";
 
 interface ISeries {
     name?: string;
@@ -17,6 +17,7 @@ interface ILegend {
     className: string;
     name: string;
 }
+
 @Component
 export default class DiscoverComponent extends Vue {
     private static activeBtnTheme: string = 'btn-dark';
@@ -70,7 +71,6 @@ export default class DiscoverComponent extends Vue {
         var q = new GetApplicationOverview();
         q.ApplicationId = applicationId;
         q.NumberOfDays = 30;
-
         AppRoot.Instance.apiClient.query<GetApplicationOverviewResult>(q)
             .then(result => {
                 this.incidentCount = result.StatSummary.Incidents;

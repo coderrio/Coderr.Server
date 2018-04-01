@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Coderr.Server.Api.Core.ApiKeys.Commands;
 using Coderr.Server.Api.Core.ApiKeys.Events;
 using DotNetCqs;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 
 namespace Coderr.Server.SqlServer.Core.ApiKeys.Commands

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Coderr.Server.Abstractions.Security;
 using Coderr.Server.App.Core.ApiKeys;
 using Coderr.Server.Infrastructure.Security;
 using FluentAssertions;

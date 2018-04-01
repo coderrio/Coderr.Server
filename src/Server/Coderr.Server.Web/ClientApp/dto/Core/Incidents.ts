@@ -195,6 +195,7 @@ export class CloseIncident
     public ShareSolution: boolean;
     public Solution: string;
     public UserId: number;
+    public ApplicationVersion: string;
 }
 export class IgnoreIncident
 {

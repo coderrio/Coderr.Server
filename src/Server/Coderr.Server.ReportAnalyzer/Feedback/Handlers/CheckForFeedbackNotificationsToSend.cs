@@ -1,15 +1,16 @@
 ﻿using System.Threading.Tasks;
+using Coderr.Server.Abstractions.Config;
 using Coderr.Server.Api.Core.Accounts.Queries;
 using Coderr.Server.Api.Core.Incidents.Queries;
 using Coderr.Server.Api.Core.Messaging;
 using Coderr.Server.Api.Core.Messaging.Commands;
+using Coderr.Server.Domain.Core.Incidents;
 using Coderr.Server.Domain.Modules.UserNotifications;
 using Coderr.Server.Infrastructure.Configuration;
-using Coderr.Server.PluginApi.Config;
 using Coderr.Server.ReportAnalyzer.Abstractions.Feedback;
 using Coderr.Server.ReportAnalyzer.UserNotifications.Handlers;
 using DotNetCqs;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 
 namespace Coderr.Server.ReportAnalyzer.Feedback.Handlers
 {
@@ -21,22 +22,24 @@ namespace Coderr.Server.ReportAnalyzer.Feedback.Handlers
     {
         private readonly IUserNotificationsRepository _notificationsRepository;
         private ConfigurationStore _configStore;
+        private IIncidentRepository _incidentRepository;
 
         /// <summary>
         ///     Creates a new instance of <see cref="CheckForNotificationsToSend" />.
         /// </summary>
         /// <param name="notificationsRepository">To load notification configuration</param>
-        public CheckForFeedbackNotificationsToSend(IUserNotificationsRepository notificationsRepository, ConfigurationStore configStore)
+        public CheckForFeedbackNotificationsToSend(IUserNotificationsRepository notificationsRepository, ConfigurationStore configStore, IIncidentRepository incidentRepository)
         {
             _notificationsRepository = notificationsRepository;
             _configStore = configStore;
+            _incidentRepository = incidentRepository;
         }
 
         /// <inheritdoc/>
         public async Task HandleAsync(IMessageContext context, FeedbackAttachedToIncident e)
         {
             var settings = await _notificationsRepository.GetAllAsync(-1);
-            var incident = await context.QueryAsync(new GetIncident(e.IncidentId));
+            var incident = await _incidentRepository.GetAsync(e.IncidentId);
             foreach (var setting in settings)
             {
                 if (setting.UserFeedback == NotificationState.Disabled)

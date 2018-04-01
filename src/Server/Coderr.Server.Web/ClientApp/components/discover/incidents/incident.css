@@ -34,12 +34,12 @@
     stroke: #1EC2A3 !important;
 }
 
-.ct-label.ct-label.ct-horizontal {
+/*.ct-label.ct-label.ct-horizontal {
     position: relative;
     justify-content: flex-end;
     text-align: right;
     transform: translate(100%, 40%) rotate(20deg);
-}
+}*/
 
 svg.ct-chart-line, svg.ct-chart-line g.ct-labels, svg.ct-chart-line g.ct-labels span.ct-label {
     overflow: visible;

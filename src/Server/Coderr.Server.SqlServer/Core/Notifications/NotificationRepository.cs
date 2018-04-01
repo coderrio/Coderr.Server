@@ -2,9 +2,10 @@
 using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
+using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.App.Core.Notifications;
 using Coderr.Server.Domain.Modules.UserNotifications;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 

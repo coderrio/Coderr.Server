@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Coderr.Server.Domain.Modules.ApplicationVersions;
 using Coderr.Server.ReportAnalyzer.Abstractions.Incidents;
 using DotNetCqs;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 
 namespace Coderr.Server.ReportAnalyzer.ApplicationVersions.Handlers
 {
@@ -22,8 +22,8 @@ namespace Coderr.Server.ReportAnalyzer.ApplicationVersions.Handlers
             string version = null;
             foreach (var contextCollection in e.Report.ContextCollections)
             {
-                if (!contextCollection.Properties.TryGetValue(AppAssemblyVersion, out version))
-                    continue;
+                if (contextCollection.Properties.TryGetValue(AppAssemblyVersion, out version))
+                    break;
             }
 
             if (version == null)
