@@ -18,11 +18,11 @@
             <em>(We might also contact you if we need more information
                 about the error)</em>
         </p>
-        <form method="post" action="@Url.Action("Errors")" style="width: 100%" class="form">
+        <form method="post" action="@Url.Action("Errors")">
             @Html.ValidationSummary(false)
-            <div class="form-group disabled suboption">
-                @Html.LabelFor(x => x.ContactEmail, new {@class = "control-label"})
-                @Html.TextBoxFor(x => x.ContactEmail, new {@class = "form-control", placeholder = "Your email address"})
+            <div class="form-group">
+                <label asp-for="ContactEmail"></label>
+                <input asp-for="ContactEmail" type="email" class="form-control" placeholder="Your email address"/>
             </div>
             <br/>
             @Html.Raw(ViewBag.PrevLink)

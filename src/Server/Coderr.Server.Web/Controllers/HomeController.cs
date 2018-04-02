@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 
 namespace Coderr.Server.Web.Controllers
 {
-    [Authorize]
+    [Authorize()]
     public class HomeController : Controller
     {
         private readonly InstallationOptions _installationOptions;
@@ -15,11 +15,21 @@ namespace Coderr.Server.Web.Controllers
             _installationOptions = installationOptions.Value;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>
+        /// We need to make sure that the installation wizard can redirect to the install start page.
+        /// </remarks>
         [HttpGet]
         public IActionResult Index()
         {
-            if (!_installationOptions.IsConfigured)
-                return Redirect("~/installation/");
+            //if (!_installationOptions.IsConfigured)
+            //    return Redirect("~/installation/");
+
+            //if (!User.Identity.IsAuthenticated)
+            //    return RedirectToAction("Login", "Account");
 
             return View();
         }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Security.Claims;
@@ -33,17 +32,23 @@ namespace Coderr.Server.Web
         private readonly ModuleStarter _moduleStarter;
         private IServiceProvider _serviceProvider;
 
-        private bool IsConfigured => Configuration["Installation/IsConfigured"] == "true";
-
 
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
             _moduleStarter = new ModuleStarter(configuration);
-            //InstallAuthorizationFilter.Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
+
+        private bool IsConfigured
+        {
+            get
+            {
+                var sesion = Configuration.GetSection("Installation");
+                return sesion.GetValue<bool>("IsConfigured");
+            }
+        }
 
         /// <summary>
         ///     Invoked after ConfigureServices.
@@ -66,15 +71,23 @@ namespace Coderr.Server.Web
 
             app.UseMvc(routes =>
             {
-                routes.MapRoute(
-                    name: "areas",
-                    template: "{area:exists}/{controller=Setup}/{action=Index}/{id?}"
-                );
+                if (!IsConfigured)
+                {
+                    routes.MapRoute(
+                        "areas",
+                        "{area:exists}/{controller=Setup}/{action=Index}/{id?}",
+                        defaults: new { area = "Installation" }
+                    );
+                }
 
                 routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
                 routes.MapSpaFallbackRoute(
                     "spa-fallback",
-                    new { controller = "Home", action = "Index" });
+                    new
+                    {
+                        controller = "Home",
+                        action = "Index"
+                    });
             });
 
             if (!IsConfigured)
@@ -103,16 +116,17 @@ namespace Coderr.Server.Web
                 //options.p
                 //options.Events.OnRedirectToLogin = HandleAuthenticationFailure;
                 options.Events.OnValidatePrincipal = context =>
-            {
-                var principal = context.Principal;
-                var str = context.Request.GetDisplayUrl() + ": " + context.Principal.Identity.IsAuthenticated;
-                return Task.CompletedTask;
-            };
+                {
+                    var principal = context.Principal;
+                    var str = context.Request.GetDisplayUrl() + ": " + context.Principal.Identity.IsAuthenticated;
+                    return Task.CompletedTask;
+                };
             });
 
             if (!IsConfigured)
             {
                 RegisterInstallationConfiguration(services);
+                return;
             }
 
             _moduleStarter.ScanAssemblies(AppDomain.CurrentDomain.BaseDirectory);
@@ -131,14 +145,6 @@ namespace Coderr.Server.Web
             _moduleStarter.Configure(configContext);
         }
 
-        private void RegisterInstallationConfiguration(IServiceCollection services)
-        {
-            SetupTools.DbTools = new SqlServerTools(() => OpenConnection(CoderrClaims.SystemPrincipal));
-            var store = new DatabaseStore(() => OpenConnection(CoderrClaims.SystemPrincipal));
-            services.AddSingleton<ConfigurationStore>(store);
-            services.Configure<InstallationOptions>(Configuration.GetSection("Installation"));
-        }
-
         private IServiceProvider GetLazyLoadedServiceProvider()
         {
             if (_serviceProvider == null)
@@ -150,13 +156,9 @@ namespace Coderr.Server.Web
         private Task HandleAuthenticationFailure(RedirectContext<CookieAuthenticationOptions> ctx)
         {
             if (ctx.Request.GetDisplayUrl().Contains("/api/"))
-            {
                 ctx.Response.StatusCode = 401;
-            }
             else
-            {
                 ctx.Response.StatusCode = 302;
-            }
 
             ctx.Response.Headers["Location"] = "/account/login/";
             return Task.CompletedTask;
@@ -172,8 +174,17 @@ namespace Coderr.Server.Web
 
         private void RegisterConfigurationStores(IServiceCollection services)
         {
-            services.AddTransient(typeof(IConfiguration<>), typeof(Boot.Adapters.ConfigWrapper<>));
-            services.AddTransient<ConfigurationStore>(x => new DatabaseStore(() => OpenConnection(CoderrClaims.SystemPrincipal)));
+            services.AddTransient(typeof(IConfiguration<>), typeof(ConfigWrapper<>));
+            services.AddTransient<ConfigurationStore>(x =>
+                new DatabaseStore(() => OpenConnection(CoderrClaims.SystemPrincipal)));
+        }
+
+        private void RegisterInstallationConfiguration(IServiceCollection services)
+        {
+            SetupTools.DbTools = new SqlServerTools(() => OpenConnection(CoderrClaims.SystemPrincipal));
+            var store = new DatabaseStore(() => OpenConnection(CoderrClaims.SystemPrincipal));
+            services.AddSingleton<ConfigurationStore>(store);
+            services.Configure<InstallationOptions>(Configuration.GetSection("Installation"));
         }
     }
 }

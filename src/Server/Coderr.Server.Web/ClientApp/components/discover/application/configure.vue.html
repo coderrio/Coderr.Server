@@ -30,7 +30,7 @@
                         <p>We couldn't find any reported errors. Do you need help?</p>
                         <button class="btn btn-outline-danger btn-sm">Schedule a (free) demo with one of our developers</button>
                         <a href="https://coderr.io/documentation/" target="_blank" class="btn btn-outline-danger btn-sm">Read the reporting errors guide</a>
-                        <a href="#" v-on:click.prevent="onExitGuide" class="btn btn-outline-danger">Exit guide</a>
+                        <a href="#" v-on:click.prevent="onExitGuide" class="btn btn-outline-danger btn-sm">Exit onboarding</a>
                     </div>
                 </div>
                 <div class="alert alert-warning" v-if="gotNoIncidents">
@@ -38,7 +38,7 @@
                     <div>
                         <p>We could not find any reported errors in our database. </p>
                         <p>Do you want our help to troubleshoot the issue?</p>
-                        <button class="btn btn-outline-danger" v-on:click="goToSupport">Get help from our developers</button> <button class="btn btn-outline-danger">Exit guide</button>
+                        <button class="btn btn-outline-danger" v-on:click="goToSupport">Get help from our developers</button> <button class="btn btn-outline-danger">Exit onboarding</button>
                     </div>
                 </div>
                 <div class="alert alert-warning" v-if="noConnection">

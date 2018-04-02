@@ -33,9 +33,9 @@
                     <h3 class="alert-heading">No reported errors</h3>
                     <div>
                         <p>We couldn't find any reported errors. Do you need help?</p>
-                        <button class="btn btn-outline-danger btn-sm">Schedule a (free) demo with one of our developers</button>
+                        <router-link class="btn btn-outline-danger btn-sm" :to="{name: 'support', params: { type: 'configdemo' }}">Schedule a (free) demo with one of our developers</router-link>
                         <a href="https://coderr.io/documentation/" target="_blank" class="btn btn-outline-danger btn-sm">Read the reporting errors guide</a>
-                        <a href="/" class="btn btn-outline-danger">Exit guide</a>
+                        <a href="/" class="btn btn-outline-danger btn-sm">Exit onboarding</a>
                     </div>
                 </div>
                 <div class="card">

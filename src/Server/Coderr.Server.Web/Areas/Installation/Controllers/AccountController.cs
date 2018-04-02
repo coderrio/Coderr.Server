@@ -20,7 +20,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 namespace codeRR.Server.Web.Areas.Installation.Controllers
 {
     [Area("Installation")]
-    
+
     public class AccountController : Controller
     {
         public ActionResult Admin()
@@ -69,7 +69,7 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
 
                 var tm = new ApplicationTeamMember(app.Id, account.Id, "System")
                 {
-                    Roles = new[] {ApplicationRole.Admin, ApplicationRole.Member},
+                    Roles = new[] { ApplicationRole.Admin, ApplicationRole.Member },
                     UserName = account.UserName
                 };
                 await repos2.CreateAsync(tm);
@@ -86,7 +86,7 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
                     new Claim(ClaimTypes.Role, CoderrRoles.SysAdmin, ClaimValueTypes.String)
                 };
                 var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                var properties = new AuthenticationProperties {IsPersistent = false};
+                var properties = new AuthenticationProperties { IsPersistent = false };
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(identity), properties);
 
@@ -104,18 +104,13 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
         {
             ViewBag.Exception = null;
             ViewBag.AlreadyCreated = false;
-            if (User.Identity.IsAuthenticated)
-                ViewBag.AlreadyCreated = true;
-            else
+            using (var con = SetupTools.DbTools.OpenConnection())
             {
-                using (var con = SetupTools.DbTools.OpenConnection())
+                using (var uow = new AdoNetUnitOfWork(con))
                 {
-                    using (var uow = new AdoNetUnitOfWork(con))
-                    {
-                        var id = uow.ExecuteScalar("SELECT TOP 1 Id FROM Accounts");
-                        if (id != null)
-                            ViewBag.AlreadyCreated = true;
-                    }
+                    var id = uow.ExecuteScalar("SELECT TOP 1 Id FROM Accounts");
+                    if (id != null)
+                        ViewBag.AlreadyCreated = true;
                 }
             }
 

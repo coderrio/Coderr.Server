@@ -104,6 +104,7 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
         public ActionResult Completed(string displayError = null)
         {
             ViewBag.DisplayError = displayError == "1";
+            InstallAuthorizationFilter.IsInstallationCompleted = true;
             return View();
         }
 

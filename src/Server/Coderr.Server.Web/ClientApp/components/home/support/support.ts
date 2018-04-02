@@ -24,6 +24,11 @@ export default class SupportComponent extends Vue {
             area.value =
                 "I've downloaded the correct Coderr client using nuget and added the correct configuration code lines.\r\n\r\nHowever, when I try to report an error (using a try/catch) block, nothing gets reported to the Coderr Server.";
         }
+        if (this.$route.params.type === "configdemo") {
+            var area = <HTMLTextAreaElement>document.getElementById("SupportMessage");
+            area.value =
+                "I've downloaded the correct Coderr client using nuget and added the correct configuration code lines.\r\n\r\nHowever, when I try to report an error (using a try/catch) block, nothing gets reported to the Coderr Server.\r\n\r\nI would like to book a demo with one of your developers.";
+        }
         this.simpleMde$ = new SimpleMDE({ element: document.getElementById("SupportMessage") });
         
     }

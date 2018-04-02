@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "f46bf6ec06c4e81ca0d8"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "5b291a61c1c6a5e4f101"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -41880,6 +41880,11 @@ var SupportComponent = /** @class */ (function (_super) {
             area.value =
                 "I've downloaded the correct Coderr client using nuget and added the correct configuration code lines.\r\n\r\nHowever, when I try to report an error (using a try/catch) block, nothing gets reported to the Coderr Server.";
         }
+        if (this.$route.params.type === "configdemo") {
+            var area = document.getElementById("SupportMessage");
+            area.value =
+                "I've downloaded the correct Coderr client using nuget and added the correct configuration code lines.\r\n\r\nHowever, when I try to report an error (using a try/catch) block, nothing gets reported to the Coderr Server.\r\n\r\nI would like to book a demo with one of your developers.";
+        }
         this.simpleMde$ = new __WEBPACK_IMPORTED_MODULE_4_SimpleMDE__({ element: document.getElementById("SupportMessage") });
     };
     SupportComponent.prototype.sendMessage = function () {
@@ -62759,7 +62764,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "target": "_blank"
     }
   }, [_vm._v("Read the reporting errors guide")]), _vm._v(" "), _c('a', {
-    staticClass: "btn btn-outline-danger",
+    staticClass: "btn btn-outline-danger btn-sm",
     attrs: {
       "href": "#"
     },
@@ -62769,7 +62774,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.onExitGuide($event)
       }
     }
-  }, [_vm._v("Exit guide")])])]) : _vm._e(), _vm._v(" "), (_vm.gotNoIncidents) ? _c('div', {
+  }, [_vm._v("Exit onboarding")])])]) : _vm._e(), _vm._v(" "), (_vm.gotNoIncidents) ? _c('div', {
     staticClass: "alert alert-warning"
   }, [_c('h3', {
     staticClass: "alert-heading"
@@ -62780,7 +62785,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._v("Get help from our developers")]), _vm._v(" "), _c('button', {
     staticClass: "btn btn-outline-danger"
-  }, [_vm._v("Exit guide")])])]) : _vm._e(), _vm._v(" "), (_vm.noConnection) ? _c('div', {
+  }, [_vm._v("Exit onboarding")])])]) : _vm._e(), _vm._v(" "), (_vm.noConnection) ? _c('div', {
     staticClass: "alert alert-warning"
   }, [_c('h3', {
     staticClass: "alert-heading"
@@ -64848,7 +64853,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "tag": "li",
       "to": {
-        name: 'discoverForApplication',
+        name: 'discover',
         params: {
           applicationId: _vm.currentApplicationId
         }
@@ -65692,7 +65697,28 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "alert alert-warning"
   }, [_c('h3', {
     staticClass: "alert-heading"
-  }, [_vm._v("No reported errors")]), _vm._v(" "), _vm._m(2)]) : _vm._e(), _vm._v(" "), _c('div', {
+  }, [_vm._v("No reported errors")]), _vm._v(" "), _c('div', [_c('p', [_vm._v("We couldn't find any reported errors. Do you need help?")]), _vm._v(" "), _c('router-link', {
+    staticClass: "btn btn-outline-danger btn-sm",
+    attrs: {
+      "to": {
+        name: 'support',
+        params: {
+          type: 'configdemo'
+        }
+      }
+    }
+  }, [_vm._v("Schedule a (free) demo with one of our developers")]), _vm._v(" "), _c('a', {
+    staticClass: "btn btn-outline-danger btn-sm",
+    attrs: {
+      "href": "https://coderr.io/documentation/",
+      "target": "_blank"
+    }
+  }, [_vm._v("Read the reporting errors guide")]), _vm._v(" "), _c('a', {
+    staticClass: "btn btn-outline-danger btn-sm",
+    attrs: {
+      "href": "/"
+    }
+  }, [_vm._v("Exit onboarding")])], 1)]) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "card"
   }, [_c('div', {
     staticClass: "card-header"
@@ -65717,21 +65743,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "col"
   }, [_c('p', [_vm._v("\n                To get started, you need to configure your application.\n                Select the .NET library that you are going to use.\n            ")])])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('p', [_vm._v("We couldn't find any reported errors. Do you need help?")]), _vm._v(" "), _c('button', {
-    staticClass: "btn btn-outline-danger btn-sm"
-  }, [_vm._v("Schedule a (free) demo with one of our developers")]), _vm._v(" "), _c('a', {
-    staticClass: "btn btn-outline-danger btn-sm",
-    attrs: {
-      "href": "https://coderr.io/documentation/",
-      "target": "_blank"
-    }
-  }, [_vm._v("Read the reporting errors guide")]), _vm._v(" "), _c('a', {
-    staticClass: "btn btn-outline-danger",
-    attrs: {
-      "href": "/"
-    }
-  }, [_vm._v("Exit guide")])])
 }]}
 module.exports.render._withStripped = true
 if (true) {

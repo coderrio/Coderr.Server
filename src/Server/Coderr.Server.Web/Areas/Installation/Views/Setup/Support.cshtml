@@ -4,20 +4,16 @@
 }
 <div class="container">
     <div class="col-lg-12">
-
         <h2>Free Support</h2>
         <p>Do you want to get 30 days of free email support?</p>
         <p>No strings attached. You can optionally extend the support after the 30 days.</p>
         <form method="post" action="@Url.Action("Support")" style="width: 100%" class="form">
             @Html.ValidationSummary(false)
             <div>
-                <input type="text" 
-                       name="CompanyName" class="form-control" value="@Model.CompanyName" placeholder="Company name" />
-
-                <input type="email"
-                       name="Email" class="form-control" value="@Model.Email" placeholder="Your email address" />
+                <input asp-for="CompanyName" class="form-control" placeholder="Company name" autofocus="autofocus" />
+                <input type="email" asp-for="Email" class="form-control" placeholder="Your email address" />
             </div>
-            <div><em>(Leave fields empty if you do not want to sign up)</em></div>
+            <div><small class="text-muted form-text">(Leave fields empty if you do not want to sign up)</small></div>
             <div>&nbsp;</div>
             <br />
             @Html.Raw(ViewBag.PrevLink)
