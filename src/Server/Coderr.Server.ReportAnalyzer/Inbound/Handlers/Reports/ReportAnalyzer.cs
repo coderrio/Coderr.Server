@@ -3,10 +3,13 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Domain.Core.ErrorReports;
 using Coderr.Server.Domain.Core.Incidents;
 using Coderr.Server.Domain.Core.Incidents.Events;
+using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.ReportAnalyzer.Abstractions;
+using Coderr.Server.ReportAnalyzer.Abstractions.Boot;
 using Coderr.Server.ReportAnalyzer.Abstractions.ErrorReports;
 using Coderr.Server.ReportAnalyzer.Abstractions.Incidents;
 using Coderr.Server.ReportAnalyzer.ErrorReports;
@@ -21,7 +24,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
     /// <summary>
     ///     Runs analysis for the report.
     /// </summary>
-    [Griffin.Container.ContainerService]
+    [ContainerService]
     public class ReportAnalyzer : IReportAnalyzer
     {
         public const string AppAssemblyVersion = "AppAssemblyVersion";
@@ -153,6 +156,9 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
             _logger.Debug("Publishing now: " + report.ClientReportId);
             var e = new ReportAddedToIncident(summary, ConvertToCoreReport(report), isReOpened);
             await context.SendAsync(e);
+
+            await context.SendAsync(new ProcessInboundContextCollections());
+
             if (sw.ElapsedMilliseconds > 200)
                 _logger.Debug("PublishAsync took " + sw.ElapsedMilliseconds);
             sw.Stop();

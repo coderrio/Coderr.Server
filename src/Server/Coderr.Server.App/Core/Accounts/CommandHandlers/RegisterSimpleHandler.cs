@@ -9,7 +9,7 @@ using Coderr.Server.Api.Core.Messaging.Commands;
 using Coderr.Server.Domain.Core.Account;
 using Coderr.Server.Infrastructure.Configuration;
 using DotNetCqs;
-using Coderr.Server.ReportAnalyzer.Abstractions;
+
 using log4net;
 
 namespace Coderr.Server.App.Core.Accounts.CommandHandlers

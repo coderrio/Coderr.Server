@@ -1,12 +1,11 @@
 ﻿using System.Threading.Tasks;
-using codeRR.Server.Web.Areas.Installation.Models;
 using Coderr.Server.Abstractions.Config;
 using Coderr.Server.App.Modules.Messaging.Commands;
-using Coderr.Server.Web;
+using Coderr.Server.Web.Areas.Installation.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace codeRR.Server.Web.Areas.Installation.Controllers
+namespace Coderr.Server.Web.Areas.Installation.Controllers
 {
     [Area("Installation")]
     

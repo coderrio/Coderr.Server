@@ -8,3 +8,7 @@
 .more {
     display: none;
 }
+
+.feedback.col {
+    min-width: 500px;
+}

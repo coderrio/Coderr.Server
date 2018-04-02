@@ -5,10 +5,18 @@ import VueRouter from "vue-router";
 import moment from "moment";
 import { AppRoot } from "./services/AppRoot"
 import VeeValidate from 'vee-validate';
+import { IUser } from "./vue-shim";
 
 Vue.use(VeeValidate);
 Vue.use(VueRouter);
 Vue.config.devtools = true;
+
+
+declare module 'vue/types/vue' {
+    interface Vue {
+        user$: IUser;
+    }
+}
 
 Vue.filter("ago",
     (value: string) => {
@@ -35,14 +43,14 @@ Vue.filter("agoOrDate",
 Vue.filter("incidentState",
     (value: string) => {
         switch (value) {
-        case "0":
-            return "New";
-        case "1":
-            return "Assigned";
-        case "2":
-            return "Ignored";
-        case "3":
-            return "Closed";
+            case "0":
+                return "New";
+            case "1":
+                return "Assigned";
+            case "2":
+                return "Ignored";
+            case "3":
+                return "Closed";
         }
     });
 

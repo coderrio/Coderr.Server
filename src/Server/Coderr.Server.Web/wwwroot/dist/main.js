@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "5b291a61c1c6a5e4f101"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "f0a30ff8588319186e6d"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -21644,7 +21644,7 @@ exports = module.exports = __webpack_require__(5)();
 
 
 // module
-exports.push([module.i, "\n.IncidentView .tags span {\r\n    margin-right: 5px;\n}\n.tags button {\r\n    margin-right: 5px;\n}\n.more {\r\n    display: none;\n}\r\n", "", {"version":3,"sources":["/./ClientApp/components/analyze/incidents/feedback.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AACD;IACI,kBAAkB;CACrB;AAED;IACI,cAAc;CACjB","file":"feedback.css","sourcesContent":[".IncidentView .tags span {\r\n    margin-right: 5px;\r\n}\r\n.tags button {\r\n    margin-right: 5px;\r\n}\r\n\r\n.more {\r\n    display: none;\r\n}\r\n"],"sourceRoot":"webpack://"}]);
+exports.push([module.i, "\n.IncidentView .tags span {\r\n    margin-right: 5px;\n}\n.tags button {\r\n    margin-right: 5px;\n}\n.more {\r\n    display: none;\n}\n.feedback.col {\r\n    min-width: 500px;\n}", "", {"version":3,"sources":["/./ClientApp/components/analyze/incidents/feedback.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AACD;IACI,kBAAkB;CACrB;AAED;IACI,cAAc;CACjB;AAED;IACI,iBAAiB;CACpB","file":"feedback.css","sourcesContent":[".IncidentView .tags span {\r\n    margin-right: 5px;\r\n}\r\n.tags button {\r\n    margin-right: 5px;\r\n}\r\n\r\n.more {\r\n    display: none;\r\n}\r\n\r\n.feedback.col {\r\n    min-width: 500px;\r\n}"],"sourceRoot":"webpack://"}]);
 
 // exports
 
@@ -39718,6 +39718,7 @@ var AnalyzeReportComponent = /** @class */ (function (_super) {
             _this.currentIndex = 0;
             _this.currentPage = result.PageNumber;
             _this.totalCount = result.TotalCount;
+            _this.showNextButton = result.TotalCount > 1;
             // Used when we navigate out of the current page
             if (!isEntryLoadForIncident || _this.reportId == null) {
                 if (result.Items.length > 0) {
@@ -41757,7 +41758,8 @@ var NavMenuComponent = /** @class */ (function (_super) {
     };
     NavMenuComponent.prototype.changeApplication = function (applicationId) {
         console.log(applicationId);
-        if (this.$route.path.indexOf('/discover/') === 0) {
+        if (this.$route.path.indexOf('/discover') === 0) {
+            console.log('disc');
             this.$router.push({ name: 'discover', params: { applicationId: applicationId.toString() } });
         }
         else if (this.$route.path.indexOf('/analyze') === 0) {
@@ -41766,7 +41768,7 @@ var NavMenuComponent = /** @class */ (function (_super) {
         else if (this.$route.path.indexOf("/deployment") === 0) {
             this.$router.push({ name: 'deploymentHome', params: { applicationId: applicationId.toString() } });
         }
-        else if (this.$route.path.indexOf("/manage/") === 0) {
+        else if (this.$route.path.indexOf("/manage") === 0) {
             this.$router.push({ name: 'manageAppSettings', params: { applicationId: applicationId.toString() } });
         }
     };
@@ -63689,7 +63691,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "row mb-2"
   }, [_c('div', {
     staticClass: "col-lg-12"
-  }, [_c('h3', [_vm._v(_vm._s(_vm.incident.Description) + " "), _c('small', [_vm._v("[" + _vm._s(_vm.incident.FullName) + "]")])]), _vm._v(" "), _c('div', {}, [_c('a', {
+  }, [_c('h3', [_vm._v(_vm._s(_vm.incident.Description) + " "), _c('small', {
+    staticClass: "text-muted"
+  }, [_vm._v("[" + _vm._s(_vm.incident.FullName) + "]")])]), _vm._v(" "), _c('div', {}, [_c('a', {
     staticClass: "btn btn-light",
     attrs: {
       "href": "#"
@@ -64032,7 +64036,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('i', {
       staticClass: "fa-table fa text-muted"
     }), _vm._v(" " + _vm._s(collection.Name))])])
-  })], 2)])]), _vm._v(" "), (_vm.currentReport.Id > 0) ? _c('div', [_c('table', {
+  })], 2)])]), _vm._v(" "), (_vm.currentReport.Id > 0) ? _c('div', {
+    staticStyle: {
+      "overflow-x": "scroll"
+    }
+  }, [_c('table', {
     staticClass: "table"
   }, [_c('tbody', _vm._l((_vm.currentCollection.Properties), function(prop) {
     return _c('tr', [_c('td', [_vm._v(_vm._s(prop.Key))]), _vm._v(" "), _c('td', {
@@ -65303,6 +65311,20 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', {
     staticClass: "FeedbackView"
   }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "row mb-2"
+  }, [_c('div', {
+    staticClass: "col"
+  }, [_c('router-link', {
+    staticClass: "btn btn-light",
+    attrs: {
+      "to": {
+        name: 'analyzeIncident',
+        params: {
+          incidentId: _vm.incidentId
+        }
+      }
+    }
+  }, [_vm._v("<< Back to incident..")])], 1)]), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     directives: [{
@@ -65317,7 +65339,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._m(1)]), _vm._v(" "), _vm._l((_vm.feedbackList), function(feedback) {
     return _c('div', {
-      staticClass: "col"
+      staticClass: "feedback col"
     }, [_c('div', {
       staticClass: "card"
     }, [_c('div', {
@@ -65331,21 +65353,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "href": 'mailto:' + feedback.email
       }
     }, [_vm._v(_vm._s(feedback.email))])]) : _vm._e()])])
-  })], 2), _vm._v(" "), _c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col"
-  }, [_c('router-link', {
-    staticClass: "btn btn-primary",
-    attrs: {
-      "to": {
-        name: 'analyzeIncident',
-        params: {
-          incidentId: _vm.incidentId
-        }
-      }
-    }
-  }, [_vm._v("<< Back to incident..")])], 1)])])
+  })], 2)])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "row"

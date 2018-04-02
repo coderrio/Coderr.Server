@@ -4,7 +4,7 @@ using Coderr.Server.Api.Core.Users.Commands;
 using Coderr.Server.Domain.Core.Account;
 using Coderr.Server.Domain.Core.User;
 using DotNetCqs;
-using Coderr.Server.ReportAnalyzer.Abstractions;
+
 
 namespace Coderr.Server.App.Core.Users.WebApi
 {

@@ -10,7 +10,6 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer.Jobs
     internal class Importer
     {
         private readonly SqlTransaction _transaction;
-        private readonly IAdoNetUnitOfWork _unitOfWork;
         private readonly DataTable _dataTable = new DataTable();
 
         public Importer(SqlTransaction transaction)

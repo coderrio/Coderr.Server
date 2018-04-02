@@ -6,7 +6,10 @@ using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Abstractions.Config;
 using Coderr.Server.Abstractions.Security;
 using Coderr.Server.Infrastructure.Configuration.Database;
+using Coderr.Server.ReportAnalyzer.Abstractions.Incidents;
 using Coderr.Server.ReportAnalyzer.Boot.Adapters;
+using DotNetCqs;
+using DotNetCqs.Queues;
 using Griffin.Data;
 using Microsoft.Extensions.DependencyInjection;
 

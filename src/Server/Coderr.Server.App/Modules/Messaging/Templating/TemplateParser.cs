@@ -4,7 +4,6 @@ using System.Text;
 using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.App.Modules.Messaging.Templating.Formatting;
 using  ColorCode;
-using Coderr.Server.ReportAnalyzer.Abstractions;
 
 namespace Coderr.Server.App.Modules.Messaging.Templating
 {

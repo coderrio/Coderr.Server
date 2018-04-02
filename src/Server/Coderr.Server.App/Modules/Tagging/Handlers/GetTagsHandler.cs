@@ -4,7 +4,6 @@ using Coderr.Server.Api.Modules.Tagging;
 using Coderr.Server.Api.Modules.Tagging.Queries;
 using Coderr.Server.Domain.Modules.Tags;
 using DotNetCqs;
-using Coderr.Server.ReportAnalyzer.Abstractions;
 
 namespace Coderr.Server.App.Modules.Tagging.Handlers
 {

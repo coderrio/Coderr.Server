@@ -7,7 +7,7 @@ using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.ReportAnalyzer.Triggers.Actions;
 using Coderr.Server.ReportAnalyzer.Triggers.Handlers.Actions;
 using DotNetCqs.DependencyInjection;
-using Coderr.Server.ReportAnalyzer.Abstractions;
+using Coderr.Server.Abstractions.Boot;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Coderr.Server.ReportAnalyzer.Triggers
@@ -19,9 +19,7 @@ namespace Coderr.Server.ReportAnalyzer.Triggers
     public class ServiceLocatorTriggerActionFactory : ITriggerActionFactory
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly IHandlerScope _handlerScope;
         private static readonly Dictionary<string, Type> _actionTypes = new Dictionary<string, Type>();
-        private IServiceScope _serviceScope;
 
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline",
             Justification = "How on earth could I do that?")]

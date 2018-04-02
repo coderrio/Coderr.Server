@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Coderr.Server.Api.Core.Feedback.Commands;
 using Coderr.Server.ReportAnalyzer.Inbound.Commands;
 using DotNetCqs;
-using Coderr.Server.ReportAnalyzer.Abstractions;
+using Coderr.Server.Abstractions.Boot;
 using log4net;
 using Newtonsoft.Json;
 

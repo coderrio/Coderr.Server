@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Coderr.Server.Api.Core.Applications.Events;
 using DotNetCqs;
-using Coderr.Server.ReportAnalyzer.Abstractions;
+
 
 namespace Coderr.Server.App.Core.ApiKeys.Events
 {

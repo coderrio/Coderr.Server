@@ -1,8 +1,7 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
 
-namespace codeRR.Server.Web.Areas.Installation
+namespace Coderr.Server.Web.Areas.Installation
 {
     public class WizardStepInfo
     {

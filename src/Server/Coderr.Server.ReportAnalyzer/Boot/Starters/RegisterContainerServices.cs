@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using Coderr.Server.ReportAnalyzer.Abstractions.Boot;
+using Coderr.Server.ReportAnalyzer.Inbound.Handlers;
 
 namespace Coderr.Server.ReportAnalyzer.Boot.Starters
 {
@@ -14,11 +15,11 @@ namespace Coderr.Server.ReportAnalyzer.Boot.Starters
         public void Configure(ConfigurationContext context)
         {
             context.Services.RegisterContainerServices(Assembly.GetExecutingAssembly());
+            context.Services.RegisterContainerServices(typeof(ProcessReportHandler).Assembly);
 
             //workaround since SQL server already references us
             var assembly = AppDomain.CurrentDomain.GetAssemblies()
                 .First(x => x.FullName.StartsWith("Coderr.Server.SqlServer,"));
-
             context.Services.RegisterContainerServices(assembly);
         }
 

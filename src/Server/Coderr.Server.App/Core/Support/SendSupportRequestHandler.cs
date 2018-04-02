@@ -9,7 +9,7 @@ using Coderr.Server.Api.Core.Support;
 using Coderr.Server.Infrastructure.Configuration;
 using Coderr.Server.Infrastructure.Security;
 using DotNetCqs;
-using Coderr.Server.ReportAnalyzer.Abstractions;
+
 
 namespace Coderr.Server.App.Core.Support
 {

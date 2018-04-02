@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Data.SqlClient;
 using System.Threading.Tasks;
 using Coderr.Server.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Protocols;
 
-namespace codeRR.Server.Web.Areas.Installation.Controllers
+namespace Coderr.Server.Web.Areas.Installation.Controllers
 {
     [Area("Installation")]
     

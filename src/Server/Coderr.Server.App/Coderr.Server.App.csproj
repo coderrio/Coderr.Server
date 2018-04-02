@@ -22,6 +22,5 @@
     <ProjectReference Include="..\Coderr.Server.Domain\Coderr.Server.Domain.csproj" />
     <ProjectReference Include="..\Coderr.Server.Infrastructure\Coderr.Server.Infrastructure.csproj" />
     <ProjectReference Include="..\Coderr.Server.Abstractions\Coderr.Server.Abstractions.csproj" />
-    <ProjectReference Include="..\Coderr.Server.ReportAnalyzer.Abstractions\Coderr.Server.ReportAnalyzer.Abstractions.csproj" />
   </ItemGroup>
 </Project>

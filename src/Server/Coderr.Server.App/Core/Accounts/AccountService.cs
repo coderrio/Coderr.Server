@@ -12,7 +12,7 @@ using Coderr.Server.App.Core.Invitations;
 using Coderr.Server.Domain.Core.Account;
 using Coderr.Server.Domain.Core.Applications;
 using Coderr.Server.Infrastructure.Security;
-using Coderr.Server.ReportAnalyzer.Abstractions;
+
 using DotNetCqs;
 using log4net;
 

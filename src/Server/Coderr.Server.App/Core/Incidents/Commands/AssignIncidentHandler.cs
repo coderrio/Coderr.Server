@@ -5,7 +5,7 @@ using Coderr.Server.Api.Core.Incidents.Events;
 using Coderr.Server.Domain.Core.Incidents;
 using Coderr.Server.Infrastructure.Security;
 using DotNetCqs;
-using Coderr.Server.ReportAnalyzer.Abstractions;
+
 
 namespace Coderr.Server.App.Core.Incidents.Commands
 {

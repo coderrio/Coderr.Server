@@ -8,6 +8,11 @@
             </div>
             <hr />
         </div>
+        <div class="row mb-2">
+            <div class="col">
+                <router-link :to="{ name: 'analyzeIncident', params: { incidentId: incidentId }}" class="btn btn-light">&lt;&lt; Back to incident..</router-link>
+            </div>
+        </div>
         <div class="row">
             <div class="col" v-show="feedbackList.length == 0" style="display: none">
                 <div class="card">
@@ -23,7 +28,7 @@ Err.Configuration.DisplayErrorPages();
                     </div>
                 </div>
             </div>
-            <div class="col" v-for="feedback in feedbackList">
+            <div class="feedback col" v-for="feedback in feedbackList">
                 <div class="card">
                     <div class="card-header">
                         Written {{feedback.writtenAtUtc|ago}}
@@ -39,11 +44,6 @@ Err.Configuration.DisplayErrorPages();
                         <a :href="'mailto:' + feedback.email">{{feedback.email}}</a>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <router-link :to="{ name: 'analyzeIncident', params: { incidentId: incidentId }}" class="btn btn-primary">&lt;&lt; Back to incident..</router-link>
             </div>
         </div>
     </div>

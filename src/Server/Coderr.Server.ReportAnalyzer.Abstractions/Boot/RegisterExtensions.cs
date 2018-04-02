@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Reflection;
+using Coderr.Server.Abstractions.Boot;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Coderr.Server.ReportAnalyzer.Abstractions.Boot
@@ -33,7 +34,7 @@ namespace Coderr.Server.ReportAnalyzer.Abstractions.Boot
 
         public static void RegisterMessageHandlers(this IServiceCollection serviceCollection, Assembly assembly)
         {
-            var types = Assembly.GetExecutingAssembly().GetTypes()
+            var types = assembly.GetTypes()
                 .Where(y => y.GetInterfaces().Any(x => x.Name.Contains("IMessageHandler")))
                 .ToList();
             foreach (var type in types)

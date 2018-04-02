@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Coderr.Server.Api.Core.Reports.Queries;
 using Coderr.Server.Domain.Core.ErrorReports;
 using DotNetCqs;
-using Coderr.Server.ReportAnalyzer.Abstractions;
+
 
 namespace Coderr.Server.App.Core.Reports.Queries
 {

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Coderr.Server.Domain.Modules.ApplicationVersions;
 using Coderr.Server.ReportAnalyzer.Abstractions.Incidents;
 using DotNetCqs;
-using Coderr.Server.ReportAnalyzer.Abstractions;
+using Coderr.Server.Abstractions.Boot;
 
 namespace Coderr.Server.ReportAnalyzer.ApplicationVersions.Handlers
 {

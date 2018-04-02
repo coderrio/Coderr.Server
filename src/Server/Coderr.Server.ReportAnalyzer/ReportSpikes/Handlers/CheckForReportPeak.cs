@@ -9,9 +9,10 @@ using Coderr.Server.Api.Core.Messaging.Commands;
 using Coderr.Server.Domain.Modules.ReportSpikes;
 using Coderr.Server.Domain.Modules.UserNotifications;
 using Coderr.Server.Infrastructure.Configuration;
+using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.ReportAnalyzer.Abstractions.Incidents;
 using DotNetCqs;
-using Coderr.Server.ReportAnalyzer.Abstractions;
+using Coderr.Server.ReportAnalyzer.Abstractions.Boot;
 
 namespace Coderr.Server.ReportAnalyzer.ReportSpikes.Handlers
 {

@@ -52,11 +52,9 @@ namespace Coderr.Server.Web.Boot.Cqs
         public void Configure(ConfigurationContext context)
         {
             var assembly = typeof(IAccountService).Assembly;
-            context.Services.RegisterContainerServices(assembly);
             context.Services.RegisterMessageHandlers(assembly);
 
             assembly = typeof(SqlServerTools).Assembly;
-            context.Services.RegisterContainerServices(assembly);
             context.Services.RegisterMessageHandlers(assembly);
 
             context.Services.AddSingleton<IMessageQueueProvider>(CreateQueueProvider(context));

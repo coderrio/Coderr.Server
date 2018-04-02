@@ -156,7 +156,7 @@ export default class AnalyzeReportComponent extends Vue {
                 this.currentIndex = 0;
                 this.currentPage = result.PageNumber;
                 this.totalCount = result.TotalCount;
-
+                this.showNextButton = result.TotalCount > 1;
                 // Used when we navigate out of the current page
                 if (!isEntryLoadForIncident || this.reportId == null) {
                     if (result.Items.length > 0) {

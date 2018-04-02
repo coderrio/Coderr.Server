@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Coderr.Server.Domain.Core.ErrorReports;
 using Coderr.Server.ReportAnalyzer.Inbound.Commands;
 using DotNetCqs;
-using Coderr.Server.ReportAnalyzer.Abstractions;
+using Coderr.Server.Abstractions.Boot;
 using log4net;
 
 namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers

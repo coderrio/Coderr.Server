@@ -1,6 +1,6 @@
 ﻿using System;
 using Coderr.Server.Abstractions.Boot;
-using Coderr.Server.ReportAnalyzer.Abstractions;
+using Coderr.Server.Abstractions.Boot;
 
 namespace Coderr.Server.ReportAnalyzer.Tagging.Identifiers
 {

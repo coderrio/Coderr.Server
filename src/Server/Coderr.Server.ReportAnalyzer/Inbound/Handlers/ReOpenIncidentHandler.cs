@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Coderr.Server.Api.Core.Incidents.Commands;
 using Coderr.Server.Domain.Core.Incidents;
 using Coderr.Server.Domain.Core.Incidents.Events;
+using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.ReportAnalyzer.Abstractions;
 using DotNetCqs;
 

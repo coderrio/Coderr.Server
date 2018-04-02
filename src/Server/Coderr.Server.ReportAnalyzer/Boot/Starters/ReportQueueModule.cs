@@ -9,7 +9,11 @@ using Coderr.Server.Abstractions.Security;
 using Coderr.Server.Infrastructure.Messaging;
 using Coderr.Server.ReportAnalyzer.Abstractions;
 using Coderr.Server.ReportAnalyzer.Abstractions.Boot;
+using Coderr.Server.ReportAnalyzer.Abstractions.Incidents;
 using Coderr.Server.ReportAnalyzer.Boot.Adapters;
+using Coderr.Server.ReportAnalyzer.Inbound.Commands;
+using Coderr.Server.ReportAnalyzer.Inbound.Handlers;
+using DotNetCqs;
 using DotNetCqs.Bus;
 using DotNetCqs.DependencyInjection;
 using DotNetCqs.MessageProcessor;
@@ -18,6 +22,8 @@ using DotNetCqs.Queues.AdoNet;
 using Griffin.Data;
 using log4net;
 using Microsoft.Extensions.DependencyInjection;
+using ConfigurationContext = Coderr.Server.ReportAnalyzer.Abstractions.Boot.ConfigurationContext;
+using StartContext = Coderr.Server.ReportAnalyzer.Abstractions.Boot.StartContext;
 
 namespace Coderr.Server.ReportAnalyzer.Boot.Starters
 {
@@ -64,6 +70,11 @@ namespace Coderr.Server.ReportAnalyzer.Boot.Starters
         {
             var assembly = Assembly.GetExecutingAssembly();
             context.Services.RegisterMessageHandlers(assembly);
+
+            //workaround since SQL server already references us
+            assembly = AppDomain.CurrentDomain.GetAssemblies()
+                .First(x => x.FullName.StartsWith("Coderr.Server.SqlServer,"));
+            context.Services.RegisterMessageHandlers(assembly);
         }
 
         private void ConfigureMessageQueueProvider(ConfigurationContext context)
@@ -71,6 +82,14 @@ namespace Coderr.Server.ReportAnalyzer.Boot.Starters
             var serializer = new MessagingSerializer(typeof(AdoNetMessageDto));
             _messageQueueProvider =
                 new AdoNetMessageQueueProvider(() => context.ConnectionFactory(_systemPrincipal), serializer);
+
+            var queue = _messageQueueProvider.Open("ErrorReports");
+            using (var session = queue.BeginSession())
+            {
+                session.EnqueueAsync(CoderrClaims.SystemPrincipal,
+                    new Message(new ProcessInboundContextCollections()));
+                session.SaveChanges();
+            }
         }
 
         private QueueListener ConfigureQueueListener(ConfigurationContext context, string inboundQueueName,

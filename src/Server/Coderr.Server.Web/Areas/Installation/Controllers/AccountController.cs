@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using codeRR.Server.Web.Areas.Installation.Models;
 using Coderr.Server.Abstractions.Security;
 using Coderr.Server.Domain.Core.Account;
 using Coderr.Server.Domain.Core.Applications;
@@ -11,13 +10,14 @@ using Coderr.Server.Infrastructure;
 using Coderr.Server.SqlServer.Core.Accounts;
 using Coderr.Server.SqlServer.Core.Applications;
 using Coderr.Server.SqlServer.Core.Users;
+using Coderr.Server.Web.Areas.Installation.Models;
 using Griffin.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace codeRR.Server.Web.Areas.Installation.Controllers
+namespace Coderr.Server.Web.Areas.Installation.Controllers
 {
     [Area("Installation")]
 

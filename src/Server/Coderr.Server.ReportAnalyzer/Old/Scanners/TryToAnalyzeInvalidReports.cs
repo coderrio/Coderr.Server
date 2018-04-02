@@ -8,7 +8,7 @@
 //using System.Linq;
 //using System.Threading;
 //using Griffin.ApplicationServices;
-//using Coderr.Server.ReportAnalyzer.Abstractions;
+//using Coderr.Server.Abstractions.Boot;
 //using Griffin.Data;
 //using log4net;
 //using Coderr.MicroService.Core.Authentication;

@@ -1,38 +1,49 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
+using System.Data.SqlClient;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
-using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Domain.Core.ErrorReports;
 using Coderr.Server.ReportAnalyzer;
+using Coderr.Server.ReportAnalyzer.Abstractions.Incidents;
+using Coderr.Server.SqlServer.ReportAnalyzer.Jobs;
 using Coderr.Server.SqlServer.Tools;
-using Griffin.ApplicationServices;
-using Coderr.Server.ReportAnalyzer.Abstractions;
+using DotNetCqs;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 
-namespace Coderr.Server.SqlServer.ReportAnalyzer.Jobs
+namespace Coderr.Server.SqlServer.ReportAnalyzer.Handlers
 {
     /// <summary>
-    ///     Takes inbound collections and do bulk insert on them
+    ///     Process collections that was attached to inbound reports
     /// </summary>
-    [ContainerService]
-    public class InsertCollectionsJob : IBackgroundJobAsync
+    /// <remarks>
+    ///     <para>
+    ///         Will convert them.
+    ///     </para>
+    /// </remarks>
+    internal class ProcessInboundContextCollectionsHandler : IMessageHandler<ProcessInboundContextCollections>
     {
-        private readonly IAdoNetUnitOfWork _unitOfWork;
+        private static int _isProcessing;
         private readonly Importer _importer;
+        private readonly IAdoNetUnitOfWork _unitOfWork;
 
-        public InsertCollectionsJob(IAdoNetUnitOfWork unitOfWork)
+        public ProcessInboundContextCollectionsHandler(IAdoNetUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            var db = (UnitOfWorkWithTransaction)unitOfWork;
-            _importer = new Importer(db.Transaction);
+            var db = (AnalysisUnitOfWork) unitOfWork;
+            _importer = new Importer((SqlTransaction)db.Transaction);
         }
 
-        public async Task ExecuteAsync()
+
+        public async Task HandleAsync(IMessageContext context, ProcessInboundContextCollections message)
         {
-            var sw = Stopwatch.StartNew();
-            while (sw.ElapsedMilliseconds < 2000)
+            // We can receive multiple reports simultaneously.
+            // Make sure that we only got one handler running.
+            if (Interlocked.CompareExchange(ref _isProcessing, 1, 0) == 1)
+                return;
+
+            try
             {
                 var collections = await GetInboundCollections();
                 foreach (var collection in collections)
@@ -41,14 +52,17 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer.Jobs
                     _importer.AddContextCollections(collection.ReportId, contexts);
                 }
 
-                if (!collections.Any())
-                    break;
-
-                await _importer.Execute();
-                await DeleteImportedRows(collections);
-                _importer.Clear();
+                if (collections.Any())
+                {
+                    await _importer.Execute();
+                    await DeleteImportedRows(collections);
+                    _importer.Clear();
+                }
             }
-
+            finally
+            {
+                Interlocked.Exchange(ref _isProcessing, 0);
+            }
         }
 
 

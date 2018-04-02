@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Domain.Core.Applications;
-using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 

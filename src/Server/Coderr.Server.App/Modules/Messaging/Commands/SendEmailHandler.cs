@@ -9,7 +9,7 @@ using Coderr.Server.Api.Core.Messaging.Commands;
 using Coderr.Server.Infrastructure.Configuration;
 using Coderr.Server.Infrastructure.Net;
 using DotNetCqs;
-using Coderr.Server.ReportAnalyzer.Abstractions;
+
 using Markdig;
 
 namespace Coderr.Server.App.Modules.Messaging.Commands

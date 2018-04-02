@@ -15,7 +15,7 @@ using Coderr.Server.App.Core.Accounts;
 using Coderr.Server.Infrastructure.Configuration;
 using Coderr.Server.Infrastructure.Security;
 using Coderr.Server.Web.Boot;
-using Coderr.Server.Web.Infrastrucutre;
+using Coderr.Server.Web.Infrastructure;
 using Coderr.Server.Web.Models.Accounts;
 using DotNetCqs;
 using Griffin.Data;

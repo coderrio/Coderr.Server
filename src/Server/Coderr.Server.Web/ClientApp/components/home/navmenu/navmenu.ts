@@ -80,13 +80,14 @@ export default class NavMenuComponent extends Vue {
 
     changeApplication(applicationId: number) {
         console.log(applicationId);
-        if (this.$route.path.indexOf('/discover/') === 0) {
+        if (this.$route.path.indexOf('/discover') === 0) {
+            console.log('disc');
             this.$router.push({ name: 'discover', params: { applicationId: applicationId.toString() } });
         } else if (this.$route.path.indexOf('/analyze') === 0) {
             this.$router.push({ name: 'analyzeHome', params: { applicationId: applicationId.toString() } });
         } else if (this.$route.path.indexOf("/deployment") === 0) {
             this.$router.push({ name: 'deploymentHome', params: { applicationId: applicationId.toString() } });
-        } else if (this.$route.path.indexOf("/manage/") === 0) {
+        } else if (this.$route.path.indexOf("/manage") === 0) {
             this.$router.push({ name: 'manageAppSettings', params: { applicationId: applicationId.toString() } });
         }
 

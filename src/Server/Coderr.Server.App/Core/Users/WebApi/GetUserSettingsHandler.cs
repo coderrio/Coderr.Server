@@ -6,7 +6,7 @@ using Coderr.Server.App.Core.Notifications;
 using Coderr.Server.Domain.Core.User;
 using Coderr.Server.Domain.Modules.UserNotifications;
 using DotNetCqs;
-using Coderr.Server.ReportAnalyzer.Abstractions;
+
 using NotificationState = Coderr.Server.Api.Core.Users.NotificationState;
 
 namespace Coderr.Server.App.Core.Users.WebApi

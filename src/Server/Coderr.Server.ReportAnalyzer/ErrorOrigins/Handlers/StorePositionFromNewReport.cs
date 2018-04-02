@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Coderr.Server.Domain.Modules.ErrorOrigins;
 using Coderr.Server.ReportAnalyzer.Abstractions.Incidents;
 using DotNetCqs;
-using Coderr.Server.ReportAnalyzer.Abstractions;
+using Coderr.Server.Abstractions.Boot;
 using log4net;
 using Newtonsoft.Json.Linq;
 

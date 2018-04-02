@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Coderr.Server.Abstractions.Config;
 using Coderr.Server.Api.Core.Accounts.Queries;
-using Coderr.Server.Api.Core.Incidents.Queries;
 using Coderr.Server.Api.Core.Messaging;
 using Coderr.Server.Api.Core.Messaging.Commands;
 using Coderr.Server.Domain.Core.Incidents;
@@ -10,7 +9,6 @@ using Coderr.Server.Infrastructure.Configuration;
 using Coderr.Server.ReportAnalyzer.Abstractions.Feedback;
 using Coderr.Server.ReportAnalyzer.UserNotifications.Handlers;
 using DotNetCqs;
-using Coderr.Server.ReportAnalyzer.Abstractions;
 
 namespace Coderr.Server.ReportAnalyzer.Feedback.Handlers
 {

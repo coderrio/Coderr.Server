@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Domain.Core.Incidents;
 using Coderr.Server.SqlServer.Tools;
-using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 

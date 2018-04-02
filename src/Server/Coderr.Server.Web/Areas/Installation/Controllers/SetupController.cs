@@ -3,20 +3,17 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Net.Http;
 using System.Threading.Tasks;
-using codeRR.Server.Web.Areas.Installation.Models;
 using Coderr.Server.Abstractions.Config;
 using Coderr.Server.Infrastructure.Configuration;
-using Coderr.Server.Web;
-using Coderr.Server.Web.Areas.Installation;
+using Coderr.Server.Web.Areas.Installation.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Protocols;
 
-namespace codeRR.Server.Web.Areas.Installation.Controllers
+namespace Coderr.Server.Web.Areas.Installation.Controllers
 {
     [Area("Installation")]
 

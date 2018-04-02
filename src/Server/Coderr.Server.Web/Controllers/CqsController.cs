@@ -13,7 +13,7 @@ using Coderr.Server.Api.Core.Applications.Commands;
 using Coderr.Server.Api.Core.Applications.Queries;
 using Coderr.Server.Infrastructure.Messaging;
 using Coderr.Server.Web.Boot.Cqs;
-using Coderr.Server.Web.Infrastrucutre.Results;
+using Coderr.Server.Web.Infrastructure.Results;
 using Coderr.Server.Web.Models.Users;
 using DotNetCqs;
 using Griffin;

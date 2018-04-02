@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Coderr.Server.Web.Infrastrucutre
+namespace Coderr.Server.Web.Infrastructure
 {
     public static class ControllerExtensions
     {

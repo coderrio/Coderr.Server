@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Coderr.Server.ReportAnalyzer.Abstractions.Incidents;
 using DotNetCqs;
-using Coderr.Server.ReportAnalyzer.Abstractions;
+using Coderr.Server.Abstractions.Boot;
 using log4net;
 
 namespace Coderr.Server.ReportAnalyzer.Triggers.Handlers

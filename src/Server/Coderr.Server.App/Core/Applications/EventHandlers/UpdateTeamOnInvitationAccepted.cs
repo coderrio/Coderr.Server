@@ -4,7 +4,7 @@ using Coderr.Server.Api.Core.Accounts.Events;
 using Coderr.Server.Api.Core.Applications.Events;
 using Coderr.Server.Domain.Core.Applications;
 using DotNetCqs;
-using Coderr.Server.ReportAnalyzer.Abstractions;
+
 
 namespace Coderr.Server.App.Core.Applications.EventHandlers
 {

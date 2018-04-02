@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using Coderr.Server.Abstractions.Config;
 using Coderr.Server.Infrastructure.Configuration;
-using Coderr.Server.ReportAnalyzer.Abstractions.ErrorReports;
+//using Coderr.Server.ReportAnalyzer.Abstractions.ErrorReports;
 
 namespace Coderr.Server.App.Core.Reports.Config
 {
     /// <summary>
     ///     Configuration settings for reports.
     /// </summary>
-    public class ReportConfig : IConfigurationSection, IReportConfig
+    public class ReportConfig : IConfigurationSection//, IReportConfig
     {
         /// <summary>
         ///     Creates a new instance of <see cref="ReportConfig" />

@@ -2,7 +2,8 @@
 using System.Linq;
 using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Domain.Core.ErrorReports;
-using Coderr.Server.ReportAnalyzer.Abstractions;
+using Coderr.Server.Abstractions.Boot;
+using Coderr.Server.ReportAnalyzer.Abstractions.Boot;
 using log4net;
 
 namespace Coderr.Server.ReportAnalyzer.ErrorReports.HashcodeGenerators

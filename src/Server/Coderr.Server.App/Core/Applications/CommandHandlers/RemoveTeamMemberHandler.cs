@@ -4,7 +4,7 @@ using Coderr.Server.Api.Core.Applications.Commands;
 using Coderr.Server.Domain.Core.Applications;
 using Coderr.Server.Infrastructure.Security;
 using DotNetCqs;
-using Coderr.Server.ReportAnalyzer.Abstractions;
+
 using log4net;
 
 namespace Coderr.Server.App.Core.Applications.CommandHandlers
