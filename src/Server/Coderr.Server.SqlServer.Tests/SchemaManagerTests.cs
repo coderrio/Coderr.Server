@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using Coderr.Server.SqlServer.Migrations;
 using Coderr.Server.SqlServer.Tests.Helpers;
 using FluentAssertions;
 using Xunit;

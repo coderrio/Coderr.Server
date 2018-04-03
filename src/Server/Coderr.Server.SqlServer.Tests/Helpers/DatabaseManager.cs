@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Threading;
+using Coderr.Server.SqlServer.Migrations;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 

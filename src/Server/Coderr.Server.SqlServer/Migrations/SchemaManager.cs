@@ -6,13 +6,16 @@ using System.Linq;
 using System.Reflection;
 using log4net;
 
-namespace Coderr.Server.SqlServer
+namespace Coderr.Server.SqlServer.Migrations
 {
     public class SchemaManager
     {
         private readonly Func<IDbConnection> _connectionFactory;
-        private const string SchemaNamespace = "Coderr.Server.SqlServer.Schema";
         private ILog _logger = LogManager.GetLogger(typeof(SchemaManager));
+        private readonly MigrationScripts _migrationScripts = new MigrationScripts();
+        private string[] _scriptOrder = {"Update"};
+
+        private bool invoked;
 
         public SchemaManager(Func<IDbConnection> connectionFactory)
         {
@@ -20,7 +23,7 @@ namespace Coderr.Server.SqlServer
         }
 
         /// <summary>
-        /// Check if the current DB schema is out of date compared to the embedded schema resources.
+        ///     Check if the current DB schema is out of date compared to the embedded schema resources.
         /// </summary>
         public bool CanSchemaBeUpgraded()
         {
@@ -29,8 +32,6 @@ namespace Coderr.Server.SqlServer
             return embeddedSchema > version;
         }
 
-        private bool invoked = false;
-
         public void CreateInitialStructure()
         {
             if (invoked)
@@ -38,7 +39,7 @@ namespace Coderr.Server.SqlServer
             invoked = true;
             using (var con = _connectionFactory())
             {
-                var resourceName = $"{SchemaNamespace}.Database.sql";
+                var resourceName = $"{MigrationScripts.SchemaNamespace}.Database.sql";
                 var res = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
                 var sql = new StreamReader(res).ReadToEnd();
                 using (var transaction = con.BeginTransaction())
@@ -65,7 +66,7 @@ namespace Coderr.Server.SqlServer
                         var sql = "SELECT Version FROM DatabaseSchema";
                         cmd.CommandText = sql;
                         var result = cmd.ExecuteScalar();
-                        version = (int)result;
+                        version = (int) result;
                     }
                     catch (SqlException ex)
                     {
@@ -77,6 +78,7 @@ namespace Coderr.Server.SqlServer
                     }
                 }
             }
+
             return version;
         }
 
@@ -86,21 +88,25 @@ namespace Coderr.Server.SqlServer
             var names =
                 Assembly.GetExecutingAssembly()
                     .GetManifestResourceNames()
-                    .Where(x => x.StartsWith(SchemaNamespace) && x.Contains(".Update."));
+                    .Where(x => x.StartsWith(MigrationScripts.SchemaNamespace) && x.Contains(".v"));
             foreach (var name in names)
             {
-                var pos = name.IndexOf("Update") + 8; //2 extra for ".v"
+                var pos = name.IndexOf(".v") + 2; //2 extra for ".v"
                 var endPos = name.IndexOf(".", pos);
                 var versionStr = name.Substring(pos, endPos - pos);
                 var version = int.Parse(versionStr);
+
                 if (version > highestVersion)
                     highestVersion = version;
+
+                _migrationScripts.AddScript(version, name);
             }
+
             return highestVersion;
         }
 
         /// <summary>
-        /// Upgrade schema
+        ///     Upgrade schema
         /// </summary>
         /// <param name="toVersion">-1 = latest version</param>
         public void UpgradeDatabaseSchema(int toVersion = -1)
@@ -113,29 +119,22 @@ namespace Coderr.Server.SqlServer
 
             for (var version = currentSchema + 1; version <= toVersion; version++)
             {
-                var schema = GetSchema(version);
+                var migrationScripts = _migrationScripts.GetScripts(version);
                 using (var con = _connectionFactory())
                 {
-                    using (var transaction = con.BeginTransaction())
-                    using (var cmd = con.CreateCommand())
+                    foreach (var versionScript in migrationScripts)
                     {
-                        cmd.Transaction = transaction;
-                        cmd.CommandText = schema;
-                        cmd.ExecuteNonQuery();
-                        transaction.Commit();
+                        using (var transaction = con.BeginTransaction())
+                        using (var cmd = con.CreateCommand())
+                        {
+                            cmd.Transaction = transaction;
+                            cmd.CommandText = versionScript;
+                            cmd.ExecuteNonQuery();
+                            transaction.Commit();
+                        }
                     }
                 }
             }
-        }
-
-        private string GetSchema(int version)
-        {
-            var resourceName = $"{SchemaNamespace}.Update.v{version}.sql";
-            var res = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
-            if (res == null)
-                throw new InvalidOperationException("Failed to find schema " + resourceName);
-
-            return new StreamReader(res).ReadToEnd();
         }
     }
 }

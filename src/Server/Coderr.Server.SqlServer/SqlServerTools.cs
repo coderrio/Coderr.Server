@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
 using Coderr.Server.Abstractions;
 using Coderr.Server.Infrastructure;
+using Coderr.Server.SqlServer.Migrations;
 
 namespace Coderr.Server.SqlServer
 {
