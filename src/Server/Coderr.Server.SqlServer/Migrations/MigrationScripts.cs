@@ -31,10 +31,9 @@ namespace Coderr.Server.SqlServer.Migrations
             var scriptNames = _versions[version].ScriptsNames;
             foreach (var scriptName in scriptNames)
             {
-                var resourceName = $"{SchemaNamespace}.{scriptName}.sql";
-                var res = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
+                var res = Assembly.GetExecutingAssembly().GetManifestResourceStream(scriptName);
                 if (res == null)
-                    throw new InvalidOperationException("Failed to find schema " + resourceName);
+                    throw new InvalidOperationException("Failed to find schema " + scriptName);
 
                 yield return new StreamReader(res).ReadToEnd();
             }

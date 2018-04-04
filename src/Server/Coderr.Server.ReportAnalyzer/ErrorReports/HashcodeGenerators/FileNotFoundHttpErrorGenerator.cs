@@ -2,8 +2,6 @@
 using System.Linq;
 using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Domain.Core.ErrorReports;
-using Coderr.Server.Abstractions.Boot;
-using Coderr.Server.ReportAnalyzer.Abstractions.Boot;
 using log4net;
 
 namespace Coderr.Server.ReportAnalyzer.ErrorReports.HashcodeGenerators
@@ -45,8 +43,7 @@ namespace Coderr.Server.ReportAnalyzer.ErrorReports.HashcodeGenerators
                 return null;
             }
 
-            string value;
-            if (!props.Properties.TryGetValue("HttpCode", out value))
+            if (!props.Properties.TryGetValue("HttpCode", out var value))
                 return null;
             var statusCode = int.Parse(value);
 

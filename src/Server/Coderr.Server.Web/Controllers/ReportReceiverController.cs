@@ -63,7 +63,7 @@ namespace Coderr.Server.Web.Controllers
                 await handler.BuildReportAsync(principal, appKey, sig, remoteIp, buffer);
                 return NoContent();
             }
-            catch (InvalidCredentialException ex)
+            catch (InvalidCredentialException)
             {
                 return BadRequest(new ErrorMessage("INVALID_APP_KEY"));
             }

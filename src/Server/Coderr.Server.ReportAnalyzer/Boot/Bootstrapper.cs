@@ -6,10 +6,7 @@ using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Abstractions.Config;
 using Coderr.Server.Abstractions.Security;
 using Coderr.Server.Infrastructure.Configuration.Database;
-using Coderr.Server.ReportAnalyzer.Abstractions.Incidents;
 using Coderr.Server.ReportAnalyzer.Boot.Adapters;
-using DotNetCqs;
-using DotNetCqs.Queues;
 using Griffin.Data;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,7 +15,6 @@ namespace Coderr.Server.ReportAnalyzer.Boot
     public class Bootstrapper : IAppModule
     {
         private readonly ModuleStarter _moduleStarter;
-        private DomainQueueWrapper _domainQueue;
         private ServiceProvider _serviceProvider;
         private readonly ClaimsPrincipal _systemPrincipal;
 

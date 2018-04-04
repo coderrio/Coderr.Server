@@ -20,14 +20,13 @@ namespace Coderr.Server.SqlServer.Tests
     {
         private static DatabaseManager _databaseManager;
         private TestDataManager _testDataManager;
-        private static bool _isRun = false;
-        private static readonly object _syncLock = new object();
+        private static readonly object SyncLock = new object();
 
         static IntegrationTest()
         {
             var path2 = AppDomain.CurrentDomain.BaseDirectory;
 
-            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            var logRepository = LogManager.GetRepository(Assembly.GetExecutingAssembly());
             XmlConfigurator.ConfigureAndWatch(logRepository, new FileInfo(Path.Combine(path2, "log4net.config")));
             var logger = LogManager.GetLogger(typeof(IntegrationTest));
             logger.Info("Loaded");
@@ -41,7 +40,7 @@ namespace Coderr.Server.SqlServer.Tests
                 _databaseManager.Dispose();
                 _databaseManager = null;
             };
-            lock (_syncLock)
+            lock (SyncLock)
             {
                 _databaseManager = new DatabaseManager();
                 _databaseManager.CreateEmptyDatabase();
@@ -55,12 +54,14 @@ namespace Coderr.Server.SqlServer.Tests
 
         public IntegrationTest(ITestOutputHelper output)
         {
-            _testDataManager = new TestDataManager(_databaseManager.OpenConnection);
-            _testDataManager.TestUser = new TestUser()
+            _testDataManager = new TestDataManager(_databaseManager.OpenConnection)
             {
-                Email = "test@somewhere.com",
-                Password = "123456",
-                Username = "admin"
+                TestUser = new TestUser()
+                {
+                    Email = "test@somewhere.com",
+                    Password = "123456",
+                    Username = "admin"
+                }
             };
         }
 

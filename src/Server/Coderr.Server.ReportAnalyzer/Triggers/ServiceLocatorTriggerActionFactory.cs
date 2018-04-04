@@ -6,9 +6,6 @@ using System.Reflection;
 using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.ReportAnalyzer.Triggers.Actions;
 using Coderr.Server.ReportAnalyzer.Triggers.Handlers.Actions;
-using DotNetCqs.DependencyInjection;
-using Coderr.Server.Abstractions.Boot;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Coderr.Server.ReportAnalyzer.Triggers
 {
@@ -45,8 +42,7 @@ namespace Coderr.Server.ReportAnalyzer.Triggers
         /// <exception cref="NotSupportedException">Action is not supported</exception>
         public ITriggerAction Create(string actionName)
         {
-            Type type;
-            if (!_actionTypes.TryGetValue(actionName, out type))
+            if (!_actionTypes.TryGetValue(actionName, out var type))
                 throw new NotSupportedException("Do not support action of type " + actionName);
 
             return (ITriggerAction) _serviceProvider.GetService(type);

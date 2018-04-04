@@ -23,28 +23,12 @@ namespace Coderr.Server.Api.Client
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
             ContractResolver = new IncludeNonPublicMembersContractResolver()
         };
+
         private string _apiKey;
         private string _sharedSecret;
         private Uri _uri;
 
-        async Task<TResult> IQueryBus.QueryAsync<TResult>(ClaimsPrincipal user, Query<TResult> query)
-        {
-            //TODO: Unwrap the cqs object to query parameters instead
-            //to allow caching in the server
-            var response = await RequestAsync("POST", "query", query);
-            return await DeserializeResponse<TResult>(response);
 
-        }
-
-        public async Task<TResult> QueryAsync<TResult>(Query<TResult> query)
-        {
-            //TODO: Unwrap the cqs object to query parameters instead
-            //to allow caching in the server
-            var response = await RequestAsync("POST", "query", query);
-            return await DeserializeResponse<TResult>(response);
-        }
-
-        
         async Task IMessageBus.SendAsync(ClaimsPrincipal principal, object message)
         {
             await RequestAsync("POST", "send", message);
@@ -60,9 +44,36 @@ namespace Coderr.Server.Api.Client
             await RequestAsync("POST", "send", message.Body);
         }
 
+        /// <summary>
+        ///     Send a command or event
+        /// </summary>
+        /// <param name="message">message</param>
+        /// <returns>task</returns>
         public async Task SendAsync(object message)
         {
             await RequestAsync("POST", "send", message);
+        }
+
+        async Task<TResult> IQueryBus.QueryAsync<TResult>(ClaimsPrincipal user, Query<TResult> query)
+        {
+            //TODO: Unwrap the cqs object to query parameters instead
+            //to allow caching in the server
+            var response = await RequestAsync("POST", "query", query);
+            return await DeserializeResponse<TResult>(response);
+        }
+
+        /// <summary>
+        ///     Make a query
+        /// </summary>
+        /// <typeparam name="TResult">Type of result that the query returns</typeparam>
+        /// <param name="query">query to invoke</param>
+        /// <returns>task</returns>
+        public async Task<TResult> QueryAsync<TResult>(Query<TResult> query)
+        {
+            //TODO: Unwrap the cqs object to query parameters instead
+            //to allow caching in the server
+            var response = await RequestAsync("POST", "query", query);
+            return await DeserializeResponse<TResult>(response);
         }
 
 
@@ -78,7 +89,7 @@ namespace Coderr.Server.Api.Client
             _sharedSecret = sharedSecret ?? throw new ArgumentNullException(nameof(sharedSecret));
             _uri = uri ?? throw new ArgumentNullException(nameof(uri));
         }
-        
+
 
         private async Task<TResult> DeserializeResponse<TResult>(HttpWebResponse response)
         {

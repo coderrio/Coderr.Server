@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Domain.Core.ErrorReports;
-using Coderr.Server.Domain.Core.Incidents;
 using Coderr.Server.Domain.Core.Incidents.Events;
-using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.ReportAnalyzer.Abstractions;
-using Coderr.Server.ReportAnalyzer.Abstractions.Boot;
 using Coderr.Server.ReportAnalyzer.Abstractions.ErrorReports;
 using Coderr.Server.ReportAnalyzer.Abstractions.Incidents;
 using Coderr.Server.ReportAnalyzer.ErrorReports;

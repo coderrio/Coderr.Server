@@ -40,6 +40,9 @@
     "simplemde": "http://registry.npmjs.org/simplemde/-/simplemde-1.11.2.tgz",
     "toastr": "http://registry.npmjs.org/toastr/-/toastr-2.1.4.tgz",
     "vee-validate": "^2.0.6",
+    "vue-class-component": "^6.2.0",
+    "vue-property-decorator": "^6.0.0",
+    "vue-router": "^3.0.1",
     "vuelidate": "^0.6.2"
   }
 }

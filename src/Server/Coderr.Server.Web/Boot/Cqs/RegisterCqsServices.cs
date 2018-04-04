@@ -32,8 +32,8 @@ namespace Coderr.Server.Web.Boot.Cqs
         private readonly ClaimsPrincipal _systemPrincipal;
         private readonly CancellationTokenSource _cancelTokenSource = new CancellationTokenSource();
         private QueueListener _messagingQueueListener;
-        private Task _messagingQueueListenerTask;
         private AdoNetMessageQueueProvider _queueProvider;
+        private Task _messagingQueueListenerTask;
 
         public RegisterCqsServices()
         {
@@ -72,7 +72,8 @@ namespace Coderr.Server.Web.Boot.Cqs
 
         public void Start(StartContext context)
         {
-            _messagingQueueListener.RunAsync(_cancelTokenSource.Token).ContinueWith(OnListenerStopped);
+            _messagingQueueListenerTask = _messagingQueueListener.RunAsync(_cancelTokenSource.Token);
+            _messagingQueueListenerTask.ContinueWith(OnListenerStopped);
         }
 
         private void OnListenerStopped(Task obj)
@@ -172,10 +173,10 @@ namespace Coderr.Server.Web.Boot.Cqs
             if (_queueProvider != null)
                 return _queueProvider;
 
-            Func<IDbConnection> factory = () => context.ConnectionFactory(_systemPrincipal);
+            IDbConnection Factory() => context.ConnectionFactory(_systemPrincipal);
             var serializer = new MessagingSerializer(typeof(AdoNetMessageDto));
             //serializer.ThrowExceptionOnDeserialziationFailure = false;
-            _queueProvider = new AdoNetMessageQueueProvider(factory, serializer);
+            _queueProvider = new AdoNetMessageQueueProvider(Factory, serializer);
             return _queueProvider;
         }
 
