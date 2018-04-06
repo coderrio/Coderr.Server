@@ -73,8 +73,12 @@ namespace Coderr.Server.App.Modules.Messaging.Commands
             foreach (var resource in command.EmailMessage.Resources)
             {
                 var contentType = new ContentType(MimeMapping.GetMimeType(Path.GetExtension(resource.Name)));
-                var linkedResource = new LinkedResource(resource.Name, contentType);
-                await resource.Content.CopyToAsync(linkedResource.ContentStream);
+                var ms = new MemoryStream(resource.Content, 0, resource.Content.Length, false);
+                var linkedResource = new LinkedResource(ms)
+                {
+                    ContentId = resource.Name,
+                    ContentType = contentType
+                };
                 av.LinkedResources.Add(linkedResource);
             }
 

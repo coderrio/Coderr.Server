@@ -17,7 +17,7 @@ namespace Coderr.Server.App.Modules.Messaging.Templating.Formatting
         /// <remarks>
         ///     Look at the class doc for an example.
         /// </remarks>
-        public Dictionary<string, object> Convert(object instance)
+        public IDictionary<string, object> Convert(object instance)
         {
             if (instance == null)
                 throw new ArgumentNullException("instance");

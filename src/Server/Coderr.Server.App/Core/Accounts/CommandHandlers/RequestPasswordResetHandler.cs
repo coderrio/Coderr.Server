@@ -45,7 +45,7 @@ namespace Coderr.Server.App.Core.Accounts.CommandHandlers
                     {
                         AccountName = account.UserName,
                         ResetLink = 
-                            _baseConfig.BaseUrl + "/password/reset/" +
+                            _baseConfig.BaseUrl + "password/reset/" +
                             account.ActivationKey
                     },
                 Subject = "Reset password"

@@ -10,7 +10,7 @@ namespace Coderr.Server.Web.Models.Accounts
         [Required, Compare("Password2")]
         public string Password { get; set; }
 
-        [Display(Name = "Retype password")]
+        [Display(Name = "Retype password"), Required]
         public string Password2 { get; set; }
     }
 }

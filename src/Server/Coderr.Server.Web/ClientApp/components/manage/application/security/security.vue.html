@@ -54,8 +54,10 @@
                         </div>
                         <hr />
                         <h4>Send invite</h4>
-                        <input type="email" class="form-control" name="inviteEmail" placeholder="Email address" style="display: inline; width: auto;" />
-                        <input type="submit" value="Invite member" class="btn btn-primary" />
+                        <form @submit.prevent="inviteUser">
+                            <input type="email" class="form-control" v-model="inviteEmail" placeholder="Email address" style="display: inline; width: auto;" required="" />
+                            <input type="submit" value="Invite member" class="btn btn-primary" />
+                        </form>
                     </div>
                 </div>
             </div>

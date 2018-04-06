@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
+using Newtonsoft.Json.Linq;
 
 namespace Coderr.Server.App.Modules.Messaging.Templating.Formatting
 {
@@ -26,9 +29,19 @@ namespace Coderr.Server.App.Modules.Messaging.Templating.Formatting
             var tokenizer = new Tokenizer();
             var tokens = tokenizer.Parse(source);
 
+            IDictionary<string, object> model;
             //Console.WriteLine(string.Join("+", tokens.Select(x => x.Name + x.Value)));
-            var converter = new ObjectToDictionaryConverter();
-            var model = converter.Convert(arguments[0]);
+            if (arguments[0] is JObject)
+            {
+                var converter = new JObjectReflector();
+                model = converter.Reflect((JObject)arguments[0]);
+            }
+            else
+            {
+                var converter = new ObjectToDictionaryConverter();
+                model = converter.Convert(arguments[0]);
+            }
+
 
             if (arguments.Length != 1)
             {
@@ -44,7 +57,7 @@ namespace Coderr.Server.App.Modules.Messaging.Templating.Formatting
                     sb.Append('}');
                     includeEnd = false;
                 }
-                else if (token.Name != null && token.Name.IndexOfAny(new[] {' ', ',', '-', '+', ':'}) > -1)
+                else if (token.Name != null && token.Name.IndexOfAny(new[] { ' ', ',', '-', '+', ':' }) > -1)
                 {
                     // vars can't contain spaces.
                     sb.Append('{');

@@ -48635,6 +48635,7 @@ var ManageHomeComponent = /** @class */ (function (_super) {
         _this.members = [];
         _this.admins = [];
         _this.invites = [];
+        _this.inviteEmail = '';
         return _this;
     }
     ManageHomeComponent.prototype.created = function () {
@@ -48713,6 +48714,14 @@ var ManageHomeComponent = /** @class */ (function (_super) {
                 this.invites.splice(i, 1);
             }
         }
+    };
+    ManageHomeComponent.prototype.inviteUser = function () {
+        var cmd = new __WEBPACK_IMPORTED_MODULE_2__dto_Core_Invitations__["b" /* InviteUser */]();
+        cmd.ApplicationId = this.applicationId;
+        cmd.EmailAddress = this.inviteEmail;
+        __WEBPACK_IMPORTED_MODULE_0__services_AppRoot__["a" /* AppRoot */].Instance.apiClient.command(cmd);
+        __WEBPACK_IMPORTED_MODULE_0__services_AppRoot__["a" /* AppRoot */].notify('Invitation have been sent.');
+        this.inviteEmail = '';
     };
     ManageHomeComponent = __decorate([
         __WEBPACK_IMPORTED_MODULE_4_vue_property_decorator__["Component"]
@@ -49540,7 +49549,7 @@ var ListMySuggestedItem = /** @class */ (function () {
 "use strict";
 /* unused harmony export GetInvitationByKey */
 /* unused harmony export GetInvitationByKeyResult */
-/* unused harmony export InviteUser */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return InviteUser; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DeleteInvitation; });
 var GetInvitationByKey = /** @class */ (function () {
     function GetInvitationByKey() {
@@ -60858,8 +60867,16 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "alert alert-warning"
   }, [_c('h3', {
     staticClass: "alert-heading"
-  }, [_vm._v("No reported errors")]), _vm._v(" "), _c('div', [_c('p', [_vm._v("We couldn't find any reported errors. Do you need help?")]), _vm._v(" "), _c('button', {
-    staticClass: "btn btn-outline-danger btn-sm"
+  }, [_vm._v("No reported errors")]), _vm._v(" "), _c('div', [_c('p', [_vm._v("We couldn't find any reported errors. Do you need help?")]), _vm._v(" "), _c('router-link', {
+    staticClass: "btn btn-outline-danger btn-sm",
+    attrs: {
+      "to": {
+        name: 'support',
+        params: {
+          type: 'configdemo'
+        }
+      }
+    }
   }, [_vm._v("Schedule a (free) demo with one of our developers")]), _vm._v(" "), _c('a', {
     staticClass: "btn btn-outline-danger btn-sm",
     attrs: {
@@ -60877,7 +60894,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.onExitGuide($event)
       }
     }
-  }, [_vm._v("Exit onboarding")])])]) : _vm._e(), _vm._v(" "), (_vm.gotNoIncidents) ? _c('div', {
+  }, [_vm._v("Back")])], 1)]) : _vm._e(), _vm._v(" "), (_vm.gotNoIncidents) ? _c('div', {
     staticClass: "alert alert-warning"
   }, [_c('h3', {
     staticClass: "alert-heading"
@@ -61116,7 +61133,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "display-4"
   }, [_vm._v("Welcome to Coderr! ")]), _vm._v(" "), _c('p', {
     staticClass: "lead"
-  }, [_vm._v("\n                    We suggest that you begin with the onboarding process.\n                ")]), _vm._v(" "), _c('button', {
+  }, [_vm._v("\n                    We suggest that you begin by configuring your application.\n                ")]), _vm._v(" "), _c('button', {
     staticClass: "btn btn-primary",
     on: {
       "click": function($event) {
@@ -61124,7 +61141,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.start($event)
       }
     }
-  }, [_vm._v("Start onboarding")]), _vm._v(" "), _c('button', {
+  }, [_vm._v("Configuration guide")]), _vm._v(" "), _c('button', {
     staticClass: "btn btn-secondary",
     on: {
       "click": function($event) {
@@ -61423,7 +61440,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "nav-link"
   }, [_c('i', {
     staticClass: "fa fa-graduation-cap"
-  }), _vm._v(" Prioritization")])])], 1), _vm._v(" "), _c('div', {}, [_vm._v("\n            hello\n        ")])])]) : _vm._e()
+  }), _vm._v(" Prioritization")])])], 1)])]) : _vm._e()
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -62423,7 +62440,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('span', {
     staticClass: "fa fa-magic"
-  }), _vm._v(" Getting started with Coderr.\n                    ")])], 1)])]) : _vm._e(), _vm._v(" "), (!_vm.onboarding) ? _c('div', {
+  }), _vm._v(" Configure your application\n                    ")])], 1)])]) : _vm._e(), _vm._v(" "), (!_vm.onboarding) ? _c('div', {
     staticClass: "navbar-collapse collapse"
   }, [_c('ul', {
     staticClass: "navbar-nav mr-auto",
@@ -63195,7 +63212,20 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('i', {
       staticClass: "fa fa-trash"
     })])])])
-  })) : _vm._e(), _vm._v(" "), (_vm.invites.length == 0) ? _c('div', [_c('em', [_vm._v("(No pending invites)")])]) : _vm._e(), _vm._v(" "), _c('hr'), _vm._v(" "), _c('h4', [_vm._v("Send invite")]), _vm._v(" "), _c('input', {
+  })) : _vm._e(), _vm._v(" "), (_vm.invites.length == 0) ? _c('div', [_c('em', [_vm._v("(No pending invites)")])]) : _vm._e(), _vm._v(" "), _c('hr'), _vm._v(" "), _c('h4', [_vm._v("Send invite")]), _vm._v(" "), _c('form', {
+    on: {
+      "submit": function($event) {
+        $event.preventDefault();
+        _vm.inviteUser($event)
+      }
+    }
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.inviteEmail),
+      expression: "inviteEmail"
+    }],
     staticClass: "form-control",
     staticStyle: {
       "display": "inline",
@@ -63203,8 +63233,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     },
     attrs: {
       "type": "email",
-      "name": "inviteEmail",
-      "placeholder": "Email address"
+      "placeholder": "Email address",
+      "required": ""
+    },
+    domProps: {
+      "value": (_vm.inviteEmail)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.inviteEmail = $event.target.value
+      }
     }
   }), _vm._v(" "), _c('input', {
     staticClass: "btn btn-primary",
@@ -63212,7 +63251,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "type": "submit",
       "value": "Invite member"
     }
-  })])])])])])
+  })])])])])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -63538,19 +63577,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "nav-link"
   }, [_c('i', {
     staticClass: "fa fa-exchange-alt"
-  }), _vm._v(" Api keys")])]), _vm._v(" "), _c('router-link', {
-    staticClass: "nav-item",
-    attrs: {
-      "tag": "li",
-      "to": {
-        name: 'manageApiKeys'
-      }
-    }
-  }, [_c('a', {
-    staticClass: "nav-link"
-  }, [_c('i', {
-    staticClass: "fa fa-credit-card"
-  }), _vm._v(" Billing")])])], 1), _vm._v(" "), _c('div', {}, [_vm._v("\n            hello\n        ")])])])
+  }), _vm._v(" Api keys")])])], 1)])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -63637,9 +63664,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-sm-12"
-  }, [_c('h3', [_vm._v("Management pages")]), _vm._v(" "), _c('p', {
+  }, [_c('h3', [_vm._v("Adminstration area")]), _vm._v(" "), _c('p', {
     staticClass: "lead"
-  }, [_vm._v("Welcome to the management pages.")]), _vm._v(" "), _c('p', [_vm._v("Here you can configure most of the aspects in Coderr. To manage an application, select to the application that you want to manage in the top left menu.")]), _vm._v(" "), _c('p', [_vm._v("You can also create a new application by pressing the button below.")]), _vm._v(" "), _c('router-link', {
+  }, [_vm._v("Welcome to the administration area.")]), _vm._v(" "), _c('p', [_vm._v("Here you can configure most of the aspects in Coderr. To manage an application, select to the application that you want to manage in the top left menu.")]), _vm._v(" "), _c('p', [_vm._v("You can also create a new application by pressing the button below.")]), _vm._v(" "), _c('router-link', {
     staticClass: "btn btn-primary",
     attrs: {
       "to": {

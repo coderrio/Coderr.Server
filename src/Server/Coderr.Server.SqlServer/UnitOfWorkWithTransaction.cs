@@ -37,6 +37,13 @@ namespace Coderr.Server.SqlServer
 
         public void SaveChanges()
         {
+            //Already commited.
+            // some scenariors requires early SaveChanges
+            // to prevent dead locks. 
+            // when there is time, find and eliminte the reason of the deadlocks :(
+            if (Transaction == null)
+                return;
+
             var connection = Transaction.Connection;
             Transaction.Commit();
             Transaction.Dispose();

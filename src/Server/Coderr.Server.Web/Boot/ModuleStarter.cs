@@ -74,5 +74,13 @@ namespace Coderr.Server.Web.Boot
                 module.Start(context);
             }
         }
+
+        public void Stop()
+        {
+            foreach (var module in _modules)
+            {
+                module.Stop();
+            }
+        }
     }
 }

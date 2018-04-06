@@ -3,7 +3,7 @@ import {
     GetApplicationTeam, GetApplicationTeamResult, GetApplicationTeamResultInvitation, 
     RemoveTeamMember, UpdateRoles
 } from "../../../../dto/Core/Applications";
-import { DeleteInvitation } from "../../../../dto/Core/Invitations";
+import { InviteUser, DeleteInvitation } from "../../../../dto/Core/Invitations";
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 
@@ -20,6 +20,8 @@ export default class ManageHomeComponent extends Vue {
     members: IUser[] = [];
     admins: IUser[] = [];
     invites: GetApplicationTeamResultInvitation[] = [];
+
+    inviteEmail = '';
 
     created() {
         var appIdStr = this.$route.params.applicationId;
@@ -108,6 +110,15 @@ export default class ManageHomeComponent extends Vue {
                 this.invites.splice(i, 1);
             }
         }
+    }
+
+    inviteUser() {
+        var cmd = new InviteUser();
+        cmd.ApplicationId = this.applicationId;
+        cmd.EmailAddress = this.inviteEmail;
+        AppRoot.Instance.apiClient.command(cmd);
+        AppRoot.notify('Invitation have been sent.');
+        this.inviteEmail = '';
     }
 
 }

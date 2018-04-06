@@ -13,7 +13,7 @@ namespace Coderr.Server.Api.Core.Messaging
         /// </summary>
         /// <param name="name">CID</param>
         /// <param name="content">Actual content</param>
-        public EmailResource(string name, Stream content)
+        public EmailResource(string name, byte[] content)
         {
             if (name == null) throw new ArgumentNullException("name");
             if (content == null) throw new ArgumentNullException("content");
@@ -31,7 +31,7 @@ namespace Coderr.Server.Api.Core.Messaging
         /// <summary>
         ///     Contents of the resource. Stream must be readable.
         /// </summary>
-        public Stream Content { get; set; }
+        public byte[] Content { get; set; }
 
         /// <summary>
         ///     CID

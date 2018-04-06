@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Authentication;
 using System.Security.Claims;
@@ -31,7 +32,7 @@ namespace Coderr.Server.Web.Controllers
     /// <summary>
     ///     TODO: Break out logic
     /// </summary>
-    [AllowAnonymous, Route("account")]
+    [AllowAnonymous, Route("account"), Transactional]
     public class AccountController : Controller
     {
         private readonly IAccountService _accountService;
@@ -165,7 +166,6 @@ namespace Coderr.Server.Web.Controllers
         {
             var config = _configStore.Load<BaseConfiguration>();
             model.AllowRegistrations = config.AllowRegistrations != false;
-            model.ReturnUrl = Request.Query["ReturnUrl"];
 
             if (!ModelState.IsValid)
                 return View(model);
@@ -277,15 +277,19 @@ namespace Coderr.Server.Web.Controllers
             return View("PasswordRequestReceived");
         }
 
-        [Route("password/reset/{activationKey}")]
+        [HttpGet("password/reset/{activationKey}")]
         public ActionResult ResetPassword(string activationKey)
         {
             return View(new ResetPasswordViewModel { ActivationKey = activationKey });
         }
 
-        [HttpPost("password/reset")]
+        [HttpPost("password/reset/{activationKey}")]
         public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
         {
+            if (model.Password != model.Password2)
+            {
+                ModelState.AddModelError("Password2", "Passwords must match.");
+            }
             if (!ModelState.IsValid)
                 return View(model);
 
@@ -349,7 +353,7 @@ namespace Coderr.Server.Web.Controllers
             var props = new AuthenticationProperties
             {
                 IsPersistent = true,
-                ExpiresUtc = DateTimeOffset.UtcNow.AddDays(14),
+                ExpiresUtc = DateTimeOffset.UtcNow.AddDays(30),
             };
             if (identity.AuthenticationType != CookieAuthenticationDefaults.AuthenticationScheme)
                 identity = new ClaimsIdentity(identity.Claims, CookieAuthenticationDefaults.AuthenticationScheme);

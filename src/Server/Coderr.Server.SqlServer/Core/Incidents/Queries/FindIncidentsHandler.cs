@@ -105,6 +105,11 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
                         .Where(x => x.Type == CoderrClaims.Application)
                         .Select(x => x.Value)
                         .ToArray();
+                    if (!appIds.Any())
+                    {
+                        return new FindIncidentsResult {Items = new FindIncidentsResultItem[0]};
+                    }
+
                     sqlQuery += $" {startWord} Applications.Id IN({string.Join(",", appIds)})";
                 }
 

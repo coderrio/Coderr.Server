@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Coderr.Server.Abstractions.Boot;
@@ -55,14 +56,18 @@ namespace Coderr.Server.Web
         /// </summary>
         /// <param name="app"></param>
         /// <param name="env"></param>
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        /// <param name="applicationLifetime"></param>
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env,
+            IApplicationLifetime applicationLifetime)
         {
+            applicationLifetime.ApplicationStopping.Register(OnShutdown);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
                 {
-                    HotModuleReplacement = true
+                    HotModuleReplacement = true,
                 });
             }
 
@@ -72,13 +77,11 @@ namespace Coderr.Server.Web
             app.UseMvc(routes =>
             {
                 if (!IsConfigured)
-                {
                     routes.MapRoute(
                         "areas",
                         "{area:exists}/{controller=Setup}/{action=Index}/{id?}",
-                        defaults: new { area = "Installation" }
+                        new {area = "Installation"}
                     );
-                }
 
                 routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
                 routes.MapSpaFallbackRoute(
@@ -112,9 +115,6 @@ namespace Coderr.Server.Web
             var authenticationBuilder = services.AddAuthentication("Cookies");
             authenticationBuilder.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
             {
-                //options.ExpireTimeSpan = TimeSpan.FromDays(14);
-                //options.p
-                //options.Events.OnRedirectToLogin = HandleAuthenticationFailure;
                 options.Events.OnValidatePrincipal = context =>
                 {
                     var principal = context.Principal;
@@ -162,6 +162,11 @@ namespace Coderr.Server.Web
 
             ctx.Response.Headers["Location"] = "/account/login/";
             return Task.CompletedTask;
+        }
+
+        private void OnShutdown()
+        {
+            _moduleStarter.Stop();
         }
 
         private IDbConnection OpenConnection(ClaimsPrincipal arg)

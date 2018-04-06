@@ -5,6 +5,7 @@ using Coderr.Server.Api.Core.Messaging;
 using Coderr.Server.Api.Core.Messaging.Commands;
 using Coderr.Server.App.Modules.Messaging.Templating;
 using DotNetCqs;
+using Newtonsoft.Json.Linq;
 
 
 namespace Coderr.Server.App.Modules.Messaging.Commands
@@ -30,6 +31,7 @@ namespace Coderr.Server.App.Modules.Messaging.Commands
             var layout = loader.Load("Layout");
 
             var template = loader.Load(command.TemplateName);
+
             var html = templateParser.RunAll(template, command.Model);
             if (html.IndexOf("src=\"cid:", StringComparison.OrdinalIgnoreCase) == -1)
                 html = html.Replace(@"src=""", @"src=""cid:");
@@ -49,7 +51,10 @@ namespace Coderr.Server.App.Modules.Messaging.Commands
 
             foreach (var resource in template.Resources)
             {
-                var linkedResource = new EmailResource(resource.Key, resource.Value);
+                var buffer = new byte[resource.Value.Length];
+                resource.Value.Read(buffer, 0, buffer.Length);
+                resource.Value.Position = 0;
+                var linkedResource = new EmailResource(resource.Key, buffer);
 
                 var reader = new BinaryReader(resource.Value);
                 var dimensions = ImageHelper.GetDimensions(reader);
@@ -63,7 +68,10 @@ namespace Coderr.Server.App.Modules.Messaging.Commands
             }
             foreach (var resource in layout.Resources)
             {
-                var linkedResource = new EmailResource(resource.Key, resource.Value);
+                var buffer = new byte[resource.Value.Length];
+                resource.Value.Read(buffer, 0, buffer.Length);
+                resource.Value.Position = 0;
+                var linkedResource = new EmailResource(resource.Key, buffer);
 
                 var reader = new BinaryReader(resource.Value);
                 var dimensions = ImageHelper.GetDimensions(reader);

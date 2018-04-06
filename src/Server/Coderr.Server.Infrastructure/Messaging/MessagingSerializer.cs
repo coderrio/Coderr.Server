@@ -71,7 +71,7 @@ namespace Coderr.Server.Infrastructure.Messaging
             try
             {
                 contentType = dto.GetType().AssemblyQualifiedName;
-                serializedDto = JsonConvert.SerializeObject(dto);
+                serializedDto = JsonConvert.SerializeObject(dto, _settings);
             }
             catch (JsonException ex)
             {
