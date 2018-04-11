@@ -12,7 +12,7 @@
                                     {{admin.name}}
                                 </td>
                                 <td>
-                                    <a href="#" @click.prevent="removeAdmin(admin.id)" title="Downgrade to regular member"><i class="fa fa-hand-point-down text-warning"></i></a>
+                                    <a href="#" @click.prevent="removeAdmin(admin.id)" v-if="admins.length > 1" title="Downgrade to regular member"><i class="fa fa-hand-point-down text-warning"></i></a>
                                 </td>
                             </tr>
                         </table>

@@ -45,14 +45,14 @@ namespace Coderr.Server.ReportAnalyzer.ApplicationVersions.Handlers
 
             _repository.SaveIncidentVersion(e.Incident.Id, versionEntity.Id);
 
-            await IncreaseReportCounter(versionEntity.Id, isNewIncident);
+            await IncreaseReportCounter(versionEntity.Id, isNewIncident, e.Report.CreatedAtUtc);
         }
 
-        private async Task IncreaseReportCounter(int versionId, bool isNewIncident)
+        private async Task IncreaseReportCounter(int versionId, bool isNewIncident, DateTime reportedAtUtc)
         {
             var month =
-                await _repository.FindMonthForApplicationAsync(versionId, DateTime.Today.Year, DateTime.Today.Month) ??
-                new ApplicationVersionMonth(versionId, new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1));
+                await _repository.FindMonthForApplicationAsync(versionId, reportedAtUtc.Year, reportedAtUtc.Month) ??
+                new ApplicationVersionMonth(versionId, new DateTime(reportedAtUtc.Year, reportedAtUtc.Month, 1));
 
             if (isNewIncident)
                 month.IncreaseIncidentCount();

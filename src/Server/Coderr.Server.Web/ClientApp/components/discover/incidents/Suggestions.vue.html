@@ -6,7 +6,7 @@
                     {{ suggestion.incidentName }} <span class="text-muted">[{{suggestion.exceptionType}}]</span>
                 </div>
                 <div class="card-body">
-                    <strong>Motivation: </strong>
+                    <strong>Criteria: </strong>
                     {{suggestion.reason}}
                     <div v-if="!applicationId">
                         Reported for: <router-link :to="{name: 'discoverApplication', params: {applicationId: suggestion.applicationId}}">{{suggestion.applicationName}}</router-link>

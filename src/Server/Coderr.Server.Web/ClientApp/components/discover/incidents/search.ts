@@ -104,8 +104,10 @@ export default class IncidentSearchComponent extends Vue {
                     if (id > 0) {
                         this.activeApplications.push(id);
                     }
+                } else {
+                    this.highlightActiveApps();
                 }
-                this.highlightActiveApps();
+                
                 this.highlightActiveTags();
                 this.highlightIncidentState(this.incidentState);
                 this.search(true);

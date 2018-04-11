@@ -34,8 +34,8 @@ export class ApplicationCreated {
 export class ApplicationSummary {
     readonly id: number;
     readonly name: string;
-    readonly sharedSecret: string;
-    readonly appKey: string;
+    sharedSecret: string;
+    appKey: string;
 
     constructor(id: number, name: string, sharedSecret: string, appKey: string) {
         this.id = id;
@@ -114,9 +114,19 @@ export class ApplicationService {
 
     async get(appId: number): Promise<ApplicationSummary> {
         for (var i = 0; i < this.applications.length; i++) {
-            if (this.applications[i].id === appId)
-                console.log('returning cahce', this.applications[i]);
-                return this.applications[i];
+            if (this.applications[i].id !== appId)
+                continue;
+
+            if (this.applications[i].appKey === 'n/a') {
+                const appQuery = new GetApplicationInfo();
+                appQuery.ApplicationId = appId;
+                const appInfo = await this.apiClient.query<GetApplicationInfoResult>(appQuery);
+                this.applications[i].appKey = appInfo.AppKey;
+                this.applications[i].sharedSecret = appInfo.SharedSecret;
+            }
+
+            console.log('returning cahce', this.applications[i]);
+            return this.applications[i];
         }
 
         var q = new GetApplicationInfo();
@@ -151,7 +161,7 @@ export class ApplicationService {
         if (id === 0) {
             throw new Error("Expected an incidentId");
         }
-        
+
         var q = new GetApplicationTeam();
         q.ApplicationId = id;
         var result = await this.apiClient.query<GetApplicationTeamResult>(q);

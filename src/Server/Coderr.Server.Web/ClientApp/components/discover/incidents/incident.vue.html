@@ -5,10 +5,17 @@
                 <h3>{{incident.Description}} <small class="text-muted">[{{incident.FullName}}]</small></h3>
                 <div class="">
                     <a href="#" class="btn btn-light" v-on:click.prevent="$router.back()">&lt;&lt; Back ...</a>
-                    <button class="btn btn-outline-primary" v-if="incident.IncidentState == 0" v-on:click.prevent="assignToMe">Assign to me</button>
-                    <button class="btn btn-outline-primary" v-if="incident.IncidentState == 0" v-on:click.prevent="assignToSomeoneElse">Assign to ..</button>
-                    <button class="btn btn-outline-primary" v-if="!isClosed" v-on:click.prevent="close">Close</button>
-                    <button class="btn btn-outline-primary" v-if="!isClosed && !isIgnored" v-on:click.prevent="ignore">Ignore (hide) incident</button>
+                    <div class="dropdown float-right">
+                        <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            What do you want to do?
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="#" v-if="incident.IncidentState == 0" v-on:click.prevent="assignToMe">Assign to me</a>
+                            <a class="dropdown-item" href="#" v-if="incident.IncidentState == 0" v-on:click.prevent="assignToSomeoneElse">Assign to ..</a>
+                            <a class="dropdown-item" href="#" v-if="!isClosed" v-on:click.prevent="close">Close</a>
+                            <a class="dropdown-item" href="#" v-if="!isClosed && !isIgnored" v-on:click.prevent="ignore">Ignore (hide) incident</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
