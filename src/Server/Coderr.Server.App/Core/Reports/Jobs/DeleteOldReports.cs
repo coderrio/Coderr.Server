@@ -13,7 +13,7 @@ namespace Coderr.Server.App.Core.Reports.Jobs
     ///     Will delete all reports which is older than the configured (<see cref="ReportConfig.RetentionDays" />) retention
     ///     period.
     /// </summary>
-    [ContainerService]
+    [ContainerService(RegisterAsSelf = true)]
     public class DeleteOldReports : IBackgroundJobAsync
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(DeleteOldReports));

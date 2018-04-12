@@ -3,5 +3,7 @@
     public interface IConfiguration<out TConfigType> where TConfigType : new()
     {
         TConfigType Value { get; }
+
+        void Save();
     }
 }

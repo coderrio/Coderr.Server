@@ -18,7 +18,7 @@ namespace Coderr.Server.App.Core.Reports.Jobs
     ///         You can configure the amount of reports per incident in the admin area.
     ///     </para>
     /// </remarks>
-    [ContainerService]
+    [ContainerService(RegisterAsSelf = true)]
     public class DeleteReportsBelowReportLimit : IBackgroundJob
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(DeleteReportsBelowReportLimit));

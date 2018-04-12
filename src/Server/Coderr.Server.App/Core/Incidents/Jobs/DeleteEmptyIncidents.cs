@@ -19,7 +19,7 @@ namespace Coderr.Server.App.Core.Incidents.Jobs
     ///         when there are no reports for them. Do note that ignored incidents will not be deleted.
     ///     </para>
     /// </remarks>
-    [ContainerService]
+    [ContainerService(RegisterAsSelf = true)]
     internal class DeleteEmptyIncidents : IBackgroundJobAsync
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(DeleteEmptyIncidents));

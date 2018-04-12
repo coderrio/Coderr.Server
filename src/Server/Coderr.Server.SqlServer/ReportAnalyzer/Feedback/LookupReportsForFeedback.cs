@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Threading.Tasks;
+using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Domain.Core.Feedback;
 using Griffin.ApplicationServices;
 using Griffin.Data;
@@ -9,6 +10,7 @@ using log4net;
 
 namespace Coderr.Server.SqlServer.ReportAnalyzer.Feedback
 {
+    [ContainerService(RegisterAsSelf = true)]
     public class LookupReportsForFeedback : IBackgroundJobAsync
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(LookupReportsForFeedback));

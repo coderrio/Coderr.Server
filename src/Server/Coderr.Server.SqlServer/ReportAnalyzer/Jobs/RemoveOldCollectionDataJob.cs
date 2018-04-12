@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Domain.Core.ErrorReports;
 using Coderr.Server.ReportAnalyzer;
 using Coderr.Server.SqlServer.Tools;
@@ -15,6 +16,7 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer.Jobs
     /// <summary>
     ///     Migrates data to our new collection table.
     /// </summary>
+    [ContainerService(RegisterAsSelf = true)]
     public class RemoveOldCollectionDataJob : IBackgroundJobAsync
     {
         private readonly Importer _importer;

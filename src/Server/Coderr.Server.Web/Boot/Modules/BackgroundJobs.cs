@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using codeRR.Client;
 using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Web.Boot.Adapters;
 using Griffin.ApplicationServices;
@@ -37,6 +38,10 @@ namespace Coderr.Server.Web.Boot.Modules
 
         private void OnBackgroundJobFailed(object sender, BackgroundJobFailedEventArgs e)
         {
+            Err.Report(e.Exception, new
+            {
+                JobType = e.Job.GetType().FullName
+            });
         }
 
         private void OnBackgroundJobScopeClosing(object sender, ScopeClosingEventArgs e)

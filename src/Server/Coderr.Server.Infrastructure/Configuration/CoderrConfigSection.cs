@@ -6,9 +6,9 @@ namespace Coderr.Server.Infrastructure.Configuration
     /// <summary>
     ///     We'll want to track all exceptions for all OTE users so that we can correct bugs in OTE.
     /// </summary>
-    public sealed class codeRRConfigSection : IConfigurationSection
+    public sealed class CoderrConfigSection : IConfigurationSection
     {
-        public codeRRConfigSection()
+        public CoderrConfigSection()
         {
             ActivateTracking = true;
         }

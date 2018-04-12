@@ -18,14 +18,26 @@ namespace Coderr.Server.Abstractions.Boot
                 var interfaces = containerService.GetInterfaces();
 
                 // Hack so that the same instance is resolved for each interface
-                if (interfaces.Length > 1)
+                if (interfaces.Length > 1 || attr.RegisterAsSelf)
                     serviceCollection.RegisterService(attr, containerService, containerService);
 
                 foreach (var @interface in interfaces)
                 {
                     serviceCollection.RegisterService(attr, @interface, containerService);
                 }
+            }
+        }
 
+        public static void RegisterMessageHandlers(this IServiceCollection serviceCollection, Assembly assembly)
+        {
+            var types = assembly.GetTypes()
+                .Where(y => y.GetInterfaces()
+                    .Any(x => x.Name.Contains("IMessageHandler") || x.Name.Contains("IQueryHandler")))
+                .ToList();
+            foreach (var type in types)
+            {
+                serviceCollection.AddScoped(type, type);
+                serviceCollection.AddScoped(type.GetInterfaces()[0], type);
             }
         }
 
@@ -39,18 +51,5 @@ namespace Coderr.Server.Abstractions.Boot
             else
                 serviceCollection.AddScoped(service, implementation);
         }
-
-        public static void RegisterMessageHandlers(this IServiceCollection serviceCollection, Assembly assembly)
-        {
-            var types = assembly.GetTypes()
-                .Where(y => y.GetInterfaces().Any(x => x.Name.Contains("IMessageHandler") || x.Name.Contains("IQueryHandler")))
-                .ToList();
-            foreach (var type in types)
-            {
-                serviceCollection.AddScoped(type, type);
-                serviceCollection.AddScoped(type.GetInterfaces()[0], type);
-            }
-        }
-
     }
 }

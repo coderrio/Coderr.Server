@@ -108,7 +108,7 @@ namespace Coderr.Server.Web.Areas.Installation.Controllers
         public ActionResult Errors()
         {
             var model = new ErrorTrackingViewModel();
-            var config = _configStore.Load<codeRRConfigSection>();
+            var config = _configStore.Load<CoderrConfigSection>();
             if (!string.IsNullOrEmpty(model.ContactEmail))
             {
                 model.ContactEmail = config.ContactEmail;
@@ -127,7 +127,7 @@ namespace Coderr.Server.Web.Areas.Installation.Controllers
             if (!ModelState.IsValid)
                 return View("ErrorTracking", model);
 
-            var settings = new codeRRConfigSection
+            var settings = new CoderrConfigSection
             {
                 ActivateTracking = true,
                 ContactEmail = model.ContactEmail,

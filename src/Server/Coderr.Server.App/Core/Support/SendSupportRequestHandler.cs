@@ -34,7 +34,7 @@ namespace Coderr.Server.App.Core.Support
         public async Task HandleAsync(IMessageContext context, SendSupportRequest command)
         {
             var baseConfig = _configStore.Load<BaseConfiguration>();
-            var errorConfig = _configStore.Load<codeRRConfigSection>();
+            var errorConfig = _configStore.Load<CoderrConfigSection>();
 
             string email = null;
             var claim = context.Principal.FindFirst(ClaimTypes.Email);
