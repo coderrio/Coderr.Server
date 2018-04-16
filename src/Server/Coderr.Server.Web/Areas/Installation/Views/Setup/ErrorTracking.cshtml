@@ -9,15 +9,14 @@
         <h2>Error tracking</h2>
         <p>
             To correct bugs faster we have activated coderr in the community server. By completing this
-            setup, you allow us to collect error information (i.e. bugs in Coderr Community Server) and send it to our own hosted service.
+            setup, you give use the permission to collect error information (i.e. bugs in Coderr Community Server) and send them to our own hosted service.
         </p>
         <p>
             You can optionally enter your email address to get notifications when the errors in your
             installation have been corrected and released. 
         </p>
         <p>
-            <em>(We might also contact you if we need more information
-                about the error)</em>
+            <em>(We might also contact you if we need more information about the error)</em>
         </p>
         <form method="post" action="@Url.Action("Errors")">
             @Html.ValidationSummary(false)

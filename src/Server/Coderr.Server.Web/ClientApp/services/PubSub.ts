@@ -21,7 +21,6 @@ export class PubSubService {
             this.topics.push(topic);
         }
 
-        console.log('subscribing on ', topicName);
         (<Topic>topic).subscribe(callback);
     }
 
@@ -46,10 +45,8 @@ export class PubSubService {
             // typically when the publisher is created before the consumer
             topic = new Topic(topicName);
             this.topics.push(topic);
-            console.log('adding topic: ', topic)
         }
 
-        console.log('publiushing ', message, " to ", topicName)
         topic.publish(message);
     }
 

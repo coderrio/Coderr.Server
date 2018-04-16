@@ -133,6 +133,7 @@ export class IncidentService {
                 break;
             }
         }
+        console.log('my incidents after: ', this.myIncidents);
 
         var msg: IncidentClosed = {
             incidentId: incidentId,
@@ -158,7 +159,8 @@ export class IncidentService {
         var modalResult = await AppRoot.modal({
             title: 'Close incident',
             contentId: '#CloseBody',
-            submitButtonText: 'Close incident'
+            submitButtonText: 'Close incident',
+            cancelButtonText: 'Cancel'
         });
 
         var modal = <HTMLDivElement>document.getElementById(modalResult.modalId);
@@ -215,15 +217,20 @@ export class IncidentService {
     }
 
 
-    async getMine(applicationId?: number): Promise<FindIncidentsResultItem[]> {
+    /**
+     * Fetch all my incidents
+     * @param applicationId
+     * @param ignoreId Ignore this incident (we just closed or ignored it and the server might not have processed the command yet)
+     */
+    async getMine(applicationId?: number, ignoreId?: number): Promise<FindIncidentsResultItem[]> {
         if (this.myIncidents.length > 0 && this.haveFetchedMine) {
             if (applicationId) {
                 return this.myIncidents.filter(x => x.ApplicationId === applicationId.toString());
             }
             return this.myIncidents;
         }
-            
 
+        console.log('fetching mine');
         this.haveFetchedMine = true;
         var current = await AppRoot.Instance.loadCurrentUser();
         var query = new FindIncidents();
@@ -236,21 +243,21 @@ export class IncidentService {
 
         var result = await this.apiClient.query<FindIncidentsResult>(query);
         result.Items.forEach(x => {
-            var found = false;
-            this.myIncidents.forEach(cached => {
-                console.log(' comparing ', cached, x);
-                if (cached.Id === x.Id) {
-                    found = true;
-                    return;
-                }
-            });
+            var ignoreIncident = x.Id === ignoreId;
 
-            if (!found) {
-                console.log('Adding ', x);
+            if (!ignoreIncident) {
+                this.myIncidents.forEach(cached => {
+                    if (cached.Id === x.Id) {
+                        ignoreIncident = true;
+                        return;
+                    }
+                });
+            }
+
+            if (!ignoreIncident) {
                 this.myIncidents.push(x);
             }
         });
-        console.log('Updated mine; ', this.myIncidents);
 
         return this.myIncidents;
     }
@@ -308,6 +315,7 @@ export class IncidentService {
     }
 
     private async addMyIncident(incidentId: number, assignedTo: string, assignedToId: number): Promise<null> {
+        console.log('adding mine');
         const item = this.getFromCache(incidentId);
         if (item) {
             item.AssignedTo = assignedTo;
@@ -335,7 +343,6 @@ export class IncidentService {
             myItem.Name = incident.Description;
             this.myIncidents.push(myItem);
         }
-        console.log('Myincidetns arer assign:', this.myIncidents);
         return null;
     }
     

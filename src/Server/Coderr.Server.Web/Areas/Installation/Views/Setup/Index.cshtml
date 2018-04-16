@@ -14,7 +14,7 @@
         <p>
             To start, you must enter the password from the <code>Installation/Password</code> setting in <code>appsettings.json</code>.
         </p>
-        <form method="post" action="@Url.Action("Index")">
+        <form method="post" asp-action="Index">
             @Html.ValidationSummary()
             <input type="text" name="key" class="form-control" placeholder="Enter the value installation password" style="width:100%" autofocus /><br/>
             <input type="submit" value="Continue" class="btn btn-primary"/>

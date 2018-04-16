@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "Installation - Usage statistics";
+}
+<div class="container">
+    <div class="col-lg-12">
+
+        <h2>Usage statistics</h2>
+        <p>
+            By continuing with the setup, you allow us to collect anonymous usage statistics. The data is specified below.
+        </p>
+        <pre style="background: #444444; color: #cccccc;"><code>{
+    Guid InstallationId; // Cannot be used to identify you, your company or your servers.
+    YearMonth DateTime;  // year+month for the usage
+    Applications[]:      // One entry per application that you have added to Coderr
+    {
+        ApplicationdId: int; // Id of a specific application
+        IncidentCount: int;  // Number of new incidents created the given month
+        ReportCount: int;    // Number of error reports received the given month
+    }
+}</code></pre>
+        @Html.Raw(ViewBag.PrevLink)
+        @Html.Raw(ViewBag.NextLink)
+        <br />
+    </div>
+</div>

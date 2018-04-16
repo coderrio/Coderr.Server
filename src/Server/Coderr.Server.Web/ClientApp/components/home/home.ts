@@ -1,4 +1,5 @@
 import { AppRoot } from "../../services/AppRoot";
+import { FindIncidents, FindIncidentsResult } from "../../dto/Core/Incidents";
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 
@@ -13,6 +14,16 @@ export default class HomeHomeComponent extends Vue {
                     this.$router.push({ name: "discover" });
                 }
             });
+
+        var q = new FindIncidents();
+        q.PageNumber = 1;
+        q.ItemsPerPage = 1;
+        AppRoot.Instance.apiClient.query<FindIncidentsResult>(q)
+            .then(result => {
+                if (result.TotalCount > 0) {
+                    this.mute();
+                }
+            });
     }
 
     start() {
@@ -23,6 +34,7 @@ export default class HomeHomeComponent extends Vue {
                     this.noApps = true;
                     return;
                 }
+
                 this.$router.push({ name: 'onboardApp', params: { applicationId: apps[0].id.toString() } });
             });
     }

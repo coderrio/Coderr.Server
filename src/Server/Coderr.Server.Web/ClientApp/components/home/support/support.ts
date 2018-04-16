@@ -34,7 +34,6 @@ export default class SupportComponent extends Vue {
     }
 
     sendMessage() {
-        console.log('here');
         var cmd = new SendSupportRequest();
 
         cmd.Message = this.simpleMde$.value();

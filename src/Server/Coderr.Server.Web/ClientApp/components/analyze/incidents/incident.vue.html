@@ -22,7 +22,7 @@
                             </button>
                             <div class="dropdown-menu">
                                 <span class="dropdown-item" v-on:click="reAssign"><i class="fa-redo fa text-muted"></i> Re-assign</span>
-                                <span class="dropdown-item" v-on:click="addToTfs"><i class="fa-code-branch fa text-muted"></i> Add to TFS/VSTS</span>
+                                <!--<span class="dropdown-item" v-on:click="addToTfs"><i class="fa-code-branch fa text-muted"></i> Add to TFS/VSTS</span>-->
                                 <span class="dropdown-item" v-on:click="closeIncident"><i class="fa-lock fa text-muted"></i> Close incident</span>
                             </div>
                         </div>
@@ -48,7 +48,7 @@
                         </div>
                     </div>
                 </div>
-                
+
             </div>
             <div class="row">
                 <div class="col-xl-8 col-lg-6">
@@ -103,7 +103,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div v-if="currentReport.Id > 0"   style="overflow-x: scroll">
+                            <div v-if="currentReport.Id > 0" style="overflow-x: scroll">
                                 <table class="table">
                                     <tbody>
                                         <tr v-for="prop in currentCollection.Properties">
@@ -133,9 +133,12 @@
             </div>
         </div>
         <div id="CloseBody" style="display: none">
-            <input type="text" name="version" class="form-control mb-3" size="10" placeholder="Which version is the error corrected in? (format: 1.2.10)" pattern="[0-9\.]*" title="You can use semantic versioning, including pre-releases, but must specify the release version here." />
             <textarea id="CloseArea" class="w-100" rows="10" placeholder="How did you solve the error?" autofocus="autofocus" required="required"></textarea>
-            <em><router-link :to="{name: 'closeIncident', params: { incidentId: incidentId }}">Go to full screen editor</router-link></em>
+            <input type="text" name="version" class="form-control mb-3" size="10" placeholder="Which version is the error corrected in? (format: 1.2.10)" pattern="[0-9\.]*" title="You can use semantic versioning, including pre-releases, but must specify the release version here." />
+            <div>
+                <em><a href="https://coderr.io/documentation/features/incidents/close/">Learn more about this feature</a></em>
+                <em class="float-right"><router-link :to="{name: 'closeIncident', params: { incidentId: incidentId }}">Go to full screen editor</router-link></em>
+            </div>
         </div>
     </div>
 </template>

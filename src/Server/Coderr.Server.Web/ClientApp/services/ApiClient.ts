@@ -11,17 +11,17 @@ export interface IQueryResponse<T> {
 
 export class ApiClient {
     private http: HttpClient = new HttpClient();
+    public static ApiUrl = '';
 
     constructor(private apiRootUrl: string) {
-        console.log('using URL ', apiRootUrl);
         if (!this.apiRootUrl) {
             throw new Error("URL must be specified");
         }
         if (this.apiRootUrl.substr(this.apiRootUrl.length - 1, 1) !== "/")
             this.apiRootUrl += "/";
+        ApiClient.ApiUrl = this.apiRootUrl;
     }
     async command(cmd: any): Promise<any> {
-        console.log('using URL ', this.apiRootUrl);
         var headers = {
             "X-Cqs-Name": cmd.constructor.TYPE_NAME
         };
@@ -29,7 +29,6 @@ export class ApiClient {
     }
 
     query<T>(query: any): Promise<T> {
-        console.log('using URL ', this.apiRootUrl);
         var headers = {
             "Accept": "application/json",
             "X-Cqs-Name": query.constructor.TYPE_NAME
@@ -49,7 +48,6 @@ export class ApiClient {
     }
 
     async auth(): Promise<any> {
-        console.log('callint gauth')
         var result = await this.http.post(`${this.apiRootUrl}authenticate/`, null, "application/json");
         return result.body;
     }

@@ -9,7 +9,7 @@
                     <a class="nav-link"><i class="fa fa-question-circle"></i> Suggestions</a>
                 </router-link>-->
                 <router-link tag="li" class="nav-item" :to="{name: 'findIncidents', params: {applicationId: currentApplicationId }}">
-                    <a class="nav-link"><i class="fa fa-table"></i> Find incidents</a>
+                    <a class="nav-link"><i class="fa fa-table"></i> Search</a>
                 </router-link>
                 <router-link tag="li" class="nav-item" :to="{name: 'configureApplication', params: {applicationId: currentApplicationId }}" v-if="currentApplicationId">
                     <a class="nav-link"><i class="fa fa-cog"></i> Configure your application</a>

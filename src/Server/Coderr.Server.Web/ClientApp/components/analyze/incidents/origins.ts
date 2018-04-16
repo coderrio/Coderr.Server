@@ -45,7 +45,6 @@ export default class OriginsComponent extends Vue {
             query.IncidentId = incidentId;
             self.apiClient.query<GetOriginsForIncidentResult>(query)
                 .then(response => {
-                    console.log(response);
                     if (response.Items.length < 50) {
                         response.Items.forEach(item => {
                             var point = new google.maps.LatLng(item.Latitude, item.Longitude);

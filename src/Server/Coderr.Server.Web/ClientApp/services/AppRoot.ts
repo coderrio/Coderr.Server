@@ -17,6 +17,7 @@ export interface IModalContext {
     htmlContent?: string;
     submitButtonText?: string;
     cancelButtonText?: string;
+    footerHint?: string;
     showFooter?: boolean
     onShowingModal?: (modalId: string) => void;
     onModalShown?: (modalId: string) => void;
@@ -44,12 +45,19 @@ export interface IStoreStateSettings {
 }
 
 export class AppRoot {
-    static ApiUrl: string = "/api/";
     static Instance: AppRoot = new AppRoot();
     public currentUser: IUser;
-    public apiClient: ApiClient = new ApiClient(AppRoot.ApiUrl);
-    public incidentService: IncidentService = new IncidentService(this.apiClient);
-    public applicationService: ApplicationService = new ApplicationService(PubSubService.Instance, this.apiClient);
+    public apiClient: ApiClient;
+    public incidentService: IncidentService;
+    public applicationService: ApplicationService;
+
+    constructor() {
+        var base = <HTMLBaseElement>document.head.querySelector('base');
+        var apiUrl = base.href + "api/";
+        this.apiClient= new ApiClient(apiUrl);
+        this.incidentService= new IncidentService(this.apiClient);
+        this.applicationService = new ApplicationService(PubSubService.Instance, this.apiClient);
+    }
 
     // current user is always validated server side
     // this is more to adjust the UI
@@ -185,6 +193,7 @@ export class AppRoot {
             const parent = <HTMLElement>node.parentElement;
             parent.removeChild(node);
         }
+
         if (modalContext.showFooter === false) {
             const node = <HTMLElement>myModal.querySelector('.modal-footer');
             const parent = <HTMLElement>node.parentElement;
@@ -200,6 +209,14 @@ export class AppRoot {
             var el = document.getElementById(id);
             if (!el)
                 throw Error("Failed to find modal body " + modalContext.contentId);
+
+            console.log(el);
+            var hint = <HTMLElement>el.querySelector('[data-target="footerHint"]');
+            console.log(hint);
+            if (hint != null) {
+                modalContext.footerHint = hint.innerHTML;
+                hint.parentElement.removeChild(hint);
+            }
             ourBody = el.innerHTML;
         } else {
             ourBody = `<div>${modalContext.htmlContent}</div>`;
@@ -209,9 +226,17 @@ export class AppRoot {
         if (!body) {
             throw new Error("Your div must have a CSS class with name 'modal-body'.");
         }
+        
+
         body.innerHTML = ourBody;
         body.style.display = '';
         (<HTMLElement>body.firstElementChild).style.display = '';
+
+        // need to be after body handling since we can attach a body.
+        if (modalContext.footerHint) {
+            const node = <HTMLSpanElement>myModal.querySelector('[data-name="hint"]');
+            node.innerHTML = modalContext.footerHint;
+        }
 
         var bsModal = $(myModal).modal({ show: false });
 
@@ -250,3 +275,4 @@ export class AppRoot {
         });
     }
 }
+

@@ -142,7 +142,6 @@ export default class IncidentSearchComponent extends Vue {
         } else {
             btn.className = 'btn btn-light';
             this.activeApplications = this.activeApplications.filter(itm => {
-                console.log(itm, applicationId);
                 return itm !== applicationId;
             });
         }
@@ -158,10 +157,10 @@ export default class IncidentSearchComponent extends Vue {
                 break;
             case 1:
                 query.IsAssigned = true;
-            case 2:
+            case 3:
                 query.IsClosed = true;
                 break;
-            case 3:
+            case 2:
                 query.IsIgnored = true;
                 break;
         }
@@ -234,7 +233,6 @@ export default class IncidentSearchComponent extends Vue {
         this.activeTags.forEach(tag => {
             var elem = <HTMLElement>document.querySelector(`[data-tag="${tag}"`);
             if (!elem) {
-                console.log('failed to find tag ' + tag, document.querySelectorAll('[data-tag]'));
 
                 // reset so that we do not have a lot of invalid tags
                 // in our localStorage
@@ -271,7 +269,6 @@ export default class IncidentSearchComponent extends Vue {
                 // in our localStorage
                 this.activeApplications.length = 0;
 
-                console.log('failed to find app ' + app, document.querySelectorAll('[data-app]'));
                 return;
             }
 

@@ -158,7 +158,6 @@ export default class AnalyzeMenuComponent extends Vue {
                 break;
             }
         }
-        console.log('new list without ' + incidentId, this.myIncidents);
     }
 
     private async getIncident(incidentId: number): Promise<MenuApi.MenuItem> {

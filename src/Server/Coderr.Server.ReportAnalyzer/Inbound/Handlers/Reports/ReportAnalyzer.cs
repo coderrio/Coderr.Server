@@ -109,7 +109,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
 
                 if (incident.IsClosed)
                 {
-                    if (incident.IsReportIgnored(applicationVersion))
+                    if (applicationVersion != null && incident.IsReportIgnored(applicationVersion))
                     {
                         _logger.Info("Ignored report since it's for a version less that the solution version: " + JsonConvert.SerializeObject(report));
                         incident.WasJustIgnored();

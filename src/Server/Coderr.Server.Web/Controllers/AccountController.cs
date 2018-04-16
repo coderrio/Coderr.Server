@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Security.Authentication;
 using System.Security.Claims;
@@ -9,13 +7,10 @@ using Coderr.Server.Abstractions.Config;
 using Coderr.Server.Abstractions.Security;
 using Coderr.Server.Api.Core.Accounts.Commands;
 using Coderr.Server.Api.Core.Accounts.Requests;
-using Coderr.Server.Api.Core.Applications;
 using Coderr.Server.Api.Core.Applications.Queries;
 using Coderr.Server.Api.Core.Invitations.Queries;
 using Coderr.Server.App.Core.Accounts;
 using Coderr.Server.Infrastructure.Configuration;
-using Coderr.Server.Infrastructure.Security;
-using Coderr.Server.Web.Boot;
 using Coderr.Server.Web.Infrastructure;
 using Coderr.Server.Web.Models.Accounts;
 using DotNetCqs;
@@ -32,7 +27,7 @@ namespace Coderr.Server.Web.Controllers
     /// <summary>
     ///     TODO: Break out logic
     /// </summary>
-    [AllowAnonymous, Route("account"), Transactional]
+    [AllowAnonymous, Transactional]
     public class AccountController : Controller
     {
         private readonly IAccountService _accountService;
@@ -57,7 +52,7 @@ namespace Coderr.Server.Web.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("accept/{id}")]
+        [HttpGet("account/accept/{id}")]
         public async Task<ActionResult> Accept(string id)
         {
             try
@@ -83,7 +78,7 @@ namespace Coderr.Server.Web.Controllers
             }
         }
 
-        [HttpPost("accept")]
+        [HttpPost("account/accept")]
         public async Task<ActionResult> Accept(AcceptViewModel model)
         {
             if (!ModelState.IsValid)
@@ -120,7 +115,7 @@ namespace Coderr.Server.Web.Controllers
             return RedirectToAction("UpdateSession", new { returnUrl = "/#/account/accepted" });
         }
 
-        [HttpGet("activate/{id}")]
+        [HttpGet("account/activate/{id}")]
         public async Task<ActionResult> Activate(string id)
         {
             try
@@ -138,13 +133,13 @@ namespace Coderr.Server.Web.Controllers
             }
         }
 
-        [HttpGet("activation/requested")]
+        [HttpGet("account/activation/requested")]
         public ActionResult ActivationRequested()
         {
             return View();
         }
 
-        [HttpGet("login")]
+        [HttpGet("account/login")]
         public ActionResult Login()
         {
             var config = _configStore.Load<BaseConfiguration>();
@@ -161,7 +156,7 @@ namespace Coderr.Server.Web.Controllers
             return View(model);
         }
 
-        [HttpPost("login")]
+        [HttpPost("account/login")]
         public async Task<ActionResult> Login(LoginViewModel model)
         {
             var config = _configStore.Load<BaseConfiguration>();
@@ -201,21 +196,21 @@ namespace Coderr.Server.Web.Controllers
             }
         }
 
-        [HttpGet("logout")]
+        [HttpGet("account/logout")]
         public ActionResult Logout()
         {
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return Redirect("~/");
         }
 
-        [HttpGet("register")]
+        [HttpGet("account/register")]
         public ActionResult Register()
         {
             return View();
         }
 
 
-        [HttpPost("register")]
+        [HttpPost("account/register")]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
             var config = _configStore.Load<BaseConfiguration>();
@@ -314,7 +309,7 @@ namespace Coderr.Server.Web.Controllers
             return RedirectToAction("Login", drDictionary);
         }
 
-        [Authorize, HttpGet("update/session"), HttpPost("update/session")]
+        [Authorize, HttpGet("account/update/session"), HttpPost("account/update/session")]
         public async Task<ActionResult> UpdateSession(string returnUrl = null)
         {
             var getApps = new GetApplicationList { AccountId = User.GetAccountId() };

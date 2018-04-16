@@ -17,9 +17,16 @@ namespace Coderr.Server.Web.Areas.Installation
 
         public bool IsForAbsolutePath(string currentPath, IUrlHelper helper)
         {
-            var myPath = helper.Content(VirtualPath).TrimEnd('/');
             currentPath = currentPath.TrimEnd('/');
-            return myPath.Equals(currentPath, StringComparison.OrdinalIgnoreCase);
+
+            var stepPath = helper.Content(VirtualPath).TrimEnd('/');
+            if (stepPath.Equals(currentPath, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            stepPath = VirtualPath.Replace("~", "").TrimEnd('/');
+            return currentPath.Equals(stepPath, StringComparison.OrdinalIgnoreCase);
         }
     }
 }

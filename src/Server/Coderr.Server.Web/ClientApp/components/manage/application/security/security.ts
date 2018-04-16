@@ -48,7 +48,6 @@ export default class ManageHomeComponent extends Vue {
                     }
 
                 }
-                console.log(this.members);
             });
     }
 

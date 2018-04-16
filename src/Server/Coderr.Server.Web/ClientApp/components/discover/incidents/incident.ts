@@ -21,16 +21,15 @@ export default class IncidentComponent extends Vue {
     team: ApplicationMember[] = [];
     created() {
         this.incidentId = parseInt(this.$route.params.incidentId, 10);
-
         AppRoot.Instance.incidentService.get(this.incidentId)
             .then(result => {
                 this.incident = result;
                 this.isIgnored = result.IsIgnored;
                 this.isClosed = result.IsSolved;
                 result.Facts = result.Facts.filter(v => v.Value !== '0');
-
+                
                 this.displayChart(result.DayStatistics);
-
+                console.log(result.IncidentState);
                 AppRoot.Instance.applicationService.getTeam(result.ApplicationId)
                     .then(x => {
                         this.team = x;
@@ -45,8 +44,9 @@ export default class IncidentComponent extends Vue {
         AppRoot.modal({
             title: "Ignore incident",
             htmlContent:
-                "<p>This feature will hide incident from the search result and throw away all future error reports without analyzing them.</p><p><em>You can still find the incidents by explictly searching for ignored incidents on the search page.</em></p>",
-            submitButtonText: "Ignore reports"
+                "<p>This feature will hide incident from the search result and throw away all future error reports without analyzing them.</p>",
+            submitButtonText: "Ignore reports",
+            footerHint: "<a href=\"https://coderr.io/documentation/features/incident/close/\">Learn more about this feature</a>"
         }).then(x => {
             AppRoot.Instance.incidentService.ignore(this.incidentId)
                 .then(x => {

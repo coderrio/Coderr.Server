@@ -122,7 +122,13 @@ export class QueryString {
 }
 
 export class HttpClient {
-    static REDIRECT_401_TO = "/account/login";
+    loginUrl: string = '/account/login/';
+
+    constructor(redirectUrl?: string) {
+        if (redirectUrl) {
+            this.loginUrl = redirectUrl;
+        }
+    }
 
     get(url: string, queryString: any = null, headers: any = null): Promise<IHttpResponse> {
         const request = new HttpRequest("GET", url);
@@ -219,8 +225,8 @@ export class HttpClient {
                     if (xhr.status >= 200 && xhr.status < 300) {
                         resolve(response);
                     } else {
-                        if (xhr.status === 401 && HttpClient.REDIRECT_401_TO) {
-                            window.location.assign(HttpClient.REDIRECT_401_TO +
+                        if (xhr.status === 401 && this.loginUrl) {
+                            window.location.assign(this.loginUrl +
                                 "?ReturnTo=" +
                                 encodeURIComponent(window.location.href.replace("#", "&hash=")));
                         }

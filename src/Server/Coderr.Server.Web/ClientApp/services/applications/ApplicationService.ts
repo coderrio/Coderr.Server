@@ -125,7 +125,6 @@ export class ApplicationService {
                 this.applications[i].sharedSecret = appInfo.SharedSecret;
             }
 
-            console.log('returning cahce', this.applications[i]);
             return this.applications[i];
         }
 

@@ -80,7 +80,6 @@ export default class AnalyzeReportComponent extends Vue {
     }
 
     private checkNavigationLinks() {
-        console.log(this.indexInTotalSet, this.totalCount)
         this.showPrevButton = this.indexInTotalSet > 0;
 
         // -1 since we are comparing a zero based index with a one based count
@@ -89,7 +88,6 @@ export default class AnalyzeReportComponent extends Vue {
 
     @Watch('$route.params.reportId')
     onNavigationChanged(value: string, oldValue: string) {
-        console.log('nav', value);
     }
 
     private loadReport(reportId: number) {
@@ -149,7 +147,6 @@ export default class AnalyzeReportComponent extends Vue {
             
         }
 
-        console.log('loading list');
         AppRoot.Instance.apiClient.query<GetReportListResult>(q)
             .then(result => {
                 this.reports = result.Items;

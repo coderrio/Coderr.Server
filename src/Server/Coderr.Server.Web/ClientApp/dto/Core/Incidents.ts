@@ -93,6 +93,7 @@ export class GetIncidentResult
     public FullName: string;
     public HashCodeIdentifier: string;
     public Id: number;
+    public IncidentState: number;
     public IsIgnored: boolean;
     public IsReOpened: boolean;
     public IsSolutionShared: boolean;

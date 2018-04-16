@@ -143,7 +143,6 @@ export default class DiscoverComponent extends Vue {
             labels: labels,
             series: series
         };
-        console.log(data);
         new Chartist.Line('.ct-chart', data, options);
     }
 
@@ -192,7 +191,6 @@ export default class DiscoverComponent extends Vue {
             labels: labels,
             series: series
         };
-        console.log(data);
         new Chartist.Line('.ct-chart', data, options);
     }
 

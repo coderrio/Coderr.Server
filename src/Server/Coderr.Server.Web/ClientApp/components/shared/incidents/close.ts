@@ -45,7 +45,6 @@ export default class AnalyzeIncidentComponent extends Vue {
 
     @Watch('$route.params.incidentId')
     onIncidentSelected(value: string, oldValue: string) {
-        console.log('changed', value);
         var incidentId = parseInt(value, 10);
         this.loadIncident(incidentId);
     }

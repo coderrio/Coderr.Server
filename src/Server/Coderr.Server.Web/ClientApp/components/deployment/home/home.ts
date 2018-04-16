@@ -166,7 +166,6 @@ export default class DeploymentHomeComponent extends Vue {
             labels: labels,
             series: series
         };
-        console.log('chart data', data);
         new Chartist.Line('.ct-chart', data, options);
     }
 

@@ -104,8 +104,6 @@ namespace Coderr.Server.Web.Areas.Installation.Controllers
         {
             ViewBag.PrevLink = Url.GetPreviousWizardStepLink();
             ViewBag.NextLink = Url.GetNextWizardStepLink();
-            ViewBag.PrevLink = Url.GetPreviousWizardStepLink();
-            ViewBag.NextLink = Url.GetNextWizardStepLink();
             return base.OnActionExecutionAsync(context, next);
         }
     }

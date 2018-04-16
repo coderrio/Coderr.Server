@@ -105,6 +105,12 @@ namespace Coderr.Server.Web.Areas.Installation.Controllers
             return View();
         }
 
+
+        public ActionResult Stats()
+        {
+            return View();
+        }
+
         public ActionResult Errors()
         {
             var model = new ErrorTrackingViewModel();

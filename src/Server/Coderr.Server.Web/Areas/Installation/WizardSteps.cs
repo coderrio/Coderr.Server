@@ -14,6 +14,7 @@ namespace Coderr.Server.Web.Areas.Installation
             new WizardStepInfo("Create admin account", "~/installation/account/admin/"),
             new WizardStepInfo("Mail settings", "~/installation/messaging/email/"),
             new WizardStepInfo("Support", "~/installation/setup/support"),
+            new WizardStepInfo("Usage statistics", "~/installation/setup/stats/"),
             new WizardStepInfo("Completed", "~/installation/setup/completed/")
         };
 
@@ -66,7 +67,9 @@ namespace Coderr.Server.Web.Areas.Installation
                     return i;
             }
 
-            if (urlHelper.ActionContext.HttpContext.Request.Path.Value == "/")
+            // in ASP.NET Core, the virtual path is in PathBase and the rest in Path
+            // this we only need to check if the path is root (while the wizard link is for ./installation)
+            if (urlHelper.ActionContext.HttpContext.Request.Path == "")
                 return 0;
 
             return -1;

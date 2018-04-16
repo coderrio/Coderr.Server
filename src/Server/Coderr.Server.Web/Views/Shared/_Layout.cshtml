@@ -10,9 +10,11 @@
     <link rel="stylesheet" href="~/css/bootstrap.min.css" asp-append-version="true" />
     <link href="~/css/fontawesome-all.min.css" rel="stylesheet">
     <link href="~/css/toastr.min.css" rel="stylesheet">
-    <environment exclude="Development">
-        <link rel="stylesheet" href="~/dist/site.css" asp-append-version="true" />
-    </environment>
+    <link rel="icon" type="image/png" sizes="32x32" href="~/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="~/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="~/favicon-16x16.png">
+    <meta name="msapplication-TileColor" content="#59C1D5">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
 </head>
 <body>
     @RenderBody()
@@ -31,7 +33,9 @@
 
                     </div>
                     <div class="modal-footer">
-                        <span data-name="hint"></span>
+                        <div style="margin-right: auto">
+                            <span data-name="hint"></span>
+                        </div>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Save changes</button>
                     </div>
@@ -39,10 +43,7 @@
             </div>
         </form>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.js"></script>
-    <script src="http://vue-charts.hchspersonal.tk/js/vue-charts.js"></script>
     <script src="~/dist/vendor.js" asp-append-version="true"></script>
-    @*<script src="~/js/bootstrap-notify.min.js"></script>*@
     @RenderSection("scripts", required: false)
 </body>
 </html>

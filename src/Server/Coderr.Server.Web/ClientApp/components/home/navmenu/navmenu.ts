@@ -79,9 +79,7 @@ export default class NavMenuComponent extends Vue {
     }
 
     changeApplication(applicationId: number) {
-        console.log(applicationId);
         if (this.$route.path.indexOf('/discover') === 0) {
-            console.log('disc');
             this.$router.push({ name: 'discover', params: { applicationId: applicationId.toString() } });
         } else if (this.$route.path.indexOf('/analyze') === 0) {
             this.$router.push({ name: 'analyzeHome', params: { applicationId: applicationId.toString() } });

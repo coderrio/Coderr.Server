@@ -71,7 +71,6 @@ export default class ApplicationDetailsComponent extends Vue {
     private copyObject(source: any, destination: any) {
         for (var prop in source) {
             if (source.hasOwnProperty(prop)) {
-                console.log('copying' + source[prop]);
                 destination[prop] = source[prop];
                 //Vue.set(destination, prop, source[prop]);
             }
@@ -113,7 +112,6 @@ export default class ApplicationDetailsComponent extends Vue {
             labels: labels,
             series: series
         };
-        console.log(data);
         new Chartist.Line('.ct-chart', data, options);
     }
 

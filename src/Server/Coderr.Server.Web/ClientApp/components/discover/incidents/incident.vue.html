@@ -13,7 +13,7 @@
                             <a class="dropdown-item" href="#" v-if="incident.IncidentState == 0" v-on:click.prevent="assignToMe">Assign to me</a>
                             <a class="dropdown-item" href="#" v-if="incident.IncidentState == 0" v-on:click.prevent="assignToSomeoneElse">Assign to ..</a>
                             <a class="dropdown-item" href="#" v-if="!isClosed" v-on:click.prevent="close">Close</a>
-                            <a class="dropdown-item" href="#" v-if="!isClosed && !isIgnored" v-on:click.prevent="ignore">Ignore (hide) incident</a>
+                            <a class="dropdown-item" href="#" v-if="!isClosed && !isIgnored" v-on:click.prevent="ignore">Ignore incident</a>
                         </div>
                     </div>
                 </div>
@@ -93,11 +93,9 @@
             <textarea id="CloseArea" class="w-100" rows="10" placeholder="How did you solve the error?" autofocus="autofocus" required="required"></textarea>
             <input type="text" name="version" class="form-control mb-3" size="10" placeholder="Which version is the error corrected in? (format: 1.2.10)" pattern="[0-9\.]*" title="You can use semantic versioning, including pre-releases, but must specify the release version here." />
             <div>
-                <em><router-link :to="{name: 'closeIncident', params: { incidentId: incidentId }}">Go to full screen editor</router-link></em>
-                <em class="float-right"><a href="https://coderr.io/documentation/features/close/">Learn more about this feature</a></em>
+                <em data-target="footerHint"><a href="https://coderr.io/documentation/features/incidents/close/">Learn more about this feature</a></em>
+                <em class="float-right"><router-link :to="{name: 'closeIncident', params: { incidentId: incidentId }}">Go to full screen editor</router-link></em>
             </div>
-            
-            
         </div>
     </div>
 </template>

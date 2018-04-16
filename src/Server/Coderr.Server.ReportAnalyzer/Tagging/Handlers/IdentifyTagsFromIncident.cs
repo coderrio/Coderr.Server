@@ -63,7 +63,7 @@ namespace Coderr.Server.ReportAnalyzer.Tagging.Handlers
             {
                 // Comma seperated tags
                 if (collection.Properties.TryGetValue("OneTrueTags", out var tagsStr)
-                    && collection.Properties.TryGetValue("ErrTags", out tagsStr))
+                    || collection.Properties.TryGetValue("ErrTags", out tagsStr))
                 {
                     try
                     {
