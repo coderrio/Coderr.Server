@@ -1,4 +1,4 @@
-import { PubSubService } from "../../../services/PubSub";
+import { ApiClient } from "../../../services/ApiClient";
 import * as http from '../../../services/HttpClient';
 import { AppRoot } from '../../../services/AppRoot';
 import { FindIncidents, FindIncidentsResult, FindIncidentsResultItem } from '../../../dto/Core/Incidents'
@@ -30,7 +30,7 @@ export default class ConfigureClientComponent extends Vue {
         this.applicationId = parseInt(this.$route.params.applicationId, 10);
 
         var client = new http.HttpClient();
-        client.get('/api/onboarding/libraries/')
+        client.get(ApiClient.ApiUrl + 'onboarding/libraries/')
             .then(response => {
                 var data = <ILibrarySummary[]>response.body;
                 data.forEach(lib => {
@@ -79,7 +79,7 @@ export default class ConfigureClientComponent extends Vue {
         AppRoot.Instance.applicationService.get(appInfo.id)
             .then(app => {
                 var client = new http.HttpClient();
-                client.get('/api/onboarding/library/' + libName + "/?appKey=" + app.appKey)
+                client.get(ApiClient.ApiUrl + 'onboarding/library/' + libName + "/?appKey=" + app.appKey)
                     .then(response => {
                         this.instruction = response.body
                             .replace('yourAppKey', this.appKey)

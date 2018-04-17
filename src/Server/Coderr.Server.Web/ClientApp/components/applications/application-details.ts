@@ -4,7 +4,6 @@ import { GetApplicationInfo, GetApplicationInfoResult, GetApplicationOverview, G
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import Chartist from "chartist";
-import 'chartist/dist/chartist.css';
 import * as moment from 'moment';
 import * as Incidents from "../../dto/Core/Incidents";
 import FindIncidentsResultItem = Incidents.FindIncidentsResultItem;

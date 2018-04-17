@@ -5,7 +5,6 @@ import { GetIncident, GetIncidentResult, GetIncidentStatistics, GetIncidentStati
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import Chartist from "chartist";
-import 'chartist/dist/chartist.css';
 import * as moment from 'moment';
 
 

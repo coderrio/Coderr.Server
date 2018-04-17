@@ -6,7 +6,6 @@ import * as Mine from "../../../dto/Common/Mine"
 import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
 import Chartist from "chartist";
-import "chartist/dist/chartist.css";
 import * as moment from "moment";
 
 interface ISeries {

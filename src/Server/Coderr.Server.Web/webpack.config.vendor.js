@@ -12,7 +12,7 @@ module.exports = (env) => {
         entry: {
             vendor: [
                 'bootstrap',
-                'bootstrap/dist/css/bootstrap.css',
+                //'bootstrap/dist/css/bootstrap.css',
                 'event-source-polyfill',
                 'isomorphic-fetch',
                 'jquery',
