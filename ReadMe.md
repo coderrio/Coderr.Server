@@ -3,7 +3,7 @@ Coderr Community Server
 
 [![Build status](https://1tcompany.visualstudio.com/_apis/public/build/definitions/75570083-b1ef-4e78-88e2-5db4982f756c/6/badge)]() [![Github All Releases](https://img.shields.io/github/downloads/coderrapp/coderr.server/total.svg?style=flat-square)]()
 
-[![](docs/banner.png)](https://coderr.io/documentation/beta/)
+[![](docs/release_banner.png)](https://coderr.io/documentation/beta/)
 
 # Skip logfiles - Use automated exception handling!
 
