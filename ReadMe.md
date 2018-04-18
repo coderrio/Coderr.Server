@@ -1,28 +1,28 @@
-codeRR Community Server
+Coderr Community Server
 =============================
 
 [![Build status](https://1tcompany.visualstudio.com/_apis/public/build/definitions/75570083-b1ef-4e78-88e2-5db4982f756c/6/badge)]() [![Github All Releases](https://img.shields.io/github/downloads/coderrapp/coderr.server/total.svg?style=flat-square)]()
 
-codeRR discovers and analyzes all exceptions in all of your installations for every version of your .NET application.
+![![](docs/banner.png)](https://coderr.io/documentation/beta/)
+
+# Skip logfiles - Use automated exception handling!
 
 ![OSS screenshot](docs/screenshot.png)
 
-.. don't want to host/maintain your own server? Try [codeRR Live](https://coderrapp.com/live/)
+.. don't want to host/maintain your own server? Try [Coderr Live](https://coderr.io/live/)
 
-## What's in it for me?
+## What’s Coderr?
 
-codeRR monitors your application and notifies you when new unique errors occurs, putting an end to random logfile scanning and relying on reports from users.
+Coderr is an error management tool developed specifically for .NET applications. Coderr provides an insight to all errors that are occurring and gives you control and a complete view of your applications’ status. 
 
-You can typically solve the incident straight way, since codeRR provides relevant information together with the exception. In your codeRR server you can do further analysis of systematic and related errors.
+## Why change?
 
-In short, we believe that codeRR will save you time and effort and help you improve code quality
+Too often, error detection and management involves relying on reports from users and random logfile scanning. The unknown amount of errors and weaknesses of the code creates uncertainty and lessens your control. With a systematic approach facilitated by a tool built for developers by developers, Coderr provides insight about the status of the applications. 
 
-[Read more...](https://coderrapp.com)
 
 ## Getting started
 
-Once you have installed the server you need to install one of our nuget packages in your application. 
-You can read more about them [here](https://coderrapp.com/documentation/).
+Once you have [installed the server](https://github.com/coderrapp/Coderr.Server/releases) you need to install and configure one of our nuget packages. You can read more about them [here](https://coderrapp.com/documentation/client/).
 
 Unhandled exceptions will be picked up by the client libraries. 
 
@@ -42,11 +42,18 @@ public void UpdatePost(int uid, ForumPost post)
 }
 ```
 
-The context information will be attached as:
+The context information will in this case be attached as:
 
 ![](https://coderrapp.com/images/features/custom-context.png)
 
-[Read more...](https://coderrapp.com/features/)
+You can learn more about reporting errors [here](https://coderr.io/documentation/).
+
+# Running Coderr
+
+You can run Coderr Community Service in all your environments as long as you follow the AGPL license. Our commercial variant, Coderr Live adds powerful algorithms to prioritize the errors and provides insights to how your applied solutions bring down application errors. Coderr was rebranded and developed from OneTrueError in 2017.
+
+[Read more](https://coderr.io/features/)
+
 
 ## Community
 
