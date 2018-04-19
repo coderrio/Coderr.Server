@@ -49,7 +49,7 @@ namespace Coderr.Server.ReportAnalyzer.Tagging.Handlers
 
             ExtractTagsFromCollections(e, ctx);
 
-            _logger.DebugFormat("Done, identified {0} new tags", ctx.NewTags);
+            _logger.DebugFormat("Done, identified {0} new tags", string.Join(", ", ctx.NewTags));
 
             if (ctx.NewTags.Count == 0)
                 return;
@@ -70,7 +70,7 @@ namespace Coderr.Server.ReportAnalyzer.Tagging.Handlers
                         var tags = tagsStr.Split(',');
                         foreach (var tag in tags)
                         {
-                            ctx.AddTag(tag, 1);
+                            ctx.AddTag(tag.Trim(), 1);
                         }
                     }
                     catch (Exception ex)
@@ -85,7 +85,7 @@ namespace Coderr.Server.ReportAnalyzer.Tagging.Handlers
                 foreach (var property in collection.Properties)
                 {
                     if (property.Key.StartsWith("ErrTags["))
-                        ctx.AddTag(property.Value, 1);
+                        ctx.AddTag(property.Value.Trim(), 1);
                 }
             }
         }

@@ -8,14 +8,10 @@
 
         <h2>Error tracking</h2>
         <p>
-            We have activated Coderr in the Community Server to send us bugs as they occur. It is our own way to practice what we preach about error handling and helps us to correct our code faster
+            We have activated Coderr in the Community Server to send us bugs as they occur. It is our own way to practice what we preach about error handling and helps us to correct our code faster. Further, with rich context information provided by Coderr, it enables us understand the error better.
         </p>
         <p>
-            You can optionally enter your email address to get notifications when the errors in your
-            installation have been corrected and released. 
-        </p>
-        <p>
-            <em>(We might also contact you if we need more information about the error)</em>
+            If you want to receive notification when the errors in your installation have been corrected, please provide an email address.
         </p>
         <form method="post" action="@Url.Action("Errors")">
             @Html.ValidationSummary(false)
