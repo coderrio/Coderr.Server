@@ -48,11 +48,15 @@ The context information will in this case be attached as:
 
 You can learn more about reporting errors [here](https://coderr.io/documentation/).
 
-# Running Coderr
+## Running Coderr
 
 You can run Coderr Community Service in all your environments as long as you follow the AGPL license. Our commercial variant, Coderr Live adds powerful algorithms to prioritize the errors and provides insights to how your applied solutions bring down application errors. Coderr was rebranded and developed from OneTrueError in 2017.
 
 [Read more](https://coderr.io/features/)
+
+## About us
+
+We are passionate about Open Source, Microsoft .NET and code quality. 1TCompany started in 2017 in Sweden and builds on years of coding experience and bringing products to market. Our mission is to assist fellow developers deliver quality code. To accomplish this mission, we decided to make Coderr commercially available and ready for prime time.
 
 
 ## Community
