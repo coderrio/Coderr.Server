@@ -4,15 +4,13 @@ using System.Reflection;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
-using codeRR.Client;
+using Coderr.Client;
 using Coderr.Server.Abstractions.Security;
 using Coderr.Server.Infrastructure.Messaging;
 using Coderr.Server.ReportAnalyzer.Abstractions;
 using Coderr.Server.ReportAnalyzer.Abstractions.Boot;
 using Coderr.Server.ReportAnalyzer.Abstractions.Incidents;
 using Coderr.Server.ReportAnalyzer.Boot.Adapters;
-using Coderr.Server.ReportAnalyzer.Inbound.Commands;
-using Coderr.Server.ReportAnalyzer.Inbound.Handlers;
 using DotNetCqs;
 using DotNetCqs.Bus;
 using DotNetCqs.DependencyInjection;
@@ -109,7 +107,7 @@ namespace Coderr.Server.ReportAnalyzer.Boot.Starters
             };
             listener.PoisonMessageDetected += (sender, args) =>
             {
-                //Err.Report(args.Exception, new { args.Message });
+                Err.Report(args.Exception, new { args.Message.Body });
                 _logger.Error(inboundQueueName + " Poison message: " + args.Message.Body, args.Exception);
             };
             listener.ScopeCreated += (sender, args) =>

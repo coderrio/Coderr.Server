@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using codeRR.Client;
+using Coderr.Client;
 using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Web.Boot.Adapters;
 using Griffin.ApplicationServices;

@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Reflection;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
-using codeRR.Client;
+using Coderr.Client;
 using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Abstractions.Security;
 using Coderr.Server.App.Core.Accounts;
@@ -140,7 +139,7 @@ namespace Coderr.Server.Web.Boot.Cqs
                 }
                 catch (Exception ex)
                 {
-                    Err.Report(ex, new {args.Message});
+                    Err.Report(ex, new {args.Message.Body});
                 }
             };
 
@@ -160,7 +159,7 @@ namespace Coderr.Server.Web.Boot.Cqs
 
                 Err.Report(args.Exception, new
                 {
-                    args.Message,
+                    args.Message.Body,
                     HandlerType = args.Handler.GetType(),
                     args.ExecutionTime
                 });
@@ -199,7 +198,7 @@ namespace Coderr.Server.Web.Boot.Cqs
 
                 Err.Report(args.Exception, new
                 {
-                    args.Message,
+                    args.Message.Body,
                     HandlerType = args.Handler.GetType(),
                     args.ExecutionTime
                 });

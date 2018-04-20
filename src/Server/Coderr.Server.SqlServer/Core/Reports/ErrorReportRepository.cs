@@ -65,7 +65,7 @@ namespace Coderr.Server.SqlServer.Core.Reports
                             report.Add(collection);
                         }
 
-                        properties.Add(reader.GetString(1), reader.GetString(2));
+                        properties[reader.GetString(1)] = reader.GetString(2);
                     }
 
                     // When the last property is in a new collection

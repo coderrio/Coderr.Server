@@ -1,13 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Coderr.Client;
+using Coderr.Client.AspNetCore.Mvc;
+using Coderr.Client.ContextCollections;
+using Coderr.Client.Contracts;
 using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Abstractions.Config;
 using Coderr.Server.Abstractions.Security;
+using Coderr.Server.App.Core.Reports.Config;
 using Coderr.Server.Infrastructure;
+using Coderr.Server.Infrastructure.Configuration;
 using Coderr.Server.Infrastructure.Configuration.Database;
 using Coderr.Server.Infrastructure.Messaging;
 using Coderr.Server.SqlServer;
@@ -21,6 +27,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -61,13 +68,14 @@ namespace Coderr.Server.Web
             IApplicationLifetime applicationLifetime)
         {
             applicationLifetime.ApplicationStopping.Register(OnShutdown);
+            ConfigureCoderr(app);
 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
                 {
-                    HotModuleReplacement = true,
+                    HotModuleReplacement = true
                 });
             }
 
@@ -80,7 +88,7 @@ namespace Coderr.Server.Web
                     routes.MapRoute(
                         "areas",
                         "{area:exists}/{controller=Setup}/{action=Index}/{id?}",
-                        new {area = "Installation"}
+                        new { area = "Installation" }
                     );
 
                 routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
@@ -106,7 +114,11 @@ namespace Coderr.Server.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc(options => { options.Filters.Add<InstallAuthorizationFilter>(); })
+            services.AddMvc(options =>
+                {
+                    AddCoderrToMvc(options);
+                    options.Filters.Add<InstallAuthorizationFilter>();
+                })
                 .AddJsonOptions(jsonOptions =>
                 {
                     jsonOptions.SerializerSettings.ContractResolver = new IncludeNonPublicMembersContractResolver();
@@ -145,14 +157,55 @@ namespace Coderr.Server.Web
             _moduleStarter.Configure(configContext);
         }
 
-        private IServiceProvider GetLazyLoadedServiceProvider()
+        private void AddCoderrToMvc(MvcOptions options)
         {
-            if (_serviceProvider == null)
-                throw new InvalidOperationException("It's not built yet.");
-
-            return _serviceProvider;
+            options.CatchMvcExceptions();
         }
 
+        private void ConfigureCoderr(IApplicationBuilder app)
+        {
+            var url = new Uri("https://report.coderr.io/");
+            Err.Configuration.Credentials(url,
+                "2b3002d3ab3e4a57ad45cff2210221ab",
+                "f381a5c9797f49bd8a3238b892d02806");
+            Err.Configuration.ThrowExceptions = false;
+            app.CatchOwinExceptions();
+
+            CoderrConfigSection config;
+
+            try
+            {
+                var dbStore = new DatabaseStore(() => OpenConnection(CoderrClaims.SystemPrincipal));
+                config = dbStore.Load<CoderrConfigSection>();
+                if (config == null)
+                    return;
+            }
+            catch (SqlException)
+            {
+                // We have not yet configured coderr. 
+                return;
+            }
+            
+
+            // partitions allow us to see the number of affected installations
+            Err.Configuration.AddPartition(x => x.AddPartition("InstallationId", config.InstallationId));
+
+            if (string.IsNullOrWhiteSpace(config.ContactEmail)) 
+                return;
+
+            // Allows us to notify you once the error is corrected.
+            Err.Configuration.ReportPreProcessor = report =>
+            {
+                if (string.IsNullOrWhiteSpace(config.ContactEmail))
+                    return;
+
+                var collection = CollectionBuilder.Feedback(config.ContactEmail, null);
+                var collections = new List<ContextCollectionDTO>(report.ContextCollections.Length + 1);
+                collections.AddRange(report.ContextCollections);
+                collections.Add(collection);
+            };
+        }
+        
         private Task HandleAuthenticationFailure(RedirectContext<CookieAuthenticationOptions> ctx)
         {
             if (ctx.Request.GetDisplayUrl().Contains("/api/"))

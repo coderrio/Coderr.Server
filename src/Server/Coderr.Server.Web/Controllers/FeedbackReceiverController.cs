@@ -3,7 +3,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Text;
 using System.Threading.Tasks;
-using codeRR.Client.Contracts;
+using Coderr.Client.Contracts;
 using Coderr.Server.Domain.Core.Applications;
 using Coderr.Server.Infrastructure.Messaging;
 using Coderr.Server.ReportAnalyzer.Inbound.Commands;

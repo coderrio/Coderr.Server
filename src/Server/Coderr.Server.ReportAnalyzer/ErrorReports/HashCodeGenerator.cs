@@ -64,14 +64,21 @@ namespace Coderr.Server.ReportAnalyzer.ErrorReports
         {
             if (report == null) throw new ArgumentNullException("report");
 
-            //TODO: Ta bort radnummers stripparen
-            var hashSource = report.Exception.FullName + "\r\n";
-            hashSource += StripLineNumbers(report.Exception.StackTrace ?? "");
+            
+            var hashSource = $"{report.Exception.FullName ?? report.Exception.Name}\r\n";
+
+            // the client libraries can by themselves specify how we should identify
+            // unqiue incidents. We then use that identifier in combination with the exception name.
+            var collection = report.ContextCollections.FirstOrDefault(x => x.Name == "CoderrData");
+            if (collection != null && collection.Properties.TryGetValue("HashSource", out var reportHashSource))
+                hashSource += reportHashSource;
+            else
+                hashSource += StripLineNumbers(report.Exception.StackTrace ?? "");
 
             var hash = 23;
             foreach (var c in hashSource)
             {
-                hash = hash*31 + c;
+                hash = hash * 31 + c;
             }
             return hash.ToString("X");
         }
