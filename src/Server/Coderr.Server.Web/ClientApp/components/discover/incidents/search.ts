@@ -1,5 +1,5 @@
 import { PubSubService } from "../../../services/PubSub";
-import { FindIncidents, FindIncidentsResult } from "../../../dto/Core/Incidents";
+import { FindIncidents, FindIncidentsResult, IncidentOrder } from "../../../dto/Core/Incidents";
 import { GetTags, TagDTO } from "../../../dto/Modules/Tagging";
 import { ApplicationService, AppEvents, ApplicationCreated } from "../../../services/applications/ApplicationService";
 import { ApiClient } from '../../../services/ApiClient';
@@ -50,6 +50,12 @@ export default class IncidentSearchComponent extends Vue {
     contextCollectionName: string = '';
     contextCollectionProperty: string = '';
     contextCollectionPropertyValue: string = '';
+
+    // incidents to assign
+    checkedIncidents: number[] = [];
+
+    sortKey = 0;
+    ascendingSort = true;
 
     //for the close dialog
     currentIncidentId = 0;
@@ -107,8 +113,9 @@ export default class IncidentSearchComponent extends Vue {
                 } else {
                     this.highlightActiveApps();
                 }
-                
+
                 this.highlightActiveTags();
+                this.drawSearchUi();
                 this.highlightIncidentState(this.incidentState);
                 this.search(true);
             });
@@ -147,6 +154,22 @@ export default class IncidentSearchComponent extends Vue {
         }
     }
 
+    sort(e: MouseEvent) {
+        var el = <HTMLElement>e.target;
+        var sortKey = parseInt(el.getAttribute('data-value'), 10);
+
+        console.log('here', sortKey, this.ascendingSort);
+        if (this.sortKey === sortKey) {
+            this.ascendingSort = !this.ascendingSort;
+        } else {
+            this.sortKey = sortKey;
+            this.ascendingSort = true;
+        }
+
+        this.drawSearchUi();
+        this.search();
+    }
+
     search(byCode?: boolean) {
         var query = new FindIncidents();
         query.FreeText = this.freeText;
@@ -164,6 +187,9 @@ export default class IncidentSearchComponent extends Vue {
                 query.IsIgnored = true;
                 break;
         }
+
+        query.SortAscending = this.ascendingSort;
+        query.SortType = this.sortKey;
 
         query.Tags = this.activeTags;
 
@@ -216,6 +242,14 @@ export default class IncidentSearchComponent extends Vue {
             });
     }
 
+    assignAllToMe() {
+        this.checkedIncidents.forEach(id => {
+            this.incidentService$.assignToMe(id);
+        });
+        AppRoot.notify('All incidents have been assigned to you. Click on the "Analyze" menu to start working with them.');
+        setTimeout(() => { this.search() }, 1000);
+    }
+
     close(incidentId: number) {
         this.currentIncidentId = incidentId;
         AppRoot.Instance.incidentService.showClose(incidentId, "CloseBody")
@@ -225,6 +259,21 @@ export default class IncidentSearchComponent extends Vue {
 
     }
 
+    private drawSearchUi() {
+        var els = document.querySelectorAll('.search-head th i');
+        for (var i = 0; i < els.length; i++) {
+            els[i].classList.remove('fa-chevron-down');
+            els[i].classList.remove('fa-chevron-up');
+        }
+
+        var us = document.querySelector('.search-head th[data-value="' + this.sortKey + '"] i');
+        if (this.ascendingSort) {
+            us.classList.add('fa-chevron-up');
+        } else {
+            us.classList.add('fa-chevron-down');
+        }
+
+    }
     private toggleState(state: number, e: MouseEvent) {
         this.highlightIncidentState(state);
     }

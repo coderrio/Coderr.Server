@@ -12,9 +12,13 @@
 }
 
 
-.coderr-chart {
+/*.coderr-chart {
     margin-right: 40px;
-}
+}*/
+
+    .coderr-chart .ct-chart-line {
+        overflow: visible !important;
+    }
 
     .coderr-chart .legend {
         text-align: center;
@@ -61,12 +65,7 @@
         stroke: #1EC2A3 !important;
     }
 
-/*.ct-label.ct-label.ct-horizontal {
-    position: relative;
-    justify-content: flex-end;
-    dtext-align: right;
-    tdransform: translate(100%, 60%) rotate(20deg);
-}*/
+
 
 svg.ct-chart-line, svg.ct-chart-line g.ct-labels, svg.ct-chart-line g.ct-labels span.ct-label {
     overflow: visible;

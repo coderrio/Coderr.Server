@@ -73,35 +73,37 @@
 
                 </div>
                 <table class="table w-100">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Name</th>
-                            <th v-if="showApplicationColumn">Application</th>
-                            <th>Created</th>
-                            <th>Last report</th>
-                            <th>Report count</th>
-                        </tr>
+                    <thead class="table-light search-head">
+                    <tr>
+                        <th>Name</th>
+                        <th v-if="showApplicationColumn">Application</th>
+                        <th>Created</th>
+                        <th class="sortable" v-on:click.prevent="sort($event)" data-value="0">Last report <i class="fa"></i></th>
+                        <th class="sortable" v-on:click.prevent="sort($event)" data-value="1">Report count <i class="fa fa-chevron-up"></i></th>
+                    </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="incident in incidents">
-                            <td>
-                                <router-link :to="{ name: 'discoverIncident', params: { applicationId: incident.ApplicationId, incidentId: incident.Id }}">{{ incident.Name }}</router-link>
-                            </td>
-                            <td v-if="showApplicationColumn">
-                                <router-link :to="{ name: 'application', params: { applicationId: incident.ApplicationId }}">{{incident.ApplicationName}}</router-link>
-                            </td>
-                            <td>
-                                {{ incident.CreatedAtUtc | ago }}
-                            </td>
-                            <td>
-                                {{ incident.LastReportReceivedAtUtc | ago }}
-                            </td>
-                            <td>
-                                {{ incident.ReportCount }}
-                            </td>
-                        </tr>
+                    <tr v-for="incident in incidents">
+                        <td>
+                            <input type="checkbox" :value="incident.Id" name="id" class="form-check-inline" v-model="checkedIncidents"/>
+                            <router-link :to="{ name: 'discoverIncident', params: { applicationId: incident.ApplicationId, incidentId: incident.Id }}">{{ incident.Name }}</router-link>
+                        </td>
+                        <td v-if="showApplicationColumn">
+                            <router-link :to="{ name: 'application', params: { applicationId: incident.ApplicationId }}">{{incident.ApplicationName}}</router-link>
+                        </td>
+                        <td>
+                            {{ incident.CreatedAtUtc | ago }}
+                        </td>
+                        <td>
+                            {{ incident.LastReportReceivedAtUtc | ago }}
+                        </td>
+                        <td>
+                            {{ incident.ReportCount }}
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
+                <button class="btn btn-primary" v-on:click.prevent="assignAllToMe">Assign checked incidents to me</button>
             </div>
         </div>
         <div id="CloseBody" style="display: none">

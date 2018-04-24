@@ -25,5 +25,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Schema\Update.v10.sql" />
+    <None Remove="Schema\Update.v11.sql" />
+    <None Remove="Schema\Update.v12.sql" />
   </ItemGroup>
 </Project>

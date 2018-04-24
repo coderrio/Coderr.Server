@@ -41,6 +41,6 @@
     transform: translate(100%, 40%) rotate(20deg);
 }*/
 
-svg.ct-chart-line, svg.ct-chart-line g.ct-labels, svg.ct-chart-line g.ct-labels span.ct-label {
+.incident-chart svg.ct-chart-line, .incident-chart svg.ct-chart-line g.ct-labels, .incident-chart svg.ct-chart-line g.ct-labels span.ct-label {
     overflow: visible;
 }

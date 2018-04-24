@@ -6,3 +6,11 @@
 .more {
     display: none;
 }
+
+.sortable {
+    cursor: pointer;
+}
+
+.sort-ascending {
+
+}

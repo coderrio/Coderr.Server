@@ -80,14 +80,6 @@ namespace Coderr.Server.ReportAnalyzer.Boot.Starters
             var serializer = new MessagingSerializer(typeof(AdoNetMessageDto));
             _messageQueueProvider =
                 new AdoNetMessageQueueProvider(() => context.ConnectionFactory(_systemPrincipal), serializer);
-
-            var queue = _messageQueueProvider.Open("ErrorReports");
-            using (var session = queue.BeginSession())
-            {
-                session.EnqueueAsync(CoderrClaims.SystemPrincipal,
-                    new Message(new ProcessInboundContextCollections()));
-                session.SaveChanges();
-            }
         }
 
         private QueueListener ConfigureQueueListener(ConfigurationContext context, string inboundQueueName,

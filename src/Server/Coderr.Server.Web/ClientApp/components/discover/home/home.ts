@@ -125,6 +125,10 @@ export default class DiscoverComponent extends Vue {
         }
 
         var options = {
+            fullWidth: true,
+            chartPadding: {
+                right: 40
+            },
             axisY: {
                 onlyInteger: true,
                 offset: 0
@@ -174,8 +178,9 @@ export default class DiscoverComponent extends Vue {
 
         var options = {
             axisY: {
+                type: Chartist.AutoScaleAxis,
                 onlyInteger: true,
-                offset: 0
+                low: 0
             },
             axisX: {
                 labelInterpolationFnc(value: any, index: number, labels: any) {

@@ -20,6 +20,7 @@ namespace Coderr.Server.Web.Controllers
 {
     public class ReportReceiverController : Controller
     {
+        private const int CompressedReportSizeLimit = 1000000;
         private readonly ConfigurationStore _configStore;
         private readonly ILog _logger = LogManager.GetLogger(typeof(ReportReceiverController));
         private readonly IMessageQueue _messageQueue;
@@ -44,16 +45,20 @@ namespace Coderr.Server.Web.Controllers
         [Route("receiver/report/{appKey}")]
         public async Task<IActionResult> Post(string appKey, string sig)
         {
-
-            if (HttpContext.Request.ContentLength == null || HttpContext.Request.ContentLength < 1)
-                return BadRequest("Content is required.");
-            if (HttpContext.Request.ContentLength > 2000000)
+            var contentLength = Request.ContentLength;
+            if (contentLength > CompressedReportSizeLimit)
                 return await KillLargeReportAsync(appKey);
+            if (contentLength == null || contentLength < 1)
+                return BadRequest("Content required.");
 
             try
             {
-                var buffer = new byte[HttpContext.Request.ContentLength.Value];
-                Request.Body.Read(buffer, 0, buffer.Length);
+                var buffer = new byte[contentLength.Value];
+                var bytesRead = 0;
+                while (bytesRead < contentLength.Value)
+                {
+                    bytesRead += await Request.Body.ReadAsync(buffer, bytesRead, buffer.Length - bytesRead);
+                }
 
                 var reportConfig = _configStore.Load<ReportConfig>();
                 var config = new ReportConfigWrapper(reportConfig);

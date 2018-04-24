@@ -174,7 +174,7 @@ namespace Coderr.Server.App.Modules.MonthlyStats
             var json = JsonConvert.SerializeObject(dto);
             var client = new HttpClient();
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            await client.PostAsync("http://localhost:54782/stats/usage", content);
+            await client.PostAsync("https://coderr.io/stats/usage", content);
             return true;
         }
     }
