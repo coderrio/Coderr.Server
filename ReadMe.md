@@ -5,7 +5,8 @@ Coderr Community Server
 
 # Skip logfiles - Use automated exception handling!
 
-![OSS screenshot](docs/screenshot.png)
+![OSS screenshot of v2.0](docs/screenshot.png)*screenshot is from the version 2.0 beta*
+
 
 .. don't want to host/maintain your own server? Try [Coderr Live](https://coderr.io/live/)
 
