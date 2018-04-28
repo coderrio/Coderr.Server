@@ -3,8 +3,6 @@ Coderr Community Server
 
 [![Build status](https://1tcompany.visualstudio.com/_apis/public/build/definitions/75570083-b1ef-4e78-88e2-5db4982f756c/6/badge)]() [![Github All Releases](https://img.shields.io/github/downloads/coderrapp/coderr.server/total.svg?style=flat-square)]()
 
-[![](docs/release_banner.png)](https://coderr.io/documentation/beta/)
-
 # Skip logfiles - Use automated exception handling!
 
 ![OSS screenshot](docs/screenshot.png)
@@ -13,7 +11,7 @@ Coderr Community Server
 
 ## What’s Coderr?
 
-Coderr is an error management tool developed specifically for .NET applications. Coderr provides an insight to all errors that are occurring and gives you control and a complete view of your applications’ status. 
+Coderr is an error handling tool developed specifically for .NET applications. Coderr provides an insight to all errors that are occurring and gives you control and a complete view of your applications’ status. 
 
 ## Why change?
 
@@ -22,7 +20,7 @@ Too often, error detection and management involves relying on reports from users
 
 ## Getting started
 
-Once you have [installed the server](https://github.com/coderrapp/Coderr.Server/releases) you need to install and configure one of our nuget packages. You can read more about them [here](https://coderrapp.com/documentation/client/).
+Once you have [downloaded and installed the server](https://github.com/coderrapp/Coderr.Server/releases) you need to install and configure one of our nuget packages. You can read more about them [here](https://coderrapp.com/documentation/client/).
 
 Unhandled exceptions will be picked up by the client libraries. 
 
