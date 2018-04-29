@@ -1,7 +1,7 @@
 import { PubSubService } from "../../../services/PubSub";
 import { AppRoot } from '../../../services/AppRoot';
 import { ApplicationMember } from "../../../services/applications/ApplicationService";
-import { GetIncident, GetIncidentResult, GetIncidentStatistics, GetIncidentStatisticsResult, ReportDay } from "../../../dto/Core/Incidents";
+import { GetIncident, GetIncidentResult, GetIncidentStatistics, GetIncidentStatisticsResult, ReportDay, QuickFact } from "../../../dto/Core/Incidents";
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import Chartist from "chartist";
@@ -27,16 +27,20 @@ export default class IncidentComponent extends Vue {
                 this.isClosed = result.IsSolved;
                 result.Facts = result.Facts.filter(v => v.Value !== '0');
                 
+                if (result.AssignedToId > 0) {
+                    var fact = new QuickFact();
+                    fact.Description = 'Assigned at ' + moment(result.AssignedAtUtc);
+                    fact.Title = "Assigned to";
+                    fact.Value = result.AssignedTo;
+                    result.Facts.push(fact);
+                }
+                
                 this.displayChart(result.DayStatistics);
-                console.log(result.IncidentState);
                 AppRoot.Instance.applicationService.getTeam(result.ApplicationId)
                     .then(x => {
                         this.team = x;
                     });
             });
-
-
-
     }
 
     ignore() {

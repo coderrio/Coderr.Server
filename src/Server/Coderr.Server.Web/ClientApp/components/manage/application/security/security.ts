@@ -1,11 +1,11 @@
 import { AppRoot } from '../../../../services/AppRoot';
 import {
-    GetApplicationTeam, GetApplicationTeamResult, GetApplicationTeamResultInvitation, 
+    GetApplicationTeam, GetApplicationTeamResult, GetApplicationTeamResultInvitation,
     RemoveTeamMember, UpdateRoles
 } from "../../../../dto/Core/Applications";
 import { InviteUser, DeleteInvitation } from "../../../../dto/Core/Invitations";
 import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { Component, Watch } from "vue-property-decorator";
 
 interface IUser {
     name: string;
@@ -23,36 +23,16 @@ export default class ManageHomeComponent extends Vue {
 
     inviteEmail = '';
 
-    created() {
-        var appIdStr = this.$route.params.applicationId;
-        this.applicationId = parseInt(appIdStr, 10);
-
-        AppRoot.Instance.applicationService.get(this.applicationId)
-            .then(appInfo => {
-                this.applicationName = appInfo.name;
-            });
-
-        var q = new GetApplicationTeam();
-        q.ApplicationId = this.applicationId;
-        AppRoot.Instance.apiClient.query<GetApplicationTeamResult>(q)
-            .then(result => {
-                for (let i = 0; i < result.Invited.length; i++) {
-                    this.invites.push(result.Invited[i]);
-                }
-                for (let i = 0; i < result.Members.length; i++) {
-                    let member = result.Members[i];
-                    if (member.IsAdmin) {
-                        this.admins.push({ name: member.UserName, id: member.UserId });
-                    } else {
-                        this.members.push({ name: member.UserName, id: member.UserId });
-                    }
-
-                }
-            });
+    mounted() {
+        this.load();
     }
 
-
-    mounted() {
+    @Watch('$route.params.applicationId')
+    onApplicationChanged(value: string, oldValue: string) {
+        this.members = [];
+        this.admins = [];
+        this.invites = [];
+        this.load();
     }
 
     removeAdmin(userId: number) {
@@ -69,6 +49,8 @@ export default class ManageHomeComponent extends Vue {
             }
         }
     }
+
+
 
     addAdmin(userId: number) {
         for (var i = 0; i < this.members.length; i++) {
@@ -101,7 +83,7 @@ export default class ManageHomeComponent extends Vue {
     removeInvitation(emailAddress: string) {
         var cmd = new DeleteInvitation();
         cmd.ApplicationId = this.applicationId;
-        cmd.InvitedEmailAddress= emailAddress;
+        cmd.InvitedEmailAddress = emailAddress;
         AppRoot.Instance.apiClient.command(cmd);
 
         for (var i = 0; i < this.invites.length; i++) {
@@ -118,6 +100,35 @@ export default class ManageHomeComponent extends Vue {
         AppRoot.Instance.apiClient.command(cmd);
         AppRoot.notify('Invitation have been sent.');
         this.inviteEmail = '';
+    }
+
+
+    private load() {
+        var appIdStr = this.$route.params.applicationId;
+        this.applicationId = parseInt(appIdStr, 10);
+
+        AppRoot.Instance.applicationService.get(this.applicationId)
+            .then(appInfo => {
+                this.applicationName = appInfo.name;
+            });
+
+        var q = new GetApplicationTeam();
+        q.ApplicationId = this.applicationId;
+        AppRoot.Instance.apiClient.query<GetApplicationTeamResult>(q)
+            .then(result => {
+                for (let i = 0; i < result.Invited.length; i++) {
+                    this.invites.push(result.Invited[i]);
+                }
+                for (let i = 0; i < result.Members.length; i++) {
+                    let member = result.Members[i];
+                    if (member.IsAdmin) {
+                        this.admins.push({ name: member.UserName, id: member.UserId });
+                    } else {
+                        this.members.push({ name: member.UserName, id: member.UserId });
+                    }
+
+                }
+            });
     }
 
 }

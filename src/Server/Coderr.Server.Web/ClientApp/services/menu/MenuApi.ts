@@ -6,16 +6,16 @@ export interface MenuItem {
     children?: MenuItem[];
 }
 
-export class Menus {
-	static Discover: string = "Discover";
-}
-
 export class MessagingTopics
 {
-	static ChangeMenu: string = "/menu/change/";
+    static SetApplication: string = "/menu/application/set/";
+    static ApplicationChanged: string = "/menu/application/changed/";
 }
 
-export class ChangeMenu {
-    menuName: string;
-    routeData: any;
+export class SetApplication {
+    applicationId: number;
+}
+
+export class ApplicationChanged {
+    applicationId: number;
 }

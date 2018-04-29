@@ -107,7 +107,7 @@ const routes = [
                 name: "discover",
                 path: ":applicationId?",
                 component: require("./components/discover/home/home.vue.html")
-            },
+            }
         ]
     },
     {
@@ -158,7 +158,6 @@ const routes = [
         ]
     },
     {
-        name: "manageApp",
         path: "/manage/application/",
         component: require("./components/manage/application/app.vue.html"),
         children: [
@@ -200,7 +199,7 @@ const routes = [
             },
             {
                 name: "createApp",
-                path: "application/create",
+                path: "create/application/",
                 component: require("./components/manage/system/create/create.vue.html"),
             },
             {

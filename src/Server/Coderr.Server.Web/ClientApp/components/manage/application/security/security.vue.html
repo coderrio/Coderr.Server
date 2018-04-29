@@ -3,18 +3,20 @@
         <div class="row">
             <div class="col-lg-8 members">
                 <div class="card">
-                    <div class="card-header">Application security</div>
+                    <div class="card-header">
+                        Application security [{{applicationName}}]</div>
                     <div class="card-body">
                         <h3>Admins</h3>
                         <table class="">
                             <tr v-for="admin in admins">
                                 <td>
-                                    {{admin.name}}
-                                </td>
-                                <td>
-                                    <a href="#" @click.prevent="removeAdmin(admin.id)" v-if="admins.length > 1" title="Downgrade to regular member"><i class="fa fa-hand-point-down text-warning"></i></a>
-                                </td>
-                            </tr>
+                                    {{admin.name
+                        }}
+                        </td>
+                        <td>
+                            <a href="#" @click.prevent="removeAdmin(admin.id)" v-if="admins.length > 1" title="Downgrade to regular member"><i class="fa fa-hand-point-down text-warning"></i></a>
+                        </td>
+                        </tr>
                         </table>
                         <h3>Members</h3>
                         <table class="">

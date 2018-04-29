@@ -34,7 +34,9 @@ export default class ManageCreateApplicationComponent extends Vue {
             name: 'configureApplication',
             params: { applicationId: applicationId.toString() }
         });
-        var url = "/account/update/session/?ReturnUrl=" + encodeURI(route.href);
+
+        var baseUrl = document.getElementsByTagName('base')[0].href;
+        var url = baseUrl + "/account/update/session/?ReturnUrl=" + encodeURI(route.href);
         window.location.href = url;
     }
 

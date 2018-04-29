@@ -37,7 +37,6 @@ export class ApiClient {
             this.http.post(`${this.apiRootUrl}cqs/`, query, "application/json", { type: query.constructor.TYPE_NAME }, headers)
                 .then((result: IHttpResponse) => resolve(result.body))
                 .catch((rejection: HttpError) => {
-                    console.log(rejection);
                     if (rejection.reponse.statusCode === 401) {
                         //TODO: redirect;
                         return;

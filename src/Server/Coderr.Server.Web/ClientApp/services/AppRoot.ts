@@ -210,9 +210,7 @@ export class AppRoot {
             if (!el)
                 throw Error("Failed to find modal body " + modalContext.contentId);
 
-            console.log(el);
             var hint = <HTMLElement>el.querySelector('[data-target="footerHint"]');
-            console.log(hint);
             if (hint != null) {
                 modalContext.footerHint = hint.innerHTML;
                 hint.parentElement.removeChild(hint);

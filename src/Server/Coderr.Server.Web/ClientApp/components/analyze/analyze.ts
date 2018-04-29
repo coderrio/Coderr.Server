@@ -10,4 +10,5 @@ export default class AnalyzeComponent extends Vue {
     created() {
     }
 
+
 }

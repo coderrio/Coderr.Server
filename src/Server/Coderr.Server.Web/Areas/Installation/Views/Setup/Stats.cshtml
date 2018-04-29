@@ -18,6 +18,8 @@
         ApplicationdId: int; // Id of a specific application
         IncidentCount: int;  // Number of new incidents created the given month
         ReportCount: int;    // Number of error reports received the given month
+        ClosedCount: int;    // Number of errors that was corrected/solved this month
+        ReOpened: int;       // Number of errors that was repopened this month
     }
 }</code></pre>
         @Html.Raw(ViewBag.PrevLink)

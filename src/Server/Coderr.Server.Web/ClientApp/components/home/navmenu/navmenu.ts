@@ -33,20 +33,16 @@ export default class NavMenuComponent extends Vue {
     @Watch('$route.params.applicationId')
     onApplicationChanged(value: string, oldValue: string) {
         if (!value) {
-            this.currentApplicationId = null;
-            this.currentApplicationName = 'All applications';
+            // analyze uses it's own logic
+            if (this.$route.path.indexOf('/analyze/') !== -1)
+                return;
+
+            this.updateCurrent(0);
             return;
         }
 
         var applicationId = parseInt(value);
-        var app = this.getApplication(applicationId);
-        this.currentApplicationId = applicationId;
-
-        var title = app.title;
-        if (title.length > 20) {
-            title = title.substr(0, 15) + '[...]';
-        }
-        this.currentApplicationName = title;
+        this.updateCurrent(applicationId);
     }
 
     created() {
@@ -65,6 +61,11 @@ export default class NavMenuComponent extends Vue {
 
             next();
         });
+
+        PubSubService.Instance.subscribe(MenuApi.MessagingTopics.SetApplication, ctx => {
+            var msg = <MenuApi.SetApplication>ctx.message.body;
+            this.changeApplication(msg.applicationId);
+        });
     }
 
     mounted() {
@@ -79,16 +80,44 @@ export default class NavMenuComponent extends Vue {
     }
 
     changeApplication(applicationId: number) {
-        if (this.$route.path.indexOf('/discover') === 0) {
-            this.$router.push({ name: 'discover', params: { applicationId: applicationId.toString() } });
-        } else if (this.$route.path.indexOf('/analyze') === 0) {
-            this.$router.push({ name: 'analyzeHome', params: { applicationId: applicationId.toString() } });
-        } else if (this.$route.path.indexOf("/deployment") === 0) {
-            this.$router.push({ name: 'deploymentHome', params: { applicationId: applicationId.toString() } });
-        } else if (this.$route.path.indexOf("/manage") === 0) {
-            this.$router.push({ name: 'manageAppSettings', params: { applicationId: applicationId.toString() } });
+        if (applicationId == null) {
+            this.updateCurrent(0);
+        } else {
+            this.updateCurrent(applicationId);
         }
 
+        const currentRoute = this.$route;
+        let paramCount = 0;
+        for (let key in currentRoute.params) {
+            if (currentRoute.params.hasOwnProperty(key)) {
+                paramCount++;
+            }
+        }
+
+        if (paramCount === 1 && currentRoute.params.hasOwnProperty('applicationId')) {
+            if (applicationId == null) {
+                this.$router.push({ name: currentRoute.name  });
+                PubSubService.Instance.publish(MenuApi.MessagingTopics.ApplicationChanged, { applicationId: null });
+            } else {
+                this.$router.push({ name: currentRoute.name, params: { applicationId: applicationId.toString() } });
+                PubSubService.Instance.publish(MenuApi.MessagingTopics.ApplicationChanged, { applicationId: applicationId });
+            }
+            return;
+        }
+
+        if (currentRoute.path.indexOf('/discover') === 0) {
+            this.$router.push({ name: 'discover', params: { applicationId: applicationId.toString() } });
+        } else if (currentRoute.path.indexOf('/analyze') === 0) {
+            this.$router.push({ name: 'analyzeHome', params: { applicationId: applicationId.toString() } });
+        } else if (currentRoute.path.indexOf('/manage/') !== -1 && currentRoute.path.indexOf('/manage/application') === -1) {
+            const route = { name: 'manageAppSettings', params: { applicationId: applicationId.toString() } };
+            this.$router.push(route);
+        } else {
+            const route = { name: currentRoute.name, params: { applicationId: applicationId.toString() } };
+            this.$router.push(route);
+        }
+
+        PubSubService.Instance.publish(MenuApi.MessagingTopics.ApplicationChanged, { applicationId: applicationId });
     }
 
     private askCallbacksForWhichMenu(route: Router.Route): string {
@@ -112,9 +141,20 @@ export default class NavMenuComponent extends Vue {
 
 
     private updateCurrent(applicationId: number) {
+        if (applicationId === 0) {
+            this.currentApplicationName = "All applications";
+            this.currentApplicationId = null;
+            return;
+        }
+
         var app = this.getApplication(applicationId);
         this.currentApplicationId = applicationId;
-        this.currentApplicationName = app.title;
+
+        var title = app.title;
+        if (title.length > 20) {
+            title = title.substr(0, 15) + '[...]';
+        }
+        this.currentApplicationName = title;
     }
 
 

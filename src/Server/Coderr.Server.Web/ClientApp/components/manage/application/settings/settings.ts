@@ -12,14 +12,7 @@ export default class ManageAppSettingsComponent extends Vue {
 
 
     created() {
-        var appIdStr = this.$route.params.applicationId;
-        this.applicationId = parseInt(appIdStr, 10);
-        AppRoot.Instance.applicationService.get(this.applicationId)
-            .then(appInfo => {
-                this.applicationName = appInfo.name;
-                this.sharedSecret = appInfo.sharedSecret;
-                this.appKey = appInfo.appKey;
-            });
+        this.load();
     }
 
     
@@ -29,7 +22,11 @@ export default class ManageAppSettingsComponent extends Vue {
 
     @Watch('$route.params.applicationId')
     onApplicationChanged(value: string, oldValue: string) {
-        this.applicationId = parseInt(value, 10);
+        this.load();
+    }
+
+    private load() {
+        this.applicationId = parseInt(this.$route.params.applicationId, 10);
         AppRoot.Instance.applicationService.get(this.applicationId)
             .then(appInfo => {
                 this.applicationName = appInfo.name;

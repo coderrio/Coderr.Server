@@ -34,6 +34,12 @@ namespace Coderr.Server.Infrastructure.Configuration
         /// </remarks>
         public string InstallationId { get; set; }
 
+        /// <summary>
+        /// Estimate of how many unique errors the admin think it has.
+        /// </summary>
+        public int NumberOfUniqueErrors { get; set; }
+
+
         string IConfigurationSection.SectionName
         {
             get { return "ErrorTracking"; }

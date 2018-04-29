@@ -133,8 +133,6 @@ export class IncidentService {
                 break;
             }
         }
-        console.log('my incidents after: ', this.myIncidents);
-
         var msg: IncidentClosed = {
             incidentId: incidentId,
             userId: current.id
@@ -230,7 +228,6 @@ export class IncidentService {
             return this.myIncidents;
         }
 
-        console.log('fetching mine');
         this.haveFetchedMine = true;
         var current = await AppRoot.Instance.loadCurrentUser();
         var query = new FindIncidents();
@@ -315,7 +312,6 @@ export class IncidentService {
     }
 
     private async addMyIncident(incidentId: number, assignedTo: string, assignedToId: number): Promise<null> {
-        console.log('adding mine');
         const item = this.getFromCache(incidentId);
         if (item) {
             item.AssignedTo = assignedTo;

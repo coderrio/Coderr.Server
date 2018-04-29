@@ -77,13 +77,103 @@ namespace Coderr.Server.App.Modules.MonthlyStats
             return results.ToArray();
         }
 
+        private async Task<AppResult[]> GetClosedCount(DateTime lastMonth)
+        {
+            var results = new List<AppResult>();
+            using (var cmd = _unitOfWork.CreateDbCommand())
+            {
+                cmd.CommandText = @"SELECT Incidents.ApplicationId, count(*)
+                                    FROM IncidentHistory
+                                    JOIN Incidents on (Incidents.Id = IncidentId)
+                                    WHERE IncidentHistory.state = 3
+                                    AND IncidentHistory.CreatedAtUtc >= @fromDate AND IncidentHistory.CreatedAtUtc < @toDate
+                                    GROUP BY Incidents.ApplicationId";
+                cmd.AddParameter("fromDate", lastMonth);
+                cmd.AddParameter("toDate", lastMonth.AddMonths(1));
+                using (var reader = await cmd.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        var item = new AppResult
+                        {
+                            ApplicationId = reader.GetInt32(0),
+                            Count = reader.GetInt32(1)
+                        };
+                        results.Add(item);
+                    }
+                }
+            }
+
+            return results.ToArray();
+        }
+
+        private async Task<AppResult[]> GetReOpened(DateTime lastMonth)
+        {
+            var results = new List<AppResult>();
+            using (var cmd = _unitOfWork.CreateDbCommand())
+            {
+                cmd.CommandText = @"SELECT Incidents.ApplicationId, count(*)
+                                    FROM IncidentHistory
+                                    JOIN Incidents on (Incidents.Id = IncidentId)
+                                    WHERE IncidentHistory.state = 4
+                                    AND IncidentHistory.CreatedAtUtc >= @fromDate AND IncidentHistory.CreatedAtUtc < @toDate
+                                    GROUP BY Incidents.ApplicationId";
+                cmd.AddParameter("fromDate", lastMonth);
+                cmd.AddParameter("toDate", lastMonth.AddMonths(1));
+                using (var reader = await cmd.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        var item = new AppResult
+                        {
+                            ApplicationId = reader.GetInt32(0),
+                            Count = reader.GetInt32(1)
+                        };
+                        results.Add(item);
+                    }
+                }
+            }
+
+            return results.ToArray();
+        }
+
+        private async Task<AppResult[]> GetIgnoredCount(DateTime lastMonth)
+        {
+            var results = new List<AppResult>();
+            using (var cmd = _unitOfWork.CreateDbCommand())
+            {
+                cmd.CommandText = @"SELECT Incidents.ApplicationId, count(*)
+                                    FROM IncidentHistory
+                                    JOIN Incidents on (Incidents.Id = IncidentId)
+                                    WHERE IncidentHistory.state = 2
+                                    AND IncidentHistory.CreatedAtUtc >= @fromDate AND IncidentHistory.CreatedAtUtc < @toDate
+                                    GROUP BY Incidents.ApplicationId";
+                cmd.AddParameter("fromDate", lastMonth);
+                cmd.AddParameter("toDate", lastMonth.AddMonths(1));
+                using (var reader = await cmd.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        var item = new AppResult
+                        {
+                            ApplicationId = reader.GetInt32(0),
+                            Count = reader.GetInt32(1)
+                        };
+                        results.Add(item);
+                    }
+                }
+            }
+
+            return results.ToArray();
+        }
+
         private async Task<AppResult[]> GetReportCounts(DateTime lastMonth)
         {
             var results = new List<AppResult>();
             using (var cmd = _unitOfWork.CreateDbCommand())
             {
-                cmd.CommandText = @"select ApplicationId, count(*)
-                                    from ErrorReports
+                cmd.CommandText = @"SELECT ApplicationId, count(*)
+                                    FROM ErrorReports
                                     where CreatedAtUtc >= @fromDate AND CreatedAtUtc < @toDate
                                     group by ApplicationId";
                 cmd.AddParameter("fromDate", lastMonth);
@@ -121,39 +211,20 @@ namespace Coderr.Server.App.Modules.MonthlyStats
         {
             var apps = new Dictionary<int, ApplicationUsageStatisticsDto>();
 
-            var incidentCounts = await GetIncidentCounts(lastMonth);
-            foreach (var count in incidentCounts)
-            {
-                if (count.Count == 0)
-                    continue;
-                if (!apps.TryGetValue(count.ApplicationId, out var value))
-                {
-                    value = new ApplicationUsageStatisticsDto
-                    {
-                        ApplicationId = count.ApplicationId
-                    };
-                    apps[value.ApplicationId] = value;
-                }
+            var values = await GetIncidentCounts(lastMonth);
+            MergeStats(values, apps, (stat, value) => stat.IncidentCount = value);
 
-                value.IncidentCount = count.Count;
-            }
+            values = await GetReportCounts(lastMonth);
+            MergeStats(values, apps, (stat, value) => stat.ReportCount = value);
 
-            var reportCounts = await GetReportCounts(lastMonth);
-            foreach (var count in reportCounts)
-            {
-                if (count.Count == 0)
-                    continue;
-                if (!apps.TryGetValue(count.ApplicationId, out var value))
-                {
-                    value = new ApplicationUsageStatisticsDto
-                    {
-                        ApplicationId = count.ApplicationId
-                    };
-                    apps[value.ApplicationId] = value;
-                }
+            values = await GetClosedCount(lastMonth);
+            MergeStats(values, apps, (stat, value) => stat.ClosedCount = value);
 
-                value.ReportCount = count.Count;
-            }
+            values = await GetReOpened(lastMonth);
+            MergeStats(values, apps, (stat, value) => stat.ReOpenedCount = value);
+
+            values = await GetIgnoredCount(lastMonth);
+            MergeStats(values, apps, (stat, value) => stat.IgnoredCount = value);
 
             if (_config.Value.LatestUploadedMonth == null || _config.Value.LatestUploadedMonth < lastMonth)
             {
@@ -176,6 +247,25 @@ namespace Coderr.Server.App.Modules.MonthlyStats
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             await client.PostAsync("https://coderr.io/stats/usage", content);
             return true;
+        }
+
+        private static void MergeStats(IEnumerable<AppResult> appResults, IDictionary<int, ApplicationUsageStatisticsDto> apps, Action<ApplicationUsageStatisticsDto, int> assignMethod)
+        {
+            foreach (var count in appResults)
+            {
+                if (count.Count == 0)
+                    continue;
+                if (!apps.TryGetValue(count.ApplicationId, out var value))
+                {
+                    value = new ApplicationUsageStatisticsDto
+                    {
+                        ApplicationId = count.ApplicationId
+                    };
+                    apps[value.ApplicationId] = value;
+                }
+
+                assignMethod(value, count.Count);
+            }
         }
     }
 }

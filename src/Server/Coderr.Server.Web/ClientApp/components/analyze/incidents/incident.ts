@@ -1,4 +1,4 @@
-import { PubSubService } from "../../../services/PubSub";
+import { MyIncidents, IMyIncident } from "../myincidents";
 import { ApplicationMember } from "../../../services/applications/ApplicationService";
 import { ApiClient } from '../../../services/ApiClient';
 import { AppRoot } from '../../../services/AppRoot';
@@ -12,14 +12,13 @@ import { Component, Watch } from "vue-property-decorator";
 @Component
 export default class AnalyzeIncidentComponent extends Vue {
     private static activeBtnTheme: string = 'btn-dark';
-    private apiClient: ApiClient = new ApiClient('http://localhost:50473/cqs/');
+    private apiClient: ApiClient = AppRoot.Instance.apiClient;
     private static readonly selectCollectionTitle: string = '(select collection)';
     private team: ApplicationMember[] = [];
 
     name = '';
     incidentId = 0;
     incident = new GetIncidentResult();
-    isEmpty: boolean = false;
     reports: GetReportListResultItem[] = [];
     currentReport = new GetReportResult();
     currentCollection = new GetReportResultContextCollection();
@@ -28,27 +27,17 @@ export default class AnalyzeIncidentComponent extends Vue {
     currentCollectionName: string = '';
 
     created() {
-        if (!this.$route.params.incidentId) {
-            AppRoot.Instance.incidentService.getMine().then(incidents => {
-                if (incidents.length === 0) {
-                    this.isEmpty = false;
-                    return;
-                } else {
-                    let incidentId = incidents[0].Id;
-                    this.loadIncident(incidentId);
-                }
-            });
-
-        } else {
-            let incidentId = parseInt(this.$route.params.incidentId, 10);
-            this.loadIncident(incidentId);
-        }
-
+        MyIncidents.Instance.subscribeOnSelectedIncident(x => {
+            if (x == null) {
+                this.$router.push({ name: 'analyzeHome' });
+            } else {
+                this.loadIncident(x.incidentId);
+            }
+        });
     }
 
-    @Watch('$route.params.incidentId')
-    onIncidentSelected(value: string, oldValue: string) {
-        var incidentId = parseInt(value, 10);
+    mounted() {
+        var incidentId = parseInt(this.$route.params.incidentId, 10);
         this.loadIncident(incidentId);
     }
 
@@ -69,10 +58,8 @@ export default class AnalyzeIncidentComponent extends Vue {
     closeIncident() {
         AppRoot.Instance.incidentService.showClose(this.incident.Id, "CloseBody")
             .then(x => {
-                console.log('close result', x);
                 AppRoot.Instance.incidentService.getMine(null, this.incident.Id)
                     .then(incidents => {
-                        console.log('my incidents', incidents);
                         if (incidents.length === 0) {
                             this.$router.push({ name: "discover" });
                         } else {

@@ -21,7 +21,7 @@
                         <div class="btn-group">
                             <button type="button" class="btn btn-primary dropdown-toggle" id="mnuCurrentApplication" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{currentApplicationName}}</button>
                             <div class="dropdown-menu">
-                                <router-link to="/discover" class="dropdown-item"><i class="fa fa-home"></i> All applications</router-link>
+                                <a v-on:click.prevent="changeApplication(null)" class="dropdown-item"><i class="fa fa-home"></i> All applications</a>
                                 <div class="dropdown-divider"></div>
                                 <div v-for="item in myApplications">
                                     <a href="#" v-on:click.prevent="changeApplication(item.tag)" class="dropdown-item"><i class="fa-desktop fa text-muted"></i> {{item.title}}</a>
@@ -30,7 +30,7 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <router-link class="nav-link" to="/discover/">
+                        <router-link class="nav-link" :to="'/discover/' + currentApplicationId">
                             <span class="fa fa-binoculars"></span> Discover
                         </router-link>
                     </li>

@@ -1,7 +1,8 @@
+import { PubSubService, MessageContext } from "../../services/PubSub";
 import * as MenuApi from "../../services/menu/MenuApi";
 import Vue from 'vue';
 import { Component, Watch } from 'vue-property-decorator';
-import {Route} from "vue-router";
+import { Route } from "vue-router";
 
 interface IRouteNavigation {
     routeName: string;
@@ -31,6 +32,13 @@ export default class DiscoverMenuComponent extends Vue {
 
         var applicationId = parseInt(value);
         this.currentApplicationId = applicationId;
+    }
+
+    created() {
+        PubSubService.Instance.subscribe(MenuApi.MessagingTopics.SetApplication, ctx => {
+            var msg = <MenuApi.SetApplication>ctx.message.body;
+            this.currentApplicationId = msg.applicationId;
+        });
     }
 
     mounted() {

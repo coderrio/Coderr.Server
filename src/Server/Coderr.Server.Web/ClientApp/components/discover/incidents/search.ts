@@ -1,4 +1,5 @@
 import { PubSubService } from "../../../services/PubSub";
+import * as MenuApi from "../../../services/menu/MenuApi";
 import { FindIncidents, FindIncidentsResult, IncidentOrder } from "../../../dto/Core/Incidents";
 import { GetTags, TagDTO } from "../../../dto/Modules/Tagging";
 import { ApplicationService, AppEvents, ApplicationCreated } from "../../../services/applications/ApplicationService";
@@ -61,6 +62,19 @@ export default class IncidentSearchComponent extends Vue {
     currentIncidentId = 0;
 
     created() {
+        PubSubService.Instance.subscribe(MenuApi.MessagingTopics.ApplicationChanged, ctx => {
+            var body = <MenuApi.ApplicationChanged>ctx.message.body;
+            if (body.applicationId == null) {
+                this.activeApplications = [];
+                this.showApplicationColumn = true;
+            } else {
+                this.activeApplications = [body.applicationId];
+                this.showApplicationColumn = false;
+            }
+            
+            this.search();
+        });
+
         //fetch in created since we do not need the DOM
         var promise = new Promise<any>(resolve => {
             var appService = new ApplicationService(PubSubService.Instance, AppRoot.Instance.apiClient);
@@ -93,9 +107,9 @@ export default class IncidentSearchComponent extends Vue {
         });
 
         if (this.$route.params.applicationId) {
+            var appId = parseInt(this.$route.params.applicationId, 10);
+            this.activeApplications = [appId];
             this.showApplicationColumn = false;
-            var appId = parseInt(this.$route.params.applicationId);
-            this.activeApplications.push(appId);
         }
     }
 
@@ -108,7 +122,8 @@ export default class IncidentSearchComponent extends Vue {
                 if (this.$route.params.applicationId) {
                     var id = parseInt(this.$route.params.applicationId, 10);
                     if (id > 0) {
-                        this.activeApplications.push(id);
+                        this.activeApplications = [id];
+                        this.showApplicationColumn = false;
                     }
                 } else {
                     this.highlightActiveApps();
@@ -158,7 +173,6 @@ export default class IncidentSearchComponent extends Vue {
         var el = <HTMLElement>e.target;
         var sortKey = parseInt(el.getAttribute('data-value'), 10);
 
-        console.log('here', sortKey, this.ascendingSort);
         if (this.sortKey === sortKey) {
             this.ascendingSort = !this.ascendingSort;
         } else {
@@ -201,7 +215,7 @@ export default class IncidentSearchComponent extends Vue {
             AppRoot.Instance.storeState({
                 name: 'incident-search',
                 component: this,
-                excludeProperties: ["incidents", "availableApplications", "availableTags"]
+                excludeProperties: ["incidents", "availableApplications", "availableTags", "checkedIncidents"]
             });
         }
 
@@ -243,6 +257,9 @@ export default class IncidentSearchComponent extends Vue {
     }
 
     assignAllToMe() {
+        if (this.checkedIncidents.length === 0) {
+            return;
+        }
         this.checkedIncidents.forEach(id => {
             this.incidentService$.assignToMe(id);
         });

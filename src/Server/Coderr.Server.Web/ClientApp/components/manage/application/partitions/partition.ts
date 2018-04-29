@@ -1,7 +1,7 @@
 import { AppRoot } from '../../../../services/AppRoot';
 import * as Partitions from "../../../../dto/Common/Partitions";
 import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { Component, Watch } from "vue-property-decorator";
 
 
 @Component
@@ -11,21 +11,16 @@ export default class ManagePartitionsComponent extends Vue {
     partitions: Partitions.GetPartitionsResultItem[] = [];
 
     created() {
-        var appIdStr = this.$route.params.applicationId;
-        this.applicationId = parseInt(appIdStr, 10);
-
-        var q = new Partitions.GetPartitions();
-        q.ApplicationId = this.applicationId;
-        AppRoot.Instance.apiClient.query<Partitions.GetPartitionsResult>(q)
-            .then(result => {
-                for (let i = 0; i < result.Items.length; i++) {
-                    this.partitions.push(result.Items[i]);
-                }
-            });
+        this.load();
     }
 
 
     mounted() {
+    }
+
+    @Watch('$route.params.applicationId')
+    onApplicationChanged(value: string, oldValue: string) {
+        this.load();
     }
 
     deletePartition(id: number) {
@@ -58,4 +53,17 @@ export default class ManagePartitionsComponent extends Vue {
 
     }
 
+    private load() {
+        var appIdStr = this.$route.params.applicationId;
+        this.applicationId = parseInt(appIdStr, 10);
+
+        var q = new Partitions.GetPartitions();
+        q.ApplicationId = this.applicationId;
+        AppRoot.Instance.apiClient.query<Partitions.GetPartitionsResult>(q)
+            .then(result => {
+                for (let i = 0; i < result.Items.length; i++) {
+                    this.partitions.push(result.Items[i]);
+                }
+            });
+    }
 }
