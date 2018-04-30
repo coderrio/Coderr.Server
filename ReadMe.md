@@ -49,9 +49,10 @@ You can learn more about reporting errors [here](https://coderr.io/documentation
 
 ## Running Coderr
 
-You can run Coderr Community Service in all your environments as long as you follow the AGPL license. Our commercial variant, Coderr Live adds powerful algorithms to prioritize the errors and provides insights to how your applied solutions bring down application errors. Coderr was rebranded and developed from OneTrueError in 2017.
+You can run any Coderr in development, test and in production. Coderr is available in three different ways; as Coderr Community Server (AGPL license, self-hosting), as Coderr Live (commercial license, cloud version) or on request, as Coderr running on premise (commercial license, self-hosting version). Coderr Live and Coderr on premise add powerful algorithms to prioritize errors and provide insight to how your code is improving over time with applied solutions. Coderr was rebranded and developed from OneTrueError in 2017.
 
 [Read more](https://coderr.io/features/)
+
 
 ## About us
 
