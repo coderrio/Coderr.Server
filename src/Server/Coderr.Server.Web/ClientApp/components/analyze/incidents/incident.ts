@@ -74,6 +74,10 @@ export default class AnalyzeIncidentComponent extends Vue {
     }
 
     private loadIncident(id: number) {
+        if (!id) {
+            throw new Error("Expected an incidentId.");
+        }
+
         this.incidentId = id;
         AppRoot.Instance.incidentService.get(id)
             .then(incident => {

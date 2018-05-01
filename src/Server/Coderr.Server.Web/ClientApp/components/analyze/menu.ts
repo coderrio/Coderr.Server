@@ -57,7 +57,7 @@ export default class AnalyzeMenuComponent extends Vue {
         }
 
         var newIncidentId = parseInt(value, 10);
-
+        
         //ignore subroutes to same incident.
         if (this.incidentId === newIncidentId) {
             return;

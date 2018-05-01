@@ -9,7 +9,7 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="myIncidentsBtn">
                             <h6 class="dropdown-header">Select one of your incidents</h6>
-                            <router-link class="dropdown-item" to="{ name: 'analyzeIncident', params: {incidentId: item.incidentId.toString() }" v-for="item in incidents" :key="item.incidentId">
+                            <router-link class="dropdown-item" :to="{ name: 'analyzeIncident', params: {incidentId: item.incidentId.toString() }}" v-for="item in incidents" :key="item.incidentId">
                                 {{item.title}}
                             </router-link>
                         </div>
