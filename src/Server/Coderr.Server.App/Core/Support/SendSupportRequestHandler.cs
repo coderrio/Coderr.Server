@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Coderr.Server.Abstractions.Config;
 using Coderr.Server.Abstractions.Security;
 using Coderr.Server.Api.Core.Accounts.Queries;
+using Coderr.Server.Api.Core.Messaging;
+using Coderr.Server.Api.Core.Messaging.Commands;
 using Coderr.Server.Api.Core.Support;
 using Coderr.Server.Infrastructure.Configuration;
 using Coderr.Server.Infrastructure.Security;
@@ -47,14 +50,30 @@ namespace Coderr.Server.App.Core.Support
             }
 
             string installationId = null;
-            if (email == null)
+            if (string.IsNullOrEmpty(email))
                 email = baseConfig.SupportEmail;
 
             if (errorConfig != null)
             {
-                if (errorConfig.ContactEmail != null)
+                if (!string.IsNullOrEmpty(errorConfig.ContactEmail) && string.IsNullOrEmpty(errorConfig.ContactEmail))
                     email = errorConfig.ContactEmail;
+
                 installationId = errorConfig.InstallationId;
+            }
+
+            // A support contact have been specified.
+            // Thus this is a OnPremise/community server installation
+            if (!string.IsNullOrEmpty(baseConfig.SupportEmail))
+            {
+                var msg = new EmailMessage(email)
+                {
+                    Subject = command.Subject,
+                    ReplyTo = new EmailAddress(email),
+                    TextBody = $"Request from: {email}\r\n\r\n{command.Message}"
+                };
+                var cmd = new SendEmail(msg);
+                await context.SendAsync(cmd);
+                return;
             }
 
             var items = new List<KeyValuePair<string, string>>();
@@ -68,8 +87,11 @@ namespace Coderr.Server.App.Core.Support
             items.Add(new KeyValuePair<string, string>("PageUrl", command.Url));
 
             var content = new FormUrlEncodedContent(items);
-            var client = new HttpClient();
-            await client.PostAsync("https://coderrapp.com/support/request", content);
+            var client = new HttpClient
+            {
+                Timeout = TimeSpan.FromSeconds(5)
+            };
+            await client.PostAsync("https://coderr.io/support/request", content);
         }
     }
 }

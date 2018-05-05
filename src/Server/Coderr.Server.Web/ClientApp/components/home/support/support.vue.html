@@ -7,7 +7,7 @@
                     <textarea class="form-control" v-model="message" placeholder="Describe your problem" rows="10" id="SupportMessage" autofocus=""></textarea>
                     <button class="btn btn-primary" v-on:click.prevent="sendMessage">Send</button>
                     <em>
-                        This message will be sent directly to one of our developers. Feel free to get technical.
+                        This message will be sent to the one responsible of this Coderr installation.
                     </em>
                 </div>
             </div>
@@ -25,6 +25,6 @@
     </div>
 </template>
 
-
+<style src="simplemde/dist/simplemde.min.css"></style>
 <style src="./support.css"></style>
 <script src="./support.ts"></script>

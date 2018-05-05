@@ -35,31 +35,30 @@ namespace Coderr.Server.ReportAnalyzer.ErrorReports.HashcodeGenerators
         /// <exception cref="ArgumentNullException">entity</exception>
         public string GenerateHashCode(ErrorReportEntity entity)
         {
-            var props = entity.ContextCollections.FirstOrDefault(x => x.Name == "ExceptionProperties")
-                        ?? entity.ContextCollections.FirstOrDefault(x => x.Name == "Properties");
-            if (props == null)
+            string requestUrl = null;
+            var httpCode = 0;
+
+            foreach (var collection in entity.ContextCollections)
             {
-                _logger.Error("Failed to find ExceptionProperties collection for entity " + entity.Id);
-                return null;
+                if (collection.Properties.TryGetValue("HttpCode", out var value))
+                {
+                    int.TryParse(value, out httpCode);
+
+                }
+
+                if (!collection.Properties.TryGetValue("RequestUrl", out requestUrl))
+                    collection.Properties.TryGetValue("Url", out requestUrl);
+
             }
 
-            if (!props.Properties.TryGetValue("HttpCode", out var value))
+            if (httpCode == 0 || string.IsNullOrWhiteSpace(requestUrl))
                 return null;
-            var statusCode = int.Parse(value);
 
-            var headerProps = entity.ContextCollections.FirstOrDefault(x => x.Name == "HttpHeaders");
-            if (headerProps == null)
-            {
-                _logger.Error("Failed to find HttpHeaders collection for entity " + entity.Id);
-                return null;
-            }
-
-            var url = headerProps.Properties["Url"].ToLower();
-            var pos = url.IndexOf("?");
+            var pos = requestUrl.IndexOf("?");
             if (pos != -1)
-                url = url.Remove(pos);
+                requestUrl = requestUrl.Remove(pos);
 
-            return HashCodeUtility.GetPersistentHashCode(statusCode + "-" + url).ToString("X");
+            return HashCodeUtility.GetPersistentHashCode(httpCode + "-" + requestUrl).ToString("X");
         }
     }
 }

@@ -82,6 +82,7 @@ namespace Coderr.Server.Web.Areas.Installation.Controllers
             try
             {
                 var constr = _config.GetConnectionString("Db");
+                constr = ChangeConnectionTimeout(constr);
                 SetupTools.DbTools.TestConnection(constr);
                 return Content(@"{ ""result"": ""ok"" }", "application/json");
             }
@@ -99,7 +100,24 @@ namespace Coderr.Server.Web.Areas.Installation.Controllers
                 });
             }
         }
+        internal static string ChangeConnectionTimeout(string conStr)
+        {
+            var pos = conStr.IndexOf("Connect Timeout", StringComparison.OrdinalIgnoreCase);
+            if (pos != -1)
+            {
+                var pos2 = conStr.IndexOf(';', pos);
+                if (pos2 == -1)
+                {
+                    conStr = conStr.Substring(0, pos) + "Connect Timeout=5";
+                }
+                else
+                {
+                    conStr = conStr.Substring(0, pos) + "Connect Timeout=5;" + conStr.Substring(pos2);
+                }
+            }
 
+            return conStr;
+        }
         public override Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             ViewBag.PrevLink = Url.GetPreviousWizardStepLink();

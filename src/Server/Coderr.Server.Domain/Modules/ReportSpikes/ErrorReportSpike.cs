@@ -25,6 +25,13 @@ namespace Coderr.Server.Domain.Modules.ReportSpikes
             NotifiedAccounts = new int[0];
         }
 
+        protected ErrorReportSpike()
+        {
+            
+        }
+
+        public int Id { get; set; }
+
         /// <summary>
         ///     Application that the inspected incident belongs to.
         /// </summary>

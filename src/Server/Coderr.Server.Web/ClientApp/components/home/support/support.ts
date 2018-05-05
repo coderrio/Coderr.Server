@@ -3,7 +3,6 @@ import { SendSupportRequest } from "../../../dto/Core/Support";
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import * as SimpleMDE from "SimpleMDE";
-import 'simplemde/dist/simplemde.min.css';
 
 @Component
 export default class SupportComponent extends Vue {

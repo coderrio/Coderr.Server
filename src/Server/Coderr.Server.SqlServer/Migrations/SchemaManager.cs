@@ -13,9 +13,6 @@ namespace Coderr.Server.SqlServer.Migrations
         private readonly Func<IDbConnection> _connectionFactory;
         private ILog _logger = LogManager.GetLogger(typeof(SchemaManager));
         private readonly MigrationScripts _migrationScripts = new MigrationScripts();
-        private string[] _scriptOrder = {"Update"};
-
-        private bool invoked;
 
         public SchemaManager(Func<IDbConnection> connectionFactory)
         {
@@ -34,9 +31,6 @@ namespace Coderr.Server.SqlServer.Migrations
 
         public void CreateInitialStructure()
         {
-            if (invoked)
-                throw new InvalidOperationException("Invoked");
-            invoked = true;
             using (var con = _connectionFactory())
             {
                 var resourceName = $"{MigrationScripts.SchemaNamespace}.Database.sql";

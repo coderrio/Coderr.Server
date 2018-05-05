@@ -10,19 +10,20 @@ using Coderr.Server.Domain.Modules.ReportSpikes;
 using Coderr.Server.Domain.Modules.UserNotifications;
 using Coderr.Server.Infrastructure.Configuration;
 using Coderr.Server.ReportAnalyzer.Abstractions.Incidents;
+using Coderr.Server.ReportAnalyzer.UserNotifications.Handlers;
 using DotNetCqs;
+using log4net;
 
 namespace Coderr.Server.ReportAnalyzer.ReportSpikes.Handlers
 {
     /// <summary>
     /// </summary>
-    [ContainerService]
-    public class CheckForReportPeak :
-        IMessageHandler<ReportAddedToIncident>
+    public class CheckForReportPeak : IMessageHandler<ReportAddedToIncident>
     {
         private readonly IUserNotificationsRepository _repository;
         private readonly IReportSpikeRepository _spikeRepository;
         private readonly BaseConfiguration _baseConfiguration;
+        private ILog _log = LogManager.GetLogger(typeof(CheckForReportPeak));
 
         /// <summary>
         ///     Creates a new instance of <see cref="CheckForReportPeak" />.
@@ -48,9 +49,11 @@ namespace Coderr.Server.ReportAnalyzer.ReportSpikes.Handlers
         {
             if (e == null) throw new ArgumentNullException("e");
 
+            _log.Info("ReportId: " + e.Report.Id);
+
             var url = _baseConfiguration.BaseUrl;
-            var settings = await _repository.GetAllAsync(e.Report.ApplicationId);
-            if (!settings.Any(x => x.ApplicationSpike != NotificationState.Disabled))
+            var notificationSettings = (await _repository.GetAllAsync(e.Report.ApplicationId)).ToList();
+            if (notificationSettings.All(x => x.ApplicationSpike == NotificationState.Disabled))
                 return;
 
             var todaysCount = await CalculateSpike(e);
@@ -63,9 +66,9 @@ namespace Coderr.Server.ReportAnalyzer.ReportSpikes.Handlers
 
             var existed = spike != null;
             var messages = new List<EmailMessage>();
-            foreach (var setting in settings)
+            foreach (var setting in notificationSettings)
             {
-                if (setting.ApplicationSpike != NotificationState.Disabled)
+                if (setting.ApplicationSpike == NotificationState.Disabled)
                     continue;
 
                 if (spike != null && spike.HasAccount(setting.AccountId))
@@ -77,19 +80,12 @@ namespace Coderr.Server.ReportAnalyzer.ReportSpikes.Handlers
                 spike.AddNotifiedAccount(setting.AccountId);
                 var msg = new EmailMessage(setting.AccountId.ToString())
                 {
-                    Subject = string.Format("Spike detected for {0} ({1} reports)",
-                        e.Incident.ApplicationName,
-                        todaysCount),
-                    TextBody =
-                        string.Format(
-                            "We've detected a spike in incoming reports for application <a href=\"{0}/#/application/{1}\">{2}</a>\r\n" +
-                            "\r\n" +
-                            "We've received {3} reports so far. Day average is {4}\r\n" +
-                            "\r\n" +
-                            "No further spike emails will be sent today for that application.",
-                            url,
-                            e.Incident.ApplicationId,
-                            e.Incident.ApplicationName, todaysCount.SpikeCount, todaysCount.DayAverage)
+                    Subject = $"Spike detected for {e.Incident.ApplicationName} ({todaysCount} reports)",
+                    HtmlBody =
+                        $"We've detected a spike in incoming reports for application <a href=\"{url}/discover/{e.Incident.ApplicationId}/\">{e.Incident.ApplicationName}</a>\r\n" +
+                        "\r\n" +
+                        $"We've received {todaysCount.SpikeCount} reports so far. Day average is {todaysCount.DayAverage}\r\n" +
+                        "\r\n" + "No further spike emails will be sent today for this application."
                 };
 
                 messages.Add(msg);
@@ -121,7 +117,7 @@ namespace Coderr.Server.ReportAnalyzer.ReportSpikes.Handlers
                 return null;
 
             var todaysCount = await _spikeRepository.GetTodaysCountAsync(applicationEvent.Incident.ApplicationId);
-            var threshold = average > 20 ? average : average*2;
+            var threshold = average > 20 ? average * 1.2 : average * 2;
             if (todaysCount < threshold)
                 return null;
 

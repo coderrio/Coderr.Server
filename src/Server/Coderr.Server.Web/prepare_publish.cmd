@@ -16,6 +16,3 @@ rmdir /q /s bin\Release\PublishOutput\ko
 rmdir /q /s bin\Release\PublishOutput\ru
 rmdir /q /s bin\Release\PublishOutput\zh-Hans
 rmdir /q /s bin\Release\PublishOutput\zh-Hant
-
-pause
-

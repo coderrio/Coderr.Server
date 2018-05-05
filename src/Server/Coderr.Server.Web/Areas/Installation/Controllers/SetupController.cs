@@ -4,7 +4,9 @@ using System.Data.SqlClient;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Coderr.Server.Abstractions.Config;
+using Coderr.Server.Infrastructure;
 using Coderr.Server.Infrastructure.Configuration;
+using Coderr.Server.SqlServer;
 using Coderr.Server.Web.Areas.Installation.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;
@@ -148,8 +150,9 @@ namespace Coderr.Server.Web.Areas.Installation.Controllers
         {
             try
             {
-                var con = new SqlConnection(_configuration.GetConnectionString("Db"));
-                con.Open();
+                var conStr = _configuration.GetConnectionString("Db");
+                conStr = SqlController.ChangeConnectionTimeout(conStr);
+                SetupTools.DbTools.TestConnection(conStr);
             }
             catch
             {
@@ -157,6 +160,8 @@ namespace Coderr.Server.Web.Areas.Installation.Controllers
             }
             return View();
         }
+
+  
 
         [HttpPost]
         public ActionResult Index(string key)

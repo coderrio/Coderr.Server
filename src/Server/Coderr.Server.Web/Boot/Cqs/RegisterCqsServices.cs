@@ -84,7 +84,16 @@ namespace Coderr.Server.Web.Boot.Cqs
         public void Stop()
         {
             _cancelTokenSource.Cancel();
-            _messagingQueueListenerTask.Wait(10000);
+            try
+            {
+                _log.Debug("Shutting down");
+                _messagingQueueListenerTask.Wait(10000);
+            }
+            catch (Exception ex)
+            {
+                _log.Error("Failed to wait 10s.", ex);
+            }
+            
         }
 
         private QueueListener ConfigureQueueListener(ConfigurationContext context, string inboundQueueName,
@@ -181,7 +190,7 @@ namespace Coderr.Server.Web.Boot.Cqs
 
         private void DiagnosticLog(LogLevel level, string queuenameormessagename, string message)
         {
-            _log.Info($"{queuenameormessagename}: {message}");
+            _log.Info($"[{queuenameormessagename}] {message}");
         }
 
         private IMessageInvoker MessageInvokerFactory(IHandlerScope arg)
@@ -191,8 +200,10 @@ namespace Coderr.Server.Web.Boot.Cqs
             {
                _log.Warn("Handler missing for " + args.Message.Body.GetType());
             };
+            invoker.Logger = DiagnosticLog;
             invoker.HandlerInvoked += (sender, args) =>
             {
+                _log.Debug(args.Message.Body);
                 if (args.Exception == null)
                     return;
 

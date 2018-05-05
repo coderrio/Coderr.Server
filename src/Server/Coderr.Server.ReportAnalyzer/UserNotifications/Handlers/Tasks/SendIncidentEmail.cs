@@ -40,46 +40,45 @@ namespace Coderr.Server.ReportAnalyzer.UserNotifications.Handlers.Tasks
                 ? incident.Name.Substring(0, 40) + "..."
                 : incident.Name;
 
-            // need to be safe for subjects
-            shortName = shortName.Replace("\n", ";");
+            var pos = shortName.IndexOfAny(new[] {'\r', '\n'});
+            if (pos != -1)
+            {
+                shortName = shortName.Substring(0, pos) + "[...]";
+            }
+            
 
-            var baseUrl = string.Format("{0}/#/application/{1}/incident/{2}/",
-                _baseConfiguration.BaseUrl.ToString().TrimEnd('/'),
-                report.ApplicationId,
-                report.IncidentId);
+            var baseUrl = _baseConfiguration.BaseUrl.ToString().TrimEnd('/');
+            var incidentUrl =
+                $"{baseUrl}/discover/incidents/{report.ApplicationId}/incident/{report.IncidentId}/";
 
             //TODO: Add more information
             var msg = new EmailMessage(idOrEmailAddress);
             if (incident.IsReOpened)
             {
                 msg.Subject = "ReOpened: " + shortName;
-                msg.TextBody = string.Format(@"Incident: {0}
-Report url: {0}/report/{1}/
-Description: {2}
-Exception: {3}
+                msg.TextBody = $@"{incident.Name}
+{report.Exception.FullName}
+{report.Exception.StackTrace}
 
-{4}
-", baseUrl, report.Id, incident.Name, report.Exception.FullName, report.Exception.StackTrace);
+{incidentUrl}";
             }
             else if (incident.ReportCount == 1)
             {
                 msg.Subject = "New: " + shortName;
-                msg.TextBody = string.Format(@"Incident: {0}
-Description: {1}
-Exception: {2}
+                msg.TextBody = $@"{incident.Name}
+{report.Exception.FullName}
+{report.Exception.StackTrace}
 
-{3}", baseUrl, incident.Name, report.Exception.FullName, report.Exception.StackTrace);
+{incidentUrl}";
             }
             else
             {
                 msg.Subject = "Updated: " + shortName;
-                msg.TextBody = string.Format(@"Incident: {0}
-Report url: {0}/report/{1}/
-Description: {2}
-Exception: {3}
+                msg.TextBody = $@"{incident.Name}
+{report.Exception.FullName}
+{report.Exception.StackTrace}
 
-{4}
-", baseUrl, report.Id, incident.Name, report.Exception.FullName, report.Exception.StackTrace);
+{incidentUrl}";
             }
 
             var emailCmd = new SendEmail(msg);

@@ -8,19 +8,19 @@ using Coderr.Server.ReportAnalyzer.UserNotifications.Handlers.Tasks;
 using DotNetCqs;
 using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Abstractions.Config;
+using log4net;
 
 namespace Coderr.Server.ReportAnalyzer.UserNotifications.Handlers
 {
     /// <summary>
     ///     Responsible of sending notifications when a new report have been analyzed.
     /// </summary>
-    [ContainerService]
-    public class CheckForNotificationsToSend :
-        IMessageHandler<ReportAddedToIncident>
+    public class CheckForNotificationsToSend : IMessageHandler<ReportAddedToIncident>
     {
         private readonly IUserNotificationsRepository _notificationsRepository;
         private readonly IUserRepository _userRepository;
         private readonly BaseConfiguration _configuration;
+        private ILog _log = LogManager.GetLogger(typeof(CheckForNotificationsToSend));
 
         /// <summary>
         ///     Creates a new instance of <see cref="CheckForNotificationsToSend" />.
@@ -45,6 +45,8 @@ namespace Coderr.Server.ReportAnalyzer.UserNotifications.Handlers
         public async Task HandleAsync(IMessageContext context, ReportAddedToIncident e)
         {
             if (e == null) throw new ArgumentNullException("e");
+
+            _log.Info("ReportId: " + e.Report.Id);
 
             var settings = await _notificationsRepository.GetAllAsync(e.Incident.ApplicationId);
             foreach (var setting in settings)

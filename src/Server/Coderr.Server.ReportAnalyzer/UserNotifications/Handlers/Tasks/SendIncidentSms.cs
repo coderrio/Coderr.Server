@@ -58,28 +58,33 @@ namespace Coderr.Server.ReportAnalyzer.UserNotifications.Handlers.Tasks
                 ? report.Exception.Message.Substring(0, 100)
                 : report.Exception.Message;
 
+
+            var baseUrl = _baseConfiguration.BaseUrl.ToString().TrimEnd('/');
+            var incidentUrl =
+                $"{baseUrl}/discover/incidents/{report.ApplicationId}/incident/{report.IncidentId}/";
+
             string msg;
             if (incident.IsReOpened)
             {
-                msg = string.Format(@"ReOpened: {0}
-{1}/#/incident/{2}
+                msg = $@"ReOpened: {shortName}
+{incidentUrl}
 
-{3}", shortName, url, incident.Id, exMsg);
+{exMsg}";
             }
             else if (incident.ReportCount == 1)
             {
-                msg = string.Format(@"New: {0}
-{1}/#/incident/{2}
+                msg = $@"New: {shortName}
+{incidentUrl}
 
-Exception: {3}", shortName, url, incident.Id, exMsg);
+{exMsg}";
             }
             else
             {
-                msg = string.Format(@"Updated: {0}
-ReportCount: {4}
-{1}/#/incident/{2}
+                msg = $@"Updated: {shortName}
+ReportCount: {incident.ReportCount}
+{incidentUrl}
 
-{3}", shortName, url, incident.Id, exMsg, incident.ReportCount);
+{exMsg}";
             }
 
             var iso = Encoding.GetEncoding("ISO-8859-1");

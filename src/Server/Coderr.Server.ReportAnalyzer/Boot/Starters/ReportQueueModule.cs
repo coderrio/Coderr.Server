@@ -20,6 +20,7 @@ using DotNetCqs.Queues.AdoNet;
 using Griffin.Data;
 using log4net;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using ConfigurationContext = Coderr.Server.ReportAnalyzer.Abstractions.Boot.ConfigurationContext;
 using StartContext = Coderr.Server.ReportAnalyzer.Abstractions.Boot.StartContext;
 
@@ -90,11 +91,27 @@ namespace Coderr.Server.ReportAnalyzer.Boot.Starters
                 ? inboundQueue
                 : _messageQueueProvider.Open(outboundQueueName);
             var scopeFactory = new ScopeWrapper(context.ServiceProvider);
-            var listener = new QueueListener(inboundQueue, outboundQueue, scopeFactory)
+            var router = new MessageRouter
+            {
+                ReportAnalyzerQueue = outboundQueue,
+                AppQueue = _messageQueueProvider.Open("Messaging")
+            };
+
+            var listener = new QueueListener(inboundQueue, router, scopeFactory)
             {
                 RetryAttempts = new[]
                     {TimeSpan.FromMilliseconds(500), TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2)},
-                MessageInvokerFactory = scope => new MessageInvoker(scope),
+                MessageInvokerFactory = scope =>
+                {
+                    var invoker = new MessageInvoker(scope);
+                    invoker.Logger += (level, name, message) => _logger.Debug("[" + name + "] " + message);
+                    invoker.InvokingHandler += (sender, args) =>
+                    {
+                        _logger.Debug(
+                            $"Invoking {JsonConvert.SerializeObject(args.Message)} ({args.Handler.GetType()}).");
+                    };
+                    return invoker;
+                },
                 Logger = DiagnosticLog
             };
             listener.PoisonMessageDetected += (sender, args) =>
@@ -117,7 +134,7 @@ namespace Coderr.Server.ReportAnalyzer.Boot.Starters
                 var all = args.Scope.ResolveDependency<IAdoNetUnitOfWork>().ToList();
                 all[0].SaveChanges();
 
-                var queue = (DomainQueueWrapper) args.Scope.ResolveDependency<IDomainQueue>().First();
+                var queue = (DomainQueueWrapper)args.Scope.ResolveDependency<IDomainQueue>().First();
                 queue.SaveChanges();
             };
             listener.MessageInvokerFactory = MessageInvokerFactory;
@@ -141,6 +158,7 @@ namespace Coderr.Server.ReportAnalyzer.Boot.Starters
 
         private void DiagnosticLog(LogLevel level, string queueNameOrMessageName, string message)
         {
+            _logger.Debug("[" + queueNameOrMessageName + "] " + message);
         }
 
         private void HaveRun(Task obj)

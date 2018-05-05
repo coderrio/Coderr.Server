@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Coderr.Server.Abstractions.Boot;
@@ -34,8 +35,12 @@ namespace Coderr.Server.ReportAnalyzer.Abstractions.Boot
             var types = assembly.GetTypes()
                 .Where(y => y.GetInterfaces().Any(x => x.Name.Contains("IMessageHandler")))
                 .ToList();
+
             foreach (var type in types)
             {
+                if (type.GetCustomAttributes().Any(x => x.GetType().Name.StartsWith("ContainerService")))
+                    Debugger.Break();
+
                 serviceCollection.AddScoped(type, type);
                 serviceCollection.AddScoped(type.GetInterfaces()[0], type);
             }
