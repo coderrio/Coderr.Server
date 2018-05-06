@@ -75,13 +75,26 @@ namespace Coderr.Server.SqlServer.Modules.Similarities
                     {
                         var json = (string) reader["Properties"];
                         var properties = CoderrDtoSerializer.Deserialize<ContextCollectionPropertyDbEntity[]>(json);
+                        foreach (var property in properties)
+                        {
+                            var zeroProps = property.Values.Where(x => x.Count == 0);
+                            foreach (var prop in zeroProps)
+                            {
+                                _logger.Warn(
+                                    $"Similarity with 0 count. IncidentId {incidentId}, Name {property.Name}, Value: {prop.Value}");
+                                prop.Count = 1;
+                            }
+                        }
+
                         var col = new SimilarityCollection(incidentId, reader.GetString(1));
                         col.GetType().GetProperty("Id").SetValue(col, reader.GetInt32(0));
                         foreach (var entity in properties)
                         {
+                            var values = entity.Values
+                                .Select(x => new SimilarityValue(x.Value, x.Percentage, x.Count))
+                                .ToArray();
                             var prop = new Similarity(entity.Name);
-                            prop.LoadValues(
-                                entity.Values.Select(x => new SimilarityValue(x.Value, x.Percentage, x.Count)).ToArray());
+                            prop.LoadValues(values);
                             col.Properties.Add(prop);
                         }
                         collections.Add(col);

@@ -81,7 +81,7 @@ namespace Coderr.Server.ReportAnalyzer.Similarities.Handlers
             catch (Exception exception)
             {
                 _logger.Error("failed to add report to incident " + e.Incident.Id, exception);
-                throw;
+                return;
             }
             sw2.Stop();
             if (sw2.ElapsedMilliseconds > 200)
