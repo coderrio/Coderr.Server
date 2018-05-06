@@ -238,7 +238,7 @@ export class MyIncidents {
 
 
 
-        if (incidentId === this.selectedIncident.incidentId) {
+        if (this.selectedIncident == null || incidentId === this.selectedIncident.incidentId) {
             this.getNextIncident();
         }
     }

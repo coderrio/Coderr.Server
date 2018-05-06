@@ -1,4 +1,4 @@
-import { PubSubService } from "../../../services/PubSub";
+import { PubSubService, MessageContext } from "../../../services/PubSub";
 import * as MenuApi from "../../../services/menu/MenuApi";
 import { FindIncidents, FindIncidentsResult, IncidentOrder } from "../../../dto/Core/Incidents";
 import { GetTags, TagDTO } from "../../../dto/Modules/Tagging";
@@ -62,18 +62,7 @@ export default class IncidentSearchComponent extends Vue {
     currentIncidentId = 0;
 
     created() {
-        PubSubService.Instance.subscribe(MenuApi.MessagingTopics.ApplicationChanged, ctx => {
-            var body = <MenuApi.ApplicationChanged>ctx.message.body;
-            if (body.applicationId == null) {
-                this.activeApplications = [];
-                this.showApplicationColumn = true;
-            } else {
-                this.activeApplications = [body.applicationId];
-                this.showApplicationColumn = false;
-            }
-            
-            this.search();
-        });
+        PubSubService.Instance.subscribe(MenuApi.MessagingTopics.ApplicationChanged, this.onApplicationChangedInNavMenu);
 
         //fetch in created since we do not need the DOM
         var promise = new Promise<any>(resolve => {
@@ -111,6 +100,10 @@ export default class IncidentSearchComponent extends Vue {
             this.activeApplications = [appId];
             this.showApplicationColumn = false;
         }
+    }
+
+    destroyed() {
+        PubSubService.Instance.unsubscribe(MenuApi.MessagingTopics.ApplicationChanged, this.onApplicationChangedInNavMenu);
     }
 
     mounted() {
@@ -276,6 +269,21 @@ export default class IncidentSearchComponent extends Vue {
 
     }
 
+    private onApplicationChangedInNavMenu(ctx: MessageContext) {
+        if (this.$route.name !== 'findIncidents') {
+            return;
+        }
+        var body = <MenuApi.ApplicationChanged>ctx.message.body;
+        if (body.applicationId == null) {
+            this.activeApplications = [];
+            this.showApplicationColumn = true;
+        } else {
+            this.activeApplications = [body.applicationId];
+            this.showApplicationColumn = false;
+        }
+            
+        this.search();
+    }
     private drawSearchUi() {
         var els = document.querySelectorAll('.search-head th i');
         for (var i = 0; i < els.length; i++) {

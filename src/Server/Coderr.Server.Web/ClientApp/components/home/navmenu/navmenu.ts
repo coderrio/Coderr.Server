@@ -30,6 +30,8 @@ export default class NavMenuComponent extends Vue {
 
     onboarding: boolean = false;
 
+    discoverLink: string = '/discover/';
+
     @Watch('$route.params.applicationId')
     onApplicationChanged(value: string, oldValue: string) {
         if (!value) {
@@ -80,6 +82,7 @@ export default class NavMenuComponent extends Vue {
     }
 
     changeApplication(applicationId: number) {
+        console.log('changing app: ' + applicationId);
         if (applicationId == null) {
             this.updateCurrent(0);
         } else {
@@ -144,6 +147,7 @@ export default class NavMenuComponent extends Vue {
         if (applicationId === 0) {
             this.currentApplicationName = "All applications";
             this.currentApplicationId = null;
+            this.discoverLink = '/discover/';
             return;
         }
 
@@ -155,6 +159,7 @@ export default class NavMenuComponent extends Vue {
             title = title.substr(0, 15) + '[...]';
         }
         this.currentApplicationName = title;
+        this.discoverLink = '/discover/' + applicationId;
     }
 
 

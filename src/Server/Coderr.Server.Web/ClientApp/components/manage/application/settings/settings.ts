@@ -22,6 +22,7 @@ export default class ManageAppSettingsComponent extends Vue {
 
     @Watch('$route.params.applicationId')
     onApplicationChanged(value: string, oldValue: string) {
+        console.log(value);
         this.load();
     }
 

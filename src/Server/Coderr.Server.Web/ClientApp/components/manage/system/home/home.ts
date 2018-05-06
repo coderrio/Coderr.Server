@@ -8,6 +8,12 @@ export default class ManageHomeComponent extends Vue {
 
 
     created() {
+        if (this.$route.params.applicationId) {
+            this.$router.push({
+                name: 'manageAppSettings',
+                params: { applicationId: this.$route.params.applicationId }
+            });
+        }
     }
 
     

@@ -30,7 +30,7 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <router-link class="nav-link" :to="'/discover/' + currentApplicationId">
+                        <router-link class="nav-link" :to="discoverLink">
                             <span class="fa fa-binoculars"></span> Discover
                         </router-link>
                     </li>
@@ -53,7 +53,7 @@
                             </router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link :to="{ name:'manageHome' }" class="nav-link" title="System administration">
+                            <router-link :to="{ name:'manageHome', params: {applicationId: currentApplicationId }}" class="nav-link" title="System administration">
                                 <i class="fa fa-cog"></i>
                             </router-link>
                         </li>
