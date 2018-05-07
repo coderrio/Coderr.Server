@@ -31,7 +31,8 @@ namespace Coderr.Server.SqlServer
             Transaction.Rollback();
             Transaction.Dispose();
             Transaction = null;
-            connection.Dispose();
+
+            connection?.Dispose();
             _logger.Info("Rolled back " + GetHashCode());
         }
 

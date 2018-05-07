@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Data.SqlClient;
 using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.SqlServer;
@@ -25,6 +26,10 @@ namespace Coderr.Server.Web.Boot.Modules
         public IDbConnection OpenConnection()
         {
             var db = _config.GetConnectionString("Db");
+            if (db == null)
+            {
+                throw new InvalidOperationException("Missing the connection string 'Db'.");
+            }
             var con = new SqlConnection(db);
             con.Open();
             return con;

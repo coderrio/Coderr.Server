@@ -20,15 +20,12 @@ namespace Coderr.Server.App.Modules.History.Events
 
         public async Task HandleAsync(IMessageContext context, IncidentReOpened message)
         {
-            // Can be reopened by the system
-            int? accountId = context.Principal.GetAccountId();
-            if (accountId == 0)
-            {
-                if (context.Principal.IsInRole(CoderrRoles.System))
-                    accountId = null;
-                else
-                    throw new InvalidOperationException("Expected either the system or a specified account.");
-            }
+            int? accountId;
+
+            if (context.Principal.IsInRole(CoderrRoles.System))
+                accountId = null;
+            else
+                accountId = context.Principal.GetAccountId();
                 
 
             var e = new HistoryEntry(message.IncidentId, accountId, IncidentState.ReOpened)

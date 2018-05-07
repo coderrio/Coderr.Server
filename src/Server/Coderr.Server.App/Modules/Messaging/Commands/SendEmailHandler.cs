@@ -31,6 +31,10 @@ namespace Coderr.Server.App.Modules.Messaging.Commands
 
             var baseConfig = _configStore.Load<BaseConfiguration>();
 
+            // Emails have been disabled. Typically just in LIVE.
+            if (string.IsNullOrEmpty(baseConfig.SupportEmail))
+                return;
+
             var email = new MailMessage
             {
                 From = new MailAddress(baseConfig.SupportEmail),
