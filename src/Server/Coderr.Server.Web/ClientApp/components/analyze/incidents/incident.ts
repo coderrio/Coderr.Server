@@ -58,6 +58,13 @@ export default class AnalyzeIncidentComponent extends Vue {
     closeIncident() {
         AppRoot.Instance.incidentService.showClose(this.incident.Id, "CloseBody")
             .then(x => {
+                if (x.requiresStatusUpdate) {
+                    this.$router.push({
+                        name: 'analyzeNotifyUsers',
+                        params: { incidentId: this.incident.Id.toString() }
+                    });
+                    return;
+                }
                 AppRoot.Instance.incidentService.getMine(null, this.incident.Id)
                     .then(incidents => {
                         if (incidents.length === 0) {

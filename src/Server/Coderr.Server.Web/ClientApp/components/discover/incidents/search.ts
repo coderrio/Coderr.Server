@@ -264,7 +264,13 @@ export default class IncidentSearchComponent extends Vue {
         this.currentIncidentId = incidentId;
         AppRoot.Instance.incidentService.showClose(incidentId, "CloseBody")
             .then(x => {
-                //this.$router.push({ name: "analyzeHome" });
+                if (x.requiresStatusUpdate) {
+                    this.$router.push({
+                        name: 'analyzeNotifyUsers',
+                        params: { incidentId: incidentId.toString() }
+                    });
+                    return;
+                }
             });
 
     }

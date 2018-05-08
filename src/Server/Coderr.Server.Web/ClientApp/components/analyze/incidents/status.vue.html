@@ -1,0 +1,47 @@
+<template>
+    <div class="StatusUpdateView">
+        <div class="row">
+            <div class="col">
+                <h2>
+                    Send status update
+                </h2>
+            </div>
+            <hr />
+        </div>
+        <div class="row mb-2">
+            <div class="col">
+                <router-link :to="{ name: 'analyzeHome' }" class="btn btn-light">&lt;&lt; Back to analyze..</router-link>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h3>Message</h3>
+                                <form @submit.prevent="send">
+                                    <div class="form-group">
+                                        <input type="text" v-model="title" placeholder="Subject" required class="form-control" />
+                                    </div>
+                                    <div class="form-group">
+                                        <textarea v-model="body" placeholder="Tell your users that the error (and which error) have been corrected and when the new application version will be available." required rows="10" class="form-control"></textarea>
+                                    </div>
+                                    <button class="btn btn-primary">Send</button>
+                                </form>
+                            </div>
+                            <div class="col-md-4">
+                                <h4>The following users will receive this message.</h4>
+                                <p><em>{{emailList}}</em></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+
+<style src="./status.css"></style>
+<script src="./status.ts"></script>

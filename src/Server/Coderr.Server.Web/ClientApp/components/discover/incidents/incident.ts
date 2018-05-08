@@ -89,6 +89,13 @@ export default class IncidentComponent extends Vue {
         AppRoot.Instance.incidentService.showClose(this.incidentId, "CloseDialog")
             .then(result => {
                 this.isClosed = true;
+                if (result.requiresStatusUpdate) {
+                    this.$router.push({
+                        name: 'analyzeNotifyUsers',
+                        params: { incidentId: this.incident.Id.toString() }
+                    });
+                    return;
+                }
             });
     }
 

@@ -26,8 +26,6 @@ namespace Coderr.Server.SqlServer
             _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
             _schemaManager = new SchemaManager(_connectionFactory);
         }
-
-        internal static string DbName { get; set; }
         
         /// <summary>
         ///     Checks if the tables exists and are for the current DB schema.

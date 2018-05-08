@@ -17,10 +17,12 @@ using Coderr.Server.Infrastructure.Configuration;
 using Coderr.Server.Infrastructure.Configuration.Database;
 using Coderr.Server.Infrastructure.Messaging;
 using Coderr.Server.SqlServer;
+using Coderr.Server.SqlServer.Migrations;
 using Coderr.Server.Web.Areas.Installation;
 using Coderr.Server.Web.Boot;
 using Coderr.Server.Web.Boot.Adapters;
 using Coderr.Server.Web.Controllers;
+using log4net;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -39,7 +41,7 @@ namespace Coderr.Server.Web
     {
         private readonly ModuleStarter _moduleStarter;
         private IServiceProvider _serviceProvider;
-
+        private ILog _logger = LogManager.GetLogger(typeof(Startup));
 
         public Startup(IConfiguration configuration)
         {
@@ -69,6 +71,7 @@ namespace Coderr.Server.Web
         {
             applicationLifetime.ApplicationStopping.Register(OnShutdown);
             ConfigureCoderr(app);
+            UpgradeDatabaseSchema();
 
             if (env.IsDevelopment())
             {
@@ -110,6 +113,27 @@ namespace Coderr.Server.Web
                 ServiceProvider = app.ApplicationServices
             };
             _moduleStarter.Start(context);
+        }
+
+        private void UpgradeDatabaseSchema()
+        {
+            // Dont run for new installations
+            if (!IsConfigured) 
+                return;
+
+            try
+            {
+                var migrator = new SchemaManager(() => OpenConnection(CoderrClaims.SystemPrincipal));
+                if (migrator.CanSchemaBeUpgraded())
+                {
+                    migrator.UpgradeDatabaseSchema();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("DB Migration failed.", ex);
+                Err.Report(ex, new {Migration = true});
+            }
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -171,6 +195,10 @@ namespace Coderr.Server.Web
             Err.Configuration.ThrowExceptions = false;
             app.CatchOwinExceptions();
 
+
+            if (!IsConfigured)
+                return;
+
             CoderrConfigSection config;
 
             try
@@ -185,12 +213,12 @@ namespace Coderr.Server.Web
                 // We have not yet configured coderr. 
                 return;
             }
-            
+
 
             // partitions allow us to see the number of affected installations
             Err.Configuration.AddPartition(x => x.AddPartition("InstallationId", config.InstallationId));
 
-            if (string.IsNullOrWhiteSpace(config.ContactEmail)) 
+            if (string.IsNullOrWhiteSpace(config.ContactEmail))
                 return;
 
             // Allows us to notify you once the error is corrected.
@@ -205,7 +233,7 @@ namespace Coderr.Server.Web
                 collections.Add(collection);
             };
         }
-        
+
         private Task HandleAuthenticationFailure(RedirectContext<CookieAuthenticationOptions> ctx)
         {
             if (ctx.Request.GetDisplayUrl().Contains("/api/"))

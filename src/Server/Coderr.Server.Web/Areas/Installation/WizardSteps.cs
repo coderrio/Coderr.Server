@@ -66,12 +66,12 @@ namespace Coderr.Server.Web.Areas.Installation
                 if (Steps[i].IsForAbsolutePath(currentPath, urlHelper))
                     return i;
             }
-
             // in ASP.NET Core, the virtual path is in PathBase and the rest in Path
             // this we only need to check if the path is root (while the wizard link is for ./installation)
-            if (urlHelper.ActionContext.HttpContext.Request.Path == "")
+            // It's "/" when there is no virtual directory and "" when there is one. Go figure.
+            if (urlHelper.ActionContext.HttpContext.Request.Path == "" || urlHelper.ActionContext.HttpContext.Request.Path == "/")
                 return 0;
-
+            
             return -1;
         }
     }

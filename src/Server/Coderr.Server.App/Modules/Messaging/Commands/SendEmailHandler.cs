@@ -48,17 +48,7 @@ namespace Coderr.Server.App.Modules.Messaging.Commands
 
             var markdownHtml = Markdown.ToHtml(command.EmailMessage.TextBody ?? "");
 
-            foreach (var recipient in command.EmailMessage.Recipients)
-            {
-                if (int.TryParse(recipient.Address, out var accountId))
-                {
-                    var query = new GetAccountEmailById(accountId);
-                    var emailAddress = await context.QueryAsync(query);
-                    email.To.Add(new MailAddress(emailAddress, recipient.Name));
-                }
-                else
-                    email.To.Add(new MailAddress(recipient.Address, recipient.Name));
-            }
+
             if (string.IsNullOrEmpty(command.EmailMessage.HtmlBody) && markdownHtml == command.EmailMessage.TextBody)
             {
                 email.Body = command.EmailMessage.TextBody;
@@ -87,7 +77,23 @@ namespace Coderr.Server.App.Modules.Messaging.Commands
             }
 
             email.AlternateViews.Add(av);
-            await client.SendMailAsync(email);
+
+            // Send one email per recipient to not share addresses.
+            foreach (var recipient in command.EmailMessage.Recipients)
+            {
+                email.To.Clear();
+                if (int.TryParse(recipient.Address, out var accountId))
+                {
+                    var query = new GetAccountEmailById(accountId);
+                    var emailAddress = await context.QueryAsync(query);
+                    email.To.Add(new MailAddress(emailAddress, recipient.Name));
+                }
+                else
+                    email.To.Add(new MailAddress(recipient.Address, recipient.Name));
+
+                await client.SendMailAsync(email);
+            }
+            
         }
 
         private SmtpClient CreateSmtpClient()

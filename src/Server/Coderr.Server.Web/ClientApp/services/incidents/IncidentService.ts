@@ -179,13 +179,21 @@ export class IncidentService {
         modalResult = await AppRoot.modal({
             title: 'Incident have followers',
             htmlContent:
-            'Incident have users following it. We strongly recommend that you use Coderr to send them a status update saying that the error is corrected.',
-            submitButtonText: 'Draft an update'
+            'Incident have users following it. We strongly recommend that you use Coderr to send them a status update saying that the error have been corrected.',
+            submitButtonText: 'Notify users',
         });
 
-        return {
-            requiresStatusUpdate: true
-        };
+        console.log('btn: ', modalResult.pressedButtonName);
+        if (modalResult.pressedButtonName === 'submit') {
+            return {
+                requiresStatusUpdate: true
+            };
+        } else {
+            return {
+                requiresStatusUpdate: false
+            };
+        }
+
         //var ops = this.$router.push(
         //    {
         //        name: 'incidentStatusUpdate',

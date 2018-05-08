@@ -210,3 +210,11 @@ export class ReOpenIncident
     public IncidentId: number;
     public UserId: number;
 }
+
+export class NotifySubscribers
+{
+    public static TYPE_NAME: string = 'NotifySubscribers';
+    public IncidentId: number;
+    public Body: string;
+    public Title: string;
+}

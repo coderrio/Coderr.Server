@@ -8,9 +8,8 @@ using DotNetCqs;
 using Griffin.Data;
 using log4net;
 
-namespace Coderr.Server.ReportAnalyzer.Feedback.Handlers
+namespace Coderr.Server.SqlServer.Core.Feedback
 {
-    //TODO: Move SQL parts to the data project.
     public class SubmitFeedbackHandler : IMessageHandler<SubmitFeedback>
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(SubmitFeedbackHandler));
@@ -56,8 +55,7 @@ namespace Coderr.Server.ReportAnalyzer.Feedback.Handlers
                 catch (Exception exception)
                 {
                     _logger.Error(
-                        string.Format("{0}: Failed to store '{1}' '{2}'", command.ErrorId, command.Email,
-                            command.Feedback), exception);
+                        $"{command.ErrorId}: Failed to store '{command.Email}' '{command.Feedback}'", exception);
                     //hide errors.
                 }
 
