@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "86f2a1fcfa73b764558d"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "35df52fbaafee4defa19"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -38622,13 +38622,13 @@ var routes = [
                 name: "analyzeFeedback",
                 path: "incident/:incidentId/feedback/",
                 component: __webpack_require__(282)
-            },
-            {
-                name: "analyzeNotifyUsers",
-                path: "incident/:incidentId/notify/",
-                component: __webpack_require__(286)
             }
         ]
+    },
+    {
+        name: "notifyUsers",
+        path: "users/notify/incident/:incidentId/",
+        component: __webpack_require__(286)
     },
     {
         path: "/onboarding/",
@@ -39467,7 +39467,7 @@ var AnalyzeIncidentComponent = /** @class */ (function (_super) {
             .then(function (x) {
             if (x.requiresStatusUpdate) {
                 _this.$router.push({
-                    name: 'analyzeNotifyUsers',
+                    name: 'notifyUsers',
                     params: { incidentId: _this.incident.Id.toString() }
                 });
                 return;
@@ -41241,7 +41241,7 @@ var IncidentComponent = /** @class */ (function (_super) {
             _this.isClosed = true;
             if (result.requiresStatusUpdate) {
                 _this.$router.push({
-                    name: 'analyzeNotifyUsers',
+                    name: 'notifyUsers',
                     params: { incidentId: _this.incident.Id.toString() }
                 });
                 return;
@@ -41539,7 +41539,7 @@ var IncidentSearchComponent = /** @class */ (function (_super) {
             .then(function (x) {
             if (x.requiresStatusUpdate) {
                 _this.$router.push({
-                    name: 'analyzeNotifyUsers',
+                    name: 'notifyUsers',
                     params: { incidentId: incidentId.toString() }
                 });
                 return;
@@ -61095,7 +61095,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("Next report >>")]) : _vm._e()])]), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
-    staticClass: "col-lg-5 col-xl-6 col-md-12 contextCollections"
+    staticClass: "col-lg-12 col-xl-8 contextCollections"
   }, [_c('div', {
     staticClass: "card"
   }, [_c('div', {
@@ -61132,14 +61132,21 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   })], 2)])]), _vm._v(" "), (this.contextCollections.length > 0) ? _c('div', [_c('table', {
     staticClass: "table table-borderless"
   }, [_c('tbody', _vm._l((_vm.currentCollection.Properties), function(prop) {
-    return _c('tr', [_c('th', [_vm._v(_vm._s(prop.Key))]), _vm._v(" "), _c('td', {
+    return _c('tr', [_c('th', {
+      staticStyle: {
+        "white-space": "nowrap"
+      }
+    }, [_vm._v(_vm._s(prop.Key))]), _vm._v(" "), _c('td', {
       staticClass: "value",
+      staticStyle: {
+        "width": "100%"
+      },
       domProps: {
         "innerHTML": _vm._s(prop.Value)
       }
     })])
   }))])]) : _vm._e()])])]), _vm._v(" "), _c('div', {
-    staticClass: "col-lg-7 col-xl-6 col-md-12"
+    staticClass: "col-lg-12 col-xl-4"
   }, [(_vm.userFeedback != null) ? _c('div', {
     staticClass: "card"
   }, [_c('div', {
@@ -62490,23 +62497,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [_vm._v("<< Back ...")]), _vm._v(" "), _c('div', {
-    staticClass: "dropdown float-right"
-  }, [_c('button', {
-    staticClass: "btn btn-outline-primary dropdown-toggle",
-    attrs: {
-      "type": "button",
-      "id": "dropdownMenuButton",
-      "data-toggle": "dropdown",
-      "aria-haspopup": "true",
-      "aria-expanded": "false"
-    }
-  }, [_vm._v("\n                            What do you want to do?\n                        ")]), _vm._v(" "), _c('div', {
-    staticClass: "dropdown-menu",
-    attrs: {
-      "aria-labelledby": "dropdownMenuButton"
-    }
+    staticClass: "float-right"
   }, [(_vm.incident.IncidentState == 0) ? _c('a', {
-    staticClass: "dropdown-item",
+    staticClass: "btn btn-primary",
     attrs: {
       "href": "#"
     },
@@ -62516,7 +62509,26 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.assignToMe($event)
       }
     }
-  }, [_vm._v("Assign to me")]) : _vm._e(), _vm._v(" "), (_vm.incident.IncidentState == 0) ? _c('a', {
+  }, [_vm._v("Assign to me")]) : _vm._e(), _vm._v(" "), _c('div', {
+    staticClass: "dropdown",
+    staticStyle: {
+      "display": "inline-block"
+    }
+  }, [_c('button', {
+    staticClass: "btn btn-outline-primary dropdown-toggle",
+    attrs: {
+      "type": "button",
+      "id": "dropdownMenuButton",
+      "data-toggle": "dropdown",
+      "aria-haspopup": "true",
+      "aria-expanded": "false"
+    }
+  }, [_vm._v("\n                                Other actions\n                            ")]), _vm._v(" "), _c('div', {
+    staticClass: "dropdown-menu",
+    attrs: {
+      "aria-labelledby": "dropdownMenuButton"
+    }
+  }, [(_vm.incident.IncidentState == 0) ? _c('a', {
     staticClass: "dropdown-item",
     attrs: {
       "href": "#"
@@ -62538,7 +62550,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.close($event)
       }
     }
-  }, [_vm._v("Close")]) : _vm._e(), _vm._v(" "), (!_vm.isClosed && !_vm.isIgnored) ? _c('a', {
+  }, [_vm._v("Close incident")]) : _vm._e(), _vm._v(" "), (!_vm.isClosed && !_vm.isIgnored) ? _c('a', {
     staticClass: "dropdown-item",
     attrs: {
       "href": "#"
@@ -62549,7 +62561,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.ignore($event)
       }
     }
-  }, [_vm._v("Ignore incident")]) : _vm._e()])])])])]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c('div', {
+  }, [_vm._v("Ignore incident")]) : _vm._e()])])])])])]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-lg-8"
@@ -62721,7 +62733,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "aria-haspopup": "true",
       "aria-expanded": "false"
     }
-  }, [_vm._v("\n                            What do you want to do?\n                        ")]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n                            Actions\n                        ")]), _vm._v(" "), _c('div', {
     staticClass: "dropdown-menu"
   }, [_c('span', {
     staticClass: "dropdown-item",
@@ -64365,7 +64377,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "card"
   }, [_c('div', {
     staticClass: "card-header"
-  }, [_vm._v("Get help")]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Get help or leave feedback")]), _vm._v(" "), _c('div', {
     staticClass: "card-body"
   }, [_c('textarea', {
     directives: [{
@@ -64543,7 +64555,9 @@ if (true) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "StatusUpdateView"
+    staticClass: "StatusUpdateView mt-4"
+  }, [_c('div', {
+    staticClass: "container"
   }, [_vm._m(0), _vm._v(" "), _c('div', {
     staticClass: "row mb-2"
   }, [_c('div', {
@@ -64626,13 +64640,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "btn btn-primary"
   }, [_vm._v("Send")])])]), _vm._v(" "), _c('div', {
     staticClass: "col-md-4"
-  }, [_c('h4', [_vm._v("The following users will receive this message.")]), _vm._v(" "), _c('p', [_c('em', [_vm._v(_vm._s(_vm.emailList))])])])])])])])])])
+  }, [_c('h4', [_vm._v("The following users will receive this message.")]), _vm._v(" "), _c('p', [_c('em', [_vm._v(_vm._s(_vm.emailList))])])])])])])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col"
-  }, [_c('h2', [_vm._v("\n                Send status update\n            ")])]), _vm._v(" "), _c('hr')])
+  }, [_c('h2', [_vm._v("\n                    Send status update\n                ")])]), _vm._v(" "), _c('hr')])
 }]}
 module.exports.render._withStripped = true
 if (true) {

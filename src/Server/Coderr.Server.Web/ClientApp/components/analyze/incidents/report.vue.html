@@ -22,7 +22,7 @@
         </div>
         <div class="row">
 
-            <div class="col-lg-5 col-xl-6 col-md-12 contextCollections">
+            <div class="col-lg-12 col-xl-8 contextCollections">
                 <div class="card">
                     <div class="card-body">
                         <h3>Context collections</h3>
@@ -49,8 +49,8 @@
                             <table class="table table-borderless">
                                 <tbody>
                                 <tr v-for="prop in currentCollection.Properties">
-                                    <th>{{prop.Key}}</th>
-                                    <td class="value" v-html="prop.Value"></td>
+                                    <th style="white-space: nowrap;">{{prop.Key}}</th>
+                                    <td style="width:100%;" class="value" v-html="prop.Value"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -58,7 +58,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-7 col-xl-6 col-md-12">
+            <div class="col-lg-12 col-xl-4">
                 <div class="card" v-if="userFeedback != null">
                     <div class="card-body">
                         <h3>Error report from {{userOrEmail}}</h3>

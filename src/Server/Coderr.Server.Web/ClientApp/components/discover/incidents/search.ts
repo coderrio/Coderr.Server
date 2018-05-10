@@ -266,7 +266,7 @@ export default class IncidentSearchComponent extends Vue {
             .then(x => {
                 if (x.requiresStatusUpdate) {
                     this.$router.push({
-                        name: 'analyzeNotifyUsers',
+                        name: 'notifyUsers',
                         params: { incidentId: incidentId.toString() }
                     });
                     return;

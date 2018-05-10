@@ -143,13 +143,13 @@ const routes = [
                 name: "analyzeFeedback",
                 path: "incident/:incidentId/feedback/",
                 component: require("./components/analyze/incidents/feedback.vue.html")
-            },
-            {
-                name: "analyzeNotifyUsers",
-                path: "incident/:incidentId/notify/",
-                component: require("./components/analyze/incidents/status.vue.html")
             }
         ]
+    },
+    {
+        name: "notifyUsers",
+        path: "users/notify/incident/:incidentId/",
+        component: require("./components/analyze/incidents/status.vue.html")
     },
     {
         path: "/onboarding/",

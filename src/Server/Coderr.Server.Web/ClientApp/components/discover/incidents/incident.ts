@@ -91,7 +91,7 @@ export default class IncidentComponent extends Vue {
                 this.isClosed = true;
                 if (result.requiresStatusUpdate) {
                     this.$router.push({
-                        name: 'analyzeNotifyUsers',
+                        name: 'notifyUsers',
                         params: { incidentId: this.incident.Id.toString() }
                     });
                     return;

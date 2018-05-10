@@ -198,14 +198,14 @@ namespace Coderr.Server.ReportAnalyzer.Inbound
             }
         }
 
-        private Task StoreReportAsync(ClaimsPrincipal user, ProcessReport report)
+        private async Task StoreReportAsync(ClaimsPrincipal user, ProcessReport report)
         {
             try
             {
                 using (var session = _queue.BeginSession())
                 {
-                    session.EnqueueAsync(user, new Message(report));
-                    session.SaveChanges();
+                    await session.EnqueueAsync(user, new Message(report));
+                    await session.SaveChanges();
                 }
             }
             catch (Exception ex)
@@ -213,7 +213,6 @@ namespace Coderr.Server.ReportAnalyzer.Inbound
                 _logger.Error(
                     "Failed to StoreReport: " + JsonConvert.SerializeObject(new {model = report}), ex);
             }
-            return Task.FromResult<object>(null);
         }
 
         private class AppInfo

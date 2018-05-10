@@ -60,7 +60,7 @@ export default class AnalyzeIncidentComponent extends Vue {
             .then(x => {
                 if (x.requiresStatusUpdate) {
                     this.$router.push({
-                        name: 'analyzeNotifyUsers',
+                        name: 'notifyUsers',
                         params: { incidentId: this.incident.Id.toString() }
                     });
                     return;
