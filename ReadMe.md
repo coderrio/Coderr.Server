@@ -36,7 +36,7 @@ public void UpdatePost(int uid, ForumPost post)
 	}
 	catch (Exception ex)
 	{
-		OneTrue.Report(ex, new{ UserId = uid, ForumPost = post });
+		Err.Report(ex, new{ UserId = uid, ForumPost = post });
 	}
 }
 ```
