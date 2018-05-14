@@ -36,7 +36,7 @@ namespace Coderr.Server.Domain.Modules.Similarities
             if (propertyName == null) throw new ArgumentNullException("propertyName");
 
             PropertyName = propertyName;
-            ValueCount = 0;
+            ValueCount = 1;
             _similarityValues = new Dictionary<string, SimilarityValue>();
         }
 
@@ -87,8 +87,7 @@ namespace Coderr.Server.Domain.Modules.Similarities
             if (value == null)
                 value = "";
 
-            SimilarityValue similarityValue;
-            if (!_similarityValues.TryGetValue(value, out similarityValue))
+            if (!_similarityValues.TryGetValue(value, out var similarityValue))
             {
                 similarityValue = new SimilarityValue(value);
                 _similarityValues.Add(value, similarityValue);
@@ -103,16 +102,6 @@ namespace Coderr.Server.Domain.Modules.Similarities
             }
         }
 
-        /// <summary>
-        ///     Invoked during fetching.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        public void AddValue(SimilarityValue value)
-        {
-            if (value == null) throw new ArgumentNullException("value");
-
-            _similarityValues.Add(value.Value, value);
-        }
 
         /// <summary>
         ///     Get the value with highest percentage count.
@@ -134,17 +123,22 @@ namespace Coderr.Server.Domain.Modules.Similarities
         {
             if (values == null) throw new ArgumentNullException("values");
 
+
+            // Calculate the total.
+            // Must do this first since we are empty
+            // due to being loaded from the DB
+            ValueCount = values.Sum(x => x.Count);
+
             foreach (var value in values)
             {
-                //TODO: Find out why this bug occur
-                // i.e. sometimes the exact same value is repeated over multiple values.
-                if (_similarityValues.ContainsKey(value.Value))
-                    _similarityValues[value.Value].IncreaseUsage(ValueCount);
+                if (_similarityValues.TryGetValue(value.Value, out var similarityValue))
+                    similarityValue.IncreaseUsage(ValueCount);
                 else
+                {
                     _similarityValues.Add(value.Value, value);
+                    value.Recalculate(ValueCount);
+                }
             }
-            if (ValueCount == 0)
-                ValueCount = _similarityValues.Sum(x => x.Value.Count);
         }
 
         /// <summary>
@@ -156,7 +150,7 @@ namespace Coderr.Server.Domain.Modules.Similarities
         /// <filterpriority>2</filterpriority>
         public override string ToString()
         {
-            return string.Format("{0}[{1}]", PropertyName, string.Join(", ", Values.Select(x => x.Value)));
+            return $"{PropertyName}[{string.Join(", ", Values.Select(x => x.Value))}]";
         }
     }
 }

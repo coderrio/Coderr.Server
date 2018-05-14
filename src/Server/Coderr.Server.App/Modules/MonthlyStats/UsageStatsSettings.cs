@@ -17,7 +17,7 @@ namespace Coderr.Server.App.Modules.MonthlyStats
                 return;
 
             var value = settings["LatestUploadedMonth"];
-            LatestUploadedMonth = DateTime.Parse(value, CultureInfo.InvariantCulture);
+            LatestUploadedMonth = DateTime.Parse(value).ToUniversalTime();
         }
 
         IDictionary<string, string> IConfigurationSection.ToDictionary()
