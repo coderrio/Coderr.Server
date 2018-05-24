@@ -99,7 +99,7 @@ export default class NavMenuComponent extends Vue {
 
         if (paramCount === 1 && currentRoute.params.hasOwnProperty('applicationId')) {
             if (applicationId == null) {
-                this.$router.push({ name: currentRoute.name  });
+                this.$router.push({ name: currentRoute.name });
                 PubSubService.Instance.publish(MenuApi.MessagingTopics.ApplicationChanged, { applicationId: null });
             } else {
                 this.$router.push({ name: currentRoute.name, params: { applicationId: applicationId.toString() } });
@@ -112,9 +112,14 @@ export default class NavMenuComponent extends Vue {
             this.$router.push({ name: 'discover', params: { applicationId: applicationId.toString() } });
         } else if (currentRoute.path.indexOf('/analyze') === 0) {
             this.$router.push({ name: 'analyzeHome', params: { applicationId: applicationId.toString() } });
-        } else if (currentRoute.path.indexOf('/manage/') !== -1 && currentRoute.path.indexOf('/manage/application') === -1) {
-            const route = { name: 'manageAppSettings', params: { applicationId: applicationId.toString() } };
-            this.$router.push(route);
+        } else if (currentRoute.path.indexOf('/manage/') !== -1) {
+            if (applicationId) {
+                const route = { name: 'manageAppSettings', params: { applicationId: applicationId.toString() } };
+                this.$router.push(route);
+            } else {
+                const route = { name: 'manageHome' };
+                this.$router.push(route);
+            }
         } else {
             const route = { name: currentRoute.name, params: { applicationId: applicationId.toString() } };
             this.$router.push(route);
