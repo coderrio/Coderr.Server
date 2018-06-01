@@ -23,9 +23,9 @@ Too often, error detection and management involves relying on reports from users
 
 Once you have [downloaded and installed the server](https://github.com/coderrio/Coderr.Server/releases) you need to install and configure one of our nuget packages. You can read more about them [here](https://coderr.io/documentation/client/).
 
-Unhandled exceptions will be picked up by the client libraries. 
+**Unhandled exceptions will automatically be reported by the client libraries.**
 
-To report exceptions yourself:
+To report exceptions manually:
 
 ```csharp
 public void UpdatePost(int uid, ForumPost post)
