@@ -9,6 +9,7 @@ using Coderr.Server.Abstractions.Security;
 using Coderr.Server.App.Core.Reports.Config;
 using Coderr.Server.ReportAnalyzer.Inbound;
 using Coderr.Server.Web.Infrastructure;
+using Coderr.Server.Web.Infrastructure.Misc;
 using Coderr.Server.Web.Infrastructure.Results;
 using DotNetCqs.Queues;
 using Griffin.Data;
@@ -23,6 +24,8 @@ namespace Coderr.Server.Web.Controllers
     public class ReportReceiverController : Controller
     {
         private const int CompressedReportSizeLimit = 1000000;
+
+        private static int _currentReportCount;
         private readonly ConfigurationStore _configStore;
         private readonly ILog _logger = LogManager.GetLogger(typeof(ReportReceiverController));
         private readonly IMessageQueue _messageQueue;
@@ -52,6 +55,8 @@ namespace Coderr.Server.Web.Controllers
                 return await KillLargeReportAsync(appKey);
             if (contentLength == null || contentLength < 1)
                 return BadRequest("Content required.");
+
+            if (!IsBelowReportLimit()) return NoContent();
 
             try
             {
@@ -85,7 +90,8 @@ namespace Coderr.Server.Web.Controllers
             }
             catch (Exception exception)
             {
-                _logger.Error("Failed to handle request from " + appKey + " / " + Request.HttpContext.Connection.RemoteIpAddress,
+                _logger.Error(
+                    "Failed to handle request from " + appKey + " / " + Request.HttpContext.Connection.RemoteIpAddress,
                     exception);
                 return new ContentResult
                 {
@@ -105,13 +111,37 @@ namespace Coderr.Server.Web.Controllers
             }));
             return principal;
         }
+
+        private bool IsBelowReportLimit()
+        {
+            if (!string.IsNullOrEmpty(License.LicensedTo))
+                return true;
+
+            var count = License.Count / 5;
+            count = count / 10;
+
+            if (_currentReportCount == 0)
+                using (var cmd = _unitOfWork.CreateDbCommand())
+                {
+                    var from = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+                    cmd.CommandText =
+                        "SELECT count(*) FROM ErrorReports WHERE CreatedAtUtc >= @from AND CreatedAtUtc <= @to";
+                    cmd.AddParameter("from", from);
+                    cmd.AddParameter("to", DateTime.Now);
+                    _currentReportCount = (int) cmd.ExecuteScalar();
+                }
+            else
+                _currentReportCount++;
+
+            return _currentReportCount < count;
+        }
+
         private Task<IActionResult> KillLargeReportAsync(string appKey)
         {
-            _logger.Error(appKey + "Too large report: " + Request.ContentLength+ " from " +
+            _logger.Error(appKey + "Too large report: " + Request.ContentLength + " from " +
                           Request.HttpContext.Connection.RemoteIpAddress);
             //TODO: notify
             return Task.FromResult<IActionResult>(NoContent());
         }
-
     }
 }

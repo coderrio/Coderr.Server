@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using System.Security.Cryptography;
 using Coderr.Server.SqlServer.ReportAnalyzer;
 using Griffin.Data.Mapper;
 using log4net;
