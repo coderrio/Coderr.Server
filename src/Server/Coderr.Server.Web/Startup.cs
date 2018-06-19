@@ -148,6 +148,25 @@ namespace Coderr.Server.Web
                     jsonOptions.SerializerSettings.ContractResolver = new IncludeNonPublicMembersContractResolver();
                 });
 
+            if (Configuration["EnableCors"] == "true")
+            {
+                services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                }));
+            }
+            else
+            {
+                // Add the policy, but do not allow any origins
+                // which means that the policy is effectivly denying everything.
+                services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
+                {
+                    builder.AllowAnyHeader();
+                }));
+            }
+
             var authenticationBuilder = services.AddAuthentication("Cookies");
             authenticationBuilder.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
             {

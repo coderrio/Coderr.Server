@@ -8,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 namespace Coderr.Server.Web.Areas.Installation.Controllers
 {
     [Area("Installation")]
-    
+
     public class SqlController : Controller
     {
         private static int _counter;
@@ -79,9 +79,10 @@ namespace Coderr.Server.Web.Areas.Installation.Controllers
 
         public ActionResult Validate()
         {
+            string constr = "Not set";
             try
             {
-                var constr = _config.GetConnectionString("Db");
+                constr = _config.GetConnectionString("Db");
                 constr = ChangeConnectionTimeout(constr);
                 SetupTools.DbTools.TestConnection(constr);
                 return Content(@"{ ""result"": ""ok"" }", "application/json");
@@ -95,7 +96,7 @@ namespace Coderr.Server.Web.Areas.Installation.Controllers
                 return Json(new
                 {
                     result = "fail",
-                    reason = errMsg,
+                    reason = errMsg + "<br>Connection string: " + constr,
                     attempt = ++_counter
                 });
             }

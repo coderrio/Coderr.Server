@@ -43,7 +43,7 @@ namespace Coderr.Server.App.Core.Incidents.Jobs
             using (var cmd = _unitOfWork.CreateDbCommand())
             {
                 cmd.CommandText =
-                    $@"DELETE TOP(1000) Incidents 
+                    $@"DELETE TOP(500) Incidents 
                        WHERE LastReportAtUtc < @retentionDays";
 
                 // Wait until no reports have been received for the specified report save time

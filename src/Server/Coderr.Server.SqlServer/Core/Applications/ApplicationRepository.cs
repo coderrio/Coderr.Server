@@ -34,7 +34,8 @@ namespace Coderr.Server.SqlServer.Core.Applications
                 cmd.CommandText = @"SELECT a.Id ApplicationId, a.Name ApplicationName, ApplicationMembers.Roles
                                         FROM Applications a
                                         JOIN ApplicationMembers ON (ApplicationMembers.ApplicationId = a.Id) 
-                                        WHERE ApplicationMembers.AccountId = @userId";
+                                        WHERE ApplicationMembers.AccountId = @userId
+                                        ORDER BY Name";
                 cmd.AddParameter("userId", accountId);
                 using (var reader = await cmd.ExecuteReaderAsync())
                 {
@@ -167,7 +168,7 @@ namespace Coderr.Server.SqlServer.Core.Applications
         {
             using (var cmd = (DbCommand) _uow.CreateCommand())
             {
-                cmd.CommandText = "SELECT * FROM Applications";
+                cmd.CommandText = "SELECT * FROM Applications ORDER BY Name";
 
                 //cmd.AddParameter("ids", string.Join(", ", appIds.Select(x => "'" + x + "'")));
                 var result = await cmd.ToListAsync<Application>();

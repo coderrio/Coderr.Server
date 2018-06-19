@@ -14,10 +14,12 @@ using DotNetCqs.Queues;
 using Griffin.Data;
 using Griffin.Net.Protocols.Http;
 using log4net;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Coderr.Server.Web.Controllers
 {
+    [EnableCors("CorsPolicy")]
     public class ReportReceiverController : Controller
     {
         private const int CompressedReportSizeLimit = 1000000;

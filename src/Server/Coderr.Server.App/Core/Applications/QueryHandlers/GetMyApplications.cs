@@ -46,7 +46,7 @@ namespace Coderr.Server.App.Core.Applications.QueryHandlers
             var isSysAdmin = false;
             if (query.AccountId > 0)
             {
-                var account = await _accountRepository.GetByIdAsync((int) query.AccountId);
+                var account = await _accountRepository.GetByIdAsync((int)query.AccountId);
                 if (account.IsSysAdmin)
                 {
                     query.AccountId = 0;

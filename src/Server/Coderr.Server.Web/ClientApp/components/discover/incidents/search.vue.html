@@ -31,6 +31,11 @@
                             <h4>Incident state</h4>
                             <div class="row text-nowrap">
                                 <div class="col">
+                                    <button class="btn btn-dark" v-model="incidentState" value="-1" v-on:click.prevent="toggleState(-1, $event)">
+                                        All
+                                    </button>
+                                </div>
+                                <div class="col">
                                     <button class="btn btn-dark" v-model="incidentState" value="0" v-on:click.prevent="toggleState(0, $event)">
                                         New
                                     </button>

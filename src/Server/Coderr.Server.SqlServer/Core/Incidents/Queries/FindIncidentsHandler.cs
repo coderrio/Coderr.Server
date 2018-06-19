@@ -122,6 +122,7 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
                                         FROM ErrorReports 
                                         WHERE StackTrace LIKE @FreeText 
                                             OR ErrorReports.Title LIKE @FreeText
+                                            OR ErrorReports.ErrorId LIKE @FreeText
                                             OR Incidents.Description LIKE @FreeText)
                                     )";
                     cmd.AddParameter("FreeText", $"%{query.FreeText}%");

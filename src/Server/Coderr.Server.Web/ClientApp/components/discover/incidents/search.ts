@@ -182,11 +182,14 @@ export default class IncidentSearchComponent extends Vue {
         query.FreeText = this.freeText;
 
         switch (this.incidentState) {
+            case -1:
+                break;
             case 0:
                 query.IsNew = true;
                 break;
             case 1:
                 query.IsAssigned = true;
+                break;
             case 3:
                 query.IsClosed = true;
                 break;
@@ -204,7 +207,7 @@ export default class IncidentSearchComponent extends Vue {
             query.ApplicationIds = this.activeApplications;
         }
 
-        if (byCode !== true) {
+        if (!byCode) {
             AppRoot.Instance.storeState({
                 name: 'incident-search',
                 component: this,
@@ -287,7 +290,7 @@ export default class IncidentSearchComponent extends Vue {
             this.activeApplications = [body.applicationId];
             this.showApplicationColumn = false;
         }
-            
+
         this.search();
     }
     private drawSearchUi() {
