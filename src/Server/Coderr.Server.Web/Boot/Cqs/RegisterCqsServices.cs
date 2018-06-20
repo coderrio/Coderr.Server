@@ -89,6 +89,10 @@ namespace Coderr.Server.Web.Boot.Cqs
                 _log.Debug("Shutting down");
                 _messagingQueueListenerTask.Wait(10000);
             }
+            catch (TaskCanceledException)
+            {
+                
+            }
             catch (Exception ex)
             {
                 _log.Error("Failed to wait 10s.", ex);

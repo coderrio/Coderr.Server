@@ -78,6 +78,10 @@ namespace Coderr.Server.SqlServer.Migrations
 
         public int GetLatestSchemaVersion()
         {
+            if (!_migrationScripts.IsEmpty)
+            {
+                return _migrationScripts.GetHighestVersion();
+            }
             var highestVersion = 0;
             var names =
                 Assembly.GetExecutingAssembly()
