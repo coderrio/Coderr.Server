@@ -54,6 +54,7 @@ namespace Coderr.Server.Web.Controllers
                 return await KillLargeReportAsync(appKey);
             if (contentLength == null || contentLength < 1)
                 return BadRequest("Content required.");
+
             try
             {
                 var buffer = new byte[contentLength.Value];

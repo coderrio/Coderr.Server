@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace Coderr.Server.SqlServer.Migrations
@@ -9,6 +10,9 @@ namespace Coderr.Server.SqlServer.Migrations
     {
         internal const string SchemaNamespace = "Coderr.Server.SqlServer.Schema";
         private readonly Dictionary<int, VersionMigration> _versions = new Dictionary<int, VersionMigration>();
+        private bool _isEmpty;
+
+        public bool IsEmpty => _versions.Count == 0;
 
         public void AddScript(int version, string scriptName)
         {
@@ -37,6 +41,11 @@ namespace Coderr.Server.SqlServer.Migrations
 
                 yield return new StreamReader(res).ReadToEnd();
             }
+        }
+
+        public int GetHighestVersion()
+        {
+            return _versions.Max(x => x.Key);
         }
     }
 }
