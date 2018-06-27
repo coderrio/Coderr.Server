@@ -66,14 +66,34 @@ namespace Coderr.Server.ReportAnalyzer.ErrorReports
 
             
             var hashSource = $"{report.Exception.FullName ?? report.Exception.Name}\r\n";
+            var foundHashSource = false;
 
             // the client libraries can by themselves specify how we should identify
             // unqiue incidents. We then use that identifier in combination with the exception name.
             var collection = report.ContextCollections.FirstOrDefault(x => x.Name == "CoderrData");
-            if (collection != null && collection.Properties.TryGetValue("HashSource", out var reportHashSource))
-                hashSource += reportHashSource;
-            else
-                hashSource += StripLineNumbers(report.Exception.StackTrace ?? "");
+            if (collection != null)
+            {
+                if (collection.Properties.TryGetValue("HashSource", out var reportHashSource))
+                {
+                    foundHashSource = true;
+                    hashSource += reportHashSource;
+                }
+                else
+                    hashSource += StripLineNumbers(report.Exception.StackTrace ?? "");
+            }
+            if (!foundHashSource)
+            {
+                // This identifier is determined by the developer when  the error is generated.
+                foreach (var contextCollection in report.ContextCollections)
+                {
+                    if (!contextCollection.Properties.TryGetValue("ErrorHashSource", out var ourHashSource)) 
+                        continue;
+
+                    hashSource = ourHashSource;
+                    break;
+                }
+            }
+            
 
             var hash = 23;
             foreach (var c in hashSource)
