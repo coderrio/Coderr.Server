@@ -17,9 +17,10 @@ type NavigationCallback = (context: IRouteNavigation) => void;
 @Component
 export default class NavMenuComponent extends Vue {
     private callbacks: NavigationCallback[] = [];
-
+    private loaded = false;
     childMenu: MenuApi.MenuItem[] = [];
 
+    myApplicationsPromise: Promise<null>;
     myApplications: MenuApi.MenuItem[] = [];
     currentApplicationName: string = 'All applications';
     currentApplicationId: number | null = null;
@@ -42,16 +43,24 @@ export default class NavMenuComponent extends Vue {
             this.updateCurrent(0);
             return;
         }
-
+        console.log()
         var applicationId = parseInt(value);
         this.updateCurrent(applicationId);
     }
 
     created() {
-        AppRoot.Instance.currentUser.applications.forEach(app => {
-            var mnuItem = this.createAppMenuItem(app.id, app.name);
-            this.myApplications.push(mnuItem);
+        this.myApplicationsPromise = new Promise((accept, reject) => {
+            AppRoot.Instance.loadCurrentUser().then(x => {
+                x.applications.forEach(app => {
+                    var mnuItem = this.createAppMenuItem(app.id, app.name);
+                    this.myApplications.push(mnuItem);
+                });
+                accept();
+            });
         });
+        this.myApplicationsPromise.then(x => {
+            console.log('pushed', this.myApplications);
+        })
 
         this.$router.beforeEach((to, from, next) => {
             if (to.fullPath.indexOf('/onboarding/') === -1 && this.onboarding) {
@@ -156,15 +165,17 @@ export default class NavMenuComponent extends Vue {
             return;
         }
 
-        var app = this.getApplication(applicationId);
-        this.currentApplicationId = applicationId;
+        this.myApplicationsPromise.then(x => {
+            var app = this.getApplication(applicationId);
+            this.currentApplicationId = applicationId;
 
-        var title = app.title;
-        if (title.length > 20) {
-            title = title.substr(0, 15) + '[...]';
-        }
-        this.currentApplicationName = title;
-        this.discoverLink = '/discover/' + applicationId;
+            var title = app.title;
+            if (title.length > 20) {
+                title = title.substr(0, 15) + '[...]';
+            }
+            this.currentApplicationName = title;
+            this.discoverLink = '/discover/' + applicationId;
+        });
     }
 
 
@@ -189,7 +200,7 @@ export default class NavMenuComponent extends Vue {
             }
         }
 
-        throw new Error('Failed to find application ' + applicationId);
+        throw new Error('Failed to find application ' + applicationId + ".\r\n" + JSON.stringify(this.myApplications));
     }
 
 }

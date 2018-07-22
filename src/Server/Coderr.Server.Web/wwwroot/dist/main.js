@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "649bf1071e9021a65082"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "bfd68759b20121ddf487"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -706,7 +706,7 @@
 /******/ 	__webpack_require__.h = function() { return hotCurrentHash; };
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return hotCreateRequire(412)(__webpack_require__.s = 412);
+/******/ 	return hotCreateRequire(414)(__webpack_require__.s = 414);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -2557,7 +2557,7 @@ function loadLocale(name) {
         try {
             oldLocale = globalLocale._abbr;
             var aliasedRequire = require;
-            __webpack_require__(267)("./" + name);
+            __webpack_require__(268)("./" + name);
             getSetGlobalLocale(oldLocale);
         } catch (e) {}
     }
@@ -5249,7 +5249,7 @@ return hooks;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(193)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(194)(module)))
 
 /***/ }),
 /* 1 */
@@ -5465,200 +5465,6 @@ module.exports = function() {
 
 /***/ }),
 /* 4 */
-/***/ (function(module, exports) {
-
-// this module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle
-
-module.exports = function normalizeComponent (
-  rawScriptExports,
-  compiledTemplate,
-  scopeId,
-  cssModules
-) {
-  var esModule
-  var scriptExports = rawScriptExports = rawScriptExports || {}
-
-  // ES6 modules interop
-  var type = typeof rawScriptExports.default
-  if (type === 'object' || type === 'function') {
-    esModule = rawScriptExports
-    scriptExports = rawScriptExports.default
-  }
-
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (compiledTemplate) {
-    options.render = compiledTemplate.render
-    options.staticRenderFns = compiledTemplate.staticRenderFns
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = scopeId
-  }
-
-  // inject cssModules
-  if (cssModules) {
-    var computed = Object.create(options.computed || null)
-    Object.keys(cssModules).forEach(function (key) {
-      var module = cssModules[key]
-      computed[key] = function () { return module }
-    })
-    options.computed = computed
-  }
-
-  return {
-    esModule: esModule,
-    exports: scriptExports,
-    options: options
-  }
-}
-
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-(function (global, factory) {
-	 true ? factory(exports, __webpack_require__(1), __webpack_require__(278), __webpack_require__(271)) :
-	typeof define === 'function' && define.amd ? define(['exports', 'vue', 'vue-class-component', 'reflect-metadata'], factory) :
-	(factory((global.VuePropertyDecorator = {}),global.Vue,global.VueClassComponent));
-}(this, (function (exports,vue,vueClassComponent) { 'use strict';
-
-vue = vue && vue.hasOwnProperty('default') ? vue['default'] : vue;
-var vueClassComponent__default = 'default' in vueClassComponent ? vueClassComponent['default'] : vueClassComponent;
-
-/** vue-property-decorator verson 6.0.0 MIT LICENSE copyright 2017 kaorun343 */
-'use strict';
-/**
- * decorator of an inject
- * @param key key
- * @return PropertyDecorator
- */
-function Inject(key) {
-    return vueClassComponent.createDecorator(function (componentOptions, k) {
-        if (typeof componentOptions.inject === 'undefined') {
-            componentOptions.inject = {};
-        }
-        if (!Array.isArray(componentOptions.inject)) {
-            componentOptions.inject[k] = key || k;
-        }
-    });
-}
-/**
- * decorator of a provide
- * @param key key
- * @return PropertyDecorator | void
- */
-function Provide(key) {
-    return vueClassComponent.createDecorator(function (componentOptions, k) {
-        var provide = componentOptions.provide;
-        if (typeof provide !== 'function' || !provide.managed) {
-            var original_1 = componentOptions.provide;
-            provide = componentOptions.provide = function () {
-                var rv = Object.create((typeof original_1 === 'function' ? original_1.call(this) : original_1) || null);
-                for (var i in provide.managed)
-                    rv[provide.managed[i]] = this[i];
-                return rv;
-            };
-            provide.managed = {};
-        }
-        provide.managed[k] = key || k;
-    });
-}
-/**
- * decorator of model
- * @param  event event name
- * @return PropertyDecorator
- */
-function Model(event, options) {
-    if (options === void 0) { options = {}; }
-    return function (target, key) {
-        if (!Array.isArray(options) && typeof options.type === 'undefined') {
-            options.type = Reflect.getMetadata('design:type', target, key);
-        }
-        vueClassComponent.createDecorator(function (componentOptions, k) {
-            (componentOptions.props || (componentOptions.props = {}))[k] = options;
-            componentOptions.model = { prop: k, event: event || k };
-        })(target, key);
-    };
-}
-/**
- * decorator of a prop
- * @param  options the options for the prop
- * @return PropertyDecorator | void
- */
-function Prop(options) {
-    if (options === void 0) { options = {}; }
-    return function (target, key) {
-        if (!Array.isArray(options) && typeof options.type === 'undefined') {
-            options.type = Reflect.getMetadata('design:type', target, key);
-        }
-        vueClassComponent.createDecorator(function (componentOptions, k) {
-            (componentOptions.props || (componentOptions.props = {}))[k] = options;
-        })(target, key);
-    };
-}
-/**
- * decorator of a watch function
- * @param  path the path or the expression to observe
- * @param  WatchOption
- * @return MethodDecorator
- */
-function Watch(path, options) {
-    if (options === void 0) { options = {}; }
-    var _a = options.deep, deep = _a === void 0 ? false : _a, _b = options.immediate, immediate = _b === void 0 ? false : _b;
-    return vueClassComponent.createDecorator(function (componentOptions, handler) {
-        if (typeof componentOptions.watch !== 'object') {
-            componentOptions.watch = Object.create(null);
-        }
-        componentOptions.watch[path] = { handler: handler, deep: deep, immediate: immediate };
-    });
-}
-// Code copied from Vue/src/shared/util.js
-var hyphenateRE = /\B([A-Z])/g;
-var hyphenate = function (str) { return str.replace(hyphenateRE, '-$1').toLowerCase(); };
-/**
- * decorator of an event-emitter function
- * @param  event The name of the event
- * @return MethodDecorator
- */
-function Emit(event) {
-    return function (target, key, descriptor) {
-        key = hyphenate(key);
-        var original = descriptor.value;
-        descriptor.value = function emitter() {
-            var args = [];
-            for (var _i = 0; _i < arguments.length; _i++) {
-                args[_i] = arguments[_i];
-            }
-            if (original.apply(this, args) !== false)
-                this.$emit.apply(this, [event || key].concat(args));
-        };
-    };
-}
-
-exports.Component = vueClassComponent__default;
-exports.Vue = vue;
-exports.Inject = Inject;
-exports.Provide = Provide;
-exports.Model = Model;
-exports.Prop = Prop;
-exports.Watch = Watch;
-exports.Emit = Emit;
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
-})));
-
-
-/***/ }),
-/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -5677,7 +5483,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(404)
+var listToStyles = __webpack_require__(406)
 
 /*
 type StyleObject = {
@@ -5879,20 +5685,214 @@ function applyToTag (styleElement, obj) {
 
 
 /***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+// this module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle
+
+module.exports = function normalizeComponent (
+  rawScriptExports,
+  compiledTemplate,
+  scopeId,
+  cssModules
+) {
+  var esModule
+  var scriptExports = rawScriptExports = rawScriptExports || {}
+
+  // ES6 modules interop
+  var type = typeof rawScriptExports.default
+  if (type === 'object' || type === 'function') {
+    esModule = rawScriptExports
+    scriptExports = rawScriptExports.default
+  }
+
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (compiledTemplate) {
+    options.render = compiledTemplate.render
+    options.staticRenderFns = compiledTemplate.staticRenderFns
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = scopeId
+  }
+
+  // inject cssModules
+  if (cssModules) {
+    var computed = Object.create(options.computed || null)
+    Object.keys(cssModules).forEach(function (key) {
+      var module = cssModules[key]
+      computed[key] = function () { return module }
+    })
+    options.computed = computed
+  }
+
+  return {
+    esModule: esModule,
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+(function (global, factory) {
+	 true ? factory(exports, __webpack_require__(1), __webpack_require__(279), __webpack_require__(272)) :
+	typeof define === 'function' && define.amd ? define(['exports', 'vue', 'vue-class-component', 'reflect-metadata'], factory) :
+	(factory((global.VuePropertyDecorator = {}),global.Vue,global.VueClassComponent));
+}(this, (function (exports,vue,vueClassComponent) { 'use strict';
+
+vue = vue && vue.hasOwnProperty('default') ? vue['default'] : vue;
+var vueClassComponent__default = 'default' in vueClassComponent ? vueClassComponent['default'] : vueClassComponent;
+
+/** vue-property-decorator verson 6.0.0 MIT LICENSE copyright 2017 kaorun343 */
+'use strict';
+/**
+ * decorator of an inject
+ * @param key key
+ * @return PropertyDecorator
+ */
+function Inject(key) {
+    return vueClassComponent.createDecorator(function (componentOptions, k) {
+        if (typeof componentOptions.inject === 'undefined') {
+            componentOptions.inject = {};
+        }
+        if (!Array.isArray(componentOptions.inject)) {
+            componentOptions.inject[k] = key || k;
+        }
+    });
+}
+/**
+ * decorator of a provide
+ * @param key key
+ * @return PropertyDecorator | void
+ */
+function Provide(key) {
+    return vueClassComponent.createDecorator(function (componentOptions, k) {
+        var provide = componentOptions.provide;
+        if (typeof provide !== 'function' || !provide.managed) {
+            var original_1 = componentOptions.provide;
+            provide = componentOptions.provide = function () {
+                var rv = Object.create((typeof original_1 === 'function' ? original_1.call(this) : original_1) || null);
+                for (var i in provide.managed)
+                    rv[provide.managed[i]] = this[i];
+                return rv;
+            };
+            provide.managed = {};
+        }
+        provide.managed[k] = key || k;
+    });
+}
+/**
+ * decorator of model
+ * @param  event event name
+ * @return PropertyDecorator
+ */
+function Model(event, options) {
+    if (options === void 0) { options = {}; }
+    return function (target, key) {
+        if (!Array.isArray(options) && typeof options.type === 'undefined') {
+            options.type = Reflect.getMetadata('design:type', target, key);
+        }
+        vueClassComponent.createDecorator(function (componentOptions, k) {
+            (componentOptions.props || (componentOptions.props = {}))[k] = options;
+            componentOptions.model = { prop: k, event: event || k };
+        })(target, key);
+    };
+}
+/**
+ * decorator of a prop
+ * @param  options the options for the prop
+ * @return PropertyDecorator | void
+ */
+function Prop(options) {
+    if (options === void 0) { options = {}; }
+    return function (target, key) {
+        if (!Array.isArray(options) && typeof options.type === 'undefined') {
+            options.type = Reflect.getMetadata('design:type', target, key);
+        }
+        vueClassComponent.createDecorator(function (componentOptions, k) {
+            (componentOptions.props || (componentOptions.props = {}))[k] = options;
+        })(target, key);
+    };
+}
+/**
+ * decorator of a watch function
+ * @param  path the path or the expression to observe
+ * @param  WatchOption
+ * @return MethodDecorator
+ */
+function Watch(path, options) {
+    if (options === void 0) { options = {}; }
+    var _a = options.deep, deep = _a === void 0 ? false : _a, _b = options.immediate, immediate = _b === void 0 ? false : _b;
+    return vueClassComponent.createDecorator(function (componentOptions, handler) {
+        if (typeof componentOptions.watch !== 'object') {
+            componentOptions.watch = Object.create(null);
+        }
+        componentOptions.watch[path] = { handler: handler, deep: deep, immediate: immediate };
+    });
+}
+// Code copied from Vue/src/shared/util.js
+var hyphenateRE = /\B([A-Z])/g;
+var hyphenate = function (str) { return str.replace(hyphenateRE, '-$1').toLowerCase(); };
+/**
+ * decorator of an event-emitter function
+ * @param  event The name of the event
+ * @return MethodDecorator
+ */
+function Emit(event) {
+    return function (target, key, descriptor) {
+        key = hyphenate(key);
+        var original = descriptor.value;
+        descriptor.value = function emitter() {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i] = arguments[_i];
+            }
+            if (original.apply(this, args) !== false)
+                this.$emit.apply(this, [event || key].concat(args));
+        };
+    };
+}
+
+exports.Component = vueClassComponent__default;
+exports.Vue = vue;
+exports.Inject = Inject;
+exports.Provide = Provide;
+exports.Model = Model;
+exports.Prop = Prop;
+exports.Watch = Watch;
+exports.Emit = Emit;
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+})));
+
+
+/***/ }),
 /* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppRoot; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ApiClient__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__incidents_IncidentService__ = __webpack_require__(69);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__applications_ApplicationService__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__incidents_IncidentService__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__applications_ApplicationService__ = __webpack_require__(69);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__PubSub__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_toastr__ = __webpack_require__(275);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_toastr__ = __webpack_require__(276);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_toastr___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_toastr__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_jquery__ = __webpack_require__(194);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_jquery__ = __webpack_require__(195);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_jquery__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_localforage__ = __webpack_require__(265);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_localforage__ = __webpack_require__(266);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_localforage___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_localforage__);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -5958,6 +5958,7 @@ var AppRoot = /** @class */ (function () {
                         return [4 /*yield*/, this.apiClient.auth()];
                     case 1:
                         usr = _a.sent();
+                        console.log(usr);
                         apps = [];
                         usr.Applications.forEach(function (app) {
                             apps.push({
@@ -20955,7 +20956,7 @@ module.exports = (__webpack_require__(11))(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_menu_MenuApi__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_AppRoot__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_PubSub__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_incidents_IncidentService__ = __webpack_require__(69);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_incidents_IncidentService__ = __webpack_require__(70);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -21781,7 +21782,7 @@ exports = module.exports = __webpack_require__(3)();
 
 
 // module
-exports.push([module.i, "", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"create.css","sourceRoot":"webpack://"}]);
+exports.push([module.i, "\n.end {\r\n    position: absolute;\r\n    bottom: 0\n}\n.onboarding .card .card-footer, .onboarding .card .card-header {\r\n    background: transparent;\r\n    border: none;\n}\r\n\r\n/*.onboarding .card-group {\r\n    padding: 5px;\r\n}*/\n.onboarding .card {\r\n    margin-right: 10px;\n}\n.onboarding .card:last-child {\r\n    margin-right: 0;\n}", "", {"version":3,"sources":["/./ClientApp/components/home/home.css"],"names":[],"mappings":";AAAA;IACI,mBAAmB;IACnB,SAAS;CACZ;AAGD;IACI,wBAAwB;IACxB,aAAa;CAChB;;AAED;;GAEG;AACH;IACI,mBAAmB;CACtB;AAED;IACI,gBAAgB;CACnB","file":"home.css","sourcesContent":[".end {\r\n    position: absolute;\r\n    bottom: 0\r\n}\r\n\r\n\r\n.onboarding .card .card-footer, .onboarding .card .card-header {\r\n    background: transparent;\r\n    border: none;\r\n}\r\n\r\n/*.onboarding .card-group {\r\n    padding: 5px;\r\n}*/\r\n.onboarding .card {\r\n    margin-right: 10px;\r\n}\r\n\r\n.onboarding .card:last-child {\r\n    margin-right: 0;\r\n}"],"sourceRoot":"webpack://"}]);
 
 // exports
 
@@ -21795,7 +21796,7 @@ exports = module.exports = __webpack_require__(3)();
 
 
 // module
-exports.push([module.i, "\n.tags button {\r\n    margin-right: 5px;\n}\n.more {\r\n    display: none;\n}\n.card .card-body ul {\r\n    padding-left: 10px;\n}", "", {"version":3,"sources":["/./ClientApp/components/analyze/home/home.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AAED;IACI,cAAc;CACjB;AAGD;IACI,mBAAmB;CACtB","file":"home.css","sourcesContent":[".tags button {\r\n    margin-right: 5px;\r\n}\r\n\r\n.more {\r\n    display: none;\r\n}\r\n\r\n\r\n.card .card-body ul {\r\n    padding-left: 10px;\r\n}"],"sourceRoot":"webpack://"}]);
+exports.push([module.i, "", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"create.css","sourceRoot":"webpack://"}]);
 
 // exports
 
@@ -21809,7 +21810,7 @@ exports = module.exports = __webpack_require__(3)();
 
 
 // module
-exports.push([module.i, "\n.tags button {\r\n    margin-right: 5px;\n}\n.more {\r\n    display: none;\n}\r\n", "", {"version":3,"sources":["/./ClientApp/components/discover/incidents/suggestions.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AAED;IACI,cAAc;CACjB","file":"suggestions.css","sourcesContent":[".tags button {\r\n    margin-right: 5px;\r\n}\r\n\r\n.more {\r\n    display: none;\r\n}\r\n"],"sourceRoot":"webpack://"}]);
+exports.push([module.i, "\n.tags button {\r\n    margin-right: 5px;\n}\n.more {\r\n    display: none;\n}\n.card .card-body ul {\r\n    padding-left: 10px;\n}", "", {"version":3,"sources":["/./ClientApp/components/analyze/home/home.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AAED;IACI,cAAc;CACjB;AAGD;IACI,mBAAmB;CACtB","file":"home.css","sourcesContent":[".tags button {\r\n    margin-right: 5px;\r\n}\r\n\r\n.more {\r\n    display: none;\r\n}\r\n\r\n\r\n.card .card-body ul {\r\n    padding-left: 10px;\r\n}"],"sourceRoot":"webpack://"}]);
 
 // exports
 
@@ -21823,7 +21824,7 @@ exports = module.exports = __webpack_require__(3)();
 
 
 // module
-exports.push([module.i, "\n#manageMenu .router-link-active {\r\n    font-weight: bold;\n}\n#manageMenu > div {\r\n    box-shadow: 0 5px 5px 0 rgba(214,214,214,1);\n}\n#manageMenu li {\r\n    margin-top: -0.5rem;\r\n    margin-bottom: -0.5rem;\r\n    padding-top: 0.25rem;\r\n    padding-bottom: 0.25rem;\n}\n#manageMenu li.router-link-active {\r\n        background: #f1f3f5;\n}\r\n", "", {"version":3,"sources":["/./ClientApp/components/manage/application/menu.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AAED;IACI,4CAA4C;CAC/C;AAED;IACI,oBAAoB;IACpB,uBAAuB;IACvB,qBAAqB;IACrB,wBAAwB;CAC3B;AAEG;QACI,oBAAoB;CACvB","file":"menu.css","sourcesContent":["#manageMenu .router-link-active {\r\n    font-weight: bold;\r\n}\r\n\r\n#manageMenu > div {\r\n    box-shadow: 0 5px 5px 0 rgba(214,214,214,1);\r\n}\r\n\r\n#manageMenu li {\r\n    margin-top: -0.5rem;\r\n    margin-bottom: -0.5rem;\r\n    padding-top: 0.25rem;\r\n    padding-bottom: 0.25rem;\r\n}\r\n\r\n    #manageMenu li.router-link-active {\r\n        background: #f1f3f5;\r\n    }\r\n"],"sourceRoot":"webpack://"}]);
+exports.push([module.i, "\n.tags button {\r\n    margin-right: 5px;\n}\n.more {\r\n    display: none;\n}\r\n", "", {"version":3,"sources":["/./ClientApp/components/discover/incidents/suggestions.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AAED;IACI,cAAc;CACjB","file":"suggestions.css","sourcesContent":[".tags button {\r\n    margin-right: 5px;\r\n}\r\n\r\n.more {\r\n    display: none;\r\n}\r\n"],"sourceRoot":"webpack://"}]);
 
 // exports
 
@@ -21837,7 +21838,7 @@ exports = module.exports = __webpack_require__(3)();
 
 
 // module
-exports.push([module.i, "\n.tags button {\r\n    margin-right: 5px;\n}\n.more {\r\n    display: none;\n}\r\n", "", {"version":3,"sources":["/./ClientApp/components/applications/application-details.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AAED;IACI,cAAc;CACjB","file":"application-details.css","sourcesContent":[".tags button {\r\n    margin-right: 5px;\r\n}\r\n\r\n.more {\r\n    display: none;\r\n}\r\n"],"sourceRoot":"webpack://"}]);
+exports.push([module.i, "\n#manageMenu .router-link-active {\r\n    font-weight: bold;\n}\n#manageMenu > div {\r\n    box-shadow: 0 5px 5px 0 rgba(214,214,214,1);\n}\n#manageMenu li {\r\n    margin-top: -0.5rem;\r\n    margin-bottom: -0.5rem;\r\n    padding-top: 0.25rem;\r\n    padding-bottom: 0.25rem;\n}\n#manageMenu li.router-link-active {\r\n        background: #f1f3f5;\n}\r\n", "", {"version":3,"sources":["/./ClientApp/components/manage/application/menu.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AAED;IACI,4CAA4C;CAC/C;AAED;IACI,oBAAoB;IACpB,uBAAuB;IACvB,qBAAqB;IACrB,wBAAwB;CAC3B;AAEG;QACI,oBAAoB;CACvB","file":"menu.css","sourcesContent":["#manageMenu .router-link-active {\r\n    font-weight: bold;\r\n}\r\n\r\n#manageMenu > div {\r\n    box-shadow: 0 5px 5px 0 rgba(214,214,214,1);\r\n}\r\n\r\n#manageMenu li {\r\n    margin-top: -0.5rem;\r\n    margin-bottom: -0.5rem;\r\n    padding-top: 0.25rem;\r\n    padding-bottom: 0.25rem;\r\n}\r\n\r\n    #manageMenu li.router-link-active {\r\n        background: #f1f3f5;\r\n    }\r\n"],"sourceRoot":"webpack://"}]);
 
 // exports
 
@@ -21851,7 +21852,7 @@ exports = module.exports = __webpack_require__(3)();
 
 
 // module
-exports.push([module.i, "\n.ct-label {\n  fill: rgba(0, 0, 0, 0.4);\n  color: rgba(0, 0, 0, 0.4);\n  font-size: 0.75rem;\n  line-height: 1;\n}\n.ct-chart-line .ct-label,\n.ct-chart-bar .ct-label {\n  display: block;\n  display: -webkit-box;\n  display: -moz-box;\n  display: -ms-flexbox;\n  display: -webkit-flex;\n  display: flex;\n}\n.ct-chart-pie .ct-label,\n.ct-chart-donut .ct-label {\n  dominant-baseline: central;\n}\n.ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-label.ct-vertical.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-end;\n  -webkit-justify-content: flex-end;\n  -ms-flex-pack: flex-end;\n  justify-content: flex-end;\n  text-align: right;\n  text-anchor: end;\n}\n.ct-label.ct-vertical.ct-end {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar .ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  text-align: center;\n  text-anchor: start;\n}\n.ct-chart-bar .ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  text-align: center;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-vertical.ct-start {\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -webkit-box-pack: flex-end;\n  -webkit-justify-content: flex-end;\n  -ms-flex-pack: flex-end;\n  justify-content: flex-end;\n  text-align: right;\n  text-anchor: end;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-vertical.ct-end {\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: end;\n}\n.ct-grid {\n  stroke: rgba(0, 0, 0, 0.2);\n  stroke-width: 1px;\n  stroke-dasharray: 2px;\n}\n.ct-grid-background {\n  fill: none;\n}\n.ct-point {\n  stroke-width: 10px;\n  stroke-linecap: round;\n}\n.ct-line {\n  fill: none;\n  stroke-width: 4px;\n}\n.ct-area {\n  stroke: none;\n  fill-opacity: 0.1;\n}\n.ct-bar {\n  fill: none;\n  stroke-width: 10px;\n}\n.ct-slice-donut {\n  fill: none;\n  stroke-width: 60px;\n}\n.ct-series-a .ct-point, .ct-series-a .ct-line, .ct-series-a .ct-bar, .ct-series-a .ct-slice-donut {\n  stroke: #d70206;\n}\n.ct-series-a .ct-slice-pie, .ct-series-a .ct-slice-donut-solid, .ct-series-a .ct-area {\n  fill: #d70206;\n}\n.ct-series-b .ct-point, .ct-series-b .ct-line, .ct-series-b .ct-bar, .ct-series-b .ct-slice-donut {\n  stroke: #f05b4f;\n}\n.ct-series-b .ct-slice-pie, .ct-series-b .ct-slice-donut-solid, .ct-series-b .ct-area {\n  fill: #f05b4f;\n}\n.ct-series-c .ct-point, .ct-series-c .ct-line, .ct-series-c .ct-bar, .ct-series-c .ct-slice-donut {\n  stroke: #f4c63d;\n}\n.ct-series-c .ct-slice-pie, .ct-series-c .ct-slice-donut-solid, .ct-series-c .ct-area {\n  fill: #f4c63d;\n}\n.ct-series-d .ct-point, .ct-series-d .ct-line, .ct-series-d .ct-bar, .ct-series-d .ct-slice-donut {\n  stroke: #d17905;\n}\n.ct-series-d .ct-slice-pie, .ct-series-d .ct-slice-donut-solid, .ct-series-d .ct-area {\n  fill: #d17905;\n}\n.ct-series-e .ct-point, .ct-series-e .ct-line, .ct-series-e .ct-bar, .ct-series-e .ct-slice-donut {\n  stroke: #453d3f;\n}\n.ct-series-e .ct-slice-pie, .ct-series-e .ct-slice-donut-solid, .ct-series-e .ct-area {\n  fill: #453d3f;\n}\n.ct-series-f .ct-point, .ct-series-f .ct-line, .ct-series-f .ct-bar, .ct-series-f .ct-slice-donut {\n  stroke: #59922b;\n}\n.ct-series-f .ct-slice-pie, .ct-series-f .ct-slice-donut-solid, .ct-series-f .ct-area {\n  fill: #59922b;\n}\n.ct-series-g .ct-point, .ct-series-g .ct-line, .ct-series-g .ct-bar, .ct-series-g .ct-slice-donut {\n  stroke: #0544d3;\n}\n.ct-series-g .ct-slice-pie, .ct-series-g .ct-slice-donut-solid, .ct-series-g .ct-area {\n  fill: #0544d3;\n}\n.ct-series-h .ct-point, .ct-series-h .ct-line, .ct-series-h .ct-bar, .ct-series-h .ct-slice-donut {\n  stroke: #6b0392;\n}\n.ct-series-h .ct-slice-pie, .ct-series-h .ct-slice-donut-solid, .ct-series-h .ct-area {\n  fill: #6b0392;\n}\n.ct-series-i .ct-point, .ct-series-i .ct-line, .ct-series-i .ct-bar, .ct-series-i .ct-slice-donut {\n  stroke: #f05b4f;\n}\n.ct-series-i .ct-slice-pie, .ct-series-i .ct-slice-donut-solid, .ct-series-i .ct-area {\n  fill: #f05b4f;\n}\n.ct-series-j .ct-point, .ct-series-j .ct-line, .ct-series-j .ct-bar, .ct-series-j .ct-slice-donut {\n  stroke: #dda458;\n}\n.ct-series-j .ct-slice-pie, .ct-series-j .ct-slice-donut-solid, .ct-series-j .ct-area {\n  fill: #dda458;\n}\n.ct-series-k .ct-point, .ct-series-k .ct-line, .ct-series-k .ct-bar, .ct-series-k .ct-slice-donut {\n  stroke: #eacf7d;\n}\n.ct-series-k .ct-slice-pie, .ct-series-k .ct-slice-donut-solid, .ct-series-k .ct-area {\n  fill: #eacf7d;\n}\n.ct-series-l .ct-point, .ct-series-l .ct-line, .ct-series-l .ct-bar, .ct-series-l .ct-slice-donut {\n  stroke: #86797d;\n}\n.ct-series-l .ct-slice-pie, .ct-series-l .ct-slice-donut-solid, .ct-series-l .ct-area {\n  fill: #86797d;\n}\n.ct-series-m .ct-point, .ct-series-m .ct-line, .ct-series-m .ct-bar, .ct-series-m .ct-slice-donut {\n  stroke: #b2c326;\n}\n.ct-series-m .ct-slice-pie, .ct-series-m .ct-slice-donut-solid, .ct-series-m .ct-area {\n  fill: #b2c326;\n}\n.ct-series-n .ct-point, .ct-series-n .ct-line, .ct-series-n .ct-bar, .ct-series-n .ct-slice-donut {\n  stroke: #6188e2;\n}\n.ct-series-n .ct-slice-pie, .ct-series-n .ct-slice-donut-solid, .ct-series-n .ct-area {\n  fill: #6188e2;\n}\n.ct-series-o .ct-point, .ct-series-o .ct-line, .ct-series-o .ct-bar, .ct-series-o .ct-slice-donut {\n  stroke: #a748ca;\n}\n.ct-series-o .ct-slice-pie, .ct-series-o .ct-slice-donut-solid, .ct-series-o .ct-area {\n  fill: #a748ca;\n}\n.ct-square {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-square:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 100%;\n}\n.ct-square:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-square > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-second {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-second:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 93.75%;\n}\n.ct-minor-second:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-second > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-second {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-second:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 88.8888888889%;\n}\n.ct-major-second:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-second > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-third {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-third:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 83.3333333333%;\n}\n.ct-minor-third:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-third > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-third {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-third:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 80%;\n}\n.ct-major-third:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-third > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-perfect-fourth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-perfect-fourth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 75%;\n}\n.ct-perfect-fourth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-perfect-fourth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-perfect-fifth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-perfect-fifth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 66.6666666667%;\n}\n.ct-perfect-fifth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-perfect-fifth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-sixth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-sixth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 62.5%;\n}\n.ct-minor-sixth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-sixth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-golden-section {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-golden-section:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 61.804697157%;\n}\n.ct-golden-section:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-golden-section > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-sixth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-sixth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 60%;\n}\n.ct-major-sixth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-sixth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-seventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-seventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 56.25%;\n}\n.ct-minor-seventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-seventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-seventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-seventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 53.3333333333%;\n}\n.ct-major-seventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-seventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-octave {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-octave:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 50%;\n}\n.ct-octave:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-octave > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-tenth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-tenth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 40%;\n}\n.ct-major-tenth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-tenth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-eleventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-eleventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 37.5%;\n}\n.ct-major-eleventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-eleventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-twelfth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-twelfth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 33.3333333333%;\n}\n.ct-major-twelfth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-twelfth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-double-octave {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-double-octave:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 25%;\n}\n.ct-double-octave:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-double-octave > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n\n/*# sourceMappingURL=chartist.css.map */", "", {"version":3,"sources":["/./node_modules/src/styles/chartist.scss","/./node_modules/src/styles/settings/_chartist-settings.scss","/./node_modules/chartist/dist/chartist.css"],"names":[],"mappings":";AAoHE;EAxDA,yBC7BkB;ED8BlB,0BC9BkB;ED+BlB,mBC9BoB;ED+BpB,eC5BqB;CDmFpB;AAED;;EArEA,eAAe;EACf,qBAAqB;EACrB,kBAAkB;EAClB,qBAAqB;EACrB,sBAAsB;EACtB,cAAc;CAkEb;AAED;;EACE,2BAA2B;CAC5B;AAED;EAjGA,4BAkGoC;EAjGpC,8BAiGoC;EAhGpC,yBAgGoC;EA/FpC,sBA+FoC;EA9FpC,6BA8FgD;EA7FhD,oCA6FgD;EA5FhD,0BA4FgD;EA3FhD,4BA2FgD;EAxF9C,iBAAiB;EA0FjB,mBAAmB;CACpB;AAED;EAvGA,8BAwGsC;EAvGtC,gCAuGsC;EAtGtC,2BAsGsC;EArGtC,wBAqGsC;EApGtC,6BAoGkD;EAnGlD,oCAmGkD;EAlGlD,0BAkGkD;EAjGlD,4BAiGkD;EA9FhD,iBAAiB;EAgGjB,mBAAmB;CACpB;AAED;EA7GA,4BA8GoC;EA7GpC,8BA6GoC;EA5GpC,yBA4GoC;EA3GpC,sBA2GoC;EA1GpC,2BA0G8C;EAzG9C,kCAyG8C;EAxG9C,wBAwG8C;EAvG9C,0BAuG8C;EAlG5C,kBAAkB;EAoGlB,iBAAiB;CAClB;AAED;EAnHA,4BAoHoC;EAnHpC,8BAmHoC;EAlHpC,yBAkHoC;EAjHpC,sBAiHoC;EAhHpC,6BAgHgD;EA/GhD,oCA+GgD;EA9GhD,0BA8GgD;EA7GhD,4BA6GgD;EA1G9C,iBAAiB;EA4GjB,mBAAmB;CACpB;AAED;EAzHA,4BA0HoC;EAzHpC,8BAyHoC;EAxHpC,yBAwHoC;EAvHpC,sBAuHoC;EAtHpC,yBAsH4C;EArH5C,gCAqH4C;EApH5C,sBAoH4C;EAnH5C,wBAmH4C;EA5G1C,mBAAmB;EA8GnB,mBAAmB;CACpB;AAED;EA/HA,8BAgIsC;EA/HtC,gCA+HsC;EA9HtC,2BA8HsC;EA7HtC,wBA6HsC;EA5HtC,yBA4H8C;EA3H9C,gCA2H8C;EA1H9C,sBA0H8C;EAzH9C,wBAyH8C;EAlH5C,mBAAmB;EAoHnB,mBAAmB;CACpB;AAED;EArIA,4BAsIoC;EArIpC,8BAqIoC;EApIpC,yBAoIoC;EAnIpC,sBAmIoC;EAlIpC,6BAkIgD;EAjIhD,oCAiIgD;EAhIhD,0BAgIgD;EA/HhD,4BA+HgD;EA5H9C,iBAAiB;EA8HjB,mBAAmB;CACpB;AAED;EA3IA,8BA4IsC;EA3ItC,gCA2IsC;EA1ItC,2BA0IsC;EAzItC,wBAyIsC;EAxItC,6BAwIkD;EAvIlD,oCAuIkD;EAtIlD,0BAsIkD;EArIlD,4BAqIkD;EAlIhD,iBAAiB;EAoIjB,mBAAmB;CACpB;AAED;EAjJA,0BAmJkC;EAlJlC,4BAkJkC;EAjJlC,uBAiJkC;EAhJlC,oBAgJkC;EA/IlC,2BA+I4C;EA9I5C,kCA8I4C;EA7I5C,wBA6I4C;EA5I5C,0BA4I4C;EAvI1C,kBAAkB;EAyIlB,iBAAiB;CAClB;AAED;EAxJA,0BAyJkC;EAxJlC,4BAwJkC;EAvJlC,uBAuJkC;EAtJlC,oBAsJkC;EArJlC,6BAqJ8C;EApJ9C,oCAoJ8C;EAnJ9C,0BAmJ8C;EAlJ9C,4BAkJ8C;EA/I5C,iBAAiB;EAiJjB,iBAAiB;CAClB;AAED;EA1HA,2BC7BkB;ED8BlB,kBC5BiB;ED+Bf,sBChCmB;CDwJpB;AAED;EACE,WCzJ0B;CD0J3B;AAED;EAzHA,mBC9BkB;ED+BlB,sBC7BoB;CDuJnB;AAED;EAxHA,WAAW;EACX,kBCtCiB;CD+JhB;AAED;EAnHA,aAAa;EACb,kBCzCmB;CD6JlB;AAED;EAlHA,WAAW;EACX,mBC3CiB;CD8JhB;AAED;EAjHA,WAAW;EACX,mBC7CmB;CD+JlB;AA9GD;EACE,gBClCK;CDmCN;AAED;EACE,cCtCK;CDuCN;AAND;EACE,gBCjCK;CDkCN;AAED;EACE,cCrCK;CDsCN;AAND;EACE,gBChCK;CDiCN;AAED;EACE,cCpCK;CDqCN;AAND;EACE,gBC/BK;CDgCN;AAED;EACE,cCnCK;CDoCN;AAND;EACE,gBC9BK;CD+BN;AAED;EACE,cClCK;CDmCN;AAND;EACE,gBC7BK;CD8BN;AAED;EACE,cCjCK;CDkCN;AAND;EACE,gBC5BK;CD6BN;AAED;EACE,cChCK;CDiCN;AAND;EACE,gBC3BK;CD4BN;AAED;EACE,cC/BK;CDgCN;AAND;EACE,gBC1BK;CD2BN;AAED;EACE,cC9BK;CD+BN;AAND;EACE,gBCzBK;CD0BN;AAED;EACE,cC7BK;CD8BN;AAND;EACE,gBCxBK;CDyBN;AAED;EACE,cC5BK;CD6BN;AAND;EACE,gBCvBK;CDwBN;AAED;EACE,cC3BK;CD4BN;AAND;EACE,gBCtBK;CDuBN;AAED;EACE,cC1BK;CD2BN;AAND;EACE,gBCrBK;CDsBN;AAED;EACE,cCzBK;CD0BN;AAND;EACE,gBCpBK;CDqBN;AAED;EACE,cCxBK;CDyBN;AA0HG;EAtOJ,eAAe;EACf,mBAAmB;EACnB,YAH6C;CAyOxC;AAFD;IAjOF,eAAe;IACf,YAAY;IACZ,YAAY;IACZ,SAAS;IACT,UAAU;IACV,qBAAsB;CACvB;AA2NG;IAxNF,YAAY;IACZ,eAAe;IACf,YAAY;CACb;AAEC;IACA,eAAe;IACf,mBAAmB;IACnB,OAAO;IACP,QAAQ;CACT;AA8MG;EAtOJ,eAAe;EACf,mBAAmB;EACnB,YAH6C;CAyOxC;AAFD;IAjOF,eAAe;IACf,YAAY;IACZ,YAAY;IACZ,SAAS;IACT,UAAU;IACV,uBAAsB;CACvB;AA2NG;IAxNF,YAAY;IACZ,eAAe;IACf,YAAY;CACb;AAEC;IACA,eAAe;IACf,mBAAmB;IACnB,OAAO;IACP,QAAQ;CACT;AA8MG;EAtOJ,eAAe;EACf,mBAAmB;EACnB,YAH6C;CAyOxC;AAFD;IAjOF,eAAe;IACf,YAAY;IACZ,YAAY;IACZ,SAAS;IACT,UAAU;IACV,+BAAsB;CACvB;AA2NG;IAxNF,YAAY;IACZ,eAAe;IACf,YAAY;CACb;AAEC;IACA,eAAe;IACf,mBAAmB;IACnB,OAAO;IACP,QAAQ;CACT;AA8MG;EAtOJ,eAAe;EACf,mBAAmB;EACnB,YAH6C;CAyOxC;AAFD;IAjOF,eAAe;IACf,YAAY;IACZ,YAAY;IACZ,SAAS;IACT,UAAU;IACV,+BAAsB;CACvB;AA2NG;IAxNF,YAAY;IACZ,eAAe;IACf,YAAY;CACb;AAEC;IACA,eAAe;IACf,mBAAmB;IACnB,OAAO;IACP,QAAQ;CACT;AA8MG;EAtOJ,eAAe;EACf,mBAAmB;EACnB,YAH6C;CAyOxC;AAFD;IAjOF,eAAe;IACf,YAAY;IACZ,YAAY;IACZ,SAAS;IACT,UAAU;IACV,oBAAsB;CACvB;AA2NG;IAxNF,YAAY;IACZ,eAAe;IACf,YAAY;CACb;AAEC;IACA,eAAe;IACf,mBAAmB;IACnB,OAAO;IACP,QAAQ;CACT;AA8MG;EAtOJ,eAAe;EACf,mBAAmB;EACnB,YAH6C;CAyOxC;AAFD;IAjOF,eAAe;IACf,YAAY;IACZ,YAAY;IACZ,SAAS;IACT,UAAU;IACV,oBAAsB;CACvB;AA2NG;IAxNF,YAAY;IACZ,eAAe;IACf,YAAY;CACb;AAEC;IACA,eAAe;IACf,mBAAmB;IACnB,OAAO;IACP,QAAQ;CACT;AA8MG;EAtOJ,eAAe;EACf,mBAAmB;EACnB,YAH6C;CAyOxC;AAFD;IAjOF,eAAe;IACf,YAAY;IACZ,YAAY;IACZ,SAAS;IACT,UAAU;IACV,+BAAsB;CACvB;AA2NG;IAxNF,YAAY;IACZ,eAAe;IACf,YAAY;CACb;AAEC;IACA,eAAe;IACf,mBAAmB;IACnB,OAAO;IACP,QAAQ;CACT;AA8MG;EAtOJ,eAAe;EACf,mBAAmB;EACnB,YAH6C;CAyOxC;AAFD;IAjOF,eAAe;IACf,YAAY;IACZ,YAAY;IACZ,SAAS;IACT,UAAU;IACV,sBAAsB;CACvB;AA2NG;IAxNF,YAAY;IACZ,eAAe;IACf,YAAY;CACb;AAEC;IACA,eAAe;IACf,mBAAmB;IACnB,OAAO;IACP,QAAQ;CACT;AA8MG;EAtOJ,eAAe;EACf,mBAAmB;EACnB,YAH6C;CAyOxC;AAFD;IAjOF,eAAe;IACf,YAAY;IACZ,YAAY;IACZ,SAAS;IACT,UAAU;IACV,8BAAsB;CACvB;AA2NG;IAxNF,YAAY;IACZ,eAAe;IACf,YAAY;CACb;AAEC;IACA,eAAe;IACf,mBAAmB;IACnB,OAAO;IACP,QAAQ;CACT;AA8MG;EAtOJ,eAAe;EACf,mBAAmB;EACnB,YAH6C;CAyOxC;AAFD;IAjOF,eAAe;IACf,YAAY;IACZ,YAAY;IACZ,SAAS;IACT,UAAU;IACV,oBAAsB;CACvB;AA2NG;IAxNF,YAAY;IACZ,eAAe;IACf,YAAY;CACb;AAEC;IACA,eAAe;IACf,mBAAmB;IACnB,OAAO;IACP,QAAQ;CACT;AA8MG;EAtOJ,eAAe;EACf,mBAAmB;EACnB,YAH6C;CAyOxC;AAFD;IAjOF,eAAe;IACf,YAAY;IACZ,YAAY;IACZ,SAAS;IACT,UAAU;IACV,uBAAsB;CACvB;AA2NG;IAxNF,YAAY;IACZ,eAAe;IACf,YAAY;CACb;AAEC;IACA,eAAe;IACf,mBAAmB;IACnB,OAAO;IACP,QAAQ;CACT;AA8MG;EAtOJ,eAAe;EACf,mBAAmB;EACnB,YAH6C;CAyOxC;AAFD;IAjOF,eAAe;IACf,YAAY;IACZ,YAAY;IACZ,SAAS;IACT,UAAU;IACV,+BAAsB;CACvB;AA2NG;IAxNF,YAAY;IACZ,eAAe;IACf,YAAY;CACb;AAEC;IACA,eAAe;IACf,mBAAmB;IACnB,OAAO;IACP,QAAQ;CACT;AA8MG;EAtOJ,eAAe;EACf,mBAAmB;EACnB,YAH6C;CAyOxC;AAFD;IAjOF,eAAe;IACf,YAAY;IACZ,YAAY;IACZ,SAAS;IACT,UAAU;IACV,oBAAsB;CACvB;AA2NG;IAxNF,YAAY;IACZ,eAAe;IACf,YAAY;CACb;AAEC;IACA,eAAe;IACf,mBAAmB;IACnB,OAAO;IACP,QAAQ;CACT;AA8MG;EAtOJ,eAAe;EACf,mBAAmB;EACnB,YAH6C;CAyOxC;AAFD;IAjOF,eAAe;IACf,YAAY;IACZ,YAAY;IACZ,SAAS;IACT,UAAU;IACV,oBAAsB;CACvB;AA2NG;IAxNF,YAAY;IACZ,eAAe;IACf,YAAY;CACb;AAEC;IACA,eAAe;IACf,mBAAmB;IACnB,OAAO;IACP,QAAQ;CACT;AA8MG;EAtOJ,eAAe;EACf,mBAAmB;EACnB,YAH6C;CAyOxC;AAFD;IAjOF,eAAe;IACf,YAAY;IACZ,YAAY;IACZ,SAAS;IACT,UAAU;IACV,sBAAsB;CACvB;AA2NG;IAxNF,YAAY;IACZ,eAAe;IACf,YAAY;CACb;AAEC;IACA,eAAe;IACf,mBAAmB;IACnB,OAAO;IACP,QAAQ;CACT;AA8MG;EAtOJ,eAAe;EACf,mBAAmB;EACnB,YAH6C;CAyOxC;AAFD;IAjOF,eAAe;IACf,YAAY;IACZ,YAAY;IACZ,SAAS;IACT,UAAU;IACV,+BAAsB;CACvB;AA2NG;IAxNF,YAAY;IACZ,eAAe;IACf,YAAY;CACb;AAEC;IACA,eAAe;IACf,mBAAmB;IACnB,OAAO;IACP,QAAQ;CACT;AA8MG;EAtOJ,eAAe;EACf,mBAAmB;EACnB,YAH6C;CAyOxC;AAFD;IAjOF,eAAe;IACf,YAAY;IACZ,YAAY;IACZ,SAAS;IACT,UAAU;IACV,oBAAsB;CACvB;AA2NG;IAxNF,YAAY;IACZ,eAAe;IACf,YAAY;CACb;AAEC;IACA,eAAe;IACf,mBAAmB;IACnB,OAAO;IACP,QAAQ;CACT;;AE2kBH,wCAAwC","file":"chartist.css","sourcesContent":[null,null,"\n.ct-label {\n  fill: rgba(0, 0, 0, 0.4);\n  color: rgba(0, 0, 0, 0.4);\n  font-size: 0.75rem;\n  line-height: 1;\n}\n.ct-chart-line .ct-label,\n.ct-chart-bar .ct-label {\n  display: block;\n  display: -webkit-box;\n  display: -moz-box;\n  display: -ms-flexbox;\n  display: -webkit-flex;\n  display: flex;\n}\n.ct-chart-pie .ct-label,\n.ct-chart-donut .ct-label {\n  dominant-baseline: central;\n}\n.ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-label.ct-vertical.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-end;\n  -webkit-justify-content: flex-end;\n  -ms-flex-pack: flex-end;\n  justify-content: flex-end;\n  text-align: right;\n  text-anchor: end;\n}\n.ct-label.ct-vertical.ct-end {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar .ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  text-align: center;\n  text-anchor: start;\n}\n.ct-chart-bar .ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  text-align: center;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-vertical.ct-start {\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -webkit-box-pack: flex-end;\n  -webkit-justify-content: flex-end;\n  -ms-flex-pack: flex-end;\n  justify-content: flex-end;\n  text-align: right;\n  text-anchor: end;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-vertical.ct-end {\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: end;\n}\n.ct-grid {\n  stroke: rgba(0, 0, 0, 0.2);\n  stroke-width: 1px;\n  stroke-dasharray: 2px;\n}\n.ct-grid-background {\n  fill: none;\n}\n.ct-point {\n  stroke-width: 10px;\n  stroke-linecap: round;\n}\n.ct-line {\n  fill: none;\n  stroke-width: 4px;\n}\n.ct-area {\n  stroke: none;\n  fill-opacity: 0.1;\n}\n.ct-bar {\n  fill: none;\n  stroke-width: 10px;\n}\n.ct-slice-donut {\n  fill: none;\n  stroke-width: 60px;\n}\n.ct-series-a .ct-point, .ct-series-a .ct-line, .ct-series-a .ct-bar, .ct-series-a .ct-slice-donut {\n  stroke: #d70206;\n}\n.ct-series-a .ct-slice-pie, .ct-series-a .ct-slice-donut-solid, .ct-series-a .ct-area {\n  fill: #d70206;\n}\n.ct-series-b .ct-point, .ct-series-b .ct-line, .ct-series-b .ct-bar, .ct-series-b .ct-slice-donut {\n  stroke: #f05b4f;\n}\n.ct-series-b .ct-slice-pie, .ct-series-b .ct-slice-donut-solid, .ct-series-b .ct-area {\n  fill: #f05b4f;\n}\n.ct-series-c .ct-point, .ct-series-c .ct-line, .ct-series-c .ct-bar, .ct-series-c .ct-slice-donut {\n  stroke: #f4c63d;\n}\n.ct-series-c .ct-slice-pie, .ct-series-c .ct-slice-donut-solid, .ct-series-c .ct-area {\n  fill: #f4c63d;\n}\n.ct-series-d .ct-point, .ct-series-d .ct-line, .ct-series-d .ct-bar, .ct-series-d .ct-slice-donut {\n  stroke: #d17905;\n}\n.ct-series-d .ct-slice-pie, .ct-series-d .ct-slice-donut-solid, .ct-series-d .ct-area {\n  fill: #d17905;\n}\n.ct-series-e .ct-point, .ct-series-e .ct-line, .ct-series-e .ct-bar, .ct-series-e .ct-slice-donut {\n  stroke: #453d3f;\n}\n.ct-series-e .ct-slice-pie, .ct-series-e .ct-slice-donut-solid, .ct-series-e .ct-area {\n  fill: #453d3f;\n}\n.ct-series-f .ct-point, .ct-series-f .ct-line, .ct-series-f .ct-bar, .ct-series-f .ct-slice-donut {\n  stroke: #59922b;\n}\n.ct-series-f .ct-slice-pie, .ct-series-f .ct-slice-donut-solid, .ct-series-f .ct-area {\n  fill: #59922b;\n}\n.ct-series-g .ct-point, .ct-series-g .ct-line, .ct-series-g .ct-bar, .ct-series-g .ct-slice-donut {\n  stroke: #0544d3;\n}\n.ct-series-g .ct-slice-pie, .ct-series-g .ct-slice-donut-solid, .ct-series-g .ct-area {\n  fill: #0544d3;\n}\n.ct-series-h .ct-point, .ct-series-h .ct-line, .ct-series-h .ct-bar, .ct-series-h .ct-slice-donut {\n  stroke: #6b0392;\n}\n.ct-series-h .ct-slice-pie, .ct-series-h .ct-slice-donut-solid, .ct-series-h .ct-area {\n  fill: #6b0392;\n}\n.ct-series-i .ct-point, .ct-series-i .ct-line, .ct-series-i .ct-bar, .ct-series-i .ct-slice-donut {\n  stroke: #f05b4f;\n}\n.ct-series-i .ct-slice-pie, .ct-series-i .ct-slice-donut-solid, .ct-series-i .ct-area {\n  fill: #f05b4f;\n}\n.ct-series-j .ct-point, .ct-series-j .ct-line, .ct-series-j .ct-bar, .ct-series-j .ct-slice-donut {\n  stroke: #dda458;\n}\n.ct-series-j .ct-slice-pie, .ct-series-j .ct-slice-donut-solid, .ct-series-j .ct-area {\n  fill: #dda458;\n}\n.ct-series-k .ct-point, .ct-series-k .ct-line, .ct-series-k .ct-bar, .ct-series-k .ct-slice-donut {\n  stroke: #eacf7d;\n}\n.ct-series-k .ct-slice-pie, .ct-series-k .ct-slice-donut-solid, .ct-series-k .ct-area {\n  fill: #eacf7d;\n}\n.ct-series-l .ct-point, .ct-series-l .ct-line, .ct-series-l .ct-bar, .ct-series-l .ct-slice-donut {\n  stroke: #86797d;\n}\n.ct-series-l .ct-slice-pie, .ct-series-l .ct-slice-donut-solid, .ct-series-l .ct-area {\n  fill: #86797d;\n}\n.ct-series-m .ct-point, .ct-series-m .ct-line, .ct-series-m .ct-bar, .ct-series-m .ct-slice-donut {\n  stroke: #b2c326;\n}\n.ct-series-m .ct-slice-pie, .ct-series-m .ct-slice-donut-solid, .ct-series-m .ct-area {\n  fill: #b2c326;\n}\n.ct-series-n .ct-point, .ct-series-n .ct-line, .ct-series-n .ct-bar, .ct-series-n .ct-slice-donut {\n  stroke: #6188e2;\n}\n.ct-series-n .ct-slice-pie, .ct-series-n .ct-slice-donut-solid, .ct-series-n .ct-area {\n  fill: #6188e2;\n}\n.ct-series-o .ct-point, .ct-series-o .ct-line, .ct-series-o .ct-bar, .ct-series-o .ct-slice-donut {\n  stroke: #a748ca;\n}\n.ct-series-o .ct-slice-pie, .ct-series-o .ct-slice-donut-solid, .ct-series-o .ct-area {\n  fill: #a748ca;\n}\n.ct-square {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-square:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 100%;\n}\n.ct-square:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-square > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-second {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-second:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 93.75%;\n}\n.ct-minor-second:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-second > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-second {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-second:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 88.8888888889%;\n}\n.ct-major-second:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-second > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-third {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-third:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 83.3333333333%;\n}\n.ct-minor-third:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-third > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-third {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-third:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 80%;\n}\n.ct-major-third:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-third > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-perfect-fourth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-perfect-fourth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 75%;\n}\n.ct-perfect-fourth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-perfect-fourth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-perfect-fifth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-perfect-fifth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 66.6666666667%;\n}\n.ct-perfect-fifth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-perfect-fifth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-sixth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-sixth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 62.5%;\n}\n.ct-minor-sixth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-sixth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-golden-section {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-golden-section:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 61.804697157%;\n}\n.ct-golden-section:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-golden-section > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-sixth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-sixth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 60%;\n}\n.ct-major-sixth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-sixth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-seventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-seventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 56.25%;\n}\n.ct-minor-seventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-seventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-seventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-seventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 53.3333333333%;\n}\n.ct-major-seventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-seventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-octave {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-octave:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 50%;\n}\n.ct-octave:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-octave > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-tenth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-tenth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 40%;\n}\n.ct-major-tenth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-tenth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-eleventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-eleventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 37.5%;\n}\n.ct-major-eleventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-eleventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-twelfth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-twelfth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 33.3333333333%;\n}\n.ct-major-twelfth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-twelfth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-double-octave {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-double-octave:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 25%;\n}\n.ct-double-octave:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-double-octave > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n\n/*# sourceMappingURL=chartist.css.map */"],"sourceRoot":"webpack://"}]);
+exports.push([module.i, "\n.tags button {\r\n    margin-right: 5px;\n}\n.more {\r\n    display: none;\n}\r\n", "", {"version":3,"sources":["/./ClientApp/components/applications/application-details.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AAED;IACI,cAAc;CACjB","file":"application-details.css","sourcesContent":[".tags button {\r\n    margin-right: 5px;\r\n}\r\n\r\n.more {\r\n    display: none;\r\n}\r\n"],"sourceRoot":"webpack://"}]);
 
 // exports
 
@@ -21865,7 +21866,7 @@ exports = module.exports = __webpack_require__(3)();
 
 
 // module
-exports.push([module.i, "\n.IncidentView .tags span {\r\n    margin-right: 5px;\n}\n.tags button {\r\n    margin-right: 5px;\n}\n.more {\r\n    display: none;\n}\r\n", "", {"version":3,"sources":["/./ClientApp/components/analyze/incidents/close.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AACD;IACI,kBAAkB;CACrB;AAED;IACI,cAAc;CACjB","file":"close.css","sourcesContent":[".IncidentView .tags span {\r\n    margin-right: 5px;\r\n}\r\n.tags button {\r\n    margin-right: 5px;\r\n}\r\n\r\n.more {\r\n    display: none;\r\n}\r\n"],"sourceRoot":"webpack://"}]);
+exports.push([module.i, "\n.ct-label {\n  fill: rgba(0, 0, 0, 0.4);\n  color: rgba(0, 0, 0, 0.4);\n  font-size: 0.75rem;\n  line-height: 1;\n}\n.ct-chart-line .ct-label,\n.ct-chart-bar .ct-label {\n  display: block;\n  display: -webkit-box;\n  display: -moz-box;\n  display: -ms-flexbox;\n  display: -webkit-flex;\n  display: flex;\n}\n.ct-chart-pie .ct-label,\n.ct-chart-donut .ct-label {\n  dominant-baseline: central;\n}\n.ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-label.ct-vertical.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-end;\n  -webkit-justify-content: flex-end;\n  -ms-flex-pack: flex-end;\n  justify-content: flex-end;\n  text-align: right;\n  text-anchor: end;\n}\n.ct-label.ct-vertical.ct-end {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar .ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  text-align: center;\n  text-anchor: start;\n}\n.ct-chart-bar .ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  text-align: center;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-vertical.ct-start {\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -webkit-box-pack: flex-end;\n  -webkit-justify-content: flex-end;\n  -ms-flex-pack: flex-end;\n  justify-content: flex-end;\n  text-align: right;\n  text-anchor: end;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-vertical.ct-end {\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: end;\n}\n.ct-grid {\n  stroke: rgba(0, 0, 0, 0.2);\n  stroke-width: 1px;\n  stroke-dasharray: 2px;\n}\n.ct-grid-background {\n  fill: none;\n}\n.ct-point {\n  stroke-width: 10px;\n  stroke-linecap: round;\n}\n.ct-line {\n  fill: none;\n  stroke-width: 4px;\n}\n.ct-area {\n  stroke: none;\n  fill-opacity: 0.1;\n}\n.ct-bar {\n  fill: none;\n  stroke-width: 10px;\n}\n.ct-slice-donut {\n  fill: none;\n  stroke-width: 60px;\n}\n.ct-series-a .ct-point, .ct-series-a .ct-line, .ct-series-a .ct-bar, .ct-series-a .ct-slice-donut {\n  stroke: #d70206;\n}\n.ct-series-a .ct-slice-pie, .ct-series-a .ct-slice-donut-solid, .ct-series-a .ct-area {\n  fill: #d70206;\n}\n.ct-series-b .ct-point, .ct-series-b .ct-line, .ct-series-b .ct-bar, .ct-series-b .ct-slice-donut {\n  stroke: #f05b4f;\n}\n.ct-series-b .ct-slice-pie, .ct-series-b .ct-slice-donut-solid, .ct-series-b .ct-area {\n  fill: #f05b4f;\n}\n.ct-series-c .ct-point, .ct-series-c .ct-line, .ct-series-c .ct-bar, .ct-series-c .ct-slice-donut {\n  stroke: #f4c63d;\n}\n.ct-series-c .ct-slice-pie, .ct-series-c .ct-slice-donut-solid, .ct-series-c .ct-area {\n  fill: #f4c63d;\n}\n.ct-series-d .ct-point, .ct-series-d .ct-line, .ct-series-d .ct-bar, .ct-series-d .ct-slice-donut {\n  stroke: #d17905;\n}\n.ct-series-d .ct-slice-pie, .ct-series-d .ct-slice-donut-solid, .ct-series-d .ct-area {\n  fill: #d17905;\n}\n.ct-series-e .ct-point, .ct-series-e .ct-line, .ct-series-e .ct-bar, .ct-series-e .ct-slice-donut {\n  stroke: #453d3f;\n}\n.ct-series-e .ct-slice-pie, .ct-series-e .ct-slice-donut-solid, .ct-series-e .ct-area {\n  fill: #453d3f;\n}\n.ct-series-f .ct-point, .ct-series-f .ct-line, .ct-series-f .ct-bar, .ct-series-f .ct-slice-donut {\n  stroke: #59922b;\n}\n.ct-series-f .ct-slice-pie, .ct-series-f .ct-slice-donut-solid, .ct-series-f .ct-area {\n  fill: #59922b;\n}\n.ct-series-g .ct-point, .ct-series-g .ct-line, .ct-series-g .ct-bar, .ct-series-g .ct-slice-donut {\n  stroke: #0544d3;\n}\n.ct-series-g .ct-slice-pie, .ct-series-g .ct-slice-donut-solid, .ct-series-g .ct-area {\n  fill: #0544d3;\n}\n.ct-series-h .ct-point, .ct-series-h .ct-line, .ct-series-h .ct-bar, .ct-series-h .ct-slice-donut {\n  stroke: #6b0392;\n}\n.ct-series-h .ct-slice-pie, .ct-series-h .ct-slice-donut-solid, .ct-series-h .ct-area {\n  fill: #6b0392;\n}\n.ct-series-i .ct-point, .ct-series-i .ct-line, .ct-series-i .ct-bar, .ct-series-i .ct-slice-donut {\n  stroke: #f05b4f;\n}\n.ct-series-i .ct-slice-pie, .ct-series-i .ct-slice-donut-solid, .ct-series-i .ct-area {\n  fill: #f05b4f;\n}\n.ct-series-j .ct-point, .ct-series-j .ct-line, .ct-series-j .ct-bar, .ct-series-j .ct-slice-donut {\n  stroke: #dda458;\n}\n.ct-series-j .ct-slice-pie, .ct-series-j .ct-slice-donut-solid, .ct-series-j .ct-area {\n  fill: #dda458;\n}\n.ct-series-k .ct-point, .ct-series-k .ct-line, .ct-series-k .ct-bar, .ct-series-k .ct-slice-donut {\n  stroke: #eacf7d;\n}\n.ct-series-k .ct-slice-pie, .ct-series-k .ct-slice-donut-solid, .ct-series-k .ct-area {\n  fill: #eacf7d;\n}\n.ct-series-l .ct-point, .ct-series-l .ct-line, .ct-series-l .ct-bar, .ct-series-l .ct-slice-donut {\n  stroke: #86797d;\n}\n.ct-series-l .ct-slice-pie, .ct-series-l .ct-slice-donut-solid, .ct-series-l .ct-area {\n  fill: #86797d;\n}\n.ct-series-m .ct-point, .ct-series-m .ct-line, .ct-series-m .ct-bar, .ct-series-m .ct-slice-donut {\n  stroke: #b2c326;\n}\n.ct-series-m .ct-slice-pie, .ct-series-m .ct-slice-donut-solid, .ct-series-m .ct-area {\n  fill: #b2c326;\n}\n.ct-series-n .ct-point, .ct-series-n .ct-line, .ct-series-n .ct-bar, .ct-series-n .ct-slice-donut {\n  stroke: #6188e2;\n}\n.ct-series-n .ct-slice-pie, .ct-series-n .ct-slice-donut-solid, .ct-series-n .ct-area {\n  fill: #6188e2;\n}\n.ct-series-o .ct-point, .ct-series-o .ct-line, .ct-series-o .ct-bar, .ct-series-o .ct-slice-donut {\n  stroke: #a748ca;\n}\n.ct-series-o .ct-slice-pie, .ct-series-o .ct-slice-donut-solid, .ct-series-o .ct-area {\n  fill: #a748ca;\n}\n.ct-square {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-square:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 100%;\n}\n.ct-square:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-square > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-second {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-second:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 93.75%;\n}\n.ct-minor-second:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-second > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-second {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-second:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 88.8888888889%;\n}\n.ct-major-second:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-second > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-third {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-third:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 83.3333333333%;\n}\n.ct-minor-third:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-third > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-third {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-third:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 80%;\n}\n.ct-major-third:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-third > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-perfect-fourth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-perfect-fourth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 75%;\n}\n.ct-perfect-fourth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-perfect-fourth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-perfect-fifth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-perfect-fifth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 66.6666666667%;\n}\n.ct-perfect-fifth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-perfect-fifth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-sixth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-sixth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 62.5%;\n}\n.ct-minor-sixth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-sixth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-golden-section {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-golden-section:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 61.804697157%;\n}\n.ct-golden-section:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-golden-section > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-sixth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-sixth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 60%;\n}\n.ct-major-sixth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-sixth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-seventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-seventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 56.25%;\n}\n.ct-minor-seventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-seventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-seventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-seventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 53.3333333333%;\n}\n.ct-major-seventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-seventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-octave {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-octave:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 50%;\n}\n.ct-octave:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-octave > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-tenth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-tenth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 40%;\n}\n.ct-major-tenth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-tenth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-eleventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-eleventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 37.5%;\n}\n.ct-major-eleventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-eleventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-twelfth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-twelfth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 33.3333333333%;\n}\n.ct-major-twelfth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-twelfth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-double-octave {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-double-octave:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 25%;\n}\n.ct-double-octave:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-double-octave > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n\n/*# sourceMappingURL=chartist.css.map */", "", {"version":3,"sources":["/./node_modules/src/styles/chartist.scss","/./node_modules/src/styles/settings/_chartist-settings.scss","/./node_modules/chartist/dist/chartist.css"],"names":[],"mappings":"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","file":"chartist.css","sourcesContent":[null,null,"\n.ct-label {\n  fill: rgba(0, 0, 0, 0.4);\n  color: rgba(0, 0, 0, 0.4);\n  font-size: 0.75rem;\n  line-height: 1;\n}\n.ct-chart-line .ct-label,\n.ct-chart-bar .ct-label {\n  display: block;\n  display: -webkit-box;\n  display: -moz-box;\n  display: -ms-flexbox;\n  display: -webkit-flex;\n  display: flex;\n}\n.ct-chart-pie .ct-label,\n.ct-chart-donut .ct-label {\n  dominant-baseline: central;\n}\n.ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-label.ct-vertical.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-end;\n  -webkit-justify-content: flex-end;\n  -ms-flex-pack: flex-end;\n  justify-content: flex-end;\n  text-align: right;\n  text-anchor: end;\n}\n.ct-label.ct-vertical.ct-end {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar .ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  text-align: center;\n  text-anchor: start;\n}\n.ct-chart-bar .ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  text-align: center;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-vertical.ct-start {\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -webkit-box-pack: flex-end;\n  -webkit-justify-content: flex-end;\n  -ms-flex-pack: flex-end;\n  justify-content: flex-end;\n  text-align: right;\n  text-anchor: end;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-vertical.ct-end {\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: end;\n}\n.ct-grid {\n  stroke: rgba(0, 0, 0, 0.2);\n  stroke-width: 1px;\n  stroke-dasharray: 2px;\n}\n.ct-grid-background {\n  fill: none;\n}\n.ct-point {\n  stroke-width: 10px;\n  stroke-linecap: round;\n}\n.ct-line {\n  fill: none;\n  stroke-width: 4px;\n}\n.ct-area {\n  stroke: none;\n  fill-opacity: 0.1;\n}\n.ct-bar {\n  fill: none;\n  stroke-width: 10px;\n}\n.ct-slice-donut {\n  fill: none;\n  stroke-width: 60px;\n}\n.ct-series-a .ct-point, .ct-series-a .ct-line, .ct-series-a .ct-bar, .ct-series-a .ct-slice-donut {\n  stroke: #d70206;\n}\n.ct-series-a .ct-slice-pie, .ct-series-a .ct-slice-donut-solid, .ct-series-a .ct-area {\n  fill: #d70206;\n}\n.ct-series-b .ct-point, .ct-series-b .ct-line, .ct-series-b .ct-bar, .ct-series-b .ct-slice-donut {\n  stroke: #f05b4f;\n}\n.ct-series-b .ct-slice-pie, .ct-series-b .ct-slice-donut-solid, .ct-series-b .ct-area {\n  fill: #f05b4f;\n}\n.ct-series-c .ct-point, .ct-series-c .ct-line, .ct-series-c .ct-bar, .ct-series-c .ct-slice-donut {\n  stroke: #f4c63d;\n}\n.ct-series-c .ct-slice-pie, .ct-series-c .ct-slice-donut-solid, .ct-series-c .ct-area {\n  fill: #f4c63d;\n}\n.ct-series-d .ct-point, .ct-series-d .ct-line, .ct-series-d .ct-bar, .ct-series-d .ct-slice-donut {\n  stroke: #d17905;\n}\n.ct-series-d .ct-slice-pie, .ct-series-d .ct-slice-donut-solid, .ct-series-d .ct-area {\n  fill: #d17905;\n}\n.ct-series-e .ct-point, .ct-series-e .ct-line, .ct-series-e .ct-bar, .ct-series-e .ct-slice-donut {\n  stroke: #453d3f;\n}\n.ct-series-e .ct-slice-pie, .ct-series-e .ct-slice-donut-solid, .ct-series-e .ct-area {\n  fill: #453d3f;\n}\n.ct-series-f .ct-point, .ct-series-f .ct-line, .ct-series-f .ct-bar, .ct-series-f .ct-slice-donut {\n  stroke: #59922b;\n}\n.ct-series-f .ct-slice-pie, .ct-series-f .ct-slice-donut-solid, .ct-series-f .ct-area {\n  fill: #59922b;\n}\n.ct-series-g .ct-point, .ct-series-g .ct-line, .ct-series-g .ct-bar, .ct-series-g .ct-slice-donut {\n  stroke: #0544d3;\n}\n.ct-series-g .ct-slice-pie, .ct-series-g .ct-slice-donut-solid, .ct-series-g .ct-area {\n  fill: #0544d3;\n}\n.ct-series-h .ct-point, .ct-series-h .ct-line, .ct-series-h .ct-bar, .ct-series-h .ct-slice-donut {\n  stroke: #6b0392;\n}\n.ct-series-h .ct-slice-pie, .ct-series-h .ct-slice-donut-solid, .ct-series-h .ct-area {\n  fill: #6b0392;\n}\n.ct-series-i .ct-point, .ct-series-i .ct-line, .ct-series-i .ct-bar, .ct-series-i .ct-slice-donut {\n  stroke: #f05b4f;\n}\n.ct-series-i .ct-slice-pie, .ct-series-i .ct-slice-donut-solid, .ct-series-i .ct-area {\n  fill: #f05b4f;\n}\n.ct-series-j .ct-point, .ct-series-j .ct-line, .ct-series-j .ct-bar, .ct-series-j .ct-slice-donut {\n  stroke: #dda458;\n}\n.ct-series-j .ct-slice-pie, .ct-series-j .ct-slice-donut-solid, .ct-series-j .ct-area {\n  fill: #dda458;\n}\n.ct-series-k .ct-point, .ct-series-k .ct-line, .ct-series-k .ct-bar, .ct-series-k .ct-slice-donut {\n  stroke: #eacf7d;\n}\n.ct-series-k .ct-slice-pie, .ct-series-k .ct-slice-donut-solid, .ct-series-k .ct-area {\n  fill: #eacf7d;\n}\n.ct-series-l .ct-point, .ct-series-l .ct-line, .ct-series-l .ct-bar, .ct-series-l .ct-slice-donut {\n  stroke: #86797d;\n}\n.ct-series-l .ct-slice-pie, .ct-series-l .ct-slice-donut-solid, .ct-series-l .ct-area {\n  fill: #86797d;\n}\n.ct-series-m .ct-point, .ct-series-m .ct-line, .ct-series-m .ct-bar, .ct-series-m .ct-slice-donut {\n  stroke: #b2c326;\n}\n.ct-series-m .ct-slice-pie, .ct-series-m .ct-slice-donut-solid, .ct-series-m .ct-area {\n  fill: #b2c326;\n}\n.ct-series-n .ct-point, .ct-series-n .ct-line, .ct-series-n .ct-bar, .ct-series-n .ct-slice-donut {\n  stroke: #6188e2;\n}\n.ct-series-n .ct-slice-pie, .ct-series-n .ct-slice-donut-solid, .ct-series-n .ct-area {\n  fill: #6188e2;\n}\n.ct-series-o .ct-point, .ct-series-o .ct-line, .ct-series-o .ct-bar, .ct-series-o .ct-slice-donut {\n  stroke: #a748ca;\n}\n.ct-series-o .ct-slice-pie, .ct-series-o .ct-slice-donut-solid, .ct-series-o .ct-area {\n  fill: #a748ca;\n}\n.ct-square {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-square:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 100%;\n}\n.ct-square:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-square > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-second {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-second:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 93.75%;\n}\n.ct-minor-second:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-second > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-second {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-second:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 88.8888888889%;\n}\n.ct-major-second:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-second > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-third {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-third:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 83.3333333333%;\n}\n.ct-minor-third:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-third > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-third {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-third:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 80%;\n}\n.ct-major-third:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-third > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-perfect-fourth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-perfect-fourth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 75%;\n}\n.ct-perfect-fourth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-perfect-fourth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-perfect-fifth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-perfect-fifth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 66.6666666667%;\n}\n.ct-perfect-fifth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-perfect-fifth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-sixth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-sixth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 62.5%;\n}\n.ct-minor-sixth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-sixth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-golden-section {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-golden-section:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 61.804697157%;\n}\n.ct-golden-section:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-golden-section > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-sixth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-sixth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 60%;\n}\n.ct-major-sixth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-sixth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-seventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-seventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 56.25%;\n}\n.ct-minor-seventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-seventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-seventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-seventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 53.3333333333%;\n}\n.ct-major-seventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-seventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-octave {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-octave:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 50%;\n}\n.ct-octave:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-octave > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-tenth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-tenth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 40%;\n}\n.ct-major-tenth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-tenth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-eleventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-eleventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 37.5%;\n}\n.ct-major-eleventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-eleventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-twelfth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-twelfth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 33.3333333333%;\n}\n.ct-major-twelfth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-twelfth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-double-octave {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-double-octave:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 25%;\n}\n.ct-double-octave:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-double-octave > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n\n/*# sourceMappingURL=chartist.css.map */"],"sourceRoot":"webpack://"}]);
 
 // exports
 
@@ -21879,7 +21880,7 @@ exports = module.exports = __webpack_require__(3)();
 
 
 // module
-exports.push([module.i, "\n#manageMenu .router-link-active {\r\n    font-weight: bold;\n}\n#manageMenu > div {\r\n    box-shadow: 0 5px 5px 0 rgba(214,214,214,1);\n}\n#manageMenu li {\r\n    margin-top: -0.5rem;\r\n    margin-bottom: -0.5rem;\r\n    padding-top: 0.25rem;\r\n    padding-bottom: 0.25rem;\n}\n#manageMenu li.router-link-active {\r\n        background: #f1f3f5;\n}\r\n", "", {"version":3,"sources":["/./ClientApp/components/deployment/menu.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AAED;IACI,4CAA4C;CAC/C;AAED;IACI,oBAAoB;IACpB,uBAAuB;IACvB,qBAAqB;IACrB,wBAAwB;CAC3B;AAEG;QACI,oBAAoB;CACvB","file":"menu.css","sourcesContent":["#manageMenu .router-link-active {\r\n    font-weight: bold;\r\n}\r\n\r\n#manageMenu > div {\r\n    box-shadow: 0 5px 5px 0 rgba(214,214,214,1);\r\n}\r\n\r\n#manageMenu li {\r\n    margin-top: -0.5rem;\r\n    margin-bottom: -0.5rem;\r\n    padding-top: 0.25rem;\r\n    padding-bottom: 0.25rem;\r\n}\r\n\r\n    #manageMenu li.router-link-active {\r\n        background: #f1f3f5;\r\n    }\r\n"],"sourceRoot":"webpack://"}]);
+exports.push([module.i, "\n.IncidentView .tags span {\r\n    margin-right: 5px;\n}\n.tags button {\r\n    margin-right: 5px;\n}\n.more {\r\n    display: none;\n}\r\n", "", {"version":3,"sources":["/./ClientApp/components/analyze/incidents/close.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AACD;IACI,kBAAkB;CACrB;AAED;IACI,cAAc;CACjB","file":"close.css","sourcesContent":[".IncidentView .tags span {\r\n    margin-right: 5px;\r\n}\r\n.tags button {\r\n    margin-right: 5px;\r\n}\r\n\r\n.more {\r\n    display: none;\r\n}\r\n"],"sourceRoot":"webpack://"}]);
 
 // exports
 
@@ -21893,7 +21894,7 @@ exports = module.exports = __webpack_require__(3)();
 
 
 // module
-exports.push([module.i, "\n.tags button {\r\n    margin-right: 5px;\n}\n.more {\r\n    display: none;\n}\n.card .card-body ul {\r\n    padding-left: 10px;\n}\r\n\r\n\r\n/*.coderr-chart {\r\n    margin-right: 40px;\r\n}*/\n.coderr-chart .ct-chart-line {\r\n        overflow: visible !important;\n}\n.coderr-chart .legend {\r\n        text-align: center;\n}\n.coderr-chart .legend > div {\r\n            display: inline-block;\r\n            padding-right: 20px;\n}\n.coderr-chart .ct-line {\r\n        stroke-width: 2px;\n}\n.coderr-chart .ct-point {\r\n        stroke-width: 6px;\n}\n.coderr-chart .legend .ct-point {\r\n        stroke-width: 10px;\n}\n.coderr-chart .ct-series-a .ct-line, .coderr-chart .ct-series-a .ct-point {\r\n        stroke: rgb(0, 148, 218);\n}\n.coderr-chart .ct-series-b .ct-line, .coderr-chart .ct-series-b .ct-point {\r\n        stroke: #2f4f4f;\n}\n.coderr-chart .ct-series-c .ct-line, .coderr-chart .ct-series-c .ct-point {\r\n        stroke: #DCE12E !important;\n}\n.coderr-chart .ct-series-d .ct-line, .coderr-chart .ct-series-d .ct-point {\r\n        stroke: #C28247 !important;\n}\n.coderr-chart .ct-series-e .ct-line, .coderr-chart .ct-series-e .ct-point {\r\n        stroke: #B82B19 !important;\n}\n.coderr-chart .ct-series-f .ct-line, .coderr-chart .ct-series-f .ct-point {\r\n        stroke: #1EC2A3 !important;\n}\nsvg.ct-chart-line, svg.ct-chart-line g.ct-labels, svg.ct-chart-line g.ct-labels span.ct-label {\r\n    overflow: visible;\n}\r\n", "", {"version":3,"sources":["/./ClientApp/components/discover/home/home.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AAED;IACI,cAAc;CACjB;AAGD;IACI,mBAAmB;CACtB;;;AAGD;;GAEG;AAEC;QACI,6BAA6B;CAChC;AAED;QACI,mBAAmB;CACtB;AAEG;YACI,sBAAsB;YACtB,oBAAoB;CACvB;AAEL;QACI,kBAAkB;CACrB;AAED;QACI,kBAAkB;CACrB;AAED;QACI,mBAAmB;CACtB;AAED;QACI,yBAAyB;CAC5B;AAED;QACI,gBAAgB;CACnB;AAED;QACI,2BAA2B;CAC9B;AAED;QACI,2BAA2B;CAC9B;AAED;QACI,2BAA2B;CAC9B;AAED;QACI,2BAA2B;CAC9B;AAIL;IACI,kBAAkB;CACrB","file":"home.css","sourcesContent":[".tags button {\r\n    margin-right: 5px;\r\n}\r\n\r\n.more {\r\n    display: none;\r\n}\r\n\r\n\r\n.card .card-body ul {\r\n    padding-left: 10px;\r\n}\r\n\r\n\r\n/*.coderr-chart {\r\n    margin-right: 40px;\r\n}*/\r\n\r\n    .coderr-chart .ct-chart-line {\r\n        overflow: visible !important;\r\n    }\r\n\r\n    .coderr-chart .legend {\r\n        text-align: center;\r\n    }\r\n\r\n        .coderr-chart .legend > div {\r\n            display: inline-block;\r\n            padding-right: 20px;\r\n        }\r\n\r\n    .coderr-chart .ct-line {\r\n        stroke-width: 2px;\r\n    }\r\n\r\n    .coderr-chart .ct-point {\r\n        stroke-width: 6px;\r\n    }\r\n\r\n    .coderr-chart .legend .ct-point {\r\n        stroke-width: 10px;\r\n    }\r\n\r\n    .coderr-chart .ct-series-a .ct-line, .coderr-chart .ct-series-a .ct-point {\r\n        stroke: rgb(0, 148, 218);\r\n    }\r\n\r\n    .coderr-chart .ct-series-b .ct-line, .coderr-chart .ct-series-b .ct-point {\r\n        stroke: #2f4f4f;\r\n    }\r\n\r\n    .coderr-chart .ct-series-c .ct-line, .coderr-chart .ct-series-c .ct-point {\r\n        stroke: #DCE12E !important;\r\n    }\r\n\r\n    .coderr-chart .ct-series-d .ct-line, .coderr-chart .ct-series-d .ct-point {\r\n        stroke: #C28247 !important;\r\n    }\r\n\r\n    .coderr-chart .ct-series-e .ct-line, .coderr-chart .ct-series-e .ct-point {\r\n        stroke: #B82B19 !important;\r\n    }\r\n\r\n    .coderr-chart .ct-series-f .ct-line, .coderr-chart .ct-series-f .ct-point {\r\n        stroke: #1EC2A3 !important;\r\n    }\r\n\r\n\r\n\r\nsvg.ct-chart-line, svg.ct-chart-line g.ct-labels, svg.ct-chart-line g.ct-labels span.ct-label {\r\n    overflow: visible;\r\n}\r\n"],"sourceRoot":"webpack://"}]);
+exports.push([module.i, "\n#manageMenu .router-link-active {\r\n    font-weight: bold;\n}\n#manageMenu > div {\r\n    box-shadow: 0 5px 5px 0 rgba(214,214,214,1);\n}\n#manageMenu li {\r\n    margin-top: -0.5rem;\r\n    margin-bottom: -0.5rem;\r\n    padding-top: 0.25rem;\r\n    padding-bottom: 0.25rem;\n}\n#manageMenu li.router-link-active {\r\n        background: #f1f3f5;\n}\r\n", "", {"version":3,"sources":["/./ClientApp/components/deployment/menu.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AAED;IACI,4CAA4C;CAC/C;AAED;IACI,oBAAoB;IACpB,uBAAuB;IACvB,qBAAqB;IACrB,wBAAwB;CAC3B;AAEG;QACI,oBAAoB;CACvB","file":"menu.css","sourcesContent":["#manageMenu .router-link-active {\r\n    font-weight: bold;\r\n}\r\n\r\n#manageMenu > div {\r\n    box-shadow: 0 5px 5px 0 rgba(214,214,214,1);\r\n}\r\n\r\n#manageMenu li {\r\n    margin-top: -0.5rem;\r\n    margin-bottom: -0.5rem;\r\n    padding-top: 0.25rem;\r\n    padding-bottom: 0.25rem;\r\n}\r\n\r\n    #manageMenu li.router-link-active {\r\n        background: #f1f3f5;\r\n    }\r\n"],"sourceRoot":"webpack://"}]);
 
 // exports
 
@@ -21907,7 +21908,7 @@ exports = module.exports = __webpack_require__(3)();
 
 
 // module
-exports.push([module.i, "\n.ct-label {\n  fill: rgba(0, 0, 0, 0.4);\n  color: rgba(0, 0, 0, 0.4);\n  font-size: 0.75rem;\n  line-height: 1;\n}\n.ct-chart-line .ct-label,\n.ct-chart-bar .ct-label {\n  display: block;\n  display: -webkit-box;\n  display: -moz-box;\n  display: -ms-flexbox;\n  display: -webkit-flex;\n  display: flex;\n}\n.ct-chart-pie .ct-label,\n.ct-chart-donut .ct-label {\n  dominant-baseline: central;\n}\n.ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-label.ct-vertical.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-end;\n  -webkit-justify-content: flex-end;\n  -ms-flex-pack: flex-end;\n  justify-content: flex-end;\n  text-align: right;\n  text-anchor: end;\n}\n.ct-label.ct-vertical.ct-end {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar .ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  text-align: center;\n  text-anchor: start;\n}\n.ct-chart-bar .ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  text-align: center;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-vertical.ct-start {\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -webkit-box-pack: flex-end;\n  -webkit-justify-content: flex-end;\n  -ms-flex-pack: flex-end;\n  justify-content: flex-end;\n  text-align: right;\n  text-anchor: end;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-vertical.ct-end {\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: end;\n}\n.ct-grid {\n  stroke: rgba(0, 0, 0, 0.2);\n  stroke-width: 1px;\n  stroke-dasharray: 2px;\n}\n.ct-grid-background {\n  fill: none;\n}\n.ct-point {\n  stroke-width: 10px;\n  stroke-linecap: round;\n}\n.ct-line {\n  fill: none;\n  stroke-width: 4px;\n}\n.ct-area {\n  stroke: none;\n  fill-opacity: 0.1;\n}\n.ct-bar {\n  fill: none;\n  stroke-width: 10px;\n}\n.ct-slice-donut {\n  fill: none;\n  stroke-width: 60px;\n}\n.ct-series-a .ct-point, .ct-series-a .ct-line, .ct-series-a .ct-bar, .ct-series-a .ct-slice-donut {\n  stroke: #d70206;\n}\n.ct-series-a .ct-slice-pie, .ct-series-a .ct-slice-donut-solid, .ct-series-a .ct-area {\n  fill: #d70206;\n}\n.ct-series-b .ct-point, .ct-series-b .ct-line, .ct-series-b .ct-bar, .ct-series-b .ct-slice-donut {\n  stroke: #f05b4f;\n}\n.ct-series-b .ct-slice-pie, .ct-series-b .ct-slice-donut-solid, .ct-series-b .ct-area {\n  fill: #f05b4f;\n}\n.ct-series-c .ct-point, .ct-series-c .ct-line, .ct-series-c .ct-bar, .ct-series-c .ct-slice-donut {\n  stroke: #f4c63d;\n}\n.ct-series-c .ct-slice-pie, .ct-series-c .ct-slice-donut-solid, .ct-series-c .ct-area {\n  fill: #f4c63d;\n}\n.ct-series-d .ct-point, .ct-series-d .ct-line, .ct-series-d .ct-bar, .ct-series-d .ct-slice-donut {\n  stroke: #d17905;\n}\n.ct-series-d .ct-slice-pie, .ct-series-d .ct-slice-donut-solid, .ct-series-d .ct-area {\n  fill: #d17905;\n}\n.ct-series-e .ct-point, .ct-series-e .ct-line, .ct-series-e .ct-bar, .ct-series-e .ct-slice-donut {\n  stroke: #453d3f;\n}\n.ct-series-e .ct-slice-pie, .ct-series-e .ct-slice-donut-solid, .ct-series-e .ct-area {\n  fill: #453d3f;\n}\n.ct-series-f .ct-point, .ct-series-f .ct-line, .ct-series-f .ct-bar, .ct-series-f .ct-slice-donut {\n  stroke: #59922b;\n}\n.ct-series-f .ct-slice-pie, .ct-series-f .ct-slice-donut-solid, .ct-series-f .ct-area {\n  fill: #59922b;\n}\n.ct-series-g .ct-point, .ct-series-g .ct-line, .ct-series-g .ct-bar, .ct-series-g .ct-slice-donut {\n  stroke: #0544d3;\n}\n.ct-series-g .ct-slice-pie, .ct-series-g .ct-slice-donut-solid, .ct-series-g .ct-area {\n  fill: #0544d3;\n}\n.ct-series-h .ct-point, .ct-series-h .ct-line, .ct-series-h .ct-bar, .ct-series-h .ct-slice-donut {\n  stroke: #6b0392;\n}\n.ct-series-h .ct-slice-pie, .ct-series-h .ct-slice-donut-solid, .ct-series-h .ct-area {\n  fill: #6b0392;\n}\n.ct-series-i .ct-point, .ct-series-i .ct-line, .ct-series-i .ct-bar, .ct-series-i .ct-slice-donut {\n  stroke: #f05b4f;\n}\n.ct-series-i .ct-slice-pie, .ct-series-i .ct-slice-donut-solid, .ct-series-i .ct-area {\n  fill: #f05b4f;\n}\n.ct-series-j .ct-point, .ct-series-j .ct-line, .ct-series-j .ct-bar, .ct-series-j .ct-slice-donut {\n  stroke: #dda458;\n}\n.ct-series-j .ct-slice-pie, .ct-series-j .ct-slice-donut-solid, .ct-series-j .ct-area {\n  fill: #dda458;\n}\n.ct-series-k .ct-point, .ct-series-k .ct-line, .ct-series-k .ct-bar, .ct-series-k .ct-slice-donut {\n  stroke: #eacf7d;\n}\n.ct-series-k .ct-slice-pie, .ct-series-k .ct-slice-donut-solid, .ct-series-k .ct-area {\n  fill: #eacf7d;\n}\n.ct-series-l .ct-point, .ct-series-l .ct-line, .ct-series-l .ct-bar, .ct-series-l .ct-slice-donut {\n  stroke: #86797d;\n}\n.ct-series-l .ct-slice-pie, .ct-series-l .ct-slice-donut-solid, .ct-series-l .ct-area {\n  fill: #86797d;\n}\n.ct-series-m .ct-point, .ct-series-m .ct-line, .ct-series-m .ct-bar, .ct-series-m .ct-slice-donut {\n  stroke: #b2c326;\n}\n.ct-series-m .ct-slice-pie, .ct-series-m .ct-slice-donut-solid, .ct-series-m .ct-area {\n  fill: #b2c326;\n}\n.ct-series-n .ct-point, .ct-series-n .ct-line, .ct-series-n .ct-bar, .ct-series-n .ct-slice-donut {\n  stroke: #6188e2;\n}\n.ct-series-n .ct-slice-pie, .ct-series-n .ct-slice-donut-solid, .ct-series-n .ct-area {\n  fill: #6188e2;\n}\n.ct-series-o .ct-point, .ct-series-o .ct-line, .ct-series-o .ct-bar, .ct-series-o .ct-slice-donut {\n  stroke: #a748ca;\n}\n.ct-series-o .ct-slice-pie, .ct-series-o .ct-slice-donut-solid, .ct-series-o .ct-area {\n  fill: #a748ca;\n}\n.ct-square {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-square:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 100%;\n}\n.ct-square:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-square > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-second {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-second:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 93.75%;\n}\n.ct-minor-second:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-second > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-second {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-second:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 88.8888888889%;\n}\n.ct-major-second:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-second > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-third {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-third:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 83.3333333333%;\n}\n.ct-minor-third:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-third > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-third {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-third:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 80%;\n}\n.ct-major-third:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-third > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-perfect-fourth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-perfect-fourth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 75%;\n}\n.ct-perfect-fourth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-perfect-fourth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-perfect-fifth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-perfect-fifth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 66.6666666667%;\n}\n.ct-perfect-fifth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-perfect-fifth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-sixth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-sixth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 62.5%;\n}\n.ct-minor-sixth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-sixth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-golden-section {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-golden-section:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 61.804697157%;\n}\n.ct-golden-section:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-golden-section > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-sixth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-sixth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 60%;\n}\n.ct-major-sixth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-sixth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-seventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-seventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 56.25%;\n}\n.ct-minor-seventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-seventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-seventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-seventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 53.3333333333%;\n}\n.ct-major-seventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-seventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-octave {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-octave:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 50%;\n}\n.ct-octave:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-octave > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-tenth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-tenth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 40%;\n}\n.ct-major-tenth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-tenth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-eleventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-eleventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 37.5%;\n}\n.ct-major-eleventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-eleventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-twelfth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-twelfth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 33.3333333333%;\n}\n.ct-major-twelfth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-twelfth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-double-octave {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-double-octave:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 25%;\n}\n.ct-double-octave:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-double-octave > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n\n/*# sourceMappingURL=chartist.css.map */", "", {"version":3,"sources":["/./node_modules/src/styles/chartist.scss","/./node_modules/src/styles/settings/_chartist-settings.scss","/./node_modules/chartist/dist/chartist.css"],"names":[],"mappings":"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","file":"chartist.css","sourcesContent":[null,null,"\n.ct-label {\n  fill: rgba(0, 0, 0, 0.4);\n  color: rgba(0, 0, 0, 0.4);\n  font-size: 0.75rem;\n  line-height: 1;\n}\n.ct-chart-line .ct-label,\n.ct-chart-bar .ct-label {\n  display: block;\n  display: -webkit-box;\n  display: -moz-box;\n  display: -ms-flexbox;\n  display: -webkit-flex;\n  display: flex;\n}\n.ct-chart-pie .ct-label,\n.ct-chart-donut .ct-label {\n  dominant-baseline: central;\n}\n.ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-label.ct-vertical.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-end;\n  -webkit-justify-content: flex-end;\n  -ms-flex-pack: flex-end;\n  justify-content: flex-end;\n  text-align: right;\n  text-anchor: end;\n}\n.ct-label.ct-vertical.ct-end {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar .ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  text-align: center;\n  text-anchor: start;\n}\n.ct-chart-bar .ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  text-align: center;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-vertical.ct-start {\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -webkit-box-pack: flex-end;\n  -webkit-justify-content: flex-end;\n  -ms-flex-pack: flex-end;\n  justify-content: flex-end;\n  text-align: right;\n  text-anchor: end;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-vertical.ct-end {\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: end;\n}\n.ct-grid {\n  stroke: rgba(0, 0, 0, 0.2);\n  stroke-width: 1px;\n  stroke-dasharray: 2px;\n}\n.ct-grid-background {\n  fill: none;\n}\n.ct-point {\n  stroke-width: 10px;\n  stroke-linecap: round;\n}\n.ct-line {\n  fill: none;\n  stroke-width: 4px;\n}\n.ct-area {\n  stroke: none;\n  fill-opacity: 0.1;\n}\n.ct-bar {\n  fill: none;\n  stroke-width: 10px;\n}\n.ct-slice-donut {\n  fill: none;\n  stroke-width: 60px;\n}\n.ct-series-a .ct-point, .ct-series-a .ct-line, .ct-series-a .ct-bar, .ct-series-a .ct-slice-donut {\n  stroke: #d70206;\n}\n.ct-series-a .ct-slice-pie, .ct-series-a .ct-slice-donut-solid, .ct-series-a .ct-area {\n  fill: #d70206;\n}\n.ct-series-b .ct-point, .ct-series-b .ct-line, .ct-series-b .ct-bar, .ct-series-b .ct-slice-donut {\n  stroke: #f05b4f;\n}\n.ct-series-b .ct-slice-pie, .ct-series-b .ct-slice-donut-solid, .ct-series-b .ct-area {\n  fill: #f05b4f;\n}\n.ct-series-c .ct-point, .ct-series-c .ct-line, .ct-series-c .ct-bar, .ct-series-c .ct-slice-donut {\n  stroke: #f4c63d;\n}\n.ct-series-c .ct-slice-pie, .ct-series-c .ct-slice-donut-solid, .ct-series-c .ct-area {\n  fill: #f4c63d;\n}\n.ct-series-d .ct-point, .ct-series-d .ct-line, .ct-series-d .ct-bar, .ct-series-d .ct-slice-donut {\n  stroke: #d17905;\n}\n.ct-series-d .ct-slice-pie, .ct-series-d .ct-slice-donut-solid, .ct-series-d .ct-area {\n  fill: #d17905;\n}\n.ct-series-e .ct-point, .ct-series-e .ct-line, .ct-series-e .ct-bar, .ct-series-e .ct-slice-donut {\n  stroke: #453d3f;\n}\n.ct-series-e .ct-slice-pie, .ct-series-e .ct-slice-donut-solid, .ct-series-e .ct-area {\n  fill: #453d3f;\n}\n.ct-series-f .ct-point, .ct-series-f .ct-line, .ct-series-f .ct-bar, .ct-series-f .ct-slice-donut {\n  stroke: #59922b;\n}\n.ct-series-f .ct-slice-pie, .ct-series-f .ct-slice-donut-solid, .ct-series-f .ct-area {\n  fill: #59922b;\n}\n.ct-series-g .ct-point, .ct-series-g .ct-line, .ct-series-g .ct-bar, .ct-series-g .ct-slice-donut {\n  stroke: #0544d3;\n}\n.ct-series-g .ct-slice-pie, .ct-series-g .ct-slice-donut-solid, .ct-series-g .ct-area {\n  fill: #0544d3;\n}\n.ct-series-h .ct-point, .ct-series-h .ct-line, .ct-series-h .ct-bar, .ct-series-h .ct-slice-donut {\n  stroke: #6b0392;\n}\n.ct-series-h .ct-slice-pie, .ct-series-h .ct-slice-donut-solid, .ct-series-h .ct-area {\n  fill: #6b0392;\n}\n.ct-series-i .ct-point, .ct-series-i .ct-line, .ct-series-i .ct-bar, .ct-series-i .ct-slice-donut {\n  stroke: #f05b4f;\n}\n.ct-series-i .ct-slice-pie, .ct-series-i .ct-slice-donut-solid, .ct-series-i .ct-area {\n  fill: #f05b4f;\n}\n.ct-series-j .ct-point, .ct-series-j .ct-line, .ct-series-j .ct-bar, .ct-series-j .ct-slice-donut {\n  stroke: #dda458;\n}\n.ct-series-j .ct-slice-pie, .ct-series-j .ct-slice-donut-solid, .ct-series-j .ct-area {\n  fill: #dda458;\n}\n.ct-series-k .ct-point, .ct-series-k .ct-line, .ct-series-k .ct-bar, .ct-series-k .ct-slice-donut {\n  stroke: #eacf7d;\n}\n.ct-series-k .ct-slice-pie, .ct-series-k .ct-slice-donut-solid, .ct-series-k .ct-area {\n  fill: #eacf7d;\n}\n.ct-series-l .ct-point, .ct-series-l .ct-line, .ct-series-l .ct-bar, .ct-series-l .ct-slice-donut {\n  stroke: #86797d;\n}\n.ct-series-l .ct-slice-pie, .ct-series-l .ct-slice-donut-solid, .ct-series-l .ct-area {\n  fill: #86797d;\n}\n.ct-series-m .ct-point, .ct-series-m .ct-line, .ct-series-m .ct-bar, .ct-series-m .ct-slice-donut {\n  stroke: #b2c326;\n}\n.ct-series-m .ct-slice-pie, .ct-series-m .ct-slice-donut-solid, .ct-series-m .ct-area {\n  fill: #b2c326;\n}\n.ct-series-n .ct-point, .ct-series-n .ct-line, .ct-series-n .ct-bar, .ct-series-n .ct-slice-donut {\n  stroke: #6188e2;\n}\n.ct-series-n .ct-slice-pie, .ct-series-n .ct-slice-donut-solid, .ct-series-n .ct-area {\n  fill: #6188e2;\n}\n.ct-series-o .ct-point, .ct-series-o .ct-line, .ct-series-o .ct-bar, .ct-series-o .ct-slice-donut {\n  stroke: #a748ca;\n}\n.ct-series-o .ct-slice-pie, .ct-series-o .ct-slice-donut-solid, .ct-series-o .ct-area {\n  fill: #a748ca;\n}\n.ct-square {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-square:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 100%;\n}\n.ct-square:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-square > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-second {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-second:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 93.75%;\n}\n.ct-minor-second:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-second > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-second {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-second:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 88.8888888889%;\n}\n.ct-major-second:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-second > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-third {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-third:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 83.3333333333%;\n}\n.ct-minor-third:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-third > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-third {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-third:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 80%;\n}\n.ct-major-third:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-third > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-perfect-fourth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-perfect-fourth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 75%;\n}\n.ct-perfect-fourth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-perfect-fourth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-perfect-fifth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-perfect-fifth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 66.6666666667%;\n}\n.ct-perfect-fifth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-perfect-fifth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-sixth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-sixth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 62.5%;\n}\n.ct-minor-sixth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-sixth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-golden-section {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-golden-section:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 61.804697157%;\n}\n.ct-golden-section:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-golden-section > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-sixth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-sixth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 60%;\n}\n.ct-major-sixth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-sixth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-seventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-seventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 56.25%;\n}\n.ct-minor-seventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-seventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-seventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-seventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 53.3333333333%;\n}\n.ct-major-seventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-seventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-octave {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-octave:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 50%;\n}\n.ct-octave:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-octave > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-tenth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-tenth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 40%;\n}\n.ct-major-tenth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-tenth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-eleventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-eleventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 37.5%;\n}\n.ct-major-eleventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-eleventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-twelfth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-twelfth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 33.3333333333%;\n}\n.ct-major-twelfth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-twelfth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-double-octave {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-double-octave:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 25%;\n}\n.ct-double-octave:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-double-octave > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n\n/*# sourceMappingURL=chartist.css.map */"],"sourceRoot":"webpack://"}]);
+exports.push([module.i, "\n.tags button {\r\n    margin-right: 5px;\n}\n.more {\r\n    display: none;\n}\n.card .card-body ul {\r\n    padding-left: 10px;\n}\r\n\r\n\r\n/*.coderr-chart {\r\n    margin-right: 40px;\r\n}*/\n.coderr-chart .ct-chart-line {\r\n        overflow: visible !important;\n}\n.coderr-chart .legend {\r\n        text-align: center;\n}\n.coderr-chart .legend > div {\r\n            display: inline-block;\r\n            padding-right: 20px;\n}\n.coderr-chart .ct-line {\r\n        stroke-width: 2px;\n}\n.coderr-chart .ct-point {\r\n        stroke-width: 6px;\n}\n.coderr-chart .legend .ct-point {\r\n        stroke-width: 10px;\n}\n.coderr-chart .ct-series-a .ct-line, .coderr-chart .ct-series-a .ct-point {\r\n        stroke: rgb(0, 148, 218);\n}\n.coderr-chart .ct-series-b .ct-line, .coderr-chart .ct-series-b .ct-point {\r\n        stroke: #2f4f4f;\n}\n.coderr-chart .ct-series-c .ct-line, .coderr-chart .ct-series-c .ct-point {\r\n        stroke: #DCE12E !important;\n}\n.coderr-chart .ct-series-d .ct-line, .coderr-chart .ct-series-d .ct-point {\r\n        stroke: #C28247 !important;\n}\n.coderr-chart .ct-series-e .ct-line, .coderr-chart .ct-series-e .ct-point {\r\n        stroke: #B82B19 !important;\n}\n.coderr-chart .ct-series-f .ct-line, .coderr-chart .ct-series-f .ct-point {\r\n        stroke: #1EC2A3 !important;\n}\nsvg.ct-chart-line, svg.ct-chart-line g.ct-labels, svg.ct-chart-line g.ct-labels span.ct-label {\r\n    overflow: visible;\n}\r\n", "", {"version":3,"sources":["/./ClientApp/components/discover/home/home.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AAED;IACI,cAAc;CACjB;AAGD;IACI,mBAAmB;CACtB;;;AAGD;;GAEG;AAEC;QACI,6BAA6B;CAChC;AAED;QACI,mBAAmB;CACtB;AAEG;YACI,sBAAsB;YACtB,oBAAoB;CACvB;AAEL;QACI,kBAAkB;CACrB;AAED;QACI,kBAAkB;CACrB;AAED;QACI,mBAAmB;CACtB;AAED;QACI,yBAAyB;CAC5B;AAED;QACI,gBAAgB;CACnB;AAED;QACI,2BAA2B;CAC9B;AAED;QACI,2BAA2B;CAC9B;AAED;QACI,2BAA2B;CAC9B;AAED;QACI,2BAA2B;CAC9B;AAIL;IACI,kBAAkB;CACrB","file":"home.css","sourcesContent":[".tags button {\r\n    margin-right: 5px;\r\n}\r\n\r\n.more {\r\n    display: none;\r\n}\r\n\r\n\r\n.card .card-body ul {\r\n    padding-left: 10px;\r\n}\r\n\r\n\r\n/*.coderr-chart {\r\n    margin-right: 40px;\r\n}*/\r\n\r\n    .coderr-chart .ct-chart-line {\r\n        overflow: visible !important;\r\n    }\r\n\r\n    .coderr-chart .legend {\r\n        text-align: center;\r\n    }\r\n\r\n        .coderr-chart .legend > div {\r\n            display: inline-block;\r\n            padding-right: 20px;\r\n        }\r\n\r\n    .coderr-chart .ct-line {\r\n        stroke-width: 2px;\r\n    }\r\n\r\n    .coderr-chart .ct-point {\r\n        stroke-width: 6px;\r\n    }\r\n\r\n    .coderr-chart .legend .ct-point {\r\n        stroke-width: 10px;\r\n    }\r\n\r\n    .coderr-chart .ct-series-a .ct-line, .coderr-chart .ct-series-a .ct-point {\r\n        stroke: rgb(0, 148, 218);\r\n    }\r\n\r\n    .coderr-chart .ct-series-b .ct-line, .coderr-chart .ct-series-b .ct-point {\r\n        stroke: #2f4f4f;\r\n    }\r\n\r\n    .coderr-chart .ct-series-c .ct-line, .coderr-chart .ct-series-c .ct-point {\r\n        stroke: #DCE12E !important;\r\n    }\r\n\r\n    .coderr-chart .ct-series-d .ct-line, .coderr-chart .ct-series-d .ct-point {\r\n        stroke: #C28247 !important;\r\n    }\r\n\r\n    .coderr-chart .ct-series-e .ct-line, .coderr-chart .ct-series-e .ct-point {\r\n        stroke: #B82B19 !important;\r\n    }\r\n\r\n    .coderr-chart .ct-series-f .ct-line, .coderr-chart .ct-series-f .ct-point {\r\n        stroke: #1EC2A3 !important;\r\n    }\r\n\r\n\r\n\r\nsvg.ct-chart-line, svg.ct-chart-line g.ct-labels, svg.ct-chart-line g.ct-labels span.ct-label {\r\n    overflow: visible;\r\n}\r\n"],"sourceRoot":"webpack://"}]);
 
 // exports
 
@@ -21921,7 +21922,7 @@ exports = module.exports = __webpack_require__(3)();
 
 
 // module
-exports.push([module.i, "\n.tags span {\r\n    margin-right: 5px;\n}\n.tags {\r\n    margin-bottom: 10px;\n}\n.more {\r\n    display: none;\n}\n#IncidentSearchView .ct-series-a .ct-line, #IncidentSearchView .ct-series-a .ct-point {\r\n    stroke: rgb(0, 148, 218);\n}\n#IncidentSearchView .ct-series-b .ct-line, #IncidentSearchView .ct-series-b .ct-point {\r\n    stroke: #2f4f4f;\n}\n#IncidentSearchView .ct-series-c .ct-line, #IncidentSearchView .ct-series-c .ct-point {\r\n    stroke: #DCE12E !important;\n}\n#IncidentSearchView .ct-series-d .ct-line, #IncidentSearchView .ct-series-d .ct-point {\r\n    stroke: #C28247 !important;\n}\n#IncidentSearchView .ct-series-e .ct-line, #IncidentSearchView .ct-series-e .ct-point {\r\n    stroke: #B82B19 !important;\n}\n#IncidentSearchView .ct-series-f .ct-line, #IncidentSearchView .ct-series-f .ct-point {\r\n    stroke: #1EC2A3 !important;\n}\r\n\r\n/*.ct-label.ct-label.ct-horizontal {\r\n    position: relative;\r\n    justify-content: flex-end;\r\n    text-align: right;\r\n    transform: translate(100%, 40%) rotate(20deg);\r\n}*/\n.incident-chart svg.ct-chart-line, .incident-chart svg.ct-chart-line g.ct-labels, .incident-chart svg.ct-chart-line g.ct-labels span.ct-label {\r\n    overflow: visible;\n}", "", {"version":3,"sources":["/./ClientApp/components/discover/incidents/Incident.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AAED;IACI,oBAAoB;CACvB;AACD;IACI,cAAc;CACjB;AAGD;IACI,yBAAyB;CAC5B;AAED;IACI,gBAAgB;CACnB;AAED;IACI,2BAA2B;CAC9B;AAED;IACI,2BAA2B;CAC9B;AAED;IACI,2BAA2B;CAC9B;AAED;IACI,2BAA2B;CAC9B;;AAED;;;;;GAKG;AAEH;IACI,kBAAkB;CACrB","file":"Incident.css","sourcesContent":[".tags span {\r\n    margin-right: 5px;\r\n}\r\n\r\n.tags {\r\n    margin-bottom: 10px;\r\n}\r\n.more {\r\n    display: none;\r\n}\r\n\r\n\r\n#IncidentSearchView .ct-series-a .ct-line, #IncidentSearchView .ct-series-a .ct-point {\r\n    stroke: rgb(0, 148, 218);\r\n}\r\n\r\n#IncidentSearchView .ct-series-b .ct-line, #IncidentSearchView .ct-series-b .ct-point {\r\n    stroke: #2f4f4f;\r\n}\r\n\r\n#IncidentSearchView .ct-series-c .ct-line, #IncidentSearchView .ct-series-c .ct-point {\r\n    stroke: #DCE12E !important;\r\n}\r\n\r\n#IncidentSearchView .ct-series-d .ct-line, #IncidentSearchView .ct-series-d .ct-point {\r\n    stroke: #C28247 !important;\r\n}\r\n\r\n#IncidentSearchView .ct-series-e .ct-line, #IncidentSearchView .ct-series-e .ct-point {\r\n    stroke: #B82B19 !important;\r\n}\r\n\r\n#IncidentSearchView .ct-series-f .ct-line, #IncidentSearchView .ct-series-f .ct-point {\r\n    stroke: #1EC2A3 !important;\r\n}\r\n\r\n/*.ct-label.ct-label.ct-horizontal {\r\n    position: relative;\r\n    justify-content: flex-end;\r\n    text-align: right;\r\n    transform: translate(100%, 40%) rotate(20deg);\r\n}*/\r\n\r\n.incident-chart svg.ct-chart-line, .incident-chart svg.ct-chart-line g.ct-labels, .incident-chart svg.ct-chart-line g.ct-labels span.ct-label {\r\n    overflow: visible;\r\n}"],"sourceRoot":"webpack://"}]);
+exports.push([module.i, "\n.ct-label {\n  fill: rgba(0, 0, 0, 0.4);\n  color: rgba(0, 0, 0, 0.4);\n  font-size: 0.75rem;\n  line-height: 1;\n}\n.ct-chart-line .ct-label,\n.ct-chart-bar .ct-label {\n  display: block;\n  display: -webkit-box;\n  display: -moz-box;\n  display: -ms-flexbox;\n  display: -webkit-flex;\n  display: flex;\n}\n.ct-chart-pie .ct-label,\n.ct-chart-donut .ct-label {\n  dominant-baseline: central;\n}\n.ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-label.ct-vertical.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-end;\n  -webkit-justify-content: flex-end;\n  -ms-flex-pack: flex-end;\n  justify-content: flex-end;\n  text-align: right;\n  text-anchor: end;\n}\n.ct-label.ct-vertical.ct-end {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar .ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  text-align: center;\n  text-anchor: start;\n}\n.ct-chart-bar .ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  text-align: center;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-vertical.ct-start {\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -webkit-box-pack: flex-end;\n  -webkit-justify-content: flex-end;\n  -ms-flex-pack: flex-end;\n  justify-content: flex-end;\n  text-align: right;\n  text-anchor: end;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-vertical.ct-end {\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: end;\n}\n.ct-grid {\n  stroke: rgba(0, 0, 0, 0.2);\n  stroke-width: 1px;\n  stroke-dasharray: 2px;\n}\n.ct-grid-background {\n  fill: none;\n}\n.ct-point {\n  stroke-width: 10px;\n  stroke-linecap: round;\n}\n.ct-line {\n  fill: none;\n  stroke-width: 4px;\n}\n.ct-area {\n  stroke: none;\n  fill-opacity: 0.1;\n}\n.ct-bar {\n  fill: none;\n  stroke-width: 10px;\n}\n.ct-slice-donut {\n  fill: none;\n  stroke-width: 60px;\n}\n.ct-series-a .ct-point, .ct-series-a .ct-line, .ct-series-a .ct-bar, .ct-series-a .ct-slice-donut {\n  stroke: #d70206;\n}\n.ct-series-a .ct-slice-pie, .ct-series-a .ct-slice-donut-solid, .ct-series-a .ct-area {\n  fill: #d70206;\n}\n.ct-series-b .ct-point, .ct-series-b .ct-line, .ct-series-b .ct-bar, .ct-series-b .ct-slice-donut {\n  stroke: #f05b4f;\n}\n.ct-series-b .ct-slice-pie, .ct-series-b .ct-slice-donut-solid, .ct-series-b .ct-area {\n  fill: #f05b4f;\n}\n.ct-series-c .ct-point, .ct-series-c .ct-line, .ct-series-c .ct-bar, .ct-series-c .ct-slice-donut {\n  stroke: #f4c63d;\n}\n.ct-series-c .ct-slice-pie, .ct-series-c .ct-slice-donut-solid, .ct-series-c .ct-area {\n  fill: #f4c63d;\n}\n.ct-series-d .ct-point, .ct-series-d .ct-line, .ct-series-d .ct-bar, .ct-series-d .ct-slice-donut {\n  stroke: #d17905;\n}\n.ct-series-d .ct-slice-pie, .ct-series-d .ct-slice-donut-solid, .ct-series-d .ct-area {\n  fill: #d17905;\n}\n.ct-series-e .ct-point, .ct-series-e .ct-line, .ct-series-e .ct-bar, .ct-series-e .ct-slice-donut {\n  stroke: #453d3f;\n}\n.ct-series-e .ct-slice-pie, .ct-series-e .ct-slice-donut-solid, .ct-series-e .ct-area {\n  fill: #453d3f;\n}\n.ct-series-f .ct-point, .ct-series-f .ct-line, .ct-series-f .ct-bar, .ct-series-f .ct-slice-donut {\n  stroke: #59922b;\n}\n.ct-series-f .ct-slice-pie, .ct-series-f .ct-slice-donut-solid, .ct-series-f .ct-area {\n  fill: #59922b;\n}\n.ct-series-g .ct-point, .ct-series-g .ct-line, .ct-series-g .ct-bar, .ct-series-g .ct-slice-donut {\n  stroke: #0544d3;\n}\n.ct-series-g .ct-slice-pie, .ct-series-g .ct-slice-donut-solid, .ct-series-g .ct-area {\n  fill: #0544d3;\n}\n.ct-series-h .ct-point, .ct-series-h .ct-line, .ct-series-h .ct-bar, .ct-series-h .ct-slice-donut {\n  stroke: #6b0392;\n}\n.ct-series-h .ct-slice-pie, .ct-series-h .ct-slice-donut-solid, .ct-series-h .ct-area {\n  fill: #6b0392;\n}\n.ct-series-i .ct-point, .ct-series-i .ct-line, .ct-series-i .ct-bar, .ct-series-i .ct-slice-donut {\n  stroke: #f05b4f;\n}\n.ct-series-i .ct-slice-pie, .ct-series-i .ct-slice-donut-solid, .ct-series-i .ct-area {\n  fill: #f05b4f;\n}\n.ct-series-j .ct-point, .ct-series-j .ct-line, .ct-series-j .ct-bar, .ct-series-j .ct-slice-donut {\n  stroke: #dda458;\n}\n.ct-series-j .ct-slice-pie, .ct-series-j .ct-slice-donut-solid, .ct-series-j .ct-area {\n  fill: #dda458;\n}\n.ct-series-k .ct-point, .ct-series-k .ct-line, .ct-series-k .ct-bar, .ct-series-k .ct-slice-donut {\n  stroke: #eacf7d;\n}\n.ct-series-k .ct-slice-pie, .ct-series-k .ct-slice-donut-solid, .ct-series-k .ct-area {\n  fill: #eacf7d;\n}\n.ct-series-l .ct-point, .ct-series-l .ct-line, .ct-series-l .ct-bar, .ct-series-l .ct-slice-donut {\n  stroke: #86797d;\n}\n.ct-series-l .ct-slice-pie, .ct-series-l .ct-slice-donut-solid, .ct-series-l .ct-area {\n  fill: #86797d;\n}\n.ct-series-m .ct-point, .ct-series-m .ct-line, .ct-series-m .ct-bar, .ct-series-m .ct-slice-donut {\n  stroke: #b2c326;\n}\n.ct-series-m .ct-slice-pie, .ct-series-m .ct-slice-donut-solid, .ct-series-m .ct-area {\n  fill: #b2c326;\n}\n.ct-series-n .ct-point, .ct-series-n .ct-line, .ct-series-n .ct-bar, .ct-series-n .ct-slice-donut {\n  stroke: #6188e2;\n}\n.ct-series-n .ct-slice-pie, .ct-series-n .ct-slice-donut-solid, .ct-series-n .ct-area {\n  fill: #6188e2;\n}\n.ct-series-o .ct-point, .ct-series-o .ct-line, .ct-series-o .ct-bar, .ct-series-o .ct-slice-donut {\n  stroke: #a748ca;\n}\n.ct-series-o .ct-slice-pie, .ct-series-o .ct-slice-donut-solid, .ct-series-o .ct-area {\n  fill: #a748ca;\n}\n.ct-square {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-square:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 100%;\n}\n.ct-square:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-square > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-second {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-second:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 93.75%;\n}\n.ct-minor-second:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-second > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-second {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-second:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 88.8888888889%;\n}\n.ct-major-second:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-second > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-third {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-third:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 83.3333333333%;\n}\n.ct-minor-third:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-third > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-third {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-third:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 80%;\n}\n.ct-major-third:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-third > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-perfect-fourth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-perfect-fourth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 75%;\n}\n.ct-perfect-fourth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-perfect-fourth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-perfect-fifth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-perfect-fifth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 66.6666666667%;\n}\n.ct-perfect-fifth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-perfect-fifth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-sixth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-sixth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 62.5%;\n}\n.ct-minor-sixth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-sixth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-golden-section {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-golden-section:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 61.804697157%;\n}\n.ct-golden-section:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-golden-section > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-sixth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-sixth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 60%;\n}\n.ct-major-sixth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-sixth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-seventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-seventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 56.25%;\n}\n.ct-minor-seventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-seventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-seventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-seventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 53.3333333333%;\n}\n.ct-major-seventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-seventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-octave {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-octave:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 50%;\n}\n.ct-octave:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-octave > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-tenth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-tenth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 40%;\n}\n.ct-major-tenth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-tenth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-eleventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-eleventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 37.5%;\n}\n.ct-major-eleventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-eleventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-twelfth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-twelfth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 33.3333333333%;\n}\n.ct-major-twelfth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-twelfth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-double-octave {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-double-octave:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 25%;\n}\n.ct-double-octave:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-double-octave > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n\n/*# sourceMappingURL=chartist.css.map */", "", {"version":3,"sources":["/./node_modules/src/styles/chartist.scss","/./node_modules/src/styles/settings/_chartist-settings.scss","/./node_modules/chartist/dist/chartist.css"],"names":[],"mappings":"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","file":"chartist.css","sourcesContent":[null,null,"\n.ct-label {\n  fill: rgba(0, 0, 0, 0.4);\n  color: rgba(0, 0, 0, 0.4);\n  font-size: 0.75rem;\n  line-height: 1;\n}\n.ct-chart-line .ct-label,\n.ct-chart-bar .ct-label {\n  display: block;\n  display: -webkit-box;\n  display: -moz-box;\n  display: -ms-flexbox;\n  display: -webkit-flex;\n  display: flex;\n}\n.ct-chart-pie .ct-label,\n.ct-chart-donut .ct-label {\n  dominant-baseline: central;\n}\n.ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-label.ct-vertical.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-end;\n  -webkit-justify-content: flex-end;\n  -ms-flex-pack: flex-end;\n  justify-content: flex-end;\n  text-align: right;\n  text-anchor: end;\n}\n.ct-label.ct-vertical.ct-end {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar .ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  text-align: center;\n  text-anchor: start;\n}\n.ct-chart-bar .ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  text-align: center;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-vertical.ct-start {\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -webkit-box-pack: flex-end;\n  -webkit-justify-content: flex-end;\n  -ms-flex-pack: flex-end;\n  justify-content: flex-end;\n  text-align: right;\n  text-anchor: end;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-vertical.ct-end {\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: end;\n}\n.ct-grid {\n  stroke: rgba(0, 0, 0, 0.2);\n  stroke-width: 1px;\n  stroke-dasharray: 2px;\n}\n.ct-grid-background {\n  fill: none;\n}\n.ct-point {\n  stroke-width: 10px;\n  stroke-linecap: round;\n}\n.ct-line {\n  fill: none;\n  stroke-width: 4px;\n}\n.ct-area {\n  stroke: none;\n  fill-opacity: 0.1;\n}\n.ct-bar {\n  fill: none;\n  stroke-width: 10px;\n}\n.ct-slice-donut {\n  fill: none;\n  stroke-width: 60px;\n}\n.ct-series-a .ct-point, .ct-series-a .ct-line, .ct-series-a .ct-bar, .ct-series-a .ct-slice-donut {\n  stroke: #d70206;\n}\n.ct-series-a .ct-slice-pie, .ct-series-a .ct-slice-donut-solid, .ct-series-a .ct-area {\n  fill: #d70206;\n}\n.ct-series-b .ct-point, .ct-series-b .ct-line, .ct-series-b .ct-bar, .ct-series-b .ct-slice-donut {\n  stroke: #f05b4f;\n}\n.ct-series-b .ct-slice-pie, .ct-series-b .ct-slice-donut-solid, .ct-series-b .ct-area {\n  fill: #f05b4f;\n}\n.ct-series-c .ct-point, .ct-series-c .ct-line, .ct-series-c .ct-bar, .ct-series-c .ct-slice-donut {\n  stroke: #f4c63d;\n}\n.ct-series-c .ct-slice-pie, .ct-series-c .ct-slice-donut-solid, .ct-series-c .ct-area {\n  fill: #f4c63d;\n}\n.ct-series-d .ct-point, .ct-series-d .ct-line, .ct-series-d .ct-bar, .ct-series-d .ct-slice-donut {\n  stroke: #d17905;\n}\n.ct-series-d .ct-slice-pie, .ct-series-d .ct-slice-donut-solid, .ct-series-d .ct-area {\n  fill: #d17905;\n}\n.ct-series-e .ct-point, .ct-series-e .ct-line, .ct-series-e .ct-bar, .ct-series-e .ct-slice-donut {\n  stroke: #453d3f;\n}\n.ct-series-e .ct-slice-pie, .ct-series-e .ct-slice-donut-solid, .ct-series-e .ct-area {\n  fill: #453d3f;\n}\n.ct-series-f .ct-point, .ct-series-f .ct-line, .ct-series-f .ct-bar, .ct-series-f .ct-slice-donut {\n  stroke: #59922b;\n}\n.ct-series-f .ct-slice-pie, .ct-series-f .ct-slice-donut-solid, .ct-series-f .ct-area {\n  fill: #59922b;\n}\n.ct-series-g .ct-point, .ct-series-g .ct-line, .ct-series-g .ct-bar, .ct-series-g .ct-slice-donut {\n  stroke: #0544d3;\n}\n.ct-series-g .ct-slice-pie, .ct-series-g .ct-slice-donut-solid, .ct-series-g .ct-area {\n  fill: #0544d3;\n}\n.ct-series-h .ct-point, .ct-series-h .ct-line, .ct-series-h .ct-bar, .ct-series-h .ct-slice-donut {\n  stroke: #6b0392;\n}\n.ct-series-h .ct-slice-pie, .ct-series-h .ct-slice-donut-solid, .ct-series-h .ct-area {\n  fill: #6b0392;\n}\n.ct-series-i .ct-point, .ct-series-i .ct-line, .ct-series-i .ct-bar, .ct-series-i .ct-slice-donut {\n  stroke: #f05b4f;\n}\n.ct-series-i .ct-slice-pie, .ct-series-i .ct-slice-donut-solid, .ct-series-i .ct-area {\n  fill: #f05b4f;\n}\n.ct-series-j .ct-point, .ct-series-j .ct-line, .ct-series-j .ct-bar, .ct-series-j .ct-slice-donut {\n  stroke: #dda458;\n}\n.ct-series-j .ct-slice-pie, .ct-series-j .ct-slice-donut-solid, .ct-series-j .ct-area {\n  fill: #dda458;\n}\n.ct-series-k .ct-point, .ct-series-k .ct-line, .ct-series-k .ct-bar, .ct-series-k .ct-slice-donut {\n  stroke: #eacf7d;\n}\n.ct-series-k .ct-slice-pie, .ct-series-k .ct-slice-donut-solid, .ct-series-k .ct-area {\n  fill: #eacf7d;\n}\n.ct-series-l .ct-point, .ct-series-l .ct-line, .ct-series-l .ct-bar, .ct-series-l .ct-slice-donut {\n  stroke: #86797d;\n}\n.ct-series-l .ct-slice-pie, .ct-series-l .ct-slice-donut-solid, .ct-series-l .ct-area {\n  fill: #86797d;\n}\n.ct-series-m .ct-point, .ct-series-m .ct-line, .ct-series-m .ct-bar, .ct-series-m .ct-slice-donut {\n  stroke: #b2c326;\n}\n.ct-series-m .ct-slice-pie, .ct-series-m .ct-slice-donut-solid, .ct-series-m .ct-area {\n  fill: #b2c326;\n}\n.ct-series-n .ct-point, .ct-series-n .ct-line, .ct-series-n .ct-bar, .ct-series-n .ct-slice-donut {\n  stroke: #6188e2;\n}\n.ct-series-n .ct-slice-pie, .ct-series-n .ct-slice-donut-solid, .ct-series-n .ct-area {\n  fill: #6188e2;\n}\n.ct-series-o .ct-point, .ct-series-o .ct-line, .ct-series-o .ct-bar, .ct-series-o .ct-slice-donut {\n  stroke: #a748ca;\n}\n.ct-series-o .ct-slice-pie, .ct-series-o .ct-slice-donut-solid, .ct-series-o .ct-area {\n  fill: #a748ca;\n}\n.ct-square {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-square:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 100%;\n}\n.ct-square:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-square > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-second {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-second:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 93.75%;\n}\n.ct-minor-second:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-second > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-second {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-second:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 88.8888888889%;\n}\n.ct-major-second:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-second > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-third {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-third:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 83.3333333333%;\n}\n.ct-minor-third:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-third > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-third {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-third:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 80%;\n}\n.ct-major-third:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-third > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-perfect-fourth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-perfect-fourth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 75%;\n}\n.ct-perfect-fourth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-perfect-fourth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-perfect-fifth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-perfect-fifth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 66.6666666667%;\n}\n.ct-perfect-fifth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-perfect-fifth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-sixth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-sixth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 62.5%;\n}\n.ct-minor-sixth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-sixth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-golden-section {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-golden-section:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 61.804697157%;\n}\n.ct-golden-section:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-golden-section > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-sixth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-sixth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 60%;\n}\n.ct-major-sixth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-sixth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-seventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-seventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 56.25%;\n}\n.ct-minor-seventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-seventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-seventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-seventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 53.3333333333%;\n}\n.ct-major-seventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-seventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-octave {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-octave:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 50%;\n}\n.ct-octave:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-octave > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-tenth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-tenth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 40%;\n}\n.ct-major-tenth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-tenth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-eleventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-eleventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 37.5%;\n}\n.ct-major-eleventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-eleventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-twelfth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-twelfth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 33.3333333333%;\n}\n.ct-major-twelfth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-twelfth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-double-octave {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-double-octave:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 25%;\n}\n.ct-double-octave:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-double-octave > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n\n/*# sourceMappingURL=chartist.css.map */"],"sourceRoot":"webpack://"}]);
 
 // exports
 
@@ -21935,7 +21936,7 @@ exports = module.exports = __webpack_require__(3)();
 
 
 // module
-exports.push([module.i, "\n.ct-label {\n  fill: rgba(0, 0, 0, 0.4);\n  color: rgba(0, 0, 0, 0.4);\n  font-size: 0.75rem;\n  line-height: 1;\n}\n.ct-chart-line .ct-label,\n.ct-chart-bar .ct-label {\n  display: block;\n  display: -webkit-box;\n  display: -moz-box;\n  display: -ms-flexbox;\n  display: -webkit-flex;\n  display: flex;\n}\n.ct-chart-pie .ct-label,\n.ct-chart-donut .ct-label {\n  dominant-baseline: central;\n}\n.ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-label.ct-vertical.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-end;\n  -webkit-justify-content: flex-end;\n  -ms-flex-pack: flex-end;\n  justify-content: flex-end;\n  text-align: right;\n  text-anchor: end;\n}\n.ct-label.ct-vertical.ct-end {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar .ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  text-align: center;\n  text-anchor: start;\n}\n.ct-chart-bar .ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  text-align: center;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-vertical.ct-start {\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -webkit-box-pack: flex-end;\n  -webkit-justify-content: flex-end;\n  -ms-flex-pack: flex-end;\n  justify-content: flex-end;\n  text-align: right;\n  text-anchor: end;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-vertical.ct-end {\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: end;\n}\n.ct-grid {\n  stroke: rgba(0, 0, 0, 0.2);\n  stroke-width: 1px;\n  stroke-dasharray: 2px;\n}\n.ct-grid-background {\n  fill: none;\n}\n.ct-point {\n  stroke-width: 10px;\n  stroke-linecap: round;\n}\n.ct-line {\n  fill: none;\n  stroke-width: 4px;\n}\n.ct-area {\n  stroke: none;\n  fill-opacity: 0.1;\n}\n.ct-bar {\n  fill: none;\n  stroke-width: 10px;\n}\n.ct-slice-donut {\n  fill: none;\n  stroke-width: 60px;\n}\n.ct-series-a .ct-point, .ct-series-a .ct-line, .ct-series-a .ct-bar, .ct-series-a .ct-slice-donut {\n  stroke: #d70206;\n}\n.ct-series-a .ct-slice-pie, .ct-series-a .ct-slice-donut-solid, .ct-series-a .ct-area {\n  fill: #d70206;\n}\n.ct-series-b .ct-point, .ct-series-b .ct-line, .ct-series-b .ct-bar, .ct-series-b .ct-slice-donut {\n  stroke: #f05b4f;\n}\n.ct-series-b .ct-slice-pie, .ct-series-b .ct-slice-donut-solid, .ct-series-b .ct-area {\n  fill: #f05b4f;\n}\n.ct-series-c .ct-point, .ct-series-c .ct-line, .ct-series-c .ct-bar, .ct-series-c .ct-slice-donut {\n  stroke: #f4c63d;\n}\n.ct-series-c .ct-slice-pie, .ct-series-c .ct-slice-donut-solid, .ct-series-c .ct-area {\n  fill: #f4c63d;\n}\n.ct-series-d .ct-point, .ct-series-d .ct-line, .ct-series-d .ct-bar, .ct-series-d .ct-slice-donut {\n  stroke: #d17905;\n}\n.ct-series-d .ct-slice-pie, .ct-series-d .ct-slice-donut-solid, .ct-series-d .ct-area {\n  fill: #d17905;\n}\n.ct-series-e .ct-point, .ct-series-e .ct-line, .ct-series-e .ct-bar, .ct-series-e .ct-slice-donut {\n  stroke: #453d3f;\n}\n.ct-series-e .ct-slice-pie, .ct-series-e .ct-slice-donut-solid, .ct-series-e .ct-area {\n  fill: #453d3f;\n}\n.ct-series-f .ct-point, .ct-series-f .ct-line, .ct-series-f .ct-bar, .ct-series-f .ct-slice-donut {\n  stroke: #59922b;\n}\n.ct-series-f .ct-slice-pie, .ct-series-f .ct-slice-donut-solid, .ct-series-f .ct-area {\n  fill: #59922b;\n}\n.ct-series-g .ct-point, .ct-series-g .ct-line, .ct-series-g .ct-bar, .ct-series-g .ct-slice-donut {\n  stroke: #0544d3;\n}\n.ct-series-g .ct-slice-pie, .ct-series-g .ct-slice-donut-solid, .ct-series-g .ct-area {\n  fill: #0544d3;\n}\n.ct-series-h .ct-point, .ct-series-h .ct-line, .ct-series-h .ct-bar, .ct-series-h .ct-slice-donut {\n  stroke: #6b0392;\n}\n.ct-series-h .ct-slice-pie, .ct-series-h .ct-slice-donut-solid, .ct-series-h .ct-area {\n  fill: #6b0392;\n}\n.ct-series-i .ct-point, .ct-series-i .ct-line, .ct-series-i .ct-bar, .ct-series-i .ct-slice-donut {\n  stroke: #f05b4f;\n}\n.ct-series-i .ct-slice-pie, .ct-series-i .ct-slice-donut-solid, .ct-series-i .ct-area {\n  fill: #f05b4f;\n}\n.ct-series-j .ct-point, .ct-series-j .ct-line, .ct-series-j .ct-bar, .ct-series-j .ct-slice-donut {\n  stroke: #dda458;\n}\n.ct-series-j .ct-slice-pie, .ct-series-j .ct-slice-donut-solid, .ct-series-j .ct-area {\n  fill: #dda458;\n}\n.ct-series-k .ct-point, .ct-series-k .ct-line, .ct-series-k .ct-bar, .ct-series-k .ct-slice-donut {\n  stroke: #eacf7d;\n}\n.ct-series-k .ct-slice-pie, .ct-series-k .ct-slice-donut-solid, .ct-series-k .ct-area {\n  fill: #eacf7d;\n}\n.ct-series-l .ct-point, .ct-series-l .ct-line, .ct-series-l .ct-bar, .ct-series-l .ct-slice-donut {\n  stroke: #86797d;\n}\n.ct-series-l .ct-slice-pie, .ct-series-l .ct-slice-donut-solid, .ct-series-l .ct-area {\n  fill: #86797d;\n}\n.ct-series-m .ct-point, .ct-series-m .ct-line, .ct-series-m .ct-bar, .ct-series-m .ct-slice-donut {\n  stroke: #b2c326;\n}\n.ct-series-m .ct-slice-pie, .ct-series-m .ct-slice-donut-solid, .ct-series-m .ct-area {\n  fill: #b2c326;\n}\n.ct-series-n .ct-point, .ct-series-n .ct-line, .ct-series-n .ct-bar, .ct-series-n .ct-slice-donut {\n  stroke: #6188e2;\n}\n.ct-series-n .ct-slice-pie, .ct-series-n .ct-slice-donut-solid, .ct-series-n .ct-area {\n  fill: #6188e2;\n}\n.ct-series-o .ct-point, .ct-series-o .ct-line, .ct-series-o .ct-bar, .ct-series-o .ct-slice-donut {\n  stroke: #a748ca;\n}\n.ct-series-o .ct-slice-pie, .ct-series-o .ct-slice-donut-solid, .ct-series-o .ct-area {\n  fill: #a748ca;\n}\n.ct-square {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-square:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 100%;\n}\n.ct-square:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-square > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-second {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-second:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 93.75%;\n}\n.ct-minor-second:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-second > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-second {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-second:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 88.8888888889%;\n}\n.ct-major-second:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-second > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-third {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-third:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 83.3333333333%;\n}\n.ct-minor-third:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-third > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-third {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-third:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 80%;\n}\n.ct-major-third:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-third > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-perfect-fourth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-perfect-fourth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 75%;\n}\n.ct-perfect-fourth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-perfect-fourth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-perfect-fifth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-perfect-fifth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 66.6666666667%;\n}\n.ct-perfect-fifth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-perfect-fifth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-sixth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-sixth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 62.5%;\n}\n.ct-minor-sixth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-sixth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-golden-section {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-golden-section:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 61.804697157%;\n}\n.ct-golden-section:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-golden-section > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-sixth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-sixth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 60%;\n}\n.ct-major-sixth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-sixth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-seventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-seventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 56.25%;\n}\n.ct-minor-seventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-seventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-seventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-seventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 53.3333333333%;\n}\n.ct-major-seventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-seventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-octave {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-octave:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 50%;\n}\n.ct-octave:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-octave > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-tenth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-tenth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 40%;\n}\n.ct-major-tenth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-tenth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-eleventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-eleventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 37.5%;\n}\n.ct-major-eleventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-eleventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-twelfth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-twelfth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 33.3333333333%;\n}\n.ct-major-twelfth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-twelfth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-double-octave {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-double-octave:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 25%;\n}\n.ct-double-octave:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-double-octave > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n\n/*# sourceMappingURL=chartist.css.map */", "", {"version":3,"sources":["/./node_modules/src/styles/chartist.scss","/./node_modules/src/styles/settings/_chartist-settings.scss","/./node_modules/chartist/dist/chartist.css"],"names":[],"mappings":"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","file":"chartist.css","sourcesContent":[null,null,"\n.ct-label {\n  fill: rgba(0, 0, 0, 0.4);\n  color: rgba(0, 0, 0, 0.4);\n  font-size: 0.75rem;\n  line-height: 1;\n}\n.ct-chart-line .ct-label,\n.ct-chart-bar .ct-label {\n  display: block;\n  display: -webkit-box;\n  display: -moz-box;\n  display: -ms-flexbox;\n  display: -webkit-flex;\n  display: flex;\n}\n.ct-chart-pie .ct-label,\n.ct-chart-donut .ct-label {\n  dominant-baseline: central;\n}\n.ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-label.ct-vertical.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-end;\n  -webkit-justify-content: flex-end;\n  -ms-flex-pack: flex-end;\n  justify-content: flex-end;\n  text-align: right;\n  text-anchor: end;\n}\n.ct-label.ct-vertical.ct-end {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar .ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  text-align: center;\n  text-anchor: start;\n}\n.ct-chart-bar .ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  text-align: center;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-vertical.ct-start {\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -webkit-box-pack: flex-end;\n  -webkit-justify-content: flex-end;\n  -ms-flex-pack: flex-end;\n  justify-content: flex-end;\n  text-align: right;\n  text-anchor: end;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-vertical.ct-end {\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: end;\n}\n.ct-grid {\n  stroke: rgba(0, 0, 0, 0.2);\n  stroke-width: 1px;\n  stroke-dasharray: 2px;\n}\n.ct-grid-background {\n  fill: none;\n}\n.ct-point {\n  stroke-width: 10px;\n  stroke-linecap: round;\n}\n.ct-line {\n  fill: none;\n  stroke-width: 4px;\n}\n.ct-area {\n  stroke: none;\n  fill-opacity: 0.1;\n}\n.ct-bar {\n  fill: none;\n  stroke-width: 10px;\n}\n.ct-slice-donut {\n  fill: none;\n  stroke-width: 60px;\n}\n.ct-series-a .ct-point, .ct-series-a .ct-line, .ct-series-a .ct-bar, .ct-series-a .ct-slice-donut {\n  stroke: #d70206;\n}\n.ct-series-a .ct-slice-pie, .ct-series-a .ct-slice-donut-solid, .ct-series-a .ct-area {\n  fill: #d70206;\n}\n.ct-series-b .ct-point, .ct-series-b .ct-line, .ct-series-b .ct-bar, .ct-series-b .ct-slice-donut {\n  stroke: #f05b4f;\n}\n.ct-series-b .ct-slice-pie, .ct-series-b .ct-slice-donut-solid, .ct-series-b .ct-area {\n  fill: #f05b4f;\n}\n.ct-series-c .ct-point, .ct-series-c .ct-line, .ct-series-c .ct-bar, .ct-series-c .ct-slice-donut {\n  stroke: #f4c63d;\n}\n.ct-series-c .ct-slice-pie, .ct-series-c .ct-slice-donut-solid, .ct-series-c .ct-area {\n  fill: #f4c63d;\n}\n.ct-series-d .ct-point, .ct-series-d .ct-line, .ct-series-d .ct-bar, .ct-series-d .ct-slice-donut {\n  stroke: #d17905;\n}\n.ct-series-d .ct-slice-pie, .ct-series-d .ct-slice-donut-solid, .ct-series-d .ct-area {\n  fill: #d17905;\n}\n.ct-series-e .ct-point, .ct-series-e .ct-line, .ct-series-e .ct-bar, .ct-series-e .ct-slice-donut {\n  stroke: #453d3f;\n}\n.ct-series-e .ct-slice-pie, .ct-series-e .ct-slice-donut-solid, .ct-series-e .ct-area {\n  fill: #453d3f;\n}\n.ct-series-f .ct-point, .ct-series-f .ct-line, .ct-series-f .ct-bar, .ct-series-f .ct-slice-donut {\n  stroke: #59922b;\n}\n.ct-series-f .ct-slice-pie, .ct-series-f .ct-slice-donut-solid, .ct-series-f .ct-area {\n  fill: #59922b;\n}\n.ct-series-g .ct-point, .ct-series-g .ct-line, .ct-series-g .ct-bar, .ct-series-g .ct-slice-donut {\n  stroke: #0544d3;\n}\n.ct-series-g .ct-slice-pie, .ct-series-g .ct-slice-donut-solid, .ct-series-g .ct-area {\n  fill: #0544d3;\n}\n.ct-series-h .ct-point, .ct-series-h .ct-line, .ct-series-h .ct-bar, .ct-series-h .ct-slice-donut {\n  stroke: #6b0392;\n}\n.ct-series-h .ct-slice-pie, .ct-series-h .ct-slice-donut-solid, .ct-series-h .ct-area {\n  fill: #6b0392;\n}\n.ct-series-i .ct-point, .ct-series-i .ct-line, .ct-series-i .ct-bar, .ct-series-i .ct-slice-donut {\n  stroke: #f05b4f;\n}\n.ct-series-i .ct-slice-pie, .ct-series-i .ct-slice-donut-solid, .ct-series-i .ct-area {\n  fill: #f05b4f;\n}\n.ct-series-j .ct-point, .ct-series-j .ct-line, .ct-series-j .ct-bar, .ct-series-j .ct-slice-donut {\n  stroke: #dda458;\n}\n.ct-series-j .ct-slice-pie, .ct-series-j .ct-slice-donut-solid, .ct-series-j .ct-area {\n  fill: #dda458;\n}\n.ct-series-k .ct-point, .ct-series-k .ct-line, .ct-series-k .ct-bar, .ct-series-k .ct-slice-donut {\n  stroke: #eacf7d;\n}\n.ct-series-k .ct-slice-pie, .ct-series-k .ct-slice-donut-solid, .ct-series-k .ct-area {\n  fill: #eacf7d;\n}\n.ct-series-l .ct-point, .ct-series-l .ct-line, .ct-series-l .ct-bar, .ct-series-l .ct-slice-donut {\n  stroke: #86797d;\n}\n.ct-series-l .ct-slice-pie, .ct-series-l .ct-slice-donut-solid, .ct-series-l .ct-area {\n  fill: #86797d;\n}\n.ct-series-m .ct-point, .ct-series-m .ct-line, .ct-series-m .ct-bar, .ct-series-m .ct-slice-donut {\n  stroke: #b2c326;\n}\n.ct-series-m .ct-slice-pie, .ct-series-m .ct-slice-donut-solid, .ct-series-m .ct-area {\n  fill: #b2c326;\n}\n.ct-series-n .ct-point, .ct-series-n .ct-line, .ct-series-n .ct-bar, .ct-series-n .ct-slice-donut {\n  stroke: #6188e2;\n}\n.ct-series-n .ct-slice-pie, .ct-series-n .ct-slice-donut-solid, .ct-series-n .ct-area {\n  fill: #6188e2;\n}\n.ct-series-o .ct-point, .ct-series-o .ct-line, .ct-series-o .ct-bar, .ct-series-o .ct-slice-donut {\n  stroke: #a748ca;\n}\n.ct-series-o .ct-slice-pie, .ct-series-o .ct-slice-donut-solid, .ct-series-o .ct-area {\n  fill: #a748ca;\n}\n.ct-square {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-square:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 100%;\n}\n.ct-square:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-square > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-second {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-second:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 93.75%;\n}\n.ct-minor-second:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-second > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-second {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-second:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 88.8888888889%;\n}\n.ct-major-second:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-second > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-third {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-third:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 83.3333333333%;\n}\n.ct-minor-third:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-third > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-third {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-third:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 80%;\n}\n.ct-major-third:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-third > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-perfect-fourth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-perfect-fourth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 75%;\n}\n.ct-perfect-fourth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-perfect-fourth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-perfect-fifth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-perfect-fifth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 66.6666666667%;\n}\n.ct-perfect-fifth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-perfect-fifth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-sixth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-sixth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 62.5%;\n}\n.ct-minor-sixth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-sixth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-golden-section {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-golden-section:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 61.804697157%;\n}\n.ct-golden-section:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-golden-section > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-sixth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-sixth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 60%;\n}\n.ct-major-sixth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-sixth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-seventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-seventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 56.25%;\n}\n.ct-minor-seventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-seventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-seventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-seventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 53.3333333333%;\n}\n.ct-major-seventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-seventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-octave {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-octave:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 50%;\n}\n.ct-octave:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-octave > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-tenth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-tenth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 40%;\n}\n.ct-major-tenth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-tenth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-eleventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-eleventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 37.5%;\n}\n.ct-major-eleventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-eleventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-twelfth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-twelfth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 33.3333333333%;\n}\n.ct-major-twelfth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-twelfth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-double-octave {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-double-octave:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 25%;\n}\n.ct-double-octave:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-double-octave > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n\n/*# sourceMappingURL=chartist.css.map */"],"sourceRoot":"webpack://"}]);
+exports.push([module.i, "\n.tags span {\r\n    margin-right: 5px;\n}\n.tags {\r\n    margin-bottom: 10px;\n}\n.more {\r\n    display: none;\n}\n#IncidentSearchView .ct-series-a .ct-line, #IncidentSearchView .ct-series-a .ct-point {\r\n    stroke: rgb(0, 148, 218);\n}\n#IncidentSearchView .ct-series-b .ct-line, #IncidentSearchView .ct-series-b .ct-point {\r\n    stroke: #2f4f4f;\n}\n#IncidentSearchView .ct-series-c .ct-line, #IncidentSearchView .ct-series-c .ct-point {\r\n    stroke: #DCE12E !important;\n}\n#IncidentSearchView .ct-series-d .ct-line, #IncidentSearchView .ct-series-d .ct-point {\r\n    stroke: #C28247 !important;\n}\n#IncidentSearchView .ct-series-e .ct-line, #IncidentSearchView .ct-series-e .ct-point {\r\n    stroke: #B82B19 !important;\n}\n#IncidentSearchView .ct-series-f .ct-line, #IncidentSearchView .ct-series-f .ct-point {\r\n    stroke: #1EC2A3 !important;\n}\r\n\r\n/*.ct-label.ct-label.ct-horizontal {\r\n    position: relative;\r\n    justify-content: flex-end;\r\n    text-align: right;\r\n    transform: translate(100%, 40%) rotate(20deg);\r\n}*/\n.incident-chart svg.ct-chart-line, .incident-chart svg.ct-chart-line g.ct-labels, .incident-chart svg.ct-chart-line g.ct-labels span.ct-label {\r\n    overflow: visible;\n}", "", {"version":3,"sources":["/./ClientApp/components/discover/incidents/Incident.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AAED;IACI,oBAAoB;CACvB;AACD;IACI,cAAc;CACjB;AAGD;IACI,yBAAyB;CAC5B;AAED;IACI,gBAAgB;CACnB;AAED;IACI,2BAA2B;CAC9B;AAED;IACI,2BAA2B;CAC9B;AAED;IACI,2BAA2B;CAC9B;AAED;IACI,2BAA2B;CAC9B;;AAED;;;;;GAKG;AAEH;IACI,kBAAkB;CACrB","file":"Incident.css","sourcesContent":[".tags span {\r\n    margin-right: 5px;\r\n}\r\n\r\n.tags {\r\n    margin-bottom: 10px;\r\n}\r\n.more {\r\n    display: none;\r\n}\r\n\r\n\r\n#IncidentSearchView .ct-series-a .ct-line, #IncidentSearchView .ct-series-a .ct-point {\r\n    stroke: rgb(0, 148, 218);\r\n}\r\n\r\n#IncidentSearchView .ct-series-b .ct-line, #IncidentSearchView .ct-series-b .ct-point {\r\n    stroke: #2f4f4f;\r\n}\r\n\r\n#IncidentSearchView .ct-series-c .ct-line, #IncidentSearchView .ct-series-c .ct-point {\r\n    stroke: #DCE12E !important;\r\n}\r\n\r\n#IncidentSearchView .ct-series-d .ct-line, #IncidentSearchView .ct-series-d .ct-point {\r\n    stroke: #C28247 !important;\r\n}\r\n\r\n#IncidentSearchView .ct-series-e .ct-line, #IncidentSearchView .ct-series-e .ct-point {\r\n    stroke: #B82B19 !important;\r\n}\r\n\r\n#IncidentSearchView .ct-series-f .ct-line, #IncidentSearchView .ct-series-f .ct-point {\r\n    stroke: #1EC2A3 !important;\r\n}\r\n\r\n/*.ct-label.ct-label.ct-horizontal {\r\n    position: relative;\r\n    justify-content: flex-end;\r\n    text-align: right;\r\n    transform: translate(100%, 40%) rotate(20deg);\r\n}*/\r\n\r\n.incident-chart svg.ct-chart-line, .incident-chart svg.ct-chart-line g.ct-labels, .incident-chart svg.ct-chart-line g.ct-labels span.ct-label {\r\n    overflow: visible;\r\n}"],"sourceRoot":"webpack://"}]);
 
 // exports
 
@@ -21949,7 +21950,7 @@ exports = module.exports = __webpack_require__(3)();
 
 
 // module
-exports.push([module.i, "\n.tags button {\r\n    margin-right: 5px;\n}\n.more {\r\n    display: none;\n}\n.card .card-body ul {\r\n    padding-left: 10px;\n}\n.analyze-menu .router-link-active {\r\n    font-weight: bold;\n}\n.analyze-menu li {\r\n    margin-top: -0.5rem;\r\n    margin-bottom: -0.5rem;\r\n    padding-top: 0.25rem;\r\n    padding-bottom: 0.25rem;\n}\n.analyze-menu li.router-link-active {\r\n        background: #f1f3f5;\n}", "", {"version":3,"sources":["/./ClientApp/components/analyze/analyze.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AAED;IACI,cAAc;CACjB;AAGD;IACI,mBAAmB;CACtB;AAED;IACI,kBAAkB;CACrB;AAED;IACI,oBAAoB;IACpB,uBAAuB;IACvB,qBAAqB;IACrB,wBAAwB;CAC3B;AAEG;QACI,oBAAoB;CACvB","file":"analyze.css","sourcesContent":[".tags button {\r\n    margin-right: 5px;\r\n}\r\n\r\n.more {\r\n    display: none;\r\n}\r\n\r\n\r\n.card .card-body ul {\r\n    padding-left: 10px;\r\n}\r\n\r\n.analyze-menu .router-link-active {\r\n    font-weight: bold;\r\n}\r\n\r\n.analyze-menu li {\r\n    margin-top: -0.5rem;\r\n    margin-bottom: -0.5rem;\r\n    padding-top: 0.25rem;\r\n    padding-bottom: 0.25rem;\r\n}\r\n\r\n    .analyze-menu li.router-link-active {\r\n        background: #f1f3f5;\r\n    }"],"sourceRoot":"webpack://"}]);
+exports.push([module.i, "\n.ct-label {\n  fill: rgba(0, 0, 0, 0.4);\n  color: rgba(0, 0, 0, 0.4);\n  font-size: 0.75rem;\n  line-height: 1;\n}\n.ct-chart-line .ct-label,\n.ct-chart-bar .ct-label {\n  display: block;\n  display: -webkit-box;\n  display: -moz-box;\n  display: -ms-flexbox;\n  display: -webkit-flex;\n  display: flex;\n}\n.ct-chart-pie .ct-label,\n.ct-chart-donut .ct-label {\n  dominant-baseline: central;\n}\n.ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-label.ct-vertical.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-end;\n  -webkit-justify-content: flex-end;\n  -ms-flex-pack: flex-end;\n  justify-content: flex-end;\n  text-align: right;\n  text-anchor: end;\n}\n.ct-label.ct-vertical.ct-end {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar .ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  text-align: center;\n  text-anchor: start;\n}\n.ct-chart-bar .ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  text-align: center;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-vertical.ct-start {\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -webkit-box-pack: flex-end;\n  -webkit-justify-content: flex-end;\n  -ms-flex-pack: flex-end;\n  justify-content: flex-end;\n  text-align: right;\n  text-anchor: end;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-vertical.ct-end {\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: end;\n}\n.ct-grid {\n  stroke: rgba(0, 0, 0, 0.2);\n  stroke-width: 1px;\n  stroke-dasharray: 2px;\n}\n.ct-grid-background {\n  fill: none;\n}\n.ct-point {\n  stroke-width: 10px;\n  stroke-linecap: round;\n}\n.ct-line {\n  fill: none;\n  stroke-width: 4px;\n}\n.ct-area {\n  stroke: none;\n  fill-opacity: 0.1;\n}\n.ct-bar {\n  fill: none;\n  stroke-width: 10px;\n}\n.ct-slice-donut {\n  fill: none;\n  stroke-width: 60px;\n}\n.ct-series-a .ct-point, .ct-series-a .ct-line, .ct-series-a .ct-bar, .ct-series-a .ct-slice-donut {\n  stroke: #d70206;\n}\n.ct-series-a .ct-slice-pie, .ct-series-a .ct-slice-donut-solid, .ct-series-a .ct-area {\n  fill: #d70206;\n}\n.ct-series-b .ct-point, .ct-series-b .ct-line, .ct-series-b .ct-bar, .ct-series-b .ct-slice-donut {\n  stroke: #f05b4f;\n}\n.ct-series-b .ct-slice-pie, .ct-series-b .ct-slice-donut-solid, .ct-series-b .ct-area {\n  fill: #f05b4f;\n}\n.ct-series-c .ct-point, .ct-series-c .ct-line, .ct-series-c .ct-bar, .ct-series-c .ct-slice-donut {\n  stroke: #f4c63d;\n}\n.ct-series-c .ct-slice-pie, .ct-series-c .ct-slice-donut-solid, .ct-series-c .ct-area {\n  fill: #f4c63d;\n}\n.ct-series-d .ct-point, .ct-series-d .ct-line, .ct-series-d .ct-bar, .ct-series-d .ct-slice-donut {\n  stroke: #d17905;\n}\n.ct-series-d .ct-slice-pie, .ct-series-d .ct-slice-donut-solid, .ct-series-d .ct-area {\n  fill: #d17905;\n}\n.ct-series-e .ct-point, .ct-series-e .ct-line, .ct-series-e .ct-bar, .ct-series-e .ct-slice-donut {\n  stroke: #453d3f;\n}\n.ct-series-e .ct-slice-pie, .ct-series-e .ct-slice-donut-solid, .ct-series-e .ct-area {\n  fill: #453d3f;\n}\n.ct-series-f .ct-point, .ct-series-f .ct-line, .ct-series-f .ct-bar, .ct-series-f .ct-slice-donut {\n  stroke: #59922b;\n}\n.ct-series-f .ct-slice-pie, .ct-series-f .ct-slice-donut-solid, .ct-series-f .ct-area {\n  fill: #59922b;\n}\n.ct-series-g .ct-point, .ct-series-g .ct-line, .ct-series-g .ct-bar, .ct-series-g .ct-slice-donut {\n  stroke: #0544d3;\n}\n.ct-series-g .ct-slice-pie, .ct-series-g .ct-slice-donut-solid, .ct-series-g .ct-area {\n  fill: #0544d3;\n}\n.ct-series-h .ct-point, .ct-series-h .ct-line, .ct-series-h .ct-bar, .ct-series-h .ct-slice-donut {\n  stroke: #6b0392;\n}\n.ct-series-h .ct-slice-pie, .ct-series-h .ct-slice-donut-solid, .ct-series-h .ct-area {\n  fill: #6b0392;\n}\n.ct-series-i .ct-point, .ct-series-i .ct-line, .ct-series-i .ct-bar, .ct-series-i .ct-slice-donut {\n  stroke: #f05b4f;\n}\n.ct-series-i .ct-slice-pie, .ct-series-i .ct-slice-donut-solid, .ct-series-i .ct-area {\n  fill: #f05b4f;\n}\n.ct-series-j .ct-point, .ct-series-j .ct-line, .ct-series-j .ct-bar, .ct-series-j .ct-slice-donut {\n  stroke: #dda458;\n}\n.ct-series-j .ct-slice-pie, .ct-series-j .ct-slice-donut-solid, .ct-series-j .ct-area {\n  fill: #dda458;\n}\n.ct-series-k .ct-point, .ct-series-k .ct-line, .ct-series-k .ct-bar, .ct-series-k .ct-slice-donut {\n  stroke: #eacf7d;\n}\n.ct-series-k .ct-slice-pie, .ct-series-k .ct-slice-donut-solid, .ct-series-k .ct-area {\n  fill: #eacf7d;\n}\n.ct-series-l .ct-point, .ct-series-l .ct-line, .ct-series-l .ct-bar, .ct-series-l .ct-slice-donut {\n  stroke: #86797d;\n}\n.ct-series-l .ct-slice-pie, .ct-series-l .ct-slice-donut-solid, .ct-series-l .ct-area {\n  fill: #86797d;\n}\n.ct-series-m .ct-point, .ct-series-m .ct-line, .ct-series-m .ct-bar, .ct-series-m .ct-slice-donut {\n  stroke: #b2c326;\n}\n.ct-series-m .ct-slice-pie, .ct-series-m .ct-slice-donut-solid, .ct-series-m .ct-area {\n  fill: #b2c326;\n}\n.ct-series-n .ct-point, .ct-series-n .ct-line, .ct-series-n .ct-bar, .ct-series-n .ct-slice-donut {\n  stroke: #6188e2;\n}\n.ct-series-n .ct-slice-pie, .ct-series-n .ct-slice-donut-solid, .ct-series-n .ct-area {\n  fill: #6188e2;\n}\n.ct-series-o .ct-point, .ct-series-o .ct-line, .ct-series-o .ct-bar, .ct-series-o .ct-slice-donut {\n  stroke: #a748ca;\n}\n.ct-series-o .ct-slice-pie, .ct-series-o .ct-slice-donut-solid, .ct-series-o .ct-area {\n  fill: #a748ca;\n}\n.ct-square {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-square:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 100%;\n}\n.ct-square:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-square > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-second {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-second:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 93.75%;\n}\n.ct-minor-second:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-second > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-second {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-second:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 88.8888888889%;\n}\n.ct-major-second:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-second > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-third {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-third:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 83.3333333333%;\n}\n.ct-minor-third:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-third > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-third {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-third:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 80%;\n}\n.ct-major-third:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-third > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-perfect-fourth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-perfect-fourth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 75%;\n}\n.ct-perfect-fourth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-perfect-fourth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-perfect-fifth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-perfect-fifth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 66.6666666667%;\n}\n.ct-perfect-fifth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-perfect-fifth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-sixth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-sixth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 62.5%;\n}\n.ct-minor-sixth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-sixth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-golden-section {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-golden-section:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 61.804697157%;\n}\n.ct-golden-section:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-golden-section > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-sixth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-sixth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 60%;\n}\n.ct-major-sixth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-sixth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-seventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-seventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 56.25%;\n}\n.ct-minor-seventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-seventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-seventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-seventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 53.3333333333%;\n}\n.ct-major-seventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-seventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-octave {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-octave:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 50%;\n}\n.ct-octave:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-octave > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-tenth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-tenth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 40%;\n}\n.ct-major-tenth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-tenth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-eleventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-eleventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 37.5%;\n}\n.ct-major-eleventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-eleventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-twelfth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-twelfth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 33.3333333333%;\n}\n.ct-major-twelfth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-twelfth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-double-octave {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-double-octave:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 25%;\n}\n.ct-double-octave:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-double-octave > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n\n/*# sourceMappingURL=chartist.css.map */", "", {"version":3,"sources":["/./node_modules/src/styles/chartist.scss","/./node_modules/src/styles/settings/_chartist-settings.scss","/./node_modules/chartist/dist/chartist.css"],"names":[],"mappings":"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","file":"chartist.css","sourcesContent":[null,null,"\n.ct-label {\n  fill: rgba(0, 0, 0, 0.4);\n  color: rgba(0, 0, 0, 0.4);\n  font-size: 0.75rem;\n  line-height: 1;\n}\n.ct-chart-line .ct-label,\n.ct-chart-bar .ct-label {\n  display: block;\n  display: -webkit-box;\n  display: -moz-box;\n  display: -ms-flexbox;\n  display: -webkit-flex;\n  display: flex;\n}\n.ct-chart-pie .ct-label,\n.ct-chart-donut .ct-label {\n  dominant-baseline: central;\n}\n.ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-label.ct-vertical.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-end;\n  -webkit-justify-content: flex-end;\n  -ms-flex-pack: flex-end;\n  justify-content: flex-end;\n  text-align: right;\n  text-anchor: end;\n}\n.ct-label.ct-vertical.ct-end {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar .ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  text-align: center;\n  text-anchor: start;\n}\n.ct-chart-bar .ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  text-align: center;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-vertical.ct-start {\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -webkit-box-pack: flex-end;\n  -webkit-justify-content: flex-end;\n  -ms-flex-pack: flex-end;\n  justify-content: flex-end;\n  text-align: right;\n  text-anchor: end;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-vertical.ct-end {\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: end;\n}\n.ct-grid {\n  stroke: rgba(0, 0, 0, 0.2);\n  stroke-width: 1px;\n  stroke-dasharray: 2px;\n}\n.ct-grid-background {\n  fill: none;\n}\n.ct-point {\n  stroke-width: 10px;\n  stroke-linecap: round;\n}\n.ct-line {\n  fill: none;\n  stroke-width: 4px;\n}\n.ct-area {\n  stroke: none;\n  fill-opacity: 0.1;\n}\n.ct-bar {\n  fill: none;\n  stroke-width: 10px;\n}\n.ct-slice-donut {\n  fill: none;\n  stroke-width: 60px;\n}\n.ct-series-a .ct-point, .ct-series-a .ct-line, .ct-series-a .ct-bar, .ct-series-a .ct-slice-donut {\n  stroke: #d70206;\n}\n.ct-series-a .ct-slice-pie, .ct-series-a .ct-slice-donut-solid, .ct-series-a .ct-area {\n  fill: #d70206;\n}\n.ct-series-b .ct-point, .ct-series-b .ct-line, .ct-series-b .ct-bar, .ct-series-b .ct-slice-donut {\n  stroke: #f05b4f;\n}\n.ct-series-b .ct-slice-pie, .ct-series-b .ct-slice-donut-solid, .ct-series-b .ct-area {\n  fill: #f05b4f;\n}\n.ct-series-c .ct-point, .ct-series-c .ct-line, .ct-series-c .ct-bar, .ct-series-c .ct-slice-donut {\n  stroke: #f4c63d;\n}\n.ct-series-c .ct-slice-pie, .ct-series-c .ct-slice-donut-solid, .ct-series-c .ct-area {\n  fill: #f4c63d;\n}\n.ct-series-d .ct-point, .ct-series-d .ct-line, .ct-series-d .ct-bar, .ct-series-d .ct-slice-donut {\n  stroke: #d17905;\n}\n.ct-series-d .ct-slice-pie, .ct-series-d .ct-slice-donut-solid, .ct-series-d .ct-area {\n  fill: #d17905;\n}\n.ct-series-e .ct-point, .ct-series-e .ct-line, .ct-series-e .ct-bar, .ct-series-e .ct-slice-donut {\n  stroke: #453d3f;\n}\n.ct-series-e .ct-slice-pie, .ct-series-e .ct-slice-donut-solid, .ct-series-e .ct-area {\n  fill: #453d3f;\n}\n.ct-series-f .ct-point, .ct-series-f .ct-line, .ct-series-f .ct-bar, .ct-series-f .ct-slice-donut {\n  stroke: #59922b;\n}\n.ct-series-f .ct-slice-pie, .ct-series-f .ct-slice-donut-solid, .ct-series-f .ct-area {\n  fill: #59922b;\n}\n.ct-series-g .ct-point, .ct-series-g .ct-line, .ct-series-g .ct-bar, .ct-series-g .ct-slice-donut {\n  stroke: #0544d3;\n}\n.ct-series-g .ct-slice-pie, .ct-series-g .ct-slice-donut-solid, .ct-series-g .ct-area {\n  fill: #0544d3;\n}\n.ct-series-h .ct-point, .ct-series-h .ct-line, .ct-series-h .ct-bar, .ct-series-h .ct-slice-donut {\n  stroke: #6b0392;\n}\n.ct-series-h .ct-slice-pie, .ct-series-h .ct-slice-donut-solid, .ct-series-h .ct-area {\n  fill: #6b0392;\n}\n.ct-series-i .ct-point, .ct-series-i .ct-line, .ct-series-i .ct-bar, .ct-series-i .ct-slice-donut {\n  stroke: #f05b4f;\n}\n.ct-series-i .ct-slice-pie, .ct-series-i .ct-slice-donut-solid, .ct-series-i .ct-area {\n  fill: #f05b4f;\n}\n.ct-series-j .ct-point, .ct-series-j .ct-line, .ct-series-j .ct-bar, .ct-series-j .ct-slice-donut {\n  stroke: #dda458;\n}\n.ct-series-j .ct-slice-pie, .ct-series-j .ct-slice-donut-solid, .ct-series-j .ct-area {\n  fill: #dda458;\n}\n.ct-series-k .ct-point, .ct-series-k .ct-line, .ct-series-k .ct-bar, .ct-series-k .ct-slice-donut {\n  stroke: #eacf7d;\n}\n.ct-series-k .ct-slice-pie, .ct-series-k .ct-slice-donut-solid, .ct-series-k .ct-area {\n  fill: #eacf7d;\n}\n.ct-series-l .ct-point, .ct-series-l .ct-line, .ct-series-l .ct-bar, .ct-series-l .ct-slice-donut {\n  stroke: #86797d;\n}\n.ct-series-l .ct-slice-pie, .ct-series-l .ct-slice-donut-solid, .ct-series-l .ct-area {\n  fill: #86797d;\n}\n.ct-series-m .ct-point, .ct-series-m .ct-line, .ct-series-m .ct-bar, .ct-series-m .ct-slice-donut {\n  stroke: #b2c326;\n}\n.ct-series-m .ct-slice-pie, .ct-series-m .ct-slice-donut-solid, .ct-series-m .ct-area {\n  fill: #b2c326;\n}\n.ct-series-n .ct-point, .ct-series-n .ct-line, .ct-series-n .ct-bar, .ct-series-n .ct-slice-donut {\n  stroke: #6188e2;\n}\n.ct-series-n .ct-slice-pie, .ct-series-n .ct-slice-donut-solid, .ct-series-n .ct-area {\n  fill: #6188e2;\n}\n.ct-series-o .ct-point, .ct-series-o .ct-line, .ct-series-o .ct-bar, .ct-series-o .ct-slice-donut {\n  stroke: #a748ca;\n}\n.ct-series-o .ct-slice-pie, .ct-series-o .ct-slice-donut-solid, .ct-series-o .ct-area {\n  fill: #a748ca;\n}\n.ct-square {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-square:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 100%;\n}\n.ct-square:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-square > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-second {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-second:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 93.75%;\n}\n.ct-minor-second:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-second > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-second {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-second:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 88.8888888889%;\n}\n.ct-major-second:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-second > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-third {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-third:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 83.3333333333%;\n}\n.ct-minor-third:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-third > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-third {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-third:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 80%;\n}\n.ct-major-third:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-third > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-perfect-fourth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-perfect-fourth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 75%;\n}\n.ct-perfect-fourth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-perfect-fourth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-perfect-fifth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-perfect-fifth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 66.6666666667%;\n}\n.ct-perfect-fifth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-perfect-fifth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-sixth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-sixth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 62.5%;\n}\n.ct-minor-sixth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-sixth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-golden-section {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-golden-section:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 61.804697157%;\n}\n.ct-golden-section:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-golden-section > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-sixth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-sixth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 60%;\n}\n.ct-major-sixth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-sixth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-seventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-seventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 56.25%;\n}\n.ct-minor-seventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-seventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-seventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-seventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 53.3333333333%;\n}\n.ct-major-seventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-seventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-octave {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-octave:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 50%;\n}\n.ct-octave:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-octave > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-tenth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-tenth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 40%;\n}\n.ct-major-tenth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-tenth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-eleventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-eleventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 37.5%;\n}\n.ct-major-eleventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-eleventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-twelfth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-twelfth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 33.3333333333%;\n}\n.ct-major-twelfth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-twelfth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-double-octave {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-double-octave:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 25%;\n}\n.ct-double-octave:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-double-octave > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n\n/*# sourceMappingURL=chartist.css.map */"],"sourceRoot":"webpack://"}]);
 
 // exports
 
@@ -21963,7 +21964,7 @@ exports = module.exports = __webpack_require__(3)();
 
 
 // module
-exports.push([module.i, "\n.IncidentView .tags span {\r\n    margin-right: 5px;\n}\n.tags button {\r\n    margin-right: 5px;\n}\n.more {\r\n    display: none;\n}\r\n", "", {"version":3,"sources":["/./ClientApp/components/analyze/incidents/Incident.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AACD;IACI,kBAAkB;CACrB;AAED;IACI,cAAc;CACjB","file":"Incident.css","sourcesContent":[".IncidentView .tags span {\r\n    margin-right: 5px;\r\n}\r\n.tags button {\r\n    margin-right: 5px;\r\n}\r\n\r\n.more {\r\n    display: none;\r\n}\r\n"],"sourceRoot":"webpack://"}]);
+exports.push([module.i, "\n.tags button {\r\n    margin-right: 5px;\n}\n.more {\r\n    display: none;\n}\n.card .card-body ul {\r\n    padding-left: 10px;\n}\n.analyze-menu .router-link-active {\r\n    font-weight: bold;\n}\n.analyze-menu li {\r\n    margin-top: -0.5rem;\r\n    margin-bottom: -0.5rem;\r\n    padding-top: 0.25rem;\r\n    padding-bottom: 0.25rem;\n}\n.analyze-menu li.router-link-active {\r\n        background: #f1f3f5;\n}", "", {"version":3,"sources":["/./ClientApp/components/analyze/analyze.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AAED;IACI,cAAc;CACjB;AAGD;IACI,mBAAmB;CACtB;AAED;IACI,kBAAkB;CACrB;AAED;IACI,oBAAoB;IACpB,uBAAuB;IACvB,qBAAqB;IACrB,wBAAwB;CAC3B;AAEG;QACI,oBAAoB;CACvB","file":"analyze.css","sourcesContent":[".tags button {\r\n    margin-right: 5px;\r\n}\r\n\r\n.more {\r\n    display: none;\r\n}\r\n\r\n\r\n.card .card-body ul {\r\n    padding-left: 10px;\r\n}\r\n\r\n.analyze-menu .router-link-active {\r\n    font-weight: bold;\r\n}\r\n\r\n.analyze-menu li {\r\n    margin-top: -0.5rem;\r\n    margin-bottom: -0.5rem;\r\n    padding-top: 0.25rem;\r\n    padding-bottom: 0.25rem;\r\n}\r\n\r\n    .analyze-menu li.router-link-active {\r\n        background: #f1f3f5;\r\n    }"],"sourceRoot":"webpack://"}]);
 
 // exports
 
@@ -21977,7 +21978,7 @@ exports = module.exports = __webpack_require__(3)();
 
 
 // module
-exports.push([module.i, "\n.PartitionVue label {\r\n    font-weight: bold;\n}\n.PartitionVue .form-text {\r\n    font-style: italic;\n}", "", {"version":3,"sources":["/./ClientApp/components/manage/application/partitions/create.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AAED;IACI,mBAAmB;CACtB","file":"create.css","sourcesContent":[".PartitionVue label {\r\n    font-weight: bold;\r\n}\r\n \r\n.PartitionVue .form-text {\r\n    font-style: italic;\r\n}"],"sourceRoot":"webpack://"}]);
+exports.push([module.i, "\n.IncidentView .tags span {\r\n    margin-right: 5px;\n}\n.tags button {\r\n    margin-right: 5px;\n}\n.more {\r\n    display: none;\n}\r\n", "", {"version":3,"sources":["/./ClientApp/components/analyze/incidents/Incident.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AACD;IACI,kBAAkB;CACrB;AAED;IACI,cAAc;CACjB","file":"Incident.css","sourcesContent":[".IncidentView .tags span {\r\n    margin-right: 5px;\r\n}\r\n.tags button {\r\n    margin-right: 5px;\r\n}\r\n\r\n.more {\r\n    display: none;\r\n}\r\n"],"sourceRoot":"webpack://"}]);
 
 // exports
 
@@ -21991,7 +21992,7 @@ exports = module.exports = __webpack_require__(3)();
 
 
 // module
-exports.push([module.i, "\n#mainMenu .router-link-active, .right-menu li a.nav-link.router-link-active {\r\n    color: #ffffff;\n}\n*#mainMenu .dropdown-menu .router-link-active {\r\n    color: #000000;\n}\n.navmenu .nav-link {\r\n    margin-left: 10px;\n}\n.navmenu .dropdown-menu .router-link-exact-active {\r\n    color: #333333;\r\n    font-weight: bold;\n}\n.navmenu .bg-light .router-link-exact-active {\r\n    color: #333333;\r\n    font-weight: bold;\n}", "", {"version":3,"sources":["/./ClientApp/components/home/navmenu/navmenu.css"],"names":[],"mappings":";AAAA;IACI,eAAe;CAClB;AAED;IACI,eAAe;CAClB;AAED;IACI,kBAAkB;CACrB;AAED;IACI,eAAe;IACf,kBAAkB;CACrB;AAED;IACI,eAAe;IACf,kBAAkB;CACrB","file":"navmenu.css","sourcesContent":["#mainMenu .router-link-active, .right-menu li a.nav-link.router-link-active {\r\n    color: #ffffff;\r\n}\r\n\r\n*#mainMenu .dropdown-menu .router-link-active {\r\n    color: #000000;\r\n}\r\n\r\n.navmenu .nav-link {\r\n    margin-left: 10px;\r\n}\r\n\r\n.navmenu .dropdown-menu .router-link-exact-active {\r\n    color: #333333;\r\n    font-weight: bold;\r\n}\r\n\r\n.navmenu .bg-light .router-link-exact-active {\r\n    color: #333333;\r\n    font-weight: bold;\r\n}"],"sourceRoot":"webpack://"}]);
+exports.push([module.i, "\n.PartitionVue label {\r\n    font-weight: bold;\n}\n.PartitionVue .form-text {\r\n    font-style: italic;\n}", "", {"version":3,"sources":["/./ClientApp/components/manage/application/partitions/create.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AAED;IACI,mBAAmB;CACtB","file":"create.css","sourcesContent":[".PartitionVue label {\r\n    font-weight: bold;\r\n}\r\n \r\n.PartitionVue .form-text {\r\n    font-style: italic;\r\n}"],"sourceRoot":"webpack://"}]);
 
 // exports
 
@@ -22005,7 +22006,7 @@ exports = module.exports = __webpack_require__(3)();
 
 
 // module
-exports.push([module.i, "\n.tags button, .apps button {\r\n    margin-right: 5px;\r\n    margin-bottom: 5px;\n}\n.more {\r\n    display: none;\n}\n.sortable {\r\n    cursor: pointer;\n}\n.sort-ascending {\n}", "", {"version":3,"sources":["/./ClientApp/components/discover/incidents/search.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;IAClB,mBAAmB;CACtB;AAED;IACI,cAAc;CACjB;AAED;IACI,gBAAgB;CACnB;AAED;CAEC","file":"search.css","sourcesContent":[".tags button, .apps button {\r\n    margin-right: 5px;\r\n    margin-bottom: 5px;\r\n}\r\n\r\n.more {\r\n    display: none;\r\n}\r\n\r\n.sortable {\r\n    cursor: pointer;\r\n}\r\n\r\n.sort-ascending {\r\n\r\n}"],"sourceRoot":"webpack://"}]);
+exports.push([module.i, "\n#mainMenu .router-link-active, .right-menu li a.nav-link.router-link-active {\r\n    color: #ffffff;\n}\n*#mainMenu .dropdown-menu .router-link-active {\r\n    color: #000000;\n}\n.navmenu .nav-link {\r\n    margin-left: 10px;\n}\n.navmenu .dropdown-menu .router-link-exact-active {\r\n    color: #333333;\r\n    font-weight: bold;\n}\n.navmenu .bg-light .router-link-exact-active {\r\n    color: #333333;\r\n    font-weight: bold;\n}", "", {"version":3,"sources":["/./ClientApp/components/home/navmenu/navmenu.css"],"names":[],"mappings":";AAAA;IACI,eAAe;CAClB;AAED;IACI,eAAe;CAClB;AAED;IACI,kBAAkB;CACrB;AAED;IACI,eAAe;IACf,kBAAkB;CACrB;AAED;IACI,eAAe;IACf,kBAAkB;CACrB","file":"navmenu.css","sourcesContent":["#mainMenu .router-link-active, .right-menu li a.nav-link.router-link-active {\r\n    color: #ffffff;\r\n}\r\n\r\n*#mainMenu .dropdown-menu .router-link-active {\r\n    color: #000000;\r\n}\r\n\r\n.navmenu .nav-link {\r\n    margin-left: 10px;\r\n}\r\n\r\n.navmenu .dropdown-menu .router-link-exact-active {\r\n    color: #333333;\r\n    font-weight: bold;\r\n}\r\n\r\n.navmenu .bg-light .router-link-exact-active {\r\n    color: #333333;\r\n    font-weight: bold;\r\n}"],"sourceRoot":"webpack://"}]);
 
 // exports
 
@@ -22019,7 +22020,7 @@ exports = module.exports = __webpack_require__(3)();
 
 
 // module
-exports.push([module.i, "", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"settings.css","sourceRoot":"webpack://"}]);
+exports.push([module.i, "\n.tags button, .apps button {\r\n    margin-right: 5px;\r\n    margin-bottom: 5px;\n}\n.more {\r\n    display: none;\n}\n.sortable {\r\n    cursor: pointer;\n}\n.sort-ascending {\n}", "", {"version":3,"sources":["/./ClientApp/components/discover/incidents/search.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;IAClB,mBAAmB;CACtB;AAED;IACI,cAAc;CACjB;AAED;IACI,gBAAgB;CACnB;AAED;CAEC","file":"search.css","sourcesContent":[".tags button, .apps button {\r\n    margin-right: 5px;\r\n    margin-bottom: 5px;\r\n}\r\n\r\n.more {\r\n    display: none;\r\n}\r\n\r\n.sortable {\r\n    cursor: pointer;\r\n}\r\n\r\n.sort-ascending {\r\n\r\n}"],"sourceRoot":"webpack://"}]);
 
 // exports
 
@@ -22033,7 +22034,7 @@ exports = module.exports = __webpack_require__(3)();
 
 
 // module
-exports.push([module.i, "\n.discover-menu .router-link-active {\r\n    font-weight: bold;\n}\n.discover-menu li {\r\n    margin-top: -0.5rem;\r\n    margin-bottom: -0.5rem;\r\n    padding-top: 0.25rem;\r\n    padding-bottom: 0.25rem;\n}\n.discover-menu li.router-link-active {\r\n        background: #f1f3f5;\n}\r\n/*.router-link-exact-active {\r\n    color: #ffffff;\r\n}\r\n\r\n.dropdown-menu .router-link-exact-active {\r\n    color: #333333;\r\n    font-weight: bold;\r\n}\r\n\r\n.bg-light .router-link-exact-active {\r\n    color: #333333;\r\n    font-weight: bold;\r\n}*/\r\n", "", {"version":3,"sources":["/./ClientApp/components/discover/menu.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AAED;IACI,oBAAoB;IACpB,uBAAuB;IACvB,qBAAqB;IACrB,wBAAwB;CAC3B;AAEG;QACI,oBAAoB;CACvB;AACL;;;;;;;;;;;;GAYG","file":"menu.css","sourcesContent":[".discover-menu .router-link-active {\r\n    font-weight: bold;\r\n}\r\n\r\n.discover-menu li {\r\n    margin-top: -0.5rem;\r\n    margin-bottom: -0.5rem;\r\n    padding-top: 0.25rem;\r\n    padding-bottom: 0.25rem;\r\n}\r\n\r\n    .discover-menu li.router-link-active {\r\n        background: #f1f3f5;\r\n    }\r\n/*.router-link-exact-active {\r\n    color: #ffffff;\r\n}\r\n\r\n.dropdown-menu .router-link-exact-active {\r\n    color: #333333;\r\n    font-weight: bold;\r\n}\r\n\r\n.bg-light .router-link-exact-active {\r\n    color: #333333;\r\n    font-weight: bold;\r\n}*/\r\n"],"sourceRoot":"webpack://"}]);
+exports.push([module.i, "", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"settings.css","sourceRoot":"webpack://"}]);
 
 // exports
 
@@ -22047,7 +22048,7 @@ exports = module.exports = __webpack_require__(3)();
 
 
 // module
-exports.push([module.i, "\n.PartitionVue label {\r\n    font-weight: bold;\n}\n.PartitionVue .form-text {\r\n    font-style: italic;\n}", "", {"version":3,"sources":["/./ClientApp/components/manage/application/partitions/partition.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AAED;IACI,mBAAmB;CACtB","file":"partition.css","sourcesContent":[".PartitionVue label {\r\n    font-weight: bold;\r\n}\r\n \r\n.PartitionVue .form-text {\r\n    font-style: italic;\r\n}"],"sourceRoot":"webpack://"}]);
+exports.push([module.i, "\n.discover-menu .router-link-active {\r\n    font-weight: bold;\n}\n.discover-menu li {\r\n    margin-top: -0.5rem;\r\n    margin-bottom: -0.5rem;\r\n    padding-top: 0.25rem;\r\n    padding-bottom: 0.25rem;\n}\n.discover-menu li.router-link-active {\r\n        background: #f1f3f5;\n}\r\n/*.router-link-exact-active {\r\n    color: #ffffff;\r\n}\r\n\r\n.dropdown-menu .router-link-exact-active {\r\n    color: #333333;\r\n    font-weight: bold;\r\n}\r\n\r\n.bg-light .router-link-exact-active {\r\n    color: #333333;\r\n    font-weight: bold;\r\n}*/\r\n", "", {"version":3,"sources":["/./ClientApp/components/discover/menu.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AAED;IACI,oBAAoB;IACpB,uBAAuB;IACvB,qBAAqB;IACrB,wBAAwB;CAC3B;AAEG;QACI,oBAAoB;CACvB;AACL;;;;;;;;;;;;GAYG","file":"menu.css","sourcesContent":[".discover-menu .router-link-active {\r\n    font-weight: bold;\r\n}\r\n\r\n.discover-menu li {\r\n    margin-top: -0.5rem;\r\n    margin-bottom: -0.5rem;\r\n    padding-top: 0.25rem;\r\n    padding-bottom: 0.25rem;\r\n}\r\n\r\n    .discover-menu li.router-link-active {\r\n        background: #f1f3f5;\r\n    }\r\n/*.router-link-exact-active {\r\n    color: #ffffff;\r\n}\r\n\r\n.dropdown-menu .router-link-exact-active {\r\n    color: #333333;\r\n    font-weight: bold;\r\n}\r\n\r\n.bg-light .router-link-exact-active {\r\n    color: #333333;\r\n    font-weight: bold;\r\n}*/\r\n"],"sourceRoot":"webpack://"}]);
 
 // exports
 
@@ -22061,7 +22062,7 @@ exports = module.exports = __webpack_require__(3)();
 
 
 // module
-exports.push([module.i, "\n.members td:first-child {\r\n    width: 150px;\n}\r\n", "", {"version":3,"sources":["/./ClientApp/components/manage/application/security/security.css"],"names":[],"mappings":";AAAA;IACI,aAAa;CAChB","file":"security.css","sourcesContent":[".members td:first-child {\r\n    width: 150px;\r\n}\r\n"],"sourceRoot":"webpack://"}]);
+exports.push([module.i, "\n.PartitionVue label {\r\n    font-weight: bold;\n}\n.PartitionVue .form-text {\r\n    font-style: italic;\n}", "", {"version":3,"sources":["/./ClientApp/components/manage/application/partitions/partition.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AAED;IACI,mBAAmB;CACtB","file":"partition.css","sourcesContent":[".PartitionVue label {\r\n    font-weight: bold;\r\n}\r\n \r\n.PartitionVue .form-text {\r\n    font-style: italic;\r\n}"],"sourceRoot":"webpack://"}]);
 
 // exports
 
@@ -22075,7 +22076,7 @@ exports = module.exports = __webpack_require__(3)();
 
 
 // module
-exports.push([module.i, "\n.IncidentView .tags span {\r\n    margin-right: 5px;\n}\n.tags button {\r\n    margin-right: 5px;\n}\n.more {\r\n    display: none;\n}\r\n", "", {"version":3,"sources":["/./ClientApp/components/analyze/incidents/origins.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AACD;IACI,kBAAkB;CACrB;AAED;IACI,cAAc;CACjB","file":"origins.css","sourcesContent":[".IncidentView .tags span {\r\n    margin-right: 5px;\r\n}\r\n.tags button {\r\n    margin-right: 5px;\r\n}\r\n\r\n.more {\r\n    display: none;\r\n}\r\n"],"sourceRoot":"webpack://"}]);
+exports.push([module.i, "\n.members td:first-child {\r\n    width: 150px;\n}\r\n", "", {"version":3,"sources":["/./ClientApp/components/manage/application/security/security.css"],"names":[],"mappings":";AAAA;IACI,aAAa;CAChB","file":"security.css","sourcesContent":[".members td:first-child {\r\n    width: 150px;\r\n}\r\n"],"sourceRoot":"webpack://"}]);
 
 // exports
 
@@ -22089,7 +22090,7 @@ exports = module.exports = __webpack_require__(3)();
 
 
 // module
-exports.push([module.i, "", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"home.css","sourceRoot":"webpack://"}]);
+exports.push([module.i, "\n.IncidentView .tags span {\r\n    margin-right: 5px;\n}\n.tags button {\r\n    margin-right: 5px;\n}\n.more {\r\n    display: none;\n}\r\n", "", {"version":3,"sources":["/./ClientApp/components/analyze/incidents/origins.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AACD;IACI,kBAAkB;CACrB;AAED;IACI,cAAc;CACjB","file":"origins.css","sourcesContent":[".IncidentView .tags span {\r\n    margin-right: 5px;\r\n}\r\n.tags button {\r\n    margin-right: 5px;\r\n}\r\n\r\n.more {\r\n    display: none;\r\n}\r\n"],"sourceRoot":"webpack://"}]);
 
 // exports
 
@@ -22103,7 +22104,7 @@ exports = module.exports = __webpack_require__(3)();
 
 
 // module
-exports.push([module.i, "\n.ct-label {\n  fill: rgba(0, 0, 0, 0.4);\n  color: rgba(0, 0, 0, 0.4);\n  font-size: 0.75rem;\n  line-height: 1;\n}\n.ct-chart-line .ct-label,\n.ct-chart-bar .ct-label {\n  display: block;\n  display: -webkit-box;\n  display: -moz-box;\n  display: -ms-flexbox;\n  display: -webkit-flex;\n  display: flex;\n}\n.ct-chart-pie .ct-label,\n.ct-chart-donut .ct-label {\n  dominant-baseline: central;\n}\n.ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-label.ct-vertical.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-end;\n  -webkit-justify-content: flex-end;\n  -ms-flex-pack: flex-end;\n  justify-content: flex-end;\n  text-align: right;\n  text-anchor: end;\n}\n.ct-label.ct-vertical.ct-end {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar .ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  text-align: center;\n  text-anchor: start;\n}\n.ct-chart-bar .ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  text-align: center;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-vertical.ct-start {\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -webkit-box-pack: flex-end;\n  -webkit-justify-content: flex-end;\n  -ms-flex-pack: flex-end;\n  justify-content: flex-end;\n  text-align: right;\n  text-anchor: end;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-vertical.ct-end {\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: end;\n}\n.ct-grid {\n  stroke: rgba(0, 0, 0, 0.2);\n  stroke-width: 1px;\n  stroke-dasharray: 2px;\n}\n.ct-grid-background {\n  fill: none;\n}\n.ct-point {\n  stroke-width: 10px;\n  stroke-linecap: round;\n}\n.ct-line {\n  fill: none;\n  stroke-width: 4px;\n}\n.ct-area {\n  stroke: none;\n  fill-opacity: 0.1;\n}\n.ct-bar {\n  fill: none;\n  stroke-width: 10px;\n}\n.ct-slice-donut {\n  fill: none;\n  stroke-width: 60px;\n}\n.ct-series-a .ct-point, .ct-series-a .ct-line, .ct-series-a .ct-bar, .ct-series-a .ct-slice-donut {\n  stroke: #d70206;\n}\n.ct-series-a .ct-slice-pie, .ct-series-a .ct-slice-donut-solid, .ct-series-a .ct-area {\n  fill: #d70206;\n}\n.ct-series-b .ct-point, .ct-series-b .ct-line, .ct-series-b .ct-bar, .ct-series-b .ct-slice-donut {\n  stroke: #f05b4f;\n}\n.ct-series-b .ct-slice-pie, .ct-series-b .ct-slice-donut-solid, .ct-series-b .ct-area {\n  fill: #f05b4f;\n}\n.ct-series-c .ct-point, .ct-series-c .ct-line, .ct-series-c .ct-bar, .ct-series-c .ct-slice-donut {\n  stroke: #f4c63d;\n}\n.ct-series-c .ct-slice-pie, .ct-series-c .ct-slice-donut-solid, .ct-series-c .ct-area {\n  fill: #f4c63d;\n}\n.ct-series-d .ct-point, .ct-series-d .ct-line, .ct-series-d .ct-bar, .ct-series-d .ct-slice-donut {\n  stroke: #d17905;\n}\n.ct-series-d .ct-slice-pie, .ct-series-d .ct-slice-donut-solid, .ct-series-d .ct-area {\n  fill: #d17905;\n}\n.ct-series-e .ct-point, .ct-series-e .ct-line, .ct-series-e .ct-bar, .ct-series-e .ct-slice-donut {\n  stroke: #453d3f;\n}\n.ct-series-e .ct-slice-pie, .ct-series-e .ct-slice-donut-solid, .ct-series-e .ct-area {\n  fill: #453d3f;\n}\n.ct-series-f .ct-point, .ct-series-f .ct-line, .ct-series-f .ct-bar, .ct-series-f .ct-slice-donut {\n  stroke: #59922b;\n}\n.ct-series-f .ct-slice-pie, .ct-series-f .ct-slice-donut-solid, .ct-series-f .ct-area {\n  fill: #59922b;\n}\n.ct-series-g .ct-point, .ct-series-g .ct-line, .ct-series-g .ct-bar, .ct-series-g .ct-slice-donut {\n  stroke: #0544d3;\n}\n.ct-series-g .ct-slice-pie, .ct-series-g .ct-slice-donut-solid, .ct-series-g .ct-area {\n  fill: #0544d3;\n}\n.ct-series-h .ct-point, .ct-series-h .ct-line, .ct-series-h .ct-bar, .ct-series-h .ct-slice-donut {\n  stroke: #6b0392;\n}\n.ct-series-h .ct-slice-pie, .ct-series-h .ct-slice-donut-solid, .ct-series-h .ct-area {\n  fill: #6b0392;\n}\n.ct-series-i .ct-point, .ct-series-i .ct-line, .ct-series-i .ct-bar, .ct-series-i .ct-slice-donut {\n  stroke: #f05b4f;\n}\n.ct-series-i .ct-slice-pie, .ct-series-i .ct-slice-donut-solid, .ct-series-i .ct-area {\n  fill: #f05b4f;\n}\n.ct-series-j .ct-point, .ct-series-j .ct-line, .ct-series-j .ct-bar, .ct-series-j .ct-slice-donut {\n  stroke: #dda458;\n}\n.ct-series-j .ct-slice-pie, .ct-series-j .ct-slice-donut-solid, .ct-series-j .ct-area {\n  fill: #dda458;\n}\n.ct-series-k .ct-point, .ct-series-k .ct-line, .ct-series-k .ct-bar, .ct-series-k .ct-slice-donut {\n  stroke: #eacf7d;\n}\n.ct-series-k .ct-slice-pie, .ct-series-k .ct-slice-donut-solid, .ct-series-k .ct-area {\n  fill: #eacf7d;\n}\n.ct-series-l .ct-point, .ct-series-l .ct-line, .ct-series-l .ct-bar, .ct-series-l .ct-slice-donut {\n  stroke: #86797d;\n}\n.ct-series-l .ct-slice-pie, .ct-series-l .ct-slice-donut-solid, .ct-series-l .ct-area {\n  fill: #86797d;\n}\n.ct-series-m .ct-point, .ct-series-m .ct-line, .ct-series-m .ct-bar, .ct-series-m .ct-slice-donut {\n  stroke: #b2c326;\n}\n.ct-series-m .ct-slice-pie, .ct-series-m .ct-slice-donut-solid, .ct-series-m .ct-area {\n  fill: #b2c326;\n}\n.ct-series-n .ct-point, .ct-series-n .ct-line, .ct-series-n .ct-bar, .ct-series-n .ct-slice-donut {\n  stroke: #6188e2;\n}\n.ct-series-n .ct-slice-pie, .ct-series-n .ct-slice-donut-solid, .ct-series-n .ct-area {\n  fill: #6188e2;\n}\n.ct-series-o .ct-point, .ct-series-o .ct-line, .ct-series-o .ct-bar, .ct-series-o .ct-slice-donut {\n  stroke: #a748ca;\n}\n.ct-series-o .ct-slice-pie, .ct-series-o .ct-slice-donut-solid, .ct-series-o .ct-area {\n  fill: #a748ca;\n}\n.ct-square {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-square:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 100%;\n}\n.ct-square:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-square > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-second {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-second:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 93.75%;\n}\n.ct-minor-second:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-second > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-second {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-second:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 88.8888888889%;\n}\n.ct-major-second:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-second > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-third {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-third:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 83.3333333333%;\n}\n.ct-minor-third:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-third > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-third {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-third:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 80%;\n}\n.ct-major-third:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-third > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-perfect-fourth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-perfect-fourth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 75%;\n}\n.ct-perfect-fourth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-perfect-fourth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-perfect-fifth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-perfect-fifth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 66.6666666667%;\n}\n.ct-perfect-fifth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-perfect-fifth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-sixth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-sixth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 62.5%;\n}\n.ct-minor-sixth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-sixth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-golden-section {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-golden-section:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 61.804697157%;\n}\n.ct-golden-section:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-golden-section > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-sixth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-sixth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 60%;\n}\n.ct-major-sixth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-sixth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-seventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-seventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 56.25%;\n}\n.ct-minor-seventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-seventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-seventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-seventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 53.3333333333%;\n}\n.ct-major-seventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-seventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-octave {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-octave:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 50%;\n}\n.ct-octave:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-octave > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-tenth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-tenth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 40%;\n}\n.ct-major-tenth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-tenth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-eleventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-eleventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 37.5%;\n}\n.ct-major-eleventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-eleventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-twelfth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-twelfth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 33.3333333333%;\n}\n.ct-major-twelfth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-twelfth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-double-octave {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-double-octave:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 25%;\n}\n.ct-double-octave:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-double-octave > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n\n/*# sourceMappingURL=chartist.css.map */", "", {"version":3,"sources":["/./node_modules/src/styles/chartist.scss","/./node_modules/src/styles/settings/_chartist-settings.scss","/./node_modules/chartist/dist/chartist.css"],"names":[],"mappings":"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","file":"chartist.css","sourcesContent":[null,null,"\n.ct-label {\n  fill: rgba(0, 0, 0, 0.4);\n  color: rgba(0, 0, 0, 0.4);\n  font-size: 0.75rem;\n  line-height: 1;\n}\n.ct-chart-line .ct-label,\n.ct-chart-bar .ct-label {\n  display: block;\n  display: -webkit-box;\n  display: -moz-box;\n  display: -ms-flexbox;\n  display: -webkit-flex;\n  display: flex;\n}\n.ct-chart-pie .ct-label,\n.ct-chart-donut .ct-label {\n  dominant-baseline: central;\n}\n.ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-label.ct-vertical.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-end;\n  -webkit-justify-content: flex-end;\n  -ms-flex-pack: flex-end;\n  justify-content: flex-end;\n  text-align: right;\n  text-anchor: end;\n}\n.ct-label.ct-vertical.ct-end {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar .ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  text-align: center;\n  text-anchor: start;\n}\n.ct-chart-bar .ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  text-align: center;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-vertical.ct-start {\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -webkit-box-pack: flex-end;\n  -webkit-justify-content: flex-end;\n  -ms-flex-pack: flex-end;\n  justify-content: flex-end;\n  text-align: right;\n  text-anchor: end;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-vertical.ct-end {\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: end;\n}\n.ct-grid {\n  stroke: rgba(0, 0, 0, 0.2);\n  stroke-width: 1px;\n  stroke-dasharray: 2px;\n}\n.ct-grid-background {\n  fill: none;\n}\n.ct-point {\n  stroke-width: 10px;\n  stroke-linecap: round;\n}\n.ct-line {\n  fill: none;\n  stroke-width: 4px;\n}\n.ct-area {\n  stroke: none;\n  fill-opacity: 0.1;\n}\n.ct-bar {\n  fill: none;\n  stroke-width: 10px;\n}\n.ct-slice-donut {\n  fill: none;\n  stroke-width: 60px;\n}\n.ct-series-a .ct-point, .ct-series-a .ct-line, .ct-series-a .ct-bar, .ct-series-a .ct-slice-donut {\n  stroke: #d70206;\n}\n.ct-series-a .ct-slice-pie, .ct-series-a .ct-slice-donut-solid, .ct-series-a .ct-area {\n  fill: #d70206;\n}\n.ct-series-b .ct-point, .ct-series-b .ct-line, .ct-series-b .ct-bar, .ct-series-b .ct-slice-donut {\n  stroke: #f05b4f;\n}\n.ct-series-b .ct-slice-pie, .ct-series-b .ct-slice-donut-solid, .ct-series-b .ct-area {\n  fill: #f05b4f;\n}\n.ct-series-c .ct-point, .ct-series-c .ct-line, .ct-series-c .ct-bar, .ct-series-c .ct-slice-donut {\n  stroke: #f4c63d;\n}\n.ct-series-c .ct-slice-pie, .ct-series-c .ct-slice-donut-solid, .ct-series-c .ct-area {\n  fill: #f4c63d;\n}\n.ct-series-d .ct-point, .ct-series-d .ct-line, .ct-series-d .ct-bar, .ct-series-d .ct-slice-donut {\n  stroke: #d17905;\n}\n.ct-series-d .ct-slice-pie, .ct-series-d .ct-slice-donut-solid, .ct-series-d .ct-area {\n  fill: #d17905;\n}\n.ct-series-e .ct-point, .ct-series-e .ct-line, .ct-series-e .ct-bar, .ct-series-e .ct-slice-donut {\n  stroke: #453d3f;\n}\n.ct-series-e .ct-slice-pie, .ct-series-e .ct-slice-donut-solid, .ct-series-e .ct-area {\n  fill: #453d3f;\n}\n.ct-series-f .ct-point, .ct-series-f .ct-line, .ct-series-f .ct-bar, .ct-series-f .ct-slice-donut {\n  stroke: #59922b;\n}\n.ct-series-f .ct-slice-pie, .ct-series-f .ct-slice-donut-solid, .ct-series-f .ct-area {\n  fill: #59922b;\n}\n.ct-series-g .ct-point, .ct-series-g .ct-line, .ct-series-g .ct-bar, .ct-series-g .ct-slice-donut {\n  stroke: #0544d3;\n}\n.ct-series-g .ct-slice-pie, .ct-series-g .ct-slice-donut-solid, .ct-series-g .ct-area {\n  fill: #0544d3;\n}\n.ct-series-h .ct-point, .ct-series-h .ct-line, .ct-series-h .ct-bar, .ct-series-h .ct-slice-donut {\n  stroke: #6b0392;\n}\n.ct-series-h .ct-slice-pie, .ct-series-h .ct-slice-donut-solid, .ct-series-h .ct-area {\n  fill: #6b0392;\n}\n.ct-series-i .ct-point, .ct-series-i .ct-line, .ct-series-i .ct-bar, .ct-series-i .ct-slice-donut {\n  stroke: #f05b4f;\n}\n.ct-series-i .ct-slice-pie, .ct-series-i .ct-slice-donut-solid, .ct-series-i .ct-area {\n  fill: #f05b4f;\n}\n.ct-series-j .ct-point, .ct-series-j .ct-line, .ct-series-j .ct-bar, .ct-series-j .ct-slice-donut {\n  stroke: #dda458;\n}\n.ct-series-j .ct-slice-pie, .ct-series-j .ct-slice-donut-solid, .ct-series-j .ct-area {\n  fill: #dda458;\n}\n.ct-series-k .ct-point, .ct-series-k .ct-line, .ct-series-k .ct-bar, .ct-series-k .ct-slice-donut {\n  stroke: #eacf7d;\n}\n.ct-series-k .ct-slice-pie, .ct-series-k .ct-slice-donut-solid, .ct-series-k .ct-area {\n  fill: #eacf7d;\n}\n.ct-series-l .ct-point, .ct-series-l .ct-line, .ct-series-l .ct-bar, .ct-series-l .ct-slice-donut {\n  stroke: #86797d;\n}\n.ct-series-l .ct-slice-pie, .ct-series-l .ct-slice-donut-solid, .ct-series-l .ct-area {\n  fill: #86797d;\n}\n.ct-series-m .ct-point, .ct-series-m .ct-line, .ct-series-m .ct-bar, .ct-series-m .ct-slice-donut {\n  stroke: #b2c326;\n}\n.ct-series-m .ct-slice-pie, .ct-series-m .ct-slice-donut-solid, .ct-series-m .ct-area {\n  fill: #b2c326;\n}\n.ct-series-n .ct-point, .ct-series-n .ct-line, .ct-series-n .ct-bar, .ct-series-n .ct-slice-donut {\n  stroke: #6188e2;\n}\n.ct-series-n .ct-slice-pie, .ct-series-n .ct-slice-donut-solid, .ct-series-n .ct-area {\n  fill: #6188e2;\n}\n.ct-series-o .ct-point, .ct-series-o .ct-line, .ct-series-o .ct-bar, .ct-series-o .ct-slice-donut {\n  stroke: #a748ca;\n}\n.ct-series-o .ct-slice-pie, .ct-series-o .ct-slice-donut-solid, .ct-series-o .ct-area {\n  fill: #a748ca;\n}\n.ct-square {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-square:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 100%;\n}\n.ct-square:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-square > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-second {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-second:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 93.75%;\n}\n.ct-minor-second:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-second > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-second {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-second:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 88.8888888889%;\n}\n.ct-major-second:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-second > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-third {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-third:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 83.3333333333%;\n}\n.ct-minor-third:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-third > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-third {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-third:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 80%;\n}\n.ct-major-third:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-third > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-perfect-fourth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-perfect-fourth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 75%;\n}\n.ct-perfect-fourth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-perfect-fourth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-perfect-fifth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-perfect-fifth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 66.6666666667%;\n}\n.ct-perfect-fifth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-perfect-fifth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-sixth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-sixth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 62.5%;\n}\n.ct-minor-sixth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-sixth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-golden-section {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-golden-section:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 61.804697157%;\n}\n.ct-golden-section:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-golden-section > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-sixth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-sixth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 60%;\n}\n.ct-major-sixth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-sixth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-seventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-seventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 56.25%;\n}\n.ct-minor-seventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-seventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-seventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-seventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 53.3333333333%;\n}\n.ct-major-seventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-seventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-octave {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-octave:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 50%;\n}\n.ct-octave:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-octave > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-tenth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-tenth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 40%;\n}\n.ct-major-tenth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-tenth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-eleventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-eleventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 37.5%;\n}\n.ct-major-eleventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-eleventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-twelfth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-twelfth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 33.3333333333%;\n}\n.ct-major-twelfth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-twelfth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-double-octave {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-double-octave:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 25%;\n}\n.ct-double-octave:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-double-octave > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n\n/*# sourceMappingURL=chartist.css.map */"],"sourceRoot":"webpack://"}]);
+exports.push([module.i, "", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"home.css","sourceRoot":"webpack://"}]);
 
 // exports
 
@@ -22117,7 +22118,7 @@ exports = module.exports = __webpack_require__(3)();
 
 
 // module
-exports.push([module.i, "", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"apikey.css","sourceRoot":"webpack://"}]);
+exports.push([module.i, "\n.ct-label {\n  fill: rgba(0, 0, 0, 0.4);\n  color: rgba(0, 0, 0, 0.4);\n  font-size: 0.75rem;\n  line-height: 1;\n}\n.ct-chart-line .ct-label,\n.ct-chart-bar .ct-label {\n  display: block;\n  display: -webkit-box;\n  display: -moz-box;\n  display: -ms-flexbox;\n  display: -webkit-flex;\n  display: flex;\n}\n.ct-chart-pie .ct-label,\n.ct-chart-donut .ct-label {\n  dominant-baseline: central;\n}\n.ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-label.ct-vertical.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-end;\n  -webkit-justify-content: flex-end;\n  -ms-flex-pack: flex-end;\n  justify-content: flex-end;\n  text-align: right;\n  text-anchor: end;\n}\n.ct-label.ct-vertical.ct-end {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar .ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  text-align: center;\n  text-anchor: start;\n}\n.ct-chart-bar .ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  text-align: center;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-vertical.ct-start {\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -webkit-box-pack: flex-end;\n  -webkit-justify-content: flex-end;\n  -ms-flex-pack: flex-end;\n  justify-content: flex-end;\n  text-align: right;\n  text-anchor: end;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-vertical.ct-end {\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: end;\n}\n.ct-grid {\n  stroke: rgba(0, 0, 0, 0.2);\n  stroke-width: 1px;\n  stroke-dasharray: 2px;\n}\n.ct-grid-background {\n  fill: none;\n}\n.ct-point {\n  stroke-width: 10px;\n  stroke-linecap: round;\n}\n.ct-line {\n  fill: none;\n  stroke-width: 4px;\n}\n.ct-area {\n  stroke: none;\n  fill-opacity: 0.1;\n}\n.ct-bar {\n  fill: none;\n  stroke-width: 10px;\n}\n.ct-slice-donut {\n  fill: none;\n  stroke-width: 60px;\n}\n.ct-series-a .ct-point, .ct-series-a .ct-line, .ct-series-a .ct-bar, .ct-series-a .ct-slice-donut {\n  stroke: #d70206;\n}\n.ct-series-a .ct-slice-pie, .ct-series-a .ct-slice-donut-solid, .ct-series-a .ct-area {\n  fill: #d70206;\n}\n.ct-series-b .ct-point, .ct-series-b .ct-line, .ct-series-b .ct-bar, .ct-series-b .ct-slice-donut {\n  stroke: #f05b4f;\n}\n.ct-series-b .ct-slice-pie, .ct-series-b .ct-slice-donut-solid, .ct-series-b .ct-area {\n  fill: #f05b4f;\n}\n.ct-series-c .ct-point, .ct-series-c .ct-line, .ct-series-c .ct-bar, .ct-series-c .ct-slice-donut {\n  stroke: #f4c63d;\n}\n.ct-series-c .ct-slice-pie, .ct-series-c .ct-slice-donut-solid, .ct-series-c .ct-area {\n  fill: #f4c63d;\n}\n.ct-series-d .ct-point, .ct-series-d .ct-line, .ct-series-d .ct-bar, .ct-series-d .ct-slice-donut {\n  stroke: #d17905;\n}\n.ct-series-d .ct-slice-pie, .ct-series-d .ct-slice-donut-solid, .ct-series-d .ct-area {\n  fill: #d17905;\n}\n.ct-series-e .ct-point, .ct-series-e .ct-line, .ct-series-e .ct-bar, .ct-series-e .ct-slice-donut {\n  stroke: #453d3f;\n}\n.ct-series-e .ct-slice-pie, .ct-series-e .ct-slice-donut-solid, .ct-series-e .ct-area {\n  fill: #453d3f;\n}\n.ct-series-f .ct-point, .ct-series-f .ct-line, .ct-series-f .ct-bar, .ct-series-f .ct-slice-donut {\n  stroke: #59922b;\n}\n.ct-series-f .ct-slice-pie, .ct-series-f .ct-slice-donut-solid, .ct-series-f .ct-area {\n  fill: #59922b;\n}\n.ct-series-g .ct-point, .ct-series-g .ct-line, .ct-series-g .ct-bar, .ct-series-g .ct-slice-donut {\n  stroke: #0544d3;\n}\n.ct-series-g .ct-slice-pie, .ct-series-g .ct-slice-donut-solid, .ct-series-g .ct-area {\n  fill: #0544d3;\n}\n.ct-series-h .ct-point, .ct-series-h .ct-line, .ct-series-h .ct-bar, .ct-series-h .ct-slice-donut {\n  stroke: #6b0392;\n}\n.ct-series-h .ct-slice-pie, .ct-series-h .ct-slice-donut-solid, .ct-series-h .ct-area {\n  fill: #6b0392;\n}\n.ct-series-i .ct-point, .ct-series-i .ct-line, .ct-series-i .ct-bar, .ct-series-i .ct-slice-donut {\n  stroke: #f05b4f;\n}\n.ct-series-i .ct-slice-pie, .ct-series-i .ct-slice-donut-solid, .ct-series-i .ct-area {\n  fill: #f05b4f;\n}\n.ct-series-j .ct-point, .ct-series-j .ct-line, .ct-series-j .ct-bar, .ct-series-j .ct-slice-donut {\n  stroke: #dda458;\n}\n.ct-series-j .ct-slice-pie, .ct-series-j .ct-slice-donut-solid, .ct-series-j .ct-area {\n  fill: #dda458;\n}\n.ct-series-k .ct-point, .ct-series-k .ct-line, .ct-series-k .ct-bar, .ct-series-k .ct-slice-donut {\n  stroke: #eacf7d;\n}\n.ct-series-k .ct-slice-pie, .ct-series-k .ct-slice-donut-solid, .ct-series-k .ct-area {\n  fill: #eacf7d;\n}\n.ct-series-l .ct-point, .ct-series-l .ct-line, .ct-series-l .ct-bar, .ct-series-l .ct-slice-donut {\n  stroke: #86797d;\n}\n.ct-series-l .ct-slice-pie, .ct-series-l .ct-slice-donut-solid, .ct-series-l .ct-area {\n  fill: #86797d;\n}\n.ct-series-m .ct-point, .ct-series-m .ct-line, .ct-series-m .ct-bar, .ct-series-m .ct-slice-donut {\n  stroke: #b2c326;\n}\n.ct-series-m .ct-slice-pie, .ct-series-m .ct-slice-donut-solid, .ct-series-m .ct-area {\n  fill: #b2c326;\n}\n.ct-series-n .ct-point, .ct-series-n .ct-line, .ct-series-n .ct-bar, .ct-series-n .ct-slice-donut {\n  stroke: #6188e2;\n}\n.ct-series-n .ct-slice-pie, .ct-series-n .ct-slice-donut-solid, .ct-series-n .ct-area {\n  fill: #6188e2;\n}\n.ct-series-o .ct-point, .ct-series-o .ct-line, .ct-series-o .ct-bar, .ct-series-o .ct-slice-donut {\n  stroke: #a748ca;\n}\n.ct-series-o .ct-slice-pie, .ct-series-o .ct-slice-donut-solid, .ct-series-o .ct-area {\n  fill: #a748ca;\n}\n.ct-square {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-square:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 100%;\n}\n.ct-square:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-square > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-second {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-second:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 93.75%;\n}\n.ct-minor-second:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-second > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-second {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-second:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 88.8888888889%;\n}\n.ct-major-second:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-second > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-third {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-third:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 83.3333333333%;\n}\n.ct-minor-third:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-third > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-third {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-third:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 80%;\n}\n.ct-major-third:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-third > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-perfect-fourth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-perfect-fourth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 75%;\n}\n.ct-perfect-fourth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-perfect-fourth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-perfect-fifth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-perfect-fifth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 66.6666666667%;\n}\n.ct-perfect-fifth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-perfect-fifth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-sixth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-sixth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 62.5%;\n}\n.ct-minor-sixth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-sixth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-golden-section {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-golden-section:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 61.804697157%;\n}\n.ct-golden-section:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-golden-section > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-sixth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-sixth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 60%;\n}\n.ct-major-sixth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-sixth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-seventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-seventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 56.25%;\n}\n.ct-minor-seventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-seventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-seventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-seventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 53.3333333333%;\n}\n.ct-major-seventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-seventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-octave {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-octave:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 50%;\n}\n.ct-octave:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-octave > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-tenth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-tenth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 40%;\n}\n.ct-major-tenth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-tenth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-eleventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-eleventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 37.5%;\n}\n.ct-major-eleventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-eleventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-twelfth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-twelfth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 33.3333333333%;\n}\n.ct-major-twelfth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-twelfth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-double-octave {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-double-octave:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 25%;\n}\n.ct-double-octave:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-double-octave > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n\n/*# sourceMappingURL=chartist.css.map */", "", {"version":3,"sources":["/./node_modules/src/styles/chartist.scss","/./node_modules/src/styles/settings/_chartist-settings.scss","/./node_modules/chartist/dist/chartist.css"],"names":[],"mappings":"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","file":"chartist.css","sourcesContent":[null,null,"\n.ct-label {\n  fill: rgba(0, 0, 0, 0.4);\n  color: rgba(0, 0, 0, 0.4);\n  font-size: 0.75rem;\n  line-height: 1;\n}\n.ct-chart-line .ct-label,\n.ct-chart-bar .ct-label {\n  display: block;\n  display: -webkit-box;\n  display: -moz-box;\n  display: -ms-flexbox;\n  display: -webkit-flex;\n  display: flex;\n}\n.ct-chart-pie .ct-label,\n.ct-chart-donut .ct-label {\n  dominant-baseline: central;\n}\n.ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-label.ct-vertical.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-end;\n  -webkit-justify-content: flex-end;\n  -ms-flex-pack: flex-end;\n  justify-content: flex-end;\n  text-align: right;\n  text-anchor: end;\n}\n.ct-label.ct-vertical.ct-end {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar .ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  text-align: center;\n  text-anchor: start;\n}\n.ct-chart-bar .ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n  -ms-flex-pack: center;\n  justify-content: center;\n  text-align: center;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-start {\n  -webkit-box-align: flex-end;\n  -webkit-align-items: flex-end;\n  -ms-flex-align: flex-end;\n  align-items: flex-end;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-end {\n  -webkit-box-align: flex-start;\n  -webkit-align-items: flex-start;\n  -ms-flex-align: flex-start;\n  align-items: flex-start;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: start;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-vertical.ct-start {\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -webkit-box-pack: flex-end;\n  -webkit-justify-content: flex-end;\n  -ms-flex-pack: flex-end;\n  justify-content: flex-end;\n  text-align: right;\n  text-anchor: end;\n}\n.ct-chart-bar.ct-horizontal-bars .ct-label.ct-vertical.ct-end {\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n  -ms-flex-align: center;\n  align-items: center;\n  -webkit-box-pack: flex-start;\n  -webkit-justify-content: flex-start;\n  -ms-flex-pack: flex-start;\n  justify-content: flex-start;\n  text-align: left;\n  text-anchor: end;\n}\n.ct-grid {\n  stroke: rgba(0, 0, 0, 0.2);\n  stroke-width: 1px;\n  stroke-dasharray: 2px;\n}\n.ct-grid-background {\n  fill: none;\n}\n.ct-point {\n  stroke-width: 10px;\n  stroke-linecap: round;\n}\n.ct-line {\n  fill: none;\n  stroke-width: 4px;\n}\n.ct-area {\n  stroke: none;\n  fill-opacity: 0.1;\n}\n.ct-bar {\n  fill: none;\n  stroke-width: 10px;\n}\n.ct-slice-donut {\n  fill: none;\n  stroke-width: 60px;\n}\n.ct-series-a .ct-point, .ct-series-a .ct-line, .ct-series-a .ct-bar, .ct-series-a .ct-slice-donut {\n  stroke: #d70206;\n}\n.ct-series-a .ct-slice-pie, .ct-series-a .ct-slice-donut-solid, .ct-series-a .ct-area {\n  fill: #d70206;\n}\n.ct-series-b .ct-point, .ct-series-b .ct-line, .ct-series-b .ct-bar, .ct-series-b .ct-slice-donut {\n  stroke: #f05b4f;\n}\n.ct-series-b .ct-slice-pie, .ct-series-b .ct-slice-donut-solid, .ct-series-b .ct-area {\n  fill: #f05b4f;\n}\n.ct-series-c .ct-point, .ct-series-c .ct-line, .ct-series-c .ct-bar, .ct-series-c .ct-slice-donut {\n  stroke: #f4c63d;\n}\n.ct-series-c .ct-slice-pie, .ct-series-c .ct-slice-donut-solid, .ct-series-c .ct-area {\n  fill: #f4c63d;\n}\n.ct-series-d .ct-point, .ct-series-d .ct-line, .ct-series-d .ct-bar, .ct-series-d .ct-slice-donut {\n  stroke: #d17905;\n}\n.ct-series-d .ct-slice-pie, .ct-series-d .ct-slice-donut-solid, .ct-series-d .ct-area {\n  fill: #d17905;\n}\n.ct-series-e .ct-point, .ct-series-e .ct-line, .ct-series-e .ct-bar, .ct-series-e .ct-slice-donut {\n  stroke: #453d3f;\n}\n.ct-series-e .ct-slice-pie, .ct-series-e .ct-slice-donut-solid, .ct-series-e .ct-area {\n  fill: #453d3f;\n}\n.ct-series-f .ct-point, .ct-series-f .ct-line, .ct-series-f .ct-bar, .ct-series-f .ct-slice-donut {\n  stroke: #59922b;\n}\n.ct-series-f .ct-slice-pie, .ct-series-f .ct-slice-donut-solid, .ct-series-f .ct-area {\n  fill: #59922b;\n}\n.ct-series-g .ct-point, .ct-series-g .ct-line, .ct-series-g .ct-bar, .ct-series-g .ct-slice-donut {\n  stroke: #0544d3;\n}\n.ct-series-g .ct-slice-pie, .ct-series-g .ct-slice-donut-solid, .ct-series-g .ct-area {\n  fill: #0544d3;\n}\n.ct-series-h .ct-point, .ct-series-h .ct-line, .ct-series-h .ct-bar, .ct-series-h .ct-slice-donut {\n  stroke: #6b0392;\n}\n.ct-series-h .ct-slice-pie, .ct-series-h .ct-slice-donut-solid, .ct-series-h .ct-area {\n  fill: #6b0392;\n}\n.ct-series-i .ct-point, .ct-series-i .ct-line, .ct-series-i .ct-bar, .ct-series-i .ct-slice-donut {\n  stroke: #f05b4f;\n}\n.ct-series-i .ct-slice-pie, .ct-series-i .ct-slice-donut-solid, .ct-series-i .ct-area {\n  fill: #f05b4f;\n}\n.ct-series-j .ct-point, .ct-series-j .ct-line, .ct-series-j .ct-bar, .ct-series-j .ct-slice-donut {\n  stroke: #dda458;\n}\n.ct-series-j .ct-slice-pie, .ct-series-j .ct-slice-donut-solid, .ct-series-j .ct-area {\n  fill: #dda458;\n}\n.ct-series-k .ct-point, .ct-series-k .ct-line, .ct-series-k .ct-bar, .ct-series-k .ct-slice-donut {\n  stroke: #eacf7d;\n}\n.ct-series-k .ct-slice-pie, .ct-series-k .ct-slice-donut-solid, .ct-series-k .ct-area {\n  fill: #eacf7d;\n}\n.ct-series-l .ct-point, .ct-series-l .ct-line, .ct-series-l .ct-bar, .ct-series-l .ct-slice-donut {\n  stroke: #86797d;\n}\n.ct-series-l .ct-slice-pie, .ct-series-l .ct-slice-donut-solid, .ct-series-l .ct-area {\n  fill: #86797d;\n}\n.ct-series-m .ct-point, .ct-series-m .ct-line, .ct-series-m .ct-bar, .ct-series-m .ct-slice-donut {\n  stroke: #b2c326;\n}\n.ct-series-m .ct-slice-pie, .ct-series-m .ct-slice-donut-solid, .ct-series-m .ct-area {\n  fill: #b2c326;\n}\n.ct-series-n .ct-point, .ct-series-n .ct-line, .ct-series-n .ct-bar, .ct-series-n .ct-slice-donut {\n  stroke: #6188e2;\n}\n.ct-series-n .ct-slice-pie, .ct-series-n .ct-slice-donut-solid, .ct-series-n .ct-area {\n  fill: #6188e2;\n}\n.ct-series-o .ct-point, .ct-series-o .ct-line, .ct-series-o .ct-bar, .ct-series-o .ct-slice-donut {\n  stroke: #a748ca;\n}\n.ct-series-o .ct-slice-pie, .ct-series-o .ct-slice-donut-solid, .ct-series-o .ct-area {\n  fill: #a748ca;\n}\n.ct-square {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-square:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 100%;\n}\n.ct-square:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-square > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-second {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-second:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 93.75%;\n}\n.ct-minor-second:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-second > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-second {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-second:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 88.8888888889%;\n}\n.ct-major-second:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-second > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-third {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-third:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 83.3333333333%;\n}\n.ct-minor-third:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-third > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-third {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-third:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 80%;\n}\n.ct-major-third:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-third > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-perfect-fourth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-perfect-fourth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 75%;\n}\n.ct-perfect-fourth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-perfect-fourth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-perfect-fifth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-perfect-fifth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 66.6666666667%;\n}\n.ct-perfect-fifth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-perfect-fifth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-sixth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-sixth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 62.5%;\n}\n.ct-minor-sixth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-sixth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-golden-section {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-golden-section:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 61.804697157%;\n}\n.ct-golden-section:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-golden-section > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-sixth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-sixth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 60%;\n}\n.ct-major-sixth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-sixth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-minor-seventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-minor-seventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 56.25%;\n}\n.ct-minor-seventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-minor-seventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-seventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-seventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 53.3333333333%;\n}\n.ct-major-seventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-seventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-octave {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-octave:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 50%;\n}\n.ct-octave:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-octave > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-tenth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-tenth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 40%;\n}\n.ct-major-tenth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-tenth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-eleventh {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-eleventh:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 37.5%;\n}\n.ct-major-eleventh:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-eleventh > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-major-twelfth {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-major-twelfth:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 33.3333333333%;\n}\n.ct-major-twelfth:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-major-twelfth > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n.ct-double-octave {\n  display: block;\n  position: relative;\n  width: 100%;\n}\n.ct-double-octave:before {\n    display: block;\n    float: left;\n    content: \"\";\n    width: 0;\n    height: 0;\n    padding-bottom: 25%;\n}\n.ct-double-octave:after {\n    content: \"\";\n    display: table;\n    clear: both;\n}\n.ct-double-octave > svg {\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 0;\n}\n\n/*# sourceMappingURL=chartist.css.map */"],"sourceRoot":"webpack://"}]);
 
 // exports
 
@@ -22131,7 +22132,7 @@ exports = module.exports = __webpack_require__(3)();
 
 
 // module
-exports.push([module.i, "\n.IncidentView .tags span {\r\n    margin-right: 5px;\n}\n.tags button {\r\n    margin-right: 5px;\n}\n.more {\r\n    display: none;\n}\n.feedback.col {\r\n    min-width: 500px;\n}", "", {"version":3,"sources":["/./ClientApp/components/analyze/incidents/feedback.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AACD;IACI,kBAAkB;CACrB;AAED;IACI,cAAc;CACjB;AAED;IACI,iBAAiB;CACpB","file":"feedback.css","sourcesContent":[".IncidentView .tags span {\r\n    margin-right: 5px;\r\n}\r\n.tags button {\r\n    margin-right: 5px;\r\n}\r\n\r\n.more {\r\n    display: none;\r\n}\r\n\r\n.feedback.col {\r\n    min-width: 500px;\r\n}"],"sourceRoot":"webpack://"}]);
+exports.push([module.i, "", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"apikey.css","sourceRoot":"webpack://"}]);
 
 // exports
 
@@ -22145,7 +22146,7 @@ exports = module.exports = __webpack_require__(3)();
 
 
 // module
-exports.push([module.i, "\n@media (max-width: 767px) {\r\n    /* On small screens, the nav menu spans the full width of the screen. Leave a space for it. */\nbody {\r\n        padding-top: 50px;\n}\n}\n.toast {\r\n    opacity: 0.9 !important;\n}\n.card {\r\n    margin-bottom: 10px;\n}", "", {"version":3,"sources":["/./ClientApp/css/site.css"],"names":[],"mappings":";AAAA;IACI,8FAA8F;AAC9F;QACI,kBAAkB;CACrB;CACJ;AAED;IACI,wBAAwB;CAC3B;AAED;IACI,oBAAoB;CACvB","file":"site.css","sourcesContent":["@media (max-width: 767px) {\r\n    /* On small screens, the nav menu spans the full width of the screen. Leave a space for it. */\r\n    body {\r\n        padding-top: 50px;\r\n    }\r\n}\r\n\r\n.toast {\r\n    opacity: 0.9 !important;\r\n}\r\n\r\n.card {\r\n    margin-bottom: 10px;\r\n}"],"sourceRoot":"webpack://"}]);
+exports.push([module.i, "\n.IncidentView .tags span {\r\n    margin-right: 5px;\n}\n.tags button {\r\n    margin-right: 5px;\n}\n.more {\r\n    display: none;\n}\n.feedback.col {\r\n    min-width: 500px;\n}", "", {"version":3,"sources":["/./ClientApp/components/analyze/incidents/feedback.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AACD;IACI,kBAAkB;CACrB;AAED;IACI,cAAc;CACjB;AAED;IACI,iBAAiB;CACpB","file":"feedback.css","sourcesContent":[".IncidentView .tags span {\r\n    margin-right: 5px;\r\n}\r\n.tags button {\r\n    margin-right: 5px;\r\n}\r\n\r\n.more {\r\n    display: none;\r\n}\r\n\r\n.feedback.col {\r\n    min-width: 500px;\r\n}"],"sourceRoot":"webpack://"}]);
 
 // exports
 
@@ -22159,7 +22160,7 @@ exports = module.exports = __webpack_require__(3)();
 
 
 // module
-exports.push([module.i, "\n#manageMenu .router-link-active {\r\n    font-weight: bold;\n}\n#manageMenu > div {\r\n    box-shadow: 0 5px 5px 0 rgba(214,214,214,1);\n}\n#manageMenu li {\r\n    margin-top: -0.5rem;\r\n    margin-bottom: -0.5rem;\r\n    padding-top: 0.25rem;\r\n    padding-bottom: 0.25rem;\n}\n#manageMenu li.router-link-active {\r\n        background: #f1f3f5;\n}\r\n", "", {"version":3,"sources":["/./ClientApp/components/manage/system/menu.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AAED;IACI,4CAA4C;CAC/C;AAED;IACI,oBAAoB;IACpB,uBAAuB;IACvB,qBAAqB;IACrB,wBAAwB;CAC3B;AAEG;QACI,oBAAoB;CACvB","file":"menu.css","sourcesContent":["#manageMenu .router-link-active {\r\n    font-weight: bold;\r\n}\r\n\r\n#manageMenu > div {\r\n    box-shadow: 0 5px 5px 0 rgba(214,214,214,1);\r\n}\r\n\r\n#manageMenu li {\r\n    margin-top: -0.5rem;\r\n    margin-bottom: -0.5rem;\r\n    padding-top: 0.25rem;\r\n    padding-bottom: 0.25rem;\r\n}\r\n\r\n    #manageMenu li.router-link-active {\r\n        background: #f1f3f5;\r\n    }\r\n"],"sourceRoot":"webpack://"}]);
+exports.push([module.i, "\n@media (max-width: 767px) {\r\n    /* On small screens, the nav menu spans the full width of the screen. Leave a space for it. */\nbody {\r\n        padding-top: 50px;\n}\n}\n.toast {\r\n    opacity: 0.9 !important;\n}\n.card {\r\n    margin-bottom: 10px;\n}\n[v-cloak] {\r\n    display: none;\n}", "", {"version":3,"sources":["/./ClientApp/css/site.css"],"names":[],"mappings":";AAAA;IACI,8FAA8F;AAC9F;QACI,kBAAkB;CACrB;CACJ;AAED;IACI,wBAAwB;CAC3B;AAED;IACI,oBAAoB;CACvB;AAED;IACI,cAAc;CACjB","file":"site.css","sourcesContent":["@media (max-width: 767px) {\r\n    /* On small screens, the nav menu spans the full width of the screen. Leave a space for it. */\r\n    body {\r\n        padding-top: 50px;\r\n    }\r\n}\r\n\r\n.toast {\r\n    opacity: 0.9 !important;\r\n}\r\n\r\n.card {\r\n    margin-bottom: 10px;\r\n}\r\n\r\n[v-cloak] {\r\n    display: none;\r\n}"],"sourceRoot":"webpack://"}]);
 
 // exports
 
@@ -22173,7 +22174,7 @@ exports = module.exports = __webpack_require__(3)();
 
 
 // module
-exports.push([module.i, "", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"support.css","sourceRoot":"webpack://"}]);
+exports.push([module.i, "\n#manageMenu .router-link-active {\r\n    font-weight: bold;\n}\n#manageMenu > div {\r\n    box-shadow: 0 5px 5px 0 rgba(214,214,214,1);\n}\n#manageMenu li {\r\n    margin-top: -0.5rem;\r\n    margin-bottom: -0.5rem;\r\n    padding-top: 0.25rem;\r\n    padding-bottom: 0.25rem;\n}\n#manageMenu li.router-link-active {\r\n        background: #f1f3f5;\n}\r\n", "", {"version":3,"sources":["/./ClientApp/components/manage/system/menu.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AAED;IACI,4CAA4C;CAC/C;AAED;IACI,oBAAoB;IACpB,uBAAuB;IACvB,qBAAqB;IACrB,wBAAwB;CAC3B;AAEG;QACI,oBAAoB;CACvB","file":"menu.css","sourcesContent":["#manageMenu .router-link-active {\r\n    font-weight: bold;\r\n}\r\n\r\n#manageMenu > div {\r\n    box-shadow: 0 5px 5px 0 rgba(214,214,214,1);\r\n}\r\n\r\n#manageMenu li {\r\n    margin-top: -0.5rem;\r\n    margin-bottom: -0.5rem;\r\n    padding-top: 0.25rem;\r\n    padding-bottom: 0.25rem;\r\n}\r\n\r\n    #manageMenu li.router-link-active {\r\n        background: #f1f3f5;\r\n    }\r\n"],"sourceRoot":"webpack://"}]);
 
 // exports
 
@@ -22187,7 +22188,7 @@ exports = module.exports = __webpack_require__(3)();
 
 
 // module
-exports.push([module.i, "/**\n * simplemde v1.11.2\n * Copyright Next Step Webs, Inc.\n * @link https://github.com/NextStepWebs/simplemde-markdown-editor\n * @license MIT\n */\n.CodeMirror{color:#000\n}\n.CodeMirror-lines{padding:4px 0\n}\n.CodeMirror pre{padding:0 4px\n}\n.CodeMirror-gutter-filler,.CodeMirror-scrollbar-filler{background-color:#fff\n}\n.CodeMirror-gutters{border-right:1px solid #ddd;background-color:#f7f7f7;white-space:nowrap\n}\n.CodeMirror-linenumber{padding:0 3px 0 5px;min-width:20px;text-align:right;color:#999;white-space:nowrap\n}\n.CodeMirror-guttermarker{color:#000\n}\n.CodeMirror-guttermarker-subtle{color:#999\n}\n.CodeMirror-cursor{border-left:1px solid #000;border-right:none;width:0\n}\n.CodeMirror div.CodeMirror-secondarycursor{border-left:1px solid silver\n}\n.cm-fat-cursor .CodeMirror-cursor{width:auto;border:0!important;background:#7e7\n}\n.cm-fat-cursor div.CodeMirror-cursors{z-index:1\n}\n.cm-animate-fat-cursor{width:auto;border:0;-webkit-animation:blink 1.06s steps(1) infinite;-moz-animation:blink 1.06s steps(1) infinite;animation:blink 1.06s steps(1) infinite;background-color:#7e7\n}\n@-moz-keyframes blink{\n50%{background-color:transparent\n}\n}\n@-webkit-keyframes blink{\n50%{background-color:transparent\n}\n}\n@keyframes blink{\n50%{background-color:transparent\n}\n}\n.cm-tab{display:inline-block;text-decoration:inherit\n}\n.CodeMirror-ruler{border-left:1px solid #ccc;position:absolute\n}\n.cm-s-default .cm-header{color:#00f\n}\n.cm-s-default .cm-quote{color:#090\n}\n.cm-negative{color:#d44\n}\n.cm-positive{color:#292\n}\n.cm-header,.cm-strong{font-weight:700\n}\n.cm-em{font-style:italic\n}\n.cm-link{text-decoration:underline\n}\n.cm-strikethrough{text-decoration:line-through\n}\n.cm-s-default .cm-keyword{color:#708\n}\n.cm-s-default .cm-atom{color:#219\n}\n.cm-s-default .cm-number{color:#164\n}\n.cm-s-default .cm-def{color:#00f\n}\n.cm-s-default .cm-variable-2{color:#05a\n}\n.cm-s-default .cm-variable-3{color:#085\n}\n.cm-s-default .cm-comment{color:#a50\n}\n.cm-s-default .cm-string{color:#a11\n}\n.cm-s-default .cm-string-2{color:#f50\n}\n.cm-s-default .cm-meta,.cm-s-default .cm-qualifier{color:#555\n}\n.cm-s-default .cm-builtin{color:#30a\n}\n.cm-s-default .cm-bracket{color:#997\n}\n.cm-s-default .cm-tag{color:#170\n}\n.cm-s-default .cm-attribute{color:#00c\n}\n.cm-s-default .cm-hr{color:#999\n}\n.cm-s-default .cm-link{color:#00c\n}\n.cm-invalidchar,.cm-s-default .cm-error{color:red\n}\n.CodeMirror-composing{border-bottom:2px solid\n}\ndiv.CodeMirror span.CodeMirror-matchingbracket{color:#0f0\n}\ndiv.CodeMirror span.CodeMirror-nonmatchingbracket{color:#f22\n}\n.CodeMirror-matchingtag{background:rgba(255,150,0,.3)\n}\n.CodeMirror-activeline-background{background:#e8f2ff\n}\n.CodeMirror{position:relative;overflow:hidden;background:#fff\n}\n.CodeMirror-scroll{overflow:scroll!important;margin-bottom:-30px;margin-right:-30px;padding-bottom:30px;height:100%;outline:0;position:relative\n}\n.CodeMirror-sizer{position:relative;border-right:30px solid transparent\n}\n.CodeMirror-gutter-filler,.CodeMirror-hscrollbar,.CodeMirror-scrollbar-filler,.CodeMirror-vscrollbar{position:absolute;z-index:6;display:none\n}\n.CodeMirror-vscrollbar{right:0;top:0;overflow-x:hidden;overflow-y:scroll\n}\n.CodeMirror-hscrollbar{bottom:0;left:0;overflow-y:hidden;overflow-x:scroll\n}\n.CodeMirror-scrollbar-filler{right:0;bottom:0\n}\n.CodeMirror-gutter-filler{left:0;bottom:0\n}\n.CodeMirror-gutters{position:absolute;left:0;top:0;min-height:100%;z-index:3\n}\n.CodeMirror-gutter{white-space:normal;height:100%;display:inline-block;vertical-align:top;margin-bottom:-30px\n}\n.CodeMirror-gutter-wrapper{position:absolute;z-index:4;background:0 0!important;border:none!important;-webkit-user-select:none;-moz-user-select:none;user-select:none\n}\n.CodeMirror-gutter-background{position:absolute;top:0;bottom:0;z-index:4\n}\n.CodeMirror-gutter-elt{position:absolute;cursor:default;z-index:4\n}\n.CodeMirror-lines{cursor:text;min-height:1px\n}\n.CodeMirror pre{-moz-border-radius:0;-webkit-border-radius:0;border-radius:0;border-width:0;background:0 0;font-family:inherit;font-size:inherit;margin:0;white-space:pre;word-wrap:normal;line-height:inherit;color:inherit;z-index:2;position:relative;overflow:visible;-webkit-tap-highlight-color:transparent;-webkit-font-variant-ligatures:none;font-variant-ligatures:none\n}\n.CodeMirror-wrap pre{word-wrap:break-word;white-space:pre-wrap;word-break:normal\n}\n.CodeMirror-linebackground{position:absolute;left:0;right:0;top:0;bottom:0;z-index:0\n}\n.CodeMirror-linewidget{position:relative;z-index:2;overflow:auto\n}\n.CodeMirror-code{outline:0\n}\n.CodeMirror-gutter,.CodeMirror-gutters,.CodeMirror-linenumber,.CodeMirror-scroll,.CodeMirror-sizer{-moz-box-sizing:content-box;box-sizing:content-box\n}\n.CodeMirror-measure{position:absolute;width:100%;height:0;overflow:hidden;visibility:hidden\n}\n.CodeMirror-cursor{position:absolute\n}\n.CodeMirror-measure pre{position:static\n}\ndiv.CodeMirror-cursors{visibility:hidden;position:relative;z-index:3\n}\n.CodeMirror-focused div.CodeMirror-cursors,div.CodeMirror-dragcursors{visibility:visible\n}\n.CodeMirror-selected{background:#d9d9d9\n}\n.CodeMirror-focused .CodeMirror-selected,.CodeMirror-line::selection,.CodeMirror-line>span::selection,.CodeMirror-line>span>span::selection{background:#d7d4f0\n}\n.CodeMirror-crosshair{cursor:crosshair\n}\n.CodeMirror-line::-moz-selection,.CodeMirror-line>span::-moz-selection,.CodeMirror-line>span>span::-moz-selection{background:#d7d4f0\n}\n.cm-searching{background:#ffa;background:rgba(255,255,0,.4)\n}\n.cm-force-border{padding-right:.1px\n}\n@media print{\n.CodeMirror div.CodeMirror-cursors{visibility:hidden\n}\n}\n.cm-tab-wrap-hack:after{content:''\n}\nspan.CodeMirror-selectedtext{background:0 0\n}\n.CodeMirror{height:auto;min-height:300px;border:1px solid #ddd;border-bottom-left-radius:4px;border-bottom-right-radius:4px;padding:10px;font:inherit;z-index:1\n}\n.CodeMirror-scroll{min-height:300px\n}\n.CodeMirror-fullscreen{background:#fff;position:fixed!important;top:50px;left:0;right:0;bottom:0;height:auto;z-index:9\n}\n.CodeMirror-sided{width:50%!important\n}\n.editor-toolbar{position:relative;opacity:.6;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none;padding:0 10px;border-top:1px solid #bbb;border-left:1px solid #bbb;border-right:1px solid #bbb;border-top-left-radius:4px;border-top-right-radius:4px\n}\n.editor-toolbar:after,.editor-toolbar:before{display:block;content:' ';height:1px\n}\n.editor-toolbar:before{margin-bottom:8px\n}\n.editor-toolbar:after{margin-top:8px\n}\n.editor-toolbar:hover,.editor-wrapper input.title:focus,.editor-wrapper input.title:hover{opacity:.8\n}\n.editor-toolbar.fullscreen{width:100%;height:50px;overflow-x:auto;overflow-y:hidden;white-space:nowrap;padding-top:10px;padding-bottom:10px;box-sizing:border-box;background:#fff;border:0;position:fixed;top:0;left:0;opacity:1;z-index:9\n}\n.editor-toolbar.fullscreen::before{width:20px;height:50px;background:-moz-linear-gradient(left,rgba(255,255,255,1) 0,rgba(255,255,255,0) 100%);background:-webkit-gradient(linear,left top,right top,color-stop(0,rgba(255,255,255,1)),color-stop(100%,rgba(255,255,255,0)));background:-webkit-linear-gradient(left,rgba(255,255,255,1) 0,rgba(255,255,255,0) 100%);background:-o-linear-gradient(left,rgba(255,255,255,1) 0,rgba(255,255,255,0) 100%);background:-ms-linear-gradient(left,rgba(255,255,255,1) 0,rgba(255,255,255,0) 100%);background:linear-gradient(to right,rgba(255,255,255,1) 0,rgba(255,255,255,0) 100%);position:fixed;top:0;left:0;margin:0;padding:0\n}\n.editor-toolbar.fullscreen::after{width:20px;height:50px;background:-moz-linear-gradient(left,rgba(255,255,255,0) 0,rgba(255,255,255,1) 100%);background:-webkit-gradient(linear,left top,right top,color-stop(0,rgba(255,255,255,0)),color-stop(100%,rgba(255,255,255,1)));background:-webkit-linear-gradient(left,rgba(255,255,255,0) 0,rgba(255,255,255,1) 100%);background:-o-linear-gradient(left,rgba(255,255,255,0) 0,rgba(255,255,255,1) 100%);background:-ms-linear-gradient(left,rgba(255,255,255,0) 0,rgba(255,255,255,1) 100%);background:linear-gradient(to right,rgba(255,255,255,0) 0,rgba(255,255,255,1) 100%);position:fixed;top:0;right:0;margin:0;padding:0\n}\n.editor-toolbar a{display:inline-block;text-align:center;text-decoration:none!important;color:#2c3e50!important;width:30px;height:30px;margin:0;border:1px solid transparent;border-radius:3px;cursor:pointer\n}\n.editor-toolbar a.active,.editor-toolbar a:hover{background:#fcfcfc;border-color:#95a5a6\n}\n.editor-toolbar a:before{line-height:30px\n}\n.editor-toolbar i.separator{display:inline-block;width:0;border-left:1px solid #d9d9d9;border-right:1px solid #fff;color:transparent;text-indent:-10px;margin:0 6px\n}\n.editor-toolbar a.fa-header-x:after{font-family:Arial,\"Helvetica Neue\",Helvetica,sans-serif;font-size:65%;vertical-align:text-bottom;position:relative;top:2px\n}\n.editor-toolbar a.fa-header-1:after{content:\"1\"\n}\n.editor-toolbar a.fa-header-2:after{content:\"2\"\n}\n.editor-toolbar a.fa-header-3:after{content:\"3\"\n}\n.editor-toolbar a.fa-header-bigger:after{content:\"\\25B2\"\n}\n.editor-toolbar a.fa-header-smaller:after{content:\"\\25BC\"\n}\n.editor-toolbar.disabled-for-preview a:not(.no-disable){pointer-events:none;background:#fff;border-color:transparent;text-shadow:inherit\n}\n@media only screen and (max-width:700px){\n.editor-toolbar a.no-mobile{display:none\n}\n}\n.editor-statusbar{padding:8px 10px;font-size:12px;color:#959694;text-align:right\n}\n.editor-statusbar span{display:inline-block;min-width:4em;margin-left:1em\n}\n.editor-preview,.editor-preview-side{padding:10px;background:#fafafa;overflow:auto;display:none;box-sizing:border-box\n}\n.editor-statusbar .lines:before{content:'lines: '\n}\n.editor-statusbar .words:before{content:'words: '\n}\n.editor-statusbar .characters:before{content:'characters: '\n}\n.editor-preview{position:absolute;width:100%;height:100%;top:0;left:0;z-index:7\n}\n.editor-preview-side{position:fixed;bottom:0;width:50%;top:50px;right:0;z-index:9;border:1px solid #ddd\n}\n.editor-preview-active,.editor-preview-active-side{display:block\n}\n.editor-preview-side>p,.editor-preview>p{margin-top:0\n}\n.editor-preview pre,.editor-preview-side pre{background:#eee;margin-bottom:10px\n}\n.editor-preview table td,.editor-preview table th,.editor-preview-side table td,.editor-preview-side table th{border:1px solid #ddd;padding:5px\n}\n.CodeMirror .CodeMirror-code .cm-tag{color:#63a35c\n}\n.CodeMirror .CodeMirror-code .cm-attribute{color:#795da3\n}\n.CodeMirror .CodeMirror-code .cm-string{color:#183691\n}\n.CodeMirror .CodeMirror-selected{background:#d9d9d9\n}\n.CodeMirror .CodeMirror-code .cm-header-1{font-size:200%;line-height:200%\n}\n.CodeMirror .CodeMirror-code .cm-header-2{font-size:160%;line-height:160%\n}\n.CodeMirror .CodeMirror-code .cm-header-3{font-size:125%;line-height:125%\n}\n.CodeMirror .CodeMirror-code .cm-header-4{font-size:110%;line-height:110%\n}\n.CodeMirror .CodeMirror-code .cm-comment{background:rgba(0,0,0,.05);border-radius:2px\n}\n.CodeMirror .CodeMirror-code .cm-link{color:#7f8c8d\n}\n.CodeMirror .CodeMirror-code .cm-url{color:#aab2b3\n}\n.CodeMirror .CodeMirror-code .cm-strikethrough{text-decoration:line-through\n}\n.CodeMirror .CodeMirror-placeholder{opacity:.5\n}\n.CodeMirror .cm-spell-error:not(.cm-url):not(.cm-comment):not(.cm-tag):not(.cm-word){background:rgba(255,0,0,.15)\n}", "", {"version":3,"sources":["/./node_modules/simplemde/dist/simplemde.min.css"],"names":[],"mappings":"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","file":"simplemde.min.css","sourcesContent":["/**\n * simplemde v1.11.2\n * Copyright Next Step Webs, Inc.\n * @link https://github.com/NextStepWebs/simplemde-markdown-editor\n * @license MIT\n */\n.CodeMirror{color:#000}.CodeMirror-lines{padding:4px 0}.CodeMirror pre{padding:0 4px}.CodeMirror-gutter-filler,.CodeMirror-scrollbar-filler{background-color:#fff}.CodeMirror-gutters{border-right:1px solid #ddd;background-color:#f7f7f7;white-space:nowrap}.CodeMirror-linenumber{padding:0 3px 0 5px;min-width:20px;text-align:right;color:#999;white-space:nowrap}.CodeMirror-guttermarker{color:#000}.CodeMirror-guttermarker-subtle{color:#999}.CodeMirror-cursor{border-left:1px solid #000;border-right:none;width:0}.CodeMirror div.CodeMirror-secondarycursor{border-left:1px solid silver}.cm-fat-cursor .CodeMirror-cursor{width:auto;border:0!important;background:#7e7}.cm-fat-cursor div.CodeMirror-cursors{z-index:1}.cm-animate-fat-cursor{width:auto;border:0;-webkit-animation:blink 1.06s steps(1) infinite;-moz-animation:blink 1.06s steps(1) infinite;animation:blink 1.06s steps(1) infinite;background-color:#7e7}@-moz-keyframes blink{50%{background-color:transparent}}@-webkit-keyframes blink{50%{background-color:transparent}}@keyframes blink{50%{background-color:transparent}}.cm-tab{display:inline-block;text-decoration:inherit}.CodeMirror-ruler{border-left:1px solid #ccc;position:absolute}.cm-s-default .cm-header{color:#00f}.cm-s-default .cm-quote{color:#090}.cm-negative{color:#d44}.cm-positive{color:#292}.cm-header,.cm-strong{font-weight:700}.cm-em{font-style:italic}.cm-link{text-decoration:underline}.cm-strikethrough{text-decoration:line-through}.cm-s-default .cm-keyword{color:#708}.cm-s-default .cm-atom{color:#219}.cm-s-default .cm-number{color:#164}.cm-s-default .cm-def{color:#00f}.cm-s-default .cm-variable-2{color:#05a}.cm-s-default .cm-variable-3{color:#085}.cm-s-default .cm-comment{color:#a50}.cm-s-default .cm-string{color:#a11}.cm-s-default .cm-string-2{color:#f50}.cm-s-default .cm-meta,.cm-s-default .cm-qualifier{color:#555}.cm-s-default .cm-builtin{color:#30a}.cm-s-default .cm-bracket{color:#997}.cm-s-default .cm-tag{color:#170}.cm-s-default .cm-attribute{color:#00c}.cm-s-default .cm-hr{color:#999}.cm-s-default .cm-link{color:#00c}.cm-invalidchar,.cm-s-default .cm-error{color:red}.CodeMirror-composing{border-bottom:2px solid}div.CodeMirror span.CodeMirror-matchingbracket{color:#0f0}div.CodeMirror span.CodeMirror-nonmatchingbracket{color:#f22}.CodeMirror-matchingtag{background:rgba(255,150,0,.3)}.CodeMirror-activeline-background{background:#e8f2ff}.CodeMirror{position:relative;overflow:hidden;background:#fff}.CodeMirror-scroll{overflow:scroll!important;margin-bottom:-30px;margin-right:-30px;padding-bottom:30px;height:100%;outline:0;position:relative}.CodeMirror-sizer{position:relative;border-right:30px solid transparent}.CodeMirror-gutter-filler,.CodeMirror-hscrollbar,.CodeMirror-scrollbar-filler,.CodeMirror-vscrollbar{position:absolute;z-index:6;display:none}.CodeMirror-vscrollbar{right:0;top:0;overflow-x:hidden;overflow-y:scroll}.CodeMirror-hscrollbar{bottom:0;left:0;overflow-y:hidden;overflow-x:scroll}.CodeMirror-scrollbar-filler{right:0;bottom:0}.CodeMirror-gutter-filler{left:0;bottom:0}.CodeMirror-gutters{position:absolute;left:0;top:0;min-height:100%;z-index:3}.CodeMirror-gutter{white-space:normal;height:100%;display:inline-block;vertical-align:top;margin-bottom:-30px}.CodeMirror-gutter-wrapper{position:absolute;z-index:4;background:0 0!important;border:none!important;-webkit-user-select:none;-moz-user-select:none;user-select:none}.CodeMirror-gutter-background{position:absolute;top:0;bottom:0;z-index:4}.CodeMirror-gutter-elt{position:absolute;cursor:default;z-index:4}.CodeMirror-lines{cursor:text;min-height:1px}.CodeMirror pre{-moz-border-radius:0;-webkit-border-radius:0;border-radius:0;border-width:0;background:0 0;font-family:inherit;font-size:inherit;margin:0;white-space:pre;word-wrap:normal;line-height:inherit;color:inherit;z-index:2;position:relative;overflow:visible;-webkit-tap-highlight-color:transparent;-webkit-font-variant-ligatures:none;font-variant-ligatures:none}.CodeMirror-wrap pre{word-wrap:break-word;white-space:pre-wrap;word-break:normal}.CodeMirror-linebackground{position:absolute;left:0;right:0;top:0;bottom:0;z-index:0}.CodeMirror-linewidget{position:relative;z-index:2;overflow:auto}.CodeMirror-code{outline:0}.CodeMirror-gutter,.CodeMirror-gutters,.CodeMirror-linenumber,.CodeMirror-scroll,.CodeMirror-sizer{-moz-box-sizing:content-box;box-sizing:content-box}.CodeMirror-measure{position:absolute;width:100%;height:0;overflow:hidden;visibility:hidden}.CodeMirror-cursor{position:absolute}.CodeMirror-measure pre{position:static}div.CodeMirror-cursors{visibility:hidden;position:relative;z-index:3}.CodeMirror-focused div.CodeMirror-cursors,div.CodeMirror-dragcursors{visibility:visible}.CodeMirror-selected{background:#d9d9d9}.CodeMirror-focused .CodeMirror-selected,.CodeMirror-line::selection,.CodeMirror-line>span::selection,.CodeMirror-line>span>span::selection{background:#d7d4f0}.CodeMirror-crosshair{cursor:crosshair}.CodeMirror-line::-moz-selection,.CodeMirror-line>span::-moz-selection,.CodeMirror-line>span>span::-moz-selection{background:#d7d4f0}.cm-searching{background:#ffa;background:rgba(255,255,0,.4)}.cm-force-border{padding-right:.1px}@media print{.CodeMirror div.CodeMirror-cursors{visibility:hidden}}.cm-tab-wrap-hack:after{content:''}span.CodeMirror-selectedtext{background:0 0}.CodeMirror{height:auto;min-height:300px;border:1px solid #ddd;border-bottom-left-radius:4px;border-bottom-right-radius:4px;padding:10px;font:inherit;z-index:1}.CodeMirror-scroll{min-height:300px}.CodeMirror-fullscreen{background:#fff;position:fixed!important;top:50px;left:0;right:0;bottom:0;height:auto;z-index:9}.CodeMirror-sided{width:50%!important}.editor-toolbar{position:relative;opacity:.6;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none;padding:0 10px;border-top:1px solid #bbb;border-left:1px solid #bbb;border-right:1px solid #bbb;border-top-left-radius:4px;border-top-right-radius:4px}.editor-toolbar:after,.editor-toolbar:before{display:block;content:' ';height:1px}.editor-toolbar:before{margin-bottom:8px}.editor-toolbar:after{margin-top:8px}.editor-toolbar:hover,.editor-wrapper input.title:focus,.editor-wrapper input.title:hover{opacity:.8}.editor-toolbar.fullscreen{width:100%;height:50px;overflow-x:auto;overflow-y:hidden;white-space:nowrap;padding-top:10px;padding-bottom:10px;box-sizing:border-box;background:#fff;border:0;position:fixed;top:0;left:0;opacity:1;z-index:9}.editor-toolbar.fullscreen::before{width:20px;height:50px;background:-moz-linear-gradient(left,rgba(255,255,255,1) 0,rgba(255,255,255,0) 100%);background:-webkit-gradient(linear,left top,right top,color-stop(0,rgba(255,255,255,1)),color-stop(100%,rgba(255,255,255,0)));background:-webkit-linear-gradient(left,rgba(255,255,255,1) 0,rgba(255,255,255,0) 100%);background:-o-linear-gradient(left,rgba(255,255,255,1) 0,rgba(255,255,255,0) 100%);background:-ms-linear-gradient(left,rgba(255,255,255,1) 0,rgba(255,255,255,0) 100%);background:linear-gradient(to right,rgba(255,255,255,1) 0,rgba(255,255,255,0) 100%);position:fixed;top:0;left:0;margin:0;padding:0}.editor-toolbar.fullscreen::after{width:20px;height:50px;background:-moz-linear-gradient(left,rgba(255,255,255,0) 0,rgba(255,255,255,1) 100%);background:-webkit-gradient(linear,left top,right top,color-stop(0,rgba(255,255,255,0)),color-stop(100%,rgba(255,255,255,1)));background:-webkit-linear-gradient(left,rgba(255,255,255,0) 0,rgba(255,255,255,1) 100%);background:-o-linear-gradient(left,rgba(255,255,255,0) 0,rgba(255,255,255,1) 100%);background:-ms-linear-gradient(left,rgba(255,255,255,0) 0,rgba(255,255,255,1) 100%);background:linear-gradient(to right,rgba(255,255,255,0) 0,rgba(255,255,255,1) 100%);position:fixed;top:0;right:0;margin:0;padding:0}.editor-toolbar a{display:inline-block;text-align:center;text-decoration:none!important;color:#2c3e50!important;width:30px;height:30px;margin:0;border:1px solid transparent;border-radius:3px;cursor:pointer}.editor-toolbar a.active,.editor-toolbar a:hover{background:#fcfcfc;border-color:#95a5a6}.editor-toolbar a:before{line-height:30px}.editor-toolbar i.separator{display:inline-block;width:0;border-left:1px solid #d9d9d9;border-right:1px solid #fff;color:transparent;text-indent:-10px;margin:0 6px}.editor-toolbar a.fa-header-x:after{font-family:Arial,\"Helvetica Neue\",Helvetica,sans-serif;font-size:65%;vertical-align:text-bottom;position:relative;top:2px}.editor-toolbar a.fa-header-1:after{content:\"1\"}.editor-toolbar a.fa-header-2:after{content:\"2\"}.editor-toolbar a.fa-header-3:after{content:\"3\"}.editor-toolbar a.fa-header-bigger:after{content:\"▲\"}.editor-toolbar a.fa-header-smaller:after{content:\"▼\"}.editor-toolbar.disabled-for-preview a:not(.no-disable){pointer-events:none;background:#fff;border-color:transparent;text-shadow:inherit}@media only screen and (max-width:700px){.editor-toolbar a.no-mobile{display:none}}.editor-statusbar{padding:8px 10px;font-size:12px;color:#959694;text-align:right}.editor-statusbar span{display:inline-block;min-width:4em;margin-left:1em}.editor-preview,.editor-preview-side{padding:10px;background:#fafafa;overflow:auto;display:none;box-sizing:border-box}.editor-statusbar .lines:before{content:'lines: '}.editor-statusbar .words:before{content:'words: '}.editor-statusbar .characters:before{content:'characters: '}.editor-preview{position:absolute;width:100%;height:100%;top:0;left:0;z-index:7}.editor-preview-side{position:fixed;bottom:0;width:50%;top:50px;right:0;z-index:9;border:1px solid #ddd}.editor-preview-active,.editor-preview-active-side{display:block}.editor-preview-side>p,.editor-preview>p{margin-top:0}.editor-preview pre,.editor-preview-side pre{background:#eee;margin-bottom:10px}.editor-preview table td,.editor-preview table th,.editor-preview-side table td,.editor-preview-side table th{border:1px solid #ddd;padding:5px}.CodeMirror .CodeMirror-code .cm-tag{color:#63a35c}.CodeMirror .CodeMirror-code .cm-attribute{color:#795da3}.CodeMirror .CodeMirror-code .cm-string{color:#183691}.CodeMirror .CodeMirror-selected{background:#d9d9d9}.CodeMirror .CodeMirror-code .cm-header-1{font-size:200%;line-height:200%}.CodeMirror .CodeMirror-code .cm-header-2{font-size:160%;line-height:160%}.CodeMirror .CodeMirror-code .cm-header-3{font-size:125%;line-height:125%}.CodeMirror .CodeMirror-code .cm-header-4{font-size:110%;line-height:110%}.CodeMirror .CodeMirror-code .cm-comment{background:rgba(0,0,0,.05);border-radius:2px}.CodeMirror .CodeMirror-code .cm-link{color:#7f8c8d}.CodeMirror .CodeMirror-code .cm-url{color:#aab2b3}.CodeMirror .CodeMirror-code .cm-strikethrough{text-decoration:line-through}.CodeMirror .CodeMirror-placeholder{opacity:.5}.CodeMirror .cm-spell-error:not(.cm-url):not(.cm-comment):not(.cm-tag):not(.cm-word){background:rgba(255,0,0,.15)}"],"sourceRoot":"webpack://"}]);
+exports.push([module.i, "", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"support.css","sourceRoot":"webpack://"}]);
 
 // exports
 
@@ -22201,7 +22202,7 @@ exports = module.exports = __webpack_require__(3)();
 
 
 // module
-exports.push([module.i, "", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"home.css","sourceRoot":"webpack://"}]);
+exports.push([module.i, "/**\n * simplemde v1.11.2\n * Copyright Next Step Webs, Inc.\n * @link https://github.com/NextStepWebs/simplemde-markdown-editor\n * @license MIT\n */\n.CodeMirror{color:#000\n}\n.CodeMirror-lines{padding:4px 0\n}\n.CodeMirror pre{padding:0 4px\n}\n.CodeMirror-gutter-filler,.CodeMirror-scrollbar-filler{background-color:#fff\n}\n.CodeMirror-gutters{border-right:1px solid #ddd;background-color:#f7f7f7;white-space:nowrap\n}\n.CodeMirror-linenumber{padding:0 3px 0 5px;min-width:20px;text-align:right;color:#999;white-space:nowrap\n}\n.CodeMirror-guttermarker{color:#000\n}\n.CodeMirror-guttermarker-subtle{color:#999\n}\n.CodeMirror-cursor{border-left:1px solid #000;border-right:none;width:0\n}\n.CodeMirror div.CodeMirror-secondarycursor{border-left:1px solid silver\n}\n.cm-fat-cursor .CodeMirror-cursor{width:auto;border:0!important;background:#7e7\n}\n.cm-fat-cursor div.CodeMirror-cursors{z-index:1\n}\n.cm-animate-fat-cursor{width:auto;border:0;-webkit-animation:blink 1.06s steps(1) infinite;-moz-animation:blink 1.06s steps(1) infinite;animation:blink 1.06s steps(1) infinite;background-color:#7e7\n}\n@-moz-keyframes blink{\n50%{background-color:transparent\n}\n}\n@-webkit-keyframes blink{\n50%{background-color:transparent\n}\n}\n@keyframes blink{\n50%{background-color:transparent\n}\n}\n.cm-tab{display:inline-block;text-decoration:inherit\n}\n.CodeMirror-ruler{border-left:1px solid #ccc;position:absolute\n}\n.cm-s-default .cm-header{color:#00f\n}\n.cm-s-default .cm-quote{color:#090\n}\n.cm-negative{color:#d44\n}\n.cm-positive{color:#292\n}\n.cm-header,.cm-strong{font-weight:700\n}\n.cm-em{font-style:italic\n}\n.cm-link{text-decoration:underline\n}\n.cm-strikethrough{text-decoration:line-through\n}\n.cm-s-default .cm-keyword{color:#708\n}\n.cm-s-default .cm-atom{color:#219\n}\n.cm-s-default .cm-number{color:#164\n}\n.cm-s-default .cm-def{color:#00f\n}\n.cm-s-default .cm-variable-2{color:#05a\n}\n.cm-s-default .cm-variable-3{color:#085\n}\n.cm-s-default .cm-comment{color:#a50\n}\n.cm-s-default .cm-string{color:#a11\n}\n.cm-s-default .cm-string-2{color:#f50\n}\n.cm-s-default .cm-meta,.cm-s-default .cm-qualifier{color:#555\n}\n.cm-s-default .cm-builtin{color:#30a\n}\n.cm-s-default .cm-bracket{color:#997\n}\n.cm-s-default .cm-tag{color:#170\n}\n.cm-s-default .cm-attribute{color:#00c\n}\n.cm-s-default .cm-hr{color:#999\n}\n.cm-s-default .cm-link{color:#00c\n}\n.cm-invalidchar,.cm-s-default .cm-error{color:red\n}\n.CodeMirror-composing{border-bottom:2px solid\n}\ndiv.CodeMirror span.CodeMirror-matchingbracket{color:#0f0\n}\ndiv.CodeMirror span.CodeMirror-nonmatchingbracket{color:#f22\n}\n.CodeMirror-matchingtag{background:rgba(255,150,0,.3)\n}\n.CodeMirror-activeline-background{background:#e8f2ff\n}\n.CodeMirror{position:relative;overflow:hidden;background:#fff\n}\n.CodeMirror-scroll{overflow:scroll!important;margin-bottom:-30px;margin-right:-30px;padding-bottom:30px;height:100%;outline:0;position:relative\n}\n.CodeMirror-sizer{position:relative;border-right:30px solid transparent\n}\n.CodeMirror-gutter-filler,.CodeMirror-hscrollbar,.CodeMirror-scrollbar-filler,.CodeMirror-vscrollbar{position:absolute;z-index:6;display:none\n}\n.CodeMirror-vscrollbar{right:0;top:0;overflow-x:hidden;overflow-y:scroll\n}\n.CodeMirror-hscrollbar{bottom:0;left:0;overflow-y:hidden;overflow-x:scroll\n}\n.CodeMirror-scrollbar-filler{right:0;bottom:0\n}\n.CodeMirror-gutter-filler{left:0;bottom:0\n}\n.CodeMirror-gutters{position:absolute;left:0;top:0;min-height:100%;z-index:3\n}\n.CodeMirror-gutter{white-space:normal;height:100%;display:inline-block;vertical-align:top;margin-bottom:-30px\n}\n.CodeMirror-gutter-wrapper{position:absolute;z-index:4;background:0 0!important;border:none!important;-webkit-user-select:none;-moz-user-select:none;user-select:none\n}\n.CodeMirror-gutter-background{position:absolute;top:0;bottom:0;z-index:4\n}\n.CodeMirror-gutter-elt{position:absolute;cursor:default;z-index:4\n}\n.CodeMirror-lines{cursor:text;min-height:1px\n}\n.CodeMirror pre{-moz-border-radius:0;-webkit-border-radius:0;border-radius:0;border-width:0;background:0 0;font-family:inherit;font-size:inherit;margin:0;white-space:pre;word-wrap:normal;line-height:inherit;color:inherit;z-index:2;position:relative;overflow:visible;-webkit-tap-highlight-color:transparent;-webkit-font-variant-ligatures:none;font-variant-ligatures:none\n}\n.CodeMirror-wrap pre{word-wrap:break-word;white-space:pre-wrap;word-break:normal\n}\n.CodeMirror-linebackground{position:absolute;left:0;right:0;top:0;bottom:0;z-index:0\n}\n.CodeMirror-linewidget{position:relative;z-index:2;overflow:auto\n}\n.CodeMirror-code{outline:0\n}\n.CodeMirror-gutter,.CodeMirror-gutters,.CodeMirror-linenumber,.CodeMirror-scroll,.CodeMirror-sizer{-moz-box-sizing:content-box;box-sizing:content-box\n}\n.CodeMirror-measure{position:absolute;width:100%;height:0;overflow:hidden;visibility:hidden\n}\n.CodeMirror-cursor{position:absolute\n}\n.CodeMirror-measure pre{position:static\n}\ndiv.CodeMirror-cursors{visibility:hidden;position:relative;z-index:3\n}\n.CodeMirror-focused div.CodeMirror-cursors,div.CodeMirror-dragcursors{visibility:visible\n}\n.CodeMirror-selected{background:#d9d9d9\n}\n.CodeMirror-focused .CodeMirror-selected,.CodeMirror-line::selection,.CodeMirror-line>span::selection,.CodeMirror-line>span>span::selection{background:#d7d4f0\n}\n.CodeMirror-crosshair{cursor:crosshair\n}\n.CodeMirror-line::-moz-selection,.CodeMirror-line>span::-moz-selection,.CodeMirror-line>span>span::-moz-selection{background:#d7d4f0\n}\n.cm-searching{background:#ffa;background:rgba(255,255,0,.4)\n}\n.cm-force-border{padding-right:.1px\n}\n@media print{\n.CodeMirror div.CodeMirror-cursors{visibility:hidden\n}\n}\n.cm-tab-wrap-hack:after{content:''\n}\nspan.CodeMirror-selectedtext{background:0 0\n}\n.CodeMirror{height:auto;min-height:300px;border:1px solid #ddd;border-bottom-left-radius:4px;border-bottom-right-radius:4px;padding:10px;font:inherit;z-index:1\n}\n.CodeMirror-scroll{min-height:300px\n}\n.CodeMirror-fullscreen{background:#fff;position:fixed!important;top:50px;left:0;right:0;bottom:0;height:auto;z-index:9\n}\n.CodeMirror-sided{width:50%!important\n}\n.editor-toolbar{position:relative;opacity:.6;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none;padding:0 10px;border-top:1px solid #bbb;border-left:1px solid #bbb;border-right:1px solid #bbb;border-top-left-radius:4px;border-top-right-radius:4px\n}\n.editor-toolbar:after,.editor-toolbar:before{display:block;content:' ';height:1px\n}\n.editor-toolbar:before{margin-bottom:8px\n}\n.editor-toolbar:after{margin-top:8px\n}\n.editor-toolbar:hover,.editor-wrapper input.title:focus,.editor-wrapper input.title:hover{opacity:.8\n}\n.editor-toolbar.fullscreen{width:100%;height:50px;overflow-x:auto;overflow-y:hidden;white-space:nowrap;padding-top:10px;padding-bottom:10px;box-sizing:border-box;background:#fff;border:0;position:fixed;top:0;left:0;opacity:1;z-index:9\n}\n.editor-toolbar.fullscreen::before{width:20px;height:50px;background:-moz-linear-gradient(left,rgba(255,255,255,1) 0,rgba(255,255,255,0) 100%);background:-webkit-gradient(linear,left top,right top,color-stop(0,rgba(255,255,255,1)),color-stop(100%,rgba(255,255,255,0)));background:-webkit-linear-gradient(left,rgba(255,255,255,1) 0,rgba(255,255,255,0) 100%);background:-o-linear-gradient(left,rgba(255,255,255,1) 0,rgba(255,255,255,0) 100%);background:-ms-linear-gradient(left,rgba(255,255,255,1) 0,rgba(255,255,255,0) 100%);background:linear-gradient(to right,rgba(255,255,255,1) 0,rgba(255,255,255,0) 100%);position:fixed;top:0;left:0;margin:0;padding:0\n}\n.editor-toolbar.fullscreen::after{width:20px;height:50px;background:-moz-linear-gradient(left,rgba(255,255,255,0) 0,rgba(255,255,255,1) 100%);background:-webkit-gradient(linear,left top,right top,color-stop(0,rgba(255,255,255,0)),color-stop(100%,rgba(255,255,255,1)));background:-webkit-linear-gradient(left,rgba(255,255,255,0) 0,rgba(255,255,255,1) 100%);background:-o-linear-gradient(left,rgba(255,255,255,0) 0,rgba(255,255,255,1) 100%);background:-ms-linear-gradient(left,rgba(255,255,255,0) 0,rgba(255,255,255,1) 100%);background:linear-gradient(to right,rgba(255,255,255,0) 0,rgba(255,255,255,1) 100%);position:fixed;top:0;right:0;margin:0;padding:0\n}\n.editor-toolbar a{display:inline-block;text-align:center;text-decoration:none!important;color:#2c3e50!important;width:30px;height:30px;margin:0;border:1px solid transparent;border-radius:3px;cursor:pointer\n}\n.editor-toolbar a.active,.editor-toolbar a:hover{background:#fcfcfc;border-color:#95a5a6\n}\n.editor-toolbar a:before{line-height:30px\n}\n.editor-toolbar i.separator{display:inline-block;width:0;border-left:1px solid #d9d9d9;border-right:1px solid #fff;color:transparent;text-indent:-10px;margin:0 6px\n}\n.editor-toolbar a.fa-header-x:after{font-family:Arial,\"Helvetica Neue\",Helvetica,sans-serif;font-size:65%;vertical-align:text-bottom;position:relative;top:2px\n}\n.editor-toolbar a.fa-header-1:after{content:\"1\"\n}\n.editor-toolbar a.fa-header-2:after{content:\"2\"\n}\n.editor-toolbar a.fa-header-3:after{content:\"3\"\n}\n.editor-toolbar a.fa-header-bigger:after{content:\"\\25B2\"\n}\n.editor-toolbar a.fa-header-smaller:after{content:\"\\25BC\"\n}\n.editor-toolbar.disabled-for-preview a:not(.no-disable){pointer-events:none;background:#fff;border-color:transparent;text-shadow:inherit\n}\n@media only screen and (max-width:700px){\n.editor-toolbar a.no-mobile{display:none\n}\n}\n.editor-statusbar{padding:8px 10px;font-size:12px;color:#959694;text-align:right\n}\n.editor-statusbar span{display:inline-block;min-width:4em;margin-left:1em\n}\n.editor-preview,.editor-preview-side{padding:10px;background:#fafafa;overflow:auto;display:none;box-sizing:border-box\n}\n.editor-statusbar .lines:before{content:'lines: '\n}\n.editor-statusbar .words:before{content:'words: '\n}\n.editor-statusbar .characters:before{content:'characters: '\n}\n.editor-preview{position:absolute;width:100%;height:100%;top:0;left:0;z-index:7\n}\n.editor-preview-side{position:fixed;bottom:0;width:50%;top:50px;right:0;z-index:9;border:1px solid #ddd\n}\n.editor-preview-active,.editor-preview-active-side{display:block\n}\n.editor-preview-side>p,.editor-preview>p{margin-top:0\n}\n.editor-preview pre,.editor-preview-side pre{background:#eee;margin-bottom:10px\n}\n.editor-preview table td,.editor-preview table th,.editor-preview-side table td,.editor-preview-side table th{border:1px solid #ddd;padding:5px\n}\n.CodeMirror .CodeMirror-code .cm-tag{color:#63a35c\n}\n.CodeMirror .CodeMirror-code .cm-attribute{color:#795da3\n}\n.CodeMirror .CodeMirror-code .cm-string{color:#183691\n}\n.CodeMirror .CodeMirror-selected{background:#d9d9d9\n}\n.CodeMirror .CodeMirror-code .cm-header-1{font-size:200%;line-height:200%\n}\n.CodeMirror .CodeMirror-code .cm-header-2{font-size:160%;line-height:160%\n}\n.CodeMirror .CodeMirror-code .cm-header-3{font-size:125%;line-height:125%\n}\n.CodeMirror .CodeMirror-code .cm-header-4{font-size:110%;line-height:110%\n}\n.CodeMirror .CodeMirror-code .cm-comment{background:rgba(0,0,0,.05);border-radius:2px\n}\n.CodeMirror .CodeMirror-code .cm-link{color:#7f8c8d\n}\n.CodeMirror .CodeMirror-code .cm-url{color:#aab2b3\n}\n.CodeMirror .CodeMirror-code .cm-strikethrough{text-decoration:line-through\n}\n.CodeMirror .CodeMirror-placeholder{opacity:.5\n}\n.CodeMirror .cm-spell-error:not(.cm-url):not(.cm-comment):not(.cm-tag):not(.cm-word){background:rgba(255,0,0,.15)\n}", "", {"version":3,"sources":["/./node_modules/simplemde/dist/simplemde.min.css"],"names":[],"mappings":"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","file":"simplemde.min.css","sourcesContent":["/**\n * simplemde v1.11.2\n * Copyright Next Step Webs, Inc.\n * @link https://github.com/NextStepWebs/simplemde-markdown-editor\n * @license MIT\n */\n.CodeMirror{color:#000}.CodeMirror-lines{padding:4px 0}.CodeMirror pre{padding:0 4px}.CodeMirror-gutter-filler,.CodeMirror-scrollbar-filler{background-color:#fff}.CodeMirror-gutters{border-right:1px solid #ddd;background-color:#f7f7f7;white-space:nowrap}.CodeMirror-linenumber{padding:0 3px 0 5px;min-width:20px;text-align:right;color:#999;white-space:nowrap}.CodeMirror-guttermarker{color:#000}.CodeMirror-guttermarker-subtle{color:#999}.CodeMirror-cursor{border-left:1px solid #000;border-right:none;width:0}.CodeMirror div.CodeMirror-secondarycursor{border-left:1px solid silver}.cm-fat-cursor .CodeMirror-cursor{width:auto;border:0!important;background:#7e7}.cm-fat-cursor div.CodeMirror-cursors{z-index:1}.cm-animate-fat-cursor{width:auto;border:0;-webkit-animation:blink 1.06s steps(1) infinite;-moz-animation:blink 1.06s steps(1) infinite;animation:blink 1.06s steps(1) infinite;background-color:#7e7}@-moz-keyframes blink{50%{background-color:transparent}}@-webkit-keyframes blink{50%{background-color:transparent}}@keyframes blink{50%{background-color:transparent}}.cm-tab{display:inline-block;text-decoration:inherit}.CodeMirror-ruler{border-left:1px solid #ccc;position:absolute}.cm-s-default .cm-header{color:#00f}.cm-s-default .cm-quote{color:#090}.cm-negative{color:#d44}.cm-positive{color:#292}.cm-header,.cm-strong{font-weight:700}.cm-em{font-style:italic}.cm-link{text-decoration:underline}.cm-strikethrough{text-decoration:line-through}.cm-s-default .cm-keyword{color:#708}.cm-s-default .cm-atom{color:#219}.cm-s-default .cm-number{color:#164}.cm-s-default .cm-def{color:#00f}.cm-s-default .cm-variable-2{color:#05a}.cm-s-default .cm-variable-3{color:#085}.cm-s-default .cm-comment{color:#a50}.cm-s-default .cm-string{color:#a11}.cm-s-default .cm-string-2{color:#f50}.cm-s-default .cm-meta,.cm-s-default .cm-qualifier{color:#555}.cm-s-default .cm-builtin{color:#30a}.cm-s-default .cm-bracket{color:#997}.cm-s-default .cm-tag{color:#170}.cm-s-default .cm-attribute{color:#00c}.cm-s-default .cm-hr{color:#999}.cm-s-default .cm-link{color:#00c}.cm-invalidchar,.cm-s-default .cm-error{color:red}.CodeMirror-composing{border-bottom:2px solid}div.CodeMirror span.CodeMirror-matchingbracket{color:#0f0}div.CodeMirror span.CodeMirror-nonmatchingbracket{color:#f22}.CodeMirror-matchingtag{background:rgba(255,150,0,.3)}.CodeMirror-activeline-background{background:#e8f2ff}.CodeMirror{position:relative;overflow:hidden;background:#fff}.CodeMirror-scroll{overflow:scroll!important;margin-bottom:-30px;margin-right:-30px;padding-bottom:30px;height:100%;outline:0;position:relative}.CodeMirror-sizer{position:relative;border-right:30px solid transparent}.CodeMirror-gutter-filler,.CodeMirror-hscrollbar,.CodeMirror-scrollbar-filler,.CodeMirror-vscrollbar{position:absolute;z-index:6;display:none}.CodeMirror-vscrollbar{right:0;top:0;overflow-x:hidden;overflow-y:scroll}.CodeMirror-hscrollbar{bottom:0;left:0;overflow-y:hidden;overflow-x:scroll}.CodeMirror-scrollbar-filler{right:0;bottom:0}.CodeMirror-gutter-filler{left:0;bottom:0}.CodeMirror-gutters{position:absolute;left:0;top:0;min-height:100%;z-index:3}.CodeMirror-gutter{white-space:normal;height:100%;display:inline-block;vertical-align:top;margin-bottom:-30px}.CodeMirror-gutter-wrapper{position:absolute;z-index:4;background:0 0!important;border:none!important;-webkit-user-select:none;-moz-user-select:none;user-select:none}.CodeMirror-gutter-background{position:absolute;top:0;bottom:0;z-index:4}.CodeMirror-gutter-elt{position:absolute;cursor:default;z-index:4}.CodeMirror-lines{cursor:text;min-height:1px}.CodeMirror pre{-moz-border-radius:0;-webkit-border-radius:0;border-radius:0;border-width:0;background:0 0;font-family:inherit;font-size:inherit;margin:0;white-space:pre;word-wrap:normal;line-height:inherit;color:inherit;z-index:2;position:relative;overflow:visible;-webkit-tap-highlight-color:transparent;-webkit-font-variant-ligatures:none;font-variant-ligatures:none}.CodeMirror-wrap pre{word-wrap:break-word;white-space:pre-wrap;word-break:normal}.CodeMirror-linebackground{position:absolute;left:0;right:0;top:0;bottom:0;z-index:0}.CodeMirror-linewidget{position:relative;z-index:2;overflow:auto}.CodeMirror-code{outline:0}.CodeMirror-gutter,.CodeMirror-gutters,.CodeMirror-linenumber,.CodeMirror-scroll,.CodeMirror-sizer{-moz-box-sizing:content-box;box-sizing:content-box}.CodeMirror-measure{position:absolute;width:100%;height:0;overflow:hidden;visibility:hidden}.CodeMirror-cursor{position:absolute}.CodeMirror-measure pre{position:static}div.CodeMirror-cursors{visibility:hidden;position:relative;z-index:3}.CodeMirror-focused div.CodeMirror-cursors,div.CodeMirror-dragcursors{visibility:visible}.CodeMirror-selected{background:#d9d9d9}.CodeMirror-focused .CodeMirror-selected,.CodeMirror-line::selection,.CodeMirror-line>span::selection,.CodeMirror-line>span>span::selection{background:#d7d4f0}.CodeMirror-crosshair{cursor:crosshair}.CodeMirror-line::-moz-selection,.CodeMirror-line>span::-moz-selection,.CodeMirror-line>span>span::-moz-selection{background:#d7d4f0}.cm-searching{background:#ffa;background:rgba(255,255,0,.4)}.cm-force-border{padding-right:.1px}@media print{.CodeMirror div.CodeMirror-cursors{visibility:hidden}}.cm-tab-wrap-hack:after{content:''}span.CodeMirror-selectedtext{background:0 0}.CodeMirror{height:auto;min-height:300px;border:1px solid #ddd;border-bottom-left-radius:4px;border-bottom-right-radius:4px;padding:10px;font:inherit;z-index:1}.CodeMirror-scroll{min-height:300px}.CodeMirror-fullscreen{background:#fff;position:fixed!important;top:50px;left:0;right:0;bottom:0;height:auto;z-index:9}.CodeMirror-sided{width:50%!important}.editor-toolbar{position:relative;opacity:.6;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none;padding:0 10px;border-top:1px solid #bbb;border-left:1px solid #bbb;border-right:1px solid #bbb;border-top-left-radius:4px;border-top-right-radius:4px}.editor-toolbar:after,.editor-toolbar:before{display:block;content:' ';height:1px}.editor-toolbar:before{margin-bottom:8px}.editor-toolbar:after{margin-top:8px}.editor-toolbar:hover,.editor-wrapper input.title:focus,.editor-wrapper input.title:hover{opacity:.8}.editor-toolbar.fullscreen{width:100%;height:50px;overflow-x:auto;overflow-y:hidden;white-space:nowrap;padding-top:10px;padding-bottom:10px;box-sizing:border-box;background:#fff;border:0;position:fixed;top:0;left:0;opacity:1;z-index:9}.editor-toolbar.fullscreen::before{width:20px;height:50px;background:-moz-linear-gradient(left,rgba(255,255,255,1) 0,rgba(255,255,255,0) 100%);background:-webkit-gradient(linear,left top,right top,color-stop(0,rgba(255,255,255,1)),color-stop(100%,rgba(255,255,255,0)));background:-webkit-linear-gradient(left,rgba(255,255,255,1) 0,rgba(255,255,255,0) 100%);background:-o-linear-gradient(left,rgba(255,255,255,1) 0,rgba(255,255,255,0) 100%);background:-ms-linear-gradient(left,rgba(255,255,255,1) 0,rgba(255,255,255,0) 100%);background:linear-gradient(to right,rgba(255,255,255,1) 0,rgba(255,255,255,0) 100%);position:fixed;top:0;left:0;margin:0;padding:0}.editor-toolbar.fullscreen::after{width:20px;height:50px;background:-moz-linear-gradient(left,rgba(255,255,255,0) 0,rgba(255,255,255,1) 100%);background:-webkit-gradient(linear,left top,right top,color-stop(0,rgba(255,255,255,0)),color-stop(100%,rgba(255,255,255,1)));background:-webkit-linear-gradient(left,rgba(255,255,255,0) 0,rgba(255,255,255,1) 100%);background:-o-linear-gradient(left,rgba(255,255,255,0) 0,rgba(255,255,255,1) 100%);background:-ms-linear-gradient(left,rgba(255,255,255,0) 0,rgba(255,255,255,1) 100%);background:linear-gradient(to right,rgba(255,255,255,0) 0,rgba(255,255,255,1) 100%);position:fixed;top:0;right:0;margin:0;padding:0}.editor-toolbar a{display:inline-block;text-align:center;text-decoration:none!important;color:#2c3e50!important;width:30px;height:30px;margin:0;border:1px solid transparent;border-radius:3px;cursor:pointer}.editor-toolbar a.active,.editor-toolbar a:hover{background:#fcfcfc;border-color:#95a5a6}.editor-toolbar a:before{line-height:30px}.editor-toolbar i.separator{display:inline-block;width:0;border-left:1px solid #d9d9d9;border-right:1px solid #fff;color:transparent;text-indent:-10px;margin:0 6px}.editor-toolbar a.fa-header-x:after{font-family:Arial,\"Helvetica Neue\",Helvetica,sans-serif;font-size:65%;vertical-align:text-bottom;position:relative;top:2px}.editor-toolbar a.fa-header-1:after{content:\"1\"}.editor-toolbar a.fa-header-2:after{content:\"2\"}.editor-toolbar a.fa-header-3:after{content:\"3\"}.editor-toolbar a.fa-header-bigger:after{content:\"▲\"}.editor-toolbar a.fa-header-smaller:after{content:\"▼\"}.editor-toolbar.disabled-for-preview a:not(.no-disable){pointer-events:none;background:#fff;border-color:transparent;text-shadow:inherit}@media only screen and (max-width:700px){.editor-toolbar a.no-mobile{display:none}}.editor-statusbar{padding:8px 10px;font-size:12px;color:#959694;text-align:right}.editor-statusbar span{display:inline-block;min-width:4em;margin-left:1em}.editor-preview,.editor-preview-side{padding:10px;background:#fafafa;overflow:auto;display:none;box-sizing:border-box}.editor-statusbar .lines:before{content:'lines: '}.editor-statusbar .words:before{content:'words: '}.editor-statusbar .characters:before{content:'characters: '}.editor-preview{position:absolute;width:100%;height:100%;top:0;left:0;z-index:7}.editor-preview-side{position:fixed;bottom:0;width:50%;top:50px;right:0;z-index:9;border:1px solid #ddd}.editor-preview-active,.editor-preview-active-side{display:block}.editor-preview-side>p,.editor-preview>p{margin-top:0}.editor-preview pre,.editor-preview-side pre{background:#eee;margin-bottom:10px}.editor-preview table td,.editor-preview table th,.editor-preview-side table td,.editor-preview-side table th{border:1px solid #ddd;padding:5px}.CodeMirror .CodeMirror-code .cm-tag{color:#63a35c}.CodeMirror .CodeMirror-code .cm-attribute{color:#795da3}.CodeMirror .CodeMirror-code .cm-string{color:#183691}.CodeMirror .CodeMirror-selected{background:#d9d9d9}.CodeMirror .CodeMirror-code .cm-header-1{font-size:200%;line-height:200%}.CodeMirror .CodeMirror-code .cm-header-2{font-size:160%;line-height:160%}.CodeMirror .CodeMirror-code .cm-header-3{font-size:125%;line-height:125%}.CodeMirror .CodeMirror-code .cm-header-4{font-size:110%;line-height:110%}.CodeMirror .CodeMirror-code .cm-comment{background:rgba(0,0,0,.05);border-radius:2px}.CodeMirror .CodeMirror-code .cm-link{color:#7f8c8d}.CodeMirror .CodeMirror-code .cm-url{color:#aab2b3}.CodeMirror .CodeMirror-code .cm-strikethrough{text-decoration:line-through}.CodeMirror .CodeMirror-placeholder{opacity:.5}.CodeMirror .cm-spell-error:not(.cm-url):not(.cm-comment):not(.cm-tag):not(.cm-word){background:rgba(255,0,0,.15)}"],"sourceRoot":"webpack://"}]);
 
 // exports
 
@@ -22215,7 +22216,7 @@ exports = module.exports = __webpack_require__(3)();
 
 
 // module
-exports.push([module.i, "", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"apikeys.css","sourceRoot":"webpack://"}]);
+exports.push([module.i, "", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"home.css","sourceRoot":"webpack://"}]);
 
 // exports
 
@@ -22229,7 +22230,7 @@ exports = module.exports = __webpack_require__(3)();
 
 
 // module
-exports.push([module.i, "\n.IncidentView .tags span {\r\n    margin-right: 5px;\n}\n.tags button {\r\n    margin-right: 5px;\n}\n.more {\r\n    display: none;\n}\n.feedback.col {\r\n    min-width: 500px;\n}", "", {"version":3,"sources":["/./ClientApp/components/analyze/incidents/status.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AACD;IACI,kBAAkB;CACrB;AAED;IACI,cAAc;CACjB;AAED;IACI,iBAAiB;CACpB","file":"status.css","sourcesContent":[".IncidentView .tags span {\r\n    margin-right: 5px;\r\n}\r\n.tags button {\r\n    margin-right: 5px;\r\n}\r\n\r\n.more {\r\n    display: none;\r\n}\r\n\r\n.feedback.col {\r\n    min-width: 500px;\r\n}"],"sourceRoot":"webpack://"}]);
+exports.push([module.i, "", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"apikeys.css","sourceRoot":"webpack://"}]);
 
 // exports
 
@@ -22243,7 +22244,7 @@ exports = module.exports = __webpack_require__(3)();
 
 
 // module
-exports.push([module.i, "\n.tags button {\r\n    margin-right: 5px;\n}\n.more {\r\n    display: none;\n}\n.card .card-body ul {\r\n    padding-left: 10px;\n}", "", {"version":3,"sources":["/./ClientApp/components/discover/discover.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AAED;IACI,cAAc;CACjB;AAGD;IACI,mBAAmB;CACtB","file":"discover.css","sourcesContent":[".tags button {\r\n    margin-right: 5px;\r\n}\r\n\r\n.more {\r\n    display: none;\r\n}\r\n\r\n\r\n.card .card-body ul {\r\n    padding-left: 10px;\r\n}"],"sourceRoot":"webpack://"}]);
+exports.push([module.i, "\n.IncidentView .tags span {\r\n    margin-right: 5px;\n}\n.tags button {\r\n    margin-right: 5px;\n}\n.more {\r\n    display: none;\n}\n.feedback.col {\r\n    min-width: 500px;\n}", "", {"version":3,"sources":["/./ClientApp/components/analyze/incidents/status.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AACD;IACI,kBAAkB;CACrB;AAED;IACI,cAAc;CACjB;AAED;IACI,iBAAiB;CACpB","file":"status.css","sourcesContent":[".IncidentView .tags span {\r\n    margin-right: 5px;\r\n}\r\n.tags button {\r\n    margin-right: 5px;\r\n}\r\n\r\n.more {\r\n    display: none;\r\n}\r\n\r\n.feedback.col {\r\n    min-width: 500px;\r\n}"],"sourceRoot":"webpack://"}]);
 
 // exports
 
@@ -22257,7 +22258,7 @@ exports = module.exports = __webpack_require__(3)();
 
 
 // module
-exports.push([module.i, "", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"home.css","sourceRoot":"webpack://"}]);
+exports.push([module.i, "\n.tags button {\r\n    margin-right: 5px;\n}\n.more {\r\n    display: none;\n}\n.card .card-body ul {\r\n    padding-left: 10px;\n}", "", {"version":3,"sources":["/./ClientApp/components/discover/discover.css"],"names":[],"mappings":";AAAA;IACI,kBAAkB;CACrB;AAED;IACI,cAAc;CACjB;AAGD;IACI,mBAAmB;CACtB","file":"discover.css","sourcesContent":[".tags button {\r\n    margin-right: 5px;\r\n}\r\n\r\n.more {\r\n    display: none;\r\n}\r\n\r\n\r\n.card .card-body ul {\r\n    padding-left: 10px;\r\n}"],"sourceRoot":"webpack://"}]);
 
 // exports
 
@@ -22271,7 +22272,7 @@ exports = module.exports = __webpack_require__(3)();
 
 
 // module
-exports.push([module.i, "", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"apikey-create.css","sourceRoot":"webpack://"}]);
+exports.push([module.i, "", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"home.css","sourceRoot":"webpack://"}]);
 
 // exports
 
@@ -22280,16 +22281,30 @@ exports.push([module.i, "", "", {"version":3,"sources":[],"names":[],"mappings":
 /* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
+exports = module.exports = __webpack_require__(3)();
+// imports
+
+
+// module
+exports.push([module.i, "", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"apikey-create.css","sourceRoot":"webpack://"}]);
+
+// exports
+
+
+/***/ }),
+/* 65 */
+/***/ (function(module, exports, __webpack_require__) {
+
 
 /* styles */
-__webpack_require__(379)
-__webpack_require__(378)
+__webpack_require__(381)
+__webpack_require__(380)
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(218),
+  __webpack_require__(219),
   /* template */
-  __webpack_require__(335),
+  __webpack_require__(336),
   /* scopeId */
   null,
   /* cssModules */
@@ -22316,24 +22331,24 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /*global require,module*/
 
 var CodeMirror = __webpack_require__(8);
-__webpack_require__(256);
-__webpack_require__(198);
-__webpack_require__(254);
-__webpack_require__(71);
-__webpack_require__(70);
-__webpack_require__(255);
 __webpack_require__(257);
-__webpack_require__(258);
+__webpack_require__(199);
+__webpack_require__(255);
 __webpack_require__(72);
-var CodeMirrorSpellChecker = __webpack_require__(253);
-var marked = __webpack_require__(266);
+__webpack_require__(71);
+__webpack_require__(256);
+__webpack_require__(258);
+__webpack_require__(259);
+__webpack_require__(73);
+var CodeMirrorSpellChecker = __webpack_require__(254);
+var marked = __webpack_require__(267);
 
 
 // Some variables
@@ -24350,7 +24365,7 @@ SimpleMDE.prototype.toTextArea = function() {
 module.exports = SimpleMDE;
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -24445,7 +24460,7 @@ var KeyValuePair = /** @class */ (function () {
 
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -24524,7 +24539,7 @@ var GetIncidentFeedbackResultItem = /** @class */ (function () {
 
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -24769,7 +24784,7 @@ var ApplicationService = /** @class */ (function () {
 
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -25209,7 +25224,7 @@ var IncidentService = /** @class */ (function () {
 
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -25305,7 +25320,7 @@ CodeMirror.overlayMode = function(base, overlay, combine) {
 
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -25313,7 +25328,7 @@ CodeMirror.overlayMode = function(base, overlay, combine) {
 
 (function(mod) {
   if (true) // CommonJS
-    mod(__webpack_require__(8), __webpack_require__(72), __webpack_require__(259));
+    mod(__webpack_require__(8), __webpack_require__(73), __webpack_require__(260));
   else if (typeof define == "function" && define.amd) // AMD
     define(["../../lib/codemirror", "../xml/xml", "../meta"], mod);
   else // Plain browser env
@@ -26183,7 +26198,7 @@ CodeMirror.defineMIME("text/x-markdown", "markdown");
 
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -26590,7 +26605,7 @@ if (!CodeMirror.mimeModes.hasOwnProperty("text/html"))
 
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports) {
 
 var ENTITIES = [['Aacute', [193]], ['aacute', [225]], ['Abreve', [258]], ['abreve', [259]], ['ac', [8766]], ['acd', [8767]], ['acE', [8766, 819]], ['Acirc', [194]], ['acirc', [226]], ['acute', [180]], ['Acy', [1040]], ['acy', [1072]], ['AElig', [198]], ['aelig', [230]], ['af', [8289]], ['Afr', [120068]], ['afr', [120094]], ['Agrave', [192]], ['agrave', [224]], ['alefsym', [8501]], ['aleph', [8501]], ['Alpha', [913]], ['alpha', [945]], ['Amacr', [256]], ['amacr', [257]], ['amalg', [10815]], ['amp', [38]], ['AMP', [38]], ['andand', [10837]], ['And', [10835]], ['and', [8743]], ['andd', [10844]], ['andslope', [10840]], ['andv', [10842]], ['ang', [8736]], ['ange', [10660]], ['angle', [8736]], ['angmsdaa', [10664]], ['angmsdab', [10665]], ['angmsdac', [10666]], ['angmsdad', [10667]], ['angmsdae', [10668]], ['angmsdaf', [10669]], ['angmsdag', [10670]], ['angmsdah', [10671]], ['angmsd', [8737]], ['angrt', [8735]], ['angrtvb', [8894]], ['angrtvbd', [10653]], ['angsph', [8738]], ['angst', [197]], ['angzarr', [9084]], ['Aogon', [260]], ['aogon', [261]], ['Aopf', [120120]], ['aopf', [120146]], ['apacir', [10863]], ['ap', [8776]], ['apE', [10864]], ['ape', [8778]], ['apid', [8779]], ['apos', [39]], ['ApplyFunction', [8289]], ['approx', [8776]], ['approxeq', [8778]], ['Aring', [197]], ['aring', [229]], ['Ascr', [119964]], ['ascr', [119990]], ['Assign', [8788]], ['ast', [42]], ['asymp', [8776]], ['asympeq', [8781]], ['Atilde', [195]], ['atilde', [227]], ['Auml', [196]], ['auml', [228]], ['awconint', [8755]], ['awint', [10769]], ['backcong', [8780]], ['backepsilon', [1014]], ['backprime', [8245]], ['backsim', [8765]], ['backsimeq', [8909]], ['Backslash', [8726]], ['Barv', [10983]], ['barvee', [8893]], ['barwed', [8965]], ['Barwed', [8966]], ['barwedge', [8965]], ['bbrk', [9141]], ['bbrktbrk', [9142]], ['bcong', [8780]], ['Bcy', [1041]], ['bcy', [1073]], ['bdquo', [8222]], ['becaus', [8757]], ['because', [8757]], ['Because', [8757]], ['bemptyv', [10672]], ['bepsi', [1014]], ['bernou', [8492]], ['Bernoullis', [8492]], ['Beta', [914]], ['beta', [946]], ['beth', [8502]], ['between', [8812]], ['Bfr', [120069]], ['bfr', [120095]], ['bigcap', [8898]], ['bigcirc', [9711]], ['bigcup', [8899]], ['bigodot', [10752]], ['bigoplus', [10753]], ['bigotimes', [10754]], ['bigsqcup', [10758]], ['bigstar', [9733]], ['bigtriangledown', [9661]], ['bigtriangleup', [9651]], ['biguplus', [10756]], ['bigvee', [8897]], ['bigwedge', [8896]], ['bkarow', [10509]], ['blacklozenge', [10731]], ['blacksquare', [9642]], ['blacktriangle', [9652]], ['blacktriangledown', [9662]], ['blacktriangleleft', [9666]], ['blacktriangleright', [9656]], ['blank', [9251]], ['blk12', [9618]], ['blk14', [9617]], ['blk34', [9619]], ['block', [9608]], ['bne', [61, 8421]], ['bnequiv', [8801, 8421]], ['bNot', [10989]], ['bnot', [8976]], ['Bopf', [120121]], ['bopf', [120147]], ['bot', [8869]], ['bottom', [8869]], ['bowtie', [8904]], ['boxbox', [10697]], ['boxdl', [9488]], ['boxdL', [9557]], ['boxDl', [9558]], ['boxDL', [9559]], ['boxdr', [9484]], ['boxdR', [9554]], ['boxDr', [9555]], ['boxDR', [9556]], ['boxh', [9472]], ['boxH', [9552]], ['boxhd', [9516]], ['boxHd', [9572]], ['boxhD', [9573]], ['boxHD', [9574]], ['boxhu', [9524]], ['boxHu', [9575]], ['boxhU', [9576]], ['boxHU', [9577]], ['boxminus', [8863]], ['boxplus', [8862]], ['boxtimes', [8864]], ['boxul', [9496]], ['boxuL', [9563]], ['boxUl', [9564]], ['boxUL', [9565]], ['boxur', [9492]], ['boxuR', [9560]], ['boxUr', [9561]], ['boxUR', [9562]], ['boxv', [9474]], ['boxV', [9553]], ['boxvh', [9532]], ['boxvH', [9578]], ['boxVh', [9579]], ['boxVH', [9580]], ['boxvl', [9508]], ['boxvL', [9569]], ['boxVl', [9570]], ['boxVL', [9571]], ['boxvr', [9500]], ['boxvR', [9566]], ['boxVr', [9567]], ['boxVR', [9568]], ['bprime', [8245]], ['breve', [728]], ['Breve', [728]], ['brvbar', [166]], ['bscr', [119991]], ['Bscr', [8492]], ['bsemi', [8271]], ['bsim', [8765]], ['bsime', [8909]], ['bsolb', [10693]], ['bsol', [92]], ['bsolhsub', [10184]], ['bull', [8226]], ['bullet', [8226]], ['bump', [8782]], ['bumpE', [10926]], ['bumpe', [8783]], ['Bumpeq', [8782]], ['bumpeq', [8783]], ['Cacute', [262]], ['cacute', [263]], ['capand', [10820]], ['capbrcup', [10825]], ['capcap', [10827]], ['cap', [8745]], ['Cap', [8914]], ['capcup', [10823]], ['capdot', [10816]], ['CapitalDifferentialD', [8517]], ['caps', [8745, 65024]], ['caret', [8257]], ['caron', [711]], ['Cayleys', [8493]], ['ccaps', [10829]], ['Ccaron', [268]], ['ccaron', [269]], ['Ccedil', [199]], ['ccedil', [231]], ['Ccirc', [264]], ['ccirc', [265]], ['Cconint', [8752]], ['ccups', [10828]], ['ccupssm', [10832]], ['Cdot', [266]], ['cdot', [267]], ['cedil', [184]], ['Cedilla', [184]], ['cemptyv', [10674]], ['cent', [162]], ['centerdot', [183]], ['CenterDot', [183]], ['cfr', [120096]], ['Cfr', [8493]], ['CHcy', [1063]], ['chcy', [1095]], ['check', [10003]], ['checkmark', [10003]], ['Chi', [935]], ['chi', [967]], ['circ', [710]], ['circeq', [8791]], ['circlearrowleft', [8634]], ['circlearrowright', [8635]], ['circledast', [8859]], ['circledcirc', [8858]], ['circleddash', [8861]], ['CircleDot', [8857]], ['circledR', [174]], ['circledS', [9416]], ['CircleMinus', [8854]], ['CirclePlus', [8853]], ['CircleTimes', [8855]], ['cir', [9675]], ['cirE', [10691]], ['cire', [8791]], ['cirfnint', [10768]], ['cirmid', [10991]], ['cirscir', [10690]], ['ClockwiseContourIntegral', [8754]], ['clubs', [9827]], ['clubsuit', [9827]], ['colon', [58]], ['Colon', [8759]], ['Colone', [10868]], ['colone', [8788]], ['coloneq', [8788]], ['comma', [44]], ['commat', [64]], ['comp', [8705]], ['compfn', [8728]], ['complement', [8705]], ['complexes', [8450]], ['cong', [8773]], ['congdot', [10861]], ['Congruent', [8801]], ['conint', [8750]], ['Conint', [8751]], ['ContourIntegral', [8750]], ['copf', [120148]], ['Copf', [8450]], ['coprod', [8720]], ['Coproduct', [8720]], ['copy', [169]], ['COPY', [169]], ['copysr', [8471]], ['CounterClockwiseContourIntegral', [8755]], ['crarr', [8629]], ['cross', [10007]], ['Cross', [10799]], ['Cscr', [119966]], ['cscr', [119992]], ['csub', [10959]], ['csube', [10961]], ['csup', [10960]], ['csupe', [10962]], ['ctdot', [8943]], ['cudarrl', [10552]], ['cudarrr', [10549]], ['cuepr', [8926]], ['cuesc', [8927]], ['cularr', [8630]], ['cularrp', [10557]], ['cupbrcap', [10824]], ['cupcap', [10822]], ['CupCap', [8781]], ['cup', [8746]], ['Cup', [8915]], ['cupcup', [10826]], ['cupdot', [8845]], ['cupor', [10821]], ['cups', [8746, 65024]], ['curarr', [8631]], ['curarrm', [10556]], ['curlyeqprec', [8926]], ['curlyeqsucc', [8927]], ['curlyvee', [8910]], ['curlywedge', [8911]], ['curren', [164]], ['curvearrowleft', [8630]], ['curvearrowright', [8631]], ['cuvee', [8910]], ['cuwed', [8911]], ['cwconint', [8754]], ['cwint', [8753]], ['cylcty', [9005]], ['dagger', [8224]], ['Dagger', [8225]], ['daleth', [8504]], ['darr', [8595]], ['Darr', [8609]], ['dArr', [8659]], ['dash', [8208]], ['Dashv', [10980]], ['dashv', [8867]], ['dbkarow', [10511]], ['dblac', [733]], ['Dcaron', [270]], ['dcaron', [271]], ['Dcy', [1044]], ['dcy', [1076]], ['ddagger', [8225]], ['ddarr', [8650]], ['DD', [8517]], ['dd', [8518]], ['DDotrahd', [10513]], ['ddotseq', [10871]], ['deg', [176]], ['Del', [8711]], ['Delta', [916]], ['delta', [948]], ['demptyv', [10673]], ['dfisht', [10623]], ['Dfr', [120071]], ['dfr', [120097]], ['dHar', [10597]], ['dharl', [8643]], ['dharr', [8642]], ['DiacriticalAcute', [180]], ['DiacriticalDot', [729]], ['DiacriticalDoubleAcute', [733]], ['DiacriticalGrave', [96]], ['DiacriticalTilde', [732]], ['diam', [8900]], ['diamond', [8900]], ['Diamond', [8900]], ['diamondsuit', [9830]], ['diams', [9830]], ['die', [168]], ['DifferentialD', [8518]], ['digamma', [989]], ['disin', [8946]], ['div', [247]], ['divide', [247]], ['divideontimes', [8903]], ['divonx', [8903]], ['DJcy', [1026]], ['djcy', [1106]], ['dlcorn', [8990]], ['dlcrop', [8973]], ['dollar', [36]], ['Dopf', [120123]], ['dopf', [120149]], ['Dot', [168]], ['dot', [729]], ['DotDot', [8412]], ['doteq', [8784]], ['doteqdot', [8785]], ['DotEqual', [8784]], ['dotminus', [8760]], ['dotplus', [8724]], ['dotsquare', [8865]], ['doublebarwedge', [8966]], ['DoubleContourIntegral', [8751]], ['DoubleDot', [168]], ['DoubleDownArrow', [8659]], ['DoubleLeftArrow', [8656]], ['DoubleLeftRightArrow', [8660]], ['DoubleLeftTee', [10980]], ['DoubleLongLeftArrow', [10232]], ['DoubleLongLeftRightArrow', [10234]], ['DoubleLongRightArrow', [10233]], ['DoubleRightArrow', [8658]], ['DoubleRightTee', [8872]], ['DoubleUpArrow', [8657]], ['DoubleUpDownArrow', [8661]], ['DoubleVerticalBar', [8741]], ['DownArrowBar', [10515]], ['downarrow', [8595]], ['DownArrow', [8595]], ['Downarrow', [8659]], ['DownArrowUpArrow', [8693]], ['DownBreve', [785]], ['downdownarrows', [8650]], ['downharpoonleft', [8643]], ['downharpoonright', [8642]], ['DownLeftRightVector', [10576]], ['DownLeftTeeVector', [10590]], ['DownLeftVectorBar', [10582]], ['DownLeftVector', [8637]], ['DownRightTeeVector', [10591]], ['DownRightVectorBar', [10583]], ['DownRightVector', [8641]], ['DownTeeArrow', [8615]], ['DownTee', [8868]], ['drbkarow', [10512]], ['drcorn', [8991]], ['drcrop', [8972]], ['Dscr', [119967]], ['dscr', [119993]], ['DScy', [1029]], ['dscy', [1109]], ['dsol', [10742]], ['Dstrok', [272]], ['dstrok', [273]], ['dtdot', [8945]], ['dtri', [9663]], ['dtrif', [9662]], ['duarr', [8693]], ['duhar', [10607]], ['dwangle', [10662]], ['DZcy', [1039]], ['dzcy', [1119]], ['dzigrarr', [10239]], ['Eacute', [201]], ['eacute', [233]], ['easter', [10862]], ['Ecaron', [282]], ['ecaron', [283]], ['Ecirc', [202]], ['ecirc', [234]], ['ecir', [8790]], ['ecolon', [8789]], ['Ecy', [1069]], ['ecy', [1101]], ['eDDot', [10871]], ['Edot', [278]], ['edot', [279]], ['eDot', [8785]], ['ee', [8519]], ['efDot', [8786]], ['Efr', [120072]], ['efr', [120098]], ['eg', [10906]], ['Egrave', [200]], ['egrave', [232]], ['egs', [10902]], ['egsdot', [10904]], ['el', [10905]], ['Element', [8712]], ['elinters', [9191]], ['ell', [8467]], ['els', [10901]], ['elsdot', [10903]], ['Emacr', [274]], ['emacr', [275]], ['empty', [8709]], ['emptyset', [8709]], ['EmptySmallSquare', [9723]], ['emptyv', [8709]], ['EmptyVerySmallSquare', [9643]], ['emsp13', [8196]], ['emsp14', [8197]], ['emsp', [8195]], ['ENG', [330]], ['eng', [331]], ['ensp', [8194]], ['Eogon', [280]], ['eogon', [281]], ['Eopf', [120124]], ['eopf', [120150]], ['epar', [8917]], ['eparsl', [10723]], ['eplus', [10865]], ['epsi', [949]], ['Epsilon', [917]], ['epsilon', [949]], ['epsiv', [1013]], ['eqcirc', [8790]], ['eqcolon', [8789]], ['eqsim', [8770]], ['eqslantgtr', [10902]], ['eqslantless', [10901]], ['Equal', [10869]], ['equals', [61]], ['EqualTilde', [8770]], ['equest', [8799]], ['Equilibrium', [8652]], ['equiv', [8801]], ['equivDD', [10872]], ['eqvparsl', [10725]], ['erarr', [10609]], ['erDot', [8787]], ['escr', [8495]], ['Escr', [8496]], ['esdot', [8784]], ['Esim', [10867]], ['esim', [8770]], ['Eta', [919]], ['eta', [951]], ['ETH', [208]], ['eth', [240]], ['Euml', [203]], ['euml', [235]], ['euro', [8364]], ['excl', [33]], ['exist', [8707]], ['Exists', [8707]], ['expectation', [8496]], ['exponentiale', [8519]], ['ExponentialE', [8519]], ['fallingdotseq', [8786]], ['Fcy', [1060]], ['fcy', [1092]], ['female', [9792]], ['ffilig', [64259]], ['fflig', [64256]], ['ffllig', [64260]], ['Ffr', [120073]], ['ffr', [120099]], ['filig', [64257]], ['FilledSmallSquare', [9724]], ['FilledVerySmallSquare', [9642]], ['fjlig', [102, 106]], ['flat', [9837]], ['fllig', [64258]], ['fltns', [9649]], ['fnof', [402]], ['Fopf', [120125]], ['fopf', [120151]], ['forall', [8704]], ['ForAll', [8704]], ['fork', [8916]], ['forkv', [10969]], ['Fouriertrf', [8497]], ['fpartint', [10765]], ['frac12', [189]], ['frac13', [8531]], ['frac14', [188]], ['frac15', [8533]], ['frac16', [8537]], ['frac18', [8539]], ['frac23', [8532]], ['frac25', [8534]], ['frac34', [190]], ['frac35', [8535]], ['frac38', [8540]], ['frac45', [8536]], ['frac56', [8538]], ['frac58', [8541]], ['frac78', [8542]], ['frasl', [8260]], ['frown', [8994]], ['fscr', [119995]], ['Fscr', [8497]], ['gacute', [501]], ['Gamma', [915]], ['gamma', [947]], ['Gammad', [988]], ['gammad', [989]], ['gap', [10886]], ['Gbreve', [286]], ['gbreve', [287]], ['Gcedil', [290]], ['Gcirc', [284]], ['gcirc', [285]], ['Gcy', [1043]], ['gcy', [1075]], ['Gdot', [288]], ['gdot', [289]], ['ge', [8805]], ['gE', [8807]], ['gEl', [10892]], ['gel', [8923]], ['geq', [8805]], ['geqq', [8807]], ['geqslant', [10878]], ['gescc', [10921]], ['ges', [10878]], ['gesdot', [10880]], ['gesdoto', [10882]], ['gesdotol', [10884]], ['gesl', [8923, 65024]], ['gesles', [10900]], ['Gfr', [120074]], ['gfr', [120100]], ['gg', [8811]], ['Gg', [8921]], ['ggg', [8921]], ['gimel', [8503]], ['GJcy', [1027]], ['gjcy', [1107]], ['gla', [10917]], ['gl', [8823]], ['glE', [10898]], ['glj', [10916]], ['gnap', [10890]], ['gnapprox', [10890]], ['gne', [10888]], ['gnE', [8809]], ['gneq', [10888]], ['gneqq', [8809]], ['gnsim', [8935]], ['Gopf', [120126]], ['gopf', [120152]], ['grave', [96]], ['GreaterEqual', [8805]], ['GreaterEqualLess', [8923]], ['GreaterFullEqual', [8807]], ['GreaterGreater', [10914]], ['GreaterLess', [8823]], ['GreaterSlantEqual', [10878]], ['GreaterTilde', [8819]], ['Gscr', [119970]], ['gscr', [8458]], ['gsim', [8819]], ['gsime', [10894]], ['gsiml', [10896]], ['gtcc', [10919]], ['gtcir', [10874]], ['gt', [62]], ['GT', [62]], ['Gt', [8811]], ['gtdot', [8919]], ['gtlPar', [10645]], ['gtquest', [10876]], ['gtrapprox', [10886]], ['gtrarr', [10616]], ['gtrdot', [8919]], ['gtreqless', [8923]], ['gtreqqless', [10892]], ['gtrless', [8823]], ['gtrsim', [8819]], ['gvertneqq', [8809, 65024]], ['gvnE', [8809, 65024]], ['Hacek', [711]], ['hairsp', [8202]], ['half', [189]], ['hamilt', [8459]], ['HARDcy', [1066]], ['hardcy', [1098]], ['harrcir', [10568]], ['harr', [8596]], ['hArr', [8660]], ['harrw', [8621]], ['Hat', [94]], ['hbar', [8463]], ['Hcirc', [292]], ['hcirc', [293]], ['hearts', [9829]], ['heartsuit', [9829]], ['hellip', [8230]], ['hercon', [8889]], ['hfr', [120101]], ['Hfr', [8460]], ['HilbertSpace', [8459]], ['hksearow', [10533]], ['hkswarow', [10534]], ['hoarr', [8703]], ['homtht', [8763]], ['hookleftarrow', [8617]], ['hookrightarrow', [8618]], ['hopf', [120153]], ['Hopf', [8461]], ['horbar', [8213]], ['HorizontalLine', [9472]], ['hscr', [119997]], ['Hscr', [8459]], ['hslash', [8463]], ['Hstrok', [294]], ['hstrok', [295]], ['HumpDownHump', [8782]], ['HumpEqual', [8783]], ['hybull', [8259]], ['hyphen', [8208]], ['Iacute', [205]], ['iacute', [237]], ['ic', [8291]], ['Icirc', [206]], ['icirc', [238]], ['Icy', [1048]], ['icy', [1080]], ['Idot', [304]], ['IEcy', [1045]], ['iecy', [1077]], ['iexcl', [161]], ['iff', [8660]], ['ifr', [120102]], ['Ifr', [8465]], ['Igrave', [204]], ['igrave', [236]], ['ii', [8520]], ['iiiint', [10764]], ['iiint', [8749]], ['iinfin', [10716]], ['iiota', [8489]], ['IJlig', [306]], ['ijlig', [307]], ['Imacr', [298]], ['imacr', [299]], ['image', [8465]], ['ImaginaryI', [8520]], ['imagline', [8464]], ['imagpart', [8465]], ['imath', [305]], ['Im', [8465]], ['imof', [8887]], ['imped', [437]], ['Implies', [8658]], ['incare', [8453]], ['in', [8712]], ['infin', [8734]], ['infintie', [10717]], ['inodot', [305]], ['intcal', [8890]], ['int', [8747]], ['Int', [8748]], ['integers', [8484]], ['Integral', [8747]], ['intercal', [8890]], ['Intersection', [8898]], ['intlarhk', [10775]], ['intprod', [10812]], ['InvisibleComma', [8291]], ['InvisibleTimes', [8290]], ['IOcy', [1025]], ['iocy', [1105]], ['Iogon', [302]], ['iogon', [303]], ['Iopf', [120128]], ['iopf', [120154]], ['Iota', [921]], ['iota', [953]], ['iprod', [10812]], ['iquest', [191]], ['iscr', [119998]], ['Iscr', [8464]], ['isin', [8712]], ['isindot', [8949]], ['isinE', [8953]], ['isins', [8948]], ['isinsv', [8947]], ['isinv', [8712]], ['it', [8290]], ['Itilde', [296]], ['itilde', [297]], ['Iukcy', [1030]], ['iukcy', [1110]], ['Iuml', [207]], ['iuml', [239]], ['Jcirc', [308]], ['jcirc', [309]], ['Jcy', [1049]], ['jcy', [1081]], ['Jfr', [120077]], ['jfr', [120103]], ['jmath', [567]], ['Jopf', [120129]], ['jopf', [120155]], ['Jscr', [119973]], ['jscr', [119999]], ['Jsercy', [1032]], ['jsercy', [1112]], ['Jukcy', [1028]], ['jukcy', [1108]], ['Kappa', [922]], ['kappa', [954]], ['kappav', [1008]], ['Kcedil', [310]], ['kcedil', [311]], ['Kcy', [1050]], ['kcy', [1082]], ['Kfr', [120078]], ['kfr', [120104]], ['kgreen', [312]], ['KHcy', [1061]], ['khcy', [1093]], ['KJcy', [1036]], ['kjcy', [1116]], ['Kopf', [120130]], ['kopf', [120156]], ['Kscr', [119974]], ['kscr', [120000]], ['lAarr', [8666]], ['Lacute', [313]], ['lacute', [314]], ['laemptyv', [10676]], ['lagran', [8466]], ['Lambda', [923]], ['lambda', [955]], ['lang', [10216]], ['Lang', [10218]], ['langd', [10641]], ['langle', [10216]], ['lap', [10885]], ['Laplacetrf', [8466]], ['laquo', [171]], ['larrb', [8676]], ['larrbfs', [10527]], ['larr', [8592]], ['Larr', [8606]], ['lArr', [8656]], ['larrfs', [10525]], ['larrhk', [8617]], ['larrlp', [8619]], ['larrpl', [10553]], ['larrsim', [10611]], ['larrtl', [8610]], ['latail', [10521]], ['lAtail', [10523]], ['lat', [10923]], ['late', [10925]], ['lates', [10925, 65024]], ['lbarr', [10508]], ['lBarr', [10510]], ['lbbrk', [10098]], ['lbrace', [123]], ['lbrack', [91]], ['lbrke', [10635]], ['lbrksld', [10639]], ['lbrkslu', [10637]], ['Lcaron', [317]], ['lcaron', [318]], ['Lcedil', [315]], ['lcedil', [316]], ['lceil', [8968]], ['lcub', [123]], ['Lcy', [1051]], ['lcy', [1083]], ['ldca', [10550]], ['ldquo', [8220]], ['ldquor', [8222]], ['ldrdhar', [10599]], ['ldrushar', [10571]], ['ldsh', [8626]], ['le', [8804]], ['lE', [8806]], ['LeftAngleBracket', [10216]], ['LeftArrowBar', [8676]], ['leftarrow', [8592]], ['LeftArrow', [8592]], ['Leftarrow', [8656]], ['LeftArrowRightArrow', [8646]], ['leftarrowtail', [8610]], ['LeftCeiling', [8968]], ['LeftDoubleBracket', [10214]], ['LeftDownTeeVector', [10593]], ['LeftDownVectorBar', [10585]], ['LeftDownVector', [8643]], ['LeftFloor', [8970]], ['leftharpoondown', [8637]], ['leftharpoonup', [8636]], ['leftleftarrows', [8647]], ['leftrightarrow', [8596]], ['LeftRightArrow', [8596]], ['Leftrightarrow', [8660]], ['leftrightarrows', [8646]], ['leftrightharpoons', [8651]], ['leftrightsquigarrow', [8621]], ['LeftRightVector', [10574]], ['LeftTeeArrow', [8612]], ['LeftTee', [8867]], ['LeftTeeVector', [10586]], ['leftthreetimes', [8907]], ['LeftTriangleBar', [10703]], ['LeftTriangle', [8882]], ['LeftTriangleEqual', [8884]], ['LeftUpDownVector', [10577]], ['LeftUpTeeVector', [10592]], ['LeftUpVectorBar', [10584]], ['LeftUpVector', [8639]], ['LeftVectorBar', [10578]], ['LeftVector', [8636]], ['lEg', [10891]], ['leg', [8922]], ['leq', [8804]], ['leqq', [8806]], ['leqslant', [10877]], ['lescc', [10920]], ['les', [10877]], ['lesdot', [10879]], ['lesdoto', [10881]], ['lesdotor', [10883]], ['lesg', [8922, 65024]], ['lesges', [10899]], ['lessapprox', [10885]], ['lessdot', [8918]], ['lesseqgtr', [8922]], ['lesseqqgtr', [10891]], ['LessEqualGreater', [8922]], ['LessFullEqual', [8806]], ['LessGreater', [8822]], ['lessgtr', [8822]], ['LessLess', [10913]], ['lesssim', [8818]], ['LessSlantEqual', [10877]], ['LessTilde', [8818]], ['lfisht', [10620]], ['lfloor', [8970]], ['Lfr', [120079]], ['lfr', [120105]], ['lg', [8822]], ['lgE', [10897]], ['lHar', [10594]], ['lhard', [8637]], ['lharu', [8636]], ['lharul', [10602]], ['lhblk', [9604]], ['LJcy', [1033]], ['ljcy', [1113]], ['llarr', [8647]], ['ll', [8810]], ['Ll', [8920]], ['llcorner', [8990]], ['Lleftarrow', [8666]], ['llhard', [10603]], ['lltri', [9722]], ['Lmidot', [319]], ['lmidot', [320]], ['lmoustache', [9136]], ['lmoust', [9136]], ['lnap', [10889]], ['lnapprox', [10889]], ['lne', [10887]], ['lnE', [8808]], ['lneq', [10887]], ['lneqq', [8808]], ['lnsim', [8934]], ['loang', [10220]], ['loarr', [8701]], ['lobrk', [10214]], ['longleftarrow', [10229]], ['LongLeftArrow', [10229]], ['Longleftarrow', [10232]], ['longleftrightarrow', [10231]], ['LongLeftRightArrow', [10231]], ['Longleftrightarrow', [10234]], ['longmapsto', [10236]], ['longrightarrow', [10230]], ['LongRightArrow', [10230]], ['Longrightarrow', [10233]], ['looparrowleft', [8619]], ['looparrowright', [8620]], ['lopar', [10629]], ['Lopf', [120131]], ['lopf', [120157]], ['loplus', [10797]], ['lotimes', [10804]], ['lowast', [8727]], ['lowbar', [95]], ['LowerLeftArrow', [8601]], ['LowerRightArrow', [8600]], ['loz', [9674]], ['lozenge', [9674]], ['lozf', [10731]], ['lpar', [40]], ['lparlt', [10643]], ['lrarr', [8646]], ['lrcorner', [8991]], ['lrhar', [8651]], ['lrhard', [10605]], ['lrm', [8206]], ['lrtri', [8895]], ['lsaquo', [8249]], ['lscr', [120001]], ['Lscr', [8466]], ['lsh', [8624]], ['Lsh', [8624]], ['lsim', [8818]], ['lsime', [10893]], ['lsimg', [10895]], ['lsqb', [91]], ['lsquo', [8216]], ['lsquor', [8218]], ['Lstrok', [321]], ['lstrok', [322]], ['ltcc', [10918]], ['ltcir', [10873]], ['lt', [60]], ['LT', [60]], ['Lt', [8810]], ['ltdot', [8918]], ['lthree', [8907]], ['ltimes', [8905]], ['ltlarr', [10614]], ['ltquest', [10875]], ['ltri', [9667]], ['ltrie', [8884]], ['ltrif', [9666]], ['ltrPar', [10646]], ['lurdshar', [10570]], ['luruhar', [10598]], ['lvertneqq', [8808, 65024]], ['lvnE', [8808, 65024]], ['macr', [175]], ['male', [9794]], ['malt', [10016]], ['maltese', [10016]], ['Map', [10501]], ['map', [8614]], ['mapsto', [8614]], ['mapstodown', [8615]], ['mapstoleft', [8612]], ['mapstoup', [8613]], ['marker', [9646]], ['mcomma', [10793]], ['Mcy', [1052]], ['mcy', [1084]], ['mdash', [8212]], ['mDDot', [8762]], ['measuredangle', [8737]], ['MediumSpace', [8287]], ['Mellintrf', [8499]], ['Mfr', [120080]], ['mfr', [120106]], ['mho', [8487]], ['micro', [181]], ['midast', [42]], ['midcir', [10992]], ['mid', [8739]], ['middot', [183]], ['minusb', [8863]], ['minus', [8722]], ['minusd', [8760]], ['minusdu', [10794]], ['MinusPlus', [8723]], ['mlcp', [10971]], ['mldr', [8230]], ['mnplus', [8723]], ['models', [8871]], ['Mopf', [120132]], ['mopf', [120158]], ['mp', [8723]], ['mscr', [120002]], ['Mscr', [8499]], ['mstpos', [8766]], ['Mu', [924]], ['mu', [956]], ['multimap', [8888]], ['mumap', [8888]], ['nabla', [8711]], ['Nacute', [323]], ['nacute', [324]], ['nang', [8736, 8402]], ['nap', [8777]], ['napE', [10864, 824]], ['napid', [8779, 824]], ['napos', [329]], ['napprox', [8777]], ['natural', [9838]], ['naturals', [8469]], ['natur', [9838]], ['nbsp', [160]], ['nbump', [8782, 824]], ['nbumpe', [8783, 824]], ['ncap', [10819]], ['Ncaron', [327]], ['ncaron', [328]], ['Ncedil', [325]], ['ncedil', [326]], ['ncong', [8775]], ['ncongdot', [10861, 824]], ['ncup', [10818]], ['Ncy', [1053]], ['ncy', [1085]], ['ndash', [8211]], ['nearhk', [10532]], ['nearr', [8599]], ['neArr', [8663]], ['nearrow', [8599]], ['ne', [8800]], ['nedot', [8784, 824]], ['NegativeMediumSpace', [8203]], ['NegativeThickSpace', [8203]], ['NegativeThinSpace', [8203]], ['NegativeVeryThinSpace', [8203]], ['nequiv', [8802]], ['nesear', [10536]], ['nesim', [8770, 824]], ['NestedGreaterGreater', [8811]], ['NestedLessLess', [8810]], ['nexist', [8708]], ['nexists', [8708]], ['Nfr', [120081]], ['nfr', [120107]], ['ngE', [8807, 824]], ['nge', [8817]], ['ngeq', [8817]], ['ngeqq', [8807, 824]], ['ngeqslant', [10878, 824]], ['nges', [10878, 824]], ['nGg', [8921, 824]], ['ngsim', [8821]], ['nGt', [8811, 8402]], ['ngt', [8815]], ['ngtr', [8815]], ['nGtv', [8811, 824]], ['nharr', [8622]], ['nhArr', [8654]], ['nhpar', [10994]], ['ni', [8715]], ['nis', [8956]], ['nisd', [8954]], ['niv', [8715]], ['NJcy', [1034]], ['njcy', [1114]], ['nlarr', [8602]], ['nlArr', [8653]], ['nldr', [8229]], ['nlE', [8806, 824]], ['nle', [8816]], ['nleftarrow', [8602]], ['nLeftarrow', [8653]], ['nleftrightarrow', [8622]], ['nLeftrightarrow', [8654]], ['nleq', [8816]], ['nleqq', [8806, 824]], ['nleqslant', [10877, 824]], ['nles', [10877, 824]], ['nless', [8814]], ['nLl', [8920, 824]], ['nlsim', [8820]], ['nLt', [8810, 8402]], ['nlt', [8814]], ['nltri', [8938]], ['nltrie', [8940]], ['nLtv', [8810, 824]], ['nmid', [8740]], ['NoBreak', [8288]], ['NonBreakingSpace', [160]], ['nopf', [120159]], ['Nopf', [8469]], ['Not', [10988]], ['not', [172]], ['NotCongruent', [8802]], ['NotCupCap', [8813]], ['NotDoubleVerticalBar', [8742]], ['NotElement', [8713]], ['NotEqual', [8800]], ['NotEqualTilde', [8770, 824]], ['NotExists', [8708]], ['NotGreater', [8815]], ['NotGreaterEqual', [8817]], ['NotGreaterFullEqual', [8807, 824]], ['NotGreaterGreater', [8811, 824]], ['NotGreaterLess', [8825]], ['NotGreaterSlantEqual', [10878, 824]], ['NotGreaterTilde', [8821]], ['NotHumpDownHump', [8782, 824]], ['NotHumpEqual', [8783, 824]], ['notin', [8713]], ['notindot', [8949, 824]], ['notinE', [8953, 824]], ['notinva', [8713]], ['notinvb', [8951]], ['notinvc', [8950]], ['NotLeftTriangleBar', [10703, 824]], ['NotLeftTriangle', [8938]], ['NotLeftTriangleEqual', [8940]], ['NotLess', [8814]], ['NotLessEqual', [8816]], ['NotLessGreater', [8824]], ['NotLessLess', [8810, 824]], ['NotLessSlantEqual', [10877, 824]], ['NotLessTilde', [8820]], ['NotNestedGreaterGreater', [10914, 824]], ['NotNestedLessLess', [10913, 824]], ['notni', [8716]], ['notniva', [8716]], ['notnivb', [8958]], ['notnivc', [8957]], ['NotPrecedes', [8832]], ['NotPrecedesEqual', [10927, 824]], ['NotPrecedesSlantEqual', [8928]], ['NotReverseElement', [8716]], ['NotRightTriangleBar', [10704, 824]], ['NotRightTriangle', [8939]], ['NotRightTriangleEqual', [8941]], ['NotSquareSubset', [8847, 824]], ['NotSquareSubsetEqual', [8930]], ['NotSquareSuperset', [8848, 824]], ['NotSquareSupersetEqual', [8931]], ['NotSubset', [8834, 8402]], ['NotSubsetEqual', [8840]], ['NotSucceeds', [8833]], ['NotSucceedsEqual', [10928, 824]], ['NotSucceedsSlantEqual', [8929]], ['NotSucceedsTilde', [8831, 824]], ['NotSuperset', [8835, 8402]], ['NotSupersetEqual', [8841]], ['NotTilde', [8769]], ['NotTildeEqual', [8772]], ['NotTildeFullEqual', [8775]], ['NotTildeTilde', [8777]], ['NotVerticalBar', [8740]], ['nparallel', [8742]], ['npar', [8742]], ['nparsl', [11005, 8421]], ['npart', [8706, 824]], ['npolint', [10772]], ['npr', [8832]], ['nprcue', [8928]], ['nprec', [8832]], ['npreceq', [10927, 824]], ['npre', [10927, 824]], ['nrarrc', [10547, 824]], ['nrarr', [8603]], ['nrArr', [8655]], ['nrarrw', [8605, 824]], ['nrightarrow', [8603]], ['nRightarrow', [8655]], ['nrtri', [8939]], ['nrtrie', [8941]], ['nsc', [8833]], ['nsccue', [8929]], ['nsce', [10928, 824]], ['Nscr', [119977]], ['nscr', [120003]], ['nshortmid', [8740]], ['nshortparallel', [8742]], ['nsim', [8769]], ['nsime', [8772]], ['nsimeq', [8772]], ['nsmid', [8740]], ['nspar', [8742]], ['nsqsube', [8930]], ['nsqsupe', [8931]], ['nsub', [8836]], ['nsubE', [10949, 824]], ['nsube', [8840]], ['nsubset', [8834, 8402]], ['nsubseteq', [8840]], ['nsubseteqq', [10949, 824]], ['nsucc', [8833]], ['nsucceq', [10928, 824]], ['nsup', [8837]], ['nsupE', [10950, 824]], ['nsupe', [8841]], ['nsupset', [8835, 8402]], ['nsupseteq', [8841]], ['nsupseteqq', [10950, 824]], ['ntgl', [8825]], ['Ntilde', [209]], ['ntilde', [241]], ['ntlg', [8824]], ['ntriangleleft', [8938]], ['ntrianglelefteq', [8940]], ['ntriangleright', [8939]], ['ntrianglerighteq', [8941]], ['Nu', [925]], ['nu', [957]], ['num', [35]], ['numero', [8470]], ['numsp', [8199]], ['nvap', [8781, 8402]], ['nvdash', [8876]], ['nvDash', [8877]], ['nVdash', [8878]], ['nVDash', [8879]], ['nvge', [8805, 8402]], ['nvgt', [62, 8402]], ['nvHarr', [10500]], ['nvinfin', [10718]], ['nvlArr', [10498]], ['nvle', [8804, 8402]], ['nvlt', [60, 8402]], ['nvltrie', [8884, 8402]], ['nvrArr', [10499]], ['nvrtrie', [8885, 8402]], ['nvsim', [8764, 8402]], ['nwarhk', [10531]], ['nwarr', [8598]], ['nwArr', [8662]], ['nwarrow', [8598]], ['nwnear', [10535]], ['Oacute', [211]], ['oacute', [243]], ['oast', [8859]], ['Ocirc', [212]], ['ocirc', [244]], ['ocir', [8858]], ['Ocy', [1054]], ['ocy', [1086]], ['odash', [8861]], ['Odblac', [336]], ['odblac', [337]], ['odiv', [10808]], ['odot', [8857]], ['odsold', [10684]], ['OElig', [338]], ['oelig', [339]], ['ofcir', [10687]], ['Ofr', [120082]], ['ofr', [120108]], ['ogon', [731]], ['Ograve', [210]], ['ograve', [242]], ['ogt', [10689]], ['ohbar', [10677]], ['ohm', [937]], ['oint', [8750]], ['olarr', [8634]], ['olcir', [10686]], ['olcross', [10683]], ['oline', [8254]], ['olt', [10688]], ['Omacr', [332]], ['omacr', [333]], ['Omega', [937]], ['omega', [969]], ['Omicron', [927]], ['omicron', [959]], ['omid', [10678]], ['ominus', [8854]], ['Oopf', [120134]], ['oopf', [120160]], ['opar', [10679]], ['OpenCurlyDoubleQuote', [8220]], ['OpenCurlyQuote', [8216]], ['operp', [10681]], ['oplus', [8853]], ['orarr', [8635]], ['Or', [10836]], ['or', [8744]], ['ord', [10845]], ['order', [8500]], ['orderof', [8500]], ['ordf', [170]], ['ordm', [186]], ['origof', [8886]], ['oror', [10838]], ['orslope', [10839]], ['orv', [10843]], ['oS', [9416]], ['Oscr', [119978]], ['oscr', [8500]], ['Oslash', [216]], ['oslash', [248]], ['osol', [8856]], ['Otilde', [213]], ['otilde', [245]], ['otimesas', [10806]], ['Otimes', [10807]], ['otimes', [8855]], ['Ouml', [214]], ['ouml', [246]], ['ovbar', [9021]], ['OverBar', [8254]], ['OverBrace', [9182]], ['OverBracket', [9140]], ['OverParenthesis', [9180]], ['para', [182]], ['parallel', [8741]], ['par', [8741]], ['parsim', [10995]], ['parsl', [11005]], ['part', [8706]], ['PartialD', [8706]], ['Pcy', [1055]], ['pcy', [1087]], ['percnt', [37]], ['period', [46]], ['permil', [8240]], ['perp', [8869]], ['pertenk', [8241]], ['Pfr', [120083]], ['pfr', [120109]], ['Phi', [934]], ['phi', [966]], ['phiv', [981]], ['phmmat', [8499]], ['phone', [9742]], ['Pi', [928]], ['pi', [960]], ['pitchfork', [8916]], ['piv', [982]], ['planck', [8463]], ['planckh', [8462]], ['plankv', [8463]], ['plusacir', [10787]], ['plusb', [8862]], ['pluscir', [10786]], ['plus', [43]], ['plusdo', [8724]], ['plusdu', [10789]], ['pluse', [10866]], ['PlusMinus', [177]], ['plusmn', [177]], ['plussim', [10790]], ['plustwo', [10791]], ['pm', [177]], ['Poincareplane', [8460]], ['pointint', [10773]], ['popf', [120161]], ['Popf', [8473]], ['pound', [163]], ['prap', [10935]], ['Pr', [10939]], ['pr', [8826]], ['prcue', [8828]], ['precapprox', [10935]], ['prec', [8826]], ['preccurlyeq', [8828]], ['Precedes', [8826]], ['PrecedesEqual', [10927]], ['PrecedesSlantEqual', [8828]], ['PrecedesTilde', [8830]], ['preceq', [10927]], ['precnapprox', [10937]], ['precneqq', [10933]], ['precnsim', [8936]], ['pre', [10927]], ['prE', [10931]], ['precsim', [8830]], ['prime', [8242]], ['Prime', [8243]], ['primes', [8473]], ['prnap', [10937]], ['prnE', [10933]], ['prnsim', [8936]], ['prod', [8719]], ['Product', [8719]], ['profalar', [9006]], ['profline', [8978]], ['profsurf', [8979]], ['prop', [8733]], ['Proportional', [8733]], ['Proportion', [8759]], ['propto', [8733]], ['prsim', [8830]], ['prurel', [8880]], ['Pscr', [119979]], ['pscr', [120005]], ['Psi', [936]], ['psi', [968]], ['puncsp', [8200]], ['Qfr', [120084]], ['qfr', [120110]], ['qint', [10764]], ['qopf', [120162]], ['Qopf', [8474]], ['qprime', [8279]], ['Qscr', [119980]], ['qscr', [120006]], ['quaternions', [8461]], ['quatint', [10774]], ['quest', [63]], ['questeq', [8799]], ['quot', [34]], ['QUOT', [34]], ['rAarr', [8667]], ['race', [8765, 817]], ['Racute', [340]], ['racute', [341]], ['radic', [8730]], ['raemptyv', [10675]], ['rang', [10217]], ['Rang', [10219]], ['rangd', [10642]], ['range', [10661]], ['rangle', [10217]], ['raquo', [187]], ['rarrap', [10613]], ['rarrb', [8677]], ['rarrbfs', [10528]], ['rarrc', [10547]], ['rarr', [8594]], ['Rarr', [8608]], ['rArr', [8658]], ['rarrfs', [10526]], ['rarrhk', [8618]], ['rarrlp', [8620]], ['rarrpl', [10565]], ['rarrsim', [10612]], ['Rarrtl', [10518]], ['rarrtl', [8611]], ['rarrw', [8605]], ['ratail', [10522]], ['rAtail', [10524]], ['ratio', [8758]], ['rationals', [8474]], ['rbarr', [10509]], ['rBarr', [10511]], ['RBarr', [10512]], ['rbbrk', [10099]], ['rbrace', [125]], ['rbrack', [93]], ['rbrke', [10636]], ['rbrksld', [10638]], ['rbrkslu', [10640]], ['Rcaron', [344]], ['rcaron', [345]], ['Rcedil', [342]], ['rcedil', [343]], ['rceil', [8969]], ['rcub', [125]], ['Rcy', [1056]], ['rcy', [1088]], ['rdca', [10551]], ['rdldhar', [10601]], ['rdquo', [8221]], ['rdquor', [8221]], ['CloseCurlyDoubleQuote', [8221]], ['rdsh', [8627]], ['real', [8476]], ['realine', [8475]], ['realpart', [8476]], ['reals', [8477]], ['Re', [8476]], ['rect', [9645]], ['reg', [174]], ['REG', [174]], ['ReverseElement', [8715]], ['ReverseEquilibrium', [8651]], ['ReverseUpEquilibrium', [10607]], ['rfisht', [10621]], ['rfloor', [8971]], ['rfr', [120111]], ['Rfr', [8476]], ['rHar', [10596]], ['rhard', [8641]], ['rharu', [8640]], ['rharul', [10604]], ['Rho', [929]], ['rho', [961]], ['rhov', [1009]], ['RightAngleBracket', [10217]], ['RightArrowBar', [8677]], ['rightarrow', [8594]], ['RightArrow', [8594]], ['Rightarrow', [8658]], ['RightArrowLeftArrow', [8644]], ['rightarrowtail', [8611]], ['RightCeiling', [8969]], ['RightDoubleBracket', [10215]], ['RightDownTeeVector', [10589]], ['RightDownVectorBar', [10581]], ['RightDownVector', [8642]], ['RightFloor', [8971]], ['rightharpoondown', [8641]], ['rightharpoonup', [8640]], ['rightleftarrows', [8644]], ['rightleftharpoons', [8652]], ['rightrightarrows', [8649]], ['rightsquigarrow', [8605]], ['RightTeeArrow', [8614]], ['RightTee', [8866]], ['RightTeeVector', [10587]], ['rightthreetimes', [8908]], ['RightTriangleBar', [10704]], ['RightTriangle', [8883]], ['RightTriangleEqual', [8885]], ['RightUpDownVector', [10575]], ['RightUpTeeVector', [10588]], ['RightUpVectorBar', [10580]], ['RightUpVector', [8638]], ['RightVectorBar', [10579]], ['RightVector', [8640]], ['ring', [730]], ['risingdotseq', [8787]], ['rlarr', [8644]], ['rlhar', [8652]], ['rlm', [8207]], ['rmoustache', [9137]], ['rmoust', [9137]], ['rnmid', [10990]], ['roang', [10221]], ['roarr', [8702]], ['robrk', [10215]], ['ropar', [10630]], ['ropf', [120163]], ['Ropf', [8477]], ['roplus', [10798]], ['rotimes', [10805]], ['RoundImplies', [10608]], ['rpar', [41]], ['rpargt', [10644]], ['rppolint', [10770]], ['rrarr', [8649]], ['Rrightarrow', [8667]], ['rsaquo', [8250]], ['rscr', [120007]], ['Rscr', [8475]], ['rsh', [8625]], ['Rsh', [8625]], ['rsqb', [93]], ['rsquo', [8217]], ['rsquor', [8217]], ['CloseCurlyQuote', [8217]], ['rthree', [8908]], ['rtimes', [8906]], ['rtri', [9657]], ['rtrie', [8885]], ['rtrif', [9656]], ['rtriltri', [10702]], ['RuleDelayed', [10740]], ['ruluhar', [10600]], ['rx', [8478]], ['Sacute', [346]], ['sacute', [347]], ['sbquo', [8218]], ['scap', [10936]], ['Scaron', [352]], ['scaron', [353]], ['Sc', [10940]], ['sc', [8827]], ['sccue', [8829]], ['sce', [10928]], ['scE', [10932]], ['Scedil', [350]], ['scedil', [351]], ['Scirc', [348]], ['scirc', [349]], ['scnap', [10938]], ['scnE', [10934]], ['scnsim', [8937]], ['scpolint', [10771]], ['scsim', [8831]], ['Scy', [1057]], ['scy', [1089]], ['sdotb', [8865]], ['sdot', [8901]], ['sdote', [10854]], ['searhk', [10533]], ['searr', [8600]], ['seArr', [8664]], ['searrow', [8600]], ['sect', [167]], ['semi', [59]], ['seswar', [10537]], ['setminus', [8726]], ['setmn', [8726]], ['sext', [10038]], ['Sfr', [120086]], ['sfr', [120112]], ['sfrown', [8994]], ['sharp', [9839]], ['SHCHcy', [1065]], ['shchcy', [1097]], ['SHcy', [1064]], ['shcy', [1096]], ['ShortDownArrow', [8595]], ['ShortLeftArrow', [8592]], ['shortmid', [8739]], ['shortparallel', [8741]], ['ShortRightArrow', [8594]], ['ShortUpArrow', [8593]], ['shy', [173]], ['Sigma', [931]], ['sigma', [963]], ['sigmaf', [962]], ['sigmav', [962]], ['sim', [8764]], ['simdot', [10858]], ['sime', [8771]], ['simeq', [8771]], ['simg', [10910]], ['simgE', [10912]], ['siml', [10909]], ['simlE', [10911]], ['simne', [8774]], ['simplus', [10788]], ['simrarr', [10610]], ['slarr', [8592]], ['SmallCircle', [8728]], ['smallsetminus', [8726]], ['smashp', [10803]], ['smeparsl', [10724]], ['smid', [8739]], ['smile', [8995]], ['smt', [10922]], ['smte', [10924]], ['smtes', [10924, 65024]], ['SOFTcy', [1068]], ['softcy', [1100]], ['solbar', [9023]], ['solb', [10692]], ['sol', [47]], ['Sopf', [120138]], ['sopf', [120164]], ['spades', [9824]], ['spadesuit', [9824]], ['spar', [8741]], ['sqcap', [8851]], ['sqcaps', [8851, 65024]], ['sqcup', [8852]], ['sqcups', [8852, 65024]], ['Sqrt', [8730]], ['sqsub', [8847]], ['sqsube', [8849]], ['sqsubset', [8847]], ['sqsubseteq', [8849]], ['sqsup', [8848]], ['sqsupe', [8850]], ['sqsupset', [8848]], ['sqsupseteq', [8850]], ['square', [9633]], ['Square', [9633]], ['SquareIntersection', [8851]], ['SquareSubset', [8847]], ['SquareSubsetEqual', [8849]], ['SquareSuperset', [8848]], ['SquareSupersetEqual', [8850]], ['SquareUnion', [8852]], ['squarf', [9642]], ['squ', [9633]], ['squf', [9642]], ['srarr', [8594]], ['Sscr', [119982]], ['sscr', [120008]], ['ssetmn', [8726]], ['ssmile', [8995]], ['sstarf', [8902]], ['Star', [8902]], ['star', [9734]], ['starf', [9733]], ['straightepsilon', [1013]], ['straightphi', [981]], ['strns', [175]], ['sub', [8834]], ['Sub', [8912]], ['subdot', [10941]], ['subE', [10949]], ['sube', [8838]], ['subedot', [10947]], ['submult', [10945]], ['subnE', [10955]], ['subne', [8842]], ['subplus', [10943]], ['subrarr', [10617]], ['subset', [8834]], ['Subset', [8912]], ['subseteq', [8838]], ['subseteqq', [10949]], ['SubsetEqual', [8838]], ['subsetneq', [8842]], ['subsetneqq', [10955]], ['subsim', [10951]], ['subsub', [10965]], ['subsup', [10963]], ['succapprox', [10936]], ['succ', [8827]], ['succcurlyeq', [8829]], ['Succeeds', [8827]], ['SucceedsEqual', [10928]], ['SucceedsSlantEqual', [8829]], ['SucceedsTilde', [8831]], ['succeq', [10928]], ['succnapprox', [10938]], ['succneqq', [10934]], ['succnsim', [8937]], ['succsim', [8831]], ['SuchThat', [8715]], ['sum', [8721]], ['Sum', [8721]], ['sung', [9834]], ['sup1', [185]], ['sup2', [178]], ['sup3', [179]], ['sup', [8835]], ['Sup', [8913]], ['supdot', [10942]], ['supdsub', [10968]], ['supE', [10950]], ['supe', [8839]], ['supedot', [10948]], ['Superset', [8835]], ['SupersetEqual', [8839]], ['suphsol', [10185]], ['suphsub', [10967]], ['suplarr', [10619]], ['supmult', [10946]], ['supnE', [10956]], ['supne', [8843]], ['supplus', [10944]], ['supset', [8835]], ['Supset', [8913]], ['supseteq', [8839]], ['supseteqq', [10950]], ['supsetneq', [8843]], ['supsetneqq', [10956]], ['supsim', [10952]], ['supsub', [10964]], ['supsup', [10966]], ['swarhk', [10534]], ['swarr', [8601]], ['swArr', [8665]], ['swarrow', [8601]], ['swnwar', [10538]], ['szlig', [223]], ['Tab', [9]], ['target', [8982]], ['Tau', [932]], ['tau', [964]], ['tbrk', [9140]], ['Tcaron', [356]], ['tcaron', [357]], ['Tcedil', [354]], ['tcedil', [355]], ['Tcy', [1058]], ['tcy', [1090]], ['tdot', [8411]], ['telrec', [8981]], ['Tfr', [120087]], ['tfr', [120113]], ['there4', [8756]], ['therefore', [8756]], ['Therefore', [8756]], ['Theta', [920]], ['theta', [952]], ['thetasym', [977]], ['thetav', [977]], ['thickapprox', [8776]], ['thicksim', [8764]], ['ThickSpace', [8287, 8202]], ['ThinSpace', [8201]], ['thinsp', [8201]], ['thkap', [8776]], ['thksim', [8764]], ['THORN', [222]], ['thorn', [254]], ['tilde', [732]], ['Tilde', [8764]], ['TildeEqual', [8771]], ['TildeFullEqual', [8773]], ['TildeTilde', [8776]], ['timesbar', [10801]], ['timesb', [8864]], ['times', [215]], ['timesd', [10800]], ['tint', [8749]], ['toea', [10536]], ['topbot', [9014]], ['topcir', [10993]], ['top', [8868]], ['Topf', [120139]], ['topf', [120165]], ['topfork', [10970]], ['tosa', [10537]], ['tprime', [8244]], ['trade', [8482]], ['TRADE', [8482]], ['triangle', [9653]], ['triangledown', [9663]], ['triangleleft', [9667]], ['trianglelefteq', [8884]], ['triangleq', [8796]], ['triangleright', [9657]], ['trianglerighteq', [8885]], ['tridot', [9708]], ['trie', [8796]], ['triminus', [10810]], ['TripleDot', [8411]], ['triplus', [10809]], ['trisb', [10701]], ['tritime', [10811]], ['trpezium', [9186]], ['Tscr', [119983]], ['tscr', [120009]], ['TScy', [1062]], ['tscy', [1094]], ['TSHcy', [1035]], ['tshcy', [1115]], ['Tstrok', [358]], ['tstrok', [359]], ['twixt', [8812]], ['twoheadleftarrow', [8606]], ['twoheadrightarrow', [8608]], ['Uacute', [218]], ['uacute', [250]], ['uarr', [8593]], ['Uarr', [8607]], ['uArr', [8657]], ['Uarrocir', [10569]], ['Ubrcy', [1038]], ['ubrcy', [1118]], ['Ubreve', [364]], ['ubreve', [365]], ['Ucirc', [219]], ['ucirc', [251]], ['Ucy', [1059]], ['ucy', [1091]], ['udarr', [8645]], ['Udblac', [368]], ['udblac', [369]], ['udhar', [10606]], ['ufisht', [10622]], ['Ufr', [120088]], ['ufr', [120114]], ['Ugrave', [217]], ['ugrave', [249]], ['uHar', [10595]], ['uharl', [8639]], ['uharr', [8638]], ['uhblk', [9600]], ['ulcorn', [8988]], ['ulcorner', [8988]], ['ulcrop', [8975]], ['ultri', [9720]], ['Umacr', [362]], ['umacr', [363]], ['uml', [168]], ['UnderBar', [95]], ['UnderBrace', [9183]], ['UnderBracket', [9141]], ['UnderParenthesis', [9181]], ['Union', [8899]], ['UnionPlus', [8846]], ['Uogon', [370]], ['uogon', [371]], ['Uopf', [120140]], ['uopf', [120166]], ['UpArrowBar', [10514]], ['uparrow', [8593]], ['UpArrow', [8593]], ['Uparrow', [8657]], ['UpArrowDownArrow', [8645]], ['updownarrow', [8597]], ['UpDownArrow', [8597]], ['Updownarrow', [8661]], ['UpEquilibrium', [10606]], ['upharpoonleft', [8639]], ['upharpoonright', [8638]], ['uplus', [8846]], ['UpperLeftArrow', [8598]], ['UpperRightArrow', [8599]], ['upsi', [965]], ['Upsi', [978]], ['upsih', [978]], ['Upsilon', [933]], ['upsilon', [965]], ['UpTeeArrow', [8613]], ['UpTee', [8869]], ['upuparrows', [8648]], ['urcorn', [8989]], ['urcorner', [8989]], ['urcrop', [8974]], ['Uring', [366]], ['uring', [367]], ['urtri', [9721]], ['Uscr', [119984]], ['uscr', [120010]], ['utdot', [8944]], ['Utilde', [360]], ['utilde', [361]], ['utri', [9653]], ['utrif', [9652]], ['uuarr', [8648]], ['Uuml', [220]], ['uuml', [252]], ['uwangle', [10663]], ['vangrt', [10652]], ['varepsilon', [1013]], ['varkappa', [1008]], ['varnothing', [8709]], ['varphi', [981]], ['varpi', [982]], ['varpropto', [8733]], ['varr', [8597]], ['vArr', [8661]], ['varrho', [1009]], ['varsigma', [962]], ['varsubsetneq', [8842, 65024]], ['varsubsetneqq', [10955, 65024]], ['varsupsetneq', [8843, 65024]], ['varsupsetneqq', [10956, 65024]], ['vartheta', [977]], ['vartriangleleft', [8882]], ['vartriangleright', [8883]], ['vBar', [10984]], ['Vbar', [10987]], ['vBarv', [10985]], ['Vcy', [1042]], ['vcy', [1074]], ['vdash', [8866]], ['vDash', [8872]], ['Vdash', [8873]], ['VDash', [8875]], ['Vdashl', [10982]], ['veebar', [8891]], ['vee', [8744]], ['Vee', [8897]], ['veeeq', [8794]], ['vellip', [8942]], ['verbar', [124]], ['Verbar', [8214]], ['vert', [124]], ['Vert', [8214]], ['VerticalBar', [8739]], ['VerticalLine', [124]], ['VerticalSeparator', [10072]], ['VerticalTilde', [8768]], ['VeryThinSpace', [8202]], ['Vfr', [120089]], ['vfr', [120115]], ['vltri', [8882]], ['vnsub', [8834, 8402]], ['vnsup', [8835, 8402]], ['Vopf', [120141]], ['vopf', [120167]], ['vprop', [8733]], ['vrtri', [8883]], ['Vscr', [119985]], ['vscr', [120011]], ['vsubnE', [10955, 65024]], ['vsubne', [8842, 65024]], ['vsupnE', [10956, 65024]], ['vsupne', [8843, 65024]], ['Vvdash', [8874]], ['vzigzag', [10650]], ['Wcirc', [372]], ['wcirc', [373]], ['wedbar', [10847]], ['wedge', [8743]], ['Wedge', [8896]], ['wedgeq', [8793]], ['weierp', [8472]], ['Wfr', [120090]], ['wfr', [120116]], ['Wopf', [120142]], ['wopf', [120168]], ['wp', [8472]], ['wr', [8768]], ['wreath', [8768]], ['Wscr', [119986]], ['wscr', [120012]], ['xcap', [8898]], ['xcirc', [9711]], ['xcup', [8899]], ['xdtri', [9661]], ['Xfr', [120091]], ['xfr', [120117]], ['xharr', [10231]], ['xhArr', [10234]], ['Xi', [926]], ['xi', [958]], ['xlarr', [10229]], ['xlArr', [10232]], ['xmap', [10236]], ['xnis', [8955]], ['xodot', [10752]], ['Xopf', [120143]], ['xopf', [120169]], ['xoplus', [10753]], ['xotime', [10754]], ['xrarr', [10230]], ['xrArr', [10233]], ['Xscr', [119987]], ['xscr', [120013]], ['xsqcup', [10758]], ['xuplus', [10756]], ['xutri', [9651]], ['xvee', [8897]], ['xwedge', [8896]], ['Yacute', [221]], ['yacute', [253]], ['YAcy', [1071]], ['yacy', [1103]], ['Ycirc', [374]], ['ycirc', [375]], ['Ycy', [1067]], ['ycy', [1099]], ['yen', [165]], ['Yfr', [120092]], ['yfr', [120118]], ['YIcy', [1031]], ['yicy', [1111]], ['Yopf', [120144]], ['yopf', [120170]], ['Yscr', [119988]], ['yscr', [120014]], ['YUcy', [1070]], ['yucy', [1102]], ['yuml', [255]], ['Yuml', [376]], ['Zacute', [377]], ['zacute', [378]], ['Zcaron', [381]], ['zcaron', [382]], ['Zcy', [1047]], ['zcy', [1079]], ['Zdot', [379]], ['zdot', [380]], ['zeetrf', [8488]], ['ZeroWidthSpace', [8203]], ['Zeta', [918]], ['zeta', [950]], ['zfr', [120119]], ['Zfr', [8488]], ['ZHcy', [1046]], ['zhcy', [1078]], ['zigrarr', [8669]], ['zopf', [120171]], ['Zopf', [8484]], ['Zscr', [119989]], ['zscr', [120015]], ['zwj', [8205]], ['zwnj', [8204]]];
@@ -26786,7 +26801,7 @@ module.exports = Html5Entities;
 
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26865,7 +26880,7 @@ return af;
 
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26930,7 +26945,7 @@ return arDz;
 
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -26995,7 +27010,7 @@ return arKw;
 
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27127,7 +27142,7 @@ return arLy;
 
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27193,7 +27208,7 @@ return arMa;
 
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27304,7 +27319,7 @@ return arSa;
 
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27369,7 +27384,7 @@ return arTn;
 
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27517,7 +27532,7 @@ return ar;
 
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27628,7 +27643,7 @@ return az;
 
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27768,7 +27783,7 @@ return be;
 
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27864,7 +27879,7 @@ return bg;
 
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -27929,7 +27944,7 @@ return bm;
 
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28054,7 +28069,7 @@ return bn;
 
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28179,7 +28194,7 @@ return bo;
 
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28293,7 +28308,7 @@ return br;
 
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28451,7 +28466,7 @@ return bs;
 
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28545,7 +28560,7 @@ return ca;
 
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28730,7 +28745,7 @@ return cs;
 
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28799,7 +28814,7 @@ return cv;
 
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28886,7 +28901,7 @@ return cy;
 
 
 /***/ }),
-/* 94 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -28952,7 +28967,7 @@ return da;
 
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29037,7 +29052,7 @@ return deAt;
 
 
 /***/ }),
-/* 96 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29121,7 +29136,7 @@ return deCh;
 
 
 /***/ }),
-/* 97 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29205,7 +29220,7 @@ return de;
 
 
 /***/ }),
-/* 98 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29311,7 +29326,7 @@ return dv;
 
 
 /***/ }),
-/* 99 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29417,7 +29432,7 @@ return el;
 
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29490,7 +29505,7 @@ return enAu;
 
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29559,7 +29574,7 @@ return enCa;
 
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29632,7 +29647,7 @@ return enGb;
 
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29705,7 +29720,7 @@ return enIe;
 
 
 /***/ }),
-/* 104 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29778,7 +29793,7 @@ return enNz;
 
 
 /***/ }),
-/* 105 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29857,7 +29872,7 @@ return eo;
 
 
 /***/ }),
-/* 106 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -29954,7 +29969,7 @@ return esDo;
 
 
 /***/ }),
-/* 107 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30043,7 +30058,7 @@ return esUs;
 
 
 /***/ }),
-/* 108 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30141,7 +30156,7 @@ return es;
 
 
 /***/ }),
-/* 109 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30228,7 +30243,7 @@ return et;
 
 
 /***/ }),
-/* 110 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30300,7 +30315,7 @@ return eu;
 
 
 /***/ }),
-/* 111 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30413,7 +30428,7 @@ return fa;
 
 
 /***/ }),
-/* 112 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30528,7 +30543,7 @@ return fi;
 
 
 /***/ }),
-/* 113 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30594,7 +30609,7 @@ return fo;
 
 
 /***/ }),
-/* 114 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30674,7 +30689,7 @@ return frCa;
 
 
 /***/ }),
-/* 115 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30758,7 +30773,7 @@ return frCh;
 
 
 /***/ }),
-/* 116 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30847,7 +30862,7 @@ return fr;
 
 
 /***/ }),
-/* 117 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -30928,7 +30943,7 @@ return fy;
 
 
 /***/ }),
-/* 118 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31010,7 +31025,7 @@ return gd;
 
 
 /***/ }),
-/* 119 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31093,7 +31108,7 @@ return gl;
 
 
 /***/ }),
-/* 120 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31222,7 +31237,7 @@ return gomLatn;
 
 
 /***/ }),
-/* 121 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31352,7 +31367,7 @@ return gu;
 
 
 /***/ }),
-/* 122 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31457,7 +31472,7 @@ return he;
 
 
 /***/ }),
-/* 123 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31587,7 +31602,7 @@ return hi;
 
 
 /***/ }),
-/* 124 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31747,7 +31762,7 @@ return hr;
 
 
 /***/ }),
-/* 125 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31863,7 +31878,7 @@ return hu;
 
 
 /***/ }),
-/* 126 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -31964,7 +31979,7 @@ return hyAm;
 
 
 /***/ }),
-/* 127 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32053,7 +32068,7 @@ return id;
 
 
 /***/ }),
-/* 128 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32191,7 +32206,7 @@ return is;
 
 
 /***/ }),
-/* 129 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32267,7 +32282,7 @@ return it;
 
 
 /***/ }),
-/* 130 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32353,7 +32368,7 @@ return ja;
 
 
 /***/ }),
-/* 131 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32442,7 +32457,7 @@ return jv;
 
 
 /***/ }),
-/* 132 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32537,7 +32552,7 @@ return ka;
 
 
 /***/ }),
-/* 133 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32630,7 +32645,7 @@ return kk;
 
 
 /***/ }),
-/* 134 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32694,7 +32709,7 @@ return km;
 
 
 /***/ }),
-/* 135 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32826,7 +32841,7 @@ return kn;
 
 
 /***/ }),
-/* 136 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -32914,7 +32929,7 @@ return ko;
 
 
 /***/ }),
-/* 137 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33008,7 +33023,7 @@ return ky;
 
 
 /***/ }),
-/* 138 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33151,7 +33166,7 @@ return lb;
 
 
 /***/ }),
-/* 139 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33227,7 +33242,7 @@ return lo;
 
 
 /***/ }),
-/* 140 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33351,7 +33366,7 @@ return lt;
 
 
 /***/ }),
-/* 141 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33455,7 +33470,7 @@ return lv;
 
 
 /***/ }),
-/* 142 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33573,7 +33588,7 @@ return me;
 
 
 /***/ }),
-/* 143 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33643,7 +33658,7 @@ return mi;
 
 
 /***/ }),
-/* 144 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33739,7 +33754,7 @@ return mk;
 
 
 /***/ }),
-/* 145 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33826,7 +33841,7 @@ return ml;
 
 
 /***/ }),
-/* 146 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -33993,7 +34008,7 @@ return mr;
 
 
 /***/ }),
-/* 147 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34082,7 +34097,7 @@ return msMy;
 
 
 /***/ }),
-/* 148 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34170,7 +34185,7 @@ return ms;
 
 
 /***/ }),
-/* 149 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34236,7 +34251,7 @@ return mt;
 
 
 /***/ }),
-/* 150 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34338,7 +34353,7 @@ return my;
 
 
 /***/ }),
-/* 151 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34407,7 +34422,7 @@ return nb;
 
 
 /***/ }),
-/* 152 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34536,7 +34551,7 @@ return ne;
 
 
 /***/ }),
-/* 153 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34630,7 +34645,7 @@ return nlBe;
 
 
 /***/ }),
-/* 154 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34724,7 +34739,7 @@ return nl;
 
 
 /***/ }),
-/* 155 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34790,7 +34805,7 @@ return nn;
 
 
 /***/ }),
-/* 156 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -34920,7 +34935,7 @@ return paIn;
 
 
 /***/ }),
-/* 157 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -35052,7 +35067,7 @@ return pl;
 
 
 /***/ }),
-/* 158 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -35119,7 +35134,7 @@ return ptBr;
 
 
 /***/ }),
-/* 159 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -35190,7 +35205,7 @@ return pt;
 
 
 /***/ }),
-/* 160 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -35272,7 +35287,7 @@ return ro;
 
 
 /***/ }),
-/* 161 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -35462,7 +35477,7 @@ return ru;
 
 
 /***/ }),
-/* 162 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -35566,7 +35581,7 @@ return sd;
 
 
 /***/ }),
-/* 163 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -35633,7 +35648,7 @@ return se;
 
 
 /***/ }),
-/* 164 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -35710,7 +35725,7 @@ return si;
 
 
 /***/ }),
-/* 165 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -35873,7 +35888,7 @@ return sk;
 
 
 /***/ }),
-/* 166 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -36052,7 +36067,7 @@ return sl;
 
 
 /***/ }),
-/* 167 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -36128,7 +36143,7 @@ return sq;
 
 
 /***/ }),
-/* 168 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -36245,7 +36260,7 @@ return srCyrl;
 
 
 /***/ }),
-/* 169 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -36362,7 +36377,7 @@ return sr;
 
 
 /***/ }),
-/* 170 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -36457,7 +36472,7 @@ return ss;
 
 
 /***/ }),
-/* 171 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -36532,7 +36547,7 @@ return sv;
 
 
 /***/ }),
-/* 172 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -36597,7 +36612,7 @@ return sw;
 
 
 /***/ }),
-/* 173 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -36733,7 +36748,7 @@ return ta;
 
 
 /***/ }),
-/* 174 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -36828,7 +36843,7 @@ return te;
 
 
 /***/ }),
-/* 175 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -36902,7 +36917,7 @@ return tet;
 
 
 /***/ }),
-/* 176 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -36975,7 +36990,7 @@ return th;
 
 
 /***/ }),
-/* 177 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -37043,7 +37058,7 @@ return tlPh;
 
 
 /***/ }),
-/* 178 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -37171,7 +37186,7 @@ return tlh;
 
 
 /***/ }),
-/* 179 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -37267,7 +37282,7 @@ return tr;
 
 
 /***/ }),
-/* 180 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -37365,7 +37380,7 @@ return tzl;
 
 
 /***/ }),
-/* 181 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -37429,7 +37444,7 @@ return tzmLatn;
 
 
 /***/ }),
-/* 182 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -37493,7 +37508,7 @@ return tzm;
 
 
 /***/ }),
-/* 183 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -37651,7 +37666,7 @@ return uk;
 
 
 /***/ }),
-/* 184 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -37756,7 +37771,7 @@ return ur;
 
 
 /***/ }),
-/* 185 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -37820,7 +37835,7 @@ return uzLatn;
 
 
 /***/ }),
-/* 186 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -37884,7 +37899,7 @@ return uz;
 
 
 /***/ }),
-/* 187 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -37969,7 +37984,7 @@ return vi;
 
 
 /***/ }),
-/* 188 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -38043,7 +38058,7 @@ return xPseudo;
 
 
 /***/ }),
-/* 189 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -38109,7 +38124,7 @@ return yo;
 
 
 /***/ }),
-/* 190 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -38226,7 +38241,7 @@ return zhCn;
 
 
 /***/ }),
-/* 191 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -38337,7 +38352,7 @@ return zhHk;
 
 
 /***/ }),
-/* 192 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -38447,7 +38462,7 @@ return zhTw;
 
 
 /***/ }),
-/* 193 */
+/* 194 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -38475,25 +38490,25 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 194 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = (__webpack_require__(11))(1);
 
 /***/ }),
-/* 195 */
+/* 196 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_bootstrap__ = __webpack_require__(408);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_bootstrap__ = __webpack_require__(410);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_bootstrap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_bootstrap__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_router__ = __webpack_require__(409);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_router__ = __webpack_require__(411);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_moment__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_moment__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_AppRoot__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vee_validate__ = __webpack_require__(277);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vee_validate__ = __webpack_require__(278);
 
 
 
@@ -38537,190 +38552,190 @@ var routes = [
     {
         name: "root",
         path: "/",
-        component: __webpack_require__(300)
+        component: __webpack_require__(301)
     },
     {
         name: "support",
         path: "/support/",
-        component: __webpack_require__(302)
+        component: __webpack_require__(303)
     },
     {
         name: "application",
         path: "/discover/application/:applicationId/",
-        component: __webpack_require__(288)
+        component: __webpack_require__(289)
     },
     {
         path: "/discover/",
-        component: __webpack_require__(294),
+        component: __webpack_require__(295),
         children: [
             {
                 name: "findIncidents",
                 path: "incidents/:applicationId?",
-                component: __webpack_require__(296)
+                component: __webpack_require__(297)
             },
             {
                 name: "discoverIncident",
                 path: "incidents/:applicationId/incident/:incidentId",
-                component: __webpack_require__(64)
+                component: __webpack_require__(65)
             },
             {
                 name: "configureApplication",
                 path: "application/:applicationId/configuration",
-                component: __webpack_require__(293)
+                component: __webpack_require__(294)
             }, {
                 name: "discoverApplication",
                 path: "application/:applicationId/",
-                component: __webpack_require__(64)
+                component: __webpack_require__(65)
             },
             {
                 name: "suggest",
                 path: "suggest/:applicationId?",
-                component: __webpack_require__(297)
+                component: __webpack_require__(298)
             },
             {
                 name: "suggestIncident",
                 path: "suggest/:applicationId/incident/:incidentId",
-                component: __webpack_require__(64)
+                component: __webpack_require__(65)
             },
             {
                 name: "discover",
                 path: ":applicationId?",
-                component: __webpack_require__(295)
+                component: __webpack_require__(296)
             }
         ]
     },
     {
         path: "/analyze/",
-        component: __webpack_require__(279),
+        component: __webpack_require__(280),
         children: [
             {
                 name: "analyzeHome",
                 path: "",
-                component: __webpack_require__(280)
+                component: __webpack_require__(281)
             },
             {
                 name: "analyzeIncident",
                 path: "incident/:incidentId/",
-                component: __webpack_require__(283)
+                component: __webpack_require__(284)
             },
             {
                 name: "analyzeReport",
                 path: "incident/:incidentId/report/:reportId?",
-                component: __webpack_require__(285)
+                component: __webpack_require__(286)
             },
             {
                 name: "analyzeOrigins",
                 path: "incident/:incidentId/origins/",
-                component: __webpack_require__(284)
+                component: __webpack_require__(285)
             },
             {
                 name: "closeIncident",
                 path: "incident/:incidentId/close/",
-                component: __webpack_require__(281)
+                component: __webpack_require__(282)
             },
             {
                 name: "analyzeFeedback",
                 path: "incident/:incidentId/feedback/",
-                component: __webpack_require__(282)
+                component: __webpack_require__(283)
             }
         ]
     },
     {
         name: "notifyUsers",
         path: "users/notify/incident/:incidentId/",
-        component: __webpack_require__(286)
+        component: __webpack_require__(287)
     },
     {
         path: "/onboarding/",
-        component: __webpack_require__(319),
+        component: __webpack_require__(320),
         children: [
             {
                 name: "onboardApp",
                 path: "",
-                component: __webpack_require__(318)
+                component: __webpack_require__(319)
             }
         ]
     },
     {
         path: "/manage/application/",
-        component: __webpack_require__(303),
+        component: __webpack_require__(304),
         children: [
             {
                 name: "manageAppSettings",
                 path: ":applicationId/",
-                component: __webpack_require__(309)
+                component: __webpack_require__(310)
             },
             {
                 name: "manageSecurity",
                 path: ":applicationId/security/",
-                component: __webpack_require__(308)
+                component: __webpack_require__(309)
             },
             {
                 name: "managePartitions",
                 path: ":applicationId/partitions/",
-                component: __webpack_require__(307)
+                component: __webpack_require__(308)
             },
             {
                 name: "createPartition",
                 path: ":applicationId/partition/create/",
-                component: __webpack_require__(305)
+                component: __webpack_require__(306)
             },
             {
                 name: "editPartition",
                 path: ":applicationId/partition/:partitionId/edit",
-                component: __webpack_require__(306)
+                component: __webpack_require__(307)
             }
         ]
     },
     {
         path: "/manage/",
-        component: __webpack_require__(316),
+        component: __webpack_require__(317),
         children: [
             {
                 name: "manageHome",
                 path: "",
-                component: __webpack_require__(315),
+                component: __webpack_require__(316),
             },
             {
                 name: "createApp",
                 path: "create/application/",
-                component: __webpack_require__(314),
+                component: __webpack_require__(315),
             },
             {
                 name: "manageApiKeys",
                 path: "apikeys/",
-                component: __webpack_require__(313)
+                component: __webpack_require__(314)
             },
             {
                 name: "manageApiKey",
                 path: "apikey/:apiKey",
-                component: __webpack_require__(312)
+                component: __webpack_require__(313)
             },
             {
                 name: "editApiKey",
                 path: "apikey/:apiKey/edit",
-                component: __webpack_require__(311)
+                component: __webpack_require__(312)
             },
             {
                 name: "createApiKey",
                 path: "apikeys/create",
-                component: __webpack_require__(310)
+                component: __webpack_require__(311)
             }
         ]
     },
     {
         path: "/deployment/",
-        component: __webpack_require__(289),
+        component: __webpack_require__(290),
         children: [
             {
                 name: "deploymentHome",
                 path: ":applicationId?/",
-                component: __webpack_require__(290)
+                component: __webpack_require__(291)
             },
             {
                 name: "deploymentVersion",
                 path: ":applicationId/version/:version",
-                component: __webpack_require__(292)
+                component: __webpack_require__(293)
             }
         ]
     }
@@ -38732,7 +38747,7 @@ __WEBPACK_IMPORTED_MODULE_4__services_AppRoot__["a" /* AppRoot */].Instance.load
     ourVue = new __WEBPACK_IMPORTED_MODULE_1_vue__["default"]({
         el: "#app-root",
         router: new __WEBPACK_IMPORTED_MODULE_2_vue_router__["default"]({ mode: "history", routes: routes }),
-        render: function (h) { return h(__webpack_require__(299)); },
+        render: function (h) { return h(__webpack_require__(300)); },
         created: function () {
         },
         mounted: function () {
@@ -38743,7 +38758,7 @@ __WEBPACK_IMPORTED_MODULE_4__services_AppRoot__["a" /* AppRoot */].Instance.load
 
 
 /***/ }),
-/* 196 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(__resourceQuery, module) {/*eslint-env browser*/
@@ -38762,7 +38777,7 @@ var options = {
   ansiColors: {}
 };
 if (true) {
-  var querystring = __webpack_require__(270);
+  var querystring = __webpack_require__(271);
   var overrides = querystring.parse(__resourceQuery.slice(1));
   setOverrides(overrides);
 }
@@ -38899,11 +38914,11 @@ if (typeof window !== 'undefined') {
 }
 
 function createReporter() {
-  var strip = __webpack_require__(272);
+  var strip = __webpack_require__(273);
 
   var overlay;
   if (typeof document !== 'undefined' && options.overlay) {
-    overlay = __webpack_require__(405)({
+    overlay = __webpack_require__(407)({
       ansiColors: options.ansiColors,
       overlayStyles: options.overlayStyles
     });
@@ -38959,7 +38974,7 @@ function createReporter() {
   };
 }
 
-var processUpdate = __webpack_require__(406);
+var processUpdate = __webpack_require__(408);
 
 var customHandler;
 var subscribeAllHandler;
@@ -39025,16 +39040,16 @@ if (module) {
   };
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, "?path=__webpack_hmr&dynamicPublicPath=true", __webpack_require__(193)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, "?path=__webpack_hmr&dynamicPublicPath=true", __webpack_require__(194)(module)))
 
 /***/ }),
-/* 197 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = (__webpack_require__(11))(3);
 
 /***/ }),
-/* 198 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -39084,7 +39099,7 @@ CodeMirror.commands.shiftTabAndUnindentMarkdownList = function (cm) {
 
 
 /***/ }),
-/* 199 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39267,7 +39282,7 @@ ansiHTML.reset()
 
 
 /***/ }),
-/* 200 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39278,13 +39293,13 @@ module.exports = function () {
 
 
 /***/ }),
-/* 201 */
+/* 202 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -39314,7 +39329,7 @@ var AnalyzeComponent = /** @class */ (function (_super) {
     AnalyzeComponent = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["Component"])({
             components: {
-                AnalyzeMenu: __webpack_require__(287)
+                AnalyzeMenu: __webpack_require__(288)
             }
         })
     ], AnalyzeComponent);
@@ -39324,14 +39339,14 @@ var AnalyzeComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 202 */
+/* 203 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__myincidents__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -39381,7 +39396,7 @@ var AnalyzeHomeComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 203 */
+/* 204 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -39389,9 +39404,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__myincidents__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_AppRoot__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dto_Core_Incidents__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__dto_Core_Reports__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__dto_Core_Reports__ = __webpack_require__(67);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_vue_property_decorator__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -39566,18 +39581,18 @@ var AnalyzeIncidentComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 204 */
+/* 205 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_AppRoot__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_SimpleMDE__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_SimpleMDE__ = __webpack_require__(66);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_SimpleMDE___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_SimpleMDE__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_simplemde_dist_simplemde_min_css__ = __webpack_require__(274);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_simplemde_dist_simplemde_min_css__ = __webpack_require__(275);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_simplemde_dist_simplemde_min_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_simplemde_dist_simplemde_min_css__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_vue_property_decorator__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -39628,15 +39643,15 @@ var CloseIncidentComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 205 */
+/* 206 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_AppRoot__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dto_Web_Feedback__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dto_Web_Feedback__ = __webpack_require__(68);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -39693,15 +39708,15 @@ var AnalyzeFeedbackComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 206 */
+/* 207 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_AppRoot__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dto_Modules_ErrorOrigins__ = __webpack_require__(246);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dto_Modules_ErrorOrigins__ = __webpack_require__(247);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -39790,15 +39805,15 @@ var OriginsComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 207 */
+/* 208 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_AppRoot__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dto_Core_Reports__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dto_Core_Reports__ = __webpack_require__(67);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -40013,16 +40028,16 @@ var AnalyzeReportComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 208 */
+/* 209 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_AppRoot__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dto_Web_Feedback__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dto_Web_Feedback__ = __webpack_require__(68);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dto_Core_Incidents__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_vue_property_decorator__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -40092,13 +40107,13 @@ var AnalyzeStatusUpdateComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 209 */
+/* 210 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__myincidents__ = __webpack_require__(17);
 var __extends = (this && this.__extends) || (function () {
@@ -40203,7 +40218,7 @@ var AnalyzeMenuComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 210 */
+/* 211 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40211,7 +40226,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_AppRoot__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dto_Core_Applications__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_chartist__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_chartist___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_chartist__);
@@ -40337,13 +40352,13 @@ var ApplicationDetailsComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 211 */
+/* 212 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -40373,7 +40388,7 @@ var DeploymentComponent = /** @class */ (function (_super) {
     DeploymentComponent = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["Component"])({
             components: {
-                DeploymentMenu: __webpack_require__(291)
+                DeploymentMenu: __webpack_require__(292)
             }
         })
     ], DeploymentComponent);
@@ -40383,15 +40398,15 @@ var DeploymentComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 212 */
+/* 213 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_AppRoot__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dto_Modules_Versions__ = __webpack_require__(249);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dto_Modules_Versions__ = __webpack_require__(250);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_chartist__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_chartist___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_chartist__);
@@ -40565,13 +40580,13 @@ var DeploymentHomeComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 213 */
+/* 214 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -40621,15 +40636,15 @@ var ManageMenuComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 214 */
+/* 215 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_AppRoot__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dto_Modules_History__ = __webpack_require__(247);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dto_Modules_History__ = __webpack_require__(248);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -40719,7 +40734,7 @@ var DeploymentSummaryComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 215 */
+/* 216 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40729,7 +40744,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_AppRoot__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__dto_Core_Incidents__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_vue_property_decorator__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -40861,13 +40876,13 @@ var ConfigureClientComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 216 */
+/* 217 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -40895,7 +40910,7 @@ var DiscoverComponent = /** @class */ (function (_super) {
     DiscoverComponent = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["Component"])({
             components: {
-                DiscoverMenu: __webpack_require__(298)
+                DiscoverMenu: __webpack_require__(299)
             }
         })
     ], DiscoverComponent);
@@ -40905,16 +40920,16 @@ var DiscoverComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 217 */
+/* 218 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_AppRoot__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dto_Web_Overview__ = __webpack_require__(250);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dto_Web_Overview__ = __webpack_require__(251);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dto_Core_Applications__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_vue_property_decorator__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_chartist__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_chartist___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_chartist__);
@@ -41127,7 +41142,7 @@ var DiscoverComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 218 */
+/* 219 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -41135,7 +41150,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_AppRoot__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dto_Core_Incidents__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_chartist__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_chartist___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_chartist__);
@@ -41286,7 +41301,7 @@ var IncidentComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 219 */
+/* 220 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -41294,11 +41309,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_PubSub__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_menu_MenuApi__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dto_Core_Incidents__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__dto_Modules_Tagging__ = __webpack_require__(248);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_applications_ApplicationService__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__dto_Modules_Tagging__ = __webpack_require__(249);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_applications_ApplicationService__ = __webpack_require__(69);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_AppRoot__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_vue_property_decorator__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -41632,15 +41647,15 @@ var IncidentSearchComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 220 */
+/* 221 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_AppRoot__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dto_Common_Mine__ = __webpack_require__(243);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dto_Common_Mine__ = __webpack_require__(244);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -41718,7 +41733,7 @@ var SuggestionsComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 221 */
+/* 222 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -41726,7 +41741,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_PubSub__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_menu_MenuApi__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -41800,13 +41815,13 @@ var DiscoverMenuComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 222 */
+/* 223 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -41834,7 +41849,7 @@ var AppComponent = /** @class */ (function (_super) {
     AppComponent = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["Component"])({
             components: {
-                TopMenu: __webpack_require__(301)
+                TopMenu: __webpack_require__(302)
             }
         })
     ], AppComponent);
@@ -41844,7 +41859,7 @@ var AppComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 223 */
+/* 224 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -41852,7 +41867,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_AppRoot__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dto_Core_Incidents__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -41880,6 +41895,8 @@ var HomeHomeComponent = /** @class */ (function (_super) {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.muteOnboarding = false;
         _this.noApps = false;
+        _this.appId = '1';
+        _this.showOnboarding = false;
         return _this;
     }
     HomeHomeComponent.prototype.created = function () {
@@ -41895,22 +41912,21 @@ var HomeHomeComponent = /** @class */ (function (_super) {
         q.ItemsPerPage = 1;
         __WEBPACK_IMPORTED_MODULE_0__services_AppRoot__["a" /* AppRoot */].Instance.apiClient.query(q)
             .then(function (result) {
+            _this.showOnboarding = true;
             if (result.TotalCount > 0) {
                 _this.mute();
             }
         });
-    };
-    HomeHomeComponent.prototype.start = function () {
-        var _this = this;
-        // since we can be users who do not have access to application with id 1
         __WEBPACK_IMPORTED_MODULE_0__services_AppRoot__["a" /* AppRoot */].Instance.applicationService.list()
             .then(function (apps) {
-            if (apps.length === 0) {
-                _this.noApps = true;
-                return;
+            _this.noApps = apps.length === 0;
+            if (apps.length > 0) {
+                _this.appId = apps[0].id.toString();
             }
-            _this.$router.push({ name: 'onboardApp', params: { applicationId: apps[0].id.toString() } });
         });
+    };
+    HomeHomeComponent.prototype.start = function () {
+        this.$router.push({ name: 'onboardApp', params: { applicationId: this.appId } });
     };
     HomeHomeComponent.prototype.mute = function () {
         var _this = this;
@@ -41938,7 +41954,7 @@ var HomeHomeComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 224 */
+/* 225 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -41947,7 +41963,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_menu_MenuApi__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_AppRoot__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_vue_property_decorator__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -41978,6 +41994,7 @@ var NavMenuComponent = /** @class */ (function (_super) {
     function NavMenuComponent() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.callbacks = [];
+        _this.loaded = false;
         _this.childMenu = [];
         _this.myApplications = [];
         _this.currentApplicationName = 'All applications';
@@ -41997,14 +42014,23 @@ var NavMenuComponent = /** @class */ (function (_super) {
             this.updateCurrent(0);
             return;
         }
+        console.log();
         var applicationId = parseInt(value);
         this.updateCurrent(applicationId);
     };
     NavMenuComponent.prototype.created = function () {
         var _this = this;
-        __WEBPACK_IMPORTED_MODULE_2__services_AppRoot__["a" /* AppRoot */].Instance.currentUser.applications.forEach(function (app) {
-            var mnuItem = _this.createAppMenuItem(app.id, app.name);
-            _this.myApplications.push(mnuItem);
+        this.myApplicationsPromise = new Promise(function (accept, reject) {
+            __WEBPACK_IMPORTED_MODULE_2__services_AppRoot__["a" /* AppRoot */].Instance.loadCurrentUser().then(function (x) {
+                x.applications.forEach(function (app) {
+                    var mnuItem = _this.createAppMenuItem(app.id, app.name);
+                    _this.myApplications.push(mnuItem);
+                });
+                accept();
+            });
+        });
+        this.myApplicationsPromise.then(function (x) {
+            console.log('pushed', _this.myApplications);
         });
         this.$router.beforeEach(function (to, from, next) {
             if (to.fullPath.indexOf('/onboarding/') === -1 && _this.onboarding) {
@@ -42095,20 +42121,23 @@ var NavMenuComponent = /** @class */ (function (_super) {
         return '';
     };
     NavMenuComponent.prototype.updateCurrent = function (applicationId) {
+        var _this = this;
         if (applicationId === 0) {
             this.currentApplicationName = "All applications";
             this.currentApplicationId = null;
             this.discoverLink = '/discover/';
             return;
         }
-        var app = this.getApplication(applicationId);
-        this.currentApplicationId = applicationId;
-        var title = app.title;
-        if (title.length > 20) {
-            title = title.substr(0, 15) + '[...]';
-        }
-        this.currentApplicationName = title;
-        this.discoverLink = '/discover/' + applicationId;
+        this.myApplicationsPromise.then(function (x) {
+            var app = _this.getApplication(applicationId);
+            _this.currentApplicationId = applicationId;
+            var title = app.title;
+            if (title.length > 20) {
+                title = title.substr(0, 15) + '[...]';
+            }
+            _this.currentApplicationName = title;
+            _this.discoverLink = '/discover/' + applicationId;
+        });
     };
     NavMenuComponent.prototype.createAppMenuItem = function (applicationId, name) {
         if (!applicationId) {
@@ -42127,7 +42156,7 @@ var NavMenuComponent = /** @class */ (function (_super) {
                 return this.myApplications[i];
             }
         }
-        throw new Error('Failed to find application ' + applicationId);
+        throw new Error('Failed to find application ' + applicationId + ".\r\n" + JSON.stringify(this.myApplications));
     };
     __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4_vue_property_decorator__["Watch"])('$route.params.applicationId'),
@@ -42144,17 +42173,17 @@ var NavMenuComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 225 */
+/* 226 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_AppRoot__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dto_Core_Support__ = __webpack_require__(245);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dto_Core_Support__ = __webpack_require__(246);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_SimpleMDE__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_SimpleMDE__ = __webpack_require__(66);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_SimpleMDE___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_SimpleMDE__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -42223,7 +42252,7 @@ var SupportComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 226 */
+/* 227 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -42231,7 +42260,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_PubSub__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_menu_MenuApi__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -42276,7 +42305,7 @@ var ManageComponent = /** @class */ (function (_super) {
     ManageComponent = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__["Component"])({
             components: {
-                ManageAppMenu: __webpack_require__(304)
+                ManageAppMenu: __webpack_require__(305)
             }
         })
     ], ManageComponent);
@@ -42286,13 +42315,13 @@ var ManageComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 227 */
+/* 228 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -42345,7 +42374,7 @@ var ManageMenuComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 228 */
+/* 229 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -42353,7 +42382,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_AppRoot__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dto_Common_Partitions__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -42418,7 +42447,7 @@ var CreatePartitionComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 229 */
+/* 230 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -42426,7 +42455,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_AppRoot__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dto_Common_Partitions__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -42505,7 +42534,7 @@ var EditPartitionComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 230 */
+/* 231 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -42513,7 +42542,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_AppRoot__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dto_Common_Partitions__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -42608,16 +42637,16 @@ var ManagePartitionsComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 231 */
+/* 232 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_AppRoot__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dto_Core_Applications__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dto_Core_Invitations__ = __webpack_require__(244);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dto_Core_Invitations__ = __webpack_require__(245);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_vue_property_decorator__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -42761,14 +42790,14 @@ var ManageHomeComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 232 */
+/* 233 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_AppRoot__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -42840,7 +42869,7 @@ var ManageAppSettingsComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 233 */
+/* 234 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -42848,7 +42877,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_AppRoot__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dto_Core_ApiKeys__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -42930,7 +42959,7 @@ var CreateApiKeyComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 234 */
+/* 235 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -42938,7 +42967,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_AppRoot__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dto_Core_ApiKeys__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -43042,7 +43071,7 @@ var EditApiKeyComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 235 */
+/* 236 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43050,7 +43079,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_AppRoot__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dto_Core_ApiKeys__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -43113,7 +43142,7 @@ var ManageApiKeyComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 236 */
+/* 237 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43121,7 +43150,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_AppRoot__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dto_Core_ApiKeys__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -43169,7 +43198,7 @@ var ManageApiKeysComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 237 */
+/* 238 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43177,7 +43206,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_AppRoot__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dto_Core_Applications__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -43251,13 +43280,13 @@ var ManageCreateApplicationComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 238 */
+/* 239 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -43301,13 +43330,13 @@ var ManageHomeComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 239 */
+/* 240 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -43337,7 +43366,7 @@ var ManageComponent = /** @class */ (function (_super) {
     ManageComponent = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["Component"])({
             components: {
-                ManageMenu: __webpack_require__(317)
+                ManageMenu: __webpack_require__(318)
             }
         })
     ], ManageComponent);
@@ -43347,13 +43376,13 @@ var ManageComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 240 */
+/* 241 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -43389,7 +43418,7 @@ var ManageMenuComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 241 */
+/* 242 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43399,7 +43428,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_AppRoot__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__dto_Core_Incidents__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_vue_property_decorator__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -43544,13 +43573,13 @@ var OnboardingHomeComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 242 */
+/* 243 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -43588,7 +43617,7 @@ var OnboardingComponent = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 243 */
+/* 244 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43627,7 +43656,7 @@ var ListMySuggestedItem = /** @class */ (function () {
 
 
 /***/ }),
-/* 244 */
+/* 245 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43666,7 +43695,7 @@ var DeleteInvitation = /** @class */ (function () {
 
 
 /***/ }),
-/* 245 */
+/* 246 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43681,7 +43710,7 @@ var SendSupportRequest = /** @class */ (function () {
 
 
 /***/ }),
-/* 246 */
+/* 247 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43712,7 +43741,7 @@ var GetOriginsForIncidentResultItem = /** @class */ (function () {
 
 
 /***/ }),
-/* 247 */
+/* 248 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43756,7 +43785,7 @@ var GetIncidentsForStatesResultItem = /** @class */ (function () {
 
 
 /***/ }),
-/* 248 */
+/* 249 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43803,7 +43832,7 @@ var TagAttachedToIncident = /** @class */ (function () {
 
 
 /***/ }),
-/* 249 */
+/* 250 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43856,7 +43885,7 @@ var GetVersionHistorySeries = /** @class */ (function () {
 
 
 /***/ }),
-/* 250 */
+/* 251 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43895,7 +43924,7 @@ var OverviewStatSummary = /** @class */ (function () {
 
 
 /***/ }),
-/* 251 */
+/* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44016,7 +44045,7 @@ function fromByteArray (uint8) {
 
 
 /***/ }),
-/* 252 */
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44030,9 +44059,9 @@ function fromByteArray (uint8) {
 
 
 
-var base64 = __webpack_require__(251)
-var ieee754 = __webpack_require__(263)
-var isArray = __webpack_require__(264)
+var base64 = __webpack_require__(252)
+var ieee754 = __webpack_require__(264)
+var isArray = __webpack_require__(265)
 
 exports.Buffer = Buffer
 exports.SlowBuffer = SlowBuffer
@@ -45813,7 +45842,7 @@ function isnan (val) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(16)))
 
 /***/ }),
-/* 253 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45822,7 +45851,7 @@ function isnan (val) {
 
 
 // Requires
-var Typo = __webpack_require__(276);
+var Typo = __webpack_require__(277);
 
 
 // Create function
@@ -45938,7 +45967,7 @@ CodeMirrorSpellChecker.typo;
 module.exports = CodeMirrorSpellChecker;
 
 /***/ }),
-/* 254 */
+/* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -45985,7 +46014,7 @@ module.exports = CodeMirrorSpellChecker;
 
 
 /***/ }),
-/* 255 */
+/* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -46054,7 +46083,7 @@ module.exports = CodeMirrorSpellChecker;
 
 
 /***/ }),
-/* 256 */
+/* 257 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -46149,7 +46178,7 @@ module.exports = CodeMirrorSpellChecker;
 
 
 /***/ }),
-/* 257 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -46274,7 +46303,7 @@ module.exports = CodeMirrorSpellChecker;
 
 
 /***/ }),
-/* 258 */
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -46282,7 +46311,7 @@ module.exports = CodeMirrorSpellChecker;
 
 (function(mod) {
   if (true) // CommonJS
-    mod(__webpack_require__(8), __webpack_require__(71), __webpack_require__(70));
+    mod(__webpack_require__(8), __webpack_require__(72), __webpack_require__(71));
   else if (typeof define == "function" && define.amd) // AMD
     define(["../../lib/codemirror", "../markdown/markdown", "../../addon/mode/overlay"], mod);
   else // Plain browser env
@@ -46409,7 +46438,7 @@ CodeMirror.defineMode("gfm", function(config, modeConfig) {
 
 
 /***/ }),
-/* 259 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -46632,19 +46661,19 @@ CodeMirror.defineMode("gfm", function(config, modeConfig) {
 
 
 /***/ }),
-/* 260 */
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
-  XmlEntities: __webpack_require__(262),
-  Html4Entities: __webpack_require__(261),
-  Html5Entities: __webpack_require__(73),
-  AllHtmlEntities: __webpack_require__(73)
+  XmlEntities: __webpack_require__(263),
+  Html4Entities: __webpack_require__(262),
+  Html5Entities: __webpack_require__(74),
+  AllHtmlEntities: __webpack_require__(74)
 };
 
 
 /***/ }),
-/* 261 */
+/* 262 */
 /***/ (function(module, exports) {
 
 var HTML_ALPHA = ['apos', 'nbsp', 'iexcl', 'cent', 'pound', 'curren', 'yen', 'brvbar', 'sect', 'uml', 'copy', 'ordf', 'laquo', 'not', 'shy', 'reg', 'macr', 'deg', 'plusmn', 'sup2', 'sup3', 'acute', 'micro', 'para', 'middot', 'cedil', 'sup1', 'ordm', 'raquo', 'frac14', 'frac12', 'frac34', 'iquest', 'Agrave', 'Aacute', 'Acirc', 'Atilde', 'Auml', 'Aring', 'Aelig', 'Ccedil', 'Egrave', 'Eacute', 'Ecirc', 'Euml', 'Igrave', 'Iacute', 'Icirc', 'Iuml', 'ETH', 'Ntilde', 'Ograve', 'Oacute', 'Ocirc', 'Otilde', 'Ouml', 'times', 'Oslash', 'Ugrave', 'Uacute', 'Ucirc', 'Uuml', 'Yacute', 'THORN', 'szlig', 'agrave', 'aacute', 'acirc', 'atilde', 'auml', 'aring', 'aelig', 'ccedil', 'egrave', 'eacute', 'ecirc', 'euml', 'igrave', 'iacute', 'icirc', 'iuml', 'eth', 'ntilde', 'ograve', 'oacute', 'ocirc', 'otilde', 'ouml', 'divide', 'oslash', 'ugrave', 'uacute', 'ucirc', 'uuml', 'yacute', 'thorn', 'yuml', 'quot', 'amp', 'lt', 'gt', 'OElig', 'oelig', 'Scaron', 'scaron', 'Yuml', 'circ', 'tilde', 'ensp', 'emsp', 'thinsp', 'zwnj', 'zwj', 'lrm', 'rlm', 'ndash', 'mdash', 'lsquo', 'rsquo', 'sbquo', 'ldquo', 'rdquo', 'bdquo', 'dagger', 'Dagger', 'permil', 'lsaquo', 'rsaquo', 'euro', 'fnof', 'Alpha', 'Beta', 'Gamma', 'Delta', 'Epsilon', 'Zeta', 'Eta', 'Theta', 'Iota', 'Kappa', 'Lambda', 'Mu', 'Nu', 'Xi', 'Omicron', 'Pi', 'Rho', 'Sigma', 'Tau', 'Upsilon', 'Phi', 'Chi', 'Psi', 'Omega', 'alpha', 'beta', 'gamma', 'delta', 'epsilon', 'zeta', 'eta', 'theta', 'iota', 'kappa', 'lambda', 'mu', 'nu', 'xi', 'omicron', 'pi', 'rho', 'sigmaf', 'sigma', 'tau', 'upsilon', 'phi', 'chi', 'psi', 'omega', 'thetasym', 'upsih', 'piv', 'bull', 'hellip', 'prime', 'Prime', 'oline', 'frasl', 'weierp', 'image', 'real', 'trade', 'alefsym', 'larr', 'uarr', 'rarr', 'darr', 'harr', 'crarr', 'lArr', 'uArr', 'rArr', 'dArr', 'hArr', 'forall', 'part', 'exist', 'empty', 'nabla', 'isin', 'notin', 'ni', 'prod', 'sum', 'minus', 'lowast', 'radic', 'prop', 'infin', 'ang', 'and', 'or', 'cap', 'cup', 'int', 'there4', 'sim', 'cong', 'asymp', 'ne', 'equiv', 'le', 'ge', 'sub', 'sup', 'nsub', 'sube', 'supe', 'oplus', 'otimes', 'perp', 'sdot', 'lceil', 'rceil', 'lfloor', 'rfloor', 'lang', 'rang', 'loz', 'spades', 'clubs', 'hearts', 'diams'];
@@ -46797,7 +46826,7 @@ module.exports = Html4Entities;
 
 
 /***/ }),
-/* 262 */
+/* 263 */
 /***/ (function(module, exports) {
 
 var ALPHA_INDEX = {
@@ -46958,7 +46987,7 @@ module.exports = XmlEntities;
 
 
 /***/ }),
-/* 263 */
+/* 264 */
 /***/ (function(module, exports) {
 
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -47048,7 +47077,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 
 /***/ }),
-/* 264 */
+/* 265 */
 /***/ (function(module, exports) {
 
 var toString = {}.toString;
@@ -47059,7 +47088,7 @@ module.exports = Array.isArray || function (arr) {
 
 
 /***/ }),
-/* 265 */
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var require;var require;/*!
@@ -49495,7 +49524,7 @@ module.exports = localforage_js;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(16)))
 
 /***/ }),
-/* 266 */
+/* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/**
@@ -50885,248 +50914,248 @@ if (true) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(16)))
 
 /***/ }),
-/* 267 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./af": 74,
-	"./af.js": 74,
-	"./ar": 81,
-	"./ar-dz": 75,
-	"./ar-dz.js": 75,
-	"./ar-kw": 76,
-	"./ar-kw.js": 76,
-	"./ar-ly": 77,
-	"./ar-ly.js": 77,
-	"./ar-ma": 78,
-	"./ar-ma.js": 78,
-	"./ar-sa": 79,
-	"./ar-sa.js": 79,
-	"./ar-tn": 80,
-	"./ar-tn.js": 80,
-	"./ar.js": 81,
-	"./az": 82,
-	"./az.js": 82,
-	"./be": 83,
-	"./be.js": 83,
-	"./bg": 84,
-	"./bg.js": 84,
-	"./bm": 85,
-	"./bm.js": 85,
-	"./bn": 86,
-	"./bn.js": 86,
-	"./bo": 87,
-	"./bo.js": 87,
-	"./br": 88,
-	"./br.js": 88,
-	"./bs": 89,
-	"./bs.js": 89,
-	"./ca": 90,
-	"./ca.js": 90,
-	"./cs": 91,
-	"./cs.js": 91,
-	"./cv": 92,
-	"./cv.js": 92,
-	"./cy": 93,
-	"./cy.js": 93,
-	"./da": 94,
-	"./da.js": 94,
-	"./de": 97,
-	"./de-at": 95,
-	"./de-at.js": 95,
-	"./de-ch": 96,
-	"./de-ch.js": 96,
-	"./de.js": 97,
-	"./dv": 98,
-	"./dv.js": 98,
-	"./el": 99,
-	"./el.js": 99,
-	"./en-au": 100,
-	"./en-au.js": 100,
-	"./en-ca": 101,
-	"./en-ca.js": 101,
-	"./en-gb": 102,
-	"./en-gb.js": 102,
-	"./en-ie": 103,
-	"./en-ie.js": 103,
-	"./en-nz": 104,
-	"./en-nz.js": 104,
-	"./eo": 105,
-	"./eo.js": 105,
-	"./es": 108,
-	"./es-do": 106,
-	"./es-do.js": 106,
-	"./es-us": 107,
-	"./es-us.js": 107,
-	"./es.js": 108,
-	"./et": 109,
-	"./et.js": 109,
-	"./eu": 110,
-	"./eu.js": 110,
-	"./fa": 111,
-	"./fa.js": 111,
-	"./fi": 112,
-	"./fi.js": 112,
-	"./fo": 113,
-	"./fo.js": 113,
-	"./fr": 116,
-	"./fr-ca": 114,
-	"./fr-ca.js": 114,
-	"./fr-ch": 115,
-	"./fr-ch.js": 115,
-	"./fr.js": 116,
-	"./fy": 117,
-	"./fy.js": 117,
-	"./gd": 118,
-	"./gd.js": 118,
-	"./gl": 119,
-	"./gl.js": 119,
-	"./gom-latn": 120,
-	"./gom-latn.js": 120,
-	"./gu": 121,
-	"./gu.js": 121,
-	"./he": 122,
-	"./he.js": 122,
-	"./hi": 123,
-	"./hi.js": 123,
-	"./hr": 124,
-	"./hr.js": 124,
-	"./hu": 125,
-	"./hu.js": 125,
-	"./hy-am": 126,
-	"./hy-am.js": 126,
-	"./id": 127,
-	"./id.js": 127,
-	"./is": 128,
-	"./is.js": 128,
-	"./it": 129,
-	"./it.js": 129,
-	"./ja": 130,
-	"./ja.js": 130,
-	"./jv": 131,
-	"./jv.js": 131,
-	"./ka": 132,
-	"./ka.js": 132,
-	"./kk": 133,
-	"./kk.js": 133,
-	"./km": 134,
-	"./km.js": 134,
-	"./kn": 135,
-	"./kn.js": 135,
-	"./ko": 136,
-	"./ko.js": 136,
-	"./ky": 137,
-	"./ky.js": 137,
-	"./lb": 138,
-	"./lb.js": 138,
-	"./lo": 139,
-	"./lo.js": 139,
-	"./lt": 140,
-	"./lt.js": 140,
-	"./lv": 141,
-	"./lv.js": 141,
-	"./me": 142,
-	"./me.js": 142,
-	"./mi": 143,
-	"./mi.js": 143,
-	"./mk": 144,
-	"./mk.js": 144,
-	"./ml": 145,
-	"./ml.js": 145,
-	"./mr": 146,
-	"./mr.js": 146,
-	"./ms": 148,
-	"./ms-my": 147,
-	"./ms-my.js": 147,
-	"./ms.js": 148,
-	"./mt": 149,
-	"./mt.js": 149,
-	"./my": 150,
-	"./my.js": 150,
-	"./nb": 151,
-	"./nb.js": 151,
-	"./ne": 152,
-	"./ne.js": 152,
-	"./nl": 154,
-	"./nl-be": 153,
-	"./nl-be.js": 153,
-	"./nl.js": 154,
-	"./nn": 155,
-	"./nn.js": 155,
-	"./pa-in": 156,
-	"./pa-in.js": 156,
-	"./pl": 157,
-	"./pl.js": 157,
-	"./pt": 159,
-	"./pt-br": 158,
-	"./pt-br.js": 158,
-	"./pt.js": 159,
-	"./ro": 160,
-	"./ro.js": 160,
-	"./ru": 161,
-	"./ru.js": 161,
-	"./sd": 162,
-	"./sd.js": 162,
-	"./se": 163,
-	"./se.js": 163,
-	"./si": 164,
-	"./si.js": 164,
-	"./sk": 165,
-	"./sk.js": 165,
-	"./sl": 166,
-	"./sl.js": 166,
-	"./sq": 167,
-	"./sq.js": 167,
-	"./sr": 169,
-	"./sr-cyrl": 168,
-	"./sr-cyrl.js": 168,
-	"./sr.js": 169,
-	"./ss": 170,
-	"./ss.js": 170,
-	"./sv": 171,
-	"./sv.js": 171,
-	"./sw": 172,
-	"./sw.js": 172,
-	"./ta": 173,
-	"./ta.js": 173,
-	"./te": 174,
-	"./te.js": 174,
-	"./tet": 175,
-	"./tet.js": 175,
-	"./th": 176,
-	"./th.js": 176,
-	"./tl-ph": 177,
-	"./tl-ph.js": 177,
-	"./tlh": 178,
-	"./tlh.js": 178,
-	"./tr": 179,
-	"./tr.js": 179,
-	"./tzl": 180,
-	"./tzl.js": 180,
-	"./tzm": 182,
-	"./tzm-latn": 181,
-	"./tzm-latn.js": 181,
-	"./tzm.js": 182,
-	"./uk": 183,
-	"./uk.js": 183,
-	"./ur": 184,
-	"./ur.js": 184,
-	"./uz": 186,
-	"./uz-latn": 185,
-	"./uz-latn.js": 185,
-	"./uz.js": 186,
-	"./vi": 187,
-	"./vi.js": 187,
-	"./x-pseudo": 188,
-	"./x-pseudo.js": 188,
-	"./yo": 189,
-	"./yo.js": 189,
-	"./zh-cn": 190,
-	"./zh-cn.js": 190,
-	"./zh-hk": 191,
-	"./zh-hk.js": 191,
-	"./zh-tw": 192,
-	"./zh-tw.js": 192
+	"./af": 75,
+	"./af.js": 75,
+	"./ar": 82,
+	"./ar-dz": 76,
+	"./ar-dz.js": 76,
+	"./ar-kw": 77,
+	"./ar-kw.js": 77,
+	"./ar-ly": 78,
+	"./ar-ly.js": 78,
+	"./ar-ma": 79,
+	"./ar-ma.js": 79,
+	"./ar-sa": 80,
+	"./ar-sa.js": 80,
+	"./ar-tn": 81,
+	"./ar-tn.js": 81,
+	"./ar.js": 82,
+	"./az": 83,
+	"./az.js": 83,
+	"./be": 84,
+	"./be.js": 84,
+	"./bg": 85,
+	"./bg.js": 85,
+	"./bm": 86,
+	"./bm.js": 86,
+	"./bn": 87,
+	"./bn.js": 87,
+	"./bo": 88,
+	"./bo.js": 88,
+	"./br": 89,
+	"./br.js": 89,
+	"./bs": 90,
+	"./bs.js": 90,
+	"./ca": 91,
+	"./ca.js": 91,
+	"./cs": 92,
+	"./cs.js": 92,
+	"./cv": 93,
+	"./cv.js": 93,
+	"./cy": 94,
+	"./cy.js": 94,
+	"./da": 95,
+	"./da.js": 95,
+	"./de": 98,
+	"./de-at": 96,
+	"./de-at.js": 96,
+	"./de-ch": 97,
+	"./de-ch.js": 97,
+	"./de.js": 98,
+	"./dv": 99,
+	"./dv.js": 99,
+	"./el": 100,
+	"./el.js": 100,
+	"./en-au": 101,
+	"./en-au.js": 101,
+	"./en-ca": 102,
+	"./en-ca.js": 102,
+	"./en-gb": 103,
+	"./en-gb.js": 103,
+	"./en-ie": 104,
+	"./en-ie.js": 104,
+	"./en-nz": 105,
+	"./en-nz.js": 105,
+	"./eo": 106,
+	"./eo.js": 106,
+	"./es": 109,
+	"./es-do": 107,
+	"./es-do.js": 107,
+	"./es-us": 108,
+	"./es-us.js": 108,
+	"./es.js": 109,
+	"./et": 110,
+	"./et.js": 110,
+	"./eu": 111,
+	"./eu.js": 111,
+	"./fa": 112,
+	"./fa.js": 112,
+	"./fi": 113,
+	"./fi.js": 113,
+	"./fo": 114,
+	"./fo.js": 114,
+	"./fr": 117,
+	"./fr-ca": 115,
+	"./fr-ca.js": 115,
+	"./fr-ch": 116,
+	"./fr-ch.js": 116,
+	"./fr.js": 117,
+	"./fy": 118,
+	"./fy.js": 118,
+	"./gd": 119,
+	"./gd.js": 119,
+	"./gl": 120,
+	"./gl.js": 120,
+	"./gom-latn": 121,
+	"./gom-latn.js": 121,
+	"./gu": 122,
+	"./gu.js": 122,
+	"./he": 123,
+	"./he.js": 123,
+	"./hi": 124,
+	"./hi.js": 124,
+	"./hr": 125,
+	"./hr.js": 125,
+	"./hu": 126,
+	"./hu.js": 126,
+	"./hy-am": 127,
+	"./hy-am.js": 127,
+	"./id": 128,
+	"./id.js": 128,
+	"./is": 129,
+	"./is.js": 129,
+	"./it": 130,
+	"./it.js": 130,
+	"./ja": 131,
+	"./ja.js": 131,
+	"./jv": 132,
+	"./jv.js": 132,
+	"./ka": 133,
+	"./ka.js": 133,
+	"./kk": 134,
+	"./kk.js": 134,
+	"./km": 135,
+	"./km.js": 135,
+	"./kn": 136,
+	"./kn.js": 136,
+	"./ko": 137,
+	"./ko.js": 137,
+	"./ky": 138,
+	"./ky.js": 138,
+	"./lb": 139,
+	"./lb.js": 139,
+	"./lo": 140,
+	"./lo.js": 140,
+	"./lt": 141,
+	"./lt.js": 141,
+	"./lv": 142,
+	"./lv.js": 142,
+	"./me": 143,
+	"./me.js": 143,
+	"./mi": 144,
+	"./mi.js": 144,
+	"./mk": 145,
+	"./mk.js": 145,
+	"./ml": 146,
+	"./ml.js": 146,
+	"./mr": 147,
+	"./mr.js": 147,
+	"./ms": 149,
+	"./ms-my": 148,
+	"./ms-my.js": 148,
+	"./ms.js": 149,
+	"./mt": 150,
+	"./mt.js": 150,
+	"./my": 151,
+	"./my.js": 151,
+	"./nb": 152,
+	"./nb.js": 152,
+	"./ne": 153,
+	"./ne.js": 153,
+	"./nl": 155,
+	"./nl-be": 154,
+	"./nl-be.js": 154,
+	"./nl.js": 155,
+	"./nn": 156,
+	"./nn.js": 156,
+	"./pa-in": 157,
+	"./pa-in.js": 157,
+	"./pl": 158,
+	"./pl.js": 158,
+	"./pt": 160,
+	"./pt-br": 159,
+	"./pt-br.js": 159,
+	"./pt.js": 160,
+	"./ro": 161,
+	"./ro.js": 161,
+	"./ru": 162,
+	"./ru.js": 162,
+	"./sd": 163,
+	"./sd.js": 163,
+	"./se": 164,
+	"./se.js": 164,
+	"./si": 165,
+	"./si.js": 165,
+	"./sk": 166,
+	"./sk.js": 166,
+	"./sl": 167,
+	"./sl.js": 167,
+	"./sq": 168,
+	"./sq.js": 168,
+	"./sr": 170,
+	"./sr-cyrl": 169,
+	"./sr-cyrl.js": 169,
+	"./sr.js": 170,
+	"./ss": 171,
+	"./ss.js": 171,
+	"./sv": 172,
+	"./sv.js": 172,
+	"./sw": 173,
+	"./sw.js": 173,
+	"./ta": 174,
+	"./ta.js": 174,
+	"./te": 175,
+	"./te.js": 175,
+	"./tet": 176,
+	"./tet.js": 176,
+	"./th": 177,
+	"./th.js": 177,
+	"./tl-ph": 178,
+	"./tl-ph.js": 178,
+	"./tlh": 179,
+	"./tlh.js": 179,
+	"./tr": 180,
+	"./tr.js": 180,
+	"./tzl": 181,
+	"./tzl.js": 181,
+	"./tzm": 183,
+	"./tzm-latn": 182,
+	"./tzm-latn.js": 182,
+	"./tzm.js": 183,
+	"./uk": 184,
+	"./uk.js": 184,
+	"./ur": 185,
+	"./ur.js": 185,
+	"./uz": 187,
+	"./uz-latn": 186,
+	"./uz-latn.js": 186,
+	"./uz.js": 187,
+	"./vi": 188,
+	"./vi.js": 188,
+	"./x-pseudo": 189,
+	"./x-pseudo.js": 189,
+	"./yo": 190,
+	"./yo.js": 190,
+	"./zh-cn": 191,
+	"./zh-cn.js": 191,
+	"./zh-hk": 192,
+	"./zh-hk.js": 192,
+	"./zh-tw": 193,
+	"./zh-tw.js": 193
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -51142,10 +51171,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 267;
+webpackContext.id = 268;
 
 /***/ }),
-/* 268 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51236,7 +51265,7 @@ var isArray = Array.isArray || function (xs) {
 
 
 /***/ }),
-/* 269 */
+/* 270 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51328,18 +51357,18 @@ var objectKeys = Object.keys || function (obj) {
 
 
 /***/ }),
-/* 270 */
+/* 271 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-exports.decode = exports.parse = __webpack_require__(268);
-exports.encode = exports.stringify = __webpack_require__(269);
+exports.decode = exports.parse = __webpack_require__(269);
+exports.encode = exports.stringify = __webpack_require__(270);
 
 
 /***/ }),
-/* 271 */
+/* 272 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process, global) {/*! *****************************************************************************
@@ -52474,15 +52503,15 @@ var Reflect;
     });
 })(Reflect || (Reflect = {}));
 //# sourceMappingURL=Reflect.js.map
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(410), __webpack_require__(16)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(412), __webpack_require__(16)))
 
 /***/ }),
-/* 272 */
+/* 273 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var ansiRegex = __webpack_require__(200)();
+var ansiRegex = __webpack_require__(201)();
 
 module.exports = function (str) {
 	return typeof str === 'string' ? str.replace(ansiRegex, '') : str;
@@ -52490,7 +52519,7 @@ module.exports = function (str) {
 
 
 /***/ }),
-/* 273 */
+/* 274 */
 /***/ (function(module, exports) {
 
 /*
@@ -52742,7 +52771,7 @@ function updateLink(linkElement, obj) {
 
 
 /***/ }),
-/* 274 */
+/* 275 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -52751,7 +52780,7 @@ function updateLink(linkElement, obj) {
 var content = __webpack_require__(21);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(273)(content, {});
+var update = __webpack_require__(274)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(true) {
@@ -52768,7 +52797,7 @@ if(true) {
 }
 
 /***/ }),
-/* 275 */
+/* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
@@ -52785,7 +52814,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
  */
 /* global define */
 (function (define) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(194)], __WEBPACK_AMD_DEFINE_RESULT__ = function ($) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(195)], __WEBPACK_AMD_DEFINE_RESULT__ = function ($) {
         return (function () {
             var $container;
             var listener;
@@ -53241,11 +53270,11 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
         })();
     }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-}(__webpack_require__(407)));
+}(__webpack_require__(409)));
 
 
 /***/ }),
-/* 276 */
+/* 277 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(__dirname, Buffer) {/* globals chrome: false */
@@ -53508,7 +53537,7 @@ Typo.prototype = {
 		}
 		else if (true) {
 			// Node.js
-			var fs = __webpack_require__(411);
+			var fs = __webpack_require__(413);
 			
 			try {
 				if (fs.existsSync(path)) {
@@ -54179,10 +54208,10 @@ Typo.prototype = {
 if (true) {
 	module.exports = Typo;
 }
-/* WEBPACK VAR INJECTION */}.call(exports, "/", __webpack_require__(252).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, "/", __webpack_require__(253).Buffer))
 
 /***/ }),
-/* 277 */
+/* 278 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -59289,7 +59318,7 @@ var index_esm = {
 
 
 /***/ }),
-/* 278 */
+/* 279 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59527,18 +59556,18 @@ exports.mixins = mixins;
 
 
 /***/ }),
-/* 279 */
+/* 280 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(380)
+__webpack_require__(382)
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(201),
+  __webpack_require__(202),
   /* template */
-  __webpack_require__(336),
+  __webpack_require__(337),
   /* scopeId */
   null,
   /* cssModules */
@@ -59565,18 +59594,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 280 */
+/* 281 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(369)
+__webpack_require__(371)
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(202),
+  __webpack_require__(203),
   /* template */
-  __webpack_require__(328),
+  __webpack_require__(329),
   /* scopeId */
   null,
   /* cssModules */
@@ -59603,18 +59632,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 281 */
+/* 282 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(374)
+__webpack_require__(376)
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(204),
+  __webpack_require__(205),
   /* template */
-  __webpack_require__(332),
+  __webpack_require__(333),
   /* scopeId */
   null,
   /* cssModules */
@@ -59641,18 +59670,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 282 */
+/* 283 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(393)
+__webpack_require__(395)
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(205),
+  __webpack_require__(206),
   /* template */
-  __webpack_require__(349),
+  __webpack_require__(350),
   /* scopeId */
   null,
   /* cssModules */
@@ -59679,18 +59708,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 283 */
+/* 284 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(381)
+__webpack_require__(383)
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(203),
+  __webpack_require__(204),
   /* template */
-  __webpack_require__(337),
+  __webpack_require__(338),
   /* scopeId */
   null,
   /* cssModules */
@@ -59717,18 +59746,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 284 */
+/* 285 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(389)
+__webpack_require__(391)
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(206),
+  __webpack_require__(207),
   /* template */
-  __webpack_require__(346),
+  __webpack_require__(347),
   /* scopeId */
   null,
   /* cssModules */
@@ -59755,18 +59784,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 285 */
+/* 286 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(362)
+__webpack_require__(363)
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(207),
+  __webpack_require__(208),
   /* template */
-  __webpack_require__(320),
+  __webpack_require__(321),
   /* scopeId */
   null,
   /* cssModules */
@@ -59793,18 +59822,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 286 */
+/* 287 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(400)
+__webpack_require__(402)
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(208),
+  __webpack_require__(209),
   /* template */
-  __webpack_require__(357),
+  __webpack_require__(358),
   /* scopeId */
   null,
   /* cssModules */
@@ -59831,18 +59860,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 287 */
+/* 288 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(363)
+__webpack_require__(364)
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(209),
+  __webpack_require__(210),
   /* template */
-  __webpack_require__(321),
+  __webpack_require__(322),
   /* scopeId */
   null,
   /* cssModules */
@@ -59869,19 +59898,19 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 288 */
+/* 289 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(373)
-__webpack_require__(372)
+__webpack_require__(375)
+__webpack_require__(374)
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(210),
+  __webpack_require__(211),
   /* template */
-  __webpack_require__(331),
+  __webpack_require__(332),
   /* scopeId */
   null,
   /* cssModules */
@@ -59908,14 +59937,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 289 */
+/* 290 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(211),
+  __webpack_require__(212),
   /* template */
-  __webpack_require__(343),
+  __webpack_require__(344),
   /* scopeId */
   null,
   /* cssModules */
@@ -59942,19 +59971,19 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 290 */
+/* 291 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(391)
-__webpack_require__(390)
+__webpack_require__(393)
+__webpack_require__(392)
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(212),
+  __webpack_require__(213),
   /* template */
-  __webpack_require__(347),
+  __webpack_require__(348),
   /* scopeId */
   null,
   /* cssModules */
@@ -59981,18 +60010,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 291 */
+/* 292 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(375)
+__webpack_require__(377)
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(213),
+  __webpack_require__(214),
   /* template */
-  __webpack_require__(333),
+  __webpack_require__(334),
   /* scopeId */
   null,
   /* cssModules */
@@ -60019,18 +60048,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 292 */
+/* 293 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(365)
+__webpack_require__(366)
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(214),
+  __webpack_require__(215),
   /* template */
-  __webpack_require__(323),
+  __webpack_require__(324),
   /* scopeId */
   null,
   /* cssModules */
@@ -60057,18 +60086,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 293 */
+/* 294 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(366)
+__webpack_require__(367)
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(215),
+  __webpack_require__(216),
   /* template */
-  __webpack_require__(324),
+  __webpack_require__(325),
   /* scopeId */
   null,
   /* cssModules */
@@ -60095,18 +60124,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 294 */
+/* 295 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(401)
+__webpack_require__(403)
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(216),
+  __webpack_require__(217),
   /* template */
-  __webpack_require__(358),
+  __webpack_require__(359),
   /* scopeId */
   null,
   /* cssModules */
@@ -60133,19 +60162,19 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 295 */
+/* 296 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(377)
-__webpack_require__(376)
+__webpack_require__(379)
+__webpack_require__(378)
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(217),
+  __webpack_require__(218),
   /* template */
-  __webpack_require__(334),
+  __webpack_require__(335),
   /* scopeId */
   null,
   /* cssModules */
@@ -60172,18 +60201,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 296 */
+/* 297 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(384)
+__webpack_require__(386)
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(219),
+  __webpack_require__(220),
   /* template */
-  __webpack_require__(340),
+  __webpack_require__(341),
   /* scopeId */
   null,
   /* cssModules */
@@ -60210,18 +60239,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 297 */
+/* 298 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(370)
+__webpack_require__(372)
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(220),
+  __webpack_require__(221),
   /* template */
-  __webpack_require__(329),
+  __webpack_require__(330),
   /* scopeId */
   null,
   /* cssModules */
@@ -60248,18 +60277,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 298 */
+/* 299 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(386)
+__webpack_require__(388)
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(221),
+  __webpack_require__(222),
   /* template */
-  __webpack_require__(342),
+  __webpack_require__(343),
   /* scopeId */
   null,
   /* cssModules */
@@ -60286,18 +60315,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 299 */
+/* 300 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(394)
+__webpack_require__(396)
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(222),
+  __webpack_require__(223),
   /* template */
-  __webpack_require__(350),
+  __webpack_require__(351),
   /* scopeId */
   null,
   /* cssModules */
@@ -60324,14 +60353,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 300 */
+/* 301 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Component = __webpack_require__(4)(
+
+/* styles */
+__webpack_require__(369)
+
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(223),
+  __webpack_require__(224),
   /* template */
-  __webpack_require__(326),
+  __webpack_require__(327),
   /* scopeId */
   null,
   /* cssModules */
@@ -60358,18 +60391,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 301 */
+/* 302 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(383)
+__webpack_require__(385)
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(224),
+  __webpack_require__(225),
   /* template */
-  __webpack_require__(339),
+  __webpack_require__(340),
   /* scopeId */
   null,
   /* cssModules */
@@ -60396,19 +60429,19 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 302 */
+/* 303 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(397)
-__webpack_require__(396)
+__webpack_require__(399)
+__webpack_require__(398)
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(225),
+  __webpack_require__(226),
   /* template */
-  __webpack_require__(352),
+  __webpack_require__(353),
   /* scopeId */
   null,
   /* cssModules */
@@ -60435,14 +60468,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 303 */
+/* 304 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(226),
+  __webpack_require__(227),
   /* template */
-  __webpack_require__(355),
+  __webpack_require__(356),
   /* scopeId */
   null,
   /* cssModules */
@@ -60469,18 +60502,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 304 */
+/* 305 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(371)
+__webpack_require__(373)
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(227),
+  __webpack_require__(228),
   /* template */
-  __webpack_require__(330),
+  __webpack_require__(331),
   /* scopeId */
   null,
   /* cssModules */
@@ -60507,18 +60540,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 305 */
+/* 306 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(382)
+__webpack_require__(384)
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(228),
+  __webpack_require__(229),
   /* template */
-  __webpack_require__(338),
+  __webpack_require__(339),
   /* scopeId */
   null,
   /* cssModules */
@@ -60545,18 +60578,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 306 */
+/* 307 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(364)
+__webpack_require__(365)
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(229),
+  __webpack_require__(230),
   /* template */
-  __webpack_require__(322),
+  __webpack_require__(323),
   /* scopeId */
   null,
   /* cssModules */
@@ -60583,18 +60616,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 307 */
+/* 308 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(387)
+__webpack_require__(389)
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(230),
+  __webpack_require__(231),
   /* template */
-  __webpack_require__(344),
+  __webpack_require__(345),
   /* scopeId */
   null,
   /* cssModules */
@@ -60621,18 +60654,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 308 */
+/* 309 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(388)
+__webpack_require__(390)
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(231),
+  __webpack_require__(232),
   /* template */
-  __webpack_require__(345),
+  __webpack_require__(346),
   /* scopeId */
   null,
   /* cssModules */
@@ -60659,18 +60692,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 309 */
+/* 310 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(385)
+__webpack_require__(387)
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(232),
+  __webpack_require__(233),
   /* template */
-  __webpack_require__(341),
+  __webpack_require__(342),
   /* scopeId */
   null,
   /* cssModules */
@@ -60697,18 +60730,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 310 */
+/* 311 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(403)
+__webpack_require__(405)
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(233),
+  __webpack_require__(234),
   /* template */
-  __webpack_require__(361),
+  __webpack_require__(362),
   /* scopeId */
   null,
   /* cssModules */
@@ -60735,18 +60768,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 311 */
+/* 312 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(367)
+__webpack_require__(368)
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(234),
+  __webpack_require__(235),
   /* template */
-  __webpack_require__(325),
+  __webpack_require__(326),
   /* scopeId */
   null,
   /* cssModules */
@@ -60773,18 +60806,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 312 */
+/* 313 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(392)
+__webpack_require__(394)
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(235),
+  __webpack_require__(236),
   /* template */
-  __webpack_require__(348),
+  __webpack_require__(349),
   /* scopeId */
   null,
   /* cssModules */
@@ -60811,18 +60844,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 313 */
+/* 314 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(399)
+__webpack_require__(401)
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(236),
+  __webpack_require__(237),
   /* template */
-  __webpack_require__(356),
+  __webpack_require__(357),
   /* scopeId */
   null,
   /* cssModules */
@@ -60849,18 +60882,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 314 */
+/* 315 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(368)
+__webpack_require__(370)
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(237),
+  __webpack_require__(238),
   /* template */
-  __webpack_require__(327),
+  __webpack_require__(328),
   /* scopeId */
   null,
   /* cssModules */
@@ -60887,18 +60920,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 315 */
+/* 316 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(398)
+__webpack_require__(400)
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(238),
+  __webpack_require__(239),
   /* template */
-  __webpack_require__(353),
+  __webpack_require__(354),
   /* scopeId */
   null,
   /* cssModules */
@@ -60925,14 +60958,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 316 */
+/* 317 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(239),
+  __webpack_require__(240),
   /* template */
-  __webpack_require__(354),
+  __webpack_require__(355),
   /* scopeId */
   null,
   /* cssModules */
@@ -60959,18 +60992,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 317 */
+/* 318 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(395)
+__webpack_require__(397)
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(240),
+  __webpack_require__(241),
   /* template */
-  __webpack_require__(351),
+  __webpack_require__(352),
   /* scopeId */
   null,
   /* cssModules */
@@ -60997,18 +61030,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 318 */
+/* 319 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(402)
+__webpack_require__(404)
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(241),
+  __webpack_require__(242),
   /* template */
-  __webpack_require__(359),
+  __webpack_require__(360),
   /* scopeId */
   null,
   /* cssModules */
@@ -61035,14 +61068,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 319 */
+/* 320 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(242),
+  __webpack_require__(243),
   /* template */
-  __webpack_require__(360),
+  __webpack_require__(361),
   /* scopeId */
   null,
   /* cssModules */
@@ -61069,7 +61102,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 320 */
+/* 321 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -61211,7 +61244,7 @@ if (true) {
 }
 
 /***/ }),
-/* 321 */
+/* 322 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -61322,7 +61355,7 @@ if (true) {
 }
 
 /***/ }),
-/* 322 */
+/* 323 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -61474,7 +61507,7 @@ if (true) {
 }
 
 /***/ }),
-/* 323 */
+/* 324 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -61541,7 +61574,7 @@ if (true) {
 }
 
 /***/ }),
-/* 324 */
+/* 325 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -61662,7 +61695,7 @@ if (true) {
 }
 
 /***/ }),
-/* 325 */
+/* 326 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -61836,21 +61869,26 @@ if (true) {
 }
 
 /***/ }),
-/* 326 */
+/* 327 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {}, [(!_vm.noApps) ? _c('div', {
-    staticClass: "row"
+  return _c('div', {
+    staticClass: "onboarding"
+  }, [(_vm.showOnboarding) ? _c('div', {
+    directives: [{
+      name: "hide",
+      rawName: "v-hide"
+    }]
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "m-4"
   }, [_c('div', {
-    staticClass: "col mb-2"
+    staticClass: "row card-group"
   }, [_c('div', {
-    staticClass: "jumbotron"
-  }, [_c('h1', {
-    staticClass: "display-4"
-  }, [_vm._v("Welcome to Coderr! ")]), _vm._v(" "), _c('p', {
-    staticClass: "lead"
-  }, [_vm._v("\n                    We suggest that you begin by configuring your application.\n                ")]), _vm._v(" "), _c('button', {
+    staticClass: "card"
+  }, [_vm._m(1), _vm._v(" "), _vm._m(2), _vm._v(" "), _c('div', {
+    staticClass: "card-footer"
+  }, [_c('button', {
     staticClass: "btn btn-primary",
     on: {
       "click": function($event) {
@@ -61858,25 +61896,113 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.start($event)
       }
     }
-  }, [_vm._v("Configuration guide")]), _vm._v(" "), _c('button', {
-    staticClass: "btn btn-secondary",
-    on: {
-      "click": function($event) {
-        $event.preventDefault();
-        _vm.mute($event)
-      }
+  }, [_vm._v("Configuration wizard")])])]), _vm._v(" "), _c('div', {
+    staticClass: "card"
+  }, [_vm._m(3), _vm._v(" "), _vm._m(4), _vm._v(" "), _c('div', {
+    staticClass: "card-footer"
+  }, [_c('a', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "href": ("/manage/application/" + _vm.appId)
     }
-  }, [_vm._v("Mute this message")])])])]) : _vm._e(), _vm._v(" "), (_vm.noApps) ? _c('div', {
-    staticClass: "row"
-  }, [_vm._m(0)]) : _vm._e()])
+  }, [_vm._v("\n                            Application settings\n                        ")])])]), _vm._v(" "), _c('div', {
+    staticClass: "card"
+  }, [_vm._m(5), _vm._v(" "), _vm._m(6), _vm._v(" "), _c('div', {
+    staticClass: "card-footer"
+  }, [_c('a', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "href": ("/manage/application/" + _vm.appId + "/security")
+    }
+  }, [_vm._v("\n                            Invite co-workers\n                        ")])])])]), _vm._v(" "), _vm._m(7)])]) : _vm._e(), _vm._v(" "), (_vm.noApps) ? _c('div', {
+    directives: [{
+      name: "hide",
+      rawName: "v-hide"
+    }]
+  }, [_vm._m(8)]) : _vm._e()])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col mb-2 mt-5"
+  }, [_c('div', {
+    staticClass: "m-4"
+  }, [_c('h2', [_vm._v("Welcome to Coderr!")]), _vm._v(" "), _c('p', {
+    staticClass: "lead"
+  }, [_vm._v("\n                        Coderr finds errors in production and makes it trivial to reproduce and correct them. The best way to get started is to read our "), _c('a', {
+    attrs: {
+      "href": "https://coderr.io/documentation/getting-started/"
+    }
+  }, [_vm._v("getting started guide")]), _vm._v(".\n                    ")])])])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "card-header"
+  }, [_c('h3', [_vm._v("Report errors")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "card-body"
+  }, [_c('p', [_vm._v("\n                            Our nuget packages are used detect and report errors in your application. To get started you need to install and configure our of our packages.\n                        ")]), _vm._v(" "), _c('p', [_vm._v("\n                            Follow\n                            our configuration wizard below to get started. You can also read our "), _c('a', {
+    attrs: {
+      "href": "https://coderr.io/documentation/"
+    }
+  }, [_vm._v("reporting guide")]), _vm._v(" or visit our "), _c('a', {
+    attrs: {
+      "href": "https://coderr.io/guides-and-support"
+    }
+  }, [_vm._v("Guides and support")]), _vm._v(" section at our homepage.\n                        ")]), _vm._v(" "), _c('div')])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "card-header"
+  }, [_c('h3', [_vm._v("Application configuration (admin only)")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "card-body"
+  }, [_c('p', [_vm._v("\n                            You can monitor multiple applications in Coderr. To make it easier for you, we created an application named \"DemoApp\".\n                        ")]), _vm._v(" "), _c('p', [_vm._v("\n                            You can change its name and create more applications by clicking on the Cog wheel ("), _c('i', {
+    staticClass: "fa fa-cog text-primary"
+  }), _vm._v(") at top right.\n                        ")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "card-header"
+  }, [_c('h3', [_vm._v("Invite co-workers (admin only)")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "card-body"
+  }, [_c('p', [_vm._v("To invite co-workers, use the Cog wheel ("), _c('i', {
+    staticClass: "fa fa-cog text-primary"
+  }), _vm._v(") found in top right menu, select one of your applications and then use the \"Security\" tab.")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "row card-group mt-2"
+  }, [_c('div', {
+    staticClass: "card"
+  }, [_c('div', {
+    staticClass: "card-header"
+  }, [_c('h3', [_vm._v("Before going to production")])]), _vm._v(" "), _c('div', {
+    staticClass: "card-body"
+  }, [_c('pre', [_c('code', [_vm._v("Err.Configuration.ThrowExceptions = false;")])]), _vm._v(" "), _c('p', [_vm._v("Turn of Coderrs internal exceptions before going to production.")])])]), _vm._v(" "), _c('div', {
+    staticClass: "card"
+  }, [_c('div', {
+    staticClass: "card-header"
+  }, [_c('h3', [_vm._v("Disable Coderr in Development environments")])]), _vm._v(" "), _c('div', {
+    staticClass: "card-body"
+  }, [_c('p', [_vm._v("You typically have full control over errors happening in development environments. Learn how to conditionally enable Coderr to reduce noise.")])]), _vm._v(" "), _c('div', {
+    staticClass: "card-footer"
+  }, [_c('a', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "href": "https://coderr.io/documentation/getting-started/#before-going-to-production"
+    }
+  }, [_vm._v("Learn more")])])])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
     staticClass: "jumbotron"
   }, [_c('h1', {
     staticClass: "display-4"
   }, [_vm._v("Welcome to Coderr! ")]), _vm._v(" "), _c('p', {
     staticClass: "lead"
-  }, [_vm._v("\n                You are not a member of any applications in Coderr yet. Ask your administrator to get invited.\n            ")])])
+  }, [_vm._v("\n                    You are not a member of any applications in Coderr yet. Ask your administrator to get invited.\n                ")])])])
 }]}
 module.exports.render._withStripped = true
 if (true) {
@@ -61887,7 +62013,7 @@ if (true) {
 }
 
 /***/ }),
-/* 327 */
+/* 328 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -61957,7 +62083,7 @@ if (true) {
 }
 
 /***/ }),
-/* 328 */
+/* 329 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -61996,7 +62122,7 @@ if (true) {
 }
 
 /***/ }),
-/* 329 */
+/* 330 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -62063,7 +62189,7 @@ if (true) {
 }
 
 /***/ }),
-/* 330 */
+/* 331 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -62131,7 +62257,7 @@ if (true) {
 }
 
 /***/ }),
-/* 331 */
+/* 332 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -62262,7 +62388,7 @@ if (true) {
 }
 
 /***/ }),
-/* 332 */
+/* 333 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -62318,7 +62444,7 @@ if (true) {
 }
 
 /***/ }),
-/* 333 */
+/* 334 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -62373,7 +62499,7 @@ if (true) {
 }
 
 /***/ }),
-/* 334 */
+/* 335 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -62480,7 +62606,7 @@ if (true) {
 }
 
 /***/ }),
-/* 335 */
+/* 336 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -62703,7 +62829,7 @@ if (true) {
 }
 
 /***/ }),
-/* 336 */
+/* 337 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -62720,7 +62846,7 @@ if (true) {
 }
 
 /***/ }),
-/* 337 */
+/* 338 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -62972,7 +63098,7 @@ if (true) {
 }
 
 /***/ }),
-/* 338 */
+/* 339 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -63124,7 +63250,7 @@ if (true) {
 }
 
 /***/ }),
-/* 339 */
+/* 340 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -63288,7 +63414,7 @@ if (true) {
 }
 
 /***/ }),
-/* 340 */
+/* 341 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -63691,7 +63817,7 @@ if (true) {
 }
 
 /***/ }),
-/* 341 */
+/* 342 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -63770,7 +63896,7 @@ if (true) {
 }
 
 /***/ }),
-/* 342 */
+/* 343 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -63811,7 +63937,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "nav-link"
   }, [_c('i', {
     staticClass: "fa fa-table"
-  }), _vm._v(" Search")])]), _vm._v(" "), (_vm.currentApplicationId) ? _c('router-link', {
+  }), _vm._v(" Incidents")])]), _vm._v(" "), (_vm.currentApplicationId) ? _c('router-link', {
     staticClass: "nav-item",
     attrs: {
       "tag": "li",
@@ -63837,7 +63963,7 @@ if (true) {
 }
 
 /***/ }),
-/* 343 */
+/* 344 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -63854,7 +63980,7 @@ if (true) {
 }
 
 /***/ }),
-/* 344 */
+/* 345 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -63936,7 +64062,7 @@ if (true) {
 }
 
 /***/ }),
-/* 345 */
+/* 346 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -64068,7 +64194,7 @@ if (true) {
 }
 
 /***/ }),
-/* 346 */
+/* 347 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -64104,7 +64230,7 @@ if (true) {
 }
 
 /***/ }),
-/* 347 */
+/* 348 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -64190,7 +64316,7 @@ if (true) {
 }
 
 /***/ }),
-/* 348 */
+/* 349 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -64250,7 +64376,7 @@ if (true) {
 }
 
 /***/ }),
-/* 349 */
+/* 350 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -64326,7 +64452,7 @@ if (true) {
 }
 
 /***/ }),
-/* 350 */
+/* 351 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -64345,7 +64471,7 @@ if (true) {
 }
 
 /***/ }),
-/* 351 */
+/* 352 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -64394,7 +64520,7 @@ if (true) {
 }
 
 /***/ }),
-/* 352 */
+/* 353 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -64460,7 +64586,7 @@ if (true) {
 }
 
 /***/ }),
-/* 353 */
+/* 354 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -64490,7 +64616,7 @@ if (true) {
 }
 
 /***/ }),
-/* 354 */
+/* 355 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -64507,7 +64633,7 @@ if (true) {
 }
 
 /***/ }),
-/* 355 */
+/* 356 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -64524,7 +64650,7 @@ if (true) {
 }
 
 /***/ }),
-/* 356 */
+/* 357 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -64579,7 +64705,7 @@ if (true) {
 }
 
 /***/ }),
-/* 357 */
+/* 358 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -64686,7 +64812,7 @@ if (true) {
 }
 
 /***/ }),
-/* 358 */
+/* 359 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -64703,7 +64829,7 @@ if (true) {
 }
 
 /***/ }),
-/* 359 */
+/* 360 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -64783,15 +64909,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col"
-  }, [_c('h1', [_vm._v("Welcome to Coderr!")]), _vm._v(" "), _c('p', {
+  }, [_c('h1', [_vm._v("Application configuration")]), _vm._v(" "), _c('p', {
     staticClass: "lead"
-  }, [_vm._v("You have taken the first step towards painless error handling.")])])])
+  }, [_vm._v("First step is to configure your own application so that errors are reported to Coderr. To do that you need to install one of our nuget packages.")])])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col"
-  }, [_c('p', [_vm._v("\n                To get started, you need to configure your application.\n                Select the .NET library that you are going to use.\n            ")])])])
+  }, [_c('p', [_vm._v("\n                Select the .NET library that you are using in your application.\n            ")])])])
 }]}
 module.exports.render._withStripped = true
 if (true) {
@@ -64802,7 +64928,7 @@ if (true) {
 }
 
 /***/ }),
-/* 360 */
+/* 361 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -64819,7 +64945,7 @@ if (true) {
 }
 
 /***/ }),
-/* 361 */
+/* 362 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -64944,7 +65070,7 @@ if (true) {
 }
 
 /***/ }),
-/* 362 */
+/* 363 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -64954,7 +65080,7 @@ var content = __webpack_require__(22);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("59ff9b42", content, false);
+var update = __webpack_require__(4)("59ff9b42", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -64970,7 +65096,7 @@ if(true) {
 }
 
 /***/ }),
-/* 363 */
+/* 364 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -64980,7 +65106,7 @@ var content = __webpack_require__(23);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("3744986c", content, false);
+var update = __webpack_require__(4)("3744986c", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -64996,7 +65122,7 @@ if(true) {
 }
 
 /***/ }),
-/* 364 */
+/* 365 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65006,7 +65132,7 @@ var content = __webpack_require__(24);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("00ed1c6e", content, false);
+var update = __webpack_require__(4)("00ed1c6e", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65022,7 +65148,7 @@ if(true) {
 }
 
 /***/ }),
-/* 365 */
+/* 366 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65032,7 +65158,7 @@ var content = __webpack_require__(25);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("984870ac", content, false);
+var update = __webpack_require__(4)("984870ac", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65048,7 +65174,7 @@ if(true) {
 }
 
 /***/ }),
-/* 366 */
+/* 367 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65058,7 +65184,7 @@ var content = __webpack_require__(26);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("f56c885e", content, false);
+var update = __webpack_require__(4)("f56c885e", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65074,7 +65200,7 @@ if(true) {
 }
 
 /***/ }),
-/* 367 */
+/* 368 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65084,7 +65210,7 @@ var content = __webpack_require__(27);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("41c615a7", content, false);
+var update = __webpack_require__(4)("41c615a7", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65100,7 +65226,7 @@ if(true) {
 }
 
 /***/ }),
-/* 368 */
+/* 369 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65110,7 +65236,7 @@ var content = __webpack_require__(28);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("7b0462fe", content, false);
+var update = __webpack_require__(4)("a73e7974", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65126,7 +65252,7 @@ if(true) {
 }
 
 /***/ }),
-/* 369 */
+/* 370 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65136,7 +65262,7 @@ var content = __webpack_require__(29);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("a2796e96", content, false);
+var update = __webpack_require__(4)("7b0462fe", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65152,7 +65278,7 @@ if(true) {
 }
 
 /***/ }),
-/* 370 */
+/* 371 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65162,7 +65288,7 @@ var content = __webpack_require__(30);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("c281791e", content, false);
+var update = __webpack_require__(4)("a2796e96", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65178,7 +65304,7 @@ if(true) {
 }
 
 /***/ }),
-/* 371 */
+/* 372 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65188,7 +65314,7 @@ var content = __webpack_require__(31);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("294e24db", content, false);
+var update = __webpack_require__(4)("c281791e", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65204,7 +65330,7 @@ if(true) {
 }
 
 /***/ }),
-/* 372 */
+/* 373 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65214,7 +65340,7 @@ var content = __webpack_require__(32);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("e249b424", content, false);
+var update = __webpack_require__(4)("294e24db", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65230,7 +65356,7 @@ if(true) {
 }
 
 /***/ }),
-/* 373 */
+/* 374 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65240,7 +65366,7 @@ var content = __webpack_require__(33);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("08ea7eef", content, false);
+var update = __webpack_require__(4)("e249b424", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65256,7 +65382,7 @@ if(true) {
 }
 
 /***/ }),
-/* 374 */
+/* 375 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65266,7 +65392,7 @@ var content = __webpack_require__(34);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("6e6bc0a5", content, false);
+var update = __webpack_require__(4)("08ea7eef", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65282,7 +65408,7 @@ if(true) {
 }
 
 /***/ }),
-/* 375 */
+/* 376 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65292,7 +65418,7 @@ var content = __webpack_require__(35);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("971602cc", content, false);
+var update = __webpack_require__(4)("6e6bc0a5", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65308,7 +65434,7 @@ if(true) {
 }
 
 /***/ }),
-/* 376 */
+/* 377 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65318,7 +65444,7 @@ var content = __webpack_require__(36);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("4466a35e", content, false);
+var update = __webpack_require__(4)("971602cc", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65334,7 +65460,7 @@ if(true) {
 }
 
 /***/ }),
-/* 377 */
+/* 378 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65344,7 +65470,7 @@ var content = __webpack_require__(37);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("42249858", content, false);
+var update = __webpack_require__(4)("4466a35e", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65360,7 +65486,7 @@ if(true) {
 }
 
 /***/ }),
-/* 378 */
+/* 379 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65370,7 +65496,7 @@ var content = __webpack_require__(38);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("5d69f37a", content, false);
+var update = __webpack_require__(4)("42249858", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65386,7 +65512,7 @@ if(true) {
 }
 
 /***/ }),
-/* 379 */
+/* 380 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65396,7 +65522,7 @@ var content = __webpack_require__(39);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("6535e2b0", content, false);
+var update = __webpack_require__(4)("5d69f37a", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65412,7 +65538,7 @@ if(true) {
 }
 
 /***/ }),
-/* 380 */
+/* 381 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65422,7 +65548,7 @@ var content = __webpack_require__(40);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("c7ad3496", content, false);
+var update = __webpack_require__(4)("6535e2b0", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65438,7 +65564,7 @@ if(true) {
 }
 
 /***/ }),
-/* 381 */
+/* 382 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65448,7 +65574,7 @@ var content = __webpack_require__(41);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("ac3fe532", content, false);
+var update = __webpack_require__(4)("c7ad3496", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65464,7 +65590,7 @@ if(true) {
 }
 
 /***/ }),
-/* 382 */
+/* 383 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65474,7 +65600,7 @@ var content = __webpack_require__(42);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("3922499c", content, false);
+var update = __webpack_require__(4)("ac3fe532", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65490,7 +65616,7 @@ if(true) {
 }
 
 /***/ }),
-/* 383 */
+/* 384 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65500,7 +65626,7 @@ var content = __webpack_require__(43);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("7171fb7b", content, false);
+var update = __webpack_require__(4)("3922499c", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65516,7 +65642,7 @@ if(true) {
 }
 
 /***/ }),
-/* 384 */
+/* 385 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65526,7 +65652,7 @@ var content = __webpack_require__(44);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("78f1c356", content, false);
+var update = __webpack_require__(4)("7171fb7b", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65542,7 +65668,7 @@ if(true) {
 }
 
 /***/ }),
-/* 385 */
+/* 386 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65552,7 +65678,7 @@ var content = __webpack_require__(45);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("0b8537ca", content, false);
+var update = __webpack_require__(4)("78f1c356", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65568,7 +65694,7 @@ if(true) {
 }
 
 /***/ }),
-/* 386 */
+/* 387 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65578,7 +65704,7 @@ var content = __webpack_require__(46);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("9b0cefc8", content, false);
+var update = __webpack_require__(4)("0b8537ca", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65594,7 +65720,7 @@ if(true) {
 }
 
 /***/ }),
-/* 387 */
+/* 388 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65604,7 +65730,7 @@ var content = __webpack_require__(47);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("197e596f", content, false);
+var update = __webpack_require__(4)("9b0cefc8", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65620,7 +65746,7 @@ if(true) {
 }
 
 /***/ }),
-/* 388 */
+/* 389 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65630,7 +65756,7 @@ var content = __webpack_require__(48);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("5b8ebc0c", content, false);
+var update = __webpack_require__(4)("197e596f", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65646,7 +65772,7 @@ if(true) {
 }
 
 /***/ }),
-/* 389 */
+/* 390 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65656,7 +65782,7 @@ var content = __webpack_require__(49);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("1f53e6ef", content, false);
+var update = __webpack_require__(4)("5b8ebc0c", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65672,7 +65798,7 @@ if(true) {
 }
 
 /***/ }),
-/* 390 */
+/* 391 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65682,7 +65808,7 @@ var content = __webpack_require__(50);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("71fecf73", content, false);
+var update = __webpack_require__(4)("1f53e6ef", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65698,7 +65824,7 @@ if(true) {
 }
 
 /***/ }),
-/* 391 */
+/* 392 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65708,7 +65834,7 @@ var content = __webpack_require__(51);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("45f31814", content, false);
+var update = __webpack_require__(4)("71fecf73", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65724,7 +65850,7 @@ if(true) {
 }
 
 /***/ }),
-/* 392 */
+/* 393 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65734,7 +65860,7 @@ var content = __webpack_require__(52);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("8ccc3d94", content, false);
+var update = __webpack_require__(4)("45f31814", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65750,7 +65876,7 @@ if(true) {
 }
 
 /***/ }),
-/* 393 */
+/* 394 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65760,7 +65886,7 @@ var content = __webpack_require__(53);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("c785882e", content, false);
+var update = __webpack_require__(4)("8ccc3d94", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65776,7 +65902,7 @@ if(true) {
 }
 
 /***/ }),
-/* 394 */
+/* 395 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65786,7 +65912,7 @@ var content = __webpack_require__(54);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("88616afc", content, false);
+var update = __webpack_require__(4)("c785882e", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65802,7 +65928,7 @@ if(true) {
 }
 
 /***/ }),
-/* 395 */
+/* 396 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65812,7 +65938,7 @@ var content = __webpack_require__(55);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("31bbf5fe", content, false);
+var update = __webpack_require__(4)("88616afc", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65828,7 +65954,7 @@ if(true) {
 }
 
 /***/ }),
-/* 396 */
+/* 397 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65838,7 +65964,7 @@ var content = __webpack_require__(56);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("2c5b6764", content, false);
+var update = __webpack_require__(4)("31bbf5fe", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65854,7 +65980,7 @@ if(true) {
 }
 
 /***/ }),
-/* 397 */
+/* 398 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65864,7 +65990,7 @@ var content = __webpack_require__(57);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("0752aaad", content, false);
+var update = __webpack_require__(4)("2c5b6764", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65880,7 +66006,7 @@ if(true) {
 }
 
 /***/ }),
-/* 398 */
+/* 399 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65890,7 +66016,7 @@ var content = __webpack_require__(58);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("5e4efc7c", content, false);
+var update = __webpack_require__(4)("0752aaad", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65906,7 +66032,7 @@ if(true) {
 }
 
 /***/ }),
-/* 399 */
+/* 400 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65916,7 +66042,7 @@ var content = __webpack_require__(59);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("7daf5234", content, false);
+var update = __webpack_require__(4)("5e4efc7c", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65932,7 +66058,7 @@ if(true) {
 }
 
 /***/ }),
-/* 400 */
+/* 401 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65942,7 +66068,7 @@ var content = __webpack_require__(60);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("73d73992", content, false);
+var update = __webpack_require__(4)("7daf5234", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65958,7 +66084,7 @@ if(true) {
 }
 
 /***/ }),
-/* 401 */
+/* 402 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65968,7 +66094,7 @@ var content = __webpack_require__(61);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("34b21280", content, false);
+var update = __webpack_require__(4)("73d73992", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -65984,7 +66110,7 @@ if(true) {
 }
 
 /***/ }),
-/* 402 */
+/* 403 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -65994,7 +66120,7 @@ var content = __webpack_require__(62);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("22a113ec", content, false);
+var update = __webpack_require__(4)("34b21280", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -66010,7 +66136,7 @@ if(true) {
 }
 
 /***/ }),
-/* 403 */
+/* 404 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -66020,7 +66146,7 @@ var content = __webpack_require__(63);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("492ec7e5", content, false);
+var update = __webpack_require__(4)("22a113ec", content, false);
 // Hot Module Replacement
 if(true) {
  // When the styles change, update the <style> tags
@@ -66036,7 +66162,33 @@ if(true) {
 }
 
 /***/ }),
-/* 404 */
+/* 405 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(64);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(4)("492ec7e5", content, false);
+// Hot Module Replacement
+if(true) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept(64, function() {
+     var newContent = __webpack_require__(64);
+     if(typeof newContent === 'string') newContent = [[module.i, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 406 */
 /***/ (function(module, exports) {
 
 /**
@@ -66069,7 +66221,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 405 */
+/* 407 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*eslint-env browser*/
@@ -66095,7 +66247,7 @@ var styles = {
   textAlign: 'left'
 };
 
-var ansiHTML = __webpack_require__(199);
+var ansiHTML = __webpack_require__(200);
 var colors = {
   reset: ['transparent', 'transparent'],
   black: '181818',
@@ -66109,7 +66261,7 @@ var colors = {
   darkgrey: '6D7891'
 };
 
-var Entities = __webpack_require__(260).AllHtmlEntities;
+var Entities = __webpack_require__(261).AllHtmlEntities;
 var entities = new Entities();
 
 function showProblems(type, lines) {
@@ -66172,7 +66324,7 @@ module.exports.showProblems = showProblems;
 
 
 /***/ }),
-/* 406 */
+/* 408 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -66324,7 +66476,7 @@ module.exports = function(hash, moduleMap, options) {
 
 
 /***/ }),
-/* 407 */
+/* 409 */
 /***/ (function(module, exports) {
 
 module.exports = function() {
@@ -66333,36 +66485,36 @@ module.exports = function() {
 
 
 /***/ }),
-/* 408 */
+/* 410 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = (__webpack_require__(11))(2);
 
 /***/ }),
-/* 409 */
+/* 411 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = (__webpack_require__(11))(5);
 
 /***/ }),
-/* 410 */
+/* 412 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = (__webpack_require__(11))(8);
 
 /***/ }),
-/* 411 */
+/* 413 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
 
 /***/ }),
-/* 412 */
+/* 414 */
 /***/ (function(module, exports, __webpack_require__) {
 
+__webpack_require__(198);
 __webpack_require__(197);
-__webpack_require__(196);
-module.exports = __webpack_require__(195);
+module.exports = __webpack_require__(196);
 
 
 /***/ })

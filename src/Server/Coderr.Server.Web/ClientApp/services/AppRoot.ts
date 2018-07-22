@@ -67,7 +67,7 @@ export class AppRoot {
         }
 
         var usr = await this.apiClient.auth();
-
+        console.log(usr);
         var apps: IMyApplication[] = [];
         usr.Applications.forEach((app: any) => {
             apps.push({

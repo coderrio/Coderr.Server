@@ -1,0 +1,21 @@
+.end {
+    position: absolute;
+    bottom: 0
+}
+
+
+.onboarding .card .card-footer, .onboarding .card .card-header {
+    background: transparent;
+    border: none;
+}
+
+/*.onboarding .card-group {
+    padding: 5px;
+}*/
+.onboarding .card {
+    margin-right: 10px;
+}
+
+.onboarding .card:last-child {
+    margin-right: 0;
+}

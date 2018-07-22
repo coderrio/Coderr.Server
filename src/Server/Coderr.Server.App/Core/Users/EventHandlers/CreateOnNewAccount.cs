@@ -20,6 +20,10 @@ namespace Coderr.Server.App.Core.Users.EventHandlers
 
         public async Task HandleAsync(IMessageContext context, AccountActivated e)
         {
+            var user = await _userRepository.FindByEmailAsync(e.EmailAddress);
+            if (user != null)
+                return;
+            
             await _userRepository.CreateAsync(new User(e.AccountId, e.UserName)
             {
                 EmailAddress = e.EmailAddress

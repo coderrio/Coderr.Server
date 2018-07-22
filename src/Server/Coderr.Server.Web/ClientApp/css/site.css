@@ -12,3 +12,7 @@
 .card {
     margin-bottom: 10px;
 }
+
+[v-cloak] {
+    display: none;
+}

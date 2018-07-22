@@ -11,6 +11,7 @@ using Coderr.Server.Api.Core.Accounts.Requests;
 using Coderr.Server.App.Core.Invitations;
 using Coderr.Server.Domain.Core.Account;
 using Coderr.Server.Domain.Core.Applications;
+using Coderr.Server.Domain.Core.User;
 using Coderr.Server.Infrastructure.Security;
 
 using DotNetCqs;
