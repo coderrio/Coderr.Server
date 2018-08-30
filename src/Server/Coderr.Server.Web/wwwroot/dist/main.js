@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "bfd68759b20121ddf487"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "1c5e5eb9e76cf96fd5ff"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -41430,6 +41430,15 @@ var IncidentSearchComponent = /** @class */ (function (_super) {
             _this.search(true);
         });
     };
+    IncidentSearchComponent.prototype.checkAll = function (e) {
+        var target = e.target;
+        var elems = document.querySelectorAll('#searchTable tbody input[type="checkbox"]');
+        console.log(elems);
+        for (var i = 0; i < elems.length; i++) {
+            var elem = elems[i];
+            elem.checked = target.checked;
+        }
+    };
     IncidentSearchComponent.prototype.toggleFilterDisplay = function () {
         this.showFilters = !this.showFilters;
     };
@@ -63676,13 +63685,39 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('h2', [_vm._v("Incidents")]), _vm._v(" "), _c('div', {
     staticClass: "filters"
   }), _vm._v(" "), _c('table', {
-    staticClass: "table w-100"
+    staticClass: "table w-100",
+    attrs: {
+      "id": "searchTable"
+    }
   }, [_c('thead', {
     staticClass: "table-light search-head"
-  }, [_c('tr', [_c('th', [_vm._v("Name")]), _vm._v(" "), (_vm.showApplicationColumn) ? _c('th', [_vm._v("Application")]) : _vm._e(), _vm._v(" "), _c('th', [_vm._v("Created")]), _vm._v(" "), _c('th', {
+  }, [_c('tr', [_c('th', [_c('input', {
+    staticClass: "form-check-inline",
+    attrs: {
+      "type": "checkbox"
+    },
+    on: {
+      "click": function($event) {
+        _vm.checkAll($event)
+      }
+    }
+  }), _vm._v(" Name")]), _vm._v(" "), (_vm.showApplicationColumn) ? _c('th', [_vm._v("Application")]) : _vm._e(), _vm._v(" "), _c('th', {
     staticClass: "sortable",
     attrs: {
       "data-value": "0"
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.sort($event)
+      }
+    }
+  }, [_vm._v("Created "), _c('i', {
+    staticClass: "fa"
+  })]), _vm._v(" "), _c('th', {
+    staticClass: "sortable",
+    attrs: {
+      "data-value": "1"
     },
     on: {
       "click": function($event) {
@@ -63695,7 +63730,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   })]), _vm._v(" "), _c('th', {
     staticClass: "sortable",
     attrs: {
-      "data-value": "1"
+      "data-value": "2"
     },
     on: {
       "click": function($event) {

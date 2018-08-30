@@ -77,14 +77,14 @@
                 <div class="filters">
 
                 </div>
-                <table class="table w-100">
+                <table class="table w-100" id="searchTable">
                     <thead class="table-light search-head">
                     <tr>
-                        <th>Name</th>
+                        <th><input class="form-check-inline" type="checkbox" v-on:click="checkAll($event)"/> Name</th>
                         <th v-if="showApplicationColumn">Application</th>
-                        <th>Created</th>
-                        <th class="sortable" v-on:click.prevent="sort($event)" data-value="0">Last report <i class="fa"></i></th>
-                        <th class="sortable" v-on:click.prevent="sort($event)" data-value="1">Report count <i class="fa fa-chevron-up"></i></th>
+                        <th class="sortable" v-on:click.prevent="sort($event)" data-value="0">Created <i class="fa"></i></th>
+                        <th class="sortable" v-on:click.prevent="sort($event)" data-value="1">Last report <i class="fa"></i></th>
+                        <th class="sortable" v-on:click.prevent="sort($event)" data-value="2">Report count <i class="fa fa-chevron-up"></i></th>
                     </tr>
                     </thead>
                     <tbody>

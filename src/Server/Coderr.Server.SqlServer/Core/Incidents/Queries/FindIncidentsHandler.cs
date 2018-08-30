@@ -176,6 +176,13 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
                 if (query.SortType == IncidentOrder.Newest)
                 {
                     if (query.SortAscending)
+                        sqlQuery += " ORDER BY CreatedAtUtc";
+                    else
+                        sqlQuery += " ORDER BY CreatedAtUtc DESC";
+                }
+                else if (query.SortType == IncidentOrder.LatestReport)
+                {
+                    if (query.SortAscending)
                         sqlQuery += " ORDER BY LastReportAtUtc";
                     else
                         sqlQuery += " ORDER BY LastReportAtUtc DESC";

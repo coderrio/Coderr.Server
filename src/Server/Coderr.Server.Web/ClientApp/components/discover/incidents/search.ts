@@ -129,6 +129,16 @@ export default class IncidentSearchComponent extends Vue {
             });
     }
 
+    checkAll(e: Event) {
+        const target = <HTMLInputElement>e.target;
+        const elems = document.querySelectorAll('#searchTable tbody input[type="checkbox"]');
+        console.log(elems);
+        for (let i = 0; i < elems.length; i++) {
+            const elem = <HTMLInputElement>elems[i];
+            elem.checked = target.checked;
+        }
+    }
+
     toggleFilterDisplay() {
         this.showFilters = !this.showFilters;
     }

@@ -11,6 +11,11 @@ namespace Coderr.Server.Api.Core.Incidents
         Newest,
 
         /// <summary>
+        /// The one that recieved a report most recent.
+        /// </summary>
+        LatestReport,
+
+        /// <summary>
         ///     The incident with the highest number of reports
         /// </summary>
         MostReports,
