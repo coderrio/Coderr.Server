@@ -183,7 +183,6 @@ export class IncidentService {
             submitButtonText: 'Notify users',
         });
 
-        console.log('btn: ', modalResult.pressedButtonName);
         if (modalResult.pressedButtonName === 'submit') {
             return {
                 requiresStatusUpdate: true

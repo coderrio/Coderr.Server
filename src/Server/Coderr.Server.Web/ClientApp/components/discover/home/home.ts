@@ -22,6 +22,7 @@ export default class DiscoverComponent extends Vue {
     private static activeBtnTheme: string = 'btn-dark';
 
     applicationId: number = 0;
+    destroyed$ = false;
 
     // summary, changes when time window changes
     reportCount: number = 0;
@@ -41,13 +42,12 @@ export default class DiscoverComponent extends Vue {
             this.loadGenericOverview();
             return;
         }
+        this.applicationId = parseInt(value);
 
         if (this.$route.fullPath.indexOf('/discover/') === -1) {
             return;
         }
-
-        var applicationId = parseInt(value);
-        this.loadApplication(applicationId);
+        this.loadApplication(this.applicationId);
     }
 
     created() {
@@ -62,6 +62,9 @@ export default class DiscoverComponent extends Vue {
     mounted() {
     }
 
+    beforeDestroy() {
+        this.destroyed$ = true;
+    }
     assignBestToMe() {
 
     }
@@ -72,6 +75,10 @@ export default class DiscoverComponent extends Vue {
         q.NumberOfDays = 30;
         AppRoot.Instance.apiClient.query<GetApplicationOverviewResult>(q)
             .then(result => {
+                if (this.destroyed$) {
+                    return;
+                }
+
                 this.incidentCount = result.StatSummary.Incidents;
                 this.reportCount = result.StatSummary.Reports;
                 this.feedbackCount = result.StatSummary.UserFeedback;
@@ -90,6 +97,10 @@ export default class DiscoverComponent extends Vue {
         q.NumberOfDays = 30;
         AppRoot.Instance.apiClient.query<GetOverviewResult>(q)
             .then(result => {
+                if (this.destroyed$) {
+                    return;
+                }
+
                 this.incidentCount = result.StatSummary.Incidents;
                 this.reportCount = result.StatSummary.Reports;
                 this.feedbackCount = result.StatSummary.UserFeedback;

@@ -43,7 +43,6 @@ export default class NavMenuComponent extends Vue {
             this.updateCurrent(0);
             return;
         }
-        console.log()
         var applicationId = parseInt(value);
         this.updateCurrent(applicationId);
     }
@@ -59,7 +58,6 @@ export default class NavMenuComponent extends Vue {
             });
         });
         this.myApplicationsPromise.then(x => {
-            console.log('pushed', this.myApplications);
         })
 
         this.$router.beforeEach((to, from, next) => {
@@ -91,7 +89,6 @@ export default class NavMenuComponent extends Vue {
     }
 
     changeApplication(applicationId: number) {
-        console.log('changing app: ' + applicationId);
         if (applicationId == null) {
             this.updateCurrent(0);
         } else {

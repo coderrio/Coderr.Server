@@ -127,6 +127,7 @@ export class MyIncidents {
                 if (this.allMyIncidents$.findIndex(menuItem => menuItem.incidentId === assignedIncident.Id) === -1) {
                     var item = this.createItem(assignedIncident.Id, assignedIncident.ApplicationId, assignedIncident.Description);
                     this.allMyIncidents$.push(item);
+                    this.filterMyIncidents();
                     this.triggerIncidentListCallbacks(item.incidentId, true);
                 }
             });

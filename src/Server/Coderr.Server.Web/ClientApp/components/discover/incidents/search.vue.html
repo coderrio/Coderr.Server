@@ -1,7 +1,7 @@
 <template>
     <div class="row" id="IncidentSearchView">
         <div class="col-xl-4 col-lg-3 col-md-4">
-            <div class="card">
+            <div class="card" id="SearchOptions">
                 <div class="card-header">
                     Filter
                 </div>
@@ -9,7 +9,7 @@
                     <input type="text" placeholder="Free text" class="form-control" v-model="freeText" />
                     <div class="w-100">
                         <button class="mt-1 btn btn-primary w-auto" v-on:click="search">Search</button>
-                        <button class="mt-1 btn" v-on:click="toggleFilterDisplay">Show more filters &gt;&gt;</button>
+                        <button class="mt-1 btn" name="more" v-on:click="toggleFilterDisplay">Show more filters &gt;&gt;</button>
                     </div>
                     <div id="more-filters" v-bind:class="{more: !showFilters }">
                         <hr />
@@ -60,12 +60,12 @@
                         </div>
                         <div class="tags">
                             <h4>Context collection</h4>
-                            <input type="text" class="form-control rounded mb-1" placeholder="Collection name" v-model="contextCollectionName" />
-                            <input type="text" class="form-control rounded mb-1" placeholder="Property name" v-model="contextCollectionProperty" />
-                            <input type="text" class="form-control rounded mb-1" placeholder="Property value" v-model="contextCollectionPropertyValue" />
+                            <input name="CollectionName" type="text" class="form-control rounded mb-1" placeholder="Collection name" v-model="contextCollectionName" />
+                            <input name="PropertyName" type="text" class="form-control rounded mb-1" placeholder="Property name" v-model="contextCollectionProperty" />
+                            <input name="PropertyValue" type="text" class="form-control rounded mb-1" placeholder="Property value" v-model="contextCollectionPropertyValue" />
                             <hr />
                         </div>
-                        <button class="btn btn-primary w-100" v-on:click="search">Search</button>
+                        <button class="btn btn-primary w-100" v-on:click="search" name="executeSearch">Search</button>
                     </div>
 
                 </div>
@@ -80,7 +80,7 @@
                 <table class="table w-100" id="searchTable">
                     <thead class="table-light search-head">
                     <tr>
-                        <th><input class="form-check-inline" type="checkbox" v-on:click="checkAll($event)"/> Name</th>
+                        <th><input class="form-check-inline" type="checkbox" v-on:change="checkAll($event)"/> Name</th>
                         <th v-if="showApplicationColumn">Application</th>
                         <th class="sortable" v-on:click.prevent="sort($event)" data-value="0">Created <i class="fa"></i></th>
                         <th class="sortable" v-on:click.prevent="sort($event)" data-value="1">Last report <i class="fa"></i></th>

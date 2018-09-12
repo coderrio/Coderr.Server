@@ -33,6 +33,7 @@ export default class IncidentSearchComponent extends Vue {
     private apiClient$: ApiClient = AppRoot.Instance.apiClient;
     private incidentService$: IncidentService = AppRoot.Instance.incidentService;
     private readyPromises$: Promise<any>[] = [];
+    private destroyed$ = false;
 
     //controls
     showFilters: boolean = false;
@@ -104,14 +105,20 @@ export default class IncidentSearchComponent extends Vue {
 
     destroyed() {
         PubSubService.Instance.unsubscribe(MenuApi.MessagingTopics.ApplicationChanged, this.onApplicationChangedInNavMenu);
+        this.destroyed$ = true;
     }
 
     mounted() {
+        this.destroyed$ = false;
 
         var readyPromise = AppRoot.Instance.loadState('incident-search', this);
         this.readyPromises$.push(readyPromise);
         Promise.all(this.readyPromises$)
             .then(resolve => {
+                if (this.destroyed$) {
+                    return;
+                }
+
                 if (this.$route.params.applicationId) {
                     var id = parseInt(this.$route.params.applicationId, 10);
                     if (id > 0) {
@@ -132,7 +139,6 @@ export default class IncidentSearchComponent extends Vue {
     checkAll(e: Event) {
         const target = <HTMLInputElement>e.target;
         const elems = document.querySelectorAll('#searchTable tbody input[type="checkbox"]');
-        console.log(elems);
         for (let i = 0; i < elems.length; i++) {
             const elem = <HTMLInputElement>elems[i];
             elem.checked = target.checked;
@@ -238,6 +244,10 @@ export default class IncidentSearchComponent extends Vue {
 
         AppRoot.Instance.apiClient.query<FindIncidentsResult>(query)
             .then(result => {
+                if (this.destroyed$) {
+                    return;
+                }
+
                 this.incidents.splice(0);
                 result.Items.forEach(item => {
                     var entity: Incident = {
@@ -263,12 +273,11 @@ export default class IncidentSearchComponent extends Vue {
     }
 
     assignAllToMe() {
-        if (this.checkedIncidents.length === 0) {
-            return;
+        const elems = document.querySelectorAll('#searchTable tbody input[type="checkbox"]:checked');
+        for (let i = 0; i < elems.length; i++) {
+            const elem = <HTMLInputElement>elems[i];
+            this.incidentService$.assignToMe(parseInt(elem.value));
         }
-        this.checkedIncidents.forEach(id => {
-            this.incidentService$.assignToMe(id);
-        });
         AppRoot.notify('All incidents have been assigned to you. Click on the "Analyze" menu to start working with them.');
         setTimeout(() => { this.search() }, 1000);
     }

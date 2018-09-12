@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "1c5e5eb9e76cf96fd5ff"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "52bd89f6b6ca3d7b434c"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -5958,7 +5958,6 @@ var AppRoot = /** @class */ (function () {
                         return [4 /*yield*/, this.apiClient.auth()];
                     case 1:
                         usr = _a.sent();
-                        console.log(usr);
                         apps = [];
                         usr.Applications.forEach(function (app) {
                             apps.push({
@@ -21110,6 +21109,7 @@ var MyIncidents = /** @class */ (function () {
             if (_this.allMyIncidents$.findIndex(function (menuItem) { return menuItem.incidentId === assignedIncident.Id; }) === -1) {
                 var item = _this.createItem(assignedIncident.Id, assignedIncident.ApplicationId, assignedIncident.Description);
                 _this.allMyIncidents$.push(item);
+                _this.filterMyIncidents();
                 _this.triggerIncidentListCallbacks(item.incidentId, true);
             }
         });
@@ -25034,7 +25034,6 @@ var IncidentService = /** @class */ (function () {
                             })];
                     case 3:
                         modalResult = _a.sent();
-                        console.log('btn: ', modalResult.pressedButtonName);
                         if (modalResult.pressedButtonName === 'submit') {
                             return [2 /*return*/, {
                                     requiresStatusUpdate: true
@@ -38740,6 +38739,16 @@ var routes = [
         ]
     }
 ];
+var hooks = {
+    mounted: function (instance) { },
+    created: function (instance) { },
+    afterRoute: function (to, from) { }
+};
+// Hack for tests
+var v = window;
+if (v["Cypress"]) {
+    v['MyVueHooks'] = hooks;
+}
 var ourVue;
 __WEBPACK_IMPORTED_MODULE_4__services_AppRoot__["a" /* AppRoot */].Instance.loadCurrentUser()
     .then(function (user) {
@@ -38749,11 +38758,19 @@ __WEBPACK_IMPORTED_MODULE_4__services_AppRoot__["a" /* AppRoot */].Instance.load
         router: new __WEBPACK_IMPORTED_MODULE_2_vue_router__["default"]({ mode: "history", routes: routes }),
         render: function (h) { return h(__webpack_require__(300)); },
         created: function () {
+            hooks.created(ourVue);
         },
         mounted: function () {
+            hooks.mounted(ourVue);
         }
     });
+    ourVue.$router.afterEach(function (to, from) {
+        hooks.afterRoute(to.path, from.path);
+    });
     ourVue.user$ = user;
+    if (v["Cypress"]) {
+        v["MyVue"] = ourVue;
+    }
 });
 
 
@@ -40153,6 +40170,11 @@ var AnalyzeMenuComponent = /** @class */ (function (_super) {
         __WEBPACK_IMPORTED_MODULE_2__myincidents__["a" /* MyIncidents */].Instance.subscribeOnSelectedIncident(this.onIncidentSelected);
         __WEBPACK_IMPORTED_MODULE_2__myincidents__["a" /* MyIncidents */].Instance.subscribeOnListChanges(function (x) {
             _this.incidents = __WEBPACK_IMPORTED_MODULE_2__myincidents__["a" /* MyIncidents */].Instance.myIncidents;
+            if (!_this.incidentId && _this.incidents.length > 0) {
+                _this.incidentId = _this.incidents[0].incidentId;
+                __WEBPACK_IMPORTED_MODULE_2__myincidents__["a" /* MyIncidents */].Instance.switchIncident(_this.incidentId);
+                _this.$router.push({ name: 'analyzeIncident', params: { incidentId: _this.incidentId.toString() } });
+            }
         });
         __WEBPACK_IMPORTED_MODULE_2__myincidents__["a" /* MyIncidents */].Instance.ready()
             .then(function (x) {
@@ -40774,13 +40796,12 @@ var ConfigureClientComponent = /** @class */ (function (_super) {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.libraries = [];
         _this.instruction = null;
-        _this.weAreInTrouble = false;
         _this.applicationId = 0;
         _this.appKey = "";
         _this.sharedSecret = "";
         _this.reportUrl = "";
         _this.noConnection = false;
-        _this.gotNoIncidents = false;
+        _this.weAreInTrouble = false;
         return _this;
     }
     ConfigureClientComponent.prototype.created = function () {
@@ -40812,21 +40833,6 @@ var ConfigureClientComponent = /** @class */ (function (_super) {
         this.$router.push({
             name: "support",
             params: { type: "configuration" }
-        });
-    };
-    ConfigureClientComponent.prototype.onExitGuide = function () {
-        var _this = this;
-        __WEBPACK_IMPORTED_MODULE_2__services_AppRoot__["a" /* AppRoot */].Instance.incidentService.find(this.applicationId)
-            .then(function (x) {
-            if (x.Items.length === 0) {
-                _this.gotNoIncidents = true;
-            }
-            else {
-                _this.$router.push({
-                    name: "discover",
-                    params: { applicationId: _this.applicationId.toString() }
-                });
-            }
         });
     };
     ConfigureClientComponent.prototype.select = function (libName) {
@@ -40864,7 +40870,10 @@ var ConfigureClientComponent = /** @class */ (function (_super) {
                 _this.weAreInTrouble = true;
                 return;
             }
-            _this.$router.push({ name: "root" });
+            _this.$router.push({
+                name: "discover",
+                params: { applicationId: _this.applicationId.toString() }
+            });
         });
     };
     ConfigureClientComponent = __decorate([
@@ -40966,6 +40975,7 @@ var DiscoverComponent = /** @class */ (function (_super) {
     function DiscoverComponent() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.applicationId = 0;
+        _this.destroyed$ = false;
         // summary, changes when time window changes
         _this.reportCount = 0;
         _this.incidentCount = 0;
@@ -40982,11 +40992,11 @@ var DiscoverComponent = /** @class */ (function (_super) {
             this.loadGenericOverview();
             return;
         }
+        this.applicationId = parseInt(value);
         if (this.$route.fullPath.indexOf('/discover/') === -1) {
             return;
         }
-        var applicationId = parseInt(value);
-        this.loadApplication(applicationId);
+        this.loadApplication(this.applicationId);
     };
     DiscoverComponent.prototype.created = function () {
         if (this.$route.params.applicationId && this.$route.params.applicationId !== '0') {
@@ -40999,6 +41009,9 @@ var DiscoverComponent = /** @class */ (function (_super) {
     };
     DiscoverComponent.prototype.mounted = function () {
     };
+    DiscoverComponent.prototype.beforeDestroy = function () {
+        this.destroyed$ = true;
+    };
     DiscoverComponent.prototype.assignBestToMe = function () {
     };
     DiscoverComponent.prototype.loadApplication = function (applicationId) {
@@ -41008,6 +41021,9 @@ var DiscoverComponent = /** @class */ (function (_super) {
         q.NumberOfDays = 30;
         __WEBPACK_IMPORTED_MODULE_0__services_AppRoot__["a" /* AppRoot */].Instance.apiClient.query(q)
             .then(function (result) {
+            if (_this.destroyed$) {
+                return;
+            }
             _this.incidentCount = result.StatSummary.Incidents;
             _this.reportCount = result.StatSummary.Reports;
             _this.feedbackCount = result.StatSummary.UserFeedback;
@@ -41025,6 +41041,9 @@ var DiscoverComponent = /** @class */ (function (_super) {
         q.NumberOfDays = 30;
         __WEBPACK_IMPORTED_MODULE_0__services_AppRoot__["a" /* AppRoot */].Instance.apiClient.query(q)
             .then(function (result) {
+            if (_this.destroyed$) {
+                return;
+            }
             _this.incidentCount = result.StatSummary.Incidents;
             _this.reportCount = result.StatSummary.Reports;
             _this.feedbackCount = result.StatSummary.UserFeedback;
@@ -41346,6 +41365,7 @@ var IncidentSearchComponent = /** @class */ (function (_super) {
         _this.apiClient$ = __WEBPACK_IMPORTED_MODULE_5__services_AppRoot__["a" /* AppRoot */].Instance.apiClient;
         _this.incidentService$ = __WEBPACK_IMPORTED_MODULE_5__services_AppRoot__["a" /* AppRoot */].Instance.incidentService;
         _this.readyPromises$ = [];
+        _this.destroyed$ = false;
         //controls
         _this.showFilters = false;
         _this.showApplicationColumn = true;
@@ -41407,13 +41427,18 @@ var IncidentSearchComponent = /** @class */ (function (_super) {
     };
     IncidentSearchComponent.prototype.destroyed = function () {
         __WEBPACK_IMPORTED_MODULE_0__services_PubSub__["a" /* PubSubService */].Instance.unsubscribe(__WEBPACK_IMPORTED_MODULE_1__services_menu_MenuApi__["a" /* MessagingTopics */].ApplicationChanged, this.onApplicationChangedInNavMenu);
+        this.destroyed$ = true;
     };
     IncidentSearchComponent.prototype.mounted = function () {
         var _this = this;
+        this.destroyed$ = false;
         var readyPromise = __WEBPACK_IMPORTED_MODULE_5__services_AppRoot__["a" /* AppRoot */].Instance.loadState('incident-search', this);
         this.readyPromises$.push(readyPromise);
         Promise.all(this.readyPromises$)
             .then(function (resolve) {
+            if (_this.destroyed$) {
+                return;
+            }
             if (_this.$route.params.applicationId) {
                 var id = parseInt(_this.$route.params.applicationId, 10);
                 if (id > 0) {
@@ -41433,7 +41458,6 @@ var IncidentSearchComponent = /** @class */ (function (_super) {
     IncidentSearchComponent.prototype.checkAll = function (e) {
         var target = e.target;
         var elems = document.querySelectorAll('#searchTable tbody input[type="checkbox"]');
-        console.log(elems);
         for (var i = 0; i < elems.length; i++) {
             var elem = elems[i];
             elem.checked = target.checked;
@@ -41526,6 +41550,9 @@ var IncidentSearchComponent = /** @class */ (function (_super) {
         }
         __WEBPACK_IMPORTED_MODULE_5__services_AppRoot__["a" /* AppRoot */].Instance.apiClient.query(query)
             .then(function (result) {
+            if (_this.destroyed$) {
+                return;
+            }
             _this.incidents.splice(0);
             result.Items.forEach(function (item) {
                 var entity = {
@@ -41550,12 +41577,11 @@ var IncidentSearchComponent = /** @class */ (function (_super) {
     };
     IncidentSearchComponent.prototype.assignAllToMe = function () {
         var _this = this;
-        if (this.checkedIncidents.length === 0) {
-            return;
+        var elems = document.querySelectorAll('#searchTable tbody input[type="checkbox"]:checked');
+        for (var i = 0; i < elems.length; i++) {
+            var elem = elems[i];
+            this.incidentService$.assignToMe(parseInt(elem.value));
         }
-        this.checkedIncidents.forEach(function (id) {
-            _this.incidentService$.assignToMe(id);
-        });
         __WEBPACK_IMPORTED_MODULE_5__services_AppRoot__["a" /* AppRoot */].notify('All incidents have been assigned to you. Click on the "Analyze" menu to start working with them.');
         setTimeout(function () { _this.search(); }, 1000);
     };
@@ -41902,6 +41928,7 @@ var HomeHomeComponent = /** @class */ (function (_super) {
     __extends(HomeHomeComponent, _super);
     function HomeHomeComponent() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.destroyed$ = false;
         _this.muteOnboarding = false;
         _this.noApps = false;
         _this.appId = '1';
@@ -41911,28 +41938,41 @@ var HomeHomeComponent = /** @class */ (function (_super) {
     HomeHomeComponent.prototype.created = function () {
         var _this = this;
         __WEBPACK_IMPORTED_MODULE_0__services_AppRoot__["a" /* AppRoot */].Instance.loadState("MainHome", this)
-            .then(function (x) {
-            if (_this.muteOnboarding) {
-                _this.$router.push({ name: "discover" });
+            .then(function (gotState) {
+            if (gotState) {
+                if (_this.muteOnboarding) {
+                    _this.$router.push({ name: "discover" });
+                }
+            }
+            else {
+                var q = new __WEBPACK_IMPORTED_MODULE_1__dto_Core_Incidents__["a" /* FindIncidents */]();
+                q.PageNumber = 1;
+                q.ItemsPerPage = 1;
+                __WEBPACK_IMPORTED_MODULE_0__services_AppRoot__["a" /* AppRoot */].Instance.apiClient.query(q)
+                    .then(function (result) {
+                    if (_this.destroyed$) {
+                        return;
+                    }
+                    _this.showOnboarding = true;
+                    if (result.TotalCount > 0) {
+                        _this.mute();
+                    }
+                });
+                __WEBPACK_IMPORTED_MODULE_0__services_AppRoot__["a" /* AppRoot */].Instance.applicationService.list()
+                    .then(function (apps) {
+                    if (_this.destroyed$) {
+                        return;
+                    }
+                    _this.noApps = apps.length === 0;
+                    if (apps.length > 0) {
+                        _this.appId = apps[0].id.toString();
+                    }
+                });
             }
         });
-        var q = new __WEBPACK_IMPORTED_MODULE_1__dto_Core_Incidents__["a" /* FindIncidents */]();
-        q.PageNumber = 1;
-        q.ItemsPerPage = 1;
-        __WEBPACK_IMPORTED_MODULE_0__services_AppRoot__["a" /* AppRoot */].Instance.apiClient.query(q)
-            .then(function (result) {
-            _this.showOnboarding = true;
-            if (result.TotalCount > 0) {
-                _this.mute();
-            }
-        });
-        __WEBPACK_IMPORTED_MODULE_0__services_AppRoot__["a" /* AppRoot */].Instance.applicationService.list()
-            .then(function (apps) {
-            _this.noApps = apps.length === 0;
-            if (apps.length > 0) {
-                _this.appId = apps[0].id.toString();
-            }
-        });
+    };
+    HomeHomeComponent.prototype.destroyed = function () {
+        this.destroyed$ = true;
     };
     HomeHomeComponent.prototype.start = function () {
         this.$router.push({ name: 'onboardApp', params: { applicationId: this.appId } });
@@ -42023,7 +42063,6 @@ var NavMenuComponent = /** @class */ (function (_super) {
             this.updateCurrent(0);
             return;
         }
-        console.log();
         var applicationId = parseInt(value);
         this.updateCurrent(applicationId);
     };
@@ -42039,7 +42078,6 @@ var NavMenuComponent = /** @class */ (function (_super) {
             });
         });
         this.myApplicationsPromise.then(function (x) {
-            console.log('pushed', _this.myApplications);
         });
         this.$router.beforeEach(function (to, from, next) {
             if (to.fullPath.indexOf('/onboarding/') === -1 && _this.onboarding) {
@@ -42065,7 +42103,6 @@ var NavMenuComponent = /** @class */ (function (_super) {
         }
     };
     NavMenuComponent.prototype.changeApplication = function (applicationId) {
-        console.log('changing app: ' + applicationId);
         if (applicationId == null) {
             this.updateCurrent(0);
         }
@@ -42846,7 +42883,6 @@ var ManageAppSettingsComponent = /** @class */ (function (_super) {
     ManageAppSettingsComponent.prototype.mounted = function () {
     };
     ManageAppSettingsComponent.prototype.onApplicationChanged = function (value, oldValue) {
-        console.log(value);
         this.load();
     };
     ManageAppSettingsComponent.prototype.load = function () {
@@ -61626,45 +61662,27 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "alert alert-warning"
   }, [_c('h3', {
     staticClass: "alert-heading"
-  }, [_vm._v("No reported errors")]), _vm._v(" "), _c('div', [_c('p', [_vm._v("We couldn't find any reported errors. Do you need help?")]), _vm._v(" "), _c('router-link', {
-    staticClass: "btn btn-outline-danger btn-sm",
-    attrs: {
-      "to": {
-        name: 'support',
-        params: {
-          type: 'configdemo'
-        }
-      }
-    }
-  }, [_vm._v("Schedule a (free) demo with one of our developers")]), _vm._v(" "), _c('a', {
-    staticClass: "btn btn-outline-danger btn-sm",
-    attrs: {
-      "href": "https://coderr.io/documentation/",
-      "target": "_blank"
-    }
-  }, [_vm._v("Read the reporting errors guide")]), _vm._v(" "), _c('a', {
-    staticClass: "btn btn-outline-danger btn-sm",
-    attrs: {
-      "href": "#"
-    },
-    on: {
-      "click": function($event) {
-        $event.preventDefault();
-        _vm.onExitGuide($event)
-      }
-    }
-  }, [_vm._v("Back")])], 1)]) : _vm._e(), _vm._v(" "), (_vm.gotNoIncidents) ? _c('div', {
-    staticClass: "alert alert-warning"
-  }, [_c('h3', {
-    staticClass: "alert-heading"
   }, [_vm._v("No errors have been reported.")]), _vm._v(" "), _c('div', [_c('p', [_vm._v("We could not find any reported errors in our database. ")]), _vm._v(" "), _c('p', [_vm._v("Do you want our help to troubleshoot the issue?")]), _vm._v(" "), _c('button', {
     staticClass: "btn btn-outline-danger",
+    attrs: {
+      "id": "configureHelpButton"
+    },
     on: {
       "click": _vm.goToSupport
     }
-  }, [_vm._v("Get help from our developers")]), _vm._v(" "), _c('button', {
-    staticClass: "btn btn-outline-danger"
-  }, [_vm._v("Exit onboarding")])])]) : _vm._e(), _vm._v(" "), (_vm.noConnection) ? _c('div', {
+  }, [_vm._v("Get help from our developers")]), _vm._v(" "), _c('a', {
+    staticClass: "btn btn-outline-danger",
+    attrs: {
+      "href": "https://coderr.io/guides-and-support/"
+    }
+  }, [_vm._v("Guides and support")]), _vm._v(" "), _c('router-link', {
+    staticClass: "btn btn-outline-danger",
+    attrs: {
+      "to": {
+        name: 'root'
+      }
+    }
+  }, [_vm._v("Exit onboarding")])], 1)]) : _vm._e(), _vm._v(" "), (_vm.noConnection) ? _c('div', {
     staticClass: "alert alert-warning"
   }, [_c('h3', {
     staticClass: "alert-heading"
@@ -61691,7 +61709,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('p', [_vm._v("As we could not download them, you need to visit "), _c('a', {
     attrs: {
       "target": "_blank",
-      "href": "https://coderr.io/documentation"
+      "href": "https://coderr.io/guides-and-support/"
     }
   }, [_vm._v("our documentation")]), _vm._v(" by yourself.")])
 }]}
@@ -62033,6 +62051,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "col-lg-8"
   }, [_c('form', {
+    attrs: {
+      "id": "createAppForm"
+    },
     on: {
       "submit": function($event) {
         $event.preventDefault();
@@ -62579,7 +62600,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "card"
   }, [_c('div', {
-    staticClass: "card-body"
+    staticClass: "card-body trend"
   }, [_c('div', {
     staticClass: "position-relative coderr-chart",
     staticStyle: {
@@ -63435,7 +63456,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "col-xl-4 col-lg-3 col-md-4"
   }, [_c('div', {
-    staticClass: "card"
+    staticClass: "card",
+    attrs: {
+      "id": "SearchOptions"
+    }
   }, [_c('div', {
     staticClass: "card-header"
   }, [_vm._v("\n                Filter\n            ")]), _vm._v(" "), _c('div', {
@@ -63470,6 +63494,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._v("Search")]), _vm._v(" "), _c('button', {
     staticClass: "mt-1 btn",
+    attrs: {
+      "name": "more"
+    },
     on: {
       "click": _vm.toggleFilterDisplay
     }
@@ -63619,6 +63646,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control rounded mb-1",
     attrs: {
+      "name": "CollectionName",
       "type": "text",
       "placeholder": "Collection name"
     },
@@ -63640,6 +63668,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control rounded mb-1",
     attrs: {
+      "name": "PropertyName",
       "type": "text",
       "placeholder": "Property name"
     },
@@ -63661,6 +63690,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control rounded mb-1",
     attrs: {
+      "name": "PropertyValue",
       "type": "text",
       "placeholder": "Property value"
     },
@@ -63675,6 +63705,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }), _vm._v(" "), _c('hr')]), _vm._v(" "), _c('button', {
     staticClass: "btn btn-primary w-100",
+    attrs: {
+      "name": "executeSearch"
+    },
     on: {
       "click": _vm.search
     }
@@ -63697,7 +63730,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "type": "checkbox"
     },
     on: {
-      "click": function($event) {
+      "change": function($event) {
         _vm.checkAll($event)
       }
     }
@@ -64626,12 +64659,15 @@ if (true) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "mt-4"
+    staticClass: "mt-4",
+    attrs: {
+      "id": "ManageView"
+    }
   }, [_c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-sm-12"
-  }, [_c('h3', [_vm._v("Adminstration area")]), _vm._v(" "), _c('p', {
+  }, [_c('h3', [_vm._v("Administration area")]), _vm._v(" "), _c('p', {
     staticClass: "lead"
   }, [_vm._v("Welcome to the administration area.")]), _vm._v(" "), _c('p', [_vm._v("Here you can configure most of the aspects in Coderr. To manage an application, select to the application that you want to manage in the top left menu.")]), _vm._v(" "), _c('p', [_vm._v("You can also create a new application by pressing the button below.")]), _vm._v(" "), _c('router-link', {
     staticClass: "btn btn-primary",
@@ -64852,7 +64888,10 @@ if (true) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', [_c('discover-menu'), _vm._v(" "), _c('div', {
-    staticClass: "mt-2 mr-2 ml-2"
+    staticClass: "mt-2 mr-2 ml-2",
+    attrs: {
+      "id": "DiscoverView"
+    }
   }, [_c('router-view')], 1)], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true

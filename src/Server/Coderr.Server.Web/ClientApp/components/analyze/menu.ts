@@ -22,6 +22,11 @@ export default class AnalyzeMenuComponent extends Vue {
         MyIncidents.Instance.subscribeOnSelectedIncident(this.onIncidentSelected);
         MyIncidents.Instance.subscribeOnListChanges(x => {
             this.incidents = MyIncidents.Instance.myIncidents;
+            if (!this.incidentId && this.incidents.length > 0) {
+                this.incidentId = this.incidents[0].incidentId;
+                MyIncidents.Instance.switchIncident(this.incidentId);
+                this.$router.push({ name: 'analyzeIncident', params: { incidentId: this.incidentId.toString() } });
+            }
         });
         MyIncidents.Instance.ready()
             .then(x => {

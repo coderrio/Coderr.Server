@@ -126,11 +126,15 @@ namespace Coderr.Server.Web.Controllers
                     ? "~/#/welcome/admin/"
                     : "~/#/welcome/user/");
             }
+            catch (ArgumentOutOfRangeException)
+            {
+                ModelState.AddModelError("", "Activation key was not found.");
+            }
             catch (Exception err)
             {
                 ModelState.AddModelError("", err.Message);
-                return View();
             }
+            return View();
         }
 
         [HttpGet("account/activation/requested")]

@@ -16,7 +16,6 @@ interface ILibrarySummary {
 export default class ConfigureClientComponent extends Vue {
     libraries: ILibrarySummary[] = [];
     instruction: string | null = null;
-    weAreInTrouble = false;
 
     applicationId = 0;
     appKey = "";
@@ -24,7 +23,7 @@ export default class ConfigureClientComponent extends Vue {
     reportUrl = "";
 
     noConnection = false;
-    gotNoIncidents = false;
+    weAreInTrouble = false;
 
     created() {
         this.applicationId = parseInt(this.$route.params.applicationId, 10);
@@ -59,21 +58,7 @@ export default class ConfigureClientComponent extends Vue {
             params: { type: "configuration" }
         });
     }
-
-    onExitGuide() {
-        AppRoot.Instance.incidentService.find(this.applicationId)
-            .then(x => {
-                if (x.Items.length === 0) {
-                    this.gotNoIncidents = true;
-                } else {
-                    this.$router.push({
-                        name: "discover",
-                        params: { applicationId: this.applicationId.toString() }
-                    });
-                }
-            });
-    }
-
+    
     select(libName: string) {
         var appInfo = AppRoot.Instance.currentUser.applications[0];
         AppRoot.Instance.applicationService.get(appInfo.id)
@@ -110,7 +95,10 @@ export default class ConfigureClientComponent extends Vue {
                     return;
                 }
 
-                this.$router.push({ name: "root" });
+                this.$router.push({
+                    name: "discover",
+                    params: { applicationId: this.applicationId.toString() }
+                });
             });
 
     }

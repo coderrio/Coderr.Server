@@ -204,6 +204,12 @@ namespace Coderr.Server.Domain.Core.Account
         public void SetVerifiedEmail(string email)
         {
             Email = email ?? throw new ArgumentNullException(nameof(email));
+
+            // To enable UI testing without email integration
+            if (email.EndsWith("test@localhost.com"))
+            {
+                ActivationKey = "abc123";
+            }
         }
 
         /// <summary>

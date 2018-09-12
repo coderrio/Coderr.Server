@@ -248,6 +248,18 @@ const routes = [
     }
 ];
 
+var hooks = {
+    mounted: function(instance:Vue) {},
+    created: function(instance:Vue) {},
+    afterRoute: function (to: string, from: string) {}
+};
+
+// Hack for tests
+var v = <any>window;
+if (v["Cypress"]) {
+    v['MyVueHooks'] = hooks;
+}
+
 var ourVue: Vue;
 AppRoot.Instance.loadCurrentUser()
     .then(user => {
@@ -257,10 +269,20 @@ AppRoot.Instance.loadCurrentUser()
             router: new VueRouter({ mode: "history", routes: routes }),
             render: h => h(require("./components/home/app.vue.html")),
             created: () => {
+                hooks.created(ourVue);
             },
             mounted: () => {
+                hooks.mounted(ourVue);
+
             }
         });
+        ourVue.$router.afterEach((to, from) => {
+            hooks.afterRoute(to.path, from.path);
+        })
         ourVue.user$ = user;
+
+        if (v["Cypress"]) {
+            v["MyVue"] = ourVue;
+        }
     });
 
