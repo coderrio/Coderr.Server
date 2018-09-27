@@ -13,6 +13,26 @@
                                 </label>
                                 <input type="text" class="form-control" placeholder="Application name" v-model="applicationName" required="required" autofocus="autofocus" />
                             </div>
+                            <div class="">
+                                <h3>Optional information</h3>
+                                <em>
+                                    Specify the information below to see how your team compares to other similar teams.
+                                </em>
+                                <div class="form-group">
+                                    <label>
+                                        Number of full time developers
+                                    </label>
+                                    <input type="number" class="form-control" name="NumberOfDevelopers" v-model="numberOfDevelopers" />
+                                    <em>How many full time developers are working with this application? "2" can mean that two developers work full time or that four developers work half time.</em>
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        Estimated number of errors
+                                    </label>
+                                    <input type="number" class="form-control" name="NumberOfErrors" v-model="estimatedNumberOfErrors" />
+                                    <em>Estimation of how many errors you think that Coderr will find during the first month.</em>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <input type="submit" value="Create application" class="btn btn-primary" :disabled="disableButton" />
                             </div>

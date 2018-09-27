@@ -9,6 +9,8 @@ import { Component, Watch } from "vue-property-decorator";
 export default class ManageCreateApplicationComponent extends Vue {
     private timer$: any;
     applicationName = "";
+    numberOfDevelopers?: number = null;
+    estimatedNumberOfErrors?: number = null;
     disableButton = false;
 
     created() {

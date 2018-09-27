@@ -45,5 +45,15 @@ namespace Coderr.Server.Api.Core.Applications.Commands
         /// </summary>
         [IgnoreField]
         public int UserId { get; set; }
+
+        /// <summary>
+        /// Estimated number of errors
+        /// </summary>
+        public int? NumberOfErrors { get; set; }
+
+        /// <summary>
+        /// Number of developers that work full time with this application.
+        /// </summary>
+        public decimal? NumberOfDevelopers { get; set; }
     }
 }

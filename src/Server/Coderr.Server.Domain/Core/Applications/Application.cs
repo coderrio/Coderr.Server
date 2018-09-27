@@ -8,6 +8,8 @@ namespace Coderr.Server.Domain.Core.Applications
     /// </summary>
     public class Application
     {
+        private bool _muteStatisticsQuestion;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="Application" /> class.
         /// </summary>
@@ -78,6 +80,31 @@ namespace Coderr.Server.Domain.Core.Applications
         /// </summary>
         /// <remarks>The user have to manually configure the secret.</remarks>
         public string SharedSecret { get; private set; }
+
+        /// <summary>
+        /// Entered when the user created the application
+        /// </summary>
+        public int? EstimatedNumberOfErrors { get; private set; }
+
+        /// <summary>
+        /// Number of full time developers
+        /// </summary>
+        public decimal? NumberOfFtes { get; private set; }
+
+        public void AddStatsBase(decimal? fte, int? numberOfErrors)
+        {
+            EstimatedNumberOfErrors = numberOfErrors;
+            NumberOfFtes = fte;
+        }
+
+        /// <summary>
+        /// Don't ask for statistics information
+        /// </summary>
+        public bool MuteStatisticsQuestion
+        {
+            get => _muteStatisticsQuestion || NumberOfFtes > 0 || EstimatedNumberOfErrors > 0;
+            set => _muteStatisticsQuestion = value;
+        }
     }
 
 

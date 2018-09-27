@@ -64,7 +64,8 @@ namespace Coderr.Server.App.Core.Applications.QueryHandlers
                 Name = app.Name,
                 SharedSecret = app.SharedSecret,
                 TotalIncidentCount = totalCount,
-                Versions = versions.ToArray()
+                Versions = versions.ToArray(),
+                ShowStatsQuestion = !app.MuteStatisticsQuestion
             };
         }
     }

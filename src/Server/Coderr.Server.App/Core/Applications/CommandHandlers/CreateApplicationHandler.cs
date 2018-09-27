@@ -28,8 +28,13 @@ namespace Coderr.Server.App.Core.Applications.CommandHandlers
                 ApplicationType =
                     (TypeOfApplication) Enum.Parse(typeof(TypeOfApplication), command.TypeOfApplication.ToString())
             };
-            var creator = await _userRepository.GetUserAsync(command.UserId);
 
+            if (command.NumberOfDevelopers > 0)
+            {
+                app.AddStatsBase(command.NumberOfDevelopers, command.NumberOfErrors);
+            }
+
+            var creator = await _userRepository.GetUserAsync(command.UserId);
             await _repository.CreateAsync(app);
             await _repository.CreateAsync(new ApplicationTeamMember(app.Id, creator.AccountId, creator.UserName)
             {

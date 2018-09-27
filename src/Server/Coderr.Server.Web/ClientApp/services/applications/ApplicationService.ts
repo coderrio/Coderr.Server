@@ -142,7 +142,7 @@ export class ApplicationService {
         return summary;
     }
 
-    async create(applicationName: string): Promise<string> {
+    async create(applicationName: string, fullTimeDevelopers?: number, numberOfErrors?: number): Promise<string> {
         if (!applicationName) {
             throw new Error("Application name must be specified.");
         }
