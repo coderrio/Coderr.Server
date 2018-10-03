@@ -151,6 +151,8 @@ export class ApplicationService {
         cmd.Name = applicationName;
         cmd.ApplicationKey = Guid.newGuid().replace(/\-/g, '');
         cmd.TypeOfApplication = TypeOfApplication.DesktopApplication;
+        cmd.NumberOfDevelopers = fullTimeDevelopers;
+        cmd.NumberOfErrors = numberOfErrors;
 
         await this.apiClient.command(cmd);
         return cmd.ApplicationKey;

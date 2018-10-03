@@ -16,6 +16,7 @@ export class GetOverviewResult
     public IncidentsPerApplication: GetOverviewApplicationResult[];
     public StatSummary: OverviewStatSummary;
     public TimeAxisLabels: string[];
+    public MissedReports?: number;
 }
 export class OverviewStatSummary
 {

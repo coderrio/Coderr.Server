@@ -31,5 +31,10 @@
         ///     Labels for the time axis (X-axis) in the chart.
         /// </summary>
         public string[] TimeAxisLabels { get; set; }
+
+        /// <summary>
+        /// Number of reports that 
+        /// </summary>
+        public int MissedReports { get; set; }
     }
 }

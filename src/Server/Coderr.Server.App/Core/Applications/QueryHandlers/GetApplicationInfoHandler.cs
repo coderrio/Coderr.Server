@@ -8,7 +8,6 @@ using Coderr.Server.Domain.Core.Applications;
 using Coderr.Server.Domain.Core.Incidents;
 using Coderr.Server.Domain.Modules.ApplicationVersions;
 using DotNetCqs;
-
 using TypeOfApplication = Coderr.Server.Api.Core.Applications.TypeOfApplication;
 
 namespace Coderr.Server.App.Core.Applications.QueryHandlers

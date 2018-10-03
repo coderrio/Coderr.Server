@@ -53,6 +53,13 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
         {
             if (report == null) throw new ArgumentNullException("report");
 
+            var countThisMonth = _repository.GetMonthReportCount();
+            if (countThisMonth >= 500)
+            {
+                _repository.AddMissedReport(DateTime.Today);
+                return;
+            }
+
             var exists = _repository.ExistsByClientId(report.ClientReportId);
             if (exists)
             {

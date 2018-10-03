@@ -113,7 +113,7 @@ export class CreateApplication {
     public ApplicationKey: string;
     public Name: string;
     public TypeOfApplication: TypeOfApplication;
-    public FullTimeDevelopers?: number;
+    public NumberOfDevelopers?: number;
     public NumberOfErrors?: number;
 }
 export class DeleteApplication {

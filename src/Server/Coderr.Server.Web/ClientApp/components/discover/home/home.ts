@@ -1,3 +1,5 @@
+import { PubSubService, MessageContext } from "../../../services/PubSub";
+import * as MenuApi from "../../../services/menu/MenuApi";
 import { AppRoot } from "../../../services/AppRoot";
 import { GetOverview, GetOverviewResult } from "../../../dto/Web/Overview"
 import { FindIncidentsResultItem } from "../../../dto/Core/Incidents"
@@ -106,6 +108,8 @@ export default class DiscoverComponent extends Vue {
                 this.feedbackCount = result.StatSummary.UserFeedback;
                 this.followers = result.StatSummary.Followers;
                 this.displayChart(result);
+
+                PubSubService.Instance.publish(MenuApi.MessagingTopics.IgnoredReportCountUpdated, result.MissedReports);
             });
 
         AppRoot.Instance.incidentService.getMine()

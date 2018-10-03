@@ -8,5 +8,7 @@ namespace Coderr.Server.App.Modules.MonthlyStats
         public int ReOpenedCount { get; set; }
         public int ClosedCount { get; set; }
         public int IgnoredCount { get; set; }
+        public decimal? NumberOfDevelopers { get; set; }
+        public int? EstimatedNumberOfErrors { get; set; }
     }
 }

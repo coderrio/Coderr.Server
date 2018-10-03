@@ -21,7 +21,7 @@ export default class ManageCreateApplicationComponent extends Vue {
     }
 
     createApplication() {
-        AppRoot.Instance.applicationService.create(this.applicationName)
+        AppRoot.Instance.applicationService.create(this.applicationName, this.numberOfDevelopers, this.estimatedNumberOfErrors)
             .then(appKey => {
                 this.timer$ = setInterval(() => {
                     this.checkIfApplicationIsCreated(appKey);

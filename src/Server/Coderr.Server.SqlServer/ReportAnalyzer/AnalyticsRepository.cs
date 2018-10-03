@@ -99,6 +99,33 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer
             _unitOfWork.Update(incident);
         }
 
+        public int GetMonthReportCount()
+        {
+            using (var cmd = _unitOfWork.CreateCommand())
+            {
+                var from = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+                var to = DateTime.UtcNow;
+
+                cmd.CommandText =
+                    "SELECT count(*) FROM ErrorReports WHERE CreatedAtUtc >= @from ANd CreatedAtUtc <= @to";
+                cmd.AddParameter("from", from);
+                cmd.AddParameter("to", to);
+                return (int)cmd.ExecuteScalar();
+            }
+        }
+
+        public void AddMissedReport(DateTime date)
+        {
+            using (var cmd = _unitOfWork.CreateCommand())
+            {
+                cmd.CommandText =
+                    @"update IgnoredReports set NumberOfReports=NumberOfReports+1 WHERE date = @date;
+                        IF @@ROWCOUNT=0 insert into IgnoredReports(NumberOfReports) values(1);";
+                cmd.AddParameter("date", date);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
         public void CreateReport(ErrorReportEntity report)
         {
             if (report == null) throw new ArgumentNullException("report");

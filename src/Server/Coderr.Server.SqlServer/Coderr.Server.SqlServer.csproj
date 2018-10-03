@@ -29,5 +29,6 @@
     <None Remove="Schema\Update.v12.sql" />
     <None Remove="Schema\Update.v13.sql" />
     <None Remove="Schema\Update.v14.sql" />
+    <None Remove="Schema\Update.v15.sql" />
   </ItemGroup>
 </Project>
