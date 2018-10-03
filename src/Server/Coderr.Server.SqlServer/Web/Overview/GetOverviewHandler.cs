@@ -134,6 +134,18 @@ right join applications on (applicationid=applications.id)
                 }
             }
 
+            using (var cmd = _unitOfWork.CreateCommand())
+            {
+                var from = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+                var to = DateTime.UtcNow;
+                cmd.CommandText =
+                    "SELECT sum(NumberOfReports) FROM IgnoredReports WHERE  date >= @from ANd date <= @to";
+                cmd.AddParameter("from", from);
+                cmd.AddParameter("to", to);
+                result.MissedReports = (int) cmd.ExecuteScalar();
+
+            }
+
             await GetStatSummary(query, result);
 
 

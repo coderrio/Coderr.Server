@@ -57,5 +57,12 @@ namespace Coderr.Server.ReportAnalyzer
         /// <exception cref="ArgumentNullException">incentAnalysis</exception>
         void UpdateIncident(IncidentBeingAnalyzed incidentAnalysis);
 
+        /// <summary>
+        /// Number of reports received this month
+        /// </summary>
+        /// <returns></returns>
+        int GetMonthReportCount();
+
+        void AddMissedReport(DateTime date);
     }
 }

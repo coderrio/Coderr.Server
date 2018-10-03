@@ -31,6 +31,7 @@ export class GetApplicationInfoResult {
     public SharedSecret: string;
     public TotalIncidentCount: number;
     public Versions: string[];
+    public ShowStatsQuestion: boolean;
 }
 export class GetApplicationList {
     public static TYPE_NAME: string = 'GetApplicationList';
@@ -112,6 +113,8 @@ export class CreateApplication {
     public ApplicationKey: string;
     public Name: string;
     public TypeOfApplication: TypeOfApplication;
+    public NumberOfDevelopers?: number;
+    public NumberOfErrors?: number;
 }
 export class DeleteApplication {
     public static TYPE_NAME: string = 'DeleteApplication';

@@ -133,14 +133,16 @@ namespace Coderr.Server.SqlServer.Core.Applications
             using (var cmd = (DbCommand) _uow.CreateCommand())
             {
                 cmd.CommandText =
-                    @"INSERT INTO Applications (Name, AppKey, CreatedById, CreatedAtUtc, ApplicationType, SharedSecret) 
-                        VALUES(@Name, @AppKey, @CreatedById, @CreatedAtUtc, @ApplicationType, @SharedSecret);SELECT SCOPE_IDENTITY();";
+                    @"INSERT INTO Applications (Name, AppKey, CreatedById, CreatedAtUtc, ApplicationType, SharedSecret, EstimatedNumberOfErrors, NumberOfFtes) 
+                        VALUES(@Name, @AppKey, @CreatedById, @CreatedAtUtc, @ApplicationType, @SharedSecret, @EstimatedNumberOfErrors, @NumberOfFtes);SELECT SCOPE_IDENTITY();";
                 cmd.AddParameter("Name", application.Name);
                 cmd.AddParameter("AppKey", application.AppKey);
                 cmd.AddParameter("CreatedById", application.CreatedById);
                 cmd.AddParameter("CreatedAtUtc", application.CreatedAtUtc);
                 cmd.AddParameter("ApplicationType", application.ApplicationType.ToString());
                 cmd.AddParameter("SharedSecret", application.SharedSecret);
+                cmd.AddParameter("EstimatedNumberOfErrors", application.EstimatedNumberOfErrors);
+                cmd.AddParameter("NumberOfFtes", application.NumberOfFtes);
                 var item = (decimal) await cmd.ExecuteScalarAsync();
                 application.GetType().GetProperty("Id").SetValue(application, (int) item);
             }

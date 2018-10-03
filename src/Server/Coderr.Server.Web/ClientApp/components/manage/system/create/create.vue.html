@@ -13,6 +13,28 @@
                                 </label>
                                 <input type="text" class="form-control" placeholder="Application name" v-model="applicationName" required="required" autofocus="autofocus" />
                             </div>
+                            <div class="">
+                                <h3>Optional information</h3>
+                                <p>
+                                    <em>
+                                        Specify the information below to see how your team compares to other similar teams.
+                                    </em>
+                                </p>
+                                <div class="form-group">
+                                    <label>
+                                        Number of full time developers
+                                    </label>
+                                    <input type="number" step="0.5" class="form-control" name="NumberOfDevelopers" v-model="numberOfDevelopers" placeholder="1.5" />
+                                    <em>How many full time developers are working with this application? "2" corresponds either to two full time developers or four developers that work half time.</em>
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        Estimated number of errors
+                                    </label>
+                                    <input type="number" class="form-control" name="NumberOfErrors" v-model="estimatedNumberOfErrors" placeholder="1337" />
+                                    <em>Estimation of how many errors you think that Coderr will find during the first month for this application.</em>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <input type="submit" value="Create application" class="btn btn-primary" :disabled="disableButton" />
                             </div>

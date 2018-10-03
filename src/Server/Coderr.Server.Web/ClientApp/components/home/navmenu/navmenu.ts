@@ -24,7 +24,7 @@ export default class NavMenuComponent extends Vue {
     myApplications: MenuApi.MenuItem[] = [];
     currentApplicationName: string = 'All applications';
     currentApplicationId: number | null = null;
-
+    missedReportsMessage: string = '';
     isDiscoverActive: boolean = true;
     isAnalyzeActive: boolean = false;
     isDeploymentActive: boolean = false;
@@ -71,6 +71,13 @@ export default class NavMenuComponent extends Vue {
             next();
         });
 
+        PubSubService.Instance.subscribe(MenuApi.MessagingTopics.IgnoredReportCountUpdated, ctx => {
+            if (ctx.message.body > 0) {
+                this.missedReportsMessage = `Coderr have discarded ${ctx.message.body} error report(s) this month. (Community Server limit)`;
+            } else {
+                this.missedReportsMessage = '';
+            }
+        });
         PubSubService.Instance.subscribe(MenuApi.MessagingTopics.SetApplication, ctx => {
             var msg = <MenuApi.SetApplication>ctx.message.body;
             this.changeApplication(msg.applicationId);

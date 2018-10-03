@@ -142,7 +142,7 @@ export class ApplicationService {
         return summary;
     }
 
-    async create(applicationName: string): Promise<string> {
+    async create(applicationName: string, fullTimeDevelopers?: number, numberOfErrors?: number): Promise<string> {
         if (!applicationName) {
             throw new Error("Application name must be specified.");
         }
@@ -151,6 +151,8 @@ export class ApplicationService {
         cmd.Name = applicationName;
         cmd.ApplicationKey = Guid.newGuid().replace(/\-/g, '');
         cmd.TypeOfApplication = TypeOfApplication.DesktopApplication;
+        cmd.NumberOfDevelopers = fullTimeDevelopers;
+        cmd.NumberOfErrors = numberOfErrors;
 
         await this.apiClient.command(cmd);
         return cmd.ApplicationKey;

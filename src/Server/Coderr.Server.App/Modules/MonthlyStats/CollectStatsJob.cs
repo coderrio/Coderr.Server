@@ -67,7 +67,8 @@ namespace Coderr.Server.App.Modules.MonthlyStats
                         var item = new AppResult
                         {
                             ApplicationId = reader.GetInt32(0),
-                            Count = reader.GetInt32(1)
+                            Count = reader.GetInt32(1),
+                            
                         };
                         results.Add(item);
                     }
@@ -211,6 +212,8 @@ namespace Coderr.Server.App.Modules.MonthlyStats
         {
             var apps = new Dictionary<int, ApplicationUsageStatisticsDto>();
 
+            await GetApps(apps);
+
             var values = await GetIncidentCounts(lastMonth);
             MergeStats(values, apps, (stat, value) => stat.IncidentCount = value);
 
@@ -247,6 +250,27 @@ namespace Coderr.Server.App.Modules.MonthlyStats
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             await client.PostAsync("https://coderr.io/stats/usage", content);
             return true;
+        }
+
+        private async Task GetApps(Dictionary<int, ApplicationUsageStatisticsDto> apps)
+        {
+            using (var cmd = _unitOfWork.CreateDbCommand())
+            {
+                cmd.CommandText = @"select Id, EstimatedNumberOfErrors, NumberOfFtes FROM Applications";
+                using (var reader = await cmd.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        var item = new ApplicationUsageStatisticsDto()
+                        {
+                            ApplicationId = reader.GetInt32(0),
+                            EstimatedNumberOfErrors= reader.GetFieldValue<int?>(1),
+                            NumberOfDevelopers = reader.GetFieldValue<decimal?>(2)
+                        };
+                        apps[item.ApplicationId] = item;
+                    }
+                }
+            }
         }
 
         private static void MergeStats(IEnumerable<AppResult> appResults, IDictionary<int, ApplicationUsageStatisticsDto> apps, Action<ApplicationUsageStatisticsDto, int> assignMethod)

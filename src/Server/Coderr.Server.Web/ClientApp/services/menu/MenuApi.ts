@@ -10,6 +10,7 @@ export class MessagingTopics
 {
     static SetApplication: string = "/menu/application/set/";
     static ApplicationChanged: string = "/menu/application/changed/";
+    static IgnoredReportCountUpdated = "/menu/missedreportcount/updated/";
 }
 
 export class SetApplication {
