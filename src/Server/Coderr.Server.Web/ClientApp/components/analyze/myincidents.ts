@@ -33,9 +33,9 @@ export class MyIncidents {
     public static Instance = new MyIncidents();
     private allMyIncidents$: IMyIncident[] = [];
     private selectedCallbacks$: incidentSelectedCallback[] = [];
-    private changedCallbacks$: incidentListChanged[] = [];
+    private listChangedCallback$: incidentListChanged[] = [];
     private loadPromise$: Promise<any>;
-
+    
     myIncidents: IMyIncident[] = [];
     selectedIncident: IMyIncident | null;
     menuTitle = '';
@@ -71,6 +71,7 @@ export class MyIncidents {
      */
     async switchApplication(applicationId: number) {
         await this.loadPromise$;
+
         if (applicationId === 0) {
             this.selectedApplicationId = null;
         } else {
@@ -90,7 +91,10 @@ export class MyIncidents {
     }
 
     async switchIncident(incidentId: number) {
-        await this.loadPromise$;
+        if (this.loadPromise$) {
+            await this.loadPromise$;
+        }
+
         var incident = await this.getIncident(incidentId);
         if (incident == null) {
             this.getNextIncident();
@@ -116,9 +120,15 @@ export class MyIncidents {
      * @returns The incident that was selected when the subscribe method was invoked (null if none was selected)
      */
     public subscribeOnListChanges(callback: incidentListChanged): IMyIncident {
-        this.changedCallbacks$.push(callback);
+        this.listChangedCallback$.push(callback);
         return this.selectedIncident;
     }
+
+    unsubscribe(callback: any) {
+        this.selectedCallbacks$ = this.selectedCallbacks$.filter(x => x !== callback);
+        this.listChangedCallback$ = this.listChangedCallback$.filter(x => x !== callback);
+    }
+
 
     private onIncidentAssigned(msgContext: MessageContext) {
         var msg = <IncidentAssigned>msgContext.message.body;
@@ -140,7 +150,7 @@ export class MyIncidents {
     }
 
     private triggerIncidentListCallbacks(incidentId?: number, added?: boolean) {
-        this.changedCallbacks$.forEach(x => {
+        this.listChangedCallback$.forEach(x => {
             x({ incidentId, added });
         });
     }
@@ -155,15 +165,12 @@ export class MyIncidents {
         if (mine.length === 0) {
             return;
         }
-
         mine.forEach(dto => {
             if (!this.allMyIncidents$.find(item => item.incidentId === dto.Id)) {
                 var item = this.createItem(dto.Id, parseInt(dto.ApplicationId, 10), dto.Name);
                 this.allMyIncidents$.push(item);
             }
         });
-
-        this.filterMyIncidents();
     }
 
     private filterMyIncidents() {

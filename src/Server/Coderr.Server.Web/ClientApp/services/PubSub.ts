@@ -93,6 +93,6 @@ class Topic {
     }
 
     unsubscribe(callback: ListenerCallback) {
-        this.listeners = this.listeners.filter(x => x === callback);
+        this.listeners = this.listeners.filter(x => x !== callback);
     }
 }

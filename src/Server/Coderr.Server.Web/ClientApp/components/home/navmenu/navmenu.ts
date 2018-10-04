@@ -28,7 +28,7 @@ export default class NavMenuComponent extends Vue {
     isDiscoverActive: boolean = true;
     isAnalyzeActive: boolean = false;
     isDeploymentActive: boolean = false;
-
+    lastPublishedId$ = 0;
     onboarding: boolean = false;
 
     discoverLink: string = '/discover/';
@@ -113,10 +113,10 @@ export default class NavMenuComponent extends Vue {
         if (paramCount === 1 && currentRoute.params.hasOwnProperty('applicationId')) {
             if (applicationId == null) {
                 this.$router.push({ name: currentRoute.name });
-                PubSubService.Instance.publish(MenuApi.MessagingTopics.ApplicationChanged, { applicationId: null });
+                this.publishApplicationChanged(null);
             } else {
                 this.$router.push({ name: currentRoute.name, params: { applicationId: applicationId.toString() } });
-                PubSubService.Instance.publish(MenuApi.MessagingTopics.ApplicationChanged, { applicationId: applicationId });
+                this.publishApplicationChanged(applicationId);
             }
             return;
         }
@@ -138,26 +138,26 @@ export default class NavMenuComponent extends Vue {
             this.$router.push(route);
         }
 
-        PubSubService.Instance.publish(MenuApi.MessagingTopics.ApplicationChanged, { applicationId: applicationId });
+        this.publishApplicationChanged(applicationId);
     }
 
     private askCallbacksForWhichMenu(route: Router.Route): string {
         var chosenMenu = "";
-        var ctx: IRouteNavigation = {
+        const ctx: IRouteNavigation = {
             routeName: <string>route.name,
             url: route.fullPath,
             setMenu: (menuName: string) => {
                 chosenMenu = menuName;
             }
-        }
-        for (var i = 0; i < this.callbacks.length; i++) {
+        };
+        for (let i = 0; i < this.callbacks.length; i++) {
             this.callbacks[i](ctx);
             if (chosenMenu !== "") {
                 return chosenMenu;
             }
         }
 
-        return '';
+        return "";
     }
 
 
@@ -165,7 +165,10 @@ export default class NavMenuComponent extends Vue {
         if (applicationId === 0) {
             this.currentApplicationName = "All applications";
             this.currentApplicationId = null;
-            this.discoverLink = '/discover/';
+            this.discoverLink = "/discover/";
+            const msg = new MenuApi.ApplicationChanged();
+            msg.applicationId = applicationId;
+            this.publishApplicationChanged(null);
             return;
         }
 
@@ -175,10 +178,13 @@ export default class NavMenuComponent extends Vue {
 
             var title = app.title;
             if (title.length > 20) {
-                title = title.substr(0, 15) + '[...]';
+                title = title.substr(0, 15) + "[...]";
             }
             this.currentApplicationName = title;
-            this.discoverLink = '/discover/' + applicationId;
+            this.discoverLink = `/discover/${applicationId}`;
+            var msg = new MenuApi.ApplicationChanged();
+            msg.applicationId = applicationId;
+            this.publishApplicationChanged(applicationId);
         });
     }
 
@@ -189,11 +195,11 @@ export default class NavMenuComponent extends Vue {
         }
 
         const app: MenuApi.MenuItem =
-            {
-                title: name,
-                url: '',
-                tag: applicationId
-            };
+        {
+            title: name,
+            url: '',
+            tag: applicationId
+        };
         return app;
 
     }
@@ -205,6 +211,17 @@ export default class NavMenuComponent extends Vue {
         }
 
         throw new Error('Failed to find application ' + applicationId + ".\r\n" + JSON.stringify(this.myApplications));
+    }
+
+    private publishApplicationChanged(applicationId: number) {
+        if (applicationId === this.lastPublishedId$) {
+            return;
+        }
+
+        this.lastPublishedId$ = applicationId;
+        var msg = new MenuApi.ApplicationChanged();
+        msg.applicationId = applicationId;
+        PubSubService.Instance.publish(MenuApi.MessagingTopics.ApplicationChanged, msg);
     }
 
 }
