@@ -79,6 +79,7 @@ export default class NavMenuComponent extends Vue {
             }
         });
         PubSubService.Instance.subscribe(MenuApi.MessagingTopics.SetApplication, ctx => {
+            console.log('SET', ctx.message)
             var msg = <MenuApi.SetApplication>ctx.message.body;
             this.changeApplication(msg.applicationId);
         });
@@ -110,7 +111,15 @@ export default class NavMenuComponent extends Vue {
             }
         }
 
-        if (paramCount === 1 && currentRoute.params.hasOwnProperty('applicationId')) {
+        if (currentRoute.path.indexOf('/manage/') !== -1) {
+            if (applicationId) {
+                const route = { name: 'manageAppSettings', params: { applicationId: applicationId.toString() } };
+                this.$router.push(route);
+            } else {
+                const route = { name: 'manageHome' };
+                this.$router.push(route);
+            }
+        } else if (paramCount === 1 && currentRoute.params.hasOwnProperty('applicationId')) {
             if (applicationId == null) {
                 this.$router.push({ name: currentRoute.name });
                 this.publishApplicationChanged(null);
@@ -119,21 +128,11 @@ export default class NavMenuComponent extends Vue {
                 this.publishApplicationChanged(applicationId);
             }
             return;
-        }
-
-        if (currentRoute.path.indexOf('/discover') === 0) {
+        } else if (currentRoute.path.indexOf('/discover') === 0) {
             this.$router.push({ name: 'discover', params: { applicationId: applicationId.toString() } });
         } else if (currentRoute.path.indexOf('/analyze') === 0) {
             this.$router.push({ name: 'analyzeHome', params: { applicationId: applicationId.toString() } });
-        } else if (currentRoute.path.indexOf('/manage/') !== -1) {
-            if (applicationId) {
-                const route = { name: 'manageAppSettings', params: { applicationId: applicationId.toString() } };
-                this.$router.push(route);
-            } else {
-                const route = { name: 'manageHome' };
-                this.$router.push(route);
-            }
-        } else {
+        } else  {
             const route = { name: currentRoute.name, params: { applicationId: applicationId.toString() } };
             this.$router.push(route);
         }

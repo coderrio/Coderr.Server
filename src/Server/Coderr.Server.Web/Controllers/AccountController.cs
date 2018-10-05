@@ -112,7 +112,8 @@ namespace Coderr.Server.Web.Controllers
 
 
             await SignInAsync(identity);
-            return RedirectToAction("UpdateSession", new { returnUrl = "/#/account/accepted" });
+            var url = Url.Content("~/");
+            return RedirectToAction("UpdateSession", new {returnUrl = url});
         }
 
         [HttpGet("account/activate/{id}")]
