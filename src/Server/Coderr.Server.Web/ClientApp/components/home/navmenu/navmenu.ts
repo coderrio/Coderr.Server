@@ -79,7 +79,6 @@ export default class NavMenuComponent extends Vue {
             }
         });
         PubSubService.Instance.subscribe(MenuApi.MessagingTopics.SetApplication, ctx => {
-            console.log('SET', ctx.message)
             var msg = <MenuApi.SetApplication>ctx.message.body;
             this.changeApplication(msg.applicationId);
         });
@@ -111,9 +110,10 @@ export default class NavMenuComponent extends Vue {
             }
         }
 
+        const appIdStr = applicationId == null ? null : applicationId.toString();
         if (currentRoute.path.indexOf('/manage/') !== -1) {
             if (applicationId) {
-                const route = { name: 'manageAppSettings', params: { applicationId: applicationId.toString() } };
+                const route = { name: 'manageAppSettings', params: { applicationId: appIdStr } };
                 this.$router.push(route);
             } else {
                 const route = { name: 'manageHome' };
@@ -129,11 +129,15 @@ export default class NavMenuComponent extends Vue {
             }
             return;
         } else if (currentRoute.path.indexOf('/discover') === 0) {
-            this.$router.push({ name: 'discover', params: { applicationId: applicationId.toString() } });
+            this.$router.push({ name: 'discover', params: { applicationId: appIdStr } });
         } else if (currentRoute.path.indexOf('/analyze') === 0) {
-            this.$router.push({ name: 'analyzeHome', params: { applicationId: applicationId.toString() } });
+            if (applicationId == null) {
+                this.$router.push({ name: 'analyzeHome' });
+            } else {
+                this.$router.push({ name: 'analyzeHome', params: { applicationId: appIdStr } });
+            }
         } else  {
-            const route = { name: currentRoute.name, params: { applicationId: applicationId.toString() } };
+            const route = { name: currentRoute.name, params: { applicationId: appIdStr } };
             this.$router.push(route);
         }
 

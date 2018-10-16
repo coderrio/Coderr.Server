@@ -124,7 +124,7 @@ export class AppRoot {
                 localForage.getItem(options.name);
             })
             .catch(reason => {
-                console.log('ERRROR', reason);
+                console.log('ERROR', reason);
             });
     }
 

@@ -82,7 +82,7 @@ export class MyIncidents {
         this.triggerIncidentListCallbacks();
 
         if (this.selectedIncident) {
-            if (this.selectedIncident.applicationId === applicationId || this.selectedApplicationId == null) {
+            if (this.selectedIncident.applicationId === applicationId) {
                 return;
             }
         }
