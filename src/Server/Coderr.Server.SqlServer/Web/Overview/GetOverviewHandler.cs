@@ -142,7 +142,9 @@ right join applications on (applicationid=applications.id)
                     "SELECT sum(NumberOfReports) FROM IgnoredReports WHERE  date >= @from ANd date <= @to";
                 cmd.AddParameter("from", from);
                 cmd.AddParameter("to", to);
-                result.MissedReports = (int) cmd.ExecuteScalar();
+                var value = cmd.ExecuteScalar();
+                if (value != DBNull.Value)
+                    result.MissedReports = (int) value;
 
             }
 
