@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.Server.Api.Core.Applications.Queries
+namespace Coderr.Server.Api.Core.Applications.Queries
 {
     /// <summary>
     ///     Item for <see cref="GetApplicationTeamResult" />.
@@ -21,5 +21,7 @@ namespace codeRR.Server.Api.Core.Applications.Queries
         ///     Account name
         /// </summary>
         public string UserName { get; set; }
+
+        public bool IsAdmin { get; set; }
     }
 }

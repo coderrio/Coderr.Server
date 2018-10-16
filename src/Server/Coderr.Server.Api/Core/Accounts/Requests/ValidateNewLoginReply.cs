@@ -1,4 +1,4 @@
-﻿namespace codeRR.Server.Api.Core.Accounts.Requests
+﻿namespace Coderr.Server.Api.Core.Accounts.Requests
 {
     /// <summary>
     ///     DTO

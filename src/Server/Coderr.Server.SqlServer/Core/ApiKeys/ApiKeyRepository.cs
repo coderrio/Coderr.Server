@@ -2,19 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using codeRR.Server.App.Core.ApiKeys;
-using codeRR.Server.Infrastructure.Security;
-using codeRR.Server.SqlServer.Core.ApiKeys.Mappings;
-using Griffin.Container;
+using Coderr.Server.Abstractions.Boot;
+using Coderr.Server.Abstractions.Security;
+using Coderr.Server.App.Core.ApiKeys;
+using Coderr.Server.Infrastructure.Security;
+using Coderr.Server.SqlServer.Core.ApiKeys.Mappings;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 
-namespace codeRR.Server.SqlServer.Core.ApiKeys
+namespace Coderr.Server.SqlServer.Core.ApiKeys
 {
     /// <summary>
     ///     SQL Server implementation of <see cref="IApiKeyRepository" />.
     /// </summary>
-    [Component]
+    [ContainerService]
     public class ApiKeyRepository : IApiKeyRepository
     {
         private readonly IAdoNetUnitOfWork _uow;

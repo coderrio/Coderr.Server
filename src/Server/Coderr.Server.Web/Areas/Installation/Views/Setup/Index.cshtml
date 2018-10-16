@@ -2,24 +2,23 @@
     ViewBag.Title = "Installation - First step";
 }
 <div class="container">
-    <div class="col-lg-6">
+    <div class="col-lg-12">
 
-        <h2>Welcome</h2>
-
-        <p>Welcome to the codeRR installation.</p>
+        <h2>Welcome to the Coderr Community Server installation</h2>
         <p>
-            This guide will install everything necessary to get started. Most of the settings are stored in the <code>Settings</code> table in the database.
+            This guide will help you configure the server. Most of the settings are stored in the <code>Settings</code> table in the database.
         </p>
 
 
         <h3>Verification</h3>
         <p>
-            To start, you must enter the password that is specified in <code>web.config</code> in the appSettings key named <code>ConfigurationKey</code>.
+            To start, you must enter the password from the <code>Installation/Password</code> setting in <code>appsettings.json</code>.
         </p>
-        <form method="post" action="@Url.Action("Index")">
+        <form method="post" asp-action="Index">
             @Html.ValidationSummary()
-            <input type="text" name="key" class="form-control" placeholder="Enter value from web.config/appSettings/ConfigurationKey" style="width:100%" autofocus /><br/>
+            <input type="text" name="key" class="form-control" placeholder="Enter the value installation password" style="width:100%" autofocus /><br/>
             <input type="submit" value="Continue" class="btn btn-primary"/>
+            <em>For a zero configuration experience, try our hosted server <a href="https://coderr.io/live/">Coderr Live</a>.</em>
         </form>
         <br />
     </div>

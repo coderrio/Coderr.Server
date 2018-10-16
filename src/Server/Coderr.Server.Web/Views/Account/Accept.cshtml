@@ -1,11 +1,12 @@
-﻿@model codeRR.Server.Web.Models.Account.AcceptViewModel
+﻿@using Coderr.Server.Web.Models.Accounts
+@model Coderr.Server.Web.Models.Accounts.AcceptViewModel
 @{
     ViewBag.Title = "Register";
 }
 
 <div class="container mt-3">
     <div style="max-width: 800px">
-        <h2>Welcome to codeRR</h2>
+        <h2>Welcome to Coderr</h2>
         <p>
             To accept the invitation you have to fill out the following form.
         </p>
@@ -85,7 +86,7 @@
         return "";
     }
 </script>
-@section ViewModelScripts
+@section scripts
 {
     <script type="text/javascript">
         $(function () {

@@ -1,6 +1,6 @@
-﻿using codeRR.Server.Api.Core.Users.Queries;
+﻿using Coderr.Server.Api.Core.Users.Queries;
 
-namespace codeRR.Server.Api.Core.Users
+namespace Coderr.Server.Api.Core.Users
 {
     /// <summary>
     ///     Notification settings for <see cref="GetUserSettingsResult" />.

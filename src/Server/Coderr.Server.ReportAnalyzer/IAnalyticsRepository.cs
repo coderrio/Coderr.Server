@@ -1,8 +1,8 @@
 ﻿using System;
-using codeRR.Server.ReportAnalyzer.Domain.Incidents;
-using codeRR.Server.ReportAnalyzer.Domain.Reports;
+using Coderr.Server.Domain.Core.ErrorReports;
+using Coderr.Server.ReportAnalyzer.Incidents;
 
-namespace codeRR.Server.ReportAnalyzer
+namespace Coderr.Server.ReportAnalyzer
 {
     /// <summary>
     ///     Repository (think CQRS write side in this case. yay!)
@@ -57,5 +57,12 @@ namespace codeRR.Server.ReportAnalyzer
         /// <exception cref="ArgumentNullException">incentAnalysis</exception>
         void UpdateIncident(IncidentBeingAnalyzed incidentAnalysis);
 
+        /// <summary>
+        /// Number of reports received this month
+        /// </summary>
+        /// <returns></returns>
+        int GetMonthReportCount();
+
+        void AddMissedReport(DateTime date);
     }
 }

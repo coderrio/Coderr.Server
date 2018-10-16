@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using codeRR.Server.App.Modules.Tagging;
-using codeRR.Server.App.Modules.Tagging.Domain;
-using Griffin.Container;
+using Coderr.Server.Abstractions.Boot;
+using Coderr.Server.Domain.Modules.Tags;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 
-namespace codeRR.Server.SqlServer.Modules.Tagging
+namespace Coderr.Server.SqlServer.Modules.Tagging
 {
-    [Component]
+    [ContainerService]
     public class TagsRepository : ITagsRepository
     {
         private readonly IAdoNetUnitOfWork _adoNetUnitOfWork;

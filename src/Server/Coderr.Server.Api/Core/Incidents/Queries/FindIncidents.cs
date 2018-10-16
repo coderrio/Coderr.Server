@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace codeRR.Server.Api.Core.Incidents.Queries
+namespace Coderr.Server.Api.Core.Incidents.Queries
 {
     /// <summary>
     ///     Find incidents

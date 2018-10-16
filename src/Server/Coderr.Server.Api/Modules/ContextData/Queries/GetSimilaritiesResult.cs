@@ -1,4 +1,4 @@
-﻿namespace codeRR.Server.Api.Modules.ContextData.Queries
+﻿namespace Coderr.Server.Api.Modules.ContextData.Queries
 {
     /// <summary>
     ///     Result for <see cref="GetSimilarities" />.

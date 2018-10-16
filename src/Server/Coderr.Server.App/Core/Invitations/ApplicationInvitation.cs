@@ -1,6 +1,6 @@
 using System;
 
-namespace codeRR.Server.App.Core.Invitations
+namespace Coderr.Server.App.Core.Invitations
 {
     /// <summary>
     ///     Invitation to a specific application.

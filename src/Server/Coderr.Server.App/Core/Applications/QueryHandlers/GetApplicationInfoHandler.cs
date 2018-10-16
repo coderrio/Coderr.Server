@@ -1,25 +1,25 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core;
-using codeRR.Server.Api.Core.Applications;
-using codeRR.Server.Api.Core.Applications.Queries;
-using codeRR.Server.App.Core.Incidents;
-using codeRR.Server.App.Modules.Versions;
+using Coderr.Server.Api;
+using Coderr.Server.Api.Core.Applications.Queries;
+using Coderr.Server.App.Modules.Versions;
+using Coderr.Server.Domain.Core.Applications;
+using Coderr.Server.Domain.Core.Incidents;
+using Coderr.Server.Domain.Modules.ApplicationVersions;
 using DotNetCqs;
-using Griffin.Container;
+using TypeOfApplication = Coderr.Server.Api.Core.Applications.TypeOfApplication;
 
-namespace codeRR.Server.App.Core.Applications.QueryHandlers
+namespace Coderr.Server.App.Core.Applications.QueryHandlers
 {
     /// <summary>
     ///     Handler for <see cref="GetApplicationInfo" />.
     /// </summary>
-    [Component]
     public class GetApplicationInfoHandler : IQueryHandler<GetApplicationInfo, GetApplicationInfoResult>
     {
         private readonly IIncidentRepository _incidentRepository;
         private readonly IApplicationRepository _repository;
-        private IVersionRepository _versionRepository;
+        private IApplicationVersionRepository _versionRepository;
 
         /// <summary>
         ///     Creates a new instance of <see cref="GetApplicationInfoHandler" />.
@@ -27,7 +27,7 @@ namespace codeRR.Server.App.Core.Applications.QueryHandlers
         /// <param name="repository">repos</param>
         /// <param name="incidentRepository">used to count the number of incidents</param>
         /// <param name="versionRepository">to fetch versions</param>
-        public GetApplicationInfoHandler(IApplicationRepository repository, IIncidentRepository incidentRepository, IVersionRepository versionRepository)
+        public GetApplicationInfoHandler(IApplicationRepository repository, IIncidentRepository incidentRepository, IApplicationVersionRepository versionRepository)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
             _incidentRepository = incidentRepository ?? throw new ArgumentNullException(nameof(incidentRepository));
@@ -63,7 +63,8 @@ namespace codeRR.Server.App.Core.Applications.QueryHandlers
                 Name = app.Name,
                 SharedSecret = app.SharedSecret,
                 TotalIncidentCount = totalCount,
-                Versions = versions.ToArray()
+                Versions = versions.ToArray(),
+                ShowStatsQuestion = !app.MuteStatisticsQuestion
             };
         }
     }

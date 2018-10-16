@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using Coderr.Server.PluginApi.Config;
+using Coderr.Server.Abstractions.Config;
 using Griffin.Data;
 
-namespace codeRR.Server.Infrastructure.Configuration.Database
+namespace Coderr.Server.Infrastructure.Configuration.Database
 {
     /// <summary>
     ///     Uses a DB to store configuration.
@@ -68,6 +68,8 @@ namespace codeRR.Server.Infrastructure.Configuration.Database
         public override void Store(IConfigurationSection section)
         {
             SetCache(section);
+
+
             using (var connection = OpenConnectionFor(section.GetType()))
             {
                 using (var cmd = connection.CreateCommand())
@@ -76,10 +78,16 @@ namespace codeRR.Server.Infrastructure.Configuration.Database
                     cmd.AddParameter("section", section.SectionName);
                     cmd.ExecuteNonQuery();
                 }
+                var items = section.ToDictionary();
+                if (items.Count == 0)
+                {
+                    return;
+                }
+                    
                 using (var cmd = connection.CreateCommand())
                 {
                     var index = 0;
-                    foreach (var kvp in section.ToDictionary())
+                    foreach (var kvp in items)
                     {
                         cmd.CommandText +=
                             string.Format(
@@ -89,6 +97,7 @@ namespace codeRR.Server.Infrastructure.Configuration.Database
                         cmd.AddParameter("value" + index, kvp.Value);
                         ++index;
                     }
+
                     cmd.AddParameter("section", section.SectionName);
                     cmd.ExecuteNonQuery();
                 }

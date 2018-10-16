@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
-using codeRR.Server.App.Core.Reports.Config;
-using Coderr.Server.PluginApi.Config;
+using Coderr.Server.Abstractions.Boot;
+using Coderr.Server.Abstractions.Config;
+using Coderr.Server.App.Core.Reports.Config;
 using Griffin.ApplicationServices;
-using Griffin.Container;
 using Griffin.Data;
 using log4net;
 
-namespace codeRR.Server.App.Core.Incidents.Jobs
+namespace Coderr.Server.App.Core.Incidents.Jobs
 {
     /// <summary>
     ///     Delete incidents where all reports have been deleted (due to retention days).
@@ -19,7 +19,7 @@ namespace codeRR.Server.App.Core.Incidents.Jobs
     ///         when there are no reports for them. Do note that ignored incidents will not be deleted.
     ///     </para>
     /// </remarks>
-    [Component(RegisterAsSelf = true)]
+    [ContainerService(RegisterAsSelf = true)]
     internal class DeleteEmptyIncidents : IBackgroundJobAsync
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(DeleteEmptyIncidents));
@@ -43,7 +43,7 @@ namespace codeRR.Server.App.Core.Incidents.Jobs
             using (var cmd = _unitOfWork.CreateDbCommand())
             {
                 cmd.CommandText =
-                    $@"DELETE TOP(1000) Incidents 
+                    $@"DELETE TOP(500) Incidents 
                        WHERE LastReportAtUtc < @retentionDays";
 
                 // Wait until no reports have been received for the specified report save time

@@ -3,18 +3,17 @@ using System.Net;
 using System.Net.Mail;
 using System.Net.Mime;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Accounts.Queries;
-using codeRR.Server.Api.Core.Messaging.Commands;
-using codeRR.Server.App.Configuration;
-using codeRR.Server.Infrastructure.Net;
-using Coderr.Server.PluginApi.Config;
+using Coderr.Server.Abstractions.Config;
+using Coderr.Server.Api.Core.Accounts.Queries;
+using Coderr.Server.Api.Core.Messaging.Commands;
+using Coderr.Server.Infrastructure.Configuration;
+using Coderr.Server.Infrastructure.Net;
 using DotNetCqs;
-using Griffin.Container;
+
 using Markdig;
 
-namespace codeRR.Server.App.Modules.Messaging.Commands
+namespace Coderr.Server.App.Modules.Messaging.Commands
 {
-    [Component]
     internal class SendEmailHandler : IMessageHandler<SendEmail>
     {
         private ConfigurationStore _configStore;
@@ -32,6 +31,10 @@ namespace codeRR.Server.App.Modules.Messaging.Commands
 
             var baseConfig = _configStore.Load<BaseConfiguration>();
 
+            // Emails have been disabled. Typically just in LIVE.
+            if (string.IsNullOrEmpty(baseConfig.SupportEmail))
+                return;
+
             var email = new MailMessage
             {
                 From = new MailAddress(baseConfig.SupportEmail),
@@ -45,17 +48,7 @@ namespace codeRR.Server.App.Modules.Messaging.Commands
 
             var markdownHtml = Markdown.ToHtml(command.EmailMessage.TextBody ?? "");
 
-            foreach (var recipient in command.EmailMessage.Recipients)
-            {
-                if (int.TryParse(recipient.Address, out var accountId))
-                {
-                    var query = new GetAccountEmailById(accountId);
-                    var emailAddress = await context.QueryAsync(query);
-                    email.To.Add(new MailAddress(emailAddress, recipient.Name));
-                }
-                else
-                    email.To.Add(new MailAddress(recipient.Address, recipient.Name));
-            }
+
             if (string.IsNullOrEmpty(command.EmailMessage.HtmlBody) && markdownHtml == command.EmailMessage.TextBody)
             {
                 email.Body = command.EmailMessage.TextBody;
@@ -74,13 +67,33 @@ namespace codeRR.Server.App.Modules.Messaging.Commands
             foreach (var resource in command.EmailMessage.Resources)
             {
                 var contentType = new ContentType(MimeMapping.GetMimeType(Path.GetExtension(resource.Name)));
-                var linkedResource = new LinkedResource(resource.Name, contentType);
-                await resource.Content.CopyToAsync(linkedResource.ContentStream);
+                var ms = new MemoryStream(resource.Content, 0, resource.Content.Length, false);
+                var linkedResource = new LinkedResource(ms)
+                {
+                    ContentId = resource.Name,
+                    ContentType = contentType
+                };
                 av.LinkedResources.Add(linkedResource);
             }
 
             email.AlternateViews.Add(av);
-            await client.SendMailAsync(email);
+
+            // Send one email per recipient to not share addresses.
+            foreach (var recipient in command.EmailMessage.Recipients)
+            {
+                email.To.Clear();
+                if (int.TryParse(recipient.Address, out var accountId))
+                {
+                    var query = new GetAccountEmailById(accountId);
+                    var emailAddress = await context.QueryAsync(query);
+                    email.To.Add(new MailAddress(emailAddress, recipient.Name));
+                }
+                else
+                    email.To.Add(new MailAddress(recipient.Address, recipient.Name));
+
+                await client.SendMailAsync(email);
+            }
+            
         }
 
         private SmtpClient CreateSmtpClient()

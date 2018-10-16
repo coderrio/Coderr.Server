@@ -1,4 +1,4 @@
-﻿namespace codeRR.Server.Api
+﻿namespace Coderr.Server.Api
 {
     /// <summary>
     /// Marker attribute to tell which DTOs are commands

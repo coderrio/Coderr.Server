@@ -3,7 +3,7 @@ using System.Data;
 using System.Reflection;
 using Griffin.Data.Mapper;
 
-namespace codeRR.Server.SqlServer.Core.ApiKeys.Mappings
+namespace Coderr.Server.SqlServer.Core.ApiKeys.Mappings
 {
     public class MirrorMapper<T> : IEntityMapper<T> where T : new()
     {

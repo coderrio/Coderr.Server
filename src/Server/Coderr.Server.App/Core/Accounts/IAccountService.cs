@@ -1,9 +1,9 @@
 ﻿using System.Security.Claims;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Accounts.Events;
-using codeRR.Server.Api.Core.Accounts.Requests;
+using Coderr.Server.Api.Core.Accounts.Events;
+using Coderr.Server.Api.Core.Accounts.Requests;
 
-namespace codeRR.Server.App.Core.Accounts
+namespace Coderr.Server.App.Core.Accounts
 {
     public interface IAccountService
     {

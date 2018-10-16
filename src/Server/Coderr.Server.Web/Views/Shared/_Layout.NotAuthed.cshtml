@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Coderr</title>
+    <base href="~/" />
+    <style>
+        html, body {
+            height: 100%;
+        }
+
+        .validation-summary-errors ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+            .validation-summary-errors ul li {
+                color: red;
+                list-style-type: none;
+            }
+    </style>
+    <link rel="stylesheet" href="~/dist/vendor.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/bootstrap.min.css" asp-append-version="true" />
+    <link href="~/css/fontawesome-all.min.css" rel="stylesheet">
+    <link href="~/css/toastr.min.css" rel="stylesheet">
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/dist/site.css" asp-append-version="true" />
+    </environment>
+</head>
+<body style="display: flex; align-items: center; justify-content: center;">
+    <div style="margin: 0 auto; min-width: 400px;">
+        @RenderBody()
+    </div>
+    <script src="~/dist/vendor.js" asp-append-version="true"></script>
+    <script src="~/js/jquery-3.3.1.slim.min.js" asp-append-version="true"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

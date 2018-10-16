@@ -1,12 +1,11 @@
 ﻿using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Invitations.Queries;
+using Coderr.Server.Api.Core.Invitations.Queries;
 using DotNetCqs;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 
-namespace codeRR.Server.SqlServer.Core.Invitations
+namespace Coderr.Server.SqlServer.Core.Invitations
 {
-    [Component]
     internal class GetInvitationByKeyHandler : IQueryHandler<GetInvitationByKey, GetInvitationByKeyResult>
     {
         private readonly IAdoNetUnitOfWork _unitOfWork;

@@ -1,9 +1,9 @@
 ﻿using System;
-using codeRR.Server.Api.Web.Overview.Queries;
+using Coderr.Server.Api.Web.Overview.Queries;
 using FluentAssertions;
 using Xunit;
 
-namespace codeRR.Server.App.Tests.Web.Overview.Queries
+namespace Coderr.Server.App.Tests.Web.Overview.Queries
 {
    public  class GetOverviewApplicationResultTests
     {

@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
-using codeRR.Server.App.Core.Applications;
-using codeRR.Server.App.Core.Users;
-using Griffin.Container;
+using Coderr.Server.Abstractions.Boot;
+using Coderr.Server.Domain.Core.Applications;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 
-namespace codeRR.Server.SqlServer.Core.Applications
+namespace Coderr.Server.SqlServer.Core.Applications
 {
-    [Component]
+    [ContainerService]
     public class ApplicationRepository : IApplicationRepository
     {
         private readonly IAdoNetUnitOfWork _uow;
@@ -35,11 +34,12 @@ namespace codeRR.Server.SqlServer.Core.Applications
                 cmd.CommandText = @"SELECT a.Id ApplicationId, a.Name ApplicationName, ApplicationMembers.Roles
                                         FROM Applications a
                                         JOIN ApplicationMembers ON (ApplicationMembers.ApplicationId = a.Id) 
-                                        WHERE ApplicationMembers.AccountId = @userId";
+                                        WHERE ApplicationMembers.AccountId = @userId
+                                        ORDER BY Name";
                 cmd.AddParameter("userId", accountId);
                 using (var reader = await cmd.ExecuteReaderAsync())
                 {
-                    List<UserApplication> apps = new List<UserApplication>();
+                    var apps = new List<UserApplication>();
                     while (await reader.ReadAsync())
                     {
                         var a = new UserApplication
@@ -50,8 +50,20 @@ namespace codeRR.Server.SqlServer.Core.Applications
                         };
                         apps.Add(a);
                     }
+
                     return apps.ToArray();
                 }
+            }
+        }
+
+        public async Task RemoveTeamMemberAsync(int applicationId, string invitedEmailAddress)
+        {
+            using (var cmd = (DbCommand) _uow.CreateCommand())
+            {
+                cmd.CommandText = "DELETE FROM ApplicationMembers WHERE ApplicationId=@appId AND EmailAddress = @email";
+                cmd.AddParameter("appId", applicationId);
+                cmd.AddParameter("email", invitedEmailAddress);
+                await cmd.ExecuteNonQueryAsync();
             }
         }
 
@@ -121,14 +133,16 @@ namespace codeRR.Server.SqlServer.Core.Applications
             using (var cmd = (DbCommand) _uow.CreateCommand())
             {
                 cmd.CommandText =
-                    @"INSERT INTO Applications (Name, AppKey, CreatedById, CreatedAtUtc, ApplicationType, SharedSecret) 
-                        VALUES(@Name, @AppKey, @CreatedById, @CreatedAtUtc, @ApplicationType, @SharedSecret);SELECT SCOPE_IDENTITY();";
+                    @"INSERT INTO Applications (Name, AppKey, CreatedById, CreatedAtUtc, ApplicationType, SharedSecret, EstimatedNumberOfErrors, NumberOfFtes) 
+                        VALUES(@Name, @AppKey, @CreatedById, @CreatedAtUtc, @ApplicationType, @SharedSecret, @EstimatedNumberOfErrors, @NumberOfFtes);SELECT SCOPE_IDENTITY();";
                 cmd.AddParameter("Name", application.Name);
                 cmd.AddParameter("AppKey", application.AppKey);
                 cmd.AddParameter("CreatedById", application.CreatedById);
                 cmd.AddParameter("CreatedAtUtc", application.CreatedAtUtc);
                 cmd.AddParameter("ApplicationType", application.ApplicationType.ToString());
                 cmd.AddParameter("SharedSecret", application.SharedSecret);
+                cmd.AddParameter("EstimatedNumberOfErrors", application.EstimatedNumberOfErrors);
+                cmd.AddParameter("NumberOfFtes", application.NumberOfFtes);
                 var item = (decimal) await cmd.ExecuteScalarAsync();
                 application.GetType().GetProperty("Id").SetValue(application, (int) item);
             }
@@ -156,18 +170,12 @@ namespace codeRR.Server.SqlServer.Core.Applications
         {
             using (var cmd = (DbCommand) _uow.CreateCommand())
             {
-                cmd.CommandText = "SELECT * FROM Applications";
+                cmd.CommandText = "SELECT * FROM Applications ORDER BY Name";
 
                 //cmd.AddParameter("ids", string.Join(", ", appIds.Select(x => "'" + x + "'")));
                 var result = await cmd.ToListAsync<Application>();
                 return result.ToArray();
             }
-        }
-
-        public async Task DeleteAsync(Application application)
-        {
-            if (application == null) throw new ArgumentNullException("application");
-            await DeleteAsync(application.Id);
         }
 
         public async Task UpdateAsync(Application entity)
@@ -177,13 +185,19 @@ namespace codeRR.Server.SqlServer.Core.Applications
 
         public async Task RemoveTeamMemberAsync(int applicationId, int userId)
         {
-            using (var cmd = (DbCommand)_uow.CreateCommand())
+            using (var cmd = (DbCommand) _uow.CreateCommand())
             {
                 cmd.CommandText = "DELETE FROM ApplicationMembers WHERE ApplicationId=@appId AND AccountId = @userId";
                 cmd.AddParameter("appId", applicationId);
                 cmd.AddParameter("userId", userId);
                 await cmd.ExecuteNonQueryAsync();
             }
+        }
+
+        public async Task DeleteAsync(Application application)
+        {
+            if (application == null) throw new ArgumentNullException("application");
+            await DeleteAsync(application.Id);
         }
     }
 }

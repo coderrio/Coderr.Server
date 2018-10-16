@@ -1,7 +1,6 @@
-﻿using codeRR.Server.Api.Core.Accounts.Requests;
-using DotNetCqs;
+﻿using DotNetCqs;
 
-namespace codeRR.Server.Api.Core.Users.Queries
+namespace Coderr.Server.Api.Core.Users.Queries
 {
     /// <summary>
     ///     Get settings for an user.

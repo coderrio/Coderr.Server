@@ -1,14 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using codeRR.Server.App.Core.Feedback;
-using Griffin.Container;
+using Coderr.Server.Abstractions.Boot;
+using Coderr.Server.Domain.Core.Feedback;
+using Coderr.Server.ReportAnalyzer.Feedback;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 
-namespace codeRR.Server.SqlServer.Core.Feedback
+namespace Coderr.Server.SqlServer.Core.Feedback
 {
-    [Component]
-    public class FeedbackRepository : IFeedbackRepository
+    [ContainerService]
+    public class FeedbackRepository : IFeedbackRepository, IUserFeedbackRepository
     {
         private readonly IAdoNetUnitOfWork _unitOfWork;
 
@@ -17,12 +20,12 @@ namespace codeRR.Server.SqlServer.Core.Feedback
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<FeedbackEntity> FindPendingAsync(string reportId)
+        public async Task<UserFeedback> FindPendingAsync(string reportId)
         {
-            return await _unitOfWork.FirstOrDefaultAsync<FeedbackEntity>(new {ErrorId = reportId});
+            return await _unitOfWork.FirstOrDefaultAsync<UserFeedback>(new {ErrorId = reportId});
         }
 
-        public async Task UpdateAsync(FeedbackEntity feedback)
+        public async Task UpdateAsync(UserFeedback feedback)
         {
             await _unitOfWork.UpdateAsync(feedback);
         }
@@ -45,6 +48,11 @@ namespace codeRR.Server.SqlServer.Core.Feedback
             }
 
             return emailAddresses;
+        }
+
+        public Task CreateAsync(NewFeedback feedback)
+        {
+            throw new NotImplementedException();
         }
     }
 }

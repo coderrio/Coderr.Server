@@ -1,17 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Web.Feedback.Queries;
-using codeRR.Server.Infrastructure.Security;
+using Coderr.Server.Abstractions.Boot;
+using Coderr.Server.Abstractions.Security;
+using Coderr.Server.Api.Web.Feedback.Queries;
+using Coderr.Server.Infrastructure.Security;
 using DotNetCqs;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 
-namespace codeRR.Server.SqlServer.Web.Feedback.Queries
+namespace Coderr.Server.SqlServer.Web.Feedback.Queries
 {
-    [Component]
+    [ContainerService]
     public class GetOverviewFeedbackHandler :
         IQueryHandler<GetFeedbackForDashboardPage, GetFeedbackForDashboardPageResult>
     {

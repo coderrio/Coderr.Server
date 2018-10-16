@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace codeRR.Server.App.Core.Invitations
+namespace Coderr.Server.App.Core.Invitations
 {
     /// <summary>
     ///     Invitation repository

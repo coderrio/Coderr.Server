@@ -18,7 +18,7 @@
         }
         else
         {
-            <form method="post" action="@Url.Action("Tables")">
+            <form method="post" action="@Url.Action("Tables")" id="myForm">
                 @Html.ValidationSummary(true)
                 <input type="hidden" name="go" value="yo"/>
                 @Html.Raw(ViewBag.PrevLink)
@@ -36,3 +36,12 @@
         }
     </div>
 </div>
+@section scripts
+{
+    <script>
+        $('#myForm').click(function() {
+            $('[data-name="nextLink"]').addClass("disabled");
+            $('[type="submit"]').addClass("disabled");
+        })
+    </script>    
+}

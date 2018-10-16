@@ -3,14 +3,14 @@
 //using System.Threading.Tasks;
 //using DotNetCqs;
 //using Griffin.ApplicationServices;
-//using Griffin.Container;
+//using Coderr.Server.ReportAnalyzer.Abstractions;
 //using Griffin.Data;
-//using codeRR.Core.Api.Reports;
-//using codeRR.Core.Api.Reports.Queries;
-//using codeRR.Core.IncidentTagging.Data;
-//using codeRR.Data;
+//using Coderr.Core.Api.Reports;
+//using Coderr.Core.Api.Reports.Queries;
+//using Coderr.Core.IncidentTagging.Data;
+//using Coderr.Data;
 
-//namespace codeRR.Core.IncidentTagging
+//namespace Coderr.Core.IncidentTagging
 //{
 //    [Component(RegisterAsSelf = true)]
 //    public class DoInitialRun : IBackgroundJobAsync

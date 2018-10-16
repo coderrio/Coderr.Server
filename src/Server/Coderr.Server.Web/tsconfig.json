@@ -1,14 +1,51 @@
 {
   "compilerOptions": {
-    "noImplicitAny": false,
-    "noEmitOnError": true,
-    "removeComments": false,
+    "allowSyntheticDefaultImports": true,
+    "emitDecoratorMetadata":  true,
+    "experimentalDecorators": true,
+    "lib": [ "es2015", "dom" ],
+    "module": "es2015",
+    "moduleResolution": "node",
+    "target": "es5",
     "sourceMap": true,
-    "target": "es5"
+    "skipDefaultLibCheck": true,
+    "strictNullChecks":  false, 
+    "strict": true,
+    "types": ["webpack-env"]
   },
-  "compileOnSave": true,
   "exclude": [
+    "bin",
     "node_modules",
-    "wwwroot"
+    "ClientApp/dto/**/*.ts"
   ]
 }
+
+//{
+//  "compilerOptions": {
+//    "allowSyntheticDefaultImports": true,
+//    "experimentalDecorators": true,
+//    "emitDecoratorMetadata": true,
+//    "module": "es2015",
+//    "lib": [ "es2015", "dom" ],
+//    "moduleResolution": "node",
+//    "target": "es5",
+//    "sourceMap": true,
+//    "skipDefaultLibCheck": true,
+//    "strict": true,
+//    "noImplicitAny": false,
+//    "noImplicitThis": false,
+//    "strictNullChecks": true,
+//    "types": [ "webpack-env" ]
+//  },
+//  "exclude": [
+//    "bin",
+//    "node_modules",
+//    "ClientApp/dto/**"
+//  ],
+//  "compileOnSave":  false
+//  //"include": [
+//  //  "vue-shim.d.ts",
+//  //  "ClientApp/*",
+//  //  "ClientApp/**/*"
+//  //]
+//}

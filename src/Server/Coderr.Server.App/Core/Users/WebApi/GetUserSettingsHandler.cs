@@ -1,15 +1,16 @@
 ﻿using System.Threading.Tasks;
-using codeRR.Server.Api.Core;
-using codeRR.Server.Api.Core.Users;
-using codeRR.Server.Api.Core.Users.Queries;
-using codeRR.Server.App.Core.Notifications;
+using Coderr.Server.Api;
+using Coderr.Server.Api.Core.Users;
+using Coderr.Server.Api.Core.Users.Queries;
+using Coderr.Server.App.Core.Notifications;
+using Coderr.Server.Domain.Core.User;
+using Coderr.Server.Domain.Modules.UserNotifications;
 using DotNetCqs;
-using Griffin.Container;
-using NotificationState = codeRR.Server.Api.Core.Users.NotificationState;
 
-namespace codeRR.Server.App.Core.Users.WebApi
+using NotificationState = Coderr.Server.Api.Core.Users.NotificationState;
+
+namespace Coderr.Server.App.Core.Users.WebApi
 {
-    [Component]
     internal class GetUserSettingsHandler : IQueryHandler<GetUserSettings, GetUserSettingsResult>
     {
         private readonly INotificationsRepository _repository;

@@ -1,28 +1,23 @@
-﻿@model codeRR.Server.Web.Areas.Installation.Models.ErrorTrackingViewModel
+﻿@using Coderr.Server.Web.Areas.Installation.Models
+@model Coderr.Server.Web.Areas.Installation.Models.ErrorTrackingViewModel
 @{
     ViewBag.Title = "Installation - Error tracking";
 }
 <div class="container">
-    <div class="col-lg-6">
+    <div class="col-lg-12">
 
         <h2>Error tracking</h2>
         <p>
-            To correct bugs faster we have activated codeRR in the community server. By completing this
-            setup, you allow us to collect error information (i.e. bugs in codeRR Community Server) and send it to our own hosted service.
+            We have activated Coderr in the Community Server to send us bugs as they occur. It is our own way to practice what we preach about error handling and helps us to correct our code faster. Further, with rich context information provided by Coderr, it enables us understand the error better.
         </p>
         <p>
-            You can optionally enter your email address to get notifications when the errors in your
-            installation have been corrected and released. 
+            If you want to receive notification when the errors in your installation have been corrected, please provide an email address.
         </p>
-        <p>
-            <em>(We might also contact you if we need more information
-                about the error)</em>
-        </p>
-        <form method="post" action="@Url.Action("Errors")" style="width: 100%" class="form">
+        <form method="post" action="@Url.Action("Errors")">
             @Html.ValidationSummary(false)
-            <div class="form-group disabled suboption">
-                @Html.LabelFor(x => x.ContactEmail, new {@class = "control-label"})
-                @Html.TextBoxFor(x => x.ContactEmail, new {@class = "form-control", placeholder = "Your email address"})
+            <div class="form-group">
+                <label asp-for="ContactEmail"></label>
+                <input asp-for="ContactEmail" type="email" class="form-control" placeholder="Your email address"/>
             </div>
             <br/>
             @Html.Raw(ViewBag.PrevLink)

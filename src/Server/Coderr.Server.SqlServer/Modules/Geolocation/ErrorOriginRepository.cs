@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Threading.Tasks;
-using codeRR.Server.App.Modules.Geolocation;
-using Griffin.Container;
+using Coderr.Server.Abstractions.Boot;
+using Coderr.Server.Domain.Modules.ErrorOrigins;
+using Coderr.Server.ReportAnalyzer.ErrorOrigins;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 
-namespace codeRR.Server.SqlServer.Modules.Geolocation
+namespace Coderr.Server.SqlServer.Modules.Geolocation
 {
-    [Component]
+    [ContainerService]
     public class ErrorOriginRepository : IErrorOriginRepository
     {
         private readonly IAdoNetUnitOfWork _unitOfWork;

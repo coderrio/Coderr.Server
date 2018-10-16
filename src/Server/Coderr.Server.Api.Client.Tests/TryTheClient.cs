@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Net;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Accounts.Queries;
+using Coderr.Server.Api.Core.Accounts.Queries;
 using FluentAssertions;
 
-namespace codeRR.Server.Api.Client.Tests
+namespace Coderr.Server.Api.Client.Tests
 {
 #if DEBUG
     public class TryTheClient

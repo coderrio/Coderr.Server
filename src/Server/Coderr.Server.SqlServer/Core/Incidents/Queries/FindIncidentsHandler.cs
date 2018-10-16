@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Data.Common;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Incidents;
-using codeRR.Server.Api.Core.Incidents.Queries;
-using codeRR.Server.App.Core.Incidents;
-using codeRR.Server.App.Modules.Messaging.Templating.Formatting;
-using codeRR.Server.Infrastructure.Security;
+using Coderr.Server.Abstractions.Security;
+using Coderr.Server.Api.Core.Incidents;
+using Coderr.Server.Api.Core.Incidents.Queries;
+using Coderr.Server.Domain.Core.Incidents;
+using Coderr.Server.Infrastructure.Security;
 using DotNetCqs;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 
-namespace codeRR.Server.SqlServer.Core.Incidents.Queries
+namespace Coderr.Server.SqlServer.Core.Incidents.Queries
 {
-    [Component]
     public class FindIncidentsHandler : IQueryHandler<FindIncidents, FindIncidentsResult>
     {
         private readonly IAdoNetUnitOfWork _uow;
@@ -107,6 +105,11 @@ namespace codeRR.Server.SqlServer.Core.Incidents.Queries
                         .Where(x => x.Type == CoderrClaims.Application)
                         .Select(x => x.Value)
                         .ToArray();
+                    if (!appIds.Any())
+                    {
+                        return new FindIncidentsResult {Items = new FindIncidentsResultItem[0]};
+                    }
+
                     sqlQuery += $" {startWord} Applications.Id IN({string.Join(",", appIds)})";
                 }
 
@@ -119,6 +122,7 @@ namespace codeRR.Server.SqlServer.Core.Incidents.Queries
                                         FROM ErrorReports 
                                         WHERE StackTrace LIKE @FreeText 
                                             OR ErrorReports.Title LIKE @FreeText
+                                            OR ErrorReports.ErrorId LIKE @FreeText
                                             OR Incidents.Description LIKE @FreeText)
                                     )";
                     cmd.AddParameter("FreeText", $"%{query.FreeText}%");
@@ -170,6 +174,13 @@ namespace codeRR.Server.SqlServer.Core.Incidents.Queries
 
                 // then items
                 if (query.SortType == IncidentOrder.Newest)
+                {
+                    if (query.SortAscending)
+                        sqlQuery += " ORDER BY CreatedAtUtc";
+                    else
+                        sqlQuery += " ORDER BY CreatedAtUtc DESC";
+                }
+                else if (query.SortType == IncidentOrder.LatestReport)
                 {
                     if (query.SortAscending)
                         sqlQuery += " ORDER BY LastReportAtUtc";

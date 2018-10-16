@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace codeRR.Server.Infrastructure
+namespace Coderr.Server.Infrastructure
 {
     public interface ISetupDatabaseTools
     {
@@ -13,13 +13,6 @@ namespace codeRR.Server.Infrastructure
         /// Update DB schema to latest version.
         /// </summary>
         void UpgradeDatabaseSchema();
-
-        /// <summary>
-        ///     Used to check if the given connection string actually works
-        /// </summary>
-        /// <param name="connectionString"></param>
-        /// <exception cref="DataException">Something do not work</exception>
-        void CheckConnectionString(string connectionString);
 
         /// <summary>
         ///     Create all tables in the new DB.
@@ -36,5 +29,7 @@ namespace codeRR.Server.Infrastructure
         /// </summary>
         /// <returns>Connection</returns>
         IDbConnection OpenConnection();
+
+        void TestConnection(string connectionString);
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using Griffin.Data.Mapper;
 
-namespace codeRR.Server.SqlServer.Core.ApiKeys.Mappings
+namespace Coderr.Server.SqlServer.Core.ApiKeys.Mappings
 {
     public class IntMapper : IEntityMapper<int>
     {

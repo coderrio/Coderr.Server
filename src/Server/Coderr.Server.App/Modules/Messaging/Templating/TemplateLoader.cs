@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace codeRR.Server.App.Modules.Messaging.Templating
+namespace Coderr.Server.App.Modules.Messaging.Templating
 {
     /// <summary>
     ///     Loads a mail template.

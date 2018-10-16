@@ -1,12 +1,13 @@
 ﻿using System.Threading.Tasks;
-using codeRR.Server.App.Core.Invitations;
-using Griffin.Container;
+using Coderr.Server.Abstractions.Boot;
+using Coderr.Server.App.Core.Invitations;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 
-namespace codeRR.Server.SqlServer.Core.Invitations
+namespace Coderr.Server.SqlServer.Core.Invitations
 {
-    [Component]
+    [ContainerService]
     internal class InvitationRepository : IInvitationRepository
     {
         private readonly IAdoNetUnitOfWork _unitOfWork;

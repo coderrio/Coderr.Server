@@ -1,12 +1,12 @@
-﻿@model codeRR.Server.Web.Areas.Installation.Models.AccountViewModel
+﻿@using Coderr.Server.Web.Areas.Installation.Models
+@model Coderr.Server.Web.Areas.Installation.Models.AccountViewModel
 @{
     ViewBag.Title = "Installation - Account";
 }
 <div class="container">
-    <div class="col-lg-6">
-
+    <div class="col-lg-12">
         <h2>Account creation</h2>
-        <p>You need to create an account to be able to login. You can at a later point invite other users to codeRR.</p>
+        <p>You need to create an account to be able to login. You can at a later point invite other users to coderr.</p>
         @if (ViewBag.AlreadyCreated)
         {
             <div class="alert alert-info">
@@ -20,30 +20,25 @@
             <form method="post" action="@Url.Action("Admin")" style="width: 100%" class="form">
                 @Html.ValidationSummary(false)
                 <div class="form-group">
-                    <label class="control-label">
-                        Username
-                    </label>
-                    <input type="text"
-                           name="UserName" class="form-control" value="@Model.UserName" autocomplete="off"/>
+                    <label asp-for="UserName">Username</label>
+                    <input asp-for="UserName" class="form-control" autocomplete="off" autofocus="autofocus" required="required" />
                 </div>
                 <div class="form-group">
-                    <label for="EmailAddress">
-                        Email address
-                    </label>
-                    <input type="email" id="EmailAddress" name="EmailAddress" class="form-control" value="@Model.EmailAddress"/>
+                    <label asp-for="EmailAddress">Email address</label>
+                    <input type="email" asp-for="EmailAddress" class="form-control" required="required" />
                 </div>
                 <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" name="Password" id="Password" class="form-control" value="@Model.Password" autocomplete="off"/>
+                    <label asp-for="Password">Password</label>
+                    <input type="password" asp-for="Password" class="form-control" value="@Model.Password" autocomplete="off" required="required" />
                 </div>
                 <div class="form-group">
                     <label>Password verification</label>
-                    <input type="password" name="Password2" id="Password2" class="form-control" placeholder="Re-enter the password for verification." autocomplete="off"/>
+                    <input type="password" name="Password2" id="Password2" class="form-control" placeholder="Re-enter the password for verification." autocomplete="off" />
                     <div class="text-danger" id="PasswordError"></div>
                 </div>
-                <br/>
+                <br />
                 @Html.Raw(ViewBag.PrevLink)
-                <input type="submit" class="btn btn-primary" value="Save"/>
+                <input type="submit" class="btn btn-primary" value="Save" />
                 @Html.Raw(ViewBag.NextLink)
             </form>
         }
@@ -54,12 +49,11 @@
         }
     </div>
 </div>
-
 @section scripts
-{
+    {
     <script>
         $("#Password2")
-            .keyup(function(e) {
+            .keyup(function (e) {
                 if ($('#Password').val() != $('#Password2').val()) {
                     $('#PasswordError').html("Passwords to not match.");
                 } else {

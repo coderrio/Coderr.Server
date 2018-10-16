@@ -1,20 +1,21 @@
 ﻿using System.Linq;
 using System.Security;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Applications.Events;
-using codeRR.Server.Api.Core.Invitations.Commands;
-using codeRR.Server.Api.Core.Messaging;
-using codeRR.Server.Api.Core.Messaging.Commands;
-using codeRR.Server.App.Configuration;
-using codeRR.Server.App.Core.Applications;
-using codeRR.Server.App.Core.Users;
-using codeRR.Server.Infrastructure.Security;
-using Coderr.Server.PluginApi.Config;
+using Coderr.Server.Abstractions.Config;
+using Coderr.Server.Abstractions.Security;
+using Coderr.Server.Api.Core.Applications.Events;
+using Coderr.Server.Api.Core.Invitations.Commands;
+using Coderr.Server.Api.Core.Messaging;
+using Coderr.Server.Api.Core.Messaging.Commands;
+using Coderr.Server.Domain.Core.Applications;
+using Coderr.Server.Domain.Core.User;
+using Coderr.Server.Infrastructure.Configuration;
+using Coderr.Server.Infrastructure.Security;
 using DotNetCqs;
-using Griffin.Container;
+
 using log4net;
 
-namespace codeRR.Server.App.Core.Invitations.CommandHandlers
+namespace Coderr.Server.App.Core.Invitations.CommandHandlers
 {
     /// <summary>
     ///     Handler for <see cref="InviteUser" />
@@ -24,7 +25,6 @@ namespace codeRR.Server.App.Core.Invitations.CommandHandlers
     /// 
     ///     </para>
     /// </remarks>
-    [Component]
     public class InviteUserHandler : IMessageHandler<InviteUser>
     {
         private readonly IApplicationRepository _applicationRepository;
@@ -135,17 +135,17 @@ namespace codeRR.Server.App.Core.Invitations.CommandHandlers
 
             var msg = new EmailMessage
             {
-                Subject = "You have been invited by " + invitation.InvitedBy + " to codeRR.",
+                Subject = "You have been invited by " + invitation.InvitedBy + " to Coderr.",
                 TextBody = string.Format(@"Hello,
 
-{0} has invited to you join their team at codeRR, a service used to keep track of exceptions in .NET applications.
+{0} has invited to you join their team at Coderr, a service used to keep track of exceptions in .NET applications.
 
 Click on the following link to accept the invitation:
 {2}/account/accept/{1}
 
 {3}
 Best regards,
-  The codeRR team
+  The Coderr team
 ", invitation.InvitedBy, invitation.InvitationKey, url, reason),
                 Recipients = new[] {new EmailAddress(invitation.EmailToInvitedUser)}
             };

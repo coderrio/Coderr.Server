@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace codeRR.Server.Api.Core.Applications.Queries
+namespace Coderr.Server.Api.Core.Applications.Queries
 {
     /// <summary>
     ///     Get all members of a specific application

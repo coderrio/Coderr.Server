@@ -1,7 +1,6 @@
 ﻿using System;
-using DotNetCqs;
 
-namespace codeRR.Server.Api.Core.Applications.Commands
+namespace Coderr.Server.Api.Core.Applications.Commands
 {
     /// <summary>
     ///     Update application

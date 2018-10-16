@@ -1,7 +1,7 @@
-﻿namespace codeRR.Server.Infrastructure.Plugins
+﻿namespace Coderr.Server.Infrastructure.Plugins
 {
     /// <summary>
-    ///     Represents a plugin in codeRR.
+    ///     Represents a plugin in Coderr.
     /// </summary>
     public interface IPlugin
     {

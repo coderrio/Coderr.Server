@@ -1,9 +1,9 @@
 using System;
-using codeRR.Server.Infrastructure.Messaging;
+using Coderr.Server.Infrastructure.Messaging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace codeRR.Server.SqlServer.Tools
+namespace Coderr.Server.SqlServer.Tools
 {
     /// <summary>
     ///     Used for serialization of DB entities (typically value objects or child entities)v.

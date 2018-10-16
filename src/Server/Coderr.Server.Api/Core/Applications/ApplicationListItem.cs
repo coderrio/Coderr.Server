@@ -1,7 +1,7 @@
 ﻿using System;
-using codeRR.Server.Api.Core.Applications.Queries;
+using Coderr.Server.Api.Core.Applications.Queries;
 
-namespace codeRR.Server.Api.Core.Applications
+namespace Coderr.Server.Api.Core.Applications
 {
     /// <summary>
     ///     Result item for <see cref="GetApplicationList" />

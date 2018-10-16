@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Web.Feedback.Queries;
+using Coderr.Server.Api.Web.Feedback.Queries;
 using DotNetCqs;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 
-namespace codeRR.Server.SqlServer.Web.Feedback.Queries
+namespace Coderr.Server.SqlServer.Web.Feedback.Queries
 {
-    [Component]
     public class GetIncidentFeedbackHandler : IQueryHandler<GetIncidentFeedback, GetIncidentFeedbackResult>
     {
         private readonly IAdoNetUnitOfWork _unitOfWork;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace codeRR.Server.App.Modules.Messaging.Templating.Formatting
+namespace Coderr.Server.App.Modules.Messaging.Templating.Formatting
 {
     /// <summary>
     ///     Converts an object into a dictionary (to be able to process it in the template)
@@ -17,7 +17,7 @@ namespace codeRR.Server.App.Modules.Messaging.Templating.Formatting
         /// <remarks>
         ///     Look at the class doc for an example.
         /// </remarks>
-        public Dictionary<string, object> Convert(object instance)
+        public IDictionary<string, object> Convert(object instance)
         {
             if (instance == null)
                 throw new ArgumentNullException("instance");

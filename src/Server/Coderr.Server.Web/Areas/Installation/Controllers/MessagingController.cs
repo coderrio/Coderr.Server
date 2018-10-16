@@ -1,19 +1,21 @@
-﻿using System.Web.Mvc;
-using codeRR.Server.App.Modules.Messaging.Commands;
-using codeRR.Server.Infrastructure.Configuration;
-using codeRR.Server.Web.Areas.Installation.Models;
-using Coderr.Server.PluginApi.Config;
+﻿using System.Threading.Tasks;
+using Coderr.Server.Abstractions.Config;
+using Coderr.Server.App.Modules.Messaging.Commands;
+using Coderr.Server.Web.Areas.Installation.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace codeRR.Server.Web.Areas.Installation.Controllers
+namespace Coderr.Server.Web.Areas.Installation.Controllers
 {
-    [OutputCache(Duration = 0, NoStore = true)]
+    [Area("Installation")]
+    
     public class MessagingController : Controller
     {
         private ConfigurationStore _configStore;
 
-        public MessagingController()
+        public MessagingController(ConfigurationStore configStore)
         {
-            _configStore = Startup.ConfigurationStore;
+            _configStore = configStore;
         }
 
         public ActionResult Email()
@@ -54,11 +56,13 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
             return Redirect(Url.GetNextWizardStep());
         }
 
-        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        public override Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
+            Response.Headers.Add("Cache-Control", "no-cache, no-store");
+            Response.Headers.Add("Expires", "-1");
             ViewBag.PrevLink = Url.GetPreviousWizardStepLink();
             ViewBag.NextLink = Url.GetNextWizardStepLink();
-            base.OnActionExecuting(filterContext);
+            return base.OnActionExecutionAsync(context, next);
         }
     }
 }

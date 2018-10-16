@@ -1,7 +1,6 @@
 ﻿using System;
-using DotNetCqs;
 
-namespace codeRR.Server.Api.Core.Incidents.Commands
+namespace Coderr.Server.Api.Core.Incidents.Commands
 {
     /// <summary>
     ///     Close incident (i.e. we have corrected the issue)
@@ -28,6 +27,11 @@ namespace codeRR.Server.Api.Core.Incidents.Commands
         protected CloseIncident()
         {
         }
+
+        /// <summary>
+        ///     Which version that incident is solved in (like "1.2.1").
+        /// </summary>
+        public string ApplicationVersion { get; set; }
 
         /// <summary>
         ///     Can send notifications to everyone which has reported exceptions through our system.

@@ -1,8 +1,8 @@
-﻿using codeRR.Server.App.Core.Incidents;
-using codeRR.Server.SqlServer.Tools;
+﻿using Coderr.Server.Domain.Core.Incidents;
+using Coderr.Server.SqlServer.Tools;
 using Griffin.Data.Mapper;
 
-namespace codeRR.Server.SqlServer.Core.Incidents
+namespace Coderr.Server.SqlServer.Core.Incidents
 {
     public class IncidentMapper : CrudEntityMapper<Incident>
     {
@@ -17,6 +17,10 @@ namespace codeRR.Server.SqlServer.Core.Incidents
                 .ToPropertyValue(DbConverters.ToEntityDate);
 
             Property(x => x.IgnoringReportsSinceUtc)
+                .ToColumnValue(DbConverters.ToNullableSqlDate)
+                .ToPropertyValue(DbConverters.ToEntityDate);
+
+            Property(x => x.ReopenedAtUtc)
                 .ToColumnValue(DbConverters.ToNullableSqlDate)
                 .ToPropertyValue(DbConverters.ToEntityDate);
 

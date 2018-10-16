@@ -1,7 +1,7 @@
-﻿using codeRR.Server.App.Modules.Similarities.Domain;
+﻿using Coderr.Server.Domain.Modules.Similarities;
 using Griffin.Data.Mapper;
 
-namespace codeRR.Server.SqlServer.Modules.Similarities.Mappers
+namespace Coderr.Server.SqlServer.Modules.Similarities.Mappers
 {
     public class SimilarityValueMapper : CrudEntityMapper<SimilarityValue>
     {

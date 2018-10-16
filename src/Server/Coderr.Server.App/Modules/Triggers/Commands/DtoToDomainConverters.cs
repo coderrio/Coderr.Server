@@ -1,10 +1,9 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
-using codeRR.Server.Api.Modules.Triggers;
-using codeRR.Server.App.Modules.Triggers.Domain;
-using codeRR.Server.App.Modules.Triggers.Domain.Rules;
+using Coderr.Server.Api.Modules.Triggers;
+using Coderr.Server.App.Modules.Triggers.Rules;
 
-namespace codeRR.Server.App.Modules.Triggers.Commands
+namespace Coderr.Server.App.Modules.Triggers.Commands
 {
     /// <summary>
     ///     Convert DTOs to Entities.
@@ -108,7 +107,7 @@ namespace codeRR.Server.App.Modules.Triggers.Commands
         /// <param name="rule">dto</param>
         /// <returns>entity</returns>
         /// <exception cref="FormatException">Subclass is not recognized.</exception>
-        public static ITriggerRule ConvertRule(TriggerRuleBase rule)
+        public static RuleBase ConvertRule(TriggerRuleBase rule)
         {
             if (rule is TriggerContextRule)
             {

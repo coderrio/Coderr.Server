@@ -1,7 +1,7 @@
 ﻿using System;
 using DotNetCqs;
 
-namespace codeRR.Server.Api.Web.Feedback.Queries
+namespace Coderr.Server.Api.Web.Feedback.Queries
 {
     /// <summary>
     ///     Lists all feedback which has been made for an incident

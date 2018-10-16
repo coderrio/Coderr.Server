@@ -1,12 +1,11 @@
 ﻿//using System;
 //using System.Threading.Tasks;
-//using Griffin.Container;
-//using codeRR.Core.Api.Applications;
+//using Coderr.Server.ReportAnalyzer.Abstractions;
+//using Coderr.Core.Api.Applications;
 //
 
-//namespace codeRR.Data.Applications
+//namespace Coderr.Data.Applications
 //{
-//    [Component]
 //    public class GetApplicationByAppKeyHandler : IQueryHandler<GetApplicationByAppKey, ApplicationResult>
 //    {
 //        private readonly IAdoNetUnitOfWork _uow;

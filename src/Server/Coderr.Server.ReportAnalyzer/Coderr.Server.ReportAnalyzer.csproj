@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Coderr.Server.ReportAnalyzer</RootNamespace>
+    <AssemblyName>Coderr.Server.ReportAnalyzer</AssemblyName>
+    <DefaultItemExcludes>$(DefaultItemExcludes);**\*.DotSettings;</DefaultItemExcludes>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Coderr.Client.NetStd" Version="1.1.3" />
+    <PackageReference Include="DotNetCqs" Version="2.0.9" />
+    <PackageReference Include="DotNetCqs.DependencyInjection.Microsoft" Version="1.0.0" />
+    <PackageReference Include="DotNetCqs.Queues.AdoNet" Version="1.0.6" />
+    <PackageReference Include="Griffin.Framework" Version="2.0.0-alpha01" />
+    <PackageReference Include="log4net" Version="2.0.8" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.4.3" />
+    <PackageReference Include="UAParser" Version="3.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Coderr.Server.Domain\Coderr.Server.Domain.csproj" />
+    <ProjectReference Include="..\Coderr.Server.Infrastructure\Coderr.Server.Infrastructure.csproj" />
+    <ProjectReference Include="..\Coderr.Server.ReportAnalyzer.Abstractions\Coderr.Server.ReportAnalyzer.Abstractions.csproj" />
+  </ItemGroup>
+  <!--<ItemGroup>
+    <Reference Include="System.Management">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.Management.dll</HintPath>
+    </Reference>
+  </ItemGroup>-->
+</Project>

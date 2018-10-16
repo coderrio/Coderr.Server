@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.Server.Api.Core.Incidents.Events
+namespace Coderr.Server.Api.Core.Incidents.Events
 {
     /// <summary>
     ///     Someone was assigned to an incident

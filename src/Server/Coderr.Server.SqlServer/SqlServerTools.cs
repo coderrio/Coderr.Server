@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Configuration;
 using System.Data;
-using System.Data.Common;
 using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
-using codeRR.Server.Infrastructure;
-using codeRR.Server.SqlServer.Tools;
+using Coderr.Server.Abstractions;
+using Coderr.Server.Infrastructure;
+using Coderr.Server.SqlServer.Migrations;
 
-namespace codeRR.Server.SqlServer
+namespace Coderr.Server.SqlServer
 {
     /// <summary>
     ///     MS Sql Server specific implementation of the database tools.
@@ -19,43 +18,39 @@ namespace codeRR.Server.SqlServer
     /// </remarks>
     public class SqlServerTools : ISetupDatabaseTools
     {
+        private readonly Func<IDbConnection> _connectionFactory;
         private readonly SchemaManager _schemaManager;
 
-        public SqlServerTools()
+        public SqlServerTools(Func<IDbConnection> connectionFactory)
         {
-            _schemaManager = new SchemaManager(OpenConnection);
+            _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
+            _schemaManager = new SchemaManager(_connectionFactory);
         }
-
-        internal static string DbName { get; set; }
-
-        private bool IsConnectionConfigured
-        {
-            get
-            {
-                var conString = GetConnectionString(false);
-                return !string.IsNullOrEmpty(conString?.ConnectionString);
-            }
-        }
-
+        
         /// <summary>
         ///     Checks if the tables exists and are for the current DB schema.
         /// </summary>
         public bool GotUpToDateTables()
         {
-            if (!IsConnectionConfigured)
-                return false;
-
-            using (var con = OpenConnection())
+            try
             {
-                using (var cmd = con.CreateCommand())
+                using (var con = _connectionFactory())
                 {
-                    cmd.CommandText = "SELECT OBJECT_ID(N'dbo.[Accounts]', N'U')";
-                    var result = cmd.ExecuteScalar();
+                    using (var cmd = con.CreateCommand())
+                    {
+                        cmd.CommandText = "SELECT OBJECT_ID(N'dbo.[Accounts]', N'U')";
+                        var result = cmd.ExecuteScalar();
 
-                    //null for SQL Express and DbNull for SQL Server
-                    return result != null && !(result is DBNull);
+                        //null for SQL Express and DbNull for SQL Server
+                        return result != null && !(result is DBNull);
+                    }
                 }
             }
+            catch (Exception)
+            {
+                return false;
+            }
+            
         }
 
         /// <summary>
@@ -73,24 +68,7 @@ namespace codeRR.Server.SqlServer
         {
             _schemaManager.UpgradeDatabaseSchema();
         }
-
-        public void CheckConnectionString(string connectionString)
-        {
-            var pos = connectionString.IndexOf("Connect Timeout=");
-            if (pos != -1)
-            {
-                pos += "Connect Timeout=".Length;
-                var endPos = connectionString.IndexOf(";", pos);
-                if (endPos == -1)
-                    connectionString = connectionString.Substring(0, pos) + "1";
-                else
-                    connectionString = connectionString.Substring(0, pos) + "1" + connectionString.Substring(endPos);
-            }
-            SqlConnection.ClearAllPools();
-            var con = new SqlConnection(connectionString);
-            con.Open();
-        }
-
+        
         [SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities",
             Justification = "Installation import = control over SQL")]
         public void CreateTables()
@@ -100,36 +78,14 @@ namespace codeRR.Server.SqlServer
 
         IDbConnection ISetupDatabaseTools.OpenConnection()
         {
-            return OpenConnection();
+            return _connectionFactory();
         }
 
-        public static IDbConnection OpenConnection(string connectionString)
+        public void TestConnection(string connectionString)
         {
             var con = new SqlConnection(connectionString);
             con.Open();
-            if (DbName != null)
-                con.ChangeDatabase(DbName);
-
-            return con;
-        }
-
-        protected ConnectionStringSettings GetConnectionString(bool throwOnError = true)
-        {
-            var db = ConfigurationManager.ConnectionStrings["Db"];
-            if (db == null && throwOnError)
-                throw new ConfigurationErrorsException("The connectionString 'Db' is missing in web.config.");
-
-            return db;
-        }
-
-        private IDbConnection OpenConnection()
-        {
-            var conStr = GetConnectionString();
-            var provider = DbProviderFactories.GetFactory(conStr.ProviderName);
-            var connection = provider.CreateConnection();
-            connection.ConnectionString = conStr.ConnectionString;
-            connection.Open();
-            return connection;
+            con.Dispose();
         }
     }
 }

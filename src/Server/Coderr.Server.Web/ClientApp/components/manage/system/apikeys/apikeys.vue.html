@@ -1,0 +1,51 @@
+<template>
+    <div class="mt-4">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        Api keys
+                        <div class="float-right">
+                            <router-link class="btn-sm btn btn-outline-primary" :to="{ name: 'createApiKey' }">Create new key</router-link>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table mb-3">
+                            <thead>
+                                <tr>
+                                    <th>Created for</th>
+                                    <th>Key</th>
+                                    <th>&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="key in keys">
+                                    <td>
+                                        {{key.ApplicationName}}
+                                    </td>
+                                    <td>
+                                        {{key.ApiKey}}
+                                    </td>
+                                    <td>
+                                        <router-link :to="{name: 'manageApiKey', params: { apiKey: key.Id.toString() }}"><i class="fa fa-info-circle"></i></router-link>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                        <p>
+                            <em>ApiKeys are used to communicate with Coderr through the HTTP api.</em>
+                        </p>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+
+<style src="./apikeys.css"></style>
+<script src="./apikeys.ts"></script>

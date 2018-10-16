@@ -1,7 +1,8 @@
 ﻿using System;
+
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
 
-namespace codeRR.Server.Api.Core.Accounts.Events
+namespace Coderr.Server.Api.Core.Accounts.Events
 {
     /// <summary>
     ///     An user have registered an account and activated it.

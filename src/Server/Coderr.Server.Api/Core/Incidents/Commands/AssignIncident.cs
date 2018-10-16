@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.Server.Api.Core.Incidents.Commands
+namespace Coderr.Server.Api.Core.Incidents.Commands
 {
     /// <summary>
     ///     Start working on an incident.

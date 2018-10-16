@@ -1,14 +1,12 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Modules.Tagging;
-using codeRR.Server.Api.Modules.Tagging.Queries;
-using codeRR.Server.App.Modules.Tagging.Domain;
+using Coderr.Server.Api.Modules.Tagging;
+using Coderr.Server.Api.Modules.Tagging.Queries;
+using Coderr.Server.Domain.Modules.Tags;
 using DotNetCqs;
-using Griffin.Container;
 
-namespace codeRR.Server.App.Modules.Tagging.Handlers
+namespace Coderr.Server.App.Modules.Tagging.Handlers
 {
-    [Component]
     internal class GetTagsHandler : IQueryHandler<GetTags, TagDTO[]>
     {
         private readonly ITagsRepository _repository;

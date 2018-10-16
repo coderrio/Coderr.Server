@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Incidents.Queries;
+using Coderr.Server.Api.Core.Incidents.Queries;
 using DotNetCqs;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 
-namespace codeRR.Server.SqlServer.Core.Incidents.Queries
+namespace Coderr.Server.SqlServer.Core.Incidents.Queries
 {
-    [Component]
     internal class GetIncidentStatisticsHandler : IQueryHandler<GetIncidentStatistics, GetIncidentStatisticsResult>
     {
         private readonly IAdoNetUnitOfWork _unitOfWork;

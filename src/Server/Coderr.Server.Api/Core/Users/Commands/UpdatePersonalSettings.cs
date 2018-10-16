@@ -1,7 +1,4 @@
-﻿using codeRR.Server.Api.Core.Accounts.Requests;
-using DotNetCqs;
-
-namespace codeRR.Server.Api.Core.Users.Commands
+﻿namespace Coderr.Server.Api.Core.Users.Commands
 {
     /// <summary>
     ///     Update personal settings.

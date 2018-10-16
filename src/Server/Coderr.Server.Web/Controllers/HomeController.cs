@@ -1,29 +1,35 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Web.Mvc;
-using codeRR.Server.Api.Core.Applications.Queries;
-using DotNetCqs;
+﻿using Coderr.Server.Web.Areas.Installation;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
-namespace codeRR.Server.Web.Controllers
+namespace Coderr.Server.Web.Controllers
 {
-    [Authorize]
+    [Authorize()]
     public class HomeController : Controller
     {
-        private readonly IQueryBus _queryBus;
+        private readonly InstallationOptions _installationOptions;
 
-        public HomeController(IQueryBus queryBus1)
+        public HomeController(IOptions<InstallationOptions> installationOptions)
         {
-            _queryBus = queryBus1;
+            _installationOptions = installationOptions.Value;
         }
 
-        public async Task<ActionResult> Index()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>
+        /// We need to make sure that the installation wizard can redirect to the install start page.
+        /// </remarks>
+        [HttpGet]
+        public IActionResult Index()
         {
-            var apps = await _queryBus.QueryAsync(this.ClaimsUser(), new GetApplicationList());
-            if (apps.Length == 0)
-                return RedirectToAction("Application", "Wizard");
+            //if (!_installationOptions.IsConfigured)
+            //    return Redirect("~/installation/");
 
-            if (!Request.Path.EndsWith("/"))
-                return Redirect(Request.Path + "/");
+            //if (!User.Identity.IsAuthenticated)
+            //    return RedirectToAction("Login", "Account");
 
             return View();
         }

@@ -1,7 +1,6 @@
-﻿using codeRR.Server.Infrastructure.Configuration;
-using Coderr.Server.PluginApi.Config;
+﻿using Coderr.Server.Abstractions.Config;
 
-namespace codeRR.Server.SqlServer.Tests
+namespace Coderr.Server.SqlServer.Tests
 {
     public class TestConfigStore : ConfigurationStore
     {

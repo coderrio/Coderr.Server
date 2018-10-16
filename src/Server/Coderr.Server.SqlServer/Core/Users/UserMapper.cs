@@ -1,7 +1,7 @@
-﻿using codeRR.Server.App.Core.Users;
+﻿using Coderr.Server.Domain.Core.User;
 using Griffin.Data.Mapper;
 
-namespace codeRR.Server.SqlServer.Core.Users
+namespace Coderr.Server.SqlServer.Core.Users
 {
     public class UserMapper : CrudEntityMapper<User>
     {

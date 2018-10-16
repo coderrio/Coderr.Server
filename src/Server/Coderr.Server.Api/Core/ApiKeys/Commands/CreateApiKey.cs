@@ -1,13 +1,12 @@
 ﻿using System;
-using DotNetCqs;
 
-namespace codeRR.Server.Api.Core.ApiKeys.Commands
+namespace Coderr.Server.Api.Core.ApiKeys.Commands
 {
     /// <summary>
     ///     Create a new API key
     /// </summary>
     /// <remarks>
-    ///     <para>API keys are used to be able to communicate with the codeRR server through the HTTP API.</para>
+    ///     <para>API keys are used to be able to communicate with the Coderr server through the HTTP API.</para>
     /// </remarks>
     [AuthorizeRoles("SysAdmin")]
     [Message]

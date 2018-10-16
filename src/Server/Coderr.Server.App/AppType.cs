@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace codeRR.Server.App
+﻿namespace Coderr.Server.App
 {
     public class AppType
     {

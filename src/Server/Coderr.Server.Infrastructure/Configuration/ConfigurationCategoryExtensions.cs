@@ -1,9 +1,9 @@
-﻿using Coderr.Server.PluginApi.Config;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using Coderr.Server.Abstractions.Config;
 
-namespace codeRR.Server.Infrastructure.Configuration
+namespace Coderr.Server.Infrastructure.Configuration
 {
     /// <summary>
     ///     Extensions used to convert between a flat object and a configuration dictionary

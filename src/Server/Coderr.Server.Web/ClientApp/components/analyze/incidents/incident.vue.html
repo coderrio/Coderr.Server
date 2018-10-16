@@ -1,0 +1,136 @@
+<template>
+    <div class="IncidentView">
+        <div>
+            <div class="row">
+                <div class="col">
+                    <div class="float-right">
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Actions
+                            </button>
+                            <div class="dropdown-menu">
+                                <span class="dropdown-item" v-on:click="reAssign"><i class="fa-redo fa text-muted"></i> Re-assign</span>
+                                <!--<span class="dropdown-item" v-on:click="addToTfs"><i class="fa-code-branch fa text-muted"></i> Add to TFS/VSTS</span>-->
+                                <span class="dropdown-item" v-on:click="closeIncident"><i class="fa-lock fa text-muted"></i> Close incident</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>{{incident.Description}} <span class="lead text-muted">[{{incident.FullName}}]</span></h3>
+
+
+                    <div class="tags">
+                        <span v-for="tag in incident.Tags" class="badge badge-dark">{{tag}}</span>
+                    </div>
+                    <hr />
+                </div>
+            </div>
+            <div class="row" v-if="incident.Solution">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            Previous solution ({{incident.SolvedAtUtc|ago}})
+                        </div>
+                        <div class="card-body">
+                            <div v-html="incident.Solution"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-xl-8 col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3>Stack trace</h3>
+                            <pre style="min-height: 200px"><code>{{incident.StackTrace}}</code></pre>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-6">
+                    <div class="card" v-if="incident.Facts && incident.Facts.length > 0">
+                        <div class="card-body">
+                            <h3>Quick facts</h3>
+                            <div>
+                                <table class="table table-borderless">
+                                    <tbody>
+                                        <tr v-for="prop in incident.Facts" v-if="prop.Value != '0'">
+                                            <td>{{prop.Title}}</td>
+                                            <td>{{prop.Value}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h3>Context collections</h3>
+                            <div>
+                                <div class="dropdown" style="display: inline">
+                                    <button type="button" class="btn btn-light dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        {{currentReportName}}
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <h6 class="dropdown-header">Select report</h6>
+                                        <div v-for="report in reports">
+                                            <a class="dropdown-item" href="#" v-on:click.prevent="loadReport(report.Id)"><i class="fa-desktop fa text-muted"></i> {{report.CreatedAtUtc|ago}}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dropdown" style="display: inline">
+                                    <button type="button" class="btn btn-light dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="reportChooser">
+                                        {{currentCollectionName}}
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <h6 class="dropdown-header">Select context collection</h6>
+                                        <div v-for="collection in currentReport.ContextCollections">
+                                            <span class="dropdown-item" v-on:click="loadCollection(collection.Name)"><i class="fa-table fa text-muted"></i> {{collection.Name}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-if="currentReport.Id > 0" style="overflow-x: scroll">
+                                <table class="table">
+                                    <tbody>
+                                        <tr v-for="prop in currentCollection.Properties">
+                                            <td>{{prop.Key}}</td>
+                                            <td v-html="prop.Value"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <hr />
+                                <em>
+                                    <router-link :to="{ name: 'analyzeReport', params: { reportId: currentReport.Id, incidentId: incident.Id}}">View entire report</router-link> |
+                                    <a href="#">Browse all reports</a>
+                                </em>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="assignToModal" style="display:none">
+            <div class="modal-body">
+                <div v-for="user in team" class="mb-2">
+                    <button class="btn btn-primary btn-block" v-on:click.prevent="assignTo(user.id, $event)" :value="user.id" data-dismiss="modal">
+                        {{user.name}}
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="CloseBody" style="display: none">
+            <textarea id="CloseArea" class="w-100" rows="10" placeholder="How did you solve the error?" autofocus="autofocus" required="required"></textarea>
+            <input type="text" name="version" class="form-control mb-3" size="10" placeholder="Which version is the error corrected in? (format: 1.2.10)" pattern="[0-9\.]*" title="You can use semantic versioning, including pre-releases, but must specify the release version here." />
+            <div>
+                <em><a href="https://coderr.io/documentation/features/incidents/close/">Learn more about this feature</a></em>
+                <em class="float-right"><router-link :to="{name: 'closeIncident', params: { incidentId: incidentId }}">Go to full screen editor</router-link></em>
+            </div>
+        </div>
+    </div>
+</template>
+
+
+<style src="./Incident.css"></style>
+<script src="./Incident.ts"></script>

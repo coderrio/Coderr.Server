@@ -1,7 +1,7 @@
 using System;
-using codeRR.Server.SqlServer.Tools;
+using Coderr.Server.SqlServer.Tools;
 
-namespace codeRR.Server.SqlServer
+namespace Coderr.Server.SqlServer
 {
     public class DbConverters
     {

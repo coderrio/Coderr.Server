@@ -1,0 +1,90 @@
+<template>
+    <div class="ReportsView">
+        <div class="row">
+            <div class="col">
+                <h2>
+                    Report details <em class="small">({{reportedAt|niceTime}})</em>
+                </h2>
+
+            </div>
+            <hr />
+        </div>
+        <div class="row mb-2">
+            <div class="col-lg-2">
+                <button class="btn btn-light" v-on:click="prevReport" v-if="showPrevButton">&lt;&lt; Previous report</button>
+            </div>
+            <div class="col-lg-8 text-center">
+                <span>{{reportedAt|ago}}</span> <span class="text-muted">(report {{indexInTotalSet+1}} of {{totalCount}})</span>
+            </div>
+            <div class="col-lg-2 text-right">
+                <button class="btn btn-light" v-on:click="nextReport" v-if="showNextButton">Next report &gt;&gt;</button>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-lg-12 col-xl-8 contextCollections">
+                <div class="card">
+                    <div class="card-body">
+                        <h3>Context collections</h3>
+                        <div v-if="this.contextCollections.length == 0">
+                            <em>No context collections were attached to this error report.</em>
+                            <p>
+                                <em>Our documentation demonstrates how you can <a href="http://coderr.io/documentation/client/manual-reporting/">manually add context information</a> or <a href="http://coderr.io/documentation/client/context-provider/">create custom collections</a>.</em>
+                            </p>
+                        </div>
+                        <div v-else>
+                            <div class="dropdown" style="display: inline">
+                                <button type="button" class="btn btn-light dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="reportChooser">
+                                    {{currentCollectionName}}
+                                </button>
+                                <div class="dropdown-menu">
+                                    <h6 class="dropdown-header">Select context collection</h6>
+                                    <div v-for="collection in contextCollections">
+                                        <span class="dropdown-item" v-on:click="loadCollection(collection.Name)"><i class="fa-table fa text-muted"></i> {{collection.Name}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-if="this.contextCollections.length > 0">
+                            <table class="table table-borderless">
+                                <tbody>
+                                <tr v-for="prop in currentCollection.Properties">
+                                    <th style="white-space: nowrap;">{{prop.Key}}</th>
+                                    <td style="width:100%;" class="value" v-html="prop.Value"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 col-xl-4">
+                <div class="card" v-if="userFeedback != null">
+                    <div class="card-body">
+                        <h3>Error report from {{userOrEmail}}</h3>
+                        <div class="card-body">
+                            <pre style="min-height: 200px"><code>{{userFeedback}}</code></pre>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h3>Stack trace</h3>
+                        <div class="card-body">
+                            <pre style="min-height: 200px"><code>{{stackTrace}}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <router-link :to="{ name: 'analyzeIncident', params: { incidentId: incidentId }}" class="btn btn-light">&lt;&lt; Back to incident..</router-link>
+            </div>
+        </div>
+    </div>
+</template>
+
+
+<style src="./report.css"></style>
+<script src="./report.ts"></script>

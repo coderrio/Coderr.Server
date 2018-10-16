@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Web.Overview.Queries;
-using codeRR.Server.App.Core.Incidents;
-using codeRR.Server.Infrastructure.Security;
+using Coderr.Server.Abstractions.Security;
+using Coderr.Server.Api.Web.Overview.Queries;
+using Coderr.Server.Domain.Core.Incidents;
+using Coderr.Server.Infrastructure.Security;
 using DotNetCqs;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 
-namespace codeRR.Server.SqlServer.Web.Overview
+namespace Coderr.Server.SqlServer.Web.Overview
 {
-    [Component]
     internal class GetOverviewHandler : IQueryHandler<GetOverview, GetOverviewResult>
     {
         private readonly IAdoNetUnitOfWork _unitOfWork;
@@ -77,7 +76,8 @@ namespace codeRR.Server.SqlServer.Web.Overview
                 ApplicationIds = string.Join(",", appIds);
             }
 
-           
+           if (!ApplicationIds.Any())
+               return new GetOverviewResult();
 
             if (query.NumberOfDays == 1)
                 return await GetTodaysOverviewAsync(query);
@@ -132,6 +132,20 @@ right join applications on (applicationid=applications.id)
                     result.TimeAxisLabels = labels;
                     result.IncidentsPerApplication = apps.Values.ToArray();
                 }
+            }
+
+            using (var cmd = _unitOfWork.CreateCommand())
+            {
+                var from = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+                var to = DateTime.UtcNow;
+                cmd.CommandText =
+                    "SELECT sum(NumberOfReports) FROM IgnoredReports WHERE  date >= @from ANd date <= @to";
+                cmd.AddParameter("from", from);
+                cmd.AddParameter("to", to);
+                var value = cmd.ExecuteScalar();
+                if (value != DBNull.Value)
+                    result.MissedReports = (int) value;
+
             }
 
             await GetStatSummary(query, result);

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core.ApiKeys.Commands;
-using codeRR.Server.App.Core.Applications;
-using codeRR.Server.SqlServer.Core.ApiKeys;
-using codeRR.Server.SqlServer.Core.ApiKeys.Commands;
-using codeRR.Server.SqlServer.Core.Applications;
+using Coderr.Server.Api.Core.ApiKeys.Commands;
+using Coderr.Server.Domain.Core.Applications;
+using Coderr.Server.SqlServer.Core.ApiKeys;
+using Coderr.Server.SqlServer.Core.ApiKeys.Commands;
+using Coderr.Server.SqlServer.Core.Applications;
 using DotNetCqs;
 using FluentAssertions;
 using Griffin.Data;
@@ -13,7 +13,7 @@ using NSubstitute;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace codeRR.Server.SqlServer.Tests.Core.ApiKeys.Commands
+namespace Coderr.Server.SqlServer.Tests.Core.ApiKeys.Commands
 {
 
     public class CreateApiKeyHandlerTests : IntegrationTest

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace codeRR.Server.Infrastructure.Plugins
+namespace Coderr.Server.Infrastructure.Plugins
 {
     /// <summary>
     ///     Item for <see cref="MenuConfiguration" />.

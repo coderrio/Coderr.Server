@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using codeRR.Server.Infrastructure.Security;
+using Coderr.Server.Abstractions.Security;
+using Coderr.Server.Infrastructure.Security;
 
-namespace codeRR.Server.App.Core.ApiKeys
+namespace Coderr.Server.App.Core.ApiKeys
 {
     /// <summary>
-    ///     A generated API key which can be used to call codeRR´s HTTP api.
+    ///     A generated API key which can be used to call Coderr´s HTTP api.
     /// </summary>
     public class ApiKey
     {

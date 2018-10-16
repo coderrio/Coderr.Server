@@ -1,8 +1,8 @@
 ﻿using System;
-using DotNetCqs;
+
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
 
-namespace codeRR.Server.Api.Core.Accounts.Commands
+namespace Coderr.Server.Api.Core.Accounts.Commands
 {
     /// <summary>
     ///     Register a new account and send out an activation email.

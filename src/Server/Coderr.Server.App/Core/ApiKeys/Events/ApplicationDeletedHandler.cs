@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Applications.Events;
+using Coderr.Server.Api.Core.Applications.Events;
 using DotNetCqs;
-using Griffin.Container;
 
-namespace codeRR.Server.App.Core.ApiKeys.Events
+
+namespace Coderr.Server.App.Core.ApiKeys.Events
 {
     /// <summary>
     ///     Will either delete an entire apikey (if the only association is with the given application) or just remove the
     ///     application mapping.
     /// </summary>
-    [Component(RegisterAsSelf = true)]
     public class ApplicationDeletedHandler : IMessageHandler<ApplicationDeleted>
     {
         private readonly IApiKeyRepository _repository;

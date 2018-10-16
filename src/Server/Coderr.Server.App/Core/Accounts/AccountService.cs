@@ -4,25 +4,26 @@ using System.Linq;
 using System.Security.Authentication;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Accounts.Events;
-using codeRR.Server.Api.Core.Accounts.Requests;
-using codeRR.Server.Api.Core.Applications;
-using codeRR.Server.Api.Core.Applications.Queries;
-using codeRR.Server.App.Core.Applications;
-using codeRR.Server.App.Core.Invitations;
-using codeRR.Server.Infrastructure.Security;
+using Coderr.Server.Abstractions.Boot;
+using Coderr.Server.Abstractions.Security;
+using Coderr.Server.Api.Core.Accounts.Events;
+using Coderr.Server.Api.Core.Accounts.Requests;
+using Coderr.Server.App.Core.Invitations;
+using Coderr.Server.Domain.Core.Account;
+using Coderr.Server.Domain.Core.Applications;
+using Coderr.Server.Domain.Core.User;
+using Coderr.Server.Infrastructure.Security;
+
 using DotNetCqs;
-using Griffin.ApplicationServices;
-using Griffin.Container;
 using log4net;
 
-namespace codeRR.Server.App.Core.Accounts
+namespace Coderr.Server.App.Core.Accounts
 {
     /// <summary>
     ///     This is a service and not CQS object as the methods here are of RPC type which isn't really a good fit for commands
     ///     or queries.
     /// </summary>
-    [Component]
+    [ContainerService]
     public class AccountService : IAccountService
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(AccountService));
@@ -236,7 +237,6 @@ namespace codeRR.Server.App.Core.Accounts
             foreach (var app in apps)
             {
                 claims.Add(new Claim(CoderrClaims.Application, app.ApplicationId.ToString(), ClaimValueTypes.Integer32));
-                claims.Add(new Claim(CoderrClaims.ApplicationName, app.ApplicationName, ClaimValueTypes.String));
                 if (app.IsAdmin)
                     claims.Add(new Claim(CoderrClaims.ApplicationAdmin, app.ApplicationId.ToString(), ClaimValueTypes.Integer32));
             }
@@ -244,7 +244,7 @@ namespace codeRR.Server.App.Core.Accounts
 
             //accountId == 1 for backwards compatibility (with version 1.0)
             if (isSysAdmin || accountId == 1)
-                claims.Add(new Claim(ClaimTypes.Role, CoderrClaims.RoleSysAdmin));
+                claims.Add(new Claim(ClaimTypes.Role, CoderrRoles.SysAdmin));
 
             return new ClaimsIdentity(claims.ToArray());
         }

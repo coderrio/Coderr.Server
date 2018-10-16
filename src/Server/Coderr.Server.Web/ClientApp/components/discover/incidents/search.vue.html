@@ -1,0 +1,124 @@
+<template>
+    <div class="row" id="IncidentSearchView">
+        <div class="col-xl-4 col-lg-3 col-md-4">
+            <div class="card" id="SearchOptions">
+                <div class="card-header">
+                    Filter
+                </div>
+                <div class="card-body">
+                    <input type="text" placeholder="Free text" class="form-control" v-model="freeText" />
+                    <div class="w-100">
+                        <button class="mt-1 btn btn-primary w-auto" v-on:click="search">Search</button>
+                        <button class="mt-1 btn" name="more" v-on:click="toggleFilterDisplay">Show more filters &gt;&gt;</button>
+                    </div>
+                    <div id="more-filters" v-bind:class="{more: !showFilters }">
+                        <hr />
+                        <div class="apps" v-if="showApplicationColumn">
+                            <h4>Applications</h4>
+                            <button class="btn btn-light" v-for="app in availableApplications" :data-app="app.id" @click="toggleApplication">
+                                {{ app.name }}
+                            </button>
+                            <hr />
+                        </div>
+                        <div class="tags">
+                            <h4>Tags</h4>
+                            <button class="btn btn-light" v-for="tag in availableTags" :data-tag="tag" @click="toggleTag">
+                                {{ tag }}
+                            </button>
+                            <hr />
+                        </div>
+                        <div class="state">
+                            <h4>Incident state</h4>
+                            <div class="row text-nowrap">
+                                <div class="col">
+                                    <button class="btn btn-dark" v-model="incidentState" value="-1" v-on:click.prevent="toggleState(-1, $event)">
+                                        All
+                                    </button>
+                                </div>
+                                <div class="col">
+                                    <button class="btn btn-dark" v-model="incidentState" value="0" v-on:click.prevent="toggleState(0, $event)">
+                                        New
+                                    </button>
+                                </div>
+                                <div class="col">
+                                    <button class="btn btn-light" v-model="incidentState" value="1" v-on:click.prevent="toggleState(1, $event)">
+                                        Assigned
+                                    </button>
+                                </div>
+                                <div class="col">
+                                    <button class="btn btn-light" v-model="incidentState" value="3" v-on:click.prevent="toggleState(3, $event)">
+                                        Closed
+                                    </button>
+                                </div>
+                                <div class="col">
+                                    <button class="btn btn-light" v-model="incidentState" value="2" v-on:click.prevent="toggleState(2, $event)">
+                                        Ignored
+                                    </button>
+                                </div>
+                            </div>
+                            <hr />
+                        </div>
+                        <div class="tags">
+                            <h4>Context collection</h4>
+                            <input name="CollectionName" type="text" class="form-control rounded mb-1" placeholder="Collection name" v-model="contextCollectionName" />
+                            <input name="PropertyName" type="text" class="form-control rounded mb-1" placeholder="Property name" v-model="contextCollectionProperty" />
+                            <input name="PropertyValue" type="text" class="form-control rounded mb-1" placeholder="Property value" v-model="contextCollectionPropertyValue" />
+                            <hr />
+                        </div>
+                        <button class="btn btn-primary w-100" v-on:click="search" name="executeSearch">Search</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-8 col-lg-9 col-md-8">
+            <div class="card-body card">
+                <h2>Incidents</h2>
+                <div class="filters">
+
+                </div>
+                <table class="table w-100" id="searchTable">
+                    <thead class="table-light search-head">
+                    <tr>
+                        <th><input class="form-check-inline" type="checkbox" v-on:change="checkAll($event)"/> Name</th>
+                        <th v-if="showApplicationColumn">Application</th>
+                        <th class="sortable" v-on:click.prevent="sort($event)" data-value="0">Created <i class="fa"></i></th>
+                        <th class="sortable" v-on:click.prevent="sort($event)" data-value="1">Last report <i class="fa"></i></th>
+                        <th class="sortable" v-on:click.prevent="sort($event)" data-value="2">Report count <i class="fa fa-chevron-up"></i></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="incident in incidents">
+                        <td>
+                            <input type="checkbox" :value="incident.Id" name="id" class="form-check-inline" v-model="checkedIncidents"/>
+                            <router-link :to="{ name: 'discoverIncident', params: { applicationId: incident.ApplicationId, incidentId: incident.Id }}">{{ incident.Name }}</router-link>
+                        </td>
+                        <td v-if="showApplicationColumn">
+                            <router-link :to="{ name: 'application', params: { applicationId: incident.ApplicationId }}">{{incident.ApplicationName}}</router-link>
+                        </td>
+                        <td>
+                            {{ incident.CreatedAtUtc | ago }}
+                        </td>
+                        <td>
+                            {{ incident.LastReportReceivedAtUtc | ago }}
+                        </td>
+                        <td>
+                            {{ incident.ReportCount }}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <button class="btn btn-primary" v-on:click.prevent="assignAllToMe">Assign checked incidents to me</button>
+            </div>
+        </div>
+        <div id="CloseBody" style="display: none">
+            <input type="text" name="version" class="form-control mb-3" size="10" placeholder="Which version is the error corrected in? (format: 1.2.10)" pattern="[0-9\.]*" title="You can use semantic versioning, including pre-releases, but must specify the release version here." />
+            <textarea style="display: none" id="CloseArea" class="w-100" rows="10" placeholder="How did you solve the error?" autofocus="autofocus" required="required"></textarea>
+            <em><router-link :to="{name: 'closeIncident', params: { incidentId: currentIncidentId }}">Go to full screen editor</router-link></em>
+        </div>
+    </div>
+</template>
+
+
+<style src="./search.css"></style>
+<script src="./search.ts"></script>

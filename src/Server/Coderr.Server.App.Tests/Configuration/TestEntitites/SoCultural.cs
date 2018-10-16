@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using codeRR.Server.Infrastructure.Configuration;
-using Coderr.Server.PluginApi.Config;
+using Coderr.Server.Abstractions.Config;
+using Coderr.Server.Infrastructure.Configuration;
 
-namespace codeRR.Server.App.Tests.Configuration.TestEntitites
+namespace Coderr.Server.App.Tests.Configuration.TestEntitites
 {
     internal class SoCultural : IConfigurationSection
     {

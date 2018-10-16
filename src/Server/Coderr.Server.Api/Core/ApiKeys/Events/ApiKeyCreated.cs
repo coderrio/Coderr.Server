@@ -1,7 +1,6 @@
 ﻿using System;
-using DotNetCqs;
 
-namespace codeRR.Server.Api.Core.ApiKeys.Events
+namespace Coderr.Server.Api.Core.ApiKeys.Events
 {
     /// <summary>
     /// A new API key has been created.

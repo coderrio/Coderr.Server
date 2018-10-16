@@ -1,4 +1,4 @@
-﻿namespace codeRR.Server.Api.Modules.Triggers
+﻿namespace Coderr.Server.Api.Modules.Triggers
 {
     /// <summary>
     ///     What to do if all rules accepted the report.

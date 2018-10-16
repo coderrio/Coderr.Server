@@ -1,7 +1,8 @@
 ﻿using System;
+
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
 
-namespace codeRR.Server.Api.Core.Incidents.Commands
+namespace Coderr.Server.Api.Core.Incidents.Commands
 {
     /// <summary>
     ///     An incident which has either been closed or ignored is marked as active again

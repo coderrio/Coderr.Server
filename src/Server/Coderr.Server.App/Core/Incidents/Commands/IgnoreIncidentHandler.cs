@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Incidents.Commands;
-using codeRR.Server.Api.Core.Incidents.Events;
-using codeRR.Server.App.Core.Users;
+using Coderr.Server.Api.Core.Incidents.Commands;
+using Coderr.Server.Api.Core.Incidents.Events;
+using Coderr.Server.Domain.Core.Incidents;
+using Coderr.Server.Domain.Core.User;
 using DotNetCqs;
-using Griffin.Container;
 
-namespace codeRR.Server.App.Core.Incidents.Commands
+
+namespace Coderr.Server.App.Core.Incidents.Commands
 {
     /// <summary>
     ///     Handler for <see cref="IgnoreIncident" />.
     /// </summary>
-    [Component]
     public class IgnoreIncidentHandler : IMessageHandler<IgnoreIncident>
     {
         private readonly IIncidentRepository _incidentRepository;

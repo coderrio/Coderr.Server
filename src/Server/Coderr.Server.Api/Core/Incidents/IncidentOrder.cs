@@ -1,4 +1,4 @@
-namespace codeRR.Server.Api.Core.Incidents
+namespace Coderr.Server.Api.Core.Incidents
 {
     /// <summary>
     ///     How incidents should be ordered in a list
@@ -9,6 +9,11 @@ namespace codeRR.Server.Api.Core.Incidents
         ///     Newest incidents first
         /// </summary>
         Newest,
+
+        /// <summary>
+        /// The one that recieved a report most recent.
+        /// </summary>
+        LatestReport,
 
         /// <summary>
         ///     The incident with the highest number of reports

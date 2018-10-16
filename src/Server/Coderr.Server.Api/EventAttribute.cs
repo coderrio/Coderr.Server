@@ -1,4 +1,4 @@
-﻿namespace codeRR.Server.Api
+﻿namespace Coderr.Server.Api
 {
     /// <summary>
     /// Marks a DTO as an event.

@@ -1,0 +1,16 @@
+.tags button, .apps button {
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.more {
+    display: none;
+}
+
+.sortable {
+    cursor: pointer;
+}
+
+.sort-ascending {
+
+}

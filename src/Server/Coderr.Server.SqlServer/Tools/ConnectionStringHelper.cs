@@ -1,7 +1,7 @@
 ﻿//using System;
 //using System.Configuration;
 
-//namespace codeRR.Server.SqlServer.Tools
+//namespace Coderr.Server.SqlServer.Tools
 //{
 //    public static class ConnectionStringHelper
 //    {

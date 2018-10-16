@@ -1,0 +1,28 @@
+<template>
+    <div class="mb-3" id="manageMenu" v-if="currentApplicationId">
+        <div class="navbar-light navbar bg-light mr-auto">
+            <ul class="nav">
+                <router-link tag="li" class="nav-item" :to="{name: 'manageHome' }" exact>
+                    <a class="nav-link"><i class="fa fa-home"></i></a>
+                </router-link>
+                <router-link tag="li" class="nav-item" :to="{name: 'manageAppSettings', params: {applicationId: currentApplicationId.toString() }}" exact>
+                    <a class="nav-link"><i class="fa fa-cog"></i> Settings</a>
+                </router-link>
+                <router-link tag="li" class="nav-item" :to="{name: 'manageSecurity', params: {applicationId: currentApplicationId.toString() }}">
+                    <a class="nav-link"><i class="fa fa-users"></i> Security</a>
+                </router-link>
+                <!-- Live feature
+                <router-link tag="li" class="nav-item" :to="{name: 'managePartitions', params: {applicationId: currentApplicationId.toString() }}">
+                    <a class="nav-link"><i class="fa fa-graduation-cap"></i> Prioritization</a>
+                </router-link>
+                -->
+            </ul>
+            <!--<div class="">
+                hello
+            </div>-->
+        </div>
+    </div>
+</template>
+
+<style src="./menu.css"></style>
+<script src="./menu.ts"></script>

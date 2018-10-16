@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
-using codeRR.Server.App.Core.Accounts;
-using Griffin.Container;
+using Coderr.Server.Abstractions.Boot;
+using Coderr.Server.Domain.Core.Account;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 using log4net;
 
-namespace codeRR.Server.SqlServer.Core.Accounts
+namespace Coderr.Server.SqlServer.Core.Accounts
 {
-    [Component]
+    [ContainerService]
     public class AccountRepository : IAccountRepository
     {
         private readonly IAdoNetUnitOfWork _uow;
@@ -102,7 +103,7 @@ namespace codeRR.Server.SqlServer.Core.Accounts
             {
                 cmd.CommandText = "SELECT * FROM Accounts WHERE Id=@id";
                 cmd.AddParameter("id", id);
-                return await cmd.FirstAsync(new AccountMapper());
+                return await cmd.FirstAsync<Account>();
             }
         }
 

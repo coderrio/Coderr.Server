@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using codeRR.Server.App.Modules.Triggers.Domain;
-using codeRR.Server.SqlServer.Tools;
+using Coderr.Server.ReportAnalyzer.Triggers;
+using Coderr.Server.SqlServer.Tools;
 using Griffin.Data.Mapper;
 
-namespace codeRR.Server.SqlServer.Modules.Triggers
+namespace Coderr.Server.SqlServer.Modules.Triggers
 {
     public class CollectionMetadataMapper : CrudEntityMapper<CollectionMetadata>
     {

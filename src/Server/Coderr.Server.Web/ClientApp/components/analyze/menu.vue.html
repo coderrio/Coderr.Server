@@ -1,0 +1,44 @@
+<template>
+    <div class="mb-3 analyze-menu" v-if="incidentId">
+        <div class="navbar-light navbar bg-light">
+            <ul class="nav">
+                <li class="nav-item">
+                    <div class="dropdown">
+                        <button class="btn btn-light dropdown-toggle" type="button" id="myIncidentsBtn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{title}}
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="myIncidentsBtn">
+                            <h6 class="dropdown-header">Select one of your incidents</h6>
+                            <router-link class="dropdown-item" :to="{ name: 'analyzeIncident', params: {incidentId: item.incidentId.toString() }}" v-for="item in incidents" :key="item.incidentId">
+                                {{item.title}}
+                            </router-link>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <router-link class="nav-link" :to="{name: 'analyzeIncident', params: {incidentId: incidentId }}" exact>
+                        <span class="fa fa-chart-line"></span> Overview
+                    </router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link class="nav-link" :to="{name: 'analyzeOrigins', params: {incidentId: incidentId }}">
+                        <span class="fa fa-globe"></span> Error origins
+                    </router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link class="nav-link" :to="{name: 'analyzeReport', params: {incidentId: incidentId }}">
+                        <span class="fa fa-table"></span> Analyze reports
+                    </router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link class="nav-link" :to="{name: 'analyzeFeedback', params: {incidentId: incidentId }}">
+                        <span class="fa fa-comment"></span> Bug reports
+                    </router-link>
+                </li>
+            </ul>
+        </div>
+    </div>
+</template>
+
+<style src="./menu.css"></style>
+<script src="./menu.ts"></script>

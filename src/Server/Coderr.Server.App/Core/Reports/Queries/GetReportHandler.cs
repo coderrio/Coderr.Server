@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Reports;
-using codeRR.Server.Api.Core.Reports.Queries;
+using Coderr.Server.Api.Core.Reports.Queries;
+using Coderr.Server.Domain.Core.ErrorReports;
 using DotNetCqs;
-using Griffin.Container;
 
-namespace codeRR.Server.App.Core.Reports.Queries
+
+namespace Coderr.Server.App.Core.Reports.Queries
 {
     /// <summary>
     ///     Get report.
     /// </summary>
-    [Component]
     public class GetReportHandler : IQueryHandler<GetReport, GetReportResult>
     {
         private readonly IReportsRepository _repository;
@@ -33,12 +32,12 @@ namespace codeRR.Server.App.Core.Reports.Queries
         public async Task<GetReportResult> HandleAsync(IMessageContext context, GetReport query)
         {
             var report = await _repository.GetAsync(query.ReportId);
-            var collections = Enumerable.ToList((
+            var collections = (
                 from x in report.ContextCollections
                 where x.Properties.Count > 0
                 let properties = Enumerable.Select(x.Properties, y => new KeyValuePair(y.Key, y.Value))
                 select new GetReportResultContextCollection(x.Name, Enumerable.ToArray(properties))
-            ));
+            ).ToList();
 
             //TODO: Fix feedback
             //var feedbackQuery = new GetReportFeedback(query.ReportId, query.);//TODO: Fix customerId
@@ -57,7 +56,7 @@ namespace codeRR.Server.App.Core.Reports.Queries
             {
                 ContextCollections = collections.ToArray(),
                 CreatedAtUtc = report.CreatedAtUtc,
-                ErrorId = report.ReportId,
+                ErrorId = report.ClientReportId,
                 Exception = ConvertException(report.Exception),
                 Id = report.Id.ToString(),
                 IncidentId = report.IncidentId.ToString(),
@@ -69,7 +68,7 @@ namespace codeRR.Server.App.Core.Reports.Queries
             };
         }
 
-        private GetReportException ConvertException(ReportExeptionDTO exception)
+        private GetReportException ConvertException(ErrorReportException exception)
         {
             var ex = new GetReportException
             {

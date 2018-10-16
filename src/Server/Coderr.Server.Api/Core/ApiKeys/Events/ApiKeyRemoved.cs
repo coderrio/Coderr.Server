@@ -1,4 +1,4 @@
-﻿namespace codeRR.Server.Api.Core.ApiKeys.Events
+﻿namespace Coderr.Server.Api.Core.ApiKeys.Events
 {
     /// <summary>
     /// A API key was removed from the system

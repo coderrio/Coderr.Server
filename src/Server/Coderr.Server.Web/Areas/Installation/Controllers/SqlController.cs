@@ -1,29 +1,36 @@
 ﻿using System;
-using System.Configuration;
-using System.Web.Mvc;
-using codeRR.Server.Infrastructure;
-using codeRR.Server.SqlServer.Tools;
+using System.Threading.Tasks;
+using Coderr.Server.Infrastructure;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Configuration;
 
-namespace codeRR.Server.Web.Areas.Installation.Controllers
+namespace Coderr.Server.Web.Areas.Installation.Controllers
 {
+    [Area("Installation")]
+
     public class SqlController : Controller
     {
         private static int _counter;
+        private IConfiguration _config;
+
+        public SqlController(IConfiguration config)
+        {
+            _config = config;
+        }
 
         [HttpPost]
-        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult Connection()
         {
             return RedirectToAction("Tables");
         }
 
-        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult Index()
         {
-            var constr = ConfigurationManager.ConnectionStrings["Db"];
-            if (!string.IsNullOrEmpty(constr?.ConnectionString))
+            var constr = _config.GetConnectionString("Db");
+            if (!string.IsNullOrEmpty(constr))
             {
-                ViewBag.ConnectionString = constr.ConnectionString ?? "";
+                ViewBag.ConnectionString = constr ?? "";
             }
             else
             {
@@ -35,7 +42,6 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
         }
 
         [HttpGet]
-        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult Tables()
         {
             ViewBag.GotException = false;
@@ -52,7 +58,6 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
         }
 
         [HttpPost]
-        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult Tables(string go)
         {
             try
@@ -72,13 +77,14 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
             //return RedirectToRoute(new {Area = "Installation", Controller = "Setup", Action = "Done"});
         }
 
-        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult Validate()
         {
+            string constr = "Not set";
             try
             {
-                var constr = ConfigurationManager.ConnectionStrings["Db"];
-                SetupTools.DbTools.CheckConnectionString(constr?.ConnectionString);
+                constr = _config.GetConnectionString("Db");
+                constr = ChangeConnectionTimeout(constr);
+                SetupTools.DbTools.TestConnection(constr);
                 return Content(@"{ ""result"": ""ok"" }", "application/json");
             }
             catch (Exception ex)
@@ -90,17 +96,34 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
                 return Json(new
                 {
                     result = "fail",
-                    reason = errMsg,
+                    reason = errMsg + "<br>Connection string: " + constr,
                     attempt = ++_counter
-                }, JsonRequestBehavior.AllowGet);
+                });
             }
         }
+        internal static string ChangeConnectionTimeout(string conStr)
+        {
+            var pos = conStr.IndexOf("Connect Timeout", StringComparison.OrdinalIgnoreCase);
+            if (pos != -1)
+            {
+                var pos2 = conStr.IndexOf(';', pos);
+                if (pos2 == -1)
+                {
+                    conStr = conStr.Substring(0, pos) + "Connect Timeout=5";
+                }
+                else
+                {
+                    conStr = conStr.Substring(0, pos) + "Connect Timeout=5;" + conStr.Substring(pos2);
+                }
+            }
 
-        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+            return conStr;
+        }
+        public override Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             ViewBag.PrevLink = Url.GetPreviousWizardStepLink();
             ViewBag.NextLink = Url.GetNextWizardStepLink();
-            base.OnActionExecuting(filterContext);
+            return base.OnActionExecutionAsync(context, next);
         }
     }
 }

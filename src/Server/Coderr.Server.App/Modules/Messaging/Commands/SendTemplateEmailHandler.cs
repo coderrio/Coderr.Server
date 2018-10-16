@@ -1,18 +1,18 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Messaging;
-using codeRR.Server.Api.Core.Messaging.Commands;
-using codeRR.Server.App.Modules.Messaging.Templating;
+using Coderr.Server.Api.Core.Messaging;
+using Coderr.Server.Api.Core.Messaging.Commands;
+using Coderr.Server.App.Modules.Messaging.Templating;
 using DotNetCqs;
-using Griffin.Container;
+using Newtonsoft.Json.Linq;
 
-namespace codeRR.Server.App.Modules.Messaging.Commands
+
+namespace Coderr.Server.App.Modules.Messaging.Commands
 {
     /// <summary>
     ///     Send an email using a template.
     /// </summary>
-    [Component]
     public class SendTemplateEmailHandler : IMessageHandler<SendTemplateEmail>
     {
 
@@ -31,6 +31,7 @@ namespace codeRR.Server.App.Modules.Messaging.Commands
             var layout = loader.Load("Layout");
 
             var template = loader.Load(command.TemplateName);
+
             var html = templateParser.RunAll(template, command.Model);
             if (html.IndexOf("src=\"cid:", StringComparison.OrdinalIgnoreCase) == -1)
                 html = html.Replace(@"src=""", @"src=""cid:");
@@ -50,7 +51,10 @@ namespace codeRR.Server.App.Modules.Messaging.Commands
 
             foreach (var resource in template.Resources)
             {
-                var linkedResource = new EmailResource(resource.Key, resource.Value);
+                var buffer = new byte[resource.Value.Length];
+                resource.Value.Read(buffer, 0, buffer.Length);
+                resource.Value.Position = 0;
+                var linkedResource = new EmailResource(resource.Key, buffer);
 
                 var reader = new BinaryReader(resource.Value);
                 var dimensions = ImageHelper.GetDimensions(reader);
@@ -64,7 +68,10 @@ namespace codeRR.Server.App.Modules.Messaging.Commands
             }
             foreach (var resource in layout.Resources)
             {
-                var linkedResource = new EmailResource(resource.Key, resource.Value);
+                var buffer = new byte[resource.Value.Length];
+                resource.Value.Read(buffer, 0, buffer.Length);
+                resource.Value.Position = 0;
+                var linkedResource = new EmailResource(resource.Key, buffer);
 
                 var reader = new BinaryReader(resource.Value);
                 var dimensions = ImageHelper.GetDimensions(reader);

@@ -1,32 +1,33 @@
 ﻿using System;
 using System.Data;
 using System.IO;
-using codeRR.Server.ReportAnalyzer;
-using codeRR.Server.SqlServer.Core.Accounts;
-using codeRR.Server.SqlServer.Tests.Helpers;
-using codeRR.Server.SqlServer.Tests.Models;
-using codeRR.Server.SqlServer.Tests.Xunit;
+using System.Reflection;
+using Coderr.Server.SqlServer.Core.Accounts;
+using Coderr.Server.SqlServer.Tests.Helpers;
+using Coderr.Server.SqlServer.Tests.Models;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 using log4net;
 using log4net.Config;
 using Xunit;
 using Xunit.Abstractions;
-[assembly: TestFramework("codeRR.Server.SqlServer.Tests.Xunit.XunitTestFrameworkWithAssemblyFixture", "codeRR.Server.SqlServer.Tests")]
 
-namespace codeRR.Server.SqlServer.Tests
+[assembly: TestFramework("Coderr.Server.SqlServer.Tests.Xunit.XunitTestFrameworkWithAssemblyFixture", "Coderr.Server.SqlServer.Tests")]
+
+namespace Coderr.Server.SqlServer.Tests
 {
     public class IntegrationTest : IDisposable
     {
         private static DatabaseManager _databaseManager;
         private TestDataManager _testDataManager;
-        private static bool _isRun = false;
-        private static readonly object _syncLock = new object();
+        private static readonly object SyncLock = new object();
 
         static IntegrationTest()
         {
             var path2 = AppDomain.CurrentDomain.BaseDirectory;
-            XmlConfigurator.ConfigureAndWatch(new FileInfo(Path.Combine(path2, "log4net.config")));
+
+            var logRepository = LogManager.GetRepository(Assembly.GetExecutingAssembly());
+            XmlConfigurator.ConfigureAndWatch(logRepository, new FileInfo(Path.Combine(path2, "log4net.config")));
             var logger = LogManager.GetLogger(typeof(IntegrationTest));
             logger.Info("Loaded");
 
@@ -39,7 +40,7 @@ namespace codeRR.Server.SqlServer.Tests
                 _databaseManager.Dispose();
                 _databaseManager = null;
             };
-            lock (_syncLock)
+            lock (SyncLock)
             {
                 _databaseManager = new DatabaseManager();
                 _databaseManager.CreateEmptyDatabase();
@@ -53,12 +54,14 @@ namespace codeRR.Server.SqlServer.Tests
 
         public IntegrationTest(ITestOutputHelper output)
         {
-            _testDataManager = new TestDataManager(_databaseManager.OpenConnection);
-            _testDataManager.TestUser = new TestUser()
+            _testDataManager = new TestDataManager(_databaseManager.OpenConnection)
             {
-                Email = "test@somewhere.com",
-                Password = "123456",
-                Username = "admin"
+                TestUser = new TestUser()
+                {
+                    Email = "test@somewhere.com",
+                    Password = "123456",
+                    Username = "admin"
+                }
             };
         }
 
@@ -70,7 +73,7 @@ namespace codeRR.Server.SqlServer.Tests
             Dispose(true);
         }
 
-        protected OurUnitOfWork CreateUnitOfWork()
+        protected IAdoNetUnitOfWork CreateUnitOfWork()
         {
             return _databaseManager.CreateUnitOfWork();
         }

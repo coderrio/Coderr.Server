@@ -1,20 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Incidents.Commands;
-using codeRR.Server.Api.Core.Messaging;
-using codeRR.Server.Api.Core.Messaging.Commands;
-using codeRR.Server.App.Core.Feedback;
+using Coderr.Server.Api.Core.Incidents.Commands;
+using Coderr.Server.Api.Core.Incidents.Events;
+using Coderr.Server.Api.Core.Messaging;
+using Coderr.Server.Api.Core.Messaging.Commands;
+using Coderr.Server.Domain.Core.Feedback;
+using Coderr.Server.Domain.Core.Incidents;
 using DotNetCqs;
-using Griffin.Container;
 
-namespace codeRR.Server.App.Core.Incidents.Commands
+namespace Coderr.Server.App.Core.Incidents.Commands
 {
     /// <summary>
     ///     Handler of <see cref="CloseIncident" />.
     /// </summary>
-    [Component]
     public class CloseIncidentHandler : IMessageHandler<CloseIncident>
     {
         private readonly IFeedbackRepository _feedbackRepository;
@@ -64,6 +63,10 @@ namespace codeRR.Server.App.Core.Incidents.Commands
             }
 
             await _repository.UpdateAsync(incident);
+
+            var closedEvt =
+                new IncidentClosed(incident.Id, command.UserId, command.Solution, command.ApplicationVersion);
+            await context.SendAsync(closedEvt);
         }
     }
 }

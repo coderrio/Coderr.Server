@@ -1,4 +1,4 @@
-﻿namespace codeRR.Server.Api.Core.Reports.Queries
+﻿namespace Coderr.Server.Api.Core.Reports.Queries
 {
     /// <summary>
     ///     Partial result for <see cref="GetReportResult" />.

@@ -1,4 +1,4 @@
-﻿namespace codeRR.Server.App.Tests
+﻿namespace Coderr.Server.App.Tests
 {
     internal static class ObjectExtensions
     {

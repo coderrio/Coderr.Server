@@ -1,21 +1,19 @@
 ﻿using System;
-using codeRR.Server.Api.Core.ApiKeys.Queries;
-using codeRR.Server.App.Core.ApiKeys;
-using codeRR.Server.App.Core.Applications;
-using codeRR.Server.SqlServer.Core.ApiKeys;
-using codeRR.Server.SqlServer.Core.ApiKeys.Queries;
-using codeRR.Server.SqlServer.Core.Applications;
+using Coderr.Server.Api.Core.ApiKeys.Queries;
+using Coderr.Server.App.Core.ApiKeys;
+using Coderr.Server.Domain.Core.Applications;
+using Coderr.Server.SqlServer.Core.ApiKeys;
+using Coderr.Server.SqlServer.Core.ApiKeys.Queries;
+using Coderr.Server.SqlServer.Core.Applications;
 using DotNetCqs;
 using FluentAssertions;
 using Griffin.Data;
 using NSubstitute;
-using NSubstitute.Core;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace codeRR.Server.SqlServer.Tests.Core.ApiKeys.Queries
+namespace Coderr.Server.SqlServer.Tests.Core.ApiKeys.Queries
 {
-
     public class GetApiKeyHandlerTests : IntegrationTest
     {
         private Application _application;

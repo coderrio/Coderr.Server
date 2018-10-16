@@ -11,7 +11,7 @@
                 a database and configured an account for it.
             </p>
             <p>
-                Modify the connectionString named <code>'Db'</code> in <code>web.config.</code> Click on 'Test Connection' to make sure that it works.
+                Modify the connectionString named <code>'Db'</code> in <code>appsettings.json.</code> Click on 'Test Connection' to make sure that it works.
             </p>
             <form method="post" action="@Url.Action("Connection", "Sql")" style="width: 100%" class="form-inline" id="dbForm">
                 <div>
@@ -21,8 +21,10 @@
                     @Html.Raw(ViewBag.NextLink)
                 </div>
             </form>
-            <br />
-            <div class="alert alert-warning" id="error" style="display: none">
+            <div style="display: none" class="alert alert-success mt-2">
+                Connection was successful. Click on the next button to continue.
+            </div>
+            <div class="alert alert-warning mt-2" id="error" style="display: none">
             </div>
         </div>
         <div class="col-lg-6">
@@ -56,8 +58,10 @@
                 var url =
                     '@Url.RouteUrl(new {Area = "Installation", Controller = "Sql", Action = "Validate"})/?connectionString=' +
                     conStr;
-                $.post(url,
-                    function (data) {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState === 4 && this.status === 200) {
+                        var data = JSON.parse(this.responseText);
                         if (data.result === "fail") {
                             var reason = data.reason.replace(/\\n/g, "<br>")
                                 .replace(/\\'/g, "'")
@@ -73,9 +77,12 @@
                             $('#error').hide();
                             $("#testConnection").removeClass("btn-primary").addClass('btn-default');
                             $('[data-name="nextLink"]').removeClass('disabled').addClass('btn-primary');
-                            humane.log("Connection was successful. Click on the Next button to continue.");
+                            $('.alert-success').css('display', '');
                         }
-                    });
+                    }
+                };
+                xhttp.open("POST", url, true);
+                xhttp.send();
             });
     </script>
 }

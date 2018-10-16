@@ -1,4 +1,4 @@
-﻿namespace codeRR.Server.Api.Core.Applications.Queries
+﻿namespace Coderr.Server.Api.Core.Applications.Queries
 {
     /// <summary>
     ///     Result for <see cref="GetApplicationInfo" />.
@@ -39,5 +39,10 @@
         /// Versions that we have received error reports for.
         /// </summary>
         public string[] Versions { get; set; }
+
+        /// <summary>
+        /// Got information to be able to compare how the team is performing with other teams.
+        /// </summary>
+        public bool ShowStatsQuestion { get; set; }
     }
 }

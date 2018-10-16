@@ -1,17 +1,17 @@
-﻿using System.Security.Claims;
-using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Applications.Commands;
-using codeRR.Server.Infrastructure.Security;
+﻿using System.Threading.Tasks;
+using Coderr.Server.Abstractions.Security;
+using Coderr.Server.Api.Core.Applications.Commands;
+using Coderr.Server.Domain.Core.Applications;
+using Coderr.Server.Infrastructure.Security;
 using DotNetCqs;
-using Griffin.Container;
+
 using log4net;
 
-namespace codeRR.Server.App.Core.Applications.CommandHandlers
+namespace Coderr.Server.App.Core.Applications.CommandHandlers
 {
     /// <summary>
     ///     Remove a team member from an application
     /// </summary>
-    [Component]
     public class RemoveTeamMemberHandler : IMessageHandler<RemoveTeamMember>
     {
         private readonly IApplicationRepository _applicationRepository;

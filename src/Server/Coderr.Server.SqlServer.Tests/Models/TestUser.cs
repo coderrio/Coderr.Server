@@ -1,4 +1,4 @@
-﻿namespace codeRR.Server.SqlServer.Tests.Models
+﻿namespace Coderr.Server.SqlServer.Tests.Models
 {
     public class TestUser
     {

@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace codeRR.Server.ReportAnalyzer.Inbound
+namespace Coderr.Server.ReportAnalyzer.Inbound
 {
     /// <summary>
     ///     Used to make sure that the uploaded report was signed with the correct shared secret.

@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Applications.Events;
+using Coderr.Server.Api.Core.Applications.Events;
 using DotNetCqs;
-using Griffin.Container;
+
 using Griffin.Data;
 
-namespace codeRR.Server.App.Core.Notifications.EventHandlers
+namespace Coderr.Server.App.Core.Notifications.EventHandlers
 {
     /// <summary>
     ///     Will delete all reports for the given application
     /// </summary>
-    [Component(RegisterAsSelf = true)]
     public class ApplicationDeletedHandler : IMessageHandler<ApplicationDeleted>
     {
         private IAdoNetUnitOfWork _uow;

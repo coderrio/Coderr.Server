@@ -1,233 +1,53 @@
-﻿@using Newtonsoft.Json
-@using codeRR.Server.Infrastructure.Security
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - codeRR</title>
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="@Url.Content("~/Content/bootstrap.min.css")">
-    @Styles.Render("~/Content/css")
-    @RenderSection("Styles", false)
-    <script>
-        window.bootScripts = [];
-        window.API_URL = '@ApiUrl';
-        window.WEB_SITE = '@(new Uri(Request.Url, Url.Content("~")))';
-        window.WEB_ROOT = '@Url.Content("~")';
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Coderr</title>
+    <base href="~/" />
 
-        //this is is validated server side for commands, thus don't try to play with it ;)
-        window.ACCOUNT_ID = @User.GetAccountId();
-    </script>
-    <link rel="stylesheet" href="@Url.Content("~/Content/morris.css")">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/css/tether.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
-    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
-    <meta name="description" content="codeRR - Automated exception handling" />
-    <style>
-        /* marked*/
-        .editor-toolbar.fullscreen, .CodeMirror-fullscreen, .editor-preview-active-side {
-            z-index: 9000;
-        }
-
-        pre > code {
-            padding: 10px;
-            margin: 10px;
-        }
-
-        /*navigation*/
-        .topbar-left a {
-            line-height: 70px
-        }
-
-        .topbar-left img.hidden-enlarged {
-            margin: auto;
-            vertical-align: middle;
-            display: inline-block;
-        }
-
-        .topbar-left img.hidden-not-enlarged {
-            display: none;
-        }
-
-        .button-menu-mobile .hidden-enlarged {
-            display: inherit;
-        }
-
-        .button-menu-mobile .hidden-not-enlarged {
-            display: none;
-        }
-
-        .enlarged .topbar-left img.hidden-enlarged {
-            display: none;
-        }
-
-        .enlarged .topbar-left img.hidden-not-enlarged {
-            margin: auto;
-            vertical-align: middle;
-            display: inline-block;
-        }
-
-        .enlarged .button-menu-mobile .hidden-enlarged {
-            display: none;
-        }
-
-        .enlarged .button-menu-mobile .hidden-not-enlarged {
-            display: inherit;
-        }
-
-        @@media (max-width: 768px) {
-            .topbar-left img.hidden-enlarged {
-                display: none;
-            }
-
-            .topbar-left img.hidden-not-enlarged {
-                margin: auto;
-                vertical-align: middle;
-                display: inline-block;
-            }
-
-            .button-menu-mobile .hidden-enlarged {
-                display: inherit;
-            }
-
-            .button-menu-mobile .hidden-not-enlarged {
-                display: none;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="~/dist/vendor.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/bootstrap.min.css" asp-append-version="true" />
+    <link href="~/css/fontawesome-all.min.css" rel="stylesheet">
+    <link href="~/css/toastr.min.css" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="~/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="~/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="~/favicon-16x16.png">
+    <link rel="manifest" href="~/site.webmanifest">
+    <link rel="mask-icon" href="~/safari-pinned-tab.svg" color="#59c1d5">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="theme-color" content="#ffffff">
+    <script src="~/coderr/js/"></script>
 </head>
-<body class="fixed-left">
-    <div id="wrapper">
+<body>
+    @RenderBody()
 
-        @Html.Partial("_TopBar")
-
-        <div class="left side-menu">
-            @Html.Partial("_LeftMenu")
-        </div>
-
-        <div class="content-page">
-            <div class="content">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-xl-12">
-                            <div class="page-title-box">
-                                <h4 class="page-title float-left" id="pageTitle"></h4>
-                                <div id="pageMenu"></div>
-                                @if (IsSectionDefined("SubMenu"))
-                                {
-                                    <div class="navbar navbar-default navbar-inverse sub-menu">
-                                        <div class="container">
-                                            @RenderSection("SubMenu", false)
-                                        </div>
-                                    </div>
-                                }
-
-                                <ol class="breadcrumb float-right" id="breadCrumbs">
-                                    <li class="breadcrumb-item active">Dashboard</li>
-                                </ol>
-
-                                <div class="clearfix"></div>
-                            </div>
-                        </div>
+    <div class="modal fade" style="display: none" id="modalTemplate" tabindex="-1" role="dialog" aria-labelledby="modalTemplateLabel" aria-hidden="true">
+        <form>
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTemplateLabel">modalTemplateName</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    @RenderBody()
+                    <div class="modal-body">
+
+                    </div>
+                    <div class="modal-footer">
+                        <div style="margin-right: auto">
+                            <span data-name="hint"></span>
+                        </div>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
                 </div>
-
             </div>
-        </div>
-
-        <footer>hello</footer>
-
-    </div><!--wrapper-->
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
-    @Scripts.Render("~/bundles/jquery")
-    <script src="@Url.Content("~/Scripts/raphael-min.js")"></script>
-    <script src="@Url.Content("~/Scripts/morris.min.js")"></script>
-    <script src="@Url.Content("~/Scripts/Chart.min.js")"></script>
-    <script src="@Url.Content("~/Scripts/Promise.js")"></script>
-    <script src="@Url.Content("~/Scripts/CqsClient.js")"></script>
-    @Scripts.Render("~/bundles/app")
-    <script type="text/javascript">
-        Griffin.Net.HttpClient.REDIRECT_401_TO = '@LoginUrl';
-    </script>
-    @RenderSection("scripts", false)
-    @RenderSection("ViewModelScripts", false)
-    <script src="@Url.Content("~/ViewModels/Incident/Components/IncidentTable.js")"></script>
-    <script src="@Url.Content("~/ViewModels/Incident/Components/IncidentNavigation.js")"></script>
-    @if (User.Identity.IsAuthenticated)
-    {
-        <script type="text/javascript">
-            @if (CanStartSpa)
-        {
-            <text>startSpaApplication();</text>
-            if (!User.IsSysAdmin() && Applications.Count == 1)
-            {
-                <text>window.location.hash = "#/application/@Applications.Keys.First()";</text>
-            }
-        }
-
-
-            function startSpaApplication() {
-                Griffin.Yo.Views.ViewRenderer.DEBUG = false;
-                Griffin.Yo.Spa.Config.resourceLocator = {
-                    getHtml: function (section) {
-                        return WEB_ROOT + 'Views/' + section + ".html";
-                    },
-                    getScript: function (section) {
-                        return WEB_ROOT + 'ViewModels/' + section + "ViewModel.js";
-                    }
-                };
-
-                var spa = new Griffin.Yo.Spa.SpaEngine('codeRR');
-                spa.addTarget('BootstrapModal', new Griffin.Yo.Routing.ViewTargets.BootstrapModalViewTarget());
-
-                //Griffin.Yo.GlobalConfig.viewDirectives.add()
-                spa.mapRoute('', 'overview/overview');
-                spa.mapRoute('welcome/admin', 'home/welcome');
-                spa.mapRoute('welcome/user', 'account/welcome');
-                spa.mapRoute('dashboard', 'overview/overview');
-                spa.mapRoute('feedback', 'feedback/overview');
-                spa.mapRoute('onboarding/application/:applicationId/create', 'onboarding/create');
-                spa.mapRoute('onboarding/application/:applicationId/nuget', 'onboarding/client');
-                spa.mapRoute('onboarding/application/:applicationId/verify', 'onboarding/verify');
-                spa.mapRoute('onboarding/application/:applicationId/', 'onboarding/index');
-                spa.mapRoute('onboarding', 'onboarding/index');
-                spa.mapRoute('onboarding/create', 'onboarding/create');
-                spa.mapRoute('account/accepted', 'account/accepted');
-                spa.mapRoute('application/:applicationId/incidents', 'incident/index');
-                spa.mapRoute('application/:applicationId/feedback', 'feedback/application');
-                spa.mapRoute('application/:applicationId/incident/:incidentId/feedback', 'feedback/incident');
-                spa.mapRoute('application/:applicationId/incident/:incidentId/close', 'incident/close');
-                spa.mapRoute('application/:applicationId/incident/:incidentId/ignore', 'incident/ignore', 'BootstrapModal');
-                spa.mapRoute('application/:applicationId/incident/:incidentId/communication', 'incident/communication');
-                spa.mapRoute('application/:applicationId/incident/:incidentId/reports', 'incident/reports');
-                spa.mapRoute('application/:applicationId/incident/:incidentId/context', 'incident/similarities');
-                spa.mapRoute('application/:applicationId/incident/:incidentId/origins', 'incident/origins');
-                spa.mapRoute('application/:applicationId/incident/:incidentId/report/:reportId', 'report/report');
-                spa.mapRoute('application/:applicationId/incident/:incidentId', 'incident/incident');
-                spa.mapRoute('application/:applicationId/incident', 'incident/index');
-                spa.mapRoute('application/:applicationId/installation', 'application/installation');
-                spa.mapRoute('application/:applicationId/team', 'application/team');
-                spa.mapRoute('application/:applicationId', 'application/details');
-                spa.mapRoute('incident/:incidentId', 'incident/incident');
-                spa.mapRoute('incidents', 'incident/index');
-                spa.mapRoute('settings/notifications', 'user/notifications');
-                spa.mapRoute('settings/personal', 'user/settings');
-                spa.run();
-            }
-            if (queryParameters['hash'] != null) {
-                window.location.href = window.location.href + '#' + queryParameters['hash'];
-            }
-        </script>
-    }
-    @Html.Partial("~/Views/Application/_create.cshtml")
-    @Html.Partial("~/Views/Shared/_support.cshtml")
-    <script>
-        window.bootScripts.forEach(function (func) {
-            func();
-        });
-    </script>
+        </form>
+    </div>
+    <script src="~/dist/vendor.js" asp-append-version="true"></script>
+    @RenderSection("scripts", required: false)
+    <script src="~/coderr/js/"></script>
 </body>
 </html>

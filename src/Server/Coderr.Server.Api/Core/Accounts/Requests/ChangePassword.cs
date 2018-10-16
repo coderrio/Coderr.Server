@@ -1,8 +1,7 @@
 ﻿using System;
-using codeRR.Server.Api.Core.Accounts.Commands;
-using DotNetCqs;
+using Coderr.Server.Api.Core.Accounts.Commands;
 
-namespace codeRR.Server.Api.Core.Accounts.Requests
+namespace Coderr.Server.Api.Core.Accounts.Requests
 {
     /// <summary>
     ///     Change password.

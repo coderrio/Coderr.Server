@@ -1,6 +1,6 @@
 ﻿using DotNetCqs;
 
-namespace codeRR.Server.Api.Core.Applications.Queries
+namespace Coderr.Server.Api.Core.Applications.Queries
 {
     /// <summary>
     ///     Get a list of applications.

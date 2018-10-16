@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace codeRR.Server.Api.Core.Incidents.Queries
+namespace Coderr.Server.Api.Core.Incidents.Queries
 {
     /// <summary>
     ///     Keeps track of all occurrences of a single incident (i.e. error reports which generates the same hash code)
@@ -103,7 +103,7 @@ namespace codeRR.Server.Api.Core.Incidents.Queries
         public bool IsReOpened { get; set; }
 
         /// <summary>
-        ///     Share solution with the codeRR community.
+        ///     Share solution with the Coderr community.
         /// </summary>
         public bool IsSolutionShared { get; set; }
 

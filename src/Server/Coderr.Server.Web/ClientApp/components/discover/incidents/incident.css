@@ -1,0 +1,46 @@
+.tags span {
+    margin-right: 5px;
+}
+
+.tags {
+    margin-bottom: 10px;
+}
+.more {
+    display: none;
+}
+
+
+#IncidentSearchView .ct-series-a .ct-line, #IncidentSearchView .ct-series-a .ct-point {
+    stroke: rgb(0, 148, 218);
+}
+
+#IncidentSearchView .ct-series-b .ct-line, #IncidentSearchView .ct-series-b .ct-point {
+    stroke: #2f4f4f;
+}
+
+#IncidentSearchView .ct-series-c .ct-line, #IncidentSearchView .ct-series-c .ct-point {
+    stroke: #DCE12E !important;
+}
+
+#IncidentSearchView .ct-series-d .ct-line, #IncidentSearchView .ct-series-d .ct-point {
+    stroke: #C28247 !important;
+}
+
+#IncidentSearchView .ct-series-e .ct-line, #IncidentSearchView .ct-series-e .ct-point {
+    stroke: #B82B19 !important;
+}
+
+#IncidentSearchView .ct-series-f .ct-line, #IncidentSearchView .ct-series-f .ct-point {
+    stroke: #1EC2A3 !important;
+}
+
+/*.ct-label.ct-label.ct-horizontal {
+    position: relative;
+    justify-content: flex-end;
+    text-align: right;
+    transform: translate(100%, 40%) rotate(20deg);
+}*/
+
+.incident-chart svg.ct-chart-line, .incident-chart svg.ct-chart-line g.ct-labels, .incident-chart svg.ct-chart-line g.ct-labels span.ct-label {
+    overflow: visible;
+}

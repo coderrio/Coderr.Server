@@ -1,37 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
+using System.Data.SqlClient;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Web.Mvc;
-using codeRR.Server.App.Configuration;
-using codeRR.Server.Infrastructure;
-using codeRR.Server.Web.Areas.Installation.Models;
-using Coderr.Server.PluginApi.Config;
+using Coderr.Server.Abstractions.Config;
+using Coderr.Server.Infrastructure;
+using Coderr.Server.Infrastructure.Configuration;
+using Coderr.Server.SqlServer;
+using Coderr.Server.Web.Areas.Installation.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
-namespace codeRR.Server.Web.Areas.Installation.Controllers
+namespace Coderr.Server.Web.Areas.Installation.Controllers
 {
-    [OutputCache(Duration = 0, NoStore = true)]
+    [Area("Installation")]
+
     public class SetupController : Controller
     {
+        private readonly IOptions<InstallationOptions> _config;
         private ConfigurationStore _configStore;
+        private readonly IConfiguration _configuration;
 
-        public SetupController()
+        public SetupController(IOptions<InstallationOptions> config, ConfigurationStore configStore, IConfiguration configuration)
         {
-            _configStore = Startup.ConfigurationStore;
+            _config = config;
+            _configStore = configStore;
+            this._configuration = configuration;
         }
+
 
         [HttpPost]
         [AllowAnonymous]
         public ActionResult Activate()
         {
-            ConfigurationManager.RefreshSection("appSettings");
-            if (ConfigurationManager.AppSettings["Configured"] != "true")
+            if (!_config.Value.IsConfigured)
                 return RedirectToAction("Completed", new
                 {
                     displayError = 1
                 });
-            return Redirect("~/?#/welcome/admin/");
+
+            return Redirect("~/");
         }
 
         public ActionResult Basics()
@@ -45,7 +57,8 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
             }
             else
             {
-                model.BaseUrl = Request.Url.ToString().Replace("installation/setup/basics/", "")
+                model.BaseUrl = Request.GetDisplayUrl()
+                    .Replace("installation/setup/basics/", "")
                     .Replace("localhost", "yourServerName");
                 ViewBag.NextLink = "";
             }
@@ -57,11 +70,11 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
         [HttpPost]
         public ActionResult Basics(BasicsViewModel model)
         {
-            if (model.BaseUrl.StartsWith("http://yourServerName/", StringComparison.OrdinalIgnoreCase))
+            if (model.BaseUrl.StartsWith("http://yourServerName", StringComparison.OrdinalIgnoreCase))
                 ModelState.AddModelError("BaseUrl", "You must specify a correct server name in the URL, or all links in notification emails will be incorrect.");
-            if (model.BaseUrl.StartsWith("http://localhost/", StringComparison.OrdinalIgnoreCase))
+            if (model.BaseUrl.StartsWith("http://localhost", StringComparison.OrdinalIgnoreCase))
                 ModelState.AddModelError("BaseUrl", "You must specify a correct server name in the URL, or all links in notification emails will be incorrect.");
-            if (model.BaseUrl.StartsWith("https://localhost/", StringComparison.OrdinalIgnoreCase))
+            if (model.BaseUrl.StartsWith("https://localhost", StringComparison.OrdinalIgnoreCase))
                 ModelState.AddModelError("BaseUrl", "You must specify a correct server name in the URL, or all links in notification emails will be incorrect.");
 
             if (!ModelState.IsValid)
@@ -90,13 +103,20 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
         public ActionResult Completed(string displayError = null)
         {
             ViewBag.DisplayError = displayError == "1";
+            InstallAuthorizationFilter.IsInstallationCompleted = true;
+            return View();
+        }
+
+
+        public ActionResult Stats()
+        {
             return View();
         }
 
         public ActionResult Errors()
         {
             var model = new ErrorTrackingViewModel();
-            var config = _configStore.Load<codeRRConfigSection>();
+            var config = _configStore.Load<CoderrConfigSection>();
             if (!string.IsNullOrEmpty(model.ContactEmail))
             {
                 model.ContactEmail = config.ContactEmail;
@@ -115,7 +135,7 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
             if (!ModelState.IsValid)
                 return View("ErrorTracking", model);
 
-            var settings = new codeRRConfigSection
+            var settings = new CoderrConfigSection
             {
                 ActivateTracking = true,
                 ContactEmail = model.ContactEmail,
@@ -130,7 +150,9 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
         {
             try
             {
-                DbConnectionFactory.Open(true);
+                var conStr = _configuration.GetConnectionString("Db");
+                conStr = SqlController.ChangeConnectionTimeout(conStr);
+                SetupTools.DbTools.TestConnection(conStr);
             }
             catch
             {
@@ -139,20 +161,22 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
             return View();
         }
 
+  
+
         [HttpPost]
         public ActionResult Index(string key)
         {
-            if (key == "change_this_to_your_own_password_before_running_the_installer")
+            if (key == "changeThis")
             {
                 ModelState.AddModelError("",
-                    "Change the 'ConfigurationKey' appSetting in web.config and then try again.");
+                    "Change the 'Installation/Password' setting in appsettings.json and then try again.");
                 return View();
             }
 
-            if (key != ConfigurationManager.AppSettings["ConfigurationKey"])
+            if (key != _config.Value.Password)
             {
                 ModelState.AddModelError("",
-                    "Enter the value from the 'ConfigurationKey' appSetting in web.config and then try again.");
+                    "Enter the 'Installation/Password' value from appsettings.json and then try again.");
                 return View();
             }
 
@@ -189,11 +213,13 @@ namespace codeRR.Server.Web.Areas.Installation.Controllers
             }
         }
 
-        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        public override Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
+            Response.Headers.Add("Cache-Control", "no-cache, no-store");
+            Response.Headers.Add("Expires", "-1");
             ViewBag.PrevLink = Url.GetPreviousWizardStepLink();
             ViewBag.NextLink = Url.GetNextWizardStepLink();
-            base.OnActionExecuting(filterContext);
+            return base.OnActionExecutionAsync(context, next);
         }
     }
 }

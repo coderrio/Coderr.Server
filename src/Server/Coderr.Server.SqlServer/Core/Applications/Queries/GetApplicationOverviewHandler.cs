@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Applications.Queries;
-using codeRR.Server.App.Core.Incidents;
+using Coderr.Server.Api.Core.Applications.Queries;
+using Coderr.Server.Domain.Core.Incidents;
 using DotNetCqs;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 
-namespace codeRR.Server.SqlServer.Core.Applications.Queries
+namespace Coderr.Server.SqlServer.Core.Applications.Queries
 {
-    [Component]
     internal class GetApplicationOverviewHandler : IQueryHandler<GetApplicationOverview, GetApplicationOverviewResult>
     {
         private readonly IAdoNetUnitOfWork _unitOfWork;

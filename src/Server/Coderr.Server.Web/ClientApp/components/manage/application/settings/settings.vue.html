@@ -1,0 +1,47 @@
+<template>
+    <div class="mt-4">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">Application settings</div>
+                    <div class="card-body">
+                        <form @submit.prevent="updateApp">
+                            <div class="form-group">
+                                <label>
+                                    Name
+                                </label>
+                                <input type="text" class="form-control" placeholder="Application name" v-model="applicationName" autofocus="autofocus" required="required" />
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Save settings" class="btn btn-primary" />
+                            </div>
+                        </form>
+                        <em><router-link :to="{ name: 'createApp' }">Create new application</router-link></em>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">Client config</div>
+                    <div class="card-body">
+                        <table class="table table-borderless">
+                            <tr>
+                                <th>App key</th>
+                                <td>{{appKey}}</td>
+                            </tr>
+                            <tr>
+                                <th>Shared secret</th>
+                                <td>{{sharedSecret}}</td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+
+<style src="./settings.css"></style>
+<script src="./settings.ts"></script>

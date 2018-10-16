@@ -1,6 +1,6 @@
 ﻿using DotNetCqs;
 
-namespace codeRR.Server.Api.Modules.Tagging.Queries
+namespace Coderr.Server.Api.Modules.Tagging.Queries
 {
     /// <summary>
     ///     Get all tags that the system have identified for an incident.

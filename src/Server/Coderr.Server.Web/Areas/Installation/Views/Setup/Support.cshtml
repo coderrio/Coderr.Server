@@ -1,27 +1,23 @@
-﻿@model codeRR.Server.Web.Areas.Installation.Models.SupportViewModel
+﻿@using Coderr.Server.Web.Areas.Installation.Models
+@model Coderr.Server.Web.Areas.Installation.Models.SupportViewModel
 @{
     ViewBag.Title = "Installation - Support";
 }
 <div class="container">
-    <div class="col-lg-6">
-
-        <h2>Free Support</h2>
-        <p>Do you want to get 30 days of free email support?</p>
-        <p>No strings attached. You can optionally extend the support after the 30 days.</p>
+    <div class="col-lg-12">
+        <h2>Getting started assistance</h2>
+        <p>We offer free assistance during the first month of usage. We want to make sure there is nothing on our end or from Coderr that stops you from getting to know Coderr. Sign up to our free service by entering your contact email which will only be used to assist you with Coderr.</p>
         <form method="post" action="@Url.Action("Support")" style="width: 100%" class="form">
             @Html.ValidationSummary(false)
             <div>
-                <input type="text" 
-                       name="CompanyName" class="form-control" value="@Model.CompanyName" placeholder="Company name" />
-
-                <input type="email"
-                       name="Email" class="form-control" value="@Model.Email" placeholder="Your email address" />
+                <input asp-for="CompanyName" class="form-control" placeholder="Company name" autofocus="autofocus" />
+                <input type="email" asp-for="Email" class="form-control" placeholder="Your email address" />
             </div>
-            <div><em>(Leave fields empty if you do not want to sign up)</em></div>
+            <div><small class="text-muted form-text">(Leave the fields empty if you do not want to sign up)</small></div>
             <div>&nbsp;</div>
             <br />
             @Html.Raw(ViewBag.PrevLink)
-            <input type="submit" class="btn btn-primary" value="Signup" />
+            <input type="submit" class="btn btn-primary" value="Get FREE assistance" />
             @Html.Raw(ViewBag.NextLink)
         </form>
     </div>

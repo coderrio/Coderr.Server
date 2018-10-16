@@ -1,0 +1,21 @@
+#mainMenu .router-link-active, .right-menu li a.nav-link.router-link-active {
+    color: #ffffff;
+}
+
+*#mainMenu .dropdown-menu .router-link-active {
+    color: #000000;
+}
+
+.navmenu .nav-link {
+    margin-left: 10px;
+}
+
+.navmenu .dropdown-menu .router-link-exact-active {
+    color: #333333;
+    font-weight: bold;
+}
+
+.navmenu .bg-light .router-link-exact-active {
+    color: #333333;
+    font-weight: bold;
+}

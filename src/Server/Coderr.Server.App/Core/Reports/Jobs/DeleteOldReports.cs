@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Threading.Tasks;
-using codeRR.Server.App.Core.Reports.Config;
-using codeRR.Server.Infrastructure.Configuration;
-using Coderr.Server.PluginApi.Config;
+using Coderr.Server.Abstractions.Boot;
+using Coderr.Server.Abstractions.Config;
+using Coderr.Server.App.Core.Reports.Config;
 using Griffin.ApplicationServices;
-using Griffin.Container;
 using Griffin.Data;
 using log4net;
 
-namespace codeRR.Server.App.Core.Reports.Jobs
+namespace Coderr.Server.App.Core.Reports.Jobs
 {
     /// <summary>
     ///     Will delete all reports which is older than the configured (<see cref="ReportConfig.RetentionDays" />) retention
     ///     period.
     /// </summary>
-    [Component(RegisterAsSelf = true)]
+    [ContainerService(RegisterAsSelf = true)]
     public class DeleteOldReports : IBackgroundJobAsync
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(DeleteOldReports));

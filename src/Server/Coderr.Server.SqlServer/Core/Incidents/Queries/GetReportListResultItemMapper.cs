@@ -1,7 +1,7 @@
-﻿using codeRR.Server.Api.Core.Reports.Queries;
+﻿using Coderr.Server.Api.Core.Reports.Queries;
 using Griffin.Data.Mapper;
 
-namespace codeRR.Server.SqlServer.Core.Incidents.Queries
+namespace Coderr.Server.SqlServer.Core.Incidents.Queries
 {
     public class GetReportListResultItemMapper : EntityMapper<GetReportListResultItem>
     {

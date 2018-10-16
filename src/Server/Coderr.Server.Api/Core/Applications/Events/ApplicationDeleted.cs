@@ -1,6 +1,4 @@
-﻿using DotNetCqs;
-
-namespace codeRR.Server.Api.Core.Applications.Events
+﻿namespace Coderr.Server.Api.Core.Applications.Events
 {
     /// <summary>
     ///     An application have been deleted.

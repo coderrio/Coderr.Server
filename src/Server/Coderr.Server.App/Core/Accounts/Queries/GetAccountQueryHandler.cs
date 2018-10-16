@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Accounts.Queries;
+using Coderr.Server.Api.Core.Accounts.Queries;
+using Coderr.Server.Domain.Core.Account;
 using DotNetCqs;
-using Griffin.Container;
 
-namespace codeRR.Server.App.Core.Accounts.Queries
+
+namespace Coderr.Server.App.Core.Accounts.Queries
 {
     /// <summary>
     ///     Handler for <see cref="GetAccountQueryHandler" />
     /// </summary>
-    [Component]
     public class GetAccountQueryHandler : IQueryHandler<GetAccountById, AccountDTO>
     {
         private readonly IAccountRepository _repository;

@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core.ApiKeys.Commands;
+using Coderr.Server.Api.Core.ApiKeys.Commands;
 using DotNetCqs;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 
-namespace codeRR.Server.SqlServer.Core.ApiKeys.Commands
+namespace Coderr.Server.SqlServer.Core.ApiKeys.Commands
 {
-    [Component(RegisterAsSelf = true)]
     public class DeleteApiKeyHandler : IMessageHandler<DeleteApiKey>
     {
         private readonly IAdoNetUnitOfWork _unitOfWork;

@@ -1,9 +1,10 @@
 using System;
 using DotNetCqs.Queues;
+using log4net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace codeRR.Server.Infrastructure.Messaging
+namespace Coderr.Server.Infrastructure.Messaging
 {
     /// <summary>
     ///     This serializer is used by the client/side and MAY NOT include type definitions.
@@ -11,6 +12,7 @@ namespace codeRR.Server.Infrastructure.Messaging
     public class MessagingSerializer : IMessageSerializer<string>
     {
         private readonly Type _messageEnvelope;
+        ILog _logger = LogManager.GetLogger(typeof(MessagingSerializer));
 
         private readonly JsonSerializerSettings _settings = new JsonSerializerSettings
         {
@@ -27,6 +29,8 @@ namespace codeRR.Server.Infrastructure.Messaging
             _settings.Converters.Add(new StringEnumConverter());
         }
 
+        public bool ThrowExceptionOnDeserialziationFailure { get; set; } = true;
+
         public MessagingSerializer(Type messageEnvelope)
         {
             _messageEnvelope = messageEnvelope;
@@ -42,13 +46,23 @@ namespace codeRR.Server.Infrastructure.Messaging
                     : Type.GetType(contentType);
 
                 if (type == null)
-                    throw new SerializationException($"Failed to lookup type \'{contentType}\'.", serializedDto);
+                {
+                    if (ThrowExceptionOnDeserialziationFailure)
+                        throw new SerializationException($"Failed to lookup type \'{contentType}\'.", serializedDto);
+
+                    _logger.Error($"Invalid message type. throwing away message. {contentType}");
+                    return null;
+                }
+
 
                 return JsonConvert.DeserializeObject(serializedDto, type, _settings);
             }
             catch (JsonException ex)
             {
-                throw new SerializationException($"Failed to deserialize \'{contentType}\'.", serializedDto, ex);
+                if(ThrowExceptionOnDeserialziationFailure)
+                    throw new SerializationException($"Failed to deserialize \'{contentType}\'.", serializedDto, ex);
+                _logger.Error($"Failed to deserialize \'{contentType}\'.");
+                return null;
             }
         }
 
@@ -57,7 +71,7 @@ namespace codeRR.Server.Infrastructure.Messaging
             try
             {
                 contentType = dto.GetType().AssemblyQualifiedName;
-                serializedDto = JsonConvert.SerializeObject(dto);
+                serializedDto = JsonConvert.SerializeObject(dto, _settings);
             }
             catch (JsonException ex)
             {

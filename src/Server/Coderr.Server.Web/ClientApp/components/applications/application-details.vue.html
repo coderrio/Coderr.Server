@@ -1,0 +1,112 @@
+<template>
+    <div class="m-2">
+        <div class="row">
+            <div class="col-lg-3 col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        {{ name }}
+                        <div class="float-right">
+                            <router-link :to="{name: 'configureApplication', params: { applicationId }}" class="btn btn-outline-primary btn-sm">
+                                Configure
+                            </router-link>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!--<line-chart id="chart-1" :data="chartData"></line-chart>-->
+                        <table class="w-100">
+                            <tbody>
+                                <tr>
+                                    <th>Report count</th>
+                                    <td>{{ reportCount }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Versions</th>
+                                    <td>
+                                        <span v-for="v in versions">{{v}}</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">My incidents</div>
+                    <div class="card-body">
+                        <table class="w-100">
+                            <tbody>
+                                <tr v-for="incident in myIncidents">
+                                    <th>
+                                        <router-link :to="{name: 'analyzeIncident', params: { incidentId: incident.Id, applicationId: applicationId }}">
+                                            {{incident.Name}}
+                                        </router-link>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card-body card">
+                    <div class="position-relative coderr-chart">
+                        <h3>
+                            <span>Incident trend</span>
+                        </h3>
+                        <div class="ct-chart ct-double-octave">
+
+                        </div>
+                        <div class="legend">
+                            <div class="ct-series-a">
+                                <svg width="10" height="10">
+                                    <rect width="10" height="10" class="ct-point" />
+                                </svg>
+                                Incidents
+                            </div>
+                            <div class="ct-series-b">
+                                <svg width="10" height="10">
+                                    <rect width="10" height="10" class="ct-point" />
+                                </svg>
+                                Reports
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <table class="table w-100 bg-white">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Name</th>
+                            <th>Created</th>
+                            <th>Last report</th>
+                            <th>Report count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="incident in incidents">
+                            <td>
+                                <router-link :to="{ name: 'discoverIncident', params: { applicationId: applicationId.toString(), incidentId: incident.Id.toString() }}">{{ incident.Name }}</router-link>
+                            </td>
+                            <td :title="new Date(incident.CreatedAtUtc).toLocaleString()">
+                                {{ incident.CreatedAtUtc | ago }}
+                            </td>
+                            <td :title="new Date(incident.LastReportReceivedAtUtc).toLocaleString()">
+                                {{ incident.LastReportReceivedAtUtc | ago }}
+                            </td>
+                            <td>
+                                {{ incident.ReportCount }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</template>
+
+
+<style src="chartist/dist/chartist.css"></style>
+<style src="./application-details.css"></style>
+<script src="./application-details.ts"></script>

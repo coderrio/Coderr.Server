@@ -1,13 +1,12 @@
 ﻿using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Incidents.Queries;
+using Coderr.Server.Api.Core.Incidents.Queries;
 using DotNetCqs;
-using Griffin.Container;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 
-namespace codeRR.Server.SqlServer.Core.Incidents.Queries
+namespace Coderr.Server.SqlServer.Core.Incidents.Queries
 {
-    [Component]
     internal class GetIncidentForClosePageHandler :
         IQueryHandler<GetIncidentForClosePage, GetIncidentForClosePageResult>
     {

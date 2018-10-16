@@ -1,9 +1,9 @@
 ﻿using DotNetCqs;
 
-namespace codeRR.Server.Api.Web.Overview.Queries
+namespace Coderr.Server.Api.Web.Overview.Queries
 {
     /// <summary>
-    ///     Get an codeRR summary (typically shown in the chart and right panel summary)
+    ///     Get an Coderr summary (typically shown in the chart and right panel summary)
     /// </summary>
     [Message]
     public class GetOverview : Query<GetOverviewResult>

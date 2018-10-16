@@ -1,6 +1,6 @@
 using System;
 
-namespace codeRR.Server.Api
+namespace Coderr.Server.Api
 {
     /// <summary>
     ///     Used to make the typescript compiler ignore certain properties and types.

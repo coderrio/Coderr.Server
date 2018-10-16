@@ -4,14 +4,15 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
-using codeRR.Server.App.Modules.ReportSpikes;
-using Griffin.Container;
+using Coderr.Server.Abstractions.Boot;
+using Coderr.Server.Domain.Modules.ReportSpikes;
+using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 
-namespace codeRR.Server.SqlServer.Modules.ReportSpikes
+namespace Coderr.Server.SqlServer.Modules.ReportSpikes
 {
-    [Component]
+    [ContainerService]
     public class ReportSpikesRepository : IReportSpikeRepository
     {
         private readonly IAdoNetUnitOfWork _unitOfWork;

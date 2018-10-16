@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Threading.Tasks;
-using codeRR.Server.Api.Core.Incidents;
-using codeRR.Server.App.Core.Incidents;
-using codeRR.Server.SqlServer.Tools;
-using Griffin.Container;
+using Coderr.Server.Abstractions.Boot;
+using Coderr.Server.Domain.Core.Incidents;
+using Coderr.Server.SqlServer.Tools;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 
-namespace codeRR.Server.SqlServer.Core.Incidents
+namespace Coderr.Server.SqlServer.Core.Incidents
 {
-    [Component]
+    [ContainerService]
     public class IncidentRepository : IIncidentRepository
     {
         private readonly IAdoNetUnitOfWork _uow;
@@ -33,6 +32,7 @@ namespace codeRR.Server.SqlServer.Core.Incidents
                         UpdatedAtUtc = @UpdatedAtUtc,
                         Description = @Description,
                         Solution = @Solution,
+                        SolvedAtUtc = @solvedAt,
                         IsSolutionShared = @IsSolutionShared,
                         AssignedToId = @AssignedTo,
                         AssignedAtUtc = @AssignedAtUtc,
@@ -46,7 +46,8 @@ namespace codeRR.Server.SqlServer.Core.Incidents
                 cmd.AddParameter("Description", incident.Description);
                 cmd.AddParameter("State", (int)incident.State);
                 cmd.AddParameter("AssignedTo", incident.AssignedToId);
-                cmd.AddParameter("AssignedAtUtc", incident.AssignedAtUtc);
+                cmd.AddParameter("AssignedAtUtc", (object)incident.AssignedAtUtc ?? DBNull.Value);
+                cmd.AddParameter("solvedAt", incident.SolvedAtUtc.ToDbNullable());
                 cmd.AddParameter("IgnoringReportsSinceUtc", incident.IgnoringReportsSinceUtc.ToDbNullable());
                 cmd.AddParameter("IgnoringRequestedBy", incident.IgnoringRequestedBy);
                 cmd.AddParameter("Solution",
@@ -65,6 +66,21 @@ namespace codeRR.Server.SqlServer.Core.Incidents
                 cmd.AddParameter("ApplicationId", applicationId);
                 var result = (int) await cmd.ExecuteScalarAsync();
                 return result;
+            }
+        }
+
+        public Task<IList<Incident>> GetAllAsync(IEnumerable<int> incidentIds)
+        {
+            if (incidentIds == null) throw new ArgumentNullException(nameof(incidentIds));
+            var ids = string.Join(",", incidentIds);
+            if (ids == "")
+                throw new ArgumentException("No incident IDs were specified.", nameof(incidentIds));
+
+            using (var cmd = (DbCommand)_uow.CreateCommand())
+            {
+                cmd.CommandText =
+                    $"SELECT * FROM Incidents WHERE Id IN ({ids})";
+                return cmd.ToListAsync(new IncidentMapper());
             }
         }
 

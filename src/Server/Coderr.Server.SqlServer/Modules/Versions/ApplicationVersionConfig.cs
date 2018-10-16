@@ -1,4 +1,4 @@
-﻿namespace codeRR.Server.SqlServer.Modules.Versions
+﻿namespace Coderr.Server.SqlServer.Modules.Versions
 {
     public class ApplicationVersionConfig
     {

@@ -1,9 +1,8 @@
 using System;
-using codeRR.Server.App.Configuration;
-using codeRR.Server.Infrastructure.Configuration;
-using Coderr.Server.PluginApi.Config;
+using Coderr.Server.Abstractions.Config;
+using Coderr.Server.Infrastructure.Configuration;
 
-namespace codeRR.Server.App.Tests
+namespace Coderr.Server.App.Tests
 {
     public class TestStore : ConfigurationStore
     {

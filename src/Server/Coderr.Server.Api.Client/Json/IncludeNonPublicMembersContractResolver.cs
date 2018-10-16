@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace codeRR.Server.Api.Client.Json
+namespace Coderr.Server.Api.Client.Json
 {
     /// <summary>
     ///     Allows us to serialize properties with private setters.
