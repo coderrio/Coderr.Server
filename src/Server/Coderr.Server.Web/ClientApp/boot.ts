@@ -276,6 +276,9 @@ AppRoot.Instance.loadCurrentUser()
 
             }
         });
+        ourVue.$router.beforeEach((to, from, next) => {
+            next();
+        });
         ourVue.$router.afterEach((to, from) => {
             hooks.afterRoute(to.path, from.path);
         })

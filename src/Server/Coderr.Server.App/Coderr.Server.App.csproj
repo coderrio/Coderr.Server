@@ -22,7 +22,7 @@
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
     <PackageReference Include="DotNetCqs" Version="2.0.9" />
-    <PackageReference Include="Griffin.Framework" Version="2.0.0-alpha01" />
+    <PackageReference Include="Griffin.Framework" Version="2.0.1" />
     <PackageReference Include="log4net" Version="2.0.8" />
     <PackageReference Include="Markdig" Version="0.14.9" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />

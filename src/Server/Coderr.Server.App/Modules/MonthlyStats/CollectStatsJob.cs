@@ -36,14 +36,14 @@ namespace Coderr.Server.App.Modules.MonthlyStats
                 return;
 
             var lastMonth = new DateTime(lastMonthDate.Year, lastMonthDate.Month, 1);
-            if (_config.Value.LatestUploadedMonth == null)
-            {
-                await ReportAllFoundMonths(lastMonth);
-                return;
-            }
+            //if (_config.Value.LatestUploadedMonth == null)
+            //{
+            //    await ReportAllFoundMonths(lastMonth);
+            //    return;
+            //}
 
-            if (_config.Value?.LatestUploadedMonth == lastMonth)
-                return;
+            //if (_config.Value?.LatestUploadedMonth == lastMonth)
+            //    return;
 
 
             await ReportMonth(lastMonth);
@@ -261,11 +261,14 @@ namespace Coderr.Server.App.Modules.MonthlyStats
                 {
                     while (await reader.ReadAsync())
                     {
+                        var estimatedNumberOfErrors = reader[1];
+                        var numberOfDevelopers = reader[2];
                         var item = new ApplicationUsageStatisticsDto()
                         {
                             ApplicationId = reader.GetInt32(0),
-                            EstimatedNumberOfErrors= reader.GetFieldValue<int?>(1),
-                            NumberOfDevelopers = reader.GetFieldValue<decimal?>(2)
+                            EstimatedNumberOfErrors =
+                                estimatedNumberOfErrors is DBNull ? 0 : (int) estimatedNumberOfErrors,
+                            NumberOfDevelopers = numberOfDevelopers is DBNull ? 0 : (decimal) numberOfDevelopers
                         };
                         apps[item.ApplicationId] = item;
                     }

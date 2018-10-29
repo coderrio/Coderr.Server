@@ -65,14 +65,6 @@ export default class AnalyzeIncidentComponent extends Vue {
                     });
                     return;
                 }
-                AppRoot.Instance.incidentService.getMine(null, this.incident.Id)
-                    .then(incidents => {
-                        if (incidents.length === 0) {
-                            this.$router.push({ name: "discover" });
-                        } else {
-                            this.$router.push({ name: "analyzeHome" });
-                        }
-                    });
             });
     }
 

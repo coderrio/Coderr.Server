@@ -120,8 +120,8 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer
             {
                 cmd.CommandText =
                     @"update IgnoredReports set NumberOfReports=NumberOfReports+1 WHERE date = @date;
-                        IF @@ROWCOUNT=0 insert into IgnoredReports(NumberOfReports) values(1);";
-                cmd.AddParameter("date", date);
+                        IF @@ROWCOUNT=0 insert into IgnoredReports(NumberOfReports, Date) values(1, Convert(date, GetUtcDate()));";
+                cmd.AddParameter("date", date.Date);
                 cmd.ExecuteNonQuery();
             }
         }

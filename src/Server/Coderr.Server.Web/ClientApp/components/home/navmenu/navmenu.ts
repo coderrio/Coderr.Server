@@ -79,7 +79,6 @@ export default class NavMenuComponent extends Vue {
             }
         });
         PubSubService.Instance.subscribe(MenuApi.MessagingTopics.SetApplication, ctx => {
-            console.log('SET', ctx.message)
             var msg = <MenuApi.SetApplication>ctx.message.body;
             this.changeApplication(msg.applicationId);
         });
@@ -129,11 +128,11 @@ export default class NavMenuComponent extends Vue {
             }
             return;
         } else if (currentRoute.path.indexOf('/discover') === 0) {
-            this.$router.push({ name: 'discover', params: { applicationId: applicationId.toString() } });
+            this.$router.push({ name: 'discover', params: { applicationId: applicationId == null ? null : applicationId.toString() } });
         } else if (currentRoute.path.indexOf('/analyze') === 0) {
-            this.$router.push({ name: 'analyzeHome', params: { applicationId: applicationId.toString() } });
+            this.$router.push({ name: 'analyzeHome', params: { applicationId: applicationId == null ? null : applicationId.toString() } });
         } else  {
-            const route = { name: currentRoute.name, params: { applicationId: applicationId.toString() } };
+            const route = { name: currentRoute.name, params: { applicationId: applicationId == null ? null : applicationId.toString() } };
             this.$router.push(route);
         }
 

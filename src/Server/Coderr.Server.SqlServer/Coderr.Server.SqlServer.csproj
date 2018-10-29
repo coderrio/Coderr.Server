@@ -6,7 +6,7 @@
   </PropertyGroup>
   <ItemGroup>
   <PackageReference Include="DotNetCqs" Version="2.0.9" />
-  <PackageReference Include="Griffin.Framework" Version="2.0.0-alpha01" />
+  <PackageReference Include="Griffin.Framework" Version="2.0.1" />
   <PackageReference Include="log4net" Version="2.0.8" />
   <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
     <PackageReference Include="System.Data.SqlClient" Version="4.4.3" />
@@ -30,5 +30,6 @@
     <None Remove="Schema\Update.v13.sql" />
     <None Remove="Schema\Update.v14.sql" />
     <None Remove="Schema\Update.v15.sql" />
+    <None Remove="Schema\Update.v16.sql" />
   </ItemGroup>
 </Project>
