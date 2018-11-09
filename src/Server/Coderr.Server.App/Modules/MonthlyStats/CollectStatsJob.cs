@@ -36,14 +36,14 @@ namespace Coderr.Server.App.Modules.MonthlyStats
                 return;
 
             var lastMonth = new DateTime(lastMonthDate.Year, lastMonthDate.Month, 1);
-            //if (_config.Value.LatestUploadedMonth == null)
-            //{
-            //    await ReportAllFoundMonths(lastMonth);
-            //    return;
-            //}
+            if (_config.Value.LatestUploadedMonth == null)
+            {
+                await ReportAllFoundMonths(lastMonth);
+                return;
+            }
 
-            //if (_config.Value?.LatestUploadedMonth == lastMonth)
-            //    return;
+            if (_config.Value?.LatestUploadedMonth == lastMonth)
+                return;
 
 
             await ReportMonth(lastMonth);

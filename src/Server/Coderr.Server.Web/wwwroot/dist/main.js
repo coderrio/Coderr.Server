@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "17d5ff35f9585df8e737"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "dbb48a9e34eaaec2540a"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -38776,9 +38776,9 @@ __WEBPACK_IMPORTED_MODULE_4__services_AppRoot__["a" /* AppRoot */].Instance.load
             hooks.mounted(ourVue);
         }
     });
-    ourVue.$router.beforeEach(function (to, from, next) {
-        next();
-    });
+    //ourVue.$router.beforeEach((to, from, next) => {
+    //    next();
+    //});
     ourVue.$router.afterEach(function (to, from) {
         hooks.afterRoute(to.path, from.path);
     });
@@ -40816,6 +40816,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 
 
 
@@ -40854,11 +40857,23 @@ var ConfigureClientComponent = /** @class */ (function (_super) {
     };
     ConfigureClientComponent.prototype.mounted = function () {
         var _this = this;
-        this.applicationId = parseInt(this.$route.params.applicationId, 10);
         __WEBPACK_IMPORTED_MODULE_2__services_AppRoot__["a" /* AppRoot */].Instance.applicationService.get(this.applicationId)
             .then(function (app) {
             _this.sharedSecret = app.sharedSecret;
             _this.appKey = app.appKey;
+        });
+    };
+    ConfigureClientComponent.prototype.onApplicationChanged = function (value, oldValue) {
+        var _this = this;
+        if (!value) {
+            return;
+        }
+        this.applicationId = parseInt(value);
+        __WEBPACK_IMPORTED_MODULE_2__services_AppRoot__["a" /* AppRoot */].Instance.applicationService.get(this.applicationId)
+            .then(function (app) {
+            _this.sharedSecret = app.sharedSecret;
+            _this.appKey = app.appKey;
+            _this.select(_this.lastLib);
         });
     };
     ConfigureClientComponent.prototype.goToSupport = function () {
@@ -40869,16 +40884,13 @@ var ConfigureClientComponent = /** @class */ (function (_super) {
     };
     ConfigureClientComponent.prototype.select = function (libName) {
         var _this = this;
-        var appInfo = __WEBPACK_IMPORTED_MODULE_2__services_AppRoot__["a" /* AppRoot */].Instance.currentUser.applications[0];
-        __WEBPACK_IMPORTED_MODULE_2__services_AppRoot__["a" /* AppRoot */].Instance.applicationService.get(appInfo.id)
-            .then(function (app) {
-            var client = new __WEBPACK_IMPORTED_MODULE_1__services_HttpClient__["a" /* HttpClient */]();
-            client.get(__WEBPACK_IMPORTED_MODULE_0__services_ApiClient__["a" /* ApiClient */].ApiUrl + 'onboarding/library/' + libName + "/?appKey=" + app.appKey)
-                .then(function (response) {
-                _this.instruction = response.body
-                    .replace('yourAppKey', _this.appKey)
-                    .replace('yourSharedSecret', _this.sharedSecret);
-            });
+        this.lastLib = libName;
+        var client = new __WEBPACK_IMPORTED_MODULE_1__services_HttpClient__["a" /* HttpClient */]();
+        client.get(__WEBPACK_IMPORTED_MODULE_0__services_ApiClient__["a" /* ApiClient */].ApiUrl + 'onboarding/library/' + libName + "/?appKey=" + this.appKey)
+            .then(function (response) {
+            _this.instruction = response.body
+                .replace('yourAppKey', _this.appKey)
+                .replace('yourSharedSecret', _this.sharedSecret);
         });
         var buttons = document.querySelectorAll('.buttons button');
         for (var i = 0; i < buttons.length; i++) {
@@ -40896,6 +40908,7 @@ var ConfigureClientComponent = /** @class */ (function (_super) {
         var q = new __WEBPACK_IMPORTED_MODULE_3__dto_Core_Incidents__["a" /* FindIncidents */]();
         q.PageNumber = 1;
         q.ItemsPerPage = 1;
+        q.ApplicationIds = [this.applicationId];
         __WEBPACK_IMPORTED_MODULE_2__services_AppRoot__["a" /* AppRoot */].Instance.apiClient.query(q)
             .then(function (result) {
             if (result.TotalCount === 0) {
@@ -40908,6 +40921,12 @@ var ConfigureClientComponent = /** @class */ (function (_super) {
             });
         });
     };
+    __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5_vue_property_decorator__["Watch"])('$route.params.applicationId'),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [String, String]),
+        __metadata("design:returntype", void 0)
+    ], ConfigureClientComponent.prototype, "onApplicationChanged", null);
     ConfigureClientComponent = __decorate([
         __WEBPACK_IMPORTED_MODULE_5_vue_property_decorator__["Component"]
     ], ConfigureClientComponent);
@@ -63477,7 +63496,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('router-link', {
     staticClass: "nav-link",
     attrs: {
-      "to": _vm.discoverLink
+      "to": _vm.discoverLink,
+      "id": "DiscoverMenu"
     }
   }, [_c('span', {
     staticClass: "fa fa-binoculars"
