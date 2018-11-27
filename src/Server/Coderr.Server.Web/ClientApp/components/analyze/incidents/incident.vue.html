@@ -91,8 +91,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div v-if="currentReport.Id > 0" style="overflow-x: scroll">
-                                <table class="table">
+                            <div v-if="currentReport.Id > 0" style="overflow: auto">
+                                <table class="table mt-3 mb-3">
                                     <tbody>
                                         <tr v-for="prop in currentCollection.Properties">
                                             <td>{{prop.Key}}</td>
@@ -102,8 +102,7 @@
                                 </table>
                                 <hr />
                                 <em>
-                                    <router-link :to="{ name: 'analyzeReport', params: { reportId: currentReport.Id, incidentId: incident.Id}}">View entire report</router-link> |
-                                    <a href="#">Browse all reports</a>
+                                    <router-link class="btn btn-primary btn-block":to="{ name: 'analyzeReport', params: { reportId: currentReport.Id, incidentId: incident.Id}}">View entire report</router-link>
                                 </em>
                             </div>
                         </div>

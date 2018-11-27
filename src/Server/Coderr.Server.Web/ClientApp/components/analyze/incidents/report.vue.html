@@ -20,46 +20,9 @@
                 <button class="btn btn-light" v-on:click="nextReport" v-if="showNextButton">Next report &gt;&gt;</button>
             </div>
         </div>
-        <div class="row">
-
-            <div class="col-lg-12 col-xl-8 contextCollections">
+        <div class="row" v-if="userFeedback != null">
+            <div class="col">
                 <div class="card">
-                    <div class="card-body">
-                        <h3>Context collections</h3>
-                        <div v-if="this.contextCollections.length == 0">
-                            <em>No context collections were attached to this error report.</em>
-                            <p>
-                                <em>Our documentation demonstrates how you can <a href="http://coderr.io/documentation/client/manual-reporting/">manually add context information</a> or <a href="http://coderr.io/documentation/client/context-provider/">create custom collections</a>.</em>
-                            </p>
-                        </div>
-                        <div v-else>
-                            <div class="dropdown" style="display: inline">
-                                <button type="button" class="btn btn-light dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="reportChooser">
-                                    {{currentCollectionName}}
-                                </button>
-                                <div class="dropdown-menu">
-                                    <h6 class="dropdown-header">Select context collection</h6>
-                                    <div v-for="collection in contextCollections">
-                                        <span class="dropdown-item" v-on:click="loadCollection(collection.Name)"><i class="fa-table fa text-muted"></i> {{collection.Name}}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div v-if="this.contextCollections.length > 0">
-                            <table class="table table-borderless">
-                                <tbody>
-                                <tr v-for="prop in currentCollection.Properties">
-                                    <th style="white-space: nowrap;">{{prop.Key}}</th>
-                                    <td style="width:100%;" class="value" v-html="prop.Value"></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-12 col-xl-4">
-                <div class="card" v-if="userFeedback != null">
                     <div class="card-body">
                         <h3>Error report from {{userOrEmail}}</h3>
                         <div class="card-body">
@@ -67,6 +30,50 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col contextCollections">
+                <div class="card">
+                    <div class="card-body">
+                        <div v-if="this.contextCollections.length == 0">
+                            <em>No context collections were attached to this error report.</em>
+                            <p>
+                                <em>Our documentation demonstrates how you can <a href="http://coderr.io/documentation/client/manual-reporting/">manually add context information</a> or <a href="http://coderr.io/documentation/client/context-provider/">create custom collections</a>.</em>
+                            </p>
+                        </div>
+                        <div v-else class="row">
+                            <div class="col-md-auto col-sm-6 collection">
+                                <h5>Select collection</h5>
+                                <div v-for="collection in contextCollections">
+                                    <a href="#"
+                                       :class="{'active': collection.Name === currentCollection.Name }"
+                                       :data-name="collection.Name"
+                                       v-on:click.prevent="loadCollection(collection.Name)">{{collection.Name}}</a>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div v-if="currentCollection">
+                                    <h4>{{currentCollection.Name}}</h4>
+                                    <table class="table table-borderless">
+                                        <tbody>
+                                            <tr v-for="prop in currentCollection.Properties">
+                                                <th style="white-space: nowrap;">{{prop.Key}}</th>
+                                                <td style="width: 100%;" class="value" v-html="prop.Value"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col">
                 <div class="card">
                     <div class="card-body">
                         <h3>Stack trace</h3>
@@ -76,6 +83,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
         <div class="row">
             <div class="col">

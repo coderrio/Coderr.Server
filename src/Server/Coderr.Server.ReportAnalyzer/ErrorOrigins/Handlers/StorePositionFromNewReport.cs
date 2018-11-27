@@ -9,6 +9,7 @@ using DotNetCqs;
 using Coderr.Server.Abstractions.Boot;
 using log4net;
 using Newtonsoft.Json.Linq;
+using Coderr.Server.Abstractions.Config;
 
 namespace Coderr.Server.ReportAnalyzer.ErrorOrigins.Handlers
 {
@@ -19,16 +20,18 @@ namespace Coderr.Server.ReportAnalyzer.ErrorOrigins.Handlers
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(StorePositionFromNewReport));
         private readonly IErrorOriginRepository _repository;
+        private IConfiguration<OriginsConfiguration> _originConfiguration;
 
         /// <summary>
         ///     Creates a new instance of <see cref="StorePositionFromNewReport" />.
         /// </summary>
         /// <param name="repository">repos</param>
         /// <exception cref="ArgumentNullException">repository</exception>
-        public StorePositionFromNewReport(IErrorOriginRepository repository)
+        public StorePositionFromNewReport(IErrorOriginRepository repository, IConfiguration<OriginsConfiguration> originConfiguration)
         {
             if (repository == null) throw new ArgumentNullException("repository");
             _repository = repository;
+            _originConfiguration = originConfiguration;
         }
 
         /// <summary>
@@ -43,12 +46,16 @@ namespace Coderr.Server.ReportAnalyzer.ErrorOrigins.Handlers
             if (string.IsNullOrEmpty(e.Report.RemoteAddress))
                 return;
 
+            if (string.IsNullOrEmpty(_originConfiguration.Value?.ApiKey))
+                return;
+
             if (e.Report.RemoteAddress == "::1")
                 return;
             if (e.Report.RemoteAddress == "127.0.0.1")
                 e.Report.RemoteAddress = "94.254.57.227";
 
-            var request = WebRequest.CreateHttp("http://freegeoip.net/json/" + e.Report.RemoteAddress);
+            var url = $"http://api.ipstack.com/{e.Report.RemoteAddress}?access_key={_originConfiguration.Value.ApiKey}";
+            var request = WebRequest.CreateHttp(url);
             string json = "";
             try
             {
@@ -71,7 +78,7 @@ namespace Coderr.Server.ReportAnalyzer.ErrorOrigins.Handlers
                     CountryName = jsonObj["country_name"].ToString(),
                     RegionCode = jsonObj["region_code"].ToString(),
                     RegionName = jsonObj["region_name"].ToString(),
-                    ZipCode = jsonObj["zip_code"].ToString()
+                    ZipCode = jsonObj["zip"].ToString()
                 };
 
                 await _repository.CreateAsync(cmd, e.Incident.ApplicationId, e.Incident.Id, e.Report.Id);

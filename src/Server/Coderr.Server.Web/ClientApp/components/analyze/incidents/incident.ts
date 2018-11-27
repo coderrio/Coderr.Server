@@ -122,7 +122,17 @@ export default class AnalyzeIncidentComponent extends Vue {
 
     private loadCollection(name: string) {
         if (name === AnalyzeIncidentComponent.selectCollectionTitle || name === '') {
-            name = this.currentReport.ContextCollections[0].Name;
+            name = null;
+            var namesToFind = ['ContextData', 'ViewModel', 'HttpRequest', 'ExceptionProperties'];
+            this.currentReport.ContextCollections.forEach(x => {
+                if (namesToFind.indexOf(x.Name) !== -1 && name == null) {
+                    name = x.Name;
+                }
+            });
+
+            if (name == null) {
+                name = this.currentReport.ContextCollections[0].Name;
+            }
         }
 
         for (var i = 0; i < this.currentReport.ContextCollections.length; i++) {

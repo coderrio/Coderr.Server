@@ -12,6 +12,7 @@ export default class OriginsComponent extends Vue {
     private apiClient: ApiClient = AppRoot.Instance.apiClient;
 
     mapScript: string = '';
+    gotItems = false;
 
     mounted() {
         var self = this;
@@ -45,6 +46,7 @@ export default class OriginsComponent extends Vue {
             query.IncidentId = incidentId;
             self.apiClient.query<GetOriginsForIncidentResult>(query)
                 .then(response => {
+                    this.gotItems = response.Items.length > 0;
                     if (response.Items.length < 50) {
                         response.Items.forEach(item => {
                             var point = new google.maps.LatLng(item.Latitude, item.Longitude);

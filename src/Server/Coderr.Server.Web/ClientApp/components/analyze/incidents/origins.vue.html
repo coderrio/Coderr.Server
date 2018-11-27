@@ -6,7 +6,25 @@
                     Origins
                 </h2>
                 <div>
+                    <div v-if="!gotItems" class="alert alert-warning">
+                        You must create an account at <a href="https://ipstack.com/">https://ipstack.com/</a>. Then add a new row in the "Settings" table in your database:
+                        <table>
+                            <tr>
+                                <th>Section</th>
+                                <td>Origins</td>
+                            </tr>
+                            <tr>
+                                <th>Name</th>
+                                <td>ApiKey</td>
+                            </tr>
+                            <tr>
+                                <th>Value</th>
+                                <td><em>Your api key</em></td>
+                            </tr>
+                        </table>
+                    </div>
                     <p>Displays where we received the error reports from.</p>
+
                 </div>
                 <div id="map" style="height: 800px; max-width: 100%; width: 4096px;">
                     <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBleXqcxCLRwuhcXk-3904HaJt9Vd1-CZc"></script>-->
