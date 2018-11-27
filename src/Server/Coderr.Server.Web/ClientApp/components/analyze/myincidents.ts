@@ -40,7 +40,7 @@ export class MyIncidents {
     selectedIncident: IMyIncident | null;
     menuTitle = '';
 
-    selectedApplicationId: number | null;
+    selectedApplicationId: number | null = null;
 
     constructor() {
         this.loadPromise$ = this.loadMyIncidentsFromBackend();
@@ -171,6 +171,8 @@ export class MyIncidents {
                 this.allMyIncidents$.push(item);
             }
         });
+        this.filterMyIncidents();
+        this.triggerIncidentListCallbacks();
     }
 
     private filterMyIncidents() {

@@ -4,7 +4,7 @@ import { AppRoot } from '../../../services/AppRoot';
 import { FindIncidents, FindIncidentsResult, FindIncidentsResultItem } from '../../../dto/Core/Incidents'
 import * as Mine from '../../../dto/Common/Mine'
 import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { Component, Watch } from "vue-property-decorator";
 
 interface ILibrarySummary {
     clientFolderName: string;
@@ -14,6 +14,7 @@ interface ILibrarySummary {
 }
 @Component
 export default class ConfigureClientComponent extends Vue {
+    private lastLib: string;
     libraries: ILibrarySummary[] = [];
     instruction: string | null = null;
 
@@ -27,7 +28,6 @@ export default class ConfigureClientComponent extends Vue {
 
     created() {
         this.applicationId = parseInt(this.$route.params.applicationId, 10);
-
         var client = new http.HttpClient();
         client.get(ApiClient.ApiUrl + 'onboarding/libraries/')
             .then(response => {
@@ -44,11 +44,25 @@ export default class ConfigureClientComponent extends Vue {
     }
 
     mounted() {
-        this.applicationId = parseInt(this.$route.params.applicationId, 10);
         AppRoot.Instance.applicationService.get(this.applicationId)
             .then(app => {
                 this.sharedSecret = app.sharedSecret;
                 this.appKey = app.appKey;
+            });
+    }
+
+    @Watch('$route.params.applicationId')
+    onApplicationChanged(value: string, oldValue: string) {
+        if (!value) {
+            return;
+        }
+
+        this.applicationId = parseInt(value);
+        AppRoot.Instance.applicationService.get(this.applicationId)
+            .then(app => {
+                this.sharedSecret = app.sharedSecret;
+                this.appKey = app.appKey;
+                this.select(this.lastLib);
             });
     }
 
@@ -58,18 +72,15 @@ export default class ConfigureClientComponent extends Vue {
             params: { type: "configuration" }
         });
     }
-    
+
     select(libName: string) {
-        var appInfo = AppRoot.Instance.currentUser.applications[0];
-        AppRoot.Instance.applicationService.get(appInfo.id)
-            .then(app => {
-                var client = new http.HttpClient();
-                client.get(ApiClient.ApiUrl + 'onboarding/library/' + libName + "/?appKey=" + app.appKey)
-                    .then(response => {
-                        this.instruction = response.body
-                            .replace('yourAppKey', this.appKey)
-                            .replace('yourSharedSecret', this.sharedSecret);
-                    });
+        this.lastLib = libName;
+        var client = new http.HttpClient();
+        client.get(ApiClient.ApiUrl + 'onboarding/library/' + libName + "/?appKey=" + this.appKey)
+            .then(response => {
+                this.instruction = response.body
+                    .replace('yourAppKey', this.appKey)
+                    .replace('yourSharedSecret', this.sharedSecret);
             });
         var buttons = document.querySelectorAll('.buttons button');
         for (var i = 0; i < buttons.length; i++) {
@@ -88,6 +99,7 @@ export default class ConfigureClientComponent extends Vue {
         var q = new FindIncidents();
         q.PageNumber = 1;
         q.ItemsPerPage = 1;
+        q.ApplicationIds = [this.applicationId];
         AppRoot.Instance.apiClient.query<FindIncidentsResult>(q)
             .then(result => {
                 if (result.TotalCount === 0) {

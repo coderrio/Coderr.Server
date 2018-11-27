@@ -7,6 +7,8 @@ namespace Coderr.Server.Api.Core.Incidents.Queries
     /// </summary>
     public class FindIncidentsResultItem
     {
+        private string _name;
+
         /// <summary>
         ///     Creates new instance of <see cref="FindIncidentsResultItem" />.
         /// </summary>
@@ -54,6 +56,11 @@ namespace Coderr.Server.Api.Core.Incidents.Queries
         public bool IsReOpened { get; set; }
 
         /// <summary>
+        ///     When we recieved the last report.
+        /// </summary>
+        public DateTime LastReportReceivedAtUtc { get; set; }
+
+        /// <summary>
         ///     When someone updated this incident (assigned/closed etc).
         /// </summary>
         public DateTime LastUpdateAtUtc { get; set; }
@@ -61,16 +68,20 @@ namespace Coderr.Server.Api.Core.Incidents.Queries
         /// <summary>
         ///     Incident name
         /// </summary>
-        public string Name { get; private set; }
+        public string Name
+        {
+            set
+            {
+                if (value.Length > 40)
+                    value = value.Substring(0, 35) + "[...]";
+                _name = value;
+            }
+            get => _name;
+        }
 
         /// <summary>
         ///     Total number of received reports (increased even if the number of stored reports are at the limit)
         /// </summary>
         public int ReportCount { get; set; }
-
-        /// <summary>
-        /// When we recieved the last report.
-        /// </summary>
-        public DateTime LastReportReceivedAtUtc { get; set; }
     }
 }

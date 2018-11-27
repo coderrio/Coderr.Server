@@ -20,8 +20,8 @@ export default class AnalyzeMenuComponent extends Vue {
     incidentId: number | null = null;
 
     created() {
-        MyIncidents.Instance.subscribeOnSelectedIncident(this.onIncidentSelected);
-        MyIncidents.Instance.subscribeOnListChanges(this.onListChanged);
+        MyIncidents.Instance.subscribeOnSelectedIncident(x => this.onIncidentSelected(x));
+        MyIncidents.Instance.subscribeOnListChanges(() => this.onListChanged());
         MyIncidents.Instance.ready()
             .then(x => {
                 this.incidents = MyIncidents.Instance.myIncidents;
@@ -61,7 +61,6 @@ export default class AnalyzeMenuComponent extends Vue {
         if (!this.incidentId && this.incidents.length > 0) {
             this.incidentId = this.incidents[0].incidentId;
             MyIncidents.Instance.switchIncident(this.incidentId);
-            this.$router.push({ name: 'analyzeIncident', params: { incidentId: this.incidentId.toString() } });
         }
     }
 
@@ -70,12 +69,7 @@ export default class AnalyzeMenuComponent extends Vue {
             this.title = '(Select an incident)';
             this.incidentId = null;
         } else {
-
-            // update URL
-            if (this.incidentId !== incident.incidentId) {
-                this.$router.push({ name: 'analyzeIncident', params: { incidentId: incident.incidentId.toString() } });
-            }
-
+            this.$router.push({ name: 'analyzeIncident', params: { incidentId: incident.incidentId.toString() } });
             this.title = incident.shortTitle;
             this.incidentId = incident.incidentId;
         }
@@ -92,6 +86,7 @@ export default class AnalyzeMenuComponent extends Vue {
         } else {
             var newIncidentId = parseInt(value, 10);
             if (this.incidentId === newIncidentId) {
+                console.log('exiting')
                 return;
             }
             this.incidentId = newIncidentId;

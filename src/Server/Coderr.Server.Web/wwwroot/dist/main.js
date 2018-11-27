@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "8ee7ea68c10730288e8e"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "dbb48a9e34eaaec2540a"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -6012,7 +6012,7 @@ var AppRoot = /** @class */ (function () {
             __WEBPACK_IMPORTED_MODULE_6_localforage__["getItem"](options.name);
         })
             .catch(function (reason) {
-            console.log('ERRROR', reason);
+            console.log('ERROR', reason);
         });
     };
     AppRoot.prototype.loadState = function (name, component) {
@@ -16110,7 +16110,7 @@ var Topic = /** @class */ (function () {
         });
     };
     Topic.prototype.unsubscribe = function (callback) {
-        this.listeners = this.listeners.filter(function (x) { return x === callback; });
+        this.listeners = this.listeners.filter(function (x) { return x !== callback; });
     };
     return Topic;
 }());
@@ -16129,7 +16129,7 @@ module.exports = vendor_15bd100ccd282834031b;
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MessagingTopics; });
 /* unused harmony export SetApplication */
-/* unused harmony export ApplicationChanged */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return ApplicationChanged; });
 var MessagingTopics = /** @class */ (function () {
     function MessagingTopics() {
     }
@@ -21001,9 +21001,10 @@ var MyIncidents = /** @class */ (function () {
         var _this = this;
         this.allMyIncidents$ = [];
         this.selectedCallbacks$ = [];
-        this.changedCallbacks$ = [];
+        this.listChangedCallback$ = [];
         this.myIncidents = [];
         this.menuTitle = '';
+        this.selectedApplicationId = null;
         this.loadPromise$ = this.loadMyIncidentsFromBackend();
         __WEBPACK_IMPORTED_MODULE_2__services_PubSub__["a" /* PubSubService */].Instance.subscribe(__WEBPACK_IMPORTED_MODULE_0__services_menu_MenuApi__["a" /* MessagingTopics */].ApplicationChanged, function (x) {
             var msg = x.message.body;
@@ -21066,11 +21067,14 @@ var MyIncidents = /** @class */ (function () {
             var incident;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.loadPromise$];
+                    case 0:
+                        if (!this.loadPromise$) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.loadPromise$];
                     case 1:
                         _a.sent();
-                        return [4 /*yield*/, this.getIncident(incidentId)];
-                    case 2:
+                        _a.label = 2;
+                    case 2: return [4 /*yield*/, this.getIncident(incidentId)];
+                    case 3:
                         incident = _a.sent();
                         if (incident == null) {
                             this.getNextIncident();
@@ -21099,8 +21103,12 @@ var MyIncidents = /** @class */ (function () {
      * @returns The incident that was selected when the subscribe method was invoked (null if none was selected)
      */
     MyIncidents.prototype.subscribeOnListChanges = function (callback) {
-        this.changedCallbacks$.push(callback);
+        this.listChangedCallback$.push(callback);
         return this.selectedIncident;
+    };
+    MyIncidents.prototype.unsubscribe = function (callback) {
+        this.selectedCallbacks$ = this.selectedCallbacks$.filter(function (x) { return x !== callback; });
+        this.listChangedCallback$ = this.listChangedCallback$.filter(function (x) { return x !== callback; });
     };
     MyIncidents.prototype.onIncidentAssigned = function (msgContext) {
         var _this = this;
@@ -21122,7 +21130,7 @@ var MyIncidents = /** @class */ (function () {
         });
     };
     MyIncidents.prototype.triggerIncidentListCallbacks = function (incidentId, added) {
-        this.changedCallbacks$.forEach(function (x) {
+        this.listChangedCallback$.forEach(function (x) {
             x({ incidentId: incidentId, added: added });
         });
     };
@@ -21151,6 +21159,7 @@ var MyIncidents = /** @class */ (function () {
                             }
                         });
                         this.filterMyIncidents();
+                        this.triggerIncidentListCallbacks();
                         return [2 /*return*/];
                 }
             });
@@ -22311,7 +22320,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\discover\\incidents\\incident.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\discover\\incidents\\incident.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] incident.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -38767,6 +38776,9 @@ __WEBPACK_IMPORTED_MODULE_4__services_AppRoot__["a" /* AppRoot */].Instance.load
             hooks.mounted(ourVue);
         }
     });
+    //ourVue.$router.beforeEach((to, from, next) => {
+    //    next();
+    //});
     ourVue.$router.afterEach(function (to, from) {
         hooks.afterRoute(to.path, from.path);
     });
@@ -39524,15 +39536,6 @@ var AnalyzeIncidentComponent = /** @class */ (function (_super) {
                 });
                 return;
             }
-            __WEBPACK_IMPORTED_MODULE_1__services_AppRoot__["a" /* AppRoot */].Instance.incidentService.getMine(null, _this.incident.Id)
-                .then(function (incidents) {
-                if (incidents.length === 0) {
-                    _this.$router.push({ name: "discover" });
-                }
-                else {
-                    _this.$router.push({ name: "analyzeHome" });
-                }
-            });
         });
     };
     AnalyzeIncidentComponent.prototype.addToTfs = function () {
@@ -40187,15 +40190,8 @@ var AnalyzeMenuComponent = /** @class */ (function (_super) {
     }
     AnalyzeMenuComponent.prototype.created = function () {
         var _this = this;
-        __WEBPACK_IMPORTED_MODULE_2__myincidents__["a" /* MyIncidents */].Instance.subscribeOnSelectedIncident(this.onIncidentSelected);
-        __WEBPACK_IMPORTED_MODULE_2__myincidents__["a" /* MyIncidents */].Instance.subscribeOnListChanges(function (x) {
-            _this.incidents = __WEBPACK_IMPORTED_MODULE_2__myincidents__["a" /* MyIncidents */].Instance.myIncidents;
-            if (!_this.incidentId && _this.incidents.length > 0) {
-                _this.incidentId = _this.incidents[0].incidentId;
-                __WEBPACK_IMPORTED_MODULE_2__myincidents__["a" /* MyIncidents */].Instance.switchIncident(_this.incidentId);
-                _this.$router.push({ name: 'analyzeIncident', params: { incidentId: _this.incidentId.toString() } });
-            }
-        });
+        __WEBPACK_IMPORTED_MODULE_2__myincidents__["a" /* MyIncidents */].Instance.subscribeOnSelectedIncident(function (x) { return _this.onIncidentSelected(x); });
+        __WEBPACK_IMPORTED_MODULE_2__myincidents__["a" /* MyIncidents */].Instance.subscribeOnListChanges(function () { return _this.onListChanged(); });
         __WEBPACK_IMPORTED_MODULE_2__myincidents__["a" /* MyIncidents */].Instance.ready()
             .then(function (x) {
             _this.incidents = __WEBPACK_IMPORTED_MODULE_2__myincidents__["a" /* MyIncidents */].Instance.myIncidents;
@@ -40204,32 +40200,6 @@ var AnalyzeMenuComponent = /** @class */ (function (_super) {
             this.incidentId = parseInt(this.$route.params.incidentId, 10);
             __WEBPACK_IMPORTED_MODULE_2__myincidents__["a" /* MyIncidents */].Instance.switchIncident(this.incidentId);
         }
-    };
-    AnalyzeMenuComponent.prototype.onIncidentSelected = function (incident) {
-        if (incident == null) {
-            this.title = '(Select an incident)';
-            this.incidentId = null;
-        }
-        else {
-            // update URL
-            if (this.incidentId !== incident.incidentId) {
-                this.$router.push({ name: 'analyzeIncident', params: { incidentId: incident.incidentId.toString() } });
-            }
-            this.title = incident.shortTitle;
-            this.incidentId = incident.incidentId;
-        }
-    };
-    AnalyzeMenuComponent.prototype.onIncidentRoute = function (value, oldValue) {
-        if (this.$route.fullPath.indexOf('/analyze/') === -1) {
-            return;
-        }
-        var newIncidentId = parseInt(value, 10);
-        //ignore subroutes to same incident.
-        if (this.incidentId === newIncidentId) {
-            return;
-        }
-        this.incidentId = newIncidentId;
-        __WEBPACK_IMPORTED_MODULE_2__myincidents__["a" /* MyIncidents */].Instance.switchIncident(newIncidentId);
     };
     AnalyzeMenuComponent.prototype.mounted = function () {
         var _this = this;
@@ -40242,8 +40212,50 @@ var AnalyzeMenuComponent = /** @class */ (function (_super) {
                 _this.$router.push({ name: 'analyzeIncident', params: { incidentId: incident.incidentId.toString() } });
                 return;
             }
-            __WEBPACK_IMPORTED_MODULE_2__myincidents__["a" /* MyIncidents */].Instance.switchIncident(_this.incidentId);
+            if (_this.incidentId) {
+                __WEBPACK_IMPORTED_MODULE_2__myincidents__["a" /* MyIncidents */].Instance.switchIncident(_this.incidentId);
+            }
         });
+    };
+    AnalyzeMenuComponent.prototype.destroyed = function () {
+        __WEBPACK_IMPORTED_MODULE_2__myincidents__["a" /* MyIncidents */].Instance.unsubscribe(this.onIncidentSelected);
+        __WEBPACK_IMPORTED_MODULE_2__myincidents__["a" /* MyIncidents */].Instance.unsubscribe(this.onListChanged);
+    };
+    AnalyzeMenuComponent.prototype.onListChanged = function () {
+        this.incidents = __WEBPACK_IMPORTED_MODULE_2__myincidents__["a" /* MyIncidents */].Instance.myIncidents;
+        if (!this.incidentId && this.incidents.length > 0) {
+            this.incidentId = this.incidents[0].incidentId;
+            __WEBPACK_IMPORTED_MODULE_2__myincidents__["a" /* MyIncidents */].Instance.switchIncident(this.incidentId);
+        }
+    };
+    AnalyzeMenuComponent.prototype.onIncidentSelected = function (incident) {
+        if (incident == null) {
+            this.title = '(Select an incident)';
+            this.incidentId = null;
+        }
+        else {
+            this.$router.push({ name: 'analyzeIncident', params: { incidentId: incident.incidentId.toString() } });
+            this.title = incident.shortTitle;
+            this.incidentId = incident.incidentId;
+        }
+    };
+    AnalyzeMenuComponent.prototype.onIncidentRoute = function (value, oldValue) {
+        if (this.$route.fullPath.indexOf('/analyze/') === -1) {
+            return;
+        }
+        if (!value) {
+            this.incidentId = null;
+            return;
+        }
+        else {
+            var newIncidentId = parseInt(value, 10);
+            if (this.incidentId === newIncidentId) {
+                console.log('exiting');
+                return;
+            }
+            this.incidentId = newIncidentId;
+        }
+        __WEBPACK_IMPORTED_MODULE_2__myincidents__["a" /* MyIncidents */].Instance.switchIncident(this.incidentId);
     };
     __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_vue_property_decorator__["Watch"])('$route.params.incidentId'),
@@ -40804,6 +40816,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 
 
 
@@ -40842,11 +40857,23 @@ var ConfigureClientComponent = /** @class */ (function (_super) {
     };
     ConfigureClientComponent.prototype.mounted = function () {
         var _this = this;
-        this.applicationId = parseInt(this.$route.params.applicationId, 10);
         __WEBPACK_IMPORTED_MODULE_2__services_AppRoot__["a" /* AppRoot */].Instance.applicationService.get(this.applicationId)
             .then(function (app) {
             _this.sharedSecret = app.sharedSecret;
             _this.appKey = app.appKey;
+        });
+    };
+    ConfigureClientComponent.prototype.onApplicationChanged = function (value, oldValue) {
+        var _this = this;
+        if (!value) {
+            return;
+        }
+        this.applicationId = parseInt(value);
+        __WEBPACK_IMPORTED_MODULE_2__services_AppRoot__["a" /* AppRoot */].Instance.applicationService.get(this.applicationId)
+            .then(function (app) {
+            _this.sharedSecret = app.sharedSecret;
+            _this.appKey = app.appKey;
+            _this.select(_this.lastLib);
         });
     };
     ConfigureClientComponent.prototype.goToSupport = function () {
@@ -40857,16 +40884,13 @@ var ConfigureClientComponent = /** @class */ (function (_super) {
     };
     ConfigureClientComponent.prototype.select = function (libName) {
         var _this = this;
-        var appInfo = __WEBPACK_IMPORTED_MODULE_2__services_AppRoot__["a" /* AppRoot */].Instance.currentUser.applications[0];
-        __WEBPACK_IMPORTED_MODULE_2__services_AppRoot__["a" /* AppRoot */].Instance.applicationService.get(appInfo.id)
-            .then(function (app) {
-            var client = new __WEBPACK_IMPORTED_MODULE_1__services_HttpClient__["a" /* HttpClient */]();
-            client.get(__WEBPACK_IMPORTED_MODULE_0__services_ApiClient__["a" /* ApiClient */].ApiUrl + 'onboarding/library/' + libName + "/?appKey=" + app.appKey)
-                .then(function (response) {
-                _this.instruction = response.body
-                    .replace('yourAppKey', _this.appKey)
-                    .replace('yourSharedSecret', _this.sharedSecret);
-            });
+        this.lastLib = libName;
+        var client = new __WEBPACK_IMPORTED_MODULE_1__services_HttpClient__["a" /* HttpClient */]();
+        client.get(__WEBPACK_IMPORTED_MODULE_0__services_ApiClient__["a" /* ApiClient */].ApiUrl + 'onboarding/library/' + libName + "/?appKey=" + this.appKey)
+            .then(function (response) {
+            _this.instruction = response.body
+                .replace('yourAppKey', _this.appKey)
+                .replace('yourSharedSecret', _this.sharedSecret);
         });
         var buttons = document.querySelectorAll('.buttons button');
         for (var i = 0; i < buttons.length; i++) {
@@ -40884,6 +40908,7 @@ var ConfigureClientComponent = /** @class */ (function (_super) {
         var q = new __WEBPACK_IMPORTED_MODULE_3__dto_Core_Incidents__["a" /* FindIncidents */]();
         q.PageNumber = 1;
         q.ItemsPerPage = 1;
+        q.ApplicationIds = [this.applicationId];
         __WEBPACK_IMPORTED_MODULE_2__services_AppRoot__["a" /* AppRoot */].Instance.apiClient.query(q)
             .then(function (result) {
             if (result.TotalCount === 0) {
@@ -40896,6 +40921,12 @@ var ConfigureClientComponent = /** @class */ (function (_super) {
             });
         });
     };
+    __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5_vue_property_decorator__["Watch"])('$route.params.applicationId'),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [String, String]),
+        __metadata("design:returntype", void 0)
+    ], ConfigureClientComponent.prototype, "onApplicationChanged", null);
     ConfigureClientComponent = __decorate([
         __WEBPACK_IMPORTED_MODULE_5_vue_property_decorator__["Component"]
     ], ConfigureClientComponent);
@@ -42077,6 +42108,7 @@ var NavMenuComponent = /** @class */ (function (_super) {
         _this.isDiscoverActive = true;
         _this.isAnalyzeActive = false;
         _this.isDeploymentActive = false;
+        _this.lastPublishedId$ = 0;
         _this.onboarding = false;
         _this.discoverLink = '/discover/';
         return _this;
@@ -42150,24 +42182,7 @@ var NavMenuComponent = /** @class */ (function (_super) {
                 paramCount++;
             }
         }
-        if (paramCount === 1 && currentRoute.params.hasOwnProperty('applicationId')) {
-            if (applicationId == null) {
-                this.$router.push({ name: currentRoute.name });
-                __WEBPACK_IMPORTED_MODULE_0__services_PubSub__["a" /* PubSubService */].Instance.publish(__WEBPACK_IMPORTED_MODULE_1__services_menu_MenuApi__["a" /* MessagingTopics */].ApplicationChanged, { applicationId: null });
-            }
-            else {
-                this.$router.push({ name: currentRoute.name, params: { applicationId: applicationId.toString() } });
-                __WEBPACK_IMPORTED_MODULE_0__services_PubSub__["a" /* PubSubService */].Instance.publish(__WEBPACK_IMPORTED_MODULE_1__services_menu_MenuApi__["a" /* MessagingTopics */].ApplicationChanged, { applicationId: applicationId });
-            }
-            return;
-        }
-        if (currentRoute.path.indexOf('/discover') === 0) {
-            this.$router.push({ name: 'discover', params: { applicationId: applicationId.toString() } });
-        }
-        else if (currentRoute.path.indexOf('/analyze') === 0) {
-            this.$router.push({ name: 'analyzeHome', params: { applicationId: applicationId.toString() } });
-        }
-        else if (currentRoute.path.indexOf('/manage/') !== -1) {
+        if (currentRoute.path.indexOf('/manage/') !== -1) {
             if (applicationId) {
                 var route = { name: 'manageAppSettings', params: { applicationId: applicationId.toString() } };
                 this.$router.push(route);
@@ -42177,11 +42192,28 @@ var NavMenuComponent = /** @class */ (function (_super) {
                 this.$router.push(route);
             }
         }
+        else if (paramCount === 1 && currentRoute.params.hasOwnProperty('applicationId')) {
+            if (applicationId == null) {
+                this.$router.push({ name: currentRoute.name });
+                this.publishApplicationChanged(null);
+            }
+            else {
+                this.$router.push({ name: currentRoute.name, params: { applicationId: applicationId.toString() } });
+                this.publishApplicationChanged(applicationId);
+            }
+            return;
+        }
+        else if (currentRoute.path.indexOf('/discover') === 0) {
+            this.$router.push({ name: 'discover', params: { applicationId: applicationId == null ? null : applicationId.toString() } });
+        }
+        else if (currentRoute.path.indexOf('/analyze') === 0) {
+            this.$router.push({ name: 'analyzeHome', params: { applicationId: applicationId == null ? null : applicationId.toString() } });
+        }
         else {
-            var route = { name: currentRoute.name, params: { applicationId: applicationId.toString() } };
+            var route = { name: currentRoute.name, params: { applicationId: applicationId == null ? null : applicationId.toString() } };
             this.$router.push(route);
         }
-        __WEBPACK_IMPORTED_MODULE_0__services_PubSub__["a" /* PubSubService */].Instance.publish(__WEBPACK_IMPORTED_MODULE_1__services_menu_MenuApi__["a" /* MessagingTopics */].ApplicationChanged, { applicationId: applicationId });
+        this.publishApplicationChanged(applicationId);
     };
     NavMenuComponent.prototype.askCallbacksForWhichMenu = function (route) {
         var chosenMenu = "";
@@ -42198,14 +42230,17 @@ var NavMenuComponent = /** @class */ (function (_super) {
                 return chosenMenu;
             }
         }
-        return '';
+        return "";
     };
     NavMenuComponent.prototype.updateCurrent = function (applicationId) {
         var _this = this;
         if (applicationId === 0) {
             this.currentApplicationName = "All applications";
             this.currentApplicationId = null;
-            this.discoverLink = '/discover/';
+            this.discoverLink = "/discover/";
+            var msg = new __WEBPACK_IMPORTED_MODULE_1__services_menu_MenuApi__["b" /* ApplicationChanged */]();
+            msg.applicationId = applicationId;
+            this.publishApplicationChanged(null);
             return;
         }
         this.myApplicationsPromise.then(function (x) {
@@ -42213,10 +42248,13 @@ var NavMenuComponent = /** @class */ (function (_super) {
             _this.currentApplicationId = applicationId;
             var title = app.title;
             if (title.length > 20) {
-                title = title.substr(0, 15) + '[...]';
+                title = title.substr(0, 15) + "[...]";
             }
             _this.currentApplicationName = title;
-            _this.discoverLink = '/discover/' + applicationId;
+            _this.discoverLink = "/discover/" + applicationId;
+            var msg = new __WEBPACK_IMPORTED_MODULE_1__services_menu_MenuApi__["b" /* ApplicationChanged */]();
+            msg.applicationId = applicationId;
+            _this.publishApplicationChanged(applicationId);
         });
     };
     NavMenuComponent.prototype.createAppMenuItem = function (applicationId, name) {
@@ -42237,6 +42275,15 @@ var NavMenuComponent = /** @class */ (function (_super) {
             }
         }
         throw new Error('Failed to find application ' + applicationId + ".\r\n" + JSON.stringify(this.myApplications));
+    };
+    NavMenuComponent.prototype.publishApplicationChanged = function (applicationId) {
+        if (applicationId === this.lastPublishedId$) {
+            return;
+        }
+        this.lastPublishedId$ = applicationId;
+        var msg = new __WEBPACK_IMPORTED_MODULE_1__services_menu_MenuApi__["b" /* ApplicationChanged */]();
+        msg.applicationId = applicationId;
+        __WEBPACK_IMPORTED_MODULE_0__services_PubSub__["a" /* PubSubService */].Instance.publish(__WEBPACK_IMPORTED_MODULE_1__services_menu_MenuApi__["a" /* MessagingTopics */].ApplicationChanged, msg);
     };
     __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4_vue_property_decorator__["Watch"])('$route.params.applicationId'),
@@ -59654,7 +59701,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\analyze\\analyze.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\analyze\\analyze.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] analyze.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -59692,7 +59739,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\analyze\\home\\home.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\analyze\\home\\home.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] home.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -59730,7 +59777,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\analyze\\incidents\\close.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\analyze\\incidents\\close.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] close.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -59768,7 +59815,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\analyze\\incidents\\feedback.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\analyze\\incidents\\feedback.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] feedback.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -59806,7 +59853,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\analyze\\incidents\\incident.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\analyze\\incidents\\incident.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] incident.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -59844,7 +59891,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\analyze\\incidents\\origins.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\analyze\\incidents\\origins.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] origins.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -59882,7 +59929,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\analyze\\incidents\\report.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\analyze\\incidents\\report.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] report.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -59920,7 +59967,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\analyze\\incidents\\status.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\analyze\\incidents\\status.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] status.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -59958,7 +60005,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\analyze\\menu.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\analyze\\menu.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] menu.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -59997,7 +60044,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\applications\\application-details.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\applications\\application-details.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] application-details.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -60031,7 +60078,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\deployment\\deployment.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\deployment\\deployment.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] deployment.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -60070,7 +60117,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\deployment\\home\\home.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\deployment\\home\\home.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] home.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -60108,7 +60155,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\deployment\\menu.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\deployment\\menu.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] menu.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -60146,7 +60193,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\deployment\\version\\summary.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\deployment\\version\\summary.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] summary.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -60184,7 +60231,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\discover\\application\\configure.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\discover\\application\\configure.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] configure.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -60222,7 +60269,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\discover\\discover.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\discover\\discover.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] discover.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -60261,7 +60308,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\discover\\home\\home.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\discover\\home\\home.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] home.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -60299,7 +60346,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\discover\\incidents\\search.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\discover\\incidents\\search.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] search.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -60337,7 +60384,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\discover\\incidents\\suggestions.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\discover\\incidents\\suggestions.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] suggestions.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -60375,7 +60422,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\discover\\menu.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\discover\\menu.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] menu.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -60413,7 +60460,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\home\\app.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\home\\app.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] app.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -60451,7 +60498,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\home\\home.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\home\\home.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] home.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -60489,7 +60536,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\home\\navmenu\\navmenu.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\home\\navmenu\\navmenu.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] navmenu.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -60528,7 +60575,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\home\\support\\support.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\home\\support\\support.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] support.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -60562,7 +60609,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\manage\\application\\app.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\manage\\application\\app.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] app.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -60600,7 +60647,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\manage\\application\\menu.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\manage\\application\\menu.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] menu.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -60638,7 +60685,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\manage\\application\\partitions\\create.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\manage\\application\\partitions\\create.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] create.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -60676,7 +60723,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\manage\\application\\partitions\\edit.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\manage\\application\\partitions\\edit.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] edit.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -60714,7 +60761,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\manage\\application\\partitions\\partition.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\manage\\application\\partitions\\partition.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] partition.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -60752,7 +60799,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\manage\\application\\security\\security.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\manage\\application\\security\\security.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] security.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -60790,7 +60837,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\manage\\application\\settings\\settings.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\manage\\application\\settings\\settings.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] settings.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -60828,7 +60875,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\manage\\system\\apikeys\\apikey-create.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\manage\\system\\apikeys\\apikey-create.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] apikey-create.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -60866,7 +60913,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\manage\\system\\apikeys\\apikey-edit.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\manage\\system\\apikeys\\apikey-edit.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] apikey-edit.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -60904,7 +60951,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\manage\\system\\apikeys\\apikey.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\manage\\system\\apikeys\\apikey.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] apikey.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -60942,7 +60989,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\manage\\system\\apikeys\\apikeys.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\manage\\system\\apikeys\\apikeys.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] apikeys.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -60980,7 +61027,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\manage\\system\\create\\create.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\manage\\system\\create\\create.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] create.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -61018,7 +61065,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\manage\\system\\home\\home.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\manage\\system\\home\\home.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] home.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -61052,7 +61099,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\manage\\system\\manage.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\manage\\system\\manage.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] manage.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -61090,7 +61137,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\manage\\system\\menu.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\manage\\system\\menu.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] menu.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -61128,7 +61175,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\onboarding\\home\\home.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\onboarding\\home\\home.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] home.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -61162,7 +61209,7 @@ var Component = __webpack_require__(5)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\src\\1TCompany\\codeRR\\OSS\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\onboarding\\onboarding.vue.html"
+Component.options.__file = "C:\\src\\1tcompany\\coderr\\oss\\codeRR.Server\\src\\Server\\Coderr.Server.Web\\ClientApp\\components\\onboarding\\onboarding.vue.html"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] onboarding.vue.html: functional components are not supported with templates, they should use render functions.")}
 
@@ -61966,7 +62013,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('a', {
     staticClass: "btn btn-primary",
     attrs: {
-      "href": ("/manage/application/" + _vm.appId)
+      "href": ("manage/application/" + _vm.appId)
     }
   }, [_vm._v("\n                            Application settings\n                        ")])])]), _vm._v(" "), _c('div', {
     staticClass: "card"
@@ -61975,7 +62022,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('a', {
     staticClass: "btn btn-primary",
     attrs: {
-      "href": ("/manage/application/" + _vm.appId + "/security")
+      "href": ("manage/application/" + _vm.appId + "/security")
     }
   }, [_vm._v("\n                            Invite co-workers\n                        ")])])])]), _vm._v(" "), _vm._m(7)])]) : _vm._e(), _vm._v(" "), (_vm.noApps) ? _c('div', {
     directives: [{
@@ -62176,7 +62223,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.estimatedNumberOfErrors = $event.target.value
       }
     }
-  }), _vm._v(" "), _c('em', [_vm._v("Estimation of how many errors you think that Coderr will find during the first month for this application.")])])]), _vm._v(" "), _c('div', {
+  }), _vm._v(" "), _c('em', [_vm._v("Estimation of how many errors you think that Coderr will find during the first month for this application. See how well you know your application.")])])]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('input', {
     staticClass: "btn btn-primary",
@@ -62189,7 +62236,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "alert-info"
   }, [_c('em', [_vm._v("Hang on, creating application..")])]) : _vm._e()])])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('p', [_c('em', [_vm._v("\n                                    Specify the information below to see how your team compares to other similar teams.\n                                ")])])
+  return _c('p', [_c('em', [_vm._v("\n                                    Specify the information below to see how your team compares to other similar teams."), _c('br'), _vm._v("(Do you have more errors? Are you correcting more or less errors than other teams?)\n                                ")])])
 }]}
 module.exports.render._withStripped = true
 if (true) {
@@ -62216,7 +62263,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "lead"
   }, [_vm._v("This section allows you to analyze the incidents that you have decided to work with.")]), _vm._v(" "), _c('p', {
     staticClass: "lead"
-  }, [_vm._v("But since you have not reported any errors yet, there is nothing to see here..")]), _vm._v(" "), _c('a', {
+  }, [_vm._v("To see incidents here, go to \"Discover\" and assign one or more incidents to yourself.")]), _vm._v(" "), _c('a', {
     staticClass: "btn btn-primary",
     attrs: {
       "href": "https://coderr.io/documentation/features/analyze/",
@@ -63449,7 +63496,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('router-link', {
     staticClass: "nav-link",
     attrs: {
-      "to": _vm.discoverLink
+      "to": _vm.discoverLink,
+      "id": "DiscoverMenu"
     }
   }, [_c('span', {
     staticClass: "fa fa-binoculars"
@@ -63522,7 +63570,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('a', {
     staticClass: "nav-link",
     attrs: {
-      "href": "/account/logout",
+      "href": "account/logout/",
       "title": "Log out"
     }
   }, [_c('i', {

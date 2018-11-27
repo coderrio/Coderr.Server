@@ -261,11 +261,14 @@ namespace Coderr.Server.App.Modules.MonthlyStats
                 {
                     while (await reader.ReadAsync())
                     {
+                        var estimatedNumberOfErrors = reader[1];
+                        var numberOfDevelopers = reader[2];
                         var item = new ApplicationUsageStatisticsDto()
                         {
                             ApplicationId = reader.GetInt32(0),
-                            EstimatedNumberOfErrors= reader.GetFieldValue<int?>(1),
-                            NumberOfDevelopers = reader.GetFieldValue<decimal?>(2)
+                            EstimatedNumberOfErrors =
+                                estimatedNumberOfErrors is DBNull ? 0 : (int) estimatedNumberOfErrors,
+                            NumberOfDevelopers = numberOfDevelopers is DBNull ? 0 : (decimal) numberOfDevelopers
                         };
                         apps[item.ApplicationId] = item;
                     }

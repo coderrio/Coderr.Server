@@ -19,6 +19,7 @@ namespace Coderr.Server.Web.Boot.Modules
             var adapter = new DependencyInjectionAdapter(context.ServiceProvider);
 
             _backgroundJobManager = new BackgroundJobManager(adapter);
+            _backgroundJobManager.ExecuteSequentially = true;
             _backgroundJobManager.JobFailed += OnBackgroundJobFailed;
             _backgroundJobManager.StartInterval = TimeSpan.FromSeconds(Debugger.IsAttached ? 0 : 10);
             _backgroundJobManager.ExecuteInterval = TimeSpan.FromMinutes(3);
