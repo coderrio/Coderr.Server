@@ -28,17 +28,17 @@ export default class AnalyzeIncidentComponent extends Vue {
 
     created() {
         MyIncidents.Instance.subscribeOnSelectedIncident(x => {
-            if (x == null) {
-                this.$router.push({ name: 'analyzeHome' });
-            } else {
-                this.loadIncident(x.incidentId);
-            }
+            this.selectIncident(x);
         });
     }
 
     mounted() {
         var incidentId = parseInt(this.$route.params.incidentId, 10);
         this.loadIncident(incidentId);
+    }
+
+    destroyed() {
+        MyIncidents.Instance.unsubscribe(this.selectIncident);
     }
 
     reAssign() {
@@ -162,4 +162,11 @@ export default class AnalyzeIncidentComponent extends Vue {
     }
 
 
+    selectIncident(myIncident: IMyIncident | null): void {
+        if (myIncident == null) {
+            this.$router.push({ name: 'analyzeHome' });
+        } else {
+            this.loadIncident(myIncident.incidentId);
+        }
+    }
 }

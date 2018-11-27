@@ -20,8 +20,8 @@ export default class AnalyzeMenuComponent extends Vue {
     incidentId: number | null = null;
 
     created() {
-        MyIncidents.Instance.subscribeOnSelectedIncident(x => this.onIncidentSelected(x));
-        MyIncidents.Instance.subscribeOnListChanges(() => this.onListChanged());
+        MyIncidents.Instance.subscribeOnSelectedIncident(this.onIncidentSelected);
+        MyIncidents.Instance.subscribeOnListChanges(this.onListChanged);
         MyIncidents.Instance.ready()
             .then(x => {
                 this.incidents = MyIncidents.Instance.myIncidents;
@@ -86,7 +86,6 @@ export default class AnalyzeMenuComponent extends Vue {
         } else {
             var newIncidentId = parseInt(value, 10);
             if (this.incidentId === newIncidentId) {
-                console.log('exiting')
                 return;
             }
             this.incidentId = newIncidentId;
