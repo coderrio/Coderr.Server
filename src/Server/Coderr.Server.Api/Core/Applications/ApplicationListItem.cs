@@ -43,5 +43,10 @@ namespace Coderr.Server.Api.Core.Applications
         /// User that requested this list is the admin of the specified application.
         /// </summary>
         public bool IsAdmin { get; set; }
+
+        /// <summary>
+        /// Number of full time developers.
+        /// </summary>
+        public decimal NumberOfDevelopers { get; set; }
     }
 }

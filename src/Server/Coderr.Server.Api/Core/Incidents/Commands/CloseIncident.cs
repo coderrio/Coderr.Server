@@ -69,5 +69,10 @@ namespace Coderr.Server.Api.Core.Incidents.Commands
         ///     <para>Need to be named "UserId" so that the CQS mapper can add the logged in user id</para>
         /// </remarks>
         public int UserId { get; set; }
+
+        /// <summary>
+        /// When incident was closed (optional, "now" will be used when not specified)
+        /// </summary>
+        public DateTime? ClosedAtUtc { get; set; }
     }
 }

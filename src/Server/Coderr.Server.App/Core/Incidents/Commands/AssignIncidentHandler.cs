@@ -28,7 +28,7 @@ namespace Coderr.Server.App.Core.Incidents.Commands
                 assignedBy = context.Principal.GetAccountId();
 
             var incident = await _repository.GetAsync(message.IncidentId);
-            incident.Assign(message.AssignedTo);
+            incident.Assign(message.AssignedTo, message.AssignedAtUtc);
             await _repository.UpdateAsync(incident);
 
             var evt = new IncidentAssigned(message.IncidentId, assignedBy, message.AssignedTo);

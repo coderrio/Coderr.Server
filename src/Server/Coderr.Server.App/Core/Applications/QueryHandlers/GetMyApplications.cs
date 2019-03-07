@@ -60,7 +60,11 @@ namespace Coderr.Server.App.Core.Applications.QueryHandlers
                 var apps = await _applicationRepository.GetForUserAsync(query.AccountId);
                 result = (
                     from x in apps
-                    select new ApplicationListItem(x.ApplicationId, x.ApplicationName) { IsAdmin = x.IsAdmin }
+                    select new ApplicationListItem(x.ApplicationId, x.ApplicationName)
+                    {
+                        IsAdmin = x.IsAdmin,
+                        NumberOfDevelopers = x.NumberOfDevelopers
+                    }
                 ).ToArray();
             }
             else

@@ -19,5 +19,10 @@
         /// If the user that this app is requested for is the admin
         /// </summary>
         public bool IsAdmin { get; set; }
+
+        /// <summary>
+        /// Number of full time developers.
+        /// </summary>
+        public decimal NumberOfDevelopers { get; set; }
     }
 }

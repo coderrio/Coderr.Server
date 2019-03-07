@@ -154,12 +154,12 @@ namespace Coderr.Server.Domain.Core.Incidents
         /// Assign this incident to someone.
         /// </summary>
         /// <param name="userId">User to assign to</param>
-        public void Assign(int userId)
+        public void Assign(int userId, DateTime? when = null)
         {
             if (userId <= 0) throw new ArgumentOutOfRangeException(nameof(userId));
             AssignedAtUtc = DateTime.UtcNow;
             AssignedToId = userId;
-            UpdatedAtUtc = DateTime.UtcNow;
+            UpdatedAtUtc = when ?? DateTime.UtcNow;
             State = IncidentState.Active;
         }
 
@@ -168,16 +168,17 @@ namespace Coderr.Server.Domain.Core.Incidents
         /// </summary>
         /// <param name="solvedBy">AccountId for whoever wrote the solution</param>
         /// <param name="solution">Actual solution</param>
+        /// <param name="when">When was the incident closed by the user?</param>
         /// <exception cref="ArgumentNullException">solution</exception>
         /// <exception cref="ArgumentOutOfRangeException">solvedBy</exception>
-        public void Close(int solvedBy, string solution)
+        public void Close(int solvedBy, string solution, DateTime? when = null)
         {
             if (solution == null) throw new ArgumentNullException("solution");
             if (solvedBy <= 0) throw new ArgumentOutOfRangeException("solvedBy");
 
             Solution = new IncidentSolution(solvedBy, solution);
             UpdatedAtUtc = DateTime.UtcNow;
-            SolvedAtUtc = DateTime.UtcNow;
+            SolvedAtUtc = when ?? DateTime.UtcNow;
             State = IncidentState.Closed;
         }
 

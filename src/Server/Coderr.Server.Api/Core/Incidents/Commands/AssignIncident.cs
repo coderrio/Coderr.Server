@@ -39,5 +39,10 @@ namespace Coderr.Server.Api.Core.Incidents.Commands
         ///     Incident being assigned.
         /// </summary>
         public int IncidentId { get; private set; }
+
+        /// <summary>
+        /// Optionally specify when the incident was assigned. Default = now.
+        /// </summary>
+        public DateTime? AssignedAtUtc { get; set; }
     }
 }
