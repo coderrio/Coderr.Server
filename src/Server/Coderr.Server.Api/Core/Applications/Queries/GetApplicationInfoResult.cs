@@ -36,6 +36,16 @@
         public int TotalIncidentCount { get; set; }
 
         /// <summary>
+        /// Number of full time developers working on this application (1.5 = one full time and one half time)
+        /// </summary>
+        /// <remarks>
+        ///<para>
+        ///null = not specified
+        /// </para>
+        /// </remarks>
+        public decimal? NumberOfDevelopers { get; set; }
+
+        /// <summary>
         /// Versions that we have received error reports for.
         /// </summary>
         public string[] Versions { get; set; }

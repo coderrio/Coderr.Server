@@ -23,6 +23,6 @@
         /// <summary>
         /// Number of full time developers.
         /// </summary>
-        public decimal NumberOfDevelopers { get; set; }
+        public decimal? NumberOfDevelopers { get; set; }
     }
 }

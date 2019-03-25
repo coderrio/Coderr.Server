@@ -42,12 +42,13 @@ namespace Coderr.Server.SqlServer.Core.Applications
                     var apps = new List<UserApplication>();
                     while (await reader.ReadAsync())
                     {
+                        var numberOfDevelopers = reader.GetValue(3);
                         var a = new UserApplication
                         {
                             IsAdmin = reader.GetString(2).Contains("Admin"),
                             ApplicationName = reader.GetString(1),
                             ApplicationId = reader.GetInt32(0),
-                            NumberOfDevelopers = reader.GetDecimal(3)
+                            NumberOfDevelopers = numberOfDevelopers is DBNull ? null : (decimal?)numberOfDevelopers
                         };
                         apps.Add(a);
                     }

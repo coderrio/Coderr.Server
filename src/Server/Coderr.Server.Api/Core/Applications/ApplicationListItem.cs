@@ -40,13 +40,16 @@ namespace Coderr.Server.Api.Core.Applications
         public string Name { get; set; }
 
         /// <summary>
-        /// User that requested this list is the admin of the specified application.
+        ///     User that requested this list is the admin of the specified application.
         /// </summary>
         public bool IsAdmin { get; set; }
 
         /// <summary>
-        /// Number of full time developers.
+        ///     Number of full time developers.
         /// </summary>
-        public decimal NumberOfDevelopers { get; set; }
+        /// <value>
+        ///     null = not specified
+        /// </value>
+        public decimal? NumberOfDevelopers { get; set; }
     }
 }
