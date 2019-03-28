@@ -1,0 +1,95 @@
+﻿@import "coderr-variables.scss";
+
+body {
+    background-color: $gray-100;
+}
+
+.puffs {
+    display: flex;
+    flex-flow: row wrap;
+
+
+    .puff {
+        margin-right: 5px;
+        margin-bottom: 5px;
+        position: relative;
+        min-width: 0;
+        display: flex;
+        flex: 1 0 0%;
+        flex-direction: column;
+        padding: 5vh 3vw;
+        text-align: center;
+        min-width: 32%;
+
+        h3 {
+            margin-bottom: 4vh;
+        }
+
+        .body {
+            flex: 1 1 auto;
+        }
+    }
+}
+
+
+.puffs.left {
+    .puff {
+        text-align: left;
+    }
+}
+
+.puffs.white {
+    .puff {
+        background-color: #fff;
+
+        .btn, h3 {
+            color: $blue;
+        }
+    }
+}
+
+.puffs.w33 {
+    .puff {
+        max-width: 33%;
+    }
+}
+
+.puffs.m {
+    .puff {
+        margin-right: 2vw;
+        margin-bottom: 8vh;
+    }
+}
+
+.puffs.gray-400 {
+    .puff {
+        background-color: $gray-400;
+    }
+}
+
+.puffs.gray {
+    .puff {
+        background-color: $gray-700;
+
+        h3 {
+            color: $blue;
+        }
+
+        span {
+            color: $red;
+        }
+
+        p {
+            color: #ffffff;
+        }
+
+        a {
+            color: $blue;
+        }
+    }
+
+
+    a {
+        color: $blue;
+    }
+}

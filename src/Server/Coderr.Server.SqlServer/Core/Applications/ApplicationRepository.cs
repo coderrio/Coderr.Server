@@ -31,7 +31,7 @@ namespace Coderr.Server.SqlServer.Core.Applications
             if (accountId <= 0) throw new ArgumentOutOfRangeException(nameof(accountId));
             using (var cmd = (DbCommand) _uow.CreateCommand())
             {
-                cmd.CommandText = @"SELECT a.Id ApplicationId, a.Name ApplicationName, ApplicationMembers.Roles, a.NumberOfDevelopers
+                cmd.CommandText = @"SELECT a.Id ApplicationId, a.Name ApplicationName, ApplicationMembers.Roles, a.NumberOfFtes NumberOfDevelopers
                                         FROM Applications a
                                         JOIN ApplicationMembers ON (ApplicationMembers.ApplicationId = a.Id) 
                                         WHERE ApplicationMembers.AccountId = @userId

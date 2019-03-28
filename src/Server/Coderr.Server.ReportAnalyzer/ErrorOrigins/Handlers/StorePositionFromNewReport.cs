@@ -49,14 +49,20 @@ namespace Coderr.Server.ReportAnalyzer.ErrorOrigins.Handlers
             if (string.IsNullOrEmpty(_originConfiguration.Value?.ApiKey))
                 return;
 
-            if (e.Report.RemoteAddress == "::1")
-                return;
-            if (e.Report.RemoteAddress == "127.0.0.1")
+            // Random swedish IP for testing purposes
+            if (e.Report.RemoteAddress == "::1" || e.Report.RemoteAddress == "127.0.0.1")
                 e.Report.RemoteAddress = "94.254.57.227";
 
+            var errorOrigin = await LookupIpAddress(e);
+            await _repository.CreateAsync(errorOrigin, e.Incident.ApplicationId, e.Incident.Id, e.Report.Id);
+        }
+
+        private async Task<ErrorOrigin> LookupIpAddress(ReportAddedToIncident e)
+        {
             var url = $"http://api.ipstack.com/{e.Report.RemoteAddress}?access_key={_originConfiguration.Value.ApiKey}";
             var request = WebRequest.CreateHttp(url);
-            string json = "";
+            var json = "";
+            ErrorOrigin errorOrigin;
             try
             {
                 var response = await request.GetResponseAsync();
@@ -71,7 +77,7 @@ namespace Coderr.Server.ReportAnalyzer.ErrorOrigins.Handlers
 
                 var lat = double.Parse(jsonObj["latitude"].Value<string>(), CultureInfo.InvariantCulture);
                 var lon = double.Parse(jsonObj["longitude"].Value<string>(), CultureInfo.InvariantCulture);
-                var cmd = new ErrorOrigin(e.Report.RemoteAddress, lon, lat)
+                errorOrigin = new ErrorOrigin(e.Report.RemoteAddress, lon, lat)
                 {
                     City = jsonObj["city"].ToString(),
                     CountryCode = jsonObj["country_code"].ToString(),
@@ -80,13 +86,13 @@ namespace Coderr.Server.ReportAnalyzer.ErrorOrigins.Handlers
                     RegionName = jsonObj["region_name"].ToString(),
                     ZipCode = jsonObj["zip"].ToString()
                 };
-
-                await _repository.CreateAsync(cmd, e.Incident.ApplicationId, e.Incident.Id, e.Report.Id);
             }
             catch (Exception exception)
             {
-                _logger.Error($"Failed to store location for incident {e.Incident.Id}/report {e.Report.Id}: {json}", exception);
+                throw new InvalidOperationException($"Failed to call lookupService or parse the JSON: {json}.", exception);
             }
+
+            return errorOrigin;
         }
     }
 }

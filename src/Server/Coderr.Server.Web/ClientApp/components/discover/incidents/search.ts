@@ -230,7 +230,8 @@ export default class IncidentSearchComponent extends Vue {
                 excludeProperties: ["incidents", "availableApplications", "availableTags", "checkedIncidents"]
             });
         }
-
+        query.PageNumber = 1;
+        query.ItemsPerPage = 50;
         if (this.contextCollectionName != null && this.contextCollectionName !== "") {
             query.ContextCollectionName = this.contextCollectionName;
         }
@@ -241,7 +242,7 @@ export default class IncidentSearchComponent extends Vue {
             query.ContextCollectionPropertyValue = this.contextCollectionPropertyValue;
         }
 
-
+        
         AppRoot.Instance.apiClient.query<FindIncidentsResult>(query)
             .then(result => {
                 if (this.destroyed$) {

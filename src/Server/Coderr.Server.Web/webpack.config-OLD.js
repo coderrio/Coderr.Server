@@ -1,34 +1,22 @@
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+//const CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
 const bundleOutputDir = './wwwroot/dist';
 
 module.exports = (env) => {
     const isDevBuild = !(env && env.prod);
-    const devMode = isDevBuild ? 'development' : 'production';
 
     return [{
-        mode: devMode,
         stats: { modules: false },
         context: __dirname,
         resolve: { extensions: [ '.js', '.ts' ] },
         entry: { 'main': './ClientApp/boot.ts' },
     module: {
         rules: [
-            { test: /\.vue\.html$/, include: /ClientApp/, loader: 'vue-loader', options: { loaders: { js: 'ts-loader' } } },
-            {
-                test: /\.ts$/, include: /ClientApp/, use: [
-                    {
-                        loader: 'ts-loader',
-                        options: {
-                            appendTsSuffixTo: [/\.vue\.html$/]
-                        }
-                    }
-                ]
-            },
-            { test: /\.css$/, use: isDevBuild ? ['style-loader', 'css-loader'] : ExtractTextPlugin.extract({ use: 'css-loader?minimize' }) },
+            { test: /\.vue\.html$/, include: /ClientApp/, loader: 'vue-loader', options: { loaders: { js: 'awesome-typescript-loader?silent=true' } } },
+            { test: /\.ts$/, include: /ClientApp/, use: 'awesome-typescript-loader?silent=true' },
+            { test: /\.css$/, use: isDevBuild ? [ 'style-loader', 'css-loader' ] : ExtractTextPlugin.extract({ use: 'css-loader?minimize' }) },
             { test: /\.(png|jpg|jpeg|gif|svg)$/, use: 'url-loader?limit=25000' }
         ]
     },
@@ -38,7 +26,7 @@ module.exports = (env) => {
             publicPath: 'dist/'
         },
         plugins: [
-            new VueLoaderPlugin(),
+            //new CheckerPlugin(),
             new webpack.DefinePlugin({
                 'process.env': {
                     NODE_ENV: JSON.stringify(isDevBuild ? 'development' : 'production')
@@ -56,7 +44,7 @@ module.exports = (env) => {
             })
         ] : [
             // Plugins that apply in production builds only
-            new UglifyJsPlugin(),
+            //new webpack.optimize.UglifyJsPlugin(),
             new ExtractTextPlugin('site.css')
         ])
     }];

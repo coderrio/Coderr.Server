@@ -90,7 +90,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
                 incident = BuildIncident(report);
                 _repository.CreateIncident(incident);
 
-                var evt = new IncidentCreated(incident.Id, incident.Description, incident.FullName)
+                var evt = new IncidentCreated(incident.ApplicationId, incident.Id, incident.Description, incident.FullName)
                 {
                     ApplicationVersion = applicationVersion
                 };
