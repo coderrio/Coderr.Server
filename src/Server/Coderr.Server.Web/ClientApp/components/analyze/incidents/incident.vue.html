@@ -100,12 +100,12 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <hr />
-                                <em>
-                                    <router-link class="btn btn-primary btn-block":to="{ name: 'analyzeReport', params: { reportId: currentReport.Id, incidentId: incident.Id}}">View entire report</router-link>
-                                </em>
                             </div>
-                        </div>
+                            <hr />
+                            <em>
+                                <router-link class="btn btn-primary btn-block" :to="{ name: 'analyzeReport', params: { reportId: currentReport.Id, incidentId: incident.Id}}">View entire report</router-link>
+                            </em>
+                         </div>
                     </div>
                 </div>
             </div>

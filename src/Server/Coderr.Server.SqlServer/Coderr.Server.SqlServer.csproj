@@ -5,7 +5,7 @@
     <AssemblyName>Coderr.Server.SqlServer</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
-  <PackageReference Include="DotNetCqs" Version="2.0.9" />
+  <PackageReference Include="DotNetCqs" Version="2.0.10" />
   <PackageReference Include="Griffin.Framework" Version="2.0.1" />
   <PackageReference Include="log4net" Version="2.0.8" />
   <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />

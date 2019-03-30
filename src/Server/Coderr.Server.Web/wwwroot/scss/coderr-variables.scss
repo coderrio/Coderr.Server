@@ -1,0 +1,49 @@
+$gray-100: #f4f4f4;
+$gray-200: #ededed;
+$gray-300: #eee;
+$gray-400: #dddddd;
+$gray-500: #706f6f;
+$gray-600: #3c3c3b;
+$gray-700: #393938;
+$gray-800: #2e2d2c;
+$gray-900: #141414;
+
+$blue:    #59c1d5;
+$blue-60:  #abdbe7;
+$blue-30:  #d8eef4;
+
+$red:     #f18c65;
+$red-60:     #fac981;
+$red-30:     #feede5;
+
+$theme-colors: (
+  "red": $red,
+  "blue": $blue
+);
+
+
+$gray: $gray-700;
+
+$primary:       $gray-700;
+$secondary:     $red;
+$light:         $gray-200;
+$dark:          $gray-700;
+
+$font-family-sans-serif:      "SofiaProRegular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
+$font-size-base:			  1.0rem;
+
+
+$btn-border-radius:           0;
+$btn-border-radius-lg:        0;
+$btn-border-radius-sm:		  0;
+$btn-padding-y:               .400rem;
+$btn-padding-x:				  .80rem;
+$btn-padding-y-lg:            0.75rem;
+$btn-padding-x-lg:            1.5rem;
+
+$h1-font-size:                $font-size-base * 3;
+$h2-font-size:                $font-size-base * 2.5;
+$h3-font-size:                $font-size-base * 2;
+$h4-font-size:                $font-size-base * 1.75;
+$h5-font-size:                $font-size-base * 1.5;
+$h6-font-size:                $font-size-base * 1.25;

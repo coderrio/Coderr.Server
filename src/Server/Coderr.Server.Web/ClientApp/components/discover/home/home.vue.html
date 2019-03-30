@@ -3,20 +3,20 @@
         <div class="row">
             <div class="col-lg-3">
                 <div class="row">
-                    <div class="col-lg-12">
 
+                    <div class="col-lg-12">
                         <div class="card mb-1">
                             <div class="card-header">
                                 Summary (last 30 days)
                             </div>
                             <div class="card-body">
-                                <table class="table table-borderless">
+                                <table class="table table-borderless th-vertical">
                                     <tbody>
                                         <tr>
-                                            <th>Number of incidents</th>
+                                            <th width="30%">Number of incidents</th>
                                             <td>{{ incidentCount }}</td>
                                         </tr>
-                                        <tr>
+                                        <tr style="white-space: nowrap">
                                             <th>Number of error reports</th>
                                             <td>{{ reportCount }}</td>
                                         </tr>
@@ -31,6 +31,18 @@
                                     </tbody>
                                 </table>
 
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12 ">
+                        <div class="card bg-blue mb-1 p-2" v-if="reportCount == 0">
+                            <div class="">
+                                <h3>Report exceptions</h3>
+                                <p class="text-white">
+                                    You have not reported any exceptions yet.
+                                </p>
+                                <router-link :to="{name: 'configureApplication', params: {applicationId: firstApplicationId }}" class="btn btn-dark">Configure your application</router-link>
                             </div>
                         </div>
                     </div>

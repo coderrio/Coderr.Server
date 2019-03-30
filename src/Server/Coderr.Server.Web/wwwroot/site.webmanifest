@@ -1,6 +1,10 @@
 {
-    "name": "",
-    "short_name": "",
+    "name": "Coderr",
+    "short_name": "Coderr",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#fff",
+    "description": "Tracks error in software.",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",
@@ -13,7 +17,5 @@
             "type": "image/png"
         }
     ],
-    "theme_color": "#ffffff",
-    "background_color": "#ffffff",
-    "display": "standalone"
+    "related_applications": []
 }

@@ -46,7 +46,7 @@ namespace Coderr.Server.Web.Controllers
         }
 
         [HttpPost]
-        [Route("receiver/report/{appKey}")]
+        [Route("receiver/report/{appKey}"), Transactional]
         public async Task<IActionResult> Post(string appKey, string sig)
         {
             var contentLength = Request.ContentLength;

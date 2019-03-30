@@ -6,11 +6,11 @@
                     <div class="card-header">
                         Api keys
                         <div class="float-right">
-                            <router-link class="btn-sm btn btn-outline-primary" :to="{ name: 'createApiKey' }">Create new key</router-link>
+                            <router-link class="btn-sm btn btn-outline-primary text-blue" :to="{ name: 'createApiKey' }">Create new key</router-link>
                         </div>
                     </div>
                     <div class="card-body">
-                        <table class="table mb-3">
+                        <table class="table mb-3 transparent" v-if="keys.length > 0">
                             <thead>
                                 <tr>
                                     <th>Created for</th>
@@ -31,8 +31,11 @@
                                     </td>
                                 </tr>
                             </tbody>
-
                         </table>
+                        <div v-if="keys.length == 0">
+                            <em>No keys have been created.</em>
+                            <hr />
+                        </div>
                         <p>
                             <em>ApiKeys are used to communicate with Coderr through the HTTP api.</em>
                         </p>

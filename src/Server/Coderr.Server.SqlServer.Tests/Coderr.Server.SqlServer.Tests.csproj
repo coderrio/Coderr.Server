@@ -18,7 +18,7 @@
     <PackageReference Include="xunit" Version="2.3.1" />
     <PackageReference Include="FluentAssertions" Version="5.2.0" />
     <PackageReference Include="NSubstitute" Version="3.1.0" />
-    <PackageReference Include="DotNetCqs" Version="2.0.9" />
+    <PackageReference Include="DotNetCqs" Version="2.0.10" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
   </ItemGroup>
   <ItemGroup>

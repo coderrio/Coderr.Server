@@ -21,7 +21,7 @@
     <PackageReference Include="ColorCode" Version="1.0.1">
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
-    <PackageReference Include="DotNetCqs" Version="2.0.9" />
+    <PackageReference Include="DotNetCqs" Version="2.0.10" />
     <PackageReference Include="Griffin.Framework" Version="2.0.1" />
     <PackageReference Include="log4net" Version="2.0.8" />
     <PackageReference Include="Markdig" Version="0.14.9" />

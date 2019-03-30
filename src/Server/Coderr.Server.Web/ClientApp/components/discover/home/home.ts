@@ -3,7 +3,7 @@ import * as MenuApi from "../../../services/menu/MenuApi";
 import { AppRoot } from "../../../services/AppRoot";
 import { GetOverview, GetOverviewResult } from "../../../dto/Web/Overview"
 import { FindIncidentsResultItem } from "../../../dto/Core/Incidents"
-import { GetApplicationOverview, GetApplicationOverviewResult } from "../../../dto/Core/Applications"
+import { GetApplicationOverview, GetApplicationOverviewResult, GetApplicationList, ApplicationListItem } from "../../../dto/Core/Applications"
 import * as Mine from "../../../dto/Common/Mine"
 import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
@@ -24,6 +24,7 @@ export default class DiscoverComponent extends Vue {
     private static activeBtnTheme: string = 'btn-dark';
 
     applicationId: number = 0;
+    firstApplicationId = 0;
     destroyed$ = false;
 
     // summary, changes when time window changes
@@ -41,10 +42,12 @@ export default class DiscoverComponent extends Vue {
     onApplicationChanged(value: string, oldValue: string) {
         if (!value) {
             this.applicationId = 0;
+            this.firstApplicationId = 0;
             this.loadGenericOverview();
             return;
         }
         this.applicationId = parseInt(value);
+        this.firstApplicationId = 0;
 
         if (this.$route.fullPath.indexOf('/discover/') === -1) {
             return;
@@ -56,9 +59,19 @@ export default class DiscoverComponent extends Vue {
         if (this.$route.params.applicationId && this.$route.params.applicationId !== '0') {
             this.applicationId = parseInt(this.$route.params.applicationId, 10);
             this.loadApplication(this.applicationId);
+            this.firstApplicationId = this.applicationId;
         } else {
             this.loadGenericOverview();
+            this.firstApplicationId = 0;
         }
+
+        AppRoot.Instance.apiClient.query<ApplicationListItem[]>(new GetApplicationList())
+            .then(result => {
+                if (this.destroyed$) {
+                    return;
+                }
+                this.firstApplicationId = result[0].Id;
+            });
     }
 
     mounted() {

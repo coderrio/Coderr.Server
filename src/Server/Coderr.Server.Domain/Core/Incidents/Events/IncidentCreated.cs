@@ -9,11 +9,13 @@ namespace Coderr.Server.Domain.Core.Incidents.Events
     /// </summary>
     public class IncidentCreated
     {
-        public IncidentCreated(int incidentId, string incidentDescription, string exceptionTypeName)
+        public IncidentCreated(int applicationId, int incidentId, string incidentDescription, string exceptionTypeName)
         {
             if (incidentDescription == null) throw new ArgumentNullException(nameof(incidentDescription));
             if (exceptionTypeName == null) throw new ArgumentNullException(nameof(exceptionTypeName));
             if (incidentId <= 0) throw new ArgumentOutOfRangeException(nameof(incidentId));
+            if (applicationId <= 0) throw new ArgumentOutOfRangeException(nameof(applicationId));
+            ApplicationId = applicationId;
             IncidentId = incidentId;
 
             var pos = incidentDescription.IndexOfAny(new[] {'\r', '\n'});

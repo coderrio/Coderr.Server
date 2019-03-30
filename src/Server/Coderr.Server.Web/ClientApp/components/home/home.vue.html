@@ -1,6 +1,6 @@
 <template>
     <div class="onboarding">
-        <div v-if="showOnboarding" v-hide>
+        <div v-show="showOnboarding">
             <div class="row">
                 <div class="col mb-2 mt-5">
                     <div class="m-4">
@@ -94,7 +94,7 @@
                 </div>
             </div>
         </div>
-        <div v-if="noApps"  v-hide>
+        <div v-show="noApps">
             <div class="row">
                 <div class="jumbotron">
                     <h1 class="display-4">Welcome to Coderr! </h1>

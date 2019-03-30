@@ -77,38 +77,42 @@
                 <div class="filters">
 
                 </div>
-                <table class="table w-100" id="searchTable">
+                <table class="table w-100 table-striped checkboxes" id="searchTable">
                     <thead class="table-light search-head">
-                    <tr>
-                        <th><input class="form-check-inline" type="checkbox" v-on:change="checkAll($event)"/> Name</th>
-                        <th v-if="showApplicationColumn">Application</th>
-                        <th class="sortable" v-on:click.prevent="sort($event)" data-value="0">Created <i class="fa"></i></th>
-                        <th class="sortable" v-on:click.prevent="sort($event)" data-value="1">Last report <i class="fa"></i></th>
-                        <th class="sortable" v-on:click.prevent="sort($event)" data-value="2">Report count <i class="fa fa-chevron-up"></i></th>
-                    </tr>
+                        <tr>
+                            <th><input class="form-check-inline" type="checkbox" v-on:change="checkAll($event)" /> Name</th>
+                            <th v-if="showApplicationColumn">Application</th>
+                            <th class="sortable" v-on:click.prevent="sort($event)" data-value="0">Created <i class="fa"></i></th>
+                            <th class="sortable" v-on:click.prevent="sort($event)" data-value="1">Last report <i class="fa"></i></th>
+                            <th class="sortable" v-on:click.prevent="sort($event)" data-value="2">Report count <i class="fa fa-chevron-up"></i></th>
+                        </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="incident in incidents">
-                        <td>
-                            <input type="checkbox" :value="incident.Id" name="id" class="form-check-inline" v-model="checkedIncidents"/>
-                            <router-link :to="{ name: 'discoverIncident', params: { applicationId: incident.ApplicationId, incidentId: incident.Id }}">{{ incident.Name }}</router-link>
-                        </td>
-                        <td v-if="showApplicationColumn">
-                            <router-link :to="{ name: 'application', params: { applicationId: incident.ApplicationId }}">{{incident.ApplicationName}}</router-link>
-                        </td>
-                        <td>
-                            {{ incident.CreatedAtUtc | ago }}
-                        </td>
-                        <td>
-                            {{ incident.LastReportReceivedAtUtc | ago }}
-                        </td>
-                        <td>
-                            {{ incident.ReportCount }}
-                        </td>
-                    </tr>
+                        <tr v-for="incident in incidents">
+                            <td>
+                                <input type="checkbox" :value="incident.Id" name="id" class="form-check-inline" v-model="checkedIncidents" />
+                                <router-link :to="{ name: 'discoverIncident', params: { applicationId: incident.ApplicationId, incidentId: incident.Id }}">{{ incident.Name }}</router-link>
+                            </td>
+                            <td v-if="showApplicationColumn">
+                                <router-link :to="{ name: 'application', params: { applicationId: incident.ApplicationId }}">{{incident.ApplicationName}}</router-link>
+                            </td>
+                            <td>
+                                {{ incident.CreatedAtUtc | ago }}
+                            </td>
+                            <td>
+                                {{ incident.LastReportReceivedAtUtc | ago }}
+                            </td>
+                            <td class="text-right">
+                                {{ incident.ReportCount }}
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
-                <button class="btn btn-primary" v-on:click.prevent="assignAllToMe">Assign checked incidents to me</button>
+                <div v-if="incidents.length == 0">
+                    <em>No incidents have been reported (or nothing matched your search).</em>
+                    <hr />
+                </div>
+                <button v-else class="btn btn-primary" v-on:click.prevent="assignAllToMe">Assign selected incidents to me</button>
             </div>
         </div>
         <div id="CloseBody" style="display: none">

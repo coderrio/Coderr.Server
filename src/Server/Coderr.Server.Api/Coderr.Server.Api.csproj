@@ -25,7 +25,7 @@
     <NoWarn>1701;1702;1705;1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="DotNetCqs" Version="2.0.9" />
+    <PackageReference Include="DotNetCqs" Version="2.0.10" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net452'">
     <Reference Include="System.Net.Http" />

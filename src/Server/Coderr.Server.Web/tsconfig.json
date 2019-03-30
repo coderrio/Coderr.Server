@@ -19,7 +19,6 @@
     "ClientApp/dto/**/*.ts"
   ]
 }
-
 //{
 //  "compilerOptions": {
 //    "allowSyntheticDefaultImports": true,

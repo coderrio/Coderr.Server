@@ -1,0 +1,53 @@
+body {
+  background-color: #f4f4f4; }
+
+.puffs {
+  display: flex;
+  flex-flow: row wrap; }
+  .puffs .puff {
+    margin-right: 5px;
+    margin-bottom: 5px;
+    position: relative;
+    min-width: 0;
+    display: flex;
+    flex: 1 0 0%;
+    flex-direction: column;
+    padding: 5vh 3vw;
+    text-align: center;
+    min-width: 32%; }
+    .puffs .puff h3 {
+      margin-bottom: 4vh; }
+    .puffs .puff .body {
+      flex: 1 1 auto; }
+
+.puffs.left .puff {
+  text-align: left; }
+
+.puffs.white .puff {
+  background-color: #fff; }
+  .puffs.white .puff .btn, .puffs.white .puff h3 {
+    color: #59c1d5; }
+
+.puffs.w33 .puff {
+  max-width: 33%; }
+
+.puffs.m .puff {
+  margin-right: 2vw;
+  margin-bottom: 8vh; }
+
+.puffs.gray-400 .puff {
+  background-color: #dddddd; }
+
+.puffs.gray .puff {
+  background-color: #393938; }
+  .puffs.gray .puff h3 {
+    color: #59c1d5; }
+  .puffs.gray .puff span {
+    color: #f18c65; }
+  .puffs.gray .puff p {
+    color: #ffffff; }
+  .puffs.gray .puff a {
+    color: #59c1d5; }
+
+.puffs.gray a {
+  color: #59c1d5; }
