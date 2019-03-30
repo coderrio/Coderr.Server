@@ -28,7 +28,7 @@ $theme-colors: map-remove($theme-colors, "success", "info", "danger", "warning",
 @import "card";
 //@import "breadcrumb";
 //@import "pagination";
-//@import "badge";
+@import "badge";
 //@import "jumbotron";
 @import "alert";
 //@import "progress";

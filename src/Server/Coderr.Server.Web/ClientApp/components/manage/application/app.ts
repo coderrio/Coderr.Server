@@ -5,7 +5,7 @@ import { Component, Watch } from 'vue-property-decorator';
 
 @Component({
     components: {
-        ManageAppMenu: require('./menu.vue.html')
+        ManageAppMenu: require('./menu.vue.html').default
     }
 })
 export default class ManageComponent extends Vue {

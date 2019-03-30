@@ -1,9 +1,18 @@
 @import "coderr-variables.scss";
 @import "mixins/_breakpoints.scss";
 
+.card-header h3 {
+    color: $blue;
+}
+
 a.active {
     background-color: $blue;
 }
+
+.nav-link.active {
+    background-color: transparent;
+}
+
 
 code {
     background-color: $gray-400;
@@ -103,19 +112,23 @@ button.btn-light, a.btn-light {
     width: 100%;
 
     th {
+        padding: 5px;
+        color: $gray;
+    }
+
+    th.gray {
         background: $gray;
         color: #fff;
-        padding: 5px;
     }
 
     td {
         padding: 5px;
     }
 
-    &.vertical-th {
+    &.th-vertical {
         th {
-            background-color: transparent;
-            color: #000;
+            width: 30%;
+            white-space: nowrap;
             text-align: right;
         }
     }
@@ -125,9 +138,22 @@ button.btn-light, a.btn-light {
     }
 }
 
+.table.blue {
+    th {
+        background-color: $blue;
+        color: #fff;
+    }
+}
+
 .table-striped tr:nth-child(even) {
     background-color: $blue-30;
 }
+
+.badge.badge-dark {
+    background-color: $gray;
+    color: #fff;
+}
+
 /** OLD BELOW 
 body {
     background-color: $gray-100;

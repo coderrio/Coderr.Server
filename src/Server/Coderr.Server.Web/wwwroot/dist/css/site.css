@@ -1,5 +1,11 @@
+.card-header h3 {
+  color: #59c1d5; }
+
 a.active {
   background-color: #59c1d5; }
+
+.nav-link.active {
+  background-color: transparent; }
 
 code {
   background-color: #dddddd; }
@@ -62,20 +68,30 @@ button.btn-light, a.btn-light {
 .table {
   width: 100%; }
   .table th {
+    padding: 5px;
+    color: #393938; }
+  .table th.gray {
     background: #393938;
-    color: #fff;
-    padding: 5px; }
+    color: #fff; }
   .table td {
     padding: 5px; }
-  .table.vertical-th th {
-    background-color: transparent;
-    color: #000;
+  .table.th-vertical th {
+    width: 30%;
+    white-space: nowrap;
     text-align: right; }
   .table td.checkboxes, .table th.checkboxes {
     padding-left: 0; }
 
+.table.blue th {
+  background-color: #59c1d5;
+  color: #fff; }
+
 .table-striped tr:nth-child(even) {
   background-color: #d8eef4; }
+
+.badge.badge-dark {
+  background-color: #393938;
+  color: #fff; }
 
 /** OLD BELOW 
 body {
