@@ -24,7 +24,7 @@ namespace Coderr.Server.App.Core.Incidents.Commands
         public async Task HandleAsync(IMessageContext context, AssignIncident message)
         {
             var assignedBy = message.AssignedBy;
-            if (assignedBy != 0)
+            if (assignedBy == 0)
                 assignedBy = context.Principal.GetAccountId();
 
             var incident = await _repository.GetAsync(message.IncidentId);
