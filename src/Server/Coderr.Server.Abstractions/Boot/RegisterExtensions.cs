@@ -9,12 +9,23 @@ namespace Coderr.Server.Abstractions.Boot
     {
         public static void RegisterContainerServices(this IServiceCollection serviceCollection, Assembly assembly)
         {
-            var containerServices = assembly.GetTypes()
-                .Where(x => x.GetCustomAttribute<ContainerServiceAttribute>(true) != null)
-                .ToList();
+            var containerServices = assembly.GetTypes();
             foreach (var containerService in containerServices)
             {
+                var gotWrongAttribute = containerService
+                    .GetCustomAttributes()
+                    .Count(x => x.GetType().FullName == "Griffin.Container.ContainerService") == 1;
+                if (gotWrongAttribute)
+                {
+                    throw new InvalidOperationException(
+                        $"Type \'{containerService}\' was decorated with the wrong attribute");
+                    ;
+                }
+
                 var attr = containerService.GetCustomAttribute<ContainerServiceAttribute>();
+                if (attr == null)
+                    continue;
+
                 var interfaces = containerService.GetInterfaces();
 
                 // Hack so that the same instance is resolved for each interface
@@ -37,7 +48,14 @@ namespace Coderr.Server.Abstractions.Boot
             foreach (var type in types)
             {
                 serviceCollection.AddScoped(type, type);
-                serviceCollection.AddScoped(type.GetInterfaces()[0], type);
+
+                var ifs = type.GetInterfaces()
+                    .Where(x => x.Name.Contains("IMessageHandler") || x.Name.Contains("IQueryHandler"))
+                    .ToList();
+                foreach (var @if in ifs)
+                {
+                    serviceCollection.AddScoped(@if, type);
+                }
             }
         }
 
