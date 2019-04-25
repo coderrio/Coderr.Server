@@ -65,7 +65,8 @@ namespace Coderr.Server.Api.Core.Applications.Queries
             get { return _applicationId; }
             set
             {
-                if (value <= 0)
+                // Will be 0 when appKey is specified.
+                if (value < 0)
                     throw new ArgumentOutOfRangeException("value", value, "Not a valid id.");
                 _applicationId = value;
             }
