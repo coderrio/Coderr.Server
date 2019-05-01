@@ -23,8 +23,6 @@ namespace Coderr.Server.Web.Controllers
     public class ReportReceiverController : Controller
     {
         private const int CompressedReportSizeLimit = 1000000;
-
-        private static int _currentReportCount;
         private readonly ConfigurationStore _configStore;
         private readonly ILog _logger = LogManager.GetLogger(typeof(ReportReceiverController));
         private readonly IMessageQueue _messageQueue;

@@ -166,6 +166,8 @@ namespace Coderr.Server.App.Core.Accounts
         ///     Accepts and deletes the invitation. Sends an event which is picked up by the application domain (which transforms
         ///     the pending invite to a membership)
         /// </summary>
+        /// <param name="messagingPrincipal">Principal that outbound messages should be sent with</param>
+        /// <param name="request">accept invitation DTO</param>
         /// <remarks>
         ///     <para>
         ///         Do note that an invitation can be accepted by using another email address than the one that the invitation was
@@ -174,7 +176,7 @@ namespace Coderr.Server.App.Core.Accounts
         ///         invitation.
         ///     </para>
         /// </remarks>
-        public async Task<ClaimsIdentity> AcceptInvitation(ClaimsPrincipal user, AcceptInvitation request)
+        public async Task<ClaimsIdentity> AcceptInvitation(ClaimsPrincipal messagingPrincipal, AcceptInvitation request)
         {
             var invitation = await _invitationRepository.GetByInvitationKeyAsync(request.InvitationKey);
             if (invitation == null)
@@ -207,8 +209,8 @@ namespace Coderr.Server.App.Core.Accounts
             // Account have not been created before the invitation was accepted.
             if (request.AccountId == 0)
             {
-                await _messageBus.SendAsync(user, new AccountRegistered(account.Id, account.UserName));
-                await _messageBus.SendAsync(user, new AccountActivated(account.Id, account.UserName)
+                await _messageBus.SendAsync(messagingPrincipal, new AccountRegistered(account.Id, account.UserName));
+                await _messageBus.SendAsync(messagingPrincipal, new AccountActivated(account.Id, account.UserName)
                 {
                     EmailAddress = account.Email
                 });
@@ -220,7 +222,7 @@ namespace Coderr.Server.App.Core.Accounts
                 AcceptedEmailAddress = request.AcceptedEmail,
                 ApplicationIds = invitation.Invitations.Select(x => x.ApplicationId).ToArray()
             };
-            await _messageBus.SendAsync(user, e);
+            await _messageBus.SendAsync(messagingPrincipal, e);
 
             return identity;
         }

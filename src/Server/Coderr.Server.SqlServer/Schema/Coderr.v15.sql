@@ -8,6 +8,3 @@
 alter table Applications add NumberOfFtes decimal;
 alter table Applications add [EstimatedNumberOfErrors] int;
 alter table Applications add [MuteStatisticsQuestion] bit not null default 0;
-
-UPDATE DatabaseSchema SET Version = 15;
-

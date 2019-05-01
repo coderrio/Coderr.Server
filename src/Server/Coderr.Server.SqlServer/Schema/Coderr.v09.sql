@@ -62,5 +62,3 @@ create table ErrorReportCollectionInbound
 	ReportId int not null constraint FK_ErrorReportCollectionInbound_ErrorReports REFERENCES ErrorReports(Id) ON DELETE CASCADE,
 	Body nvarchar(max) not null
 );
-
-UPDATE DatabaseSchema SET Version = 9;

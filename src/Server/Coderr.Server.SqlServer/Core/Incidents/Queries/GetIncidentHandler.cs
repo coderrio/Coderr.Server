@@ -51,6 +51,18 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
             {
                 new QuickFact
                 {
+                    Title = "Created",
+                    Description = "When we received the first error report",
+                    Value = result.CreatedAtUtc.ToShortDateString()
+                },
+                new QuickFact
+                {
+                    Title = "Last report",
+                    Description = "When we received the most recent error report",
+                    Value = result.LastReportReceivedAtUtc.ToShortDateString()
+                },
+                new QuickFact
+                {
                     Title = "Report Count",
                     Description = "Number of reports since this incident was discovered",
                     Value = result.ReportCount.ToString()

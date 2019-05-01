@@ -4,12 +4,12 @@ using DotNetCqs.DependencyInjection.Microsoft;
 
 namespace Coderr.Server.Web.Boot.Cqs
 {
-    internal class ScopeWrapper : IHandlerScopeFactory
+    internal class ScopeFactory : IHandlerScopeFactory
     {
         private readonly Func<IServiceProvider> _serviceProviderAccesor;
         private MicrosoftHandlerScopeFactory _scopeFactory;
 
-        public ScopeWrapper(Func<IServiceProvider> serviceProviderAccesor)
+        public ScopeFactory(Func<IServiceProvider> serviceProviderAccesor)
         {
             _serviceProviderAccesor = serviceProviderAccesor;
         }

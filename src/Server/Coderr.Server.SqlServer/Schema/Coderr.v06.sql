@@ -37,6 +37,3 @@ UPDATE Incidents
 	WHERE IncidentId = Incidents.Id)
 
 END
-
-
-UPDATE DatabaseSchema SET Version = 6;

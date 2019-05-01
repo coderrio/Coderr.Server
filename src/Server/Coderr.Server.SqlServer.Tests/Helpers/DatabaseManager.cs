@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Threading;
 using Coderr.Server.SqlServer.Migrations;
+using Coderr.Server.SqlServer.Schema;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 
@@ -91,10 +92,8 @@ namespace Coderr.Server.SqlServer.Tests.Helpers
             _invoked = true;
             try
             {
-                var schemaManager = new SchemaManager(OpenConnection);
-                schemaManager.CreateInitialStructure();
-                if (UpdateToLatestVersion)
-                    schemaManager.UpgradeDatabaseSchema();
+                var schemaManager = new MigrationRunner(OpenConnection, "Coderr", typeof(CoderrMigrationPointer).Namespace);
+                schemaManager.Run();
             }
             catch (SqlException ex)
             {
@@ -109,8 +108,8 @@ namespace Coderr.Server.SqlServer.Tests.Helpers
 
         public void UpdateSchema(int version)
         {
-            var mgr = new SchemaManager(OpenConnection);
-            mgr.UpgradeDatabaseSchema(version);
+            var mgr = new MigrationRunner(OpenConnection, "Coderr", typeof(CoderrMigrationPointer).Namespace);
+            mgr.Run();
         }
 
         private IDbConnection OpenConnection(string connectionString)

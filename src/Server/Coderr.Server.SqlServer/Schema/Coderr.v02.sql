@@ -1,12 +1,4 @@
-﻿IF OBJECT_ID(N'dbo.[DatabaseSchema]', N'U') IS NULL
-BEGIN
-	CREATE TABLE [dbo].[DatabaseSchema] (
-        [Version] int not null default 1
-	);
-	INSERT INTO DatabaseSchema VALUES(1);
-END
-
-IF OBJECT_ID(N'dbo.[ApiKeys]', N'U') IS NULL
+﻿IF OBJECT_ID(N'dbo.[ApiKeys]', N'U') IS NULL
 BEGIN
 	CREATE TABLE [dbo].[ApiKeys] (
         [Id]     INT identity      not    NULL primary key,
@@ -23,5 +15,4 @@ BEGIN
 		FOREIGN KEY (ApiKeyId) REFERENCES ApiKeys(Id) ON DELETE CASCADE,
 		FOREIGN KEY (ApplicationId) REFERENCES Applications(Id) ON DELETE NO ACTION
 	);
-	update DatabaseSchema SET Version = 2;
 END

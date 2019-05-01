@@ -16,6 +16,3 @@ create table IncidentHistory
 );
 alter table Incidents add IgnoredUntilVersion varchar(20) null;
 CREATE NONCLUSTERED INDEX IX_IncidentHistory_Incidents ON dbo.IncidentHistory (IncidentId);
-
-
-UPDATE DatabaseSchema SET Version = 10;

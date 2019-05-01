@@ -14,7 +14,8 @@ namespace Coderr.Server.Api.Core.Incidents.Events
         /// <param name="incidentId">Incident being assigned</param>
         /// <param name="assignedById">User assigning the incident</param>
         /// <param name="assignedToId">User that should start working with the incident</param>
-        public IncidentAssigned(int incidentId, int assignedById, int assignedToId)
+        /// <param name="assignedAtUtc">When incident was assigned</param>
+        public IncidentAssigned(int incidentId, int assignedById, int assignedToId, DateTime assignedAtUtc)
         {
             if (incidentId <= 0) throw new ArgumentOutOfRangeException(nameof(incidentId));
             if (assignedById <= 0) throw new ArgumentOutOfRangeException(nameof(assignedById));
@@ -23,6 +24,12 @@ namespace Coderr.Server.Api.Core.Incidents.Events
             IncidentId = incidentId;
             AssignedById = assignedById;
             AssignedToId = assignedToId;
+            AssignedAtUtc = assignedAtUtc;
+        }
+
+        protected IncidentAssigned()
+        {
+
         }
 
         /// <summary>
@@ -34,6 +41,11 @@ namespace Coderr.Server.Api.Core.Incidents.Events
         ///     User that should start working with the incident
         /// </summary>
         public int AssignedToId { get; private set; }
+
+        /// <summary>
+        /// When the incident was assigned (client side)
+        /// </summary>
+        public DateTime AssignedAtUtc { get; }
 
         /// <summary>
         ///     Incident being assigned

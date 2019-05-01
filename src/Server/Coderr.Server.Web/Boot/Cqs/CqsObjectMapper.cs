@@ -42,18 +42,12 @@ namespace Coderr.Server.Web.Boot.Cqs
         public object Deserialize(string dotNetTypeOrCqsName, string json)
         {
             var type = Type.GetType(dotNetTypeOrCqsName);
-            if (type == null)
-            {
-                if (!_cqsTypes.TryGetValue(dotNetTypeOrCqsName, out type))
-                {
-                    return null;
-                }
-            }
+            if (type == null && !_cqsTypes.TryGetValue(dotNetTypeOrCqsName, out type))
+                return null;
 
-            if (string.IsNullOrEmpty(json))
-                json = "{}";
-
-            return JsonConvert.DeserializeObject(json, type, _jsonSerializerSettings);
+            return string.IsNullOrEmpty(json)
+                ? Activator.CreateInstance(type, true)
+                : JsonConvert.DeserializeObject(json, type, _jsonSerializerSettings);
         }
 
         /// <summary>

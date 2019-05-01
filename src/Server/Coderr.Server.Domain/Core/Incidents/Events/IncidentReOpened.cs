@@ -17,7 +17,7 @@ namespace Coderr.Server.Domain.Core.Incidents.Events
         /// </summary>
         /// <param name="applicationId">application that the incident belongs to</param>
         /// <param name="incidentId">incident id</param>
-        /// <param name="createdAtUtc">when the new report was created (in the client library)</param>
+        /// <param name="createdAtUtc">when the new error report was created (in the client library)</param>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public IncidentReOpened(int applicationId, int incidentId, DateTime createdAtUtc)
         {
@@ -47,7 +47,7 @@ namespace Coderr.Server.Domain.Core.Incidents.Events
         public string ApplicationVersion { get; set; }
 
         /// <summary>
-        ///     when the new report was created (in the client library)
+        ///     when the new error report was created in the client library. I.e. the report that triggered the reopening of the incident.
         /// </summary>
         public DateTime CreatedAtUtc { get; set; }
 

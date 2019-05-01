@@ -45,7 +45,7 @@ namespace Coderr.Server.Web.Areas.Installation.Controllers
         public ActionResult Tables()
         {
             ViewBag.GotException = false;
-            if (SetupTools.DbTools.GotUpToDateTables())
+            if (SetupTools.DbTools.IsTablesInstalled())
             {
                 ViewBag.GotTables = true;
             }
@@ -63,7 +63,6 @@ namespace Coderr.Server.Web.Areas.Installation.Controllers
             try
             {
                 SetupTools.DbTools.CreateTables();
-                SetupTools.DbTools.UpgradeDatabaseSchema();
                 return Redirect(Url.GetNextWizardStep());
             }
             catch (Exception ex)
@@ -79,7 +78,7 @@ namespace Coderr.Server.Web.Areas.Installation.Controllers
 
         public ActionResult Validate()
         {
-            string constr = "Not set";
+            var constr = "Not set";
             try
             {
                 constr = _config.GetConnectionString("Db");

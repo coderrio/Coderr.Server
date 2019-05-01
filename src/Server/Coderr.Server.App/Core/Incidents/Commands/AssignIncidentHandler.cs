@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Coderr.Server.Abstractions.Security;
 using Coderr.Server.Api.Core.Incidents.Commands;
 using Coderr.Server.Api.Core.Incidents.Events;
@@ -31,7 +32,7 @@ namespace Coderr.Server.App.Core.Incidents.Commands
             incident.Assign(message.AssignedTo, message.AssignedAtUtc);
             await _repository.UpdateAsync(incident);
 
-            var evt = new IncidentAssigned(message.IncidentId, assignedBy, message.AssignedTo);
+            var evt = new IncidentAssigned(message.IncidentId, assignedBy, message.AssignedTo, message.AssignedAtUtc ?? DateTime.UtcNow);
             await context.SendAsync(evt);
         }
     }

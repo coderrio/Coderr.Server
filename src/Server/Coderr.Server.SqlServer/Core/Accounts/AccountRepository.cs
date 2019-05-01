@@ -127,8 +127,8 @@ namespace Coderr.Server.SqlServer.Core.Accounts
 
             using (var cmd = (DbCommand) _uow.CreateCommand())
             {
-                cmd.CommandText = "SELECT * FROM Accounts WHERE Id IN (@ids)";
-                cmd.AddParameter("ids", string.Join(",", ids.Select(x => "'" + x + "'")));
+                var idStr = string.Join(",", ids.Select(x => "'" + x + "'"));
+                cmd.CommandText = $"SELECT * FROM Accounts WHERE Id IN ({idStr})";
                 return await cmd.ToListAsync<Account>();
             }
         }

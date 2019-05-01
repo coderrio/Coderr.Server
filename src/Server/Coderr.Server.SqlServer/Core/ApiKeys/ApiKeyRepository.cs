@@ -167,7 +167,9 @@ namespace Coderr.Server.SqlServer.Core.ApiKeys
                 await _uow.ToListAsync<int>("SELECT ApplicationId FROM ApiKeyApplications WHERE ApiKeyId=@1",
                     key);
 
-            var apps = key.Claims.Select(x => int.Parse(x.Value));
+            var apps = key.Claims
+                .Select(x => int.Parse(x.Value))
+                .ToList();
             var removed = existingMappings.Except(apps);
             foreach (var applicationId in removed)
             {

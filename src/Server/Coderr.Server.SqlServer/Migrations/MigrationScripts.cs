@@ -1,46 +1,86 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 
 namespace Coderr.Server.SqlServer.Migrations
 {
     public class MigrationScripts
     {
-        internal const string SchemaNamespace = "Coderr.Server.SqlServer.Schema";
-        private readonly Dictionary<int, VersionMigration> _versions = new Dictionary<int, VersionMigration>();
-        private bool _isEmpty;
+        private readonly string _migrationName;
+        private readonly Dictionary<int, string> _versions = new Dictionary<int, string>();
+
+        public MigrationScripts(string migrationName)
+        {
+            _migrationName = migrationName ?? throw new ArgumentNullException(nameof(migrationName));
+        }
 
         public bool IsEmpty => _versions.Count == 0;
 
-        public void AddScript(int version, string scriptName)
+        public void AddScriptName(int version, string scriptName)
         {
-            if (scriptName == null) throw new ArgumentNullException(nameof(scriptName));
-            if (version <= 0) throw new ArgumentOutOfRangeException(nameof(version));
+            if (version < 0) throw new ArgumentOutOfRangeException(nameof(version));
 
-            if (!_versions.TryGetValue(version, out var value))
-            {
-                value = new VersionMigration(version);
-                _versions[version] = value;
-            }
-
-            value.Add(scriptName);
+            _versions[version] = scriptName ?? throw new ArgumentNullException(nameof(scriptName));
         }
 
-        public IEnumerable<string> GetScripts(int version)
+        public string LoadScript(int version)
         {
             if (version <= 0) throw new ArgumentOutOfRangeException(nameof(version));
 
-            var scriptNames = _versions[version].ScriptsNames;
-            foreach (var scriptName in scriptNames)
-            {
-                var res = Assembly.GetExecutingAssembly().GetManifestResourceStream(scriptName);
-                if (res == null)
-                    throw new InvalidOperationException("Failed to find schema " + scriptName);
+            var scriptName = _versions[version];
+            var res = Assembly.GetExecutingAssembly().GetManifestResourceStream(scriptName);
+            if (res == null)
+                throw new InvalidOperationException("Failed to find schema " + scriptName);
 
-                yield return new StreamReader(res).ReadToEnd();
+            return new StreamReader(res).ReadToEnd();
+        }
+
+        public void Execute(IDbConnection connection, int version)
+        {
+            var script = LoadScript(version);
+            var sb = new StringBuilder();
+            var sr = new StringReader(script);
+            while (true)
+            {
+                var line = sr.ReadLine();
+                if (line == null)
+                    break;
+
+                if (!line.Equals("go"))
+                {
+                    sb.AppendLine(line);
+                    continue;
+                }
+
+                ExecuteSql(connection, sb.ToString());
+                sb.Clear();
+
             }
+
+            //do the remaining part of the script (or everything if GO was not used).
+            ExecuteSql(connection, sb.ToString());
+
+            ExecuteSql(connection, $"UPDATE DatabaseSchema SET Version={version} WHERE Name = '{_migrationName}'");
+        }
+
+        private static void ExecuteSql(IDbConnection connection, string sql)
+        {
+            using (var transaction = connection.BeginTransaction())
+            {
+                using (var cmd = connection.CreateCommand())
+                {
+                    cmd.Transaction = transaction;
+                    cmd.CommandText = sql;
+                    cmd.ExecuteNonQuery();
+                }
+
+                transaction.Commit();
+            }
+           
         }
 
         public int GetHighestVersion()

@@ -7,16 +7,17 @@ namespace Coderr.Server.Web.Boot.Adapters
 {
     public class HandlerScopeWrapper : IHandlerScope
     {
-        private readonly ServiceProvider _serviceProvider;
+        private readonly IServiceProvider _serviceProvider;
 
-        public HandlerScopeWrapper(ServiceProvider serviceProvider)
+        public HandlerScopeWrapper(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
         }
 
         public void Dispose()
         {
-            _serviceProvider.Dispose();
+            var disp = _serviceProvider as IDisposable;
+            disp?.Dispose();
         }
 
         public IEnumerable<object> Create(Type messageHandlerServiceType)

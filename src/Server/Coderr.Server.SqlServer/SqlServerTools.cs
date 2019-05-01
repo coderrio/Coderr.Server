@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using Coderr.Server.Abstractions;
 using Coderr.Server.Infrastructure;
 using Coderr.Server.SqlServer.Migrations;
+using Coderr.Server.SqlServer.Schema;
 
 namespace Coderr.Server.SqlServer
 {
@@ -19,18 +20,18 @@ namespace Coderr.Server.SqlServer
     public class SqlServerTools : ISetupDatabaseTools
     {
         private readonly Func<IDbConnection> _connectionFactory;
-        private readonly SchemaManager _schemaManager;
+        private readonly MigrationRunner _schemaManager;
 
         public SqlServerTools(Func<IDbConnection> connectionFactory)
         {
             _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
-            _schemaManager = new SchemaManager(_connectionFactory);
+            _schemaManager = new MigrationRunner(_connectionFactory, "Coderr", typeof(CoderrMigrationPointer).Namespace);
         }
         
         /// <summary>
         ///     Checks if the tables exists and are for the current DB schema.
         /// </summary>
-        public bool GotUpToDateTables()
+        public bool IsTablesInstalled()
         {
             try
             {
@@ -53,27 +54,11 @@ namespace Coderr.Server.SqlServer
             
         }
 
-        /// <summary>
-        ///     Check if the current DB schema is out of date compared to the embedded schema resources.
-        /// </summary>
-        public bool CanSchemaBeUpgraded()
-        {
-            return _schemaManager.CanSchemaBeUpgraded();
-        }
-
-        /// <summary>
-        ///     Update DB schema to latest version.
-        /// </summary>
-        public void UpgradeDatabaseSchema()
-        {
-            _schemaManager.UpgradeDatabaseSchema();
-        }
-        
         [SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities",
             Justification = "Installation import = control over SQL")]
         public void CreateTables()
         {
-            _schemaManager.CreateInitialStructure();
+            _schemaManager.Run();
         }
 
         IDbConnection ISetupDatabaseTools.OpenConnection()

@@ -24,10 +24,12 @@ namespace Coderr.Server.App.Core.Applications.CommandHandlers
         {
             var app = new Application(command.UserId, command.Name)
             {
-                AppKey = command.ApplicationKey,
                 ApplicationType =
-                    (TypeOfApplication) Enum.Parse(typeof(TypeOfApplication), command.TypeOfApplication.ToString())
+                    (TypeOfApplication)Enum.Parse(typeof(TypeOfApplication), command.TypeOfApplication.ToString())
             };
+            if (command.ApplicationKey != null)
+                app.AppKey = command.ApplicationKey;
+
 
             if (command.NumberOfDevelopers > 0)
             {
@@ -39,10 +41,10 @@ namespace Coderr.Server.App.Core.Applications.CommandHandlers
             await _repository.CreateAsync(new ApplicationTeamMember(app.Id, creator.AccountId, creator.UserName)
             {
                 UserName = creator.UserName,
-                Roles = new[] {ApplicationRole.Admin, ApplicationRole.Member},
+                Roles = new[] { ApplicationRole.Admin, ApplicationRole.Member },
             });
 
-            var evt = new ApplicationCreated(app.Id, app.Name, command.UserId, command.ApplicationKey, app.SharedSecret);
+            var evt = new ApplicationCreated(app.Id, app.Name, command.UserId, app.AppKey, app.SharedSecret);
             await context.SendAsync(evt);
         }
     }
