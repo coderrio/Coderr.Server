@@ -24,6 +24,8 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer
                 .ToPropertyValue(DbConverters.ToEntityDate)
                 .ToColumnValue(DbConverters.ToNullableSqlDate);
 
+            Property(x => x.EnvironmentNames).Ignore();
+
             Property(x => x.IsClosed)
                 .Ignore();
 

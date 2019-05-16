@@ -90,7 +90,37 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer
                     .GetProperty("Id", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
                     .SetValue(incident, id);
             }
+
             //_unitOfWork.Insert(incident);
+        }
+
+        public void SaveEnvironmentName(int applicationId, int incidentId, string environmentName)
+        {
+            using (var cmd = _unitOfWork.CreateCommand())
+            {
+                cmd.CommandText = @"declare @environmentId int;
+                                    select @environmentId = id 
+                                    from ApplicationEnvironments
+                                    WHERE ApplicationId=@applicationId AND Name = @name;
+
+                                    if @environmentId is null
+                                    begin
+                                        insert into ApplicationEnvironments(ApplicationId, Name) VALUES(@applicationID, @name);
+                                        set @environmentId = scope_identity();
+                                        insert into IncidentEnvironments (IncidentId, ApplicationEnvironmentId) VALUES(@incidentId, @environmentId);
+                                    end
+                                    else
+                                    begin
+                                        INSERT INTO IncidentEnvironments (IncidentId, ApplicationEnvironmentId)
+                                        SELECT @incidentId, @environmentId
+                                        WHERE NOT EXISTS (SELECT IncidentId, ApplicationEnvironmentId FROM IncidentEnvironment
+                                                         WHERE IncidentId=@incidentId AND ApplicationEnvironmentId=@environmentId)
+                                    end;";
+                cmd.AddParameter("applicationId", applicationId);
+                cmd.AddParameter("incidentId", incidentId);
+                cmd.AddParameter("name", environmentName);
+                cmd.ExecuteNonQuery();
+            }
         }
 
         public void UpdateIncident(IncidentBeingAnalyzed incident)

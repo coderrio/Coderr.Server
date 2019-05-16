@@ -88,6 +88,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound
                 ContextCollections = report.ContextCollections.Select(ConvertCollection).ToArray(),
                 CreatedAtUtc = report.CreatedAtUtc,
                 DateReceivedUtc = DateTime.UtcNow,
+                EnvironmentName = report.EnvironmentName,
                 Exception = ConvertException(report.Exception),
                 ReportId = report.ReportId,
                 ReportVersion = report.ReportVersion

@@ -88,6 +88,10 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
             if (incident == null)
             {
                 incident = BuildIncident(report);
+
+                if (string.IsNullOrEmpty(report.EnvironmentName))
+                    incident.EnvironmentNames = new[] { report.EnvironmentName };
+
                 _repository.CreateIncident(incident);
 
                 var evt = new IncidentCreated(incident.ApplicationId,
