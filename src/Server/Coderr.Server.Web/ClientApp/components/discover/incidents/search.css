@@ -1,3 +1,10 @@
+.bg-dark {
+    color: #fff;
+}
+.bg-dark *, .bg-dark * *, table.table thead.bg-dark th {
+    color: #ccc;
+}
+
 .tags button, .apps button {
     margin-right: 5px;
     margin-bottom: 5px;
@@ -13,4 +20,53 @@
 
 .sort-ascending {
 
+}
+
+#SearchOptions .form-group {
+    display: inline-block;
+    vertical-align: top;
+}
+
+#SearchOptions label {
+    color: #ccc;
+}
+
+.btn.btn-blue {
+    color: #000;
+}
+#SearchOptions input {
+    display: inline !important;
+    width: inherit;
+    height: calc(0.875rem + 14px);
+    font-size: 0.875rem;
+    padding: 2px 4px;
+    border: 0;
+    line-height: 1.5;
+    background-color: #ccc;
+}
+
+.btn.btn-black {
+    background-color: #000;
+    color: #999;
+    border: 1px solid #333;
+}
+
+#IncidentSearchView .form-group {
+    max-width: 16%;
+}
+
+#IncidentSearchView .context.form-group {
+    max-width: 25vw;
+}
+
+@media screen and (max-width: 1600px) {
+    #IncidentSearchView .context.form-group {
+        max-width: 20vw;
+    }
+}
+
+@media screen and (max-width: 1400px) {
+    #IncidentSearchView .context.form-group {
+        max-width: 15vw;
+    }
 }

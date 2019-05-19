@@ -141,13 +141,17 @@ namespace Coderr.Server.ReportAnalyzer.Inbound
             // to support clients that still use the OneTrueError client library.
             json = json.Replace("OneTrueError", "Coderr");
 
-            return JsonConvert.DeserializeObject<NewReportDTO>(json,
+            var dto = JsonConvert.DeserializeObject<NewReportDTO>(json,
                 new JsonSerializerSettings
                 {
                     TypeNameHandling = TypeNameHandling.Objects,
                     ContractResolver =
                         new IncludeNonPublicMembersContractResolver()
                 });
+
+            if (string.IsNullOrEmpty(dto.EnvironmentName) && !string.IsNullOrEmpty(dto.Environment))
+                dto.EnvironmentName = dto.Environment;
+            return dto;
         }
 
         private async Task<AppInfo> GetAppAsync(string appKey)
@@ -175,7 +179,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound
             try
             {
                 //TODO: Make something generic.
-                using (var cmd = (SqlCommand) _unitOfWork.CreateCommand())
+                using (var cmd = (SqlCommand)_unitOfWork.CreateCommand())
                 {
                     cmd.CommandText =
                         @"INSERT INTO InvalidReports(appkey, signature, reportbody, errormessage, createdatutc)
@@ -212,7 +216,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound
             catch (Exception ex)
             {
                 _logger.Error(
-                    "Failed to StoreReport: " + JsonConvert.SerializeObject(new {model = report}), ex);
+                    "Failed to StoreReport: " + JsonConvert.SerializeObject(new { model = report }), ex);
             }
         }
 

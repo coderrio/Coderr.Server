@@ -35,4 +35,7 @@
     <ProjectReference Include="..\Coderr.Server.Infrastructure\Coderr.Server.Infrastructure.csproj" />
     <ProjectReference Include="..\Coderr.Server.Abstractions\Coderr.Server.Abstractions.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Core\Environments\" />
+  </ItemGroup>
 </Project>

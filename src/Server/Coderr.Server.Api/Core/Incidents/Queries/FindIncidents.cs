@@ -68,6 +68,11 @@ namespace Coderr.Server.Api.Core.Incidents.Queries
         public string ContextCollectionPropertyValue { get; set; }
 
         /// <summary>
+        /// Which environments we should search in.
+        /// </summary>
+        public int[] EnvironmentIds { get; set; }
+
+        /// <summary>
         ///     Will be searched in incident.message and report.stacktrace.
         /// </summary>
         public string FreeText { get; set; }

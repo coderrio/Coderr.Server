@@ -94,29 +94,28 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer
             //_unitOfWork.Insert(incident);
         }
 
-        public void SaveEnvironmentName(int applicationId, int incidentId, string environmentName)
+        public void SaveEnvironmentName(int incidentId, string environmentName)
         {
             using (var cmd = _unitOfWork.CreateCommand())
             {
                 cmd.CommandText = @"declare @environmentId int;
                                     select @environmentId = id 
-                                    from ApplicationEnvironments
-                                    WHERE ApplicationId=@applicationId AND Name = @name;
+                                    from Environments
+                                    WHERE Name = @name;
 
                                     if @environmentId is null
                                     begin
-                                        insert into ApplicationEnvironments(ApplicationId, Name) VALUES(@applicationID, @name);
+                                        insert into Environments(Name) VALUES(@name);
                                         set @environmentId = scope_identity();
-                                        insert into IncidentEnvironments (IncidentId, ApplicationEnvironmentId) VALUES(@incidentId, @environmentId);
+                                        insert into IncidentEnvironments (IncidentId, EnvironmentId) VALUES(@incidentId, @environmentId);
                                     end
                                     else
                                     begin
-                                        INSERT INTO IncidentEnvironments (IncidentId, ApplicationEnvironmentId)
+                                        INSERT INTO IncidentEnvironments (IncidentId, EnvironmentId)
                                         SELECT @incidentId, @environmentId
-                                        WHERE NOT EXISTS (SELECT IncidentId, ApplicationEnvironmentId FROM IncidentEnvironment
-                                                         WHERE IncidentId=@incidentId AND ApplicationEnvironmentId=@environmentId)
+                                        WHERE NOT EXISTS (SELECT IncidentId, EnvironmentId FROM IncidentEnvironment
+                                                         WHERE IncidentId=@incidentId AND EnvironmentId=@environmentId)
                                     end;";
-                cmd.AddParameter("applicationId", applicationId);
                 cmd.AddParameter("incidentId", incidentId);
                 cmd.AddParameter("name", environmentName);
                 cmd.ExecuteNonQuery();

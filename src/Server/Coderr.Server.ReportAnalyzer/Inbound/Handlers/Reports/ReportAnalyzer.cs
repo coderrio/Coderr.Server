@@ -89,11 +89,11 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
             {
                 incident = BuildIncident(report);
 
-                if (string.IsNullOrEmpty(report.EnvironmentName))
+                if (!string.IsNullOrEmpty(report.EnvironmentName))
                     incident.EnvironmentNames = new[] { report.EnvironmentName };
 
                 _repository.CreateIncident(incident);
-
+                _repository.SaveEnvironmentName(incident.Id, report.EnvironmentName);
                 var evt = new IncidentCreated(incident.ApplicationId,
                     incident.Id, incident.Description, incident.FullName)
                 {
@@ -120,6 +120,8 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
                     return;
                 }
 
+                if (!string.IsNullOrEmpty(report.EnvironmentName))
+                    _repository.SaveEnvironmentName(incident.Id, report.EnvironmentName);
                 if (incident.IsClosed)
                 {
                     if (applicationVersion != null && incident.IsReportIgnored(applicationVersion))

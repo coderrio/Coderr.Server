@@ -26,4 +26,8 @@ export default class ManageComponent extends Vue {
             this.$router.push({ name: 'manageHome' });
         }
     }
+
+    private testMe(e:any) {
+        console.log('TEST ME ',e);
+    }
 }

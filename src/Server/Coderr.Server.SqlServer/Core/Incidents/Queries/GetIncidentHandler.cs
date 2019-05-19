@@ -236,7 +236,7 @@ AND IncidentId = @incidentId;";
                 cmd.CommandText = @"Declare @Names AS Nvarchar(MAX);
                                     SELECT @Names = COALESCE(@Names + ';', '') + Name
                                     FROM IncidentEnvironments ie
-                                    JOIN ApplicationEnvironments ae ON (ae.Id = ie.ApplicationEnvironmentId) 
+                                    JOIN Environments ae ON (ae.Id = ie.EnvironmentId) 
                                     WHERE IncidentId=@id
                                     ORDER BY Name
                                     SELECT @Names";

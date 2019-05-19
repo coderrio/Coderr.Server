@@ -12,6 +12,10 @@
     .discover-menu li.router-link-active {
         background: #f1f3f5;
     }
+
+    .discover-menu li a.router-link-active {
+        /*color: #D8734C;*/
+    }
 /*.router-link-exact-active {
     color: #ffffff;
 }
