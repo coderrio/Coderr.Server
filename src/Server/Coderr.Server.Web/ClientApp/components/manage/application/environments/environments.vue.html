@@ -1,37 +1,26 @@
 <template>
     <div class="mt-4">
         <div class="row">
-            <div class="col-lg-8 members">
+            <div class="col-lg-8 environments">
                 <div class="card">
                     <div class="card-header">
-                        Application security [{{applicationName}}]</div>
+                        Application environments for {{applicationName}}
+                    </div>
                     <div class="card-body">
-                        <h3>Admins</h3>
-                        <table class="">
-                            <tr v-for="admin in admins">
-                                <td>
-                                    {{admin.name
-                        }}
-                        </td>
-                        <td>
-                            <a href="#" @click.prevent="removeAdmin(admin.id)" v-if="admins.length > 1" title="Downgrade to regular member"><i class="fa fa-hand-point-down text-warning"></i></a>
-                        </td>
-                        </tr>
-                        </table>
-                        <h3>Members</h3>
-                        <table class="">
-                            <tr v-for="member in members">
-                                <td>
-                                    {{member.name}}
-                                </td>
-                                <td>
-                                    <a href="#" @click.prevent="addAdmin(member.id)" title="Make admin"><i class="fa fa-hand-point-up text-success"></i></a>
-                                    <a href="#" @click.prevent="removeMember(member.id)"><i class="fa fa-trash text-danger"></i></a>
-                                </td>
-                            </tr>
-                        </table>
-                        <div v-if="members.length == 0">
-                            <em>No members have been added.</em>
+                        <h3>Received environments</h3>
+                        <em>Environments that were specified using <code>Err.Configuration.EnvironmentName</code>.</em>
+                        <div class="ml-3">
+                            <ul>
+                                <li v-for="environment in environments">
+                                    {{environment.name}}
+                                </li>
+                            </ul>
+                        </div>
+                        <div v-if="environments.length == 0">
+                            <p><em>No environments have been specified in reports.</em></p>
+                            <p>
+                                <em><a href="#" style="text-decoration: underline">Learn how to specify the environment (like "Production", "Test", "Staging" etc)</a></em>
+                            </p>
                         </div>
 
                     </div>
@@ -39,27 +28,25 @@
             </div>
             <div class="col-lg-4">
                 <div class="card">
-                    <div class="card-header">Pending invites</div>
+                    <div class="card-header">Reset environment</div>
                     <div class="card-body">
-                        <table class="table table-borderless" v-if="invites.length > 0">
-                            <tr v-for="member in invites">
-                                <td>
-                                    {{member.EmailAddress}}
-                                </td>
-                                <td>
-                                    <a href="#" @click.prevent="removeInvitation(member.EmailAddress)"><i class="fa fa-trash"></i></a>
-                                </td>
-                            </tr>
-                        </table>
-                        <div v-if="invites.length == 0">
-                            <em>(No pending invites)</em>
-                        </div>
-                        <hr />
-                        <h4>Send invite</h4>
-                        <form @submit.prevent="inviteUser">
-                            <input type="email" class="form-control" v-model="inviteEmail" placeholder="Email address" style="display: inline; width: auto;" required="" />
-                            <input type="submit" value="Invite member" class="btn btn-primary" />
+                        <p><em>Will delete all incidents and error reports that have been received in a specific environment.</em></p>
+                        <form v-if="environments.length > 0" v-on:submit.prevent="resetEnvironment()">
+                            <div class="form-group">
+                                <select name="envId" v-model="selectedResetEnvironment">
+                                    <option v-for="env in environments" :value="env.id">
+                                        {{env.name}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-red" >Reset</button>
+                            </div>
+
                         </form>
+                        <div v-if="environments.length == 0" class="text-blue">
+                            <em>(No environments have been received in reports)</em>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -68,5 +55,5 @@
 </template>
 
 
-<style src="./security.css"></style>
-<script src="./security.ts"></script>
+<style src="./environments.css"></style>
+<script src="./environments.ts"></script>

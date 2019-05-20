@@ -17,4 +17,5 @@ export class GetEnvironmentsResultItem
 export class ResetEnvironment {
     public static TYPE_NAME: string = 'ResetEnvironment';
     public EnvironmentId: number;
+    public ApplicationId: number;
 }
