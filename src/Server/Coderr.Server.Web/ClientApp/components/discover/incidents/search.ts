@@ -2,6 +2,7 @@ import { PubSubService, MessageContext } from "../../../services/PubSub";
 import * as MenuApi from "../../../services/menu/MenuApi";
 import { FindIncidents, FindIncidentsResult, IncidentOrder } from "../../../dto/Core/Incidents";
 import { GetTags, TagDTO } from "../../../dto/Modules/Tagging";
+import { GetEnvironments, GetEnvironmentsResult, GetEnvironmentsResultItem } from "../../../dto/Core/Environments";
 import { ApplicationService, AppEvents, ApplicationCreated } from "../../../services/applications/ApplicationService";
 import { ApiClient } from '../../../services/ApiClient';
 import { AppRoot } from "../../../services/AppRoot";
@@ -26,7 +27,10 @@ interface Application2 {
     name: string;
 }
 
-
+interface IEnvironment2 {
+    id: number;
+    name: string;
+}
 
 @Component
 export default class IncidentSearchComponent extends Vue {
@@ -43,6 +47,9 @@ export default class IncidentSearchComponent extends Vue {
     incidents: Incident[] = [];
     availableTags: string[] = [];
     activeTags: string[] = [];
+
+    availableEnvironments: IEnvironment2[] = [];
+    activeEnvironment: number[] = [];
 
     availableApplications: Application2[] = [];
     activeApplications: number[] = [];
@@ -62,7 +69,11 @@ export default class IncidentSearchComponent extends Vue {
     //for the close dialog
     currentIncidentId = 0;
 
+    private activeBtn$ = 'btn-blue';
+    private inactiveBtn$ = 'btn-black';
+
     created() {
+        console.log('created', this.activeApplications);
         PubSubService.Instance.subscribe(MenuApi.MessagingTopics.ApplicationChanged, this.onApplicationChangedInNavMenu);
 
         //fetch in created since we do not need the DOM
@@ -91,12 +102,28 @@ export default class IncidentSearchComponent extends Vue {
         });
         this.readyPromises$.push(promise2);
 
+        var promise3 = new Promise<any>(resolve => {
+            let q = new GetEnvironments();
+            AppRoot.Instance.apiClient.query<GetEnvironmentsResult>(q)
+                .then(x => {
+                    this.availableEnvironments.length = 0;
+                    console.log(x.Items);
+                    x.Items.forEach(x => {
+                        this.availableEnvironments.push({ id: x.Id, name: x.Name });
+                    });
+                    resolve();
+                });
+        });
+        this.readyPromises$.push(promise2);
+
         PubSubService.Instance.subscribe(AppEvents.Created, ctx => {
+            console.log('appCreated', ctx, this.activeApplications);
             var msg = <ApplicationCreated>ctx.message.body;
             this.availableApplications.push({ id: msg.id, name: msg.name });
         });
 
         if (this.$route.params.applicationId) {
+            console.log('routeAppId', this.$route.params.applicationId);
             var appId = parseInt(this.$route.params.applicationId, 10);
             this.activeApplications = [appId];
             this.showApplicationColumn = false;
@@ -104,12 +131,14 @@ export default class IncidentSearchComponent extends Vue {
     }
 
     destroyed() {
+        console.log('destroyed', this.activeApplications);
         PubSubService.Instance.unsubscribe(MenuApi.MessagingTopics.ApplicationChanged, this.onApplicationChangedInNavMenu);
         this.destroyed$ = true;
     }
 
     mounted() {
         this.destroyed$ = false;
+        console.log('mounted', this.activeApplications);
 
         var readyPromise = AppRoot.Instance.loadState('incident-search', this);
         this.readyPromises$.push(readyPromise);
@@ -119,17 +148,18 @@ export default class IncidentSearchComponent extends Vue {
                     return;
                 }
 
-                if (this.$route.params.applicationId) {
-                    var id = parseInt(this.$route.params.applicationId, 10);
-                    if (id > 0) {
-                        this.activeApplications = [id];
-                        this.showApplicationColumn = false;
-                    }
-                } else {
-                    this.highlightActiveApps();
-                }
+                //if (this.$route.params.applicationId) {
+                //    var id = parseInt(this.$route.params.applicationId, 10);
+                //    if (id > 0) {
+                //        this.activeApplications = [id];
+                //        this.showApplicationColumn = false;
+                //    }
+                //} else {
+                //    this.highlightActiveApps();
+                //}
 
                 this.highlightActiveTags();
+                this.highlightActiveEnvironments();
                 this.drawSearchUi();
                 this.highlightIncidentState(this.incidentState);
                 this.search(true);
@@ -153,25 +183,39 @@ export default class IncidentSearchComponent extends Vue {
         var btn = <HTMLButtonElement>e.target;
         var tag = <string>btn.getAttribute('data-tag');
 
-        if (btn.className.indexOf('btn-dark') === -1) {
-            btn.className = 'btn btn-dark';
+        if (btn.className.indexOf(this.activeBtn$) === -1) {
+            btn.className = `btn btn-sm ${this.activeBtn$}`;
             this.activeTags.push(tag);
         } else {
-            btn.className = 'btn btn-light';
+            btn.className = `btn btn-sm ${this.inactiveBtn$}`;
             this.activeTags = this.activeTags.filter(itm => itm !== tag);
         }
     }
 
+    toggleEnvironment(e: MouseEvent) {
+        var btn = <HTMLButtonElement>e.target;
+        var environmentId = parseInt(btn.getAttribute('data-environment'), 10);
+
+        if (btn.className.indexOf(this.activeBtn$) === -1) {
+            btn.className = `btn btn-sm ${this.activeBtn$}`;
+            this.activeEnvironment.push(environmentId);
+        } else {
+            btn.className = `btn btn-sm ${this.inactiveBtn$}`;
+            this.activeEnvironment = this.activeEnvironment.filter(itm => itm !== environmentId);
+        }
+    }
+
     toggleApplication(e: MouseEvent) {
+        console.log('toogle application')
         var btn = <HTMLButtonElement>e.target;
         var attr = btn.getAttribute('data-app');
         var applicationId = parseInt(<string>attr, 10);
 
-        if (btn.className.indexOf('btn-dark') === -1) {
-            btn.className = 'btn btn-dark';
+        if (btn.className.indexOf(this.activeBtn$) === -1) {
+            btn.className = `btn btn-sm ${this.activeBtn$}`;
             this.activeApplications.push(applicationId);
         } else {
-            btn.className = 'btn btn-light';
+            btn.className = `btn btn-sm ${this.inactiveBtn$}`;
             this.activeApplications = this.activeApplications.filter(itm => {
                 return itm !== applicationId;
             });
@@ -216,7 +260,6 @@ export default class IncidentSearchComponent extends Vue {
 
         query.SortAscending = this.ascendingSort;
         query.SortType = this.sortKey;
-
         query.Tags = this.activeTags;
 
         if (this.activeApplications.length > 0) {
@@ -279,7 +322,17 @@ export default class IncidentSearchComponent extends Vue {
             const elem = <HTMLInputElement>elems[i];
             this.incidentService$.assignToMe(parseInt(elem.value));
         }
-        AppRoot.notify('All incidents have been assigned to you. Click on the "Analyze" menu to start working with them.');
+        AppRoot.notify('All selected incidents have been assigned to you. Click on the "Analyze" menu to start working with them.');
+        setTimeout(() => { this.search() }, 1000);
+    }
+
+    closeSelectedIncidents() {
+        const elems = document.querySelectorAll('#searchTable tbody input[type="checkbox"]:checked');
+        for (let i = 0; i < elems.length; i++) {
+            const elem = <HTMLInputElement>elems[i];
+            this.incidentService$.close(parseInt(elem.value), "Mass close from search.");
+        }
+        AppRoot.notify('All selected incidents have closed.');
         setTimeout(() => { this.search() }, 1000);
     }
 
@@ -299,6 +352,7 @@ export default class IncidentSearchComponent extends Vue {
     }
 
     private onApplicationChangedInNavMenu(ctx: MessageContext) {
+        console.log('aaaaahhhhar ', ctx.message);
         if (this.$route.name !== 'findIncidents') {
             return;
         }
@@ -342,8 +396,23 @@ export default class IncidentSearchComponent extends Vue {
                 this.activeTags.length = 0;
                 return;
             }
-            elem.classList.remove('btn-light');
-            elem.classList.add('btn-dark');
+            elem.classList.remove(this.inactiveBtn$);
+            elem.classList.add(this.activeBtn$);
+        });
+    }
+
+    private highlightActiveEnvironments() {
+        this.activeEnvironment.forEach(value => {
+            var elem = <HTMLElement>document.querySelector(`[data-environment="${value}"`);
+            if (!elem) {
+
+                // reset so that we do not have a lot of invalid environments
+                // in our localStorage
+                this.activeEnvironment.length = 0;
+                return;
+            }
+            elem.classList.remove(this.inactiveBtn$);
+            elem.classList.add(this.activeBtn$);
         });
     }
 
@@ -352,11 +421,12 @@ export default class IncidentSearchComponent extends Vue {
         for (var i = 0; i < buttons.length; ++i) {
             var button = <HTMLButtonElement>buttons[i];
 
-            button.classList.add('btn-light');
-            button.classList.remove('btn-dark');
-
+            button.classList.remove(this.inactiveBtn$);
             if (button.value === incidentState.toString()) {
-                button.classList.add('btn-dark');
+                button.classList.remove(this.inactiveBtn$);
+                button.classList.add(this.activeBtn$);
+            } else {
+                button.classList.add(this.inactiveBtn$);
             }
         }
 
@@ -375,8 +445,8 @@ export default class IncidentSearchComponent extends Vue {
                 return;
             }
 
-            elem.classList.remove('btn-light');
-            elem.classList.add('btn-dark');
+            elem.classList.remove(this.inactiveBtn$);
+            elem.classList.add(this.activeBtn$);
         });
     }
 

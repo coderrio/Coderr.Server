@@ -18,6 +18,7 @@ using Coderr.Server.Infrastructure.Configuration.Database;
 using Coderr.Server.Infrastructure.Messaging;
 using Coderr.Server.SqlServer;
 using Coderr.Server.SqlServer.Migrations;
+using Coderr.Server.SqlServer.Schema;
 using Coderr.Server.Web.Areas.Installation;
 using Coderr.Server.Web.Boot;
 using Coderr.Server.Web.Boot.Adapters;
@@ -131,15 +132,12 @@ namespace Coderr.Server.Web
 
             try
             {
-                var migrator = new SchemaManager(() => OpenConnection(CoderrClaims.SystemPrincipal));
-                if (migrator.CanSchemaBeUpgraded())
-                {
-                    migrator.UpgradeDatabaseSchema();
-                }
+                var migrator = new MigrationRunner(() => OpenConnection(CoderrClaims.SystemPrincipal), "Coderr", typeof(CoderrMigrationPointer).Namespace);
+                migrator.Run();
             }
             catch (Exception ex)
             {
-                _logger.Error("DB Migration failed.", ex);
+                _logger.Fatal("DB Migration failed.", ex);
                 Err.Report(ex, new {Migration = true});
             }
         }

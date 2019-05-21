@@ -47,5 +47,10 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Commands
         ///     Version of the report (version of the Coderr.Reporting API contract)
         /// </summary>
         public string ReportVersion { get; set; }
+
+        /// <summary>
+        /// "Dev", "Production", "Test" etc
+        /// </summary>
+        public string EnvironmentName { get; set; }
     }
 }

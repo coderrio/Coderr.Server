@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Coderr.Server.Abstractions.Security;
 using Coderr.Server.Api.Core.Incidents.Commands;
 using Coderr.Server.Api.Core.Incidents.Events;
@@ -24,14 +25,14 @@ namespace Coderr.Server.App.Core.Incidents.Commands
         public async Task HandleAsync(IMessageContext context, AssignIncident message)
         {
             var assignedBy = message.AssignedBy;
-            if (assignedBy != 0)
+            if (assignedBy == 0)
                 assignedBy = context.Principal.GetAccountId();
 
             var incident = await _repository.GetAsync(message.IncidentId);
             incident.Assign(message.AssignedTo, message.AssignedAtUtc);
             await _repository.UpdateAsync(incident);
 
-            var evt = new IncidentAssigned(message.IncidentId, assignedBy, message.AssignedTo);
+            var evt = new IncidentAssigned(message.IncidentId, assignedBy, message.AssignedTo, message.AssignedAtUtc ?? DateTime.UtcNow);
             await context.SendAsync(evt);
         }
     }

@@ -1,0 +1,59 @@
+<template>
+    <div class="mt-4">
+        <div class="row">
+            <div class="col-lg-8 environments">
+                <div class="card">
+                    <div class="card-header">
+                        Application environments for {{applicationName}}
+                    </div>
+                    <div class="card-body">
+                        <h3>Received environments</h3>
+                        <em>Environments that were specified using <code>Err.Configuration.EnvironmentName</code>.</em>
+                        <div class="ml-3">
+                            <ul>
+                                <li v-for="environment in environments">
+                                    {{environment.name}}
+                                </li>
+                            </ul>
+                        </div>
+                        <div v-if="environments.length == 0">
+                            <p><em>No environments have been specified in reports.</em></p>
+                            <p>
+                                <em><a href="#" style="text-decoration: underline">Learn how to specify the environment (like "Production", "Test", "Staging" etc)</a></em>
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">Reset environment</div>
+                    <div class="card-body">
+                        <p><em>Will delete all incidents and error reports that have been received in a specific environment.</em></p>
+                        <form v-if="environments.length > 0" v-on:submit.prevent="resetEnvironment()">
+                            <div class="form-group">
+                                <select name="envId" v-model="selectedResetEnvironment">
+                                    <option v-for="env in environments" :value="env.id">
+                                        {{env.name}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-red" >Reset</button>
+                            </div>
+
+                        </form>
+                        <div v-if="environments.length == 0" class="text-blue">
+                            <em>(No environments have been received in reports)</em>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+
+<style src="./environments.css"></style>
+<script src="./environments.ts"></script>

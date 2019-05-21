@@ -10,5 +10,3 @@
 DROP TABLE QueueEvents;
 DROP TABLE QueueFeedback;
 DROP TABLE QueueReports;
-
-UPDATE DatabaseSchema SET Version = 7;

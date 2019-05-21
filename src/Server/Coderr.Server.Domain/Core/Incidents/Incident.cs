@@ -174,7 +174,7 @@ namespace Coderr.Server.Domain.Core.Incidents
         public void Close(int solvedBy, string solution, DateTime? when = null)
         {
             if (solution == null) throw new ArgumentNullException("solution");
-            if (solvedBy <= 0) throw new ArgumentOutOfRangeException("solvedBy");
+            if (solvedBy <= 0) throw new ArgumentOutOfRangeException("solvedBy", solvedBy, "Must specify a solver.");
 
             Solution = new IncidentSolution(solvedBy, solution);
             UpdatedAtUtc = DateTime.UtcNow;

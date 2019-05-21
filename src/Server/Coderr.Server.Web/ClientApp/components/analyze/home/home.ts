@@ -8,8 +8,8 @@ export default class AnalyzeHomeComponent extends Vue {
     showWelcome: boolean = false;
 
     created() {
-        MyIncidents.Instance.subscribeOnSelectedIncident(x => this.onIncidentSelected(x));
-        MyIncidents.Instance.subscribeOnListChanges(x => this.onIncidentListChanged(x));
+        MyIncidents.Instance.subscribeOnSelectedIncident(this.onIncidentSelected);
+        MyIncidents.Instance.subscribeOnListChanges(this.onIncidentListChanged);
         MyIncidents.Instance.ready()
             .then(() => this.onReady());
     }

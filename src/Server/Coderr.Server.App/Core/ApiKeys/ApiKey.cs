@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -28,9 +29,15 @@ namespace Coderr.Server.App.Core.ApiKeys
         ///     <para>
         ///         Typically contains <see cref="CoderrClaims.Application" /> to identity which applications the key can access.
         ///     </para>
+        ///     <para>If no applications are specified, then the key have access to all apps</para>
         /// </remarks>
-        public Claim[] Claims { get { return _claims.ToArray(); } private set { _claims = new List<Claim>(value); } }
-
+        public Claim[] Claims
+        {
+            get => _claims.Any()
+                ? _claims.ToArray()
+                : new[] { new Claim(ClaimTypes.Role, CoderrRoles.SysAdmin) };
+            private set => _claims = new List<Claim>(value);
+        }
         /// <summary>
         ///     When this key was generated
         /// </summary>

@@ -27,9 +27,7 @@ export default class AnalyzeIncidentComponent extends Vue {
     currentCollectionName: string = '';
 
     created() {
-        MyIncidents.Instance.subscribeOnSelectedIncident(x => {
-            this.selectIncident(x);
-        });
+        MyIncidents.Instance.subscribeOnSelectedIncident(this.selectIncident);
     }
 
     mounted() {

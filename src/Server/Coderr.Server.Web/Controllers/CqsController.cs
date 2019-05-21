@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Coderr.Server.Abstractions.Security;
 using Coderr.Server.Api.Core.Applications.Commands;
 using Coderr.Server.Api.Core.Applications.Queries;
+using Coderr.Server.Domain;
 using Coderr.Server.Infrastructure.Messaging;
 using Coderr.Server.Web.Boot.Cqs;
 using Coderr.Server.Web.Infrastructure.Results;
@@ -34,6 +35,7 @@ namespace Coderr.Server.Web.Controllers
         private readonly ILog _logger = LogManager.GetLogger(typeof(CqsController));
         private readonly IMessageBus _messageBus;
         private readonly IQueryBus _queryBus;
+        private readonly IPrincipalAccessor _principalSetter;
 
         static CqsController()
         {
@@ -47,10 +49,11 @@ namespace Coderr.Server.Web.Controllers
             _sendMethod = typeof(IMessageBus).GetMethod("SendAsync", new[] { typeof(ClaimsPrincipal), typeof(object) });
         }
 
-        public CqsController(IMessageBus messageBus, IQueryBus queryBus)
+        public CqsController(IMessageBus messageBus, IQueryBus queryBus, IPrincipalAccessor principalSetter)
         {
             _messageBus = messageBus;
             _queryBus = queryBus;
+            _principalSetter = principalSetter;
         }
 
         [HttpPost("api/authenticate")]
@@ -67,7 +70,8 @@ namespace Coderr.Server.Web.Controllers
             {
                 AccountId = User.GetAccountId(),
                 UserName = User.Identity.Name,
-                Applications = result
+                Applications = result,
+                IsSysAdmin = User.IsInRole(CoderrRoles.SysAdmin),
             };
             return Json(dto);
         }
@@ -161,6 +165,12 @@ namespace Coderr.Server.Web.Controllers
                 ex = e1;
             }
 
+
+            if (ex is EntityNotFoundException || ex is Griffin.Data.EntityNotFoundException)
+            {
+                _logger.Error("Entity not found " + json, ex);
+                return NotFound();
+            }
             if (ex is InvalidCredentialException)
             {
                 _logger.Error("Auth error for " + json, ex);

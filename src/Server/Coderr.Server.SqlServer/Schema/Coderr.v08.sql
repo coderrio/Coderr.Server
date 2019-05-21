@@ -32,5 +32,3 @@ WHERE
     KCU.TABLE_NAME = 'ApiKeyApplications' AND
     KCU.COLUMN_NAME = 'ApplicationId'
 IF @ConstraintName IS NOT NULL EXEC('alter table ApiKeyApplications drop  CONSTRAINT ' + @ConstraintName)
-
-UPDATE DatabaseSchema SET Version = 8;

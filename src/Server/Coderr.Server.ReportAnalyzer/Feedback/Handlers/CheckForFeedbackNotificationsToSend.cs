@@ -53,7 +53,7 @@ namespace Coderr.Server.ReportAnalyzer.Feedback.Handlers
                 if (string.IsNullOrEmpty(e.UserEmailAddress))
                     e.UserEmailAddress = "unknown";
 
-                var incidentUrl = string.Format("{0}/#/application/{1}/incident/{2}",
+                var incidentUrl = string.Format("{0}/discover/{1}/incident/{2}",
                     config.BaseUrl.ToString().TrimEnd('/'),
                     incident.ApplicationId,
                     incident.Id);

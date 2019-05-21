@@ -10,6 +10,13 @@ namespace Coderr.Server.ReportAnalyzer
     public interface IAnalyticsRepository
     {
         /// <summary>
+        /// Save an environment
+        /// </summary>
+        /// <param name="incidentId">incident that the report is for</param>
+        /// <param name="environmentName">Name as specified by the developer</param>
+        void SaveEnvironmentName(int incidentId, string environmentName);
+
+        /// <summary>
         ///     Create a new incident
         /// </summary>
         /// <param name="incidentAnalysis">incident to persist</param>

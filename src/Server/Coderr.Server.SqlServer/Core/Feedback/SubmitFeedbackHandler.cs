@@ -24,6 +24,14 @@ namespace Coderr.Server.SqlServer.Core.Feedback
 
         public async Task HandleAsync(IMessageContext context, SubmitFeedback command)
         {
+            if (string.IsNullOrEmpty(command.Email))
+            {
+                if (string.IsNullOrEmpty(command.Feedback))
+                    return;
+                if (command.Feedback.Length < 3)
+                    return;
+            }
+
             ErrorReportEntity report;
             if (command.ReportId > 0)
                 report = await _reportsRepository.GetAsync(command.ReportId);

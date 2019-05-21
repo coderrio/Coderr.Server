@@ -56,7 +56,7 @@ namespace Coderr.Server.Api.Core.Incidents.Queries
         public bool IsReOpened { get; set; }
 
         /// <summary>
-        ///     When we recieved the last report.
+        ///     When we received the last report.
         /// </summary>
         public DateTime LastReportReceivedAtUtc { get; set; }
 

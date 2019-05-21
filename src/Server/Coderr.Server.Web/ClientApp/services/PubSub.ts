@@ -32,7 +32,8 @@ export class PubSubService {
         topic.unsubscribe(callback);
     }
 
-    publish(topicName: string, message: Message|any) {
+    publish(topicName: string, message: Message | any) {
+        console.log('PUBLISH ', topicName)
         if (!message.hasOwnProperty("type")) {
             message = {
                 body: message,

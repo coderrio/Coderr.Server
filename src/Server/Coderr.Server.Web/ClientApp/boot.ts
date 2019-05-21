@@ -177,6 +177,11 @@ const routes = [
                 component: require("./components/manage/application/security/security.vue.html").default
             },
             {
+                name: "manageEnvironments",
+                path: ":applicationId/environments/",
+                component: require("./components/manage/application/environments/environments.vue.html").default
+            },
+            {
                 name: "managePartitions",
                 path: ":applicationId/partitions/",
                 component: require("./components/manage/application/partitions/partition.vue.html").default

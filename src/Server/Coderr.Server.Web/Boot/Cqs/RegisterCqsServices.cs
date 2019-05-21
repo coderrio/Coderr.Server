@@ -56,6 +56,7 @@ namespace Coderr.Server.Web.Boot.Cqs
             assembly = typeof(SqlServerTools).Assembly;
             context.Services.RegisterMessageHandlers(assembly);
 
+            context.Services.AddScoped<ScopeCommitter>();
             context.Services.AddSingleton<IMessageQueueProvider>(CreateQueueProvider(context));
             context.Services.AddSingleton<IMessageBus>(x =>
             {
@@ -107,7 +108,7 @@ namespace Coderr.Server.Web.Boot.Cqs
             var outboundQueue = inboundQueueName == outboundQueueName
                 ? inboundQueue
                 : _queueProvider.Open(outboundQueueName);
-            var scopeFactory = new ScopeWrapper(context.ServiceProvider);
+            var scopeFactory = new ScopeFactory(context.ServiceProvider);
             var listener = new QueueListener(inboundQueue, outboundQueue, scopeFactory)
             {
                 RetryAttempts = new[]

@@ -31,7 +31,8 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers
                 var entity = new ErrorReportEntity(message.ApplicationId, message.ReportId, message.CreatedAtUtc, ex,
                     contexts)
                 {
-                    RemoteAddress = message.RemoteAddress
+                    RemoteAddress = message.RemoteAddress,
+                    EnvironmentName = message.EnvironmentName
                 };
                 await _analyzer.Analyze(context, entity);
             }

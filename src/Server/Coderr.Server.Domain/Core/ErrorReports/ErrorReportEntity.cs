@@ -123,6 +123,11 @@ namespace Coderr.Server.Domain.Core.ErrorReports
         public ClaimsPrincipal User { get; set; }
 
         /// <summary>
+        /// System environment ("Production", "Test" etc") that the error was reported in.
+        /// </summary>
+        public string EnvironmentName { get; set; }
+
+        /// <summary>
         ///     Used when we get hash code collisions to identify the correct incident.
         /// </summary>
         public string GenerateHashCodeIdentifier()

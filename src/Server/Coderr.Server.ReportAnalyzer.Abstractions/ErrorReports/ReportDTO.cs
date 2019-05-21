@@ -51,5 +51,10 @@ namespace Coderr.Server.ReportAnalyzer.Abstractions.ErrorReports
         ///     Version of the report
         /// </summary>
         public string ReportVersion { get; set; }
+
+        /// <summary>
+        ///     Application version without prefix ("1.0.9" and not "v1.0.9")
+        /// </summary>
+        public string ApplicationVersion { get; set; }
     }
 }

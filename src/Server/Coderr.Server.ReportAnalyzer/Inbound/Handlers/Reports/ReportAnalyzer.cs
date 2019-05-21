@@ -88,11 +88,17 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
             if (incident == null)
             {
                 incident = BuildIncident(report);
-                _repository.CreateIncident(incident);
 
-                var evt = new IncidentCreated(incident.ApplicationId, incident.Id, incident.Description, incident.FullName)
+                if (!string.IsNullOrEmpty(report.EnvironmentName))
+                    incident.EnvironmentNames = new[] { report.EnvironmentName };
+
+                _repository.CreateIncident(incident);
+                _repository.SaveEnvironmentName(incident.Id, report.EnvironmentName);
+                var evt = new IncidentCreated(incident.ApplicationId,
+                    incident.Id, incident.Description, incident.FullName)
                 {
-                    ApplicationVersion = applicationVersion
+                    CreatedAtUtc = incident.CreatedAtUtc,
+                    ApplicationVersion = applicationVersion,
                 };
 
                 await _domainQueue.PublishAsync(context.Principal, evt);
@@ -114,6 +120,8 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
                     return;
                 }
 
+                if (!string.IsNullOrEmpty(report.EnvironmentName))
+                    _repository.SaveEnvironmentName(incident.Id, report.EnvironmentName);
                 if (incident.IsClosed)
                 {
                     if (applicationVersion != null && incident.IsReportIgnored(applicationVersion))
@@ -157,7 +165,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
             var sw = new Stopwatch();
             sw.Start();
             _logger.Debug("Publishing now: " + report.ClientReportId);
-            var e = new ReportAddedToIncident(summary, ConvertToCoreReport(report), isReOpened);
+            var e = new ReportAddedToIncident(summary, ConvertToCoreReport(report, applicationVersion), isReOpened);
             await context.SendAsync(e);
 
             await context.SendAsync(new ProcessInboundContextCollections());
@@ -241,7 +249,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
             return ex;
         }
 
-        private ReportDTO ConvertToCoreReport(ErrorReportEntity report)
+        private ReportDTO ConvertToCoreReport(ErrorReportEntity report, string version)
         {
             var dto = new ReportDTO
             {
@@ -253,7 +261,8 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
                 IncidentId = report.IncidentId,
                 RemoteAddress = report.RemoteAddress,
                 ReportId = report.ClientReportId,
-                ReportVersion = "1"
+                ReportVersion = "1",
+                ApplicationVersion = version
             };
             if (report.Exception != null)
                 dto.Exception = ConvertToCoreException(report.Exception);

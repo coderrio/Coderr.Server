@@ -90,7 +90,36 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer
                     .GetProperty("Id", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
                     .SetValue(incident, id);
             }
+
             //_unitOfWork.Insert(incident);
+        }
+
+        public void SaveEnvironmentName(int incidentId, string environmentName)
+        {
+            using (var cmd = _unitOfWork.CreateCommand())
+            {
+                cmd.CommandText = @"declare @environmentId int;
+                                    select @environmentId = id 
+                                    from Environments
+                                    WHERE Name = @name;
+
+                                    if @environmentId is null
+                                    begin
+                                        insert into Environments(Name) VALUES(@name);
+                                        set @environmentId = scope_identity();
+                                        insert into IncidentEnvironments (IncidentId, EnvironmentId) VALUES(@incidentId, @environmentId);
+                                    end
+                                    else
+                                    begin
+                                        INSERT INTO IncidentEnvironments (IncidentId, EnvironmentId)
+                                        SELECT @incidentId, @environmentId
+                                        WHERE NOT EXISTS (SELECT IncidentId, EnvironmentId FROM IncidentEnvironment
+                                                         WHERE IncidentId=@incidentId AND EnvironmentId=@environmentId)
+                                    end;";
+                cmd.AddParameter("incidentId", incidentId);
+                cmd.AddParameter("name", environmentName);
+                cmd.ExecuteNonQuery();
+            }
         }
 
         public void UpdateIncident(IncidentBeingAnalyzed incident)

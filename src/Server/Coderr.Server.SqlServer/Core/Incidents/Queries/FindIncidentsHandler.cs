@@ -64,6 +64,13 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
                     sqlQuery += string.Format(ourSql, ps.Remove(ps.Length - 2, 2), query.Tags.Length);
                 }
 
+                if (query.EnvironmentIds != null && query.EnvironmentIds.Length > 0)
+                {
+                    sqlQuery += " JOIN IncidentEnvironments ON (Incidents.Id = IncidentEnvironments.IncidentId)" +
+                                $" WHERE IncidentEnvironments.EnvironmentId IN ({string.Join(", ", query.EnvironmentIds)})";
+                    startWord = " AND ";
+                }
+
                 if (!string.IsNullOrEmpty(query.ContextCollectionPropertyValue)
                     || !string.IsNullOrEmpty(query.ContextCollectionName)
                     || !string.IsNullOrEmpty(query.ContextCollectionPropertyName))
@@ -107,7 +114,7 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
                         .ToArray();
                     if (!appIds.Any())
                     {
-                        return new FindIncidentsResult {Items = new FindIncidentsResultItem[0]};
+                        return new FindIncidentsResult { Items = new FindIncidentsResultItem[0] };
                     }
 
                     sqlQuery += $" {startWord} Applications.Id IN({string.Join(",", appIds)})";

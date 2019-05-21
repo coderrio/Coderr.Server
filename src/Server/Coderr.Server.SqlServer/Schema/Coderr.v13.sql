@@ -6,5 +6,3 @@
     Count int not null,
     NotifiedAccounts varchar(max) not null
 );
-
-UPDATE DatabaseSchema SET Version = 13;

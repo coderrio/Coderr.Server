@@ -39,5 +39,3 @@ BEGIN
 END
 ALTER TABLE ApplicationMembers WITH CHECK ADD CONSTRAINT FK_AppMemb_Accounts FOREIGN KEY (AccountId) REFERENCES Accounts (Id) ON DELETE CASCADE;
 ALTER TABLE ApplicationMembers WITH CHECK ADD CONSTRAINT FK_AppMemb_Applications FOREIGN KEY (ApplicationId) REFERENCES Applications (Id) ON DELETE CASCADE;
-
-UPDATE DatabaseSchema SET Version = 3;

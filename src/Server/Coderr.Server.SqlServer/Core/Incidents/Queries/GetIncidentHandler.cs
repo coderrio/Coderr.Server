@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Coderr.Server.Abstractions.Incidents;
 using Coderr.Server.Api.Core.Incidents.Queries;
@@ -19,7 +20,7 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
         private readonly IAdoNetUnitOfWork _unitOfWork;
         private ILog _logger = LogManager.GetLogger(typeof(GetIncidentHandler));
 
-        public GetIncidentHandler(IAdoNetUnitOfWork unitOfWork, 
+        public GetIncidentHandler(IAdoNetUnitOfWork unitOfWork,
             IEnumerable<IQuickfactProvider> quickfactProviders,
             IEnumerable<IHighlightedContextDataProvider> highlightedContextDataProviders,
             IEnumerable<ISolutionProvider> solutionProviders
@@ -40,15 +41,26 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
                 " LEFT JOIN Users WITH (ReadPast) ON (AssignedToId = Users.AccountId) " +
                 " WHERE Incidents.Id = @id";
 
-            var result = await _unitOfWork.FirstAsync<GetIncidentResult>(sql, new {Id = query.IncidentId});
+            var result = await _unitOfWork.FirstAsync<GetIncidentResult>(sql, new { Id = query.IncidentId });
             _logger.Info("GetIncident step 2");
 
-            var tags = GetTags(query.IncidentId);
-            result.Tags = tags.ToArray();
+            result.Tags = GetTags(query.IncidentId);
             _logger.Info("GetIncident step 3");
 
             var facts = new List<QuickFact>
             {
+                new QuickFact
+                {
+                    Title = "Created",
+                    Description = "When we received the first error report",
+                    Value = result.CreatedAtUtc.ToShortDateString()
+                },
+                new QuickFact
+                {
+                    Title = "Last report",
+                    Description = "When we received the most recent error report",
+                    Value = result.LastReportReceivedAtUtc.ToShortDateString()
+                },
                 new QuickFact
                 {
                     Title = "Report Count",
@@ -57,6 +69,15 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
                 }
             };
 
+            var environments = GetEnvironments(query.IncidentId);
+            if (environments.Any())
+            {
+                facts.Add(new QuickFact
+                {
+                    Title = "Environments",
+                    Value = string.Join(", ", environments)
+                });
+            }
 
             _logger.Info("GetIncident step 4");
             await GetContextCollectionNames(result);
@@ -133,7 +154,7 @@ group by cast(createdatutc as date)";
                         specifiedDays[specifiedDaysIndexer].Date == curDate)
                         values[valuesIndexer++] = specifiedDays[specifiedDaysIndexer++];
                     else
-                        values[valuesIndexer++] = new ReportDay {Date = curDate};
+                        values[valuesIndexer++] = new ReportDay { Date = curDate };
                     curDate = curDate.AddDays(1);
                 }
                 result.DayStatistics = values;
@@ -185,22 +206,52 @@ AND IncidentId = @incidentId;";
             }
         }
 
-        private List<string> GetTags(int incidentId)
+        private string[] GetTags(int incidentId)
         {
-            var tags = new List<string>();
             using (var cmd = _unitOfWork.CreateCommand())
             {
-                cmd.CommandText = "SELECT TagName FROM IncidentTags WHERE IncidentId=@id";
+                cmd.CommandText = @"Declare @Tags AS Nvarchar(MAX);
+                                    SELECT @Tags = COALESCE(@Tags + ';', '') + TagName 
+                                    FROM IncidentTags 
+                                    WHERE IncidentId=@id
+                                    ORDER BY OrderNumber, TagName
+                                    SELECT @Tags";
                 cmd.AddParameter("id", incidentId);
                 using (var reader = cmd.ExecuteReader())
                 {
-                    while (reader.Read())
-                    {
-                        tags.Add((string) reader[0]);
-                    }
+                    if (!reader.Read())
+                        return new string[0];
+
+                    var value = reader[0];
+                    return value is DBNull
+                        ? new string[0]
+                        : ((string)value).Split(';');
                 }
             }
-            return tags;
+        }
+        private string[] GetEnvironments(int incidentId)
+        {
+            using (var cmd = _unitOfWork.CreateCommand())
+            {
+                cmd.CommandText = @"Declare @Names AS Nvarchar(MAX);
+                                    SELECT @Names = COALESCE(@Names + ';', '') + Name
+                                    FROM IncidentEnvironments ie
+                                    JOIN Environments ae ON (ae.Id = ie.EnvironmentId) 
+                                    WHERE IncidentId=@id
+                                    ORDER BY Name
+                                    SELECT @Names";
+                cmd.AddParameter("id", incidentId);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (!reader.Read())
+                        return new string[0];
+
+                    var value = reader[0];
+                    return value is DBNull
+                        ? new string[0]
+                        : ((string)value).Split(';');
+                }
+            }
         }
     }
 }

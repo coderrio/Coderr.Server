@@ -23,6 +23,16 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Models
         /// </summary>
         public NewReportException Exception { get; set; }
 
+        /// <summary>
+        /// "Dev", "Production" etc.
+        /// </summary>
+        public string EnvironmentName { get; set; }
+
+        /// <summary>
+        /// Used in older clients.
+        /// </summary>
+        public string Environment { get; set; }
+
         public string RemoteAddress { get; set; }
 
         /// <summary>

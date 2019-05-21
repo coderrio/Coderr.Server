@@ -65,7 +65,7 @@ namespace Coderr.Server.App.Core.Incidents.Commands
             await _repository.UpdateAsync(incident);
 
             var closedEvt =
-                new IncidentClosed(incident.Id, command.UserId, command.Solution, command.ApplicationVersion);
+                new IncidentClosed(incident.Id, command.UserId, command.Solution, command.ApplicationVersion, command.ClosedAtUtc ?? DateTime.UtcNow);
             await context.SendAsync(closedEvt);
         }
     }

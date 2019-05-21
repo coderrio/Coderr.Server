@@ -35,7 +35,7 @@ export class MyIncidents {
     private selectedCallbacks$: incidentSelectedCallback[] = [];
     private listChangedCallback$: incidentListChanged[] = [];
     private loadPromise$: Promise<any>;
-    
+
     myIncidents: IMyIncident[] = [];
     selectedIncident: IMyIncident | null;
     menuTitle = '';
