@@ -3,19 +3,27 @@
     bottom: 0
 }
 
-
-.onboarding .card .card-footer, .onboarding .card .card-header {
-    background: transparent;
-    border: none;
-}
-
-/*.onboarding .card-group {
-    padding: 5px;
-}*/
 .onboarding .card {
+    background-color: #393938; /*gray-700*/
+    color: #ffffff;
     margin-right: 10px;
 }
 
-.onboarding .card:last-child {
-    margin-right: 0;
-}
+
+    .onboarding .card:last-child {
+        margin-right: 0;
+    }
+
+    .onboarding .card .card-footer, .onboarding .card .card-header {
+        background: transparent;
+        border: none;
+    }
+
+
+    .onboarding .card a {
+        color: #f18c65;
+    }
+
+        .onboarding .card a.btn {
+            color: #fff;
+        }

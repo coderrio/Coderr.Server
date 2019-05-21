@@ -28,6 +28,6 @@ namespace Coderr.Server.Api.Core.Incidents.Events
         public int IncidentId { get;private  set; }
         public string Solution { get;private  set; }
         public string ApplicationVersion { get; private set; }
-        public DateTime ClosedAtUtc { get; }
+        public DateTime ClosedAtUtc { get; private set; }
     }
 }
