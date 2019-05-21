@@ -192,7 +192,7 @@ export default class DiscoverComponent extends Vue {
         });
         series.push({
             name: 'Reports',
-            data: stats.Incidents
+            data: stats.ErrorReports
         });
         this.legend.push({
             name: 'Reports',

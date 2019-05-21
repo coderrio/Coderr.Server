@@ -3,9 +3,14 @@ Coderr Community Server
 
 [![Build status](https://1tcompany.visualstudio.com/_apis/public/build/definitions/75570083-b1ef-4e78-88e2-5db4982f756c/6/badge)]() [![Github All Releases](https://img.shields.io/github/downloads/coderrio/coderr.server/total.svg?style=flat-square)]()
 
-# Skip logfiles - Use automated exception handling!
+# Discover more errors and solve them faster!
 
-![OSS screenshot of v2.0](docs/screenshot.png)*screenshot is from the version 2.0 beta*
+![Welcome screen](docs/dashboard.png)
+
+
+## Search function
+
+![Search using your own data](docs/seach.png)
 
 
 .. don't want to host/maintain your own server? Try [Coderr Live](https://coderr.io/live/)

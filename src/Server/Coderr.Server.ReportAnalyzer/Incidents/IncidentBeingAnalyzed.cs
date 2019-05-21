@@ -93,11 +93,6 @@ namespace Coderr.Server.ReportAnalyzer.Incidents
         }
 
         /// <summary>
-        /// List of all environment names that the developer specified when reporting the errors.
-        /// </summary>
-        public string[] EnvironmentNames { get; set; }
-
-        /// <summary>
         ///     Full name of the exception message.
         /// </summary>
         public string FullName { get; private set; }
