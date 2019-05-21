@@ -10,8 +10,7 @@ Coderr Community Server
 
 ## Search function
 
-![Search using your own data](docs/seach.png)
-
+![Search using your own data](docs/search.png)
 
 .. don't want to host/maintain your own server? Try [Coderr Live](https://coderr.io/live/)
 
