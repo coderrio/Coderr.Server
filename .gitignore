@@ -35,3 +35,4 @@ src/Tools/TsGenerator/.vs/*
 src/Help/*
 src/Server/Coderr.Server.Web.Tests/applicationhost.config
 /src/Server/Coderr.Server.Web/node_modules/*
+/src/Server/Coderr.Server.Web/wwwroot/dist**
