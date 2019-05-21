@@ -285,7 +285,7 @@ export default class IncidentSearchComponent extends Vue {
             query.ContextCollectionPropertyValue = this.contextCollectionPropertyValue;
         }
 
-
+        
         AppRoot.Instance.apiClient.query<FindIncidentsResult>(query)
             .then(result => {
                 if (this.destroyed$) {
