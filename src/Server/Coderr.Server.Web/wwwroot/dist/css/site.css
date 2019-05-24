@@ -1,3 +1,18 @@
+.minimal-gutters {
+  margin-right: 1px;
+  margin-left: 1px; }
+
+.minimal-gutters > .col,
+.minimal-gutters > [class*="col-"] {
+  padding-right: 1px;
+  padding-left: 1px; }
+
+.minimal-gutters .card {
+  margin-bottom: 1px; }
+
+.card .card-body ul {
+  padding-left: 10px; }
+
 .card-header h3 {
   color: #59c1d5; }
 

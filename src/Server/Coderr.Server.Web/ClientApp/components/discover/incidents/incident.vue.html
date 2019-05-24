@@ -1,6 +1,6 @@
 <template>
     <div id="IncidentSearchView">
-        <div class="row mb-2">
+        <div class="row mb-2 mt-2">
             <div class="col-lg-12">
                 <h3>{{incident.Description}} <small class="text-muted">[{{incident.FullName}}]</small></h3>
                 <div class="">
@@ -8,10 +8,8 @@
                     <div class="float-right">
                         <a class="btn btn-primary" href="#" v-if="incident.IncidentState == 0" v-on:click.prevent="assignToMe">Assign to me</a>
                         <div class="dropdown" style="display: inline-block">
-                            <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Other actions
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item" href="#" v-if="incident.IncidentState == 0" v-on:click.prevent="assignToSomeoneElse">Assign to ..</a>
                                 <a class="dropdown-item" href="#" v-if="!isClosed" v-on:click.prevent="close">Close incident</a>
                                 <a class="dropdown-item" href="#" v-if="!isClosed && !isIgnored" v-on:click.prevent="ignore">Ignore incident</a>
@@ -21,12 +19,12 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row minimal-gutters">
             <div class="col-lg-12">
-                <div class="card">
+                <div class="card  bg-dark">
                     <div class="card-body">
                         <div class="position-relative">
-                            <h3>Report history</h3>
+                            <h3 class="">Report history</h3>
                             <div class="ct-chart incident-chart">
 
                             </div>
@@ -36,7 +34,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row minimal-gutters">
             <div class="col-lg-8">
                 <div class="card">
                     <div class="card-body">

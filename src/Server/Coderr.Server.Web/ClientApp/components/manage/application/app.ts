@@ -28,6 +28,5 @@ export default class ManageComponent extends Vue {
     }
 
     private testMe(e:any) {
-        console.log('TEST ME ',e);
     }
 }

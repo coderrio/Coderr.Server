@@ -22,33 +22,17 @@ export default class AnalyzeMenuComponent extends Vue {
     created() {
         MyIncidents.Instance.subscribeOnSelectedIncident(this.onIncidentSelected);
         MyIncidents.Instance.subscribeOnListChanges(this.onListChanged);
-        MyIncidents.Instance.ready()
-            .then(x => {
-                this.incidents = MyIncidents.Instance.myIncidents;
-            });
-
-        if (this.$route.params.incidentId) {
-            this.incidentId = parseInt(this.$route.params.incidentId, 10);
-            MyIncidents.Instance.switchIncident(this.incidentId);
-        }
     }
 
     mounted() {
-        MyIncidents.Instance.ready().then(() => {
-            if (!this.$route.params.incidentId) {
-                if (MyIncidents.Instance.myIncidents.length === 0) {
-                    return;
+        MyIncidents.Instance.ready()
+            .then(() => {
+                if (MyIncidents.Instance.incident) {
+                    this.incidentId = MyIncidents.Instance.incident.incidentId;
+                    this.title = MyIncidents.Instance.incident.title;
                 }
-
-                var incident = MyIncidents.Instance.myIncidents[0];
-                this.$router.push({ name: 'analyzeIncident', params: { incidentId: incident.incidentId.toString() } });
-                return;
-            }
-
-            if (this.incidentId) {
-                MyIncidents.Instance.switchIncident(this.incidentId);
-            }
-        });
+                this.incidents = MyIncidents.Instance.myIncidents;
+            });
     }
 
     destroyed() {

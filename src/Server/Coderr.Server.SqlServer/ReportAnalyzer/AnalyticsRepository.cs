@@ -113,7 +113,7 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer
                                     begin
                                         INSERT INTO IncidentEnvironments (IncidentId, EnvironmentId)
                                         SELECT @incidentId, @environmentId
-                                        WHERE NOT EXISTS (SELECT IncidentId, EnvironmentId FROM IncidentEnvironment
+                                        WHERE NOT EXISTS (SELECT IncidentId, EnvironmentId FROM IncidentEnvironments
                                                          WHERE IncidentId=@incidentId AND EnvironmentId=@environmentId)
                                     end;";
                 cmd.AddParameter("incidentId", incidentId);

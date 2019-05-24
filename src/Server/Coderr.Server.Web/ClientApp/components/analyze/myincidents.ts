@@ -61,6 +61,11 @@ export class MyIncidents {
         });
     }
 
+    public get incident(): IMyIncident {
+        return this.selectedIncident;
+    }
+
+
     async ready() {
         await this.loadPromise$;
     }
@@ -87,7 +92,7 @@ export class MyIncidents {
             }
         }
 
-        this.getNextIncident();
+        this.setNextIncident();
     }
 
     async switchIncident(incidentId: number) {
@@ -97,7 +102,7 @@ export class MyIncidents {
 
         var incident = await this.getIncident(incidentId);
         if (incident == null) {
-            this.getNextIncident();
+            this.setNextIncident();
         } else {
             this.selectedIncident = incident;
             this.triggerIncidentChangedCallbacks();
@@ -249,11 +254,11 @@ export class MyIncidents {
 
 
         if (this.selectedIncident == null || incidentId === this.selectedIncident.incidentId) {
-            this.getNextIncident();
+            this.setNextIncident();
         }
     }
 
-    private getNextIncident() {
+    private setNextIncident() {
         if (this.myIncidents.length > 0) {
             this.selectedIncident = this.myIncidents[0];
         } else {

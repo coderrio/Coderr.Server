@@ -1,6 +1,6 @@
 <template>
     <div id="IncidentSearchView">
-        <div class="row ">
+        <div class="row">
             <div class="col">
                 <div id="SearchOptions" class="bg-dark card-body">
                     <div class="form-group input-group-sm">
@@ -78,10 +78,10 @@
                 </div>
             </div>
         </div>
-        <div class="row bg-light mt-2 pb-3">
-            <div class="col no-gutters">
+        <div class="row pb-4" v-if="incidents.length > 0">
+            <div class="col">
                 <table class="table w-100 table-striped checkboxes" id="searchTable" style="table-layout: fixed">
-                    <thead class="table-light search-head bg-dark">
+                    <thead class="table-light search-head bg-blue">
                         <tr>
                             <th><input class="form-check-inline" type="checkbox" v-on:change="checkAll($event)" /> Name</th>
                             <th v-if="showApplicationColumn">Application</th>
@@ -111,18 +111,22 @@
                         </tr>
                     </tbody>
                 </table>
-                <div v-if="incidents.length == 0" class="mt-4">
-                    <em>No incidents have been reported (or nothing matched your search).</em>
-                </div>
-                <div v-else>
-                    <button class="btn btn-blue" v-on:click.prevent="assignAllToMe">Assign selected incidents to me</button>
-                    <button class="btn btn-dark" v-on:click.prevent="closeSelectedIncidents">Close selected incidents</button>
-                </div>
             </div>
             <div id="CloseBody" style="display: none">
                 <input type="text" name="version" class="form-control mb-3" size="10" placeholder="Which version is the error corrected in? (format: 1.2.10)" pattern="[0-9\.]*" title="You can use semantic versioning, including pre-releases, but must specify the release version here." />
                 <textarea style="display: none" id="CloseArea" class="w-100" rows="10" placeholder="How did you solve the error?" autofocus="autofocus" required="required"></textarea>
                 <em><router-link :to="{name: 'closeIncident', params: { incidentId: currentIncidentId }}">Go to full screen editor</router-link></em>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col bg-dark p-3">
+                <div v-if="incidents.length == 0" class="m-4">
+                    <em>No incidents have been reported (or nothing matched your search).</em>
+                </div>
+                <div v-else>
+                    <button class="btn btn-blue" v-on:click.prevent="assignAllToMe">Assign selected incidents to me</button>
+                    <button class="btn btn-light" v-on:click.prevent="closeSelectedIncidents">Close selected incidents</button>
+                </div>
             </div>
         </div>
     </div>

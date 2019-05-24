@@ -3,6 +3,14 @@
     bottom: 0
 }
 
+.onboarding a {
+    color: #f18c65;
+}
+
+.onboarding a.btn, .onboarding button.btn {
+    color: #fff;
+}
+
 
 .onboarding .card .card-footer, .onboarding .card .card-header {
     background: transparent;
@@ -12,8 +20,9 @@
 /*.onboarding .card-group {
     padding: 5px;
 }*/
-.onboarding .card {
+.onboarding .card, .onboarding .card * {
     margin-right: 10px;
+    color: #000;
 }
 
 .onboarding .card:last-child {

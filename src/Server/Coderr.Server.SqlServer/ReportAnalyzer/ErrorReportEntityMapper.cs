@@ -20,6 +20,9 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer
                 .ToPropertyValue(x => null)
                 .ToColumnValue(x => "");
 
+            Property(x => x.EnvironmentName)
+                .Ignore();
+
             Property(x => x.ClientReportId)
                 .ColumnName("ErrorId");
 

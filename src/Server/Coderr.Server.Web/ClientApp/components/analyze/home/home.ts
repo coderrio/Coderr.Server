@@ -29,5 +29,8 @@ export default class AnalyzeHomeComponent extends Vue {
 
     private onReady() {
         this.showWelcome = MyIncidents.Instance.myIncidents.length === 0;
+        if (MyIncidents.Instance.myIncidents.length > 0) {
+            MyIncidents.Instance.switchIncident(MyIncidents.Instance.myIncidents[0].incidentId);
+        }
     }
 }
