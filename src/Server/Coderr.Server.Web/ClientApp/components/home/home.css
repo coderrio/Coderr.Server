@@ -25,6 +25,6 @@
     color: #000;
 }
 
-.onboarding .card:last-child {
-    margin-right: 0;
-}
+        .onboarding .card a.btn {
+            color: #fff;
+        }

@@ -21,6 +21,7 @@ export default class DiscoverMenuComponent extends Vue {
 
     @Watch('$route.params.applicationId')
     onApplicationSelected(value: string, oldValue: string) {
+        console.log('DiscoverMenuComponent.changed,', value, 'stored:', this.currentApplicationId, 'old', oldValue);
         if (!value) {
             this.currentApplicationId = null;
             return;

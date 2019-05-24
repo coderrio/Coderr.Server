@@ -79,6 +79,7 @@ export default class NavMenuComponent extends Vue {
             }
         });
         PubSubService.Instance.subscribe(MenuApi.MessagingTopics.SetApplication, ctx => {
+            console.log('Set application invoked', ctx);
             var msg = <MenuApi.SetApplication>ctx.message.body;
             this.changeApplication(msg.applicationId);
         });
