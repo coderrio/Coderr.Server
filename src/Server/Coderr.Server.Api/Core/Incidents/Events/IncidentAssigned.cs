@@ -45,7 +45,7 @@ namespace Coderr.Server.Api.Core.Incidents.Events
         /// <summary>
         /// When the incident was assigned (client side)
         /// </summary>
-        public DateTime AssignedAtUtc { get; private set;  }
+        public DateTime AssignedAtUtc { get; private set; }
 
         /// <summary>
         ///     Incident being assigned

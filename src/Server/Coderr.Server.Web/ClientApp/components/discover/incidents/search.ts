@@ -73,7 +73,6 @@ export default class IncidentSearchComponent extends Vue {
     private inactiveBtn$ = 'btn-black';
 
     created() {
-        console.log('created', this.activeApplications);
         PubSubService.Instance.subscribe(MenuApi.MessagingTopics.ApplicationChanged, this.onApplicationChangedInNavMenu);
 
         //fetch in created since we do not need the DOM
@@ -107,7 +106,6 @@ export default class IncidentSearchComponent extends Vue {
             AppRoot.Instance.apiClient.query<GetEnvironmentsResult>(q)
                 .then(x => {
                     this.availableEnvironments.length = 0;
-                    console.log(x.Items);
                     x.Items.forEach(x => {
                         this.availableEnvironments.push({ id: x.Id, name: x.Name });
                     });
@@ -117,13 +115,11 @@ export default class IncidentSearchComponent extends Vue {
         this.readyPromises$.push(promise2);
 
         PubSubService.Instance.subscribe(AppEvents.Created, ctx => {
-            console.log('appCreated', ctx, this.activeApplications);
             var msg = <ApplicationCreated>ctx.message.body;
             this.availableApplications.push({ id: msg.id, name: msg.name });
         });
 
         if (this.$route.params.applicationId) {
-            console.log('routeAppId', this.$route.params.applicationId);
             var appId = parseInt(this.$route.params.applicationId, 10);
             this.activeApplications = [appId];
             this.showApplicationColumn = false;
@@ -131,14 +127,12 @@ export default class IncidentSearchComponent extends Vue {
     }
 
     destroyed() {
-        console.log('destroyed', this.activeApplications);
         PubSubService.Instance.unsubscribe(MenuApi.MessagingTopics.ApplicationChanged, this.onApplicationChangedInNavMenu);
         this.destroyed$ = true;
     }
 
     mounted() {
         this.destroyed$ = false;
-        console.log('mounted', this.activeApplications);
 
         var readyPromise = AppRoot.Instance.loadState('incident-search', this);
         this.readyPromises$.push(readyPromise);
@@ -206,7 +200,6 @@ export default class IncidentSearchComponent extends Vue {
     }
 
     toggleApplication(e: MouseEvent) {
-        console.log('toogle application')
         var btn = <HTMLButtonElement>e.target;
         var attr = btn.getAttribute('data-app');
         var applicationId = parseInt(<string>attr, 10);
@@ -262,7 +255,7 @@ export default class IncidentSearchComponent extends Vue {
         query.SortType = this.sortKey;
         query.Tags = this.activeTags;
 
-        if (this.activeApplications.length > 0) {
+        if (this.activeApplications.length > 0  && this.showApplicationColumn) {
             query.ApplicationIds = this.activeApplications;
         }
 
@@ -352,7 +345,6 @@ export default class IncidentSearchComponent extends Vue {
     }
 
     private onApplicationChangedInNavMenu(ctx: MessageContext) {
-        console.log('aaaaahhhhar ', ctx.message);
         if (this.$route.name !== 'findIncidents') {
             return;
         }
@@ -375,10 +367,14 @@ export default class IncidentSearchComponent extends Vue {
         }
 
         var us = document.querySelector('.search-head th[data-value="' + this.sortKey + '"] i');
-        if (this.ascendingSort) {
-            us.classList.add('fa-chevron-up');
+        if (us == null) {
+            console.log('failed to find', '.search-head th[data-value="' + this.sortKey + '"] i');
         } else {
-            us.classList.add('fa-chevron-down');
+            if (this.ascendingSort) {
+                us.classList.add('fa-chevron-up');
+            } else {
+                us.classList.add('fa-chevron-down');
+            }
         }
 
     }

@@ -97,6 +97,7 @@ export default class AnalyzeReportComponent extends Vue {
 
         if (reportId !== this.reportId) {
             this.reportId = reportId;
+            console.log('got report id', this.reportId);
             this.$router.push({ name: 'analyzeReport', params: { reportId: reportId.toString(), incidentId: this.incidentId.toString() } });
         }
 

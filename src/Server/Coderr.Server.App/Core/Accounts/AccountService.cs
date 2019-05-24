@@ -86,9 +86,10 @@ namespace Coderr.Server.App.Core.Accounts
                 throw new ArgumentOutOfRangeException("ActivationKey", activationKey,
                     "Key was not found.");
 
+
             account.Activate();
             await _repository.UpdateAsync(account);
-
+            
             
             if (!user.IsCurrentAccount(account.Id))
             {

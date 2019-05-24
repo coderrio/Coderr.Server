@@ -16,6 +16,7 @@ namespace Coderr.Server.SqlServer.Core.Accounts
     public class AccountRepository : IAccountRepository
     {
         private readonly IAdoNetUnitOfWork _uow;
+        private ILog _logger = LogManager.GetLogger(typeof(AccountRepository));
 
         public AccountRepository(IAdoNetUnitOfWork uow)
         {
@@ -43,7 +44,12 @@ namespace Coderr.Server.SqlServer.Core.Accounts
             {
                 cmd.CommandText = "SELECT * FROM Accounts WHERE ActivationKey=@key";
                 cmd.AddParameter("key", activationKey);
-                return await cmd.FirstOrDefaultAsync(new AccountMapper());
+                var accounts= await cmd.ToListAsync(new AccountMapper());
+                if (accounts.Count == 0)
+                    return null;
+
+                _logger.Error($"Found {accounts.Count} accounts, expected one.");
+                return accounts.First();
             }
         }
 

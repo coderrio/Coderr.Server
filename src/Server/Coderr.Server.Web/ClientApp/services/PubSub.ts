@@ -33,7 +33,6 @@ export class PubSubService {
     }
 
     publish(topicName: string, message: Message | any) {
-        console.log('PUBLISH ', topicName)
         if (!message.hasOwnProperty("type")) {
             message = {
                 body: message,

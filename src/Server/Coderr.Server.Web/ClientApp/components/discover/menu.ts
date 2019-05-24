@@ -36,7 +36,6 @@ export default class DiscoverMenuComponent extends Vue {
     }
 
     created() {
-        console.log('CREATED');
         PubSubService.Instance.subscribe(MenuApi.MessagingTopics.ApplicationChanged, this.onChanged);
     }
 
@@ -46,21 +45,17 @@ export default class DiscoverMenuComponent extends Vue {
         }
 
         var appId = parseInt(this.$route.params.applicationId);
-        console.log('DiscoverMenuComponent.changed3,', appId, 'old', this.currentApplicationId);
         this.currentApplicationId = appId;
     }
 
     destroyed() {
-        console.log('destroyed');
         PubSubService.Instance.unsubscribe(MenuApi.MessagingTopics.ApplicationChanged, this.onChanged);
     }
 
     testMe(e: any) {
-        console.log('DiscoverMenuComponent.CLICK: ',e);
     }
 
     private onChanged(ctx: MessageContext) {
-        console.log('DiscoverMenuComponent.OnChanged,', ctx, 'old', this.currentApplicationId);
         var msg = <MenuApi.SetApplication>ctx.message.body;
         this.currentApplicationId = msg.applicationId;
     }

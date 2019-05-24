@@ -3,26 +3,27 @@
     bottom: 0
 }
 
-.onboarding .card {
-    background-color: #393938; /*gray-700*/
-    color: #ffffff;
-    margin-right: 10px;
+.onboarding a {
+    color: #f18c65;
+}
+
+.onboarding a.btn, .onboarding button.btn {
+    color: #fff;
 }
 
 
-    .onboarding .card:last-child {
-        margin-right: 0;
-    }
+.onboarding .card .card-footer, .onboarding .card .card-header {
+    background: transparent;
+    border: none;
+}
 
-    .onboarding .card .card-footer, .onboarding .card .card-header {
-        background: transparent;
-        border: none;
-    }
-
-
-    .onboarding .card a {
-        color: #f18c65;
-    }
+/*.onboarding .card-group {
+    padding: 5px;
+}*/
+.onboarding .card, .onboarding .card * {
+    margin-right: 10px;
+    color: #000;
+}
 
         .onboarding .card a.btn {
             color: #fff;

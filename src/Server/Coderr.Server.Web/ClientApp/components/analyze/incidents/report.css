@@ -9,9 +9,15 @@
     display: none;
 }
 
-.ReportsView .contextCollections th, .ReportsView .contextCollections td {
+.collection a {
+    padding: 5px;
+    margin: 5px;
+    display: block;
+}
+.ReportsView .contextCollections th, .ReportsView .contextCollections td, .ReportsView h4 {
     padding: 0.15rem;
 }
+
 
 .contextCollections .card {
     overflow-x: scroll;
