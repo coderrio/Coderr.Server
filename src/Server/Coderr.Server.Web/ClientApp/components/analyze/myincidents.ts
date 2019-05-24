@@ -137,6 +137,7 @@ export class MyIncidents {
 
     private onIncidentAssigned(msgContext: MessageContext) {
         var msg = <IncidentAssigned>msgContext.message.body;
+        console.log('got assigned: ' + msg.incidentId)
         AppRoot.Instance.incidentService.get(msg.incidentId)
             .then(assignedIncident => {
                 if (this.allMyIncidents$.findIndex(menuItem => menuItem.incidentId === assignedIncident.Id) === -1) {
@@ -145,6 +146,9 @@ export class MyIncidents {
                     this.filterMyIncidents();
                     this.triggerIncidentListCallbacks(item.incidentId, true);
                 }
+
+                // always switch to correct incident upon assign
+                this.switchIncident(msg.incidentId);
             });
     }
 

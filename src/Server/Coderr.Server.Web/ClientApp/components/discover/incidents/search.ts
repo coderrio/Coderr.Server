@@ -367,10 +367,14 @@ export default class IncidentSearchComponent extends Vue {
         }
 
         var us = document.querySelector('.search-head th[data-value="' + this.sortKey + '"] i');
-        if (this.ascendingSort) {
-            us.classList.add('fa-chevron-up');
+        if (us == null) {
+            console.log('failed to find', '.search-head th[data-value="' + this.sortKey + '"] i');
         } else {
-            us.classList.add('fa-chevron-down');
+            if (this.ascendingSort) {
+                us.classList.add('fa-chevron-up');
+            } else {
+                us.classList.add('fa-chevron-down');
+            }
         }
 
     }

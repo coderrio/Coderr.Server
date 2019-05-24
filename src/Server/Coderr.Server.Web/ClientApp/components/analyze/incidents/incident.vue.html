@@ -93,17 +93,17 @@
                         <div v-if="currentReport.Id > 0" style="overflow: auto">
                             <table class="table mt-3 mb-3">
                                 <tbody>
-                                    <tr v-for="prop in currentCollection.Properties">
-                                        <td>{{prop.Key}}</td>
-                                        <td v-html="prop.Value"></td>
-                                    </tr>
+                                <tr v-for="prop in currentCollection.Properties">
+                                    <td>{{prop.Key}}</td>
+                                    <td v-html="prop.Value"></td>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
-                        <hr />
-                        <em>
-                            <router-link class="btn btn-primary btn-block" :to="{ name: 'analyzeReport', params: { reportId: currentReport.Id, incidentId: incident.Id}}">View entire report</router-link>
+                        <em v-if="currentReport.Id > 0" >
+                            <router-link class="btn btn-primary btn-block" :to="{ name: 'analyzeReport', params: { reportId: currentReport.Id, incidentId: incident.Id}}">Report browser</router-link>
                         </em>
+
                     </div>
                 </div>
             </div>
