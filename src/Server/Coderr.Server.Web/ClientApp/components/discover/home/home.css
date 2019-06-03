@@ -68,3 +68,8 @@
 svg.ct-chart-line, svg.ct-chart-line g.ct-labels, svg.ct-chart-line g.ct-labels span.ct-label {
     overflow: visible;
 }
+
+
+#IncidentSearchView #SearchOptions input {
+    color: #000;
+}

@@ -88,8 +88,8 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
             if (incident == null)
             {
                 incident = BuildIncident(report);
-
                 _repository.CreateIncident(incident);
+
                 var evt = new IncidentCreated(incident.ApplicationId,
                     incident.Id, incident.Description, incident.FullName)
                 {
