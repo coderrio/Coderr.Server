@@ -137,7 +137,6 @@ export class MyIncidents {
 
     private onIncidentAssigned(msgContext: MessageContext) {
         var msg = <IncidentAssigned>msgContext.message.body;
-        console.log('got assigned: ' + msg.incidentId)
         AppRoot.Instance.incidentService.get(msg.incidentId)
             .then(assignedIncident => {
                 if (this.allMyIncidents$.findIndex(menuItem => menuItem.incidentId === assignedIncident.Id) === -1) {

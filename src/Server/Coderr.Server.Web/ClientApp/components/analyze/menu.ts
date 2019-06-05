@@ -20,6 +20,9 @@ export default class AnalyzeMenuComponent extends Vue {
     incidentId: number | null = null;
 
     created() {
+        if (this.$route.params.incidentId) {
+            this.incidentId = parseInt(this.$route.params.incidentId, 10);
+        }
         MyIncidents.Instance.subscribeOnSelectedIncident(this.onIncidentSelected);
         MyIncidents.Instance.subscribeOnListChanges(this.onListChanged);
     }
@@ -40,11 +43,18 @@ export default class AnalyzeMenuComponent extends Vue {
         MyIncidents.Instance.unsubscribe(this.onListChanged);
     }
 
-    private onListChanged() {
+    private onListChanged(args: any) {
         this.incidents = MyIncidents.Instance.myIncidents;
-        if (!this.incidentId && this.incidents.length > 0) {
+        if (this.incidents.length === 0) {
+            return;
+        }
+
+        if (!this.incidentId) {
             this.incidentId = this.incidents[0].incidentId;
             MyIncidents.Instance.switchIncident(this.incidentId);
+        } else {
+            var incident = this.incidents.find(x => x.incidentId === this.incidentId);
+            this.title = incident.shortTitle;
         }
     }
 
