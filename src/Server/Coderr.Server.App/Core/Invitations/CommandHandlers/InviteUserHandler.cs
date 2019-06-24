@@ -135,17 +135,18 @@ namespace Coderr.Server.App.Core.Invitations.CommandHandlers
             var msg = new EmailMessage
             {
                 Subject = "You have been invited by " + invitation.InvitedBy + " to Coderr.",
-                TextBody = string.Format(@"Hello,
+                TextBody = $@"Hello,
 
-{0} has invited to you join their team at Coderr, a service used to keep track of exceptions in .NET applications.
+{invitation.InvitedBy} has invited to you join their team at Coderr, a service used to keep track of exceptions in .NET applications.
 
 Click on the following link to accept the invitation:
-{2}/account/accept/{1}
+{url}/invitation/accept/{invitation.InvitationKey}
 
-{3}
+{reason}
+
 Best regards,
   The Coderr team
-", invitation.InvitedBy, invitation.InvitationKey, url, reason),
+",
                 Recipients = new[] {new EmailAddress(invitation.EmailToInvitedUser)}
             };
 

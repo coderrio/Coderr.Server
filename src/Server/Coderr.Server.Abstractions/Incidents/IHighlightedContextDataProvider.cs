@@ -6,6 +6,6 @@ namespace Coderr.Server.Abstractions.Incidents
 {
     public interface IHighlightedContextDataProvider
     {
-        Task CollectAsync(int incidentId, ICollection<HighlightedContextData> data);
+        Task CollectAsync(HighlightedContextDataProviderContext context);
     }
 }

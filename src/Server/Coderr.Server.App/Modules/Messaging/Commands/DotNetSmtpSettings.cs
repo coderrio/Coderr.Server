@@ -54,10 +54,10 @@ namespace Coderr.Server.App.Modules.Messaging.Commands
 
         void IConfigurationSection.Load(IDictionary<string, string> items)
         {
-            AccountName = items.GetString("AccountName");
+            AccountName = items.GetString("AccountName", "");
             AccountPassword = items.GetString("AccountPassword", "");
-            SmtpHost = items.GetString("SmtpHost");
-            PortNumber = items.GetInteger("PortNumber", 0);
+            SmtpHost = items.GetString("SmtpHost", "");
+            PortNumber = items.GetInteger("PortNumber", null);
             UseSsl = items.GetBoolean("UseSSL", false);
         }
     }

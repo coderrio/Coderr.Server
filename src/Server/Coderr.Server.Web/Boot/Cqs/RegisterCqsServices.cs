@@ -141,8 +141,7 @@ namespace Coderr.Server.Web.Boot.Cqs
 
         private IMessageInvoker CreateMessageInvoker(IServiceProvider x)
         {
-            var provider = (ServiceProvider) x;
-            var invoker = new MessageInvoker(new HandlerScopeWrapper(provider));
+            var invoker = new MessageInvoker(new HandlerScopeWrapper(x));
             invoker.HandlerMissing += (sender, args) =>
             {
                 _log.Error("No handler for " + args.Message.Body.GetType());

@@ -4,6 +4,7 @@ using DotNetCqs;
 
 namespace Coderr.Server.Api.Core.Accounts.Queries
 {
+    [Message]
     public class ListAccounts : Query<ListAccountsResult>
     {
     }

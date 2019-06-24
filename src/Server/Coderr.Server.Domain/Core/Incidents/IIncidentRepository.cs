@@ -9,8 +9,6 @@ namespace Coderr.Server.Domain.Core.Incidents
     /// </summary>
     public interface IIncidentRepository
     {
-        Task<IList<Incident>> GetAllAsync(IEnumerable<int> incidentIds);
-
         /// <summary>
         ///     Get incident
         /// </summary>
@@ -19,6 +17,13 @@ namespace Coderr.Server.Domain.Core.Incidents
         /// <exception cref="ArgumentOutOfRangeException">id</exception>
         /// <exception cref="EntityNotFoundException">No incident was found with the given key.</exception>
         Task<Incident> GetAsync(int id);
+
+        /// <summary>
+        /// Get specified incidents
+        /// </summary>
+        /// <param name="incidentIds">ids to fecth</param>
+        /// <returns>All specified (or an exception will be thrown if any of them are missing)</returns>
+        Task<IList<Incident>> GetManyAsync(IEnumerable<int> incidentIds);
 
         /// <summary>
         ///     Count the number of incidents for the given application
