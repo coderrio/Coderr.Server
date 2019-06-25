@@ -216,7 +216,6 @@ export class IncidentService {
 
         var pending = this.pendingIncidents.find(x => x.incidentId === id);
         if (pending) {
-            console.log('awaiting ' + pending.incidentId + " for " + id)
             return await pending.promise;
         }
 
@@ -283,7 +282,6 @@ export class IncidentService {
 
         for (var i = 0; i < this.cachedIncidents.length; i++) {
             if (this.cachedIncidents[i].Id === id) {
-                console.log('returning  cached for ' + id, this.cachedIncidents[i]);
                 return this.cachedIncidents[i];
             }
 

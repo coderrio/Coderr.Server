@@ -21,7 +21,6 @@ export default class ContextNavigatorComponent extends Vue {
 
     @Watch('incidentId')
     onPropertyChanged(value: string, oldValue: string) {
-        console.log("incident id changed", value, oldValue);
         var incidentId = parseInt(value, 10);
         this.loadReports(incidentId);
     }
@@ -33,7 +32,6 @@ export default class ContextNavigatorComponent extends Vue {
         q.PageSize = 50;
         AppRoot.Instance.apiClient.query<GetReportListResult>(q)
             .then(list => {
-                console.log('loaded ' + incidentId, list);
                 this.reports = list.Items;
                 if (this.reports.length > 0) {
                     this.loadReport(this.reports[0].Id);
@@ -46,7 +44,6 @@ export default class ContextNavigatorComponent extends Vue {
         q.ReportId = reportId;
         AppRoot.Instance.apiClient.query<GetReportResult>(q)
             .then(report => {
-                console.log('loaded', report)
                 this.currentReport = report;
                 this.currentReportName = new Date(report.CreatedAtUtc).toLocaleString();
                 //(<HTMLButtonElement>document.getElementById('reportChooser')).removeAttribute('disabled');
