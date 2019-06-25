@@ -6,6 +6,13 @@ namespace Coderr.Server.Abstractions.Incidents
 {
     public class SolutionProviderContext
     {
+        private readonly List<SuggestedIncidentSolution> _possibleSolutions;
+
+        public SolutionProviderContext(List<SuggestedIncidentSolution> possibleSolutions)
+        {
+            _possibleSolutions = possibleSolutions;
+        }
+
         public int ApplicationId { get; set; }
         public string Description { get; set; }
 
@@ -15,7 +22,6 @@ namespace Coderr.Server.Abstractions.Incidents
         public string FullName { get; set; }
 
         public int IncidentId { get; set; }
-        public List<SuggestedIncidentSolution> PossibleSolutions { get; } = new List<SuggestedIncidentSolution>();
 
         public string StackTrace { get; set; }
         public string[] Tags { get; set; }
@@ -24,11 +30,7 @@ namespace Coderr.Server.Abstractions.Incidents
         {
             if (suggestion == null) throw new ArgumentNullException(nameof(suggestion));
             if (motivation == null) throw new ArgumentNullException(nameof(motivation));
-            PossibleSolutions.Add(new SuggestedIncidentSolution
-            {
-                Reason = motivation,
-                SuggestedSolution = suggestion
-            });
+            _possibleSolutions.Add(new SuggestedIncidentSolution {Reason = motivation, SuggestedSolution = suggestion});
         }
     }
 }

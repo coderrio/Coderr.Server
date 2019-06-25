@@ -23,9 +23,9 @@ namespace Coderr.Server.ReportAnalyzer.Similarities.Adapters
 
             var uaParser = Parser.GetDefault();
             var c = uaParser.Parse(context.Value.ToString());
-            context.AddCustomField("UserAgent.Family", c.UserAgent.Family);
+            context.AddCustomField("UserAgent.Family", c.UA.Family);
             context.AddCustomField("UserAgent.Version",
-                string.Format("{0} v{1}.{2}", c.UserAgent.Family, c.UserAgent.Major, c.UserAgent.Minor));
+                string.Format("{0} v{1}.{2}", c.UA.Family, c.UA.Major, c.UA.Minor));
 
 
             context.AddCustomField("UserInfo", "DeviceType", c.Device.Family);

@@ -3,7 +3,7 @@
     /// <summary>
     ///     Current state of an incident
     /// </summary>
-    public enum IncidentState
+    public enum AnalyzedIncidentState
     {
         /// <summary>
         ///     Incident have arrived but have not yet been categorized.

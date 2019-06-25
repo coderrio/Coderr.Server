@@ -49,7 +49,7 @@ namespace Coderr.Server.ReportAnalyzer.Tagging.Handlers
 
             ExtractTagsFromCollections(e, ctx);
 
-            _logger.DebugFormat("Done, identified {0} new tags", string.Join(", ", ctx.NewTags));
+            _logger.DebugFormat("Done, identified {0} new tags", string.Join(",", ctx.NewTags));
 
             if (ctx.NewTags.Count == 0)
                 return;
@@ -70,6 +70,7 @@ namespace Coderr.Server.ReportAnalyzer.Tagging.Handlers
                         var tags = tagsStr.Split(',');
                         foreach (var tag in tags)
                         {
+                            _logger.Debug($"Adding tag '{tag}' to incident {e.Incident.Id}");
                             ctx.AddTag(tag.Trim(), 1);
                         }
                     }

@@ -90,8 +90,8 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
             var contextData = new List<HighlightedContextData>();
             var solutions = new List<SuggestedIncidentSolution>();
             var quickFactContext = new QuickFactContext(result.ApplicationId, query.IncidentId, facts);
-            var highlightItems = new List<HighlightedContextData>();
-            var highlightContext = new HighlightedContextDataProviderContext(highlightItems);
+            var highlightContext = new HighlightedContextDataProviderContext(contextData);
+            var solutionContext = new SolutionProviderContext(solutions);
             foreach (var provider in _quickfactProviders)
             {
                 await provider.CollectAsync(quickFactContext);
@@ -102,7 +102,7 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
             }
             foreach (var provider in _solutionProviders)
             {
-                await provider.SuggestSolutionAsync(query.IncidentId, solutions);
+                await provider.SuggestSolutionAsync(solutionContext);
             }
             _logger.Info("GetIncident step 8");
 

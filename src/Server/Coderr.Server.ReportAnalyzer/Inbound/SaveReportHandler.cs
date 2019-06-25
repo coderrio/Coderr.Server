@@ -27,6 +27,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound
         private readonly IMessageQueue _queue;
         private readonly IAdoNetUnitOfWork _unitOfWork;
         private readonly int _maxSizeForJsonErrorReport;
+        private static readonly DuplicateChecker DuplicateChecker = new DuplicateChecker();
 
         /// <summary>
         ///     Creates a new instance of <see cref="SaveReportHandler" />.
@@ -59,8 +60,8 @@ namespace Coderr.Server.ReportAnalyzer.Inbound
             var application = await GetAppAsync(appKey);
             if (application == null)
             {
-                _logger.Warn("Unknown appKey: " + appKey + " from " + remoteAddress);
-                throw new InvalidCredentialException("AppKey was not found in the database. Key '" + appKey + "'.");
+                _logger.Warn($"Unknown appKey: {appKey} from {remoteAddress}");
+                throw new InvalidCredentialException($"AppKey was not found in the database. Key '{appKey}'.");
             }
 
             if (!ReportValidator.ValidateBody(application.SharedSecret, signatureProvidedByTheClient, reportBody))
@@ -73,6 +74,12 @@ namespace Coderr.Server.ReportAnalyzer.Inbound
             var report = DeserializeBody(reportBody);
             if (report == null)
                 return;
+
+            if (DuplicateChecker.IsDuplicate(remoteAddress, report))
+            {
+                _logger.Debug($"Duplicate report {report.ReportId} from {remoteAddress}");
+                return;
+            }
 
             // correct incorrect clients
             if (report.CreatedAtUtc > DateTime.UtcNow)

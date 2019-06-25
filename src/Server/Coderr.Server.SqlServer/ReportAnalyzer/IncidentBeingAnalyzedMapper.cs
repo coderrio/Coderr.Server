@@ -33,7 +33,7 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer
                 .Ignore();
 
             Property(x => x.State)
-                .ToPropertyValue(x => (IncidentState) x)
+                .ToPropertyValue(x => (AnalyzedIncidentState) x)
                 .ToColumnValue(x => (int) x);
         }
     }
