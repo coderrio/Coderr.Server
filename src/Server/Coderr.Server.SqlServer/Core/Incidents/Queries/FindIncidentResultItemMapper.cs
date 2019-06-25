@@ -23,6 +23,7 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
             destination.ApplicationId = source["ApplicationId"].ToString();
             destination.IsReOpened = source["IsReopened"].Equals(1);
             destination.ReportCount = (int) source["ReportCount"];
+            destination.CreatedAtUtc = (DateTime)source["CreatedAtUtc"];
 
             var value = source["UpdatedAtUtc"];
             if (!(value is DBNull))
@@ -30,8 +31,6 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
 
             value = source["LastReportAtUtc"];
             destination.LastReportReceivedAtUtc = (DateTime) (value is DBNull ? destination.LastUpdateAtUtc : value);
-
-            destination.CreatedAtUtc = (DateTime) source["CreatedAtUtc"];
         }
     }
 }

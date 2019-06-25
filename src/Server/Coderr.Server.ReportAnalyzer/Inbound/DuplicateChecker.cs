@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Coderr.Server.ReportAnalyzer.Inbound.Models;
+using Coderr.Server.ReportAnalyzer.Abstractions.Inbound.Models;
 
 namespace Coderr.Server.ReportAnalyzer.Inbound
 {

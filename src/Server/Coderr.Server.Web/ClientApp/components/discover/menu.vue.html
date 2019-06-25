@@ -3,13 +3,13 @@
         <div class="navbar-light navbar bg-light">
             <ul class="nav">
                 <li class="nav-item">
-                    <router-link @click="testMe()" class="nav-link" :to="{name: 'discover', params: {applicationId: currentApplicationId }}" exact><i class="fa fa-tachometer-alt"></i> Overview</router-link>
+                    <router-link class="nav-link" :to="{name: 'discover', params: {applicationId: currentApplicationId }}" exact><i class="fa fa-tachometer-alt"></i> Overview</router-link>
                 </li>
                 <li class="nav-item">
-                    <router-link @click="testMe()" class="nav-link" :to="{name: 'findIncidents', params: {applicationId: currentApplicationId }}"><i class="fa fa-table"></i> Incidents</router-link>
+                    <router-link class="nav-link" :to="{name: 'findIncidents', params: {applicationId: currentApplicationId }}"><i class="fa fa-table"></i> Incidents</router-link>
                 </li>
                 <li class="nav-item">
-                    <router-link @click="testMe()" class="nav-link" :to="{name: 'configureApplication', params: {applicationId: currentApplicationId }}" v-if="currentApplicationId"><i class="fa fa-cog"></i> Configure your application</router-link>
+                    <router-link class="nav-link" :to="{name: 'configureApplication', params: {applicationId: currentApplicationId }}" v-if="currentApplicationId"><i class="fa fa-cog"></i> Configure your application</router-link>
                 </li>
             </ul>
         </div>

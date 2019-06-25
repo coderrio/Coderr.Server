@@ -1,4 +1,4 @@
-.discover-menu .router-link-active {
+/*.discover-menu .router-link-active {
     font-weight: bold;
 }
 
@@ -14,7 +14,7 @@
     }
 
     .discover-menu li a.router-link-active {
-        /*color: #D8734C;*/
+        /*color: #D8734C;* /
     }
 /*.router-link-exact-active {
     color: #ffffff;

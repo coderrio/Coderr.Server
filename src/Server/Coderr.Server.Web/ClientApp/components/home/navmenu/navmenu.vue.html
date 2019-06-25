@@ -17,15 +17,13 @@
             </div>
             <div class="navbar-collapse collapse" v-if="!onboarding">
                 <ul class="navbar-nav mr-auto" id="mainMenu">
-                    <li class="nav-item">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-primary dropdown-toggle" id="mnuCurrentApplication" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{currentApplicationName}}</button>
-                            <div class="dropdown-menu">
-                                <a v-on:click.prevent="changeApplication(null)" class="dropdown-item"><i class="fa fa-home"></i> All applications</a>
-                                <div class="dropdown-divider"></div>
-                                <div v-for="item in myApplications">
-                                    <a href="#" v-on:click.prevent="changeApplication(item.tag)" class="dropdown-item"><i class="fa-desktop fa text-muted"></i> {{item.title}}</a>
-                                </div>
+                    <li class="nav-item dropdown">
+                        <a class="btn btn-primary nav-link dropdown-toggle" id="mnuCurrentApplication" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{currentApplicationName}}</a>
+                        <div class="dropdown-menu">
+                            <a v-on:click.prevent="changeApplication(null)" class="dropdown-item"><i class="fa fa-home"></i> All applications</a>
+                            <div class="dropdown-divider"></div>
+                            <div v-for="item in myApplications">
+                                <a href="#" v-on:click.prevent="changeApplication(item.tag)" class="dropdown-item"><i class="fa-desktop fa"></i> {{item.title}}</a>
                             </div>
                         </div>
                     </li>

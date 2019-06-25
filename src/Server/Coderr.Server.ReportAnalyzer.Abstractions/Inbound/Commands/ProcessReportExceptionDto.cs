@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Coderr.Server.ReportAnalyzer.Inbound.Commands
+namespace Coderr.Server.ReportAnalyzer.Abstractions.Inbound.Commands
 {
     /// <summary>
     ///     Model used to wrap all information from an exception.

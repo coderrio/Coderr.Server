@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Coderr.Server.ReportAnalyzer.Inbound.Models
+namespace Coderr.Server.ReportAnalyzer.Abstractions.Inbound.Models
 {
     public class NewReportContextInfo
     {

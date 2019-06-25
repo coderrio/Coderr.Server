@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Coderr.Server.ReportAnalyzer.Inbound.Commands
+namespace Coderr.Server.ReportAnalyzer.Abstractions.Inbound.Commands
 {
     /// <summary>
     ///     Feedback item as received by the client library

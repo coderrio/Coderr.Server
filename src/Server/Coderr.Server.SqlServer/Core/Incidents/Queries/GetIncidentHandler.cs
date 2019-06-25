@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Coderr.Server.Abstractions.Incidents;
 using Coderr.Server.Api.Core.Incidents.Queries;
 using DotNetCqs;
-using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 using log4net;
@@ -37,8 +36,8 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
             _logger.Info("GetIncident step 1");
             var sql =
                 "SELECT Incidents.*, Users.Username as AssignedTo " +
-                " FROM Incidents WITH (ReadPast)" +
-                " LEFT JOIN Users WITH (ReadPast) ON (AssignedToId = Users.AccountId) " +
+                " FROM Incidents WITH(READUNCOMMITTED)" +
+                " LEFT JOIN Users WITH(READUNCOMMITTED) ON (AssignedToId = Users.AccountId) " +
                 " WHERE Incidents.Id = @id";
 
             var result = await _unitOfWork.FirstAsync<GetIncidentResult>(sql, new { Id = query.IncidentId });
@@ -87,22 +86,39 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
             await GetStatSummary(query, facts);
             _logger.Info("GetIncident step 7");
 
-            var contextData = new List<HighlightedContextData>();
             var solutions = new List<SuggestedIncidentSolution>();
+            var suggestedSolutionContext = new SolutionProviderContext(solutions)
+            {
+                ApplicationId = result.ApplicationId,
+                Description = result.Description,
+                FullName = result.FullName,
+                IncidentId = result.Id,
+                StackTrace = result.StackTrace,
+                Tags = result.Tags
+            };
+
+            var contextData = new List<HighlightedContextData>();
+            var highlightedContext = new HighlightedContextDataProviderContext(contextData)
+            {
+                ApplicationId = result.ApplicationId,
+                Description = result.Description,
+                FullName = result.FullName,
+                IncidentId = result.Id,
+                StackTrace = result.StackTrace,
+                Tags = result.Tags
+            };
             var quickFactContext = new QuickFactContext(result.ApplicationId, query.IncidentId, facts);
-            var highlightContext = new HighlightedContextDataProviderContext(contextData);
-            var solutionContext = new SolutionProviderContext(solutions);
             foreach (var provider in _quickfactProviders)
             {
                 await provider.CollectAsync(quickFactContext);
             }
             foreach (var provider in _highlightedContextDataProviders)
             {
-                await provider.CollectAsync(highlightContext);
+                await provider.CollectAsync(highlightedContext);
             }
             foreach (var provider in _solutionProviders)
             {
-                await provider.SuggestSolutionAsync(solutionContext);
+                await provider.SuggestSolutionAsync(suggestedSolutionContext);
             }
             _logger.Info("GetIncident step 8");
 
@@ -118,7 +134,7 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
             using (var cmd = _unitOfWork.CreateDbCommand())
             {
                 cmd.CommandText = @"select distinct Name
-from [IncidentContextCollections]
+from [IncidentContextCollections] WITH(READUNCOMMITTED)
 where IncidentId=@incidentId";
                 cmd.AddParameter("incidentId", result.Id);
                 using (var reader = await cmd.ExecuteReaderAsync())
@@ -138,7 +154,7 @@ where IncidentId=@incidentId";
             using (var cmd = _unitOfWork.CreateCommand())
             {
                 cmd.CommandText = @"select cast(createdatutc as date) as Date, count(*) as Count
-from errorreports
+from errorreports WITH(READUNCOMMITTED)
 where incidentid=@incidentId
 AND CreatedAtUtc > @date
 group by cast(createdatutc as date)";
@@ -168,12 +184,15 @@ group by cast(createdatutc as date)";
             using (var cmd = _unitOfWork.CreateDbCommand())
             {
                 cmd.CommandText = @"
-select count(distinct emailaddress) from IncidentFeedback
+select count(distinct emailaddress) 
+from IncidentFeedback 
 where @minDate < CreatedAtUtc
 AND emailaddress is not null
 AND DATALENGTH(emailaddress) > 0
 AND IncidentId = @incidentId;
-select count(*) from IncidentFeedback 
+
+select count(*) 
+from IncidentFeedback 
 where @minDate < CreatedAtUtc
 AND Description is not null
 AND DATALENGTH(Description) > 0
@@ -214,7 +233,7 @@ AND IncidentId = @incidentId;";
             {
                 cmd.CommandText = @"Declare @Tags AS Nvarchar(MAX);
                                     SELECT @Tags = COALESCE(@Tags + ';', '') + TagName 
-                                    FROM IncidentTags 
+                                    FROM IncidentTags WITH(READUNCOMMITTED)
                                     WHERE IncidentId=@id
                                     ORDER BY OrderNumber, TagName
                                     SELECT @Tags";
@@ -237,8 +256,8 @@ AND IncidentId = @incidentId;";
             {
                 cmd.CommandText = @"Declare @Names AS Nvarchar(MAX);
                                     SELECT @Names = COALESCE(@Names + ';', '') + Name
-                                    FROM IncidentEnvironments ie
-                                    JOIN Environments ae ON (ae.Id = ie.EnvironmentId) 
+                                    FROM IncidentEnvironments ie WITH(READUNCOMMITTED)
+                                    JOIN Environments ae WITH(READUNCOMMITTED) ON (ae.Id = ie.EnvironmentId) 
                                     WHERE IncidentId=@id
                                     ORDER BY Name
                                     SELECT @Names";

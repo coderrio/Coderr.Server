@@ -172,6 +172,7 @@ namespace Coderr.Server.Web.Controllers
 
             try
             {
+                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
                 var principal = await _accountService.Login(model.UserName, model.Password);
                 if (principal == null)
                 {

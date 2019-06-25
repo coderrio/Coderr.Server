@@ -286,7 +286,7 @@ namespace Coderr.Server.Web.Controllers
                 return;
 
             var value = (int)prop.GetValue(cqsObject);
-            if (!User.IsApplicationMember(value))
+            if (!User.IsApplicationMember(value) && value != 0)
             {
                 _logger.Warn("Tried to access an application without privileges. accountId: " + User.Identity.Name +
                              ", appId: " + value);

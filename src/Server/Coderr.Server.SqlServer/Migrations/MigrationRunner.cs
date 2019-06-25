@@ -16,13 +16,35 @@ namespace Coderr.Server.SqlServer.Migrations
         private readonly string _scriptNamespace;
         private readonly MigrationScripts _scripts;
         private ILog _logger = LogManager.GetLogger(typeof(MigrationRunner));
+        private Assembly _scriptAssembly;
 
         public MigrationRunner(Func<IDbConnection> connectionFactory, string migrationName, string scriptNamespace)
         {
             _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
             _migrationName = migrationName ?? throw new ArgumentNullException(nameof(migrationName));
             _scriptNamespace = scriptNamespace;
-            _scripts = new MigrationScripts(migrationName);
+            _scriptAssembly = GetScriptAssembly(migrationName);
+            _scripts = new MigrationScripts(migrationName, _scriptAssembly);
+        }
+
+        private Assembly GetScriptAssembly(string migrationName)
+        {
+            if (migrationName == null) throw new ArgumentNullException(nameof(migrationName));
+
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                if (assembly.IsDynamic)
+                    continue;
+                if (assembly.GetName().Name?.StartsWith("Coderr", StringComparison.OrdinalIgnoreCase) != true)
+                    continue;
+
+                var isFound = assembly
+                    .GetManifestResourceNames()
+                    .Any(x => x.StartsWith(_scriptNamespace) && x.Contains($"{_migrationName}.v"));
+                if (isFound)
+                    return assembly;
+            }
+            throw new InvalidOperationException($"Failed to find scripts for migration '{migrationName}'.");
         }
 
         public void Run()
@@ -57,7 +79,7 @@ namespace Coderr.Server.SqlServer.Migrations
         protected void LoadScripts()
         {
             var names =
-                Assembly.GetExecutingAssembly()
+                _scriptAssembly
                     .GetManifestResourceNames()
                     .Where(x => x.StartsWith(_scriptNamespace) && x.Contains($"{_migrationName}.v"));
 

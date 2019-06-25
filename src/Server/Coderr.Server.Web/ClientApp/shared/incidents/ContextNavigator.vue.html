@@ -1,0 +1,47 @@
+﻿<template>
+    <div>
+        <h3>Context collections</h3>
+        <div>
+            <div class="dropdown" style="display: inline">
+                <button type="button" class="btn btn-light dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{currentReportName}}
+                </button>
+                <div class="dropdown-menu">
+                    <h6 class="dropdown-header">Select report</h6>
+                    <div v-for="report in reports">
+                        <a class="dropdown-item" href="#" v-on:click.prevent="loadReport(report.Id)"><i class="fa-desktop fa text-muted"></i> {{report.CreatedAtUtc|ago}}</a>
+                    </div>
+                </div>
+            </div>
+            <div class="dropdown" style="display: inline">
+                <button type="button" class="btn btn-light dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="reportChooser">
+                    {{currentCollectionName}}
+                </button>
+                <div class="dropdown-menu">
+                    <h6 class="dropdown-header">Select context collection</h6>
+                    <div v-for="collection in currentReport.ContextCollections">
+                        <span class="dropdown-item" v-on:click="loadCollection(collection.Name)"><i class="fa-table fa text-muted"></i> {{collection.Name}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div v-if="currentReport.Id > 0" style="overflow: auto">
+            <table class="table mt-3 mb-3">
+                <tbody>
+                    <tr v-for="prop in currentCollection.Properties">
+                        <td>{{prop.Key}}</td>
+                        <td v-html="prop.Value"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div v-if="showAnalyzeFooter">
+            <hr />
+            <em>
+                <router-link class="btn btn-primary btn-block" :to="{ name: 'analyzeReport', params: { reportId: currentReport.Id, incidentId: incidentId}}">Report browser</router-link>
+            </em>
+        </div>
+    </div>
+</template>
+
+<script src="./ContextNavigator.ts"></script>

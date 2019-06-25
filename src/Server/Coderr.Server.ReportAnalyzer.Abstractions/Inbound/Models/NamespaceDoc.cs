@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace Coderr.Server.ReportAnalyzer.Inbound.Models
+namespace Coderr.Server.ReportAnalyzer.Abstractions.Inbound.Models
 {
     /// <summary>
     ///     These classes is an exact match of the client library DTOs.

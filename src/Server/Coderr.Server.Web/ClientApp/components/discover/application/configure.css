@@ -1,13 +1,13 @@
-.tags button {
-    margin-right: 5px;
-}
-
 .more {
     display: none;
 }
 
-
-.card .card-body ul {
-    padding-left: 10px;
+.buttons {
+    padding-top: 1px;
 }
 
+    .buttons button {
+        margin-top: 1px;
+        display: block;
+        width: 100%
+    }

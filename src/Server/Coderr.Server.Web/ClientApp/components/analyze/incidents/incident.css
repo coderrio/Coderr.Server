@@ -8,3 +8,10 @@
 .more {
     display: none;
 }
+
+.badge {
+    font-size: 0.8em;
+    background-color: #abdbe7;
+    color: #000;
+    padding: 2px;
+}

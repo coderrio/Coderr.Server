@@ -5,9 +5,7 @@ using System.Threading.Tasks;
 using Coderr.Server.Abstractions.Security;
 using Coderr.Server.Api.Web.Overview.Queries;
 using Coderr.Server.Domain.Core.Incidents;
-using Coderr.Server.Infrastructure.Security;
 using DotNetCqs;
-using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 
 namespace Coderr.Server.SqlServer.Web.Overview
@@ -56,7 +54,7 @@ namespace Coderr.Server.SqlServer.Web.Overview
                 var appIds = new List<int>();
                 using (var cmd = _unitOfWork.CreateCommand())
                 {
-                    cmd.CommandText = "SELECT id FROM Applications";
+                    cmd.CommandText = "SELECT id FROM Applications WITH(READUNCOMMITTED)";
                     using (var reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -92,7 +90,7 @@ namespace Coderr.Server.SqlServer.Web.Overview
 FROM 
 (
 	select Incidents.ApplicationId , cast(Incidents.CreatedAtUtc as date) as Date, count(Incidents.Id) as Count
-	from Incidents
+	from Incidents WITH(READUNCOMMITTED)
 	where Incidents.CreatedAtUtc >= @minDate 
     AND Incidents.CreatedAtUtc <= GetUtcDate()
 	AND Incidents.ApplicationId in ({ApplicationIds})
@@ -169,25 +167,29 @@ right join applications on (applicationid=applications.id)
         {
             using (var cmd = _unitOfWork.CreateDbCommand())
             {
-                cmd.CommandText = $@"select count(id) from incidents 
+                cmd.CommandText = $@"select count(id) 
+from incidents With(READUNCOMMITTED)
 where CreatedAtUtc >= @minDate
 AND CreatedAtUtc <= GetUtcDate()
 AND Incidents.ApplicationId IN ({ApplicationIds})
 AND Incidents.State <> {(int)IncidentState.Ignored} 
 AND Incidents.State <> {(int)IncidentState.Closed};
 
-select count(id) from errorreports 
+select count(id) 
+from errorreports WITH(READUNCOMMITTED) 
 where CreatedAtUtc >= @minDate
 AND ApplicationId IN ({ApplicationIds})
 
-select count(distinct emailaddress) from IncidentFeedback
+select count(distinct emailaddress) 
+from IncidentFeedback WITH(READUNCOMMITTED)
 where CreatedAtUtc >= @minDate
 AND CreatedAtUtc <= GetUtcDate()
 AND ApplicationId IN ({ApplicationIds})
 AND emailaddress is not null
 AND DATALENGTH(emailaddress) > 0;
 
-select count(*) from IncidentFeedback 
+select count(*) 
+from IncidentFeedback WITH(READUNCOMMITTED)
 where CreatedAtUtc >= @minDate
 AND CreatedAtUtc <= GetUtcDate()
 AND ApplicationId IN ({ApplicationIds})
@@ -241,13 +243,13 @@ AND DATALENGTH(Description) > 0;";
 FROM 
 (
 	select Incidents.ApplicationId , DATEPART(HOUR, Incidents.CreatedAtUtc) as Date, count(Incidents.Id) as Count
-	from Incidents
+	from Incidents WITH(READUNCOMMITTED)
 	where Incidents.CreatedAtUtc >= @minDate
     AND CreatedAtUtc <= GetUtcDate()
     AND Incidents.ApplicationId IN ({0})
 	group by Incidents.ApplicationId, DATEPART(HOUR, Incidents.CreatedAtUtc)
 ) cte
-right join applications on (applicationid=applications.id)", ApplicationIds);
+right join applications WITH(READUNCOMMITTED) on (applicationid=applications.id)", ApplicationIds);
 
 
                 cmd.AddParameter("minDate", startDate);

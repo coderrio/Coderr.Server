@@ -15,7 +15,7 @@ export default class ManageApiKeysComponent extends Vue {
         var q = new ListApiKeys();
         AppRoot.Instance.apiClient.query<ListApiKeysResult>(q)
             .then(x => {
-                this.keys = x.Keys;
+                this.keys = x.Keys.filter(x => x.ApplicationName !== '#OTE#');
             });
 
     }

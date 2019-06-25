@@ -15,12 +15,9 @@ namespace Coderr.Server.Web.Boot.Modules
         public void Configure(ConfigurationContext context)
         {
             _config = context.Configuration;
-            context.Services.AddScoped<IAdoNetUnitOfWork>(x =>
-            {
-                var con = OpenConnection();
-                var transaction = con.BeginTransaction();
-                return new UnitOfWorkWithTransaction((SqlTransaction)transaction);
-            });
+            context.Services.AddScoped(x => OpenConnection());
+            context.Services.AddScoped(x => x.GetRequiredService<IDbConnection>().BeginTransaction());
+            context.Services.AddScoped<IAdoNetUnitOfWork>(x => new UnitOfWorkWithTransaction((SqlTransaction)x.GetRequiredService<IDbTransaction>()));
         }
 
         public IDbConnection OpenConnection()

@@ -1,6 +1,6 @@
 using System.Linq;
 using Coderr.Server.Domain.Core.ErrorReports;
-using Coderr.Server.ReportAnalyzer.Inbound.Commands;
+using Coderr.Server.ReportAnalyzer.Abstractions.Inbound.Commands;
 using Newtonsoft.Json;
 
 namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports

@@ -29,7 +29,7 @@ namespace Coderr.Server.Web.Boot.Cqs
             ContractResolver = new IncludeNonPublicMembersContractResolver(),
             NullValueHandling = NullValueHandling.Ignore,
             ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
-            Converters = new List<JsonConverter> {new StringEnumConverter()}
+            Converters = new List<JsonConverter> { new StringEnumConverter() }
         };
         public bool IsEmpty => _cqsTypes.Count == 0;
 
@@ -122,8 +122,7 @@ namespace Coderr.Server.Web.Boot.Cqs
 
                 if (_cqsTypes.ContainsKey(type.Name))
                     throw new InvalidOperationException(
-                        string.Format("Duplicate mappings for name '{0}'. '{1}' and '{2}'.", type.Name, type.FullName,
-                            _cqsTypes[type.Name].FullName));
+                        $"Duplicate mappings for '{type.Name}': '{type.FullName}' and '{_cqsTypes[type.Name].FullName}'.");
 
                 _cqsTypes.Add(type.Name, type);
             }

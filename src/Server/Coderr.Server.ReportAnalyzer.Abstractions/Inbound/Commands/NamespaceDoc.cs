@@ -1,4 +1,4 @@
-﻿namespace Coderr.Server.ReportAnalyzer.Inbound.Commands
+﻿namespace Coderr.Server.ReportAnalyzer.Abstractions.Inbound.Commands
 {
     /// <summary>
     ///     These classes are created by the "Receiver" area when new reports are being received.

@@ -139,12 +139,19 @@ export class MyIncidents {
         var msg = <IncidentAssigned>msgContext.message.body;
         AppRoot.Instance.incidentService.get(msg.incidentId)
             .then(assignedIncident => {
-                if (this.allMyIncidents$.findIndex(menuItem => menuItem.incidentId === assignedIncident.Id) === -1) {
-                    var item = this.createItem(assignedIncident.Id, assignedIncident.ApplicationId, assignedIncident.Description);
+                var index = this.allMyIncidents$.findIndex(menuItem => menuItem.incidentId === assignedIncident.Id);
+                var item: IMyIncident;
+                if (index === -1) {
+                    item = this.createItem(assignedIncident.Id,
+                        assignedIncident.ApplicationId,
+                        assignedIncident.Description);
                     this.allMyIncidents$.push(item);
-                    this.filterMyIncidents();
-                    this.triggerIncidentListCallbacks(item.incidentId, true);
+                } else {
+                    item = this.allMyIncidents$[index];
                 }
+
+                this.filterMyIncidents();
+                this.triggerIncidentListCallbacks(item.incidentId, true);
 
                 // always switch to correct incident upon assign
                 this.switchIncident(msg.incidentId);
@@ -195,8 +202,8 @@ export class MyIncidents {
 
     private createItem(incidentId: number, applicationId: number, title: string): IMyIncident {
         let shortTitle = title;
-        if (shortTitle.length > 20) {
-            shortTitle = title.substr(0, 15) + '[...]';
+        if (shortTitle.length > 50) {
+            shortTitle = title.substr(0, 45) + '[...]';
         }
 
         var item: IMyIncident = {

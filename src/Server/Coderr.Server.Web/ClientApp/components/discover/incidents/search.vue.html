@@ -114,7 +114,7 @@
             </div>
             <div id="CloseBody" style="display: none">
                 <input type="text" name="version" class="form-control mb-3" size="10" placeholder="Which version is the error corrected in? (format: 1.2.10)" pattern="[0-9\.]*" title="You can use semantic versioning, including pre-releases, but must specify the release version here." />
-                <textarea style="display: none" id="CloseArea" class="w-100" rows="10" placeholder="How did you solve the error?" autofocus="autofocus" required="required"></textarea>
+                <textarea style="display: none" id="CloseArea" class="w-100" rows="10" placeholder="How did you solve the error?" autofocus="autofocus"></textarea>
                 <em><router-link :to="{name: 'closeIncident', params: { incidentId: currentIncidentId }}">Go to full screen editor</router-link></em>
             </div>
         </div>
