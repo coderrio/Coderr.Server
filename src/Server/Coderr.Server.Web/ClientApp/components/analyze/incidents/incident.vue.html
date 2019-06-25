@@ -1,7 +1,7 @@
 <template>
     <div class="IncidentView">
         <div>
-            <div class="row">
+            <div class="row minimal-gutters">
                 <div class="col">
                     <div class="float-right">
                         <div class="btn-group" role="group">
@@ -23,10 +23,9 @@
                     <div class="tags">
                         <span v-for="tag in incident.Tags" class="badge badge-dark">{{tag}}</span>
                     </div>
-                    <hr />
                 </div>
             </div>
-            <div class="row" v-if="incident.Solution">
+            <div class="row minimal-gutters" v-if="incident.Solution">
                 <div class="col">
                     <div class="card">
                         <div class="card-header">
@@ -39,7 +38,7 @@
                 </div>
 
             </div>
-            <div class="row">
+            <div class="row minimal-gutters">
                 <div class="col-xl-8 col-lg-6">
                     <div class="card">
                         <div class="card-body">
@@ -87,7 +86,7 @@
             </div>
         </div>
         <div id="CloseBody" style="display: none">
-            <textarea id="CloseArea" class="w-100" rows="10" placeholder="How did you solve the error?" autofocus="autofocus" required="required"></textarea>
+            <textarea id="CloseArea" class="w-100" rows="10" placeholder="How did you solve the error?" autofocus="autofocus"></textarea>
             <input type="text" name="version" class="form-control mb-3" size="10" placeholder="Which version is the error corrected in? (format: 1.2.10)" pattern="[0-9\.]*" title="You can use semantic versioning, including pre-releases, but must specify the release version here." />
             <div>
                 <em><a href="https://coderr.io/documentation/features/incidents/close/">Learn more about this feature</a></em>

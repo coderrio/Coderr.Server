@@ -45,16 +45,9 @@ export default class AnalyzeMenuComponent extends Vue {
 
     private onListChanged(args: any) {
         this.incidents = MyIncidents.Instance.myIncidents;
-        if (this.incidents.length === 0) {
-            return;
-        }
-
-        if (!this.incidentId) {
+        if (!this.incidentId && this.incidents.length > 0) {
             this.incidentId = this.incidents[0].incidentId;
             MyIncidents.Instance.switchIncident(this.incidentId);
-        } else {
-            var incident = this.incidents.find(x => x.incidentId === this.incidentId);
-            this.title = incident.shortTitle;
         }
     }
 

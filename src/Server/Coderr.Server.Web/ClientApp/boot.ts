@@ -53,6 +53,7 @@ Vue.filter("incidentState",
         }
     });
 
+Vue.component('context-navigator', require('./components/shared/incidents/ContextNavigator.vue.html').default);
 
 const routes = [
     {
