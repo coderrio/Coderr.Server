@@ -149,7 +149,7 @@ namespace Coderr.Server.Abstractions.Security
                 return "Anonymous";
             }
 
-            string str = cc.Identity.Name + " [";
+            string str = cc.Identity.Name + " Claims[";
             foreach (var claim in cc.Claims)
             {
                 var pos = claim.Type.LastIndexOf('/');

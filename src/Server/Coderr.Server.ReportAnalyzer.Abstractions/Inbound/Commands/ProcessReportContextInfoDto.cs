@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Coderr.Server.ReportAnalyzer.Inbound.Commands
+namespace Coderr.Server.ReportAnalyzer.Abstractions.Inbound.Commands
 {
     /// <summary>
     ///     Context collection

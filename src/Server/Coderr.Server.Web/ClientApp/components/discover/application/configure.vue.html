@@ -15,13 +15,13 @@
                     <div class="card-header">
                         Available .NET libraries
                     </div>
-                    <div class="card-body buttons">
-                        <button class="btn btn-light btn-block" v-for="lib in libraries" :data-lib="lib.libraryName" v-on:click.prevent="select(lib.libraryName)">
+                    <div class="buttons">
+                        <button class="btn btn-light" v-for="lib in libraries" :data-lib="lib.libraryName" v-on:click.prevent="select(lib.libraryName)">
                             {{lib.clientFolderName}}
                         </button>
                     </div>
                 </div>
-                <button class="btn btn-outline-primary btn-block" v-on:click.prevent="completedConfiguration">Configuration is complete &gt;&gt;</button>
+                <button class="btn btn-blue btn-block" v-on:click.prevent="completedConfiguration">Configuration is complete &gt;&gt;</button>
             </div>
             <div class="col-md-8">
                 <div class="alert alert-warning" v-if="weAreInTrouble">
@@ -29,9 +29,9 @@
                     <div>
                         <p>We could not find any reported errors in our database. </p>
                         <p>Do you want our help to troubleshoot the issue?</p>
-                        <button id="configureHelpButton" class="btn btn-outline-danger" v-on:click="goToSupport">Get help from our developers</button>
-                        <a class="btn btn-outline-danger" href="https://coderr.io/guides-and-support/">Guides and support</a>
-                        <router-link class="btn btn-outline-danger" :to="{ name: 'root' }">Exit onboarding</router-link>
+                        <button id="configureHelpButton" class="btn btn-light" v-on:click="goToSupport">Get help from our developers</button>
+                        <a class="btn  btn-light" href="https://coderr.io/guides-and-support/">Guides and support</a>
+                        <router-link class="btn  btn-light" :to="{ name: 'root' }">Exit onboarding</router-link>
                     </div>
                 </div>
                 <div class="alert alert-warning" v-if="noConnection">

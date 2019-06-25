@@ -126,12 +126,12 @@ namespace Coderr.Server.ReportAnalyzer.Incidents
         /// <summary>
         ///     Incident have been solved (bug as been identified and corrected)
         /// </summary>
-        public bool IsClosed => State == IncidentState.Closed;
+        public bool IsClosed => State == AnalyzedIncidentState.Closed;
 
         /// <summary>
         ///     Incident is ignored, i.e. do not track any more reports or send any notifications.
         /// </summary>
-        public bool IsIgnored => State == IncidentState.Ignored;
+        public bool IsIgnored => State == AnalyzedIncidentState.Ignored;
 
         /// <summary>
         ///     Incident is opened again after being closed.
@@ -172,7 +172,7 @@ namespace Coderr.Server.ReportAnalyzer.Incidents
         /// </summary>
         public string StackTrace { get; set; }
 
-        public IncidentState State { get; private set; }
+        public AnalyzedIncidentState State { get; private set; }
 
 
         /// <summary>
@@ -222,7 +222,7 @@ namespace Coderr.Server.ReportAnalyzer.Incidents
         public void ReOpen()
         {
             PreviousSolutionAtUtc = SolvedAtUtc;
-            State = IncidentState.New;
+            State = AnalyzedIncidentState.New;
             ReOpenedAtUtc = DateTime.UtcNow;
             IsReOpened = true;
         }

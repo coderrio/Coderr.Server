@@ -20,10 +20,4 @@ namespace Coderr.Server.Api.Modules.Versions.Queries
         /// </summary>
         public GetVersionHistoryResultSet[] ReportCounts { get; set; }
     }
-
-    public class GetVersionHistoryResultSet
-    {
-        public string Name { get; set; }
-        public int[] Values { get; set; }
-    }
 }

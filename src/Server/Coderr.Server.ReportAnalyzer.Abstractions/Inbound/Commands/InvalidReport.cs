@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Coderr.Server.ReportAnalyzer.Inbound.Commands
+namespace Coderr.Server.ReportAnalyzer.Abstractions.Inbound.Commands
 {
     /// <summary>
     ///     Failed to identify an incoming report. Stored for debugging purposes.

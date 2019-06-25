@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Coderr.Client.Contracts;
 using Coderr.Server.Domain.Core.Applications;
 using Coderr.Server.Infrastructure.Messaging;
-using Coderr.Server.ReportAnalyzer.Inbound.Commands;
+using Coderr.Server.ReportAnalyzer.Abstractions.Inbound.Commands;
 using DotNetCqs;
 using DotNetCqs.Queues;
 using log4net;

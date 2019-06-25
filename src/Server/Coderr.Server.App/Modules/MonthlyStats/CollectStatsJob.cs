@@ -236,7 +236,8 @@ namespace Coderr.Server.App.Modules.MonthlyStats
                 _config.Save();
             }
 
-            if (apps.Count == 0)
+            var allIsEmpty = apps.All(x => x.Value.IsEmpty);
+            if (allIsEmpty)
                 return false;
 
             var dto = new UsageStatisticsDto

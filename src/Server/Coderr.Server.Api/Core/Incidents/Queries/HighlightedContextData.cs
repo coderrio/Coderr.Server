@@ -26,7 +26,7 @@
         public string Url { get; set; }
 
         /// <summary>
-        ///     Value to show
+        ///     Value to show (one per report or only from the latest report).
         /// </summary>
         /// <remarks>
         ///     Values should be sorted i priority order (first item will be displayed directly)

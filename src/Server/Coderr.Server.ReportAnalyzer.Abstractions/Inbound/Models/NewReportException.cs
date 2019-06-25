@@ -1,18 +1,16 @@
-using System;
 using System.Collections.Generic;
 
-namespace Coderr.Server.ReportAnalyzer.Inbound.Commands
+namespace Coderr.Server.ReportAnalyzer.Abstractions.Inbound.Models
 {
     /// <summary>
     ///     Model used to wrap all information from an exception.
     /// </summary>
-    [Serializable]
-    public class ProcessReportExceptionDto
+    public class NewReportException
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ProcessReportExceptionDto" /> class.
+        ///     Initializes a new instance of the <see cref="NewReportException" /> class.
         /// </summary>
-        public ProcessReportExceptionDto()
+        public NewReportException()
         {
             Properties = new Dictionary<string, string>();
         }
@@ -41,7 +39,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Commands
         /// <summary>
         ///     Inner exception (if any; otherwise <c>null</c>).
         /// </summary>
-        public ProcessReportExceptionDto InnerExceptionDto { get; set; }
+        public NewReportException InnerException { get; set; }
 
         /// <summary>
         ///     Exception message

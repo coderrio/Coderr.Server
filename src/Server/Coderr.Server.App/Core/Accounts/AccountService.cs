@@ -249,7 +249,7 @@ namespace Coderr.Server.App.Core.Accounts
             if (isSysAdmin || accountId == 1)
                 claims.Add(new Claim(ClaimTypes.Role, CoderrRoles.SysAdmin));
 
-            return new ClaimsIdentity(claims.ToArray());
+            return new ClaimsIdentity(claims.ToArray(), AuthenticationTypes.Default);
         }
     }
 }

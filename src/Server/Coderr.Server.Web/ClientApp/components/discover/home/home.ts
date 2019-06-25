@@ -28,7 +28,7 @@ export default class DiscoverComponent extends Vue {
     destroyed$ = false;
 
     // summary, changes when time window changes
-    reportCount: number = 0;
+    reportCount: number = -1;
     incidentCount: number = 0;
     feedbackCount: number = 0;
     followers: number = 0;

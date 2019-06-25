@@ -13,6 +13,7 @@ interface IRouteNavigation {
     setMenu(name: String): void;
 }
 type NavigationCallback = (context: IRouteNavigation) => void;
+declare var window: any;
 
 @Component
 export default class NavMenuComponent extends Vue {
@@ -30,6 +31,7 @@ export default class NavMenuComponent extends Vue {
     isDeploymentActive: boolean = false;
     lastPublishedId$ = 0;
     onboarding: boolean = false;
+    isAdmin = false;
 
     discoverLink: string = '/discover/';
 
@@ -69,6 +71,10 @@ export default class NavMenuComponent extends Vue {
             }
 
             next();
+        });
+
+        AppRoot.Instance.loadCurrentUser().then(x => {
+            this.isAdmin = x.isSysAdmin;
         });
 
         PubSubService.Instance.subscribe(MenuApi.MessagingTopics.IgnoredReportCountUpdated, ctx => {
@@ -180,8 +186,8 @@ export default class NavMenuComponent extends Vue {
             this.currentApplicationId = applicationId;
 
             var title = app.title;
-            if (title.length > 20) {
-                title = title.substr(0, 15) + "[...]";
+            if (title.length > 40) {
+                title = title.substr(0, 35) + "[...]";
             }
             this.currentApplicationName = title;
             this.discoverLink = `/discover/${applicationId}`;

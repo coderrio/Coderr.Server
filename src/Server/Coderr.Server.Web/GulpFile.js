@@ -15,6 +15,7 @@ var config = {
         src: [
             'node_modules/jquery/dist/jquery.js',
             'node_modules/popper/dist/popper.js',
+            'node_modules/chartist/dist/chartist.js',
             'node_modules/bootstrap/dist/js/bootstrap.js'
         ],
         glob: 'wwwroot/js/**/*.js'

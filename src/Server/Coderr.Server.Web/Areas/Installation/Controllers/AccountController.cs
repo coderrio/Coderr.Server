@@ -45,36 +45,36 @@ namespace Coderr.Server.Web.Areas.Installation.Controllers
                 account.Activate();
                 account.IsSysAdmin = true;
                 var con = SetupTools.DbTools.OpenConnection();
-                var uow = new AdoNetUnitOfWork(con);
-                var repos = new AccountRepository(uow);
-                if (await repos.IsUserNameTakenAsync(model.UserName))
-                    return Redirect(Url.GetNextWizardStep());
-
-                account.SetVerifiedEmail(model.EmailAddress);
-                await repos.CreateAsync(account);
-
-                var user = new User(account.Id, account.UserName)
+                Application app;
+                using (var uow = new AdoNetUnitOfWork(con))
                 {
-                    EmailAddress = account.Email
-                };
-                var userRepos = new UserRepository(uow);
-                await userRepos.CreateAsync(user);
+                    var repos = new AccountRepository(uow);
+                    if (await repos.IsUserNameTakenAsync(model.UserName))
+                        return Redirect(Url.GetNextWizardStep());
 
-                var repos2 = new ApplicationRepository(uow);
-                var app = new Application(user.AccountId, "DemoApp")
-                {
-                    ApplicationType = TypeOfApplication.DesktopApplication
-                };
-                await repos2.CreateAsync(app);
+                    account.SetVerifiedEmail(model.EmailAddress);
+                    await repos.CreateAsync(account);
 
-                var tm = new ApplicationTeamMember(app.Id, account.Id, "System")
-                {
-                    Roles = new[] { ApplicationRole.Admin, ApplicationRole.Member },
-                    UserName = account.UserName
-                };
-                await repos2.CreateAsync(tm);
+                    var user = new User(account.Id, account.UserName) { EmailAddress = account.Email };
+                    var userRepos = new UserRepository(uow);
+                    await userRepos.CreateAsync(user);
 
-                uow.SaveChanges();
+                    var repos2 = new ApplicationRepository(uow);
+                    app = new Application(user.AccountId, "DemoApp")
+                    {
+                        ApplicationType = TypeOfApplication.DesktopApplication
+                    };
+                    await repos2.CreateAsync(app);
+
+                    var tm = new ApplicationTeamMember(app.Id, account.Id, "System")
+                    {
+                        Roles = new[] { ApplicationRole.Admin, ApplicationRole.Member },
+                        UserName = account.UserName
+                    };
+                    await repos2.CreateAsync(tm);
+
+                    uow.SaveChanges();
+                }
 
                 var claims = new List<Claim>
                 {

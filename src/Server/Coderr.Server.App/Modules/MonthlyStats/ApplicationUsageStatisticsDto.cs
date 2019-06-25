@@ -10,5 +10,6 @@ namespace Coderr.Server.App.Modules.MonthlyStats
         public int IgnoredCount { get; set; }
         public decimal? NumberOfDevelopers { get; set; }
         public int? EstimatedNumberOfErrors { get; set; }
+        public bool IsEmpty => ReportCount == 0 && ClosedCount == 0;
     }
 }

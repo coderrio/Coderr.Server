@@ -12,6 +12,12 @@ namespace Coderr.Server.SqlServer.Migrations
     {
         private readonly string _migrationName;
         private readonly Dictionary<int, string> _versions = new Dictionary<int, string>();
+        private Assembly _scriptAssembly;
+        public MigrationScripts(string migrationName, Assembly scriptAssembly)
+        {
+            _migrationName = migrationName ?? throw new ArgumentNullException(nameof(migrationName));
+            _scriptAssembly = scriptAssembly ?? throw new ArgumentNullException(nameof(scriptAssembly));
+        }
 
         public MigrationScripts(string migrationName)
         {
@@ -32,7 +38,7 @@ namespace Coderr.Server.SqlServer.Migrations
             if (version <= 0) throw new ArgumentOutOfRangeException(nameof(version));
 
             var scriptName = _versions[version];
-            var res = Assembly.GetExecutingAssembly().GetManifestResourceStream(scriptName);
+            var res = _scriptAssembly.GetManifestResourceStream(scriptName);
             if (res == null)
                 throw new InvalidOperationException("Failed to find schema " + scriptName);
 
@@ -80,11 +86,13 @@ namespace Coderr.Server.SqlServer.Migrations
 
                 transaction.Commit();
             }
-           
+
         }
 
         public int GetHighestVersion()
         {
+            if (_versions.Count == 0)
+                return -1;
             return _versions.Max(x => x.Key);
         }
     }

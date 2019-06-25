@@ -18,6 +18,14 @@
     padding: 0.15rem;
 }
 
+.collection a {
+    padding: 4px;
+}
+
+.collection .active {
+    background-color: #abdbe7;
+    display: block;
+}
 
 .contextCollections .card {
     overflow-x: scroll;

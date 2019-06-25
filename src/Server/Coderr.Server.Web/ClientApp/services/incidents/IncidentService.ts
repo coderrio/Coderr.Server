@@ -82,7 +82,7 @@ export class IncidentService {
         if (!incidentId) {
             throw new Error("incidentId is required.");
         }
-        
+
         const cmd = new AssignIncident();
         cmd.IncidentId = incidentId;
         cmd.AssignedTo = userId;
@@ -179,7 +179,7 @@ export class IncidentService {
         modalResult = await AppRoot.modal({
             title: 'Incident have followers',
             htmlContent:
-            'Incident have users following it. We strongly recommend that you use Coderr to send them a status update saying that the error have been corrected.',
+                'Incident have users following it. We strongly recommend that you use Coderr to send them a status update saying that the error have been corrected.',
             submitButtonText: 'Notify users',
         });
 
@@ -203,7 +203,7 @@ export class IncidentService {
         //    });
     }
 
-
+    private pendingIncidents: any[] = [];
     async get(id: number): Promise<GetIncidentResult> {
         if (id === 0) {
             throw new Error("Expected an incidentId");
@@ -214,10 +214,19 @@ export class IncidentService {
             return cached;
         }
 
+        var pending = this.pendingIncidents.find(x => x.incidentId === id);
+        if (pending) {
+            return await pending.promise;
+        }
+
         var q = new GetIncident();
         q.IncidentId = id;
-        var result = await this.apiClient.query<GetIncidentResult>(q);
+        var promise = this.apiClient.query<GetIncidentResult>(q);
+        var index = this.pendingIncidents.push({ incidentId: id, promise: promise });
+
+        var result = await promise;
         this.pushToCache(result);
+        this.pendingIncidents.splice(index, 1);
         return result;
     }
 
@@ -272,8 +281,10 @@ export class IncidentService {
         }
 
         for (var i = 0; i < this.cachedIncidents.length; i++) {
-            if (this.cachedIncidents[i].Id === id)
+            if (this.cachedIncidents[i].Id === id) {
                 return this.cachedIncidents[i];
+            }
+
         }
 
         return null;
@@ -291,14 +302,14 @@ export class IncidentService {
         if (!incidentId) {
             throw new Error("incidentId is required");
         }
-        
+
         var current = await AppRoot.Instance.loadCurrentUser();
         var cmd = new IgnoreIncident();
         cmd.IncidentId = incidentId;
         cmd.UserId = current.id;
         await AppRoot.Instance.apiClient.command(cmd);
 
-        
+
         for (var i = 0; i < this.myIncidents.length; i++) {
             if (this.myIncidents[i].Id === incidentId) {
                 this.myIncidents.splice(i, 1);
@@ -348,5 +359,5 @@ export class IncidentService {
         }
         return null;
     }
-    
+
 }

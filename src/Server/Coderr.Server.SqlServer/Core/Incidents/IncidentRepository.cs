@@ -69,7 +69,7 @@ namespace Coderr.Server.SqlServer.Core.Incidents
             }
         }
 
-        public Task<IList<Incident>> GetAllAsync(IEnumerable<int> incidentIds)
+        public Task<IList<Incident>> GetManyAsync(IEnumerable<int> incidentIds)
         {
             if (incidentIds == null) throw new ArgumentNullException(nameof(incidentIds));
             var ids = string.Join(",", incidentIds);

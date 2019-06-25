@@ -6,19 +6,19 @@ namespace Coderr.Server.Web.Boot.Cqs
 {
     internal class ScopeFactory : IHandlerScopeFactory
     {
-        private readonly Func<IServiceProvider> _serviceProviderAccesor;
+        private readonly Func<IServiceProvider> _serviceProviderAccessor;
         private MicrosoftHandlerScopeFactory _scopeFactory;
 
-        public ScopeFactory(Func<IServiceProvider> serviceProviderAccesor)
+        public ScopeFactory(Func<IServiceProvider> serviceProviderAccessor)
         {
-            _serviceProviderAccesor = serviceProviderAccesor;
+            _serviceProviderAccessor = serviceProviderAccessor;
         }
 
         public IHandlerScope CreateScope()
         {
             if (_scopeFactory == null)
             {
-                var provider = _serviceProviderAccesor();
+                var provider = _serviceProviderAccessor();
                 if (provider == null)
                     throw new InvalidOperationException("container have not been setup properly yet.");
                 _scopeFactory = new MicrosoftHandlerScopeFactory(provider);

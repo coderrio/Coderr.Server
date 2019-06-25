@@ -1,5 +1,5 @@
 <template>
-    <div class="mt-4">
+    <div class="m-2 configure-view">
         <div class="row">
             <div class="col">
                 <h1>Application configuration</h1>
@@ -34,10 +34,34 @@
                         <p>We couldn't find any reported errors. Do you need help?</p>
                         <router-link class="btn btn-outline-danger btn-sm" :to="{name: 'support', params: { type: 'configdemo' }}">Schedule a (free) demo with one of our developers</router-link>
                         <a href="https://coderr.io/documentation/" target="_blank" class="btn btn-outline-danger btn-sm">Read the reporting errors guide</a>
-                        <a href="/" class="btn btn-outline-danger btn-sm">Exit onboarding</a>
+                        <a href="#" v-on:click.prevent="onExitGuide" class="btn btn-outline-danger btn-sm">Back</a>
                     </div>
                 </div>
-                <div class="card">
+                <div class="alert alert-warning" v-if="gotNoIncidents">
+                    <h3 class="alert-heading">No errors have been reported.</h3>
+                    <div>
+                        <p>We could not find any reported errors in our database. </p>
+                        <p>Do you want our help to troubleshoot the issue?</p>
+                        <button class="btn btn-outline-danger" v-on:click="goToSupport">Get help from our developers</button> <button class="btn btn-outline-danger">Exit onboarding</button>
+                    </div>
+                </div>
+                <div class="alert alert-warning" v-if="noConnection">
+                    <h3 class="alert-heading">No internet connection</h3>
+                    <div>
+                        <p>An internet connection is required to load the configuration guides.</p>
+                        <p>As we could not download them, you need to visit <a target="_blank" href="https://coderr.io/documentation">our documentation</a> by yourself.</p>
+                        <hr />
+                        <h5>
+                            Your credentials (copy/paste into your application)
+                        </h5>
+                        <pre><code class="lang-c#">var url = new Uri("{{reportUrl}}");
+Err.Configuration.Credentials(url,
+                              "{{appKey}}", 
+                              "{{sharedSecret}}");
+</code></pre>
+                    </div>
+                </div>
+                <div class="card" v-if="!noConnection">
                     <div class="card-header">
                         Configuration instruction
                     </div>

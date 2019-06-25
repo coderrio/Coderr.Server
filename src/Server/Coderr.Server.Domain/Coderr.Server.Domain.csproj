@@ -5,6 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="UAParser" Version="3.0.0" />
+    <PackageReference Include="UAParser" Version="3.1.38" />
   </ItemGroup>
 </Project>

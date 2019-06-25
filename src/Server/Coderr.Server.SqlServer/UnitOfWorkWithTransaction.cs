@@ -12,6 +12,7 @@ namespace Coderr.Server.SqlServer
     public class UnitOfWorkWithTransaction : IAdoNetUnitOfWork
     {
         private ILog _logger = LogManager.GetLogger(typeof(UnitOfWorkWithTransaction));
+        private SqlCommand _lastCommand;
 
 
         public UnitOfWorkWithTransaction(SqlTransaction transaction)
@@ -26,7 +27,11 @@ namespace Coderr.Server.SqlServer
             if (Transaction == null)
                 return;
 
-            _logger.Info("Rolling back " + GetHashCode());
+            if (_lastCommand != null)
+                _logger.Debug($"Rolling back {GetHashCode()}, last command: {_lastCommand.CommandText}");
+            else
+                _logger.Info($"Rolling back {GetHashCode()}");
+
             var connection = Transaction.Connection;
             Transaction.Rollback();
             Transaction.Dispose();
@@ -38,10 +43,10 @@ namespace Coderr.Server.SqlServer
 
         public void SaveChanges()
         {
-            //Already commited.
-            // some scenariors requires early SaveChanges
+            // Already committed.
+            // some scenarios requires early SaveChanges
             // to prevent dead locks. 
-            // when there is time, find and eliminte the reason of the deadlocks :(
+            // when there is time, find and eliminate the reason of the deadlocks :(
             if (Transaction == null)
                 return;
 
@@ -56,6 +61,7 @@ namespace Coderr.Server.SqlServer
         {
             var cmd = Transaction.Connection.CreateCommand();
             cmd.Transaction = Transaction;
+            _lastCommand = cmd;
             return cmd;
         }
 

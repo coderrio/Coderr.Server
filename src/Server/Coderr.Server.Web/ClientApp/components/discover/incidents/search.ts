@@ -142,15 +142,16 @@ export default class IncidentSearchComponent extends Vue {
                     return;
                 }
 
-                //if (this.$route.params.applicationId) {
-                //    var id = parseInt(this.$route.params.applicationId, 10);
-                //    if (id > 0) {
-                //        this.activeApplications = [id];
-                //        this.showApplicationColumn = false;
-                //    }
-                //} else {
-                //    this.highlightActiveApps();
-                //}
+                // Since the state contains appId(s), we need to override it.
+                if (this.$route.params.applicationId) {
+                    var id = parseInt(this.$route.params.applicationId, 10);
+                    if (id > 0) {
+                        this.activeApplications = [id];
+                        this.showApplicationColumn = false;
+                    }
+                } else {
+                    this.highlightActiveApps();
+                }
 
                 this.highlightActiveTags();
                 this.highlightActiveEnvironments();
@@ -255,7 +256,7 @@ export default class IncidentSearchComponent extends Vue {
         query.SortType = this.sortKey;
         query.Tags = this.activeTags;
 
-        if (this.activeApplications.length > 0  && this.showApplicationColumn) {
+        if (this.activeApplications.length > 0) {
             query.ApplicationIds = this.activeApplications;
         }
 

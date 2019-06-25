@@ -16,6 +16,10 @@ namespace Coderr.Server.ReportAnalyzer.Tagging.Identifiers
         public void Identify(TagIdentifierContext context)
         {
             if (context == null) throw new ArgumentNullException("context");
+
+
+            context.AddIfFound("System.Web", "http");
+
             var orderNumber = context.AddIfFound("System.Web.Mvc", "asp.net-mvc");
             if (orderNumber != -1)
             {

@@ -5,9 +5,7 @@ using System.Threading.Tasks;
 using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Abstractions.Security;
 using Coderr.Server.App.Core.ApiKeys;
-using Coderr.Server.Infrastructure.Security;
 using Coderr.Server.SqlServer.Core.ApiKeys.Mappings;
-using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 
@@ -41,7 +39,7 @@ namespace Coderr.Server.SqlServer.Core.ApiKeys
         public Task DeleteApplicationMappingAsync(int apiKeyId, int applicationId)
         {
             _uow.ExecuteNonQuery("DELETE FROM [ApiKeyApplications] WHERE ApiKeyId = @keyId AND ApplicationId = @appId",
-                new {appId = applicationId, keyId = apiKeyId});
+                new { appId = applicationId, keyId = apiKeyId });
             return Task.FromResult<object>(null);
         }
 
@@ -52,8 +50,8 @@ namespace Coderr.Server.SqlServer.Core.ApiKeys
         /// <returns></returns>
         public Task DeleteAsync(int keyId)
         {
-            _uow.ExecuteNonQuery("DELETE FROM [ApiKeyApplications] WHERE ApiKeyId = @keyId", new {keyId});
-            _uow.ExecuteNonQuery("DELETE FROM [ApiKeys] WHERE Id = @keyId", new {keyId});
+            _uow.ExecuteNonQuery("DELETE FROM [ApiKeyApplications] WHERE ApiKeyId = @keyId", new { keyId });
+            _uow.ExecuteNonQuery("DELETE FROM [ApiKeys] WHERE Id = @keyId", new { keyId });
             return Task.FromResult<object>(null);
         }
 
@@ -84,7 +82,7 @@ namespace Coderr.Server.SqlServer.Core.ApiKeys
                 key.Add(app);
             }
 
-            
+
             return key;
         }
 
@@ -174,7 +172,7 @@ namespace Coderr.Server.SqlServer.Core.ApiKeys
             foreach (var applicationId in removed)
             {
                 _uow.Execute("DELETE FROM ApiKeyApplications WHERE ApiKeyId = @1 AND ApplicationId = @2",
-                    new[] {key.Id, applicationId});
+                    new[] { key.Id, applicationId });
             }
 
             var added = apps.Except(existingMappings);
