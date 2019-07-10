@@ -70,7 +70,11 @@ export default class DiscoverComponent extends Vue {
                 if (this.destroyed$) {
                     return;
                 }
-                this.firstApplicationId = result[0].Id;
+
+                // invited without access
+                if (result.length > 0) {
+                    this.firstApplicationId = result[0].Id;
+                }
             });
     }
 

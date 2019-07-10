@@ -28,9 +28,13 @@
         <div v-if="currentReport.Id > 0" style="overflow: auto">
             <table class="table mt-3 mb-3">
                 <tbody>
-                    <tr v-for="prop in currentCollection.Properties">
-                        <td>{{prop.Key}}</td>
-                        <td v-html="prop.Value"></td>
+                    <tr v-for="prop in currentCollectionProperties">
+                        <th>{{prop.name}}</th>
+                        <td>
+                            <span v-if="prop.htmlValue" v-html="prop.htmlValue"></span>
+                            <span v-else>{{prop.value}}</span>
+                            
+                        </td>
                     </tr>
                 </tbody>
             </table>

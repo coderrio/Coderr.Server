@@ -6,7 +6,7 @@
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <IsPackable>false</IsPackable>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <Version>2.0.1</Version>
+    <Version>2.1.0</Version>
     <UserSecretsId>18bfcacd-1b5d-435b-bc30-febb568a29b2</UserSecretsId>
   </PropertyGroup>
 

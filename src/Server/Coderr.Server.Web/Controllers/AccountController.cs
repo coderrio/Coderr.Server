@@ -27,7 +27,7 @@ namespace Coderr.Server.Web.Controllers
     /// <summary>
     ///     TODO: Break out logic
     /// </summary>
-    [AllowAnonymous, Transactional]
+    [AllowAnonymous]
     public class AccountController : Controller
     {
         private readonly IAccountService _accountService;
@@ -121,18 +121,22 @@ namespace Coderr.Server.Web.Controllers
         {
             try
             {
+                _logger.Debug("Activating " + id);
                 var identity = await _accountService.ActivateAccount(this.ClaimsUser(), id);
+                _logger.Debug("Signin " + id);
+                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
                 await SignInAsync(identity);
-                return Redirect(new ClaimsPrincipal(identity).IsSysAdmin()
-                    ? "~/#/welcome/admin/"
-                    : "~/#/welcome/user/");
+                _logger.Debug("Redirect " + id);
+                return Redirect("~/");
             }
-            catch (ArgumentOutOfRangeException)
+            catch (ArgumentOutOfRangeException ex)
             {
+                _logger.Warn("Failed to activate using " + id, ex);
                 ModelState.AddModelError("", "Activation key was not found.");
             }
             catch (Exception err)
             {
+                _logger.Warn("Failed to activate using " + id, err);
                 ModelState.AddModelError("", err.Message);
             }
             return View();

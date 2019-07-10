@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Data;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Abstractions.Config;
 using Coderr.Server.App.Core.Reports.Config;
 using Griffin.ApplicationServices;
 using Griffin.Data;
+using Griffin.Data.Mapper;
 using log4net;
 
 namespace Coderr.Server.App.Core.Incidents.Jobs
@@ -23,28 +26,58 @@ namespace Coderr.Server.App.Core.Incidents.Jobs
     internal class DeleteEmptyIncidents : IBackgroundJobAsync
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(DeleteEmptyIncidents));
-        private readonly IAdoNetUnitOfWork _unitOfWork;
+        private readonly IDbConnection _connection;
         private readonly IConfiguration<ReportConfig> _reportConfiguration;
 
         /// <summary>
         ///     Creates a new instance of <see cref="DeleteEmptyIncidents" />.
         /// </summary>
-        /// <param name="unitOfWork">Used for SQL queries</param>
-        public DeleteEmptyIncidents(IAdoNetUnitOfWork unitOfWork, IConfiguration<ReportConfig> reportConfiguration)
+        /// <param name="connection">Used for SQL queries</param>
+        public DeleteEmptyIncidents(IDbConnection connection, IConfiguration<ReportConfig> reportConfiguration)
         {
-            if (unitOfWork == null) throw new ArgumentNullException("unitOfWork");
-            _unitOfWork = unitOfWork;
-            this._reportConfiguration = reportConfiguration;
+            _connection = connection;
+            _reportConfiguration = reportConfiguration;
         }
 
         /// <inheritdoc />
         public async Task ExecuteAsync()
         {
-            using (var cmd = _unitOfWork.CreateDbCommand())
+            using (var cmd = _connection.CreateDbCommand())
             {
                 cmd.CommandText =
-                    $@"DELETE TOP(500) Incidents 
-                       WHERE LastReportAtUtc < @retentionDays";
+                    $@"CREATE TABLE #ItemsToDelete 
+                            ( 
+                                Id int NOT NULL PRIMARY KEY
+                            )
+
+                            INSERT #ItemsToDelete (Id)
+                            SELECT TOP(500) Id
+                            FROM Incidents WITH (ReadUncommitted)
+                            WHERE LastReportAtUtc < @retentionDays
+                            declare @counter int = 0;
+
+                            IF @@ROWCOUNT <> 0 
+                            BEGIN 
+                                DECLARE ItemsToDeleteCursor CURSOR LOCAL FORWARD_ONLY READ_ONLY
+                                FOR SELECT Id FROM #ItemsToDelete
+                                set @counter = 1
+
+                                DECLARE @IdToDelete int
+                                OPEN ItemsToDeleteCursor
+                                FETCH NEXT FROM ItemsToDeleteCursor INTO @IdToDelete
+
+                                WHILE @@FETCH_STATUS = 0 
+                                BEGIN
+                                    set @counter = @counter + 1
+                                    DELETE FROM Incidents WHERE Id = @IdToDelete
+                                    FETCH NEXT FROM ItemsToDeleteCursor INTO @IdToDelete
+                                END
+
+                                CLOSE ItemsToDeleteCursor
+                                DEALLOCATE ItemsToDeleteCursor
+                            END 
+                            DROP TABLE #ItemsToDelete
+                            select @counter;";
 
                 // Wait until no reports have been received for the specified report save time
                 // and then make sure during another period that no new reports have been received.

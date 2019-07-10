@@ -23,6 +23,7 @@ using Coderr.Server.Web.Areas.Installation;
 using Coderr.Server.Web.Boot;
 using Coderr.Server.Web.Boot.Adapters;
 using Coderr.Server.Web.Controllers;
+using Coderr.Server.Web.Infrastructure;
 using log4net;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -148,6 +149,7 @@ namespace Coderr.Server.Web
                 {
                     AddCoderrToMvc(options);
                     options.Filters.Add<InstallAuthorizationFilter>();
+                    options.Filters.Add<TransactionalAttribute2>();
                 })
                 .AddJsonOptions(jsonOptions =>
                 {

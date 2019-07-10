@@ -87,7 +87,7 @@ export class AppRoot {
         return this.currentUser;
     }
 
-    static notify(msg: string, icon: string = 'glyphicon glyphicon-info-sign', type: string = 'info') {
+    static notify(msg: string, icon: string = 'fa fa-info-sign', type: string = 'info') {
         toastr[type](msg);
         return;
     }

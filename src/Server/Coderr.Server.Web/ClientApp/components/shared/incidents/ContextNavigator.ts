@@ -4,12 +4,18 @@ import { GetReport, GetReportList, GetReportListResult, GetReportListResultItem,
 import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
 
+interface Property {
+    name: string,
+    value: string,
+    htmlValue?: string;
+}
+
 @Component
 export default class ContextNavigatorComponent extends Vue {
     private apiClient: ApiClient = AppRoot.Instance.apiClient;
     private static readonly selectCollectionTitle: string = '(select collection)';
     reports: GetReportListResultItem[] = [];
-    currentCollection = new GetReportResultContextCollection();
+    currentCollectionProperties: Property[] = [];
     currentCollectionName: string = '';
     currentReport = new GetReportResult();
     currentReportName = '';
@@ -48,10 +54,9 @@ export default class ContextNavigatorComponent extends Vue {
                 this.currentReportName = new Date(report.CreatedAtUtc).toLocaleString();
                 //(<HTMLButtonElement>document.getElementById('reportChooser')).removeAttribute('disabled');
                 if (report.ContextCollections.length > 0) {
-
                     this.loadCollection(this.currentCollectionName);
                 } else {
-                    this.currentCollection = new GetReportResultContextCollection();
+                    this.currentCollectionProperties = [];
                     this.currentCollectionName = ContextNavigatorComponent.selectCollectionTitle;
                 }
             });
@@ -73,29 +78,30 @@ export default class ContextNavigatorComponent extends Vue {
         }
 
         for (var i = 0; i < this.currentReport.ContextCollections.length; i++) {
-            var col = this.currentReport.ContextCollections[i];
-            for (var j = 0; j < col.Properties.length; j++) {
-                var prop = col.Properties[j];
+            let col = this.currentReport.ContextCollections[i];
+            for (let j = 0; j < col.Properties.length; j++) {
+                const prop = col.Properties[j];
                 prop.Value = prop.Value.replace(/;;/g, "\r\n</br>");
             }
 
             if (col.Name === name) {
-                this.currentCollection = col;
                 this.currentCollectionName = name;
-                if (name === "Screenshots") {
-                    for (var j = 0; j < this.currentCollection.Properties.length; j++) {
-                        var kvp = this.currentCollection.Properties[j];
-                        if (kvp.Value.substr(0, 1) !== '<') {
-                            kvp.Value = '<img src="data:image/png;base64, ' + kvp.Value + '" />';
-                        }
+                this.currentCollectionProperties = [];
+                for (let j = 0; j < col.Properties.length; j++) {
+                    const prop = col.Properties[j];
+                    var item: Property = {
+                        name: prop.Key,
+                        value: prop.Value
+                    };
+                    if (this.currentCollectionName === "Screenshots") {
+                        item.htmlValue = '<img src="data:image/png;base64, ' + item.value + '" />';
+                        item.value = null;
                     }
-                }
+                    console.log('Adding', item);
+                    this.currentCollectionProperties.push(item);
+                };
                 return;
             }
-
-
         }
-
     }
-
 }

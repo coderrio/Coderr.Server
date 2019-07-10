@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Coderr.Client;
 using Coderr.Server.Domain.Modules.ApplicationVersions;
 using Coderr.Server.ReportAnalyzer.Abstractions.Incidents;
 using DotNetCqs;
@@ -28,6 +29,13 @@ namespace Coderr.Server.ReportAnalyzer.ApplicationVersions.Handlers
 
             if (version == null)
                 return;
+
+            if (version.Length > 20)
+            {
+                Err.ReportLogicError("Application version is too large.", new {version, e.Incident.ApplicationName},
+                    "AppVersionLength");
+                return;
+            }
 
             var isNewIncident = e.Incident.ReportCount <= 1;
             var versionEntity = await _repository.FindVersionAsync(e.Incident.ApplicationId, version)

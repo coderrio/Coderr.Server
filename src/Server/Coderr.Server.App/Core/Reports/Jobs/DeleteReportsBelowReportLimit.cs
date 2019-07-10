@@ -1,9 +1,9 @@
 using System;
-using System.Collections.Generic;
+using System.Data;
+using System.Diagnostics;
 using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Abstractions.Config;
 using Coderr.Server.App.Core.Reports.Config;
-
 using Griffin.ApplicationServices;
 using Griffin.Data;
 using log4net;
@@ -22,18 +22,17 @@ namespace Coderr.Server.App.Core.Reports.Jobs
     public class DeleteReportsBelowReportLimit : IBackgroundJob
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(DeleteReportsBelowReportLimit));
-        private readonly IAdoNetUnitOfWork _unitOfWork;
-        private ConfigurationStore _configStore;
+        private readonly IDbConnection _connection;
+        private readonly IConfiguration<ReportConfig> _reportConfig;
 
         /// <summary>
         ///     Creates a new instance of <see cref="DeleteReportsBelowReportLimit" />.
         /// </summary>
-        /// <param name="unitOfWork">Used for SQL queries</param>
-        public DeleteReportsBelowReportLimit(IAdoNetUnitOfWork unitOfWork, ConfigurationStore configStore)
+        /// <param name="connection">Used for SQL queries</param>
+        public DeleteReportsBelowReportLimit(IDbConnection connection, IConfiguration<ReportConfig> reportConfig)
         {
-            if (unitOfWork == null) throw new ArgumentNullException("unitOfWork");
-            _unitOfWork = unitOfWork;
-            _configStore = configStore;
+            _connection = connection;
+            _reportConfig = reportConfig;
         }
 
         /// <summary>
@@ -43,57 +42,73 @@ namespace Coderr.Server.App.Core.Reports.Jobs
         {
             get
             {
-                var config = _configStore.Load<ReportConfig>();
-                if (config == null)
-                    return 100;
-                return config.MaxReportsPerIncident;
+                return _reportConfig?.Value?.MaxReportsPerIncident ?? 100;
             }
         }
 
         /// <inheritdoc />
         public void Execute()
         {
-            // find incidents with too many reports.
-            var incidentsToTruncate = new List<Tuple<int, int>>();
-            using (var cmd = _unitOfWork.CreateCommand())
+            using (var cmd = _connection.CreateCommand())
             {
-                cmd.CommandText =
-                    @"SELECT TOP(5) IncidentId, count(Id)
-                        FROM ErrorReports WITH (ReadPast)
-                        GROUP BY IncidentId
-                        HAVING Count(IncidentId) > @max
-                        ORDER BY count(Id) DESC";
-                cmd.AddParameter("max", MaxReportsPerIncident);
-                using (var reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        incidentsToTruncate.Add(new Tuple<int, int>((int)reader[0], (int)reader[1]));
-                    }
-                }
-            }
+                var sql = $@"CREATE TABLE #Incidents (Id int NOT NULL PRIMARY KEY, NumberOfItems int)
+                            INSERT #Incidents (Id, NumberOfItems)
+                            SELECT TOP(100) IncidentId, Count(Id) - @max
+                            FROM ErrorReports WITH (READUNCOMMITTED)
+                            GROUP BY IncidentId
+                            HAVING Count(Id) > @max
+                            ORDER BY count(Id) DESC
 
-            foreach (var incidentIdAndCount in incidentsToTruncate)
-            {
-                //do not delete more then 500 at a time.
-                var rowsToDelete = Math.Min(500, incidentIdAndCount.Item2 - MaxReportsPerIncident);
-                using (var cmd = _unitOfWork.CreateCommand())
+                            CREATE TABLE #ReportsToDelete (Id int not null primary key)
+                            declare @counter int = 0;
+
+                            DECLARE IncidentCursor CURSOR LOCAL FORWARD_ONLY READ_ONLY
+                            FOR SELECT Id, NumberOfItems FROM #Incidents
+                            DECLARE @IncidentId int
+                            DECLARE @NumberOfItems int
+                            OPEN IncidentCursor
+                            FETCH NEXT FROM IncidentCursor INTO @IncidentId, @NumberOfItems
+                            WHILE @@FETCH_STATUS = 0 
+                            BEGIN
+                                INSERT INTO #ReportsToDelete (Id)
+                                SELECT TOP(@NumberOfItems) Id
+                                    FROM ErrorReports WITH (READUNCOMMITTED)
+                                    WHERE IncidentId = @IncidentId
+                                    ORDER BY Id asc
+                                FETCH NEXT FROM IncidentCursor INTO @IncidentId, @NumberOfItems
+                            END
+                            CLOSE IncidentCursor
+                            DEALLOCATE IncidentCursor
+                            DROP TABLE #Incidents
+
+                            DECLARE ItemsToDeleteCursor CURSOR LOCAL FORWARD_ONLY READ_ONLY
+                            FOR SELECT Id FROM #ReportsToDelete
+
+                            DECLARE @IdToDelete int
+                            OPEN ItemsToDeleteCursor
+                            FETCH NEXT FROM ItemsToDeleteCursor INTO @IdToDelete
+
+                            WHILE @@FETCH_STATUS = 0 
+                            BEGIN
+                                set @counter = @counter + 1
+                                DELETE FROM ErrorReports WHERE Id = @IdToDelete
+                                FETCH NEXT FROM ItemsToDeleteCursor INTO @IdToDelete
+                            END
+
+                            CLOSE ItemsToDeleteCursor
+                            DEALLOCATE ItemsToDeleteCursor
+                            DROP TABLE #ReportsToDelete
+                            select @counter;";
+
+                cmd.CommandText = sql;
+                cmd.CommandTimeout = 90;
+                cmd.AddParameter("max", MaxReportsPerIncident);
+                var rows = (int)cmd.ExecuteScalar();
+                if (rows > 0)
                 {
-                    var sql = $@"With RowsToDelete AS
-                                (
-                                    SELECT TOP {rowsToDelete} Id
-                                    FROM ErrorReports WITH (ReadPast)
-                                    WHERE IncidentId = {incidentIdAndCount.Item1}
-                                )
-                                DELETE FROM RowsToDelete";
-                    cmd.CommandText = sql;
-                    cmd.CommandTimeout = 90;
-                    var rows = cmd.ExecuteNonQuery();
-                    if (rows > 0)
-                    {
-                        _logger.Debug("Deleted the oldest " + rows + " reports for incident " + incidentIdAndCount);
-                    }
+                    _logger.Debug("Deleted the oldest " + rows + " reports.");
                 }
+
             }
         }
     }
