@@ -21,6 +21,8 @@ export interface incidentListChanged {
 export interface IMyIncident {
     incidentId: number;
     applicationId: number;
+    applicationName: string;
+    assignedAtUtc: Date;
     title: string;
 
     /**
@@ -142,9 +144,15 @@ export class MyIncidents {
                 var index = this.allMyIncidents$.findIndex(menuItem => menuItem.incidentId === assignedIncident.Id);
                 var item: IMyIncident;
                 if (index === -1) {
-                    item = this.createItem(assignedIncident.Id,
+                    item = this.createItem(
+                        assignedIncident.Id,
                         assignedIncident.ApplicationId,
-                        assignedIncident.Description);
+                        '',
+                        assignedIncident.AssignedAtUtc,
+                        assignedIncident.Description
+                    );
+                    AppRoot.Instance.applicationService.get(item.applicationId)
+                        .then(x => item.applicationName = x.name);
                     this.allMyIncidents$.push(item);
                 } else {
                     item = this.allMyIncidents$[index];
@@ -182,7 +190,9 @@ export class MyIncidents {
         }
         mine.forEach(dto => {
             if (!this.allMyIncidents$.find(item => item.incidentId === dto.Id)) {
-                var item = this.createItem(dto.Id, parseInt(dto.ApplicationId, 10), dto.Name);
+                var item = this.createItem(dto.Id, parseInt(dto.ApplicationId, 10), '', dto.CreatedAtUtc, dto.Name);
+                AppRoot.Instance.applicationService.get(item.applicationId)
+                    .then(x => item.applicationName = x.name);
                 this.allMyIncidents$.push(item);
             }
         });
@@ -200,7 +210,7 @@ export class MyIncidents {
         });
     }
 
-    private createItem(incidentId: number, applicationId: number, title: string): IMyIncident {
+    private createItem(incidentId: number, applicationId: number, applicationName: string, assignedAtUtc: Date, title: string): IMyIncident {
         let shortTitle = title;
         if (shortTitle.length > 50) {
             shortTitle = title.substr(0, 45) + '[...]';
@@ -210,7 +220,9 @@ export class MyIncidents {
             title: title,
             shortTitle: shortTitle,
             incidentId: incidentId,
-            applicationId: applicationId
+            applicationId: applicationId,
+            applicationName: applicationName,
+            assignedAtUtc: assignedAtUtc
         };
         return item;
     }

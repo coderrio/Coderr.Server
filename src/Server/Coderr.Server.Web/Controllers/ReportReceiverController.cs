@@ -53,6 +53,13 @@ namespace Coderr.Server.Web.Controllers
             if (contentLength == null || contentLength < 1)
                 return BadRequest("Content required.");
 
+            // Sig may be null for web applications
+            // as I don't know how to protect the secretKey in web applications
+            if (sig == null && Request.ContentType != "application/json")
+            {
+                return BadRequest("Must sign error report with the sharedSecret");
+            }
+
             try
             {
                 var buffer = new byte[contentLength.Value];
