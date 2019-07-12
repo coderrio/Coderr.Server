@@ -1,5 +1,7 @@
+import { PubSubService, MessageContext } from "../../services/PubSub";
 import * as MenuApi from "../../services/menu/MenuApi";
-import Vue from 'vue';
+import Vue from "vue";
+import { AppRoot } from '../../services/AppRoot';
 import { Component, Watch } from 'vue-property-decorator';
 import { MyIncidents, IMyIncident } from "./myincidents";
 
@@ -18,11 +20,15 @@ export default class AnalyzeMenuComponent extends Vue {
     incidents: IMyIncident[] = [];
     title = '';
     incidentId: number | null = null;
+    toggleMenu = false;
+    applicationId: number | null = null;
 
     created() {
         if (this.$route.params.incidentId) {
             this.incidentId = parseInt(this.$route.params.incidentId, 10);
         }
+        this.applicationId = AppRoot.Instance.currentApplicationId;
+        PubSubService.Instance.subscribe(MenuApi.MessagingTopics.ApplicationChanged, this.onApplicationChangedInNavMenu);
         MyIncidents.Instance.subscribeOnSelectedIncident(this.onIncidentSelected);
         MyIncidents.Instance.subscribeOnListChanges(this.onListChanged);
     }
@@ -41,6 +47,12 @@ export default class AnalyzeMenuComponent extends Vue {
     destroyed() {
         MyIncidents.Instance.unsubscribe(this.onIncidentSelected);
         MyIncidents.Instance.unsubscribe(this.onListChanged);
+        PubSubService.Instance.unsubscribe(MenuApi.MessagingTopics.ApplicationChanged, this.onApplicationChangedInNavMenu);
+    }
+
+    toggleIncidentMenu() {
+        this.toggleMenu = !this.toggleMenu;
+
     }
 
     private onListChanged(args: any) {
@@ -60,6 +72,20 @@ export default class AnalyzeMenuComponent extends Vue {
             this.title = incident.shortTitle;
             this.incidentId = incident.incidentId;
         }
+    }
+
+    @Watch('$route.params.applicationId')
+    onAppRoute(value: string, oldValue: string) {
+        if (!value) {
+            this.applicationId = null;
+            return;
+        } else {
+            this.applicationId = parseInt(value, 10);
+        }
+    }
+    private onApplicationChangedInNavMenu(ctx: MessageContext) {
+        var body = <MenuApi.ApplicationChanged>ctx.message.body;
+        this.applicationId = body.applicationId;
     }
 
     @Watch('$route.params.incidentId')

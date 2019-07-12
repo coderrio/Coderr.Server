@@ -31,7 +31,7 @@ namespace Coderr.Server.Api.Core.Incidents.Queries
         /// <summary>
         ///     Id of the application that this incident belongs to
         /// </summary>
-        public string ApplicationId { get; set; }
+        public int ApplicationId { get; set; }
 
         /// <summary>
         ///     Name of the application that this incident belongs to
@@ -42,6 +42,11 @@ namespace Coderr.Server.Api.Core.Incidents.Queries
         ///     When the first report was received.
         /// </summary>
         public DateTime CreatedAtUtc { get; set; }
+
+        /// <summary>
+        /// When the incident was assigned to someone.
+        /// </summary>
+        public DateTime? AssignedAtUtc { get; set; }
 
         /// <summary>
         ///     Incident id

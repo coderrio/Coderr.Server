@@ -22,8 +22,8 @@ export interface IUser {
 
 declare module 'vue/types/vue' {
     interface Vue {
-        //$router: VueRouter;
-        //$route: Route;
+        $router: VueRouter;
+        $route: Route;
         user$: IUser;
     }
 }

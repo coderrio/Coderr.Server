@@ -145,18 +145,7 @@ namespace Coderr.Server.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc(options =>
-                {
-                    AddCoderrToMvc(options);
-                    options.Filters.Add<InstallAuthorizationFilter>();
-                    options.Filters.Add<TransactionalAttribute2>();
-                })
-                .AddJsonOptions(jsonOptions =>
-                {
-                    jsonOptions.SerializerSettings.ContractResolver = new IncludeNonPublicMembersContractResolver();
-                });
-
-            if (Configuration["EnableCors"] == "true")
+            if (Configuration["EnableCors"].Equals("true", StringComparison.OrdinalIgnoreCase))
             {
                 services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
                 {
@@ -168,12 +157,24 @@ namespace Coderr.Server.Web
             else
             {
                 // Add the policy, but do not allow any origins
-                // which means that the policy is effectivly denying everything.
+                // which means that the policy is effectively denying everything.
                 services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
                 {
                     builder.AllowAnyHeader();
                 }));
             }
+
+            services.AddMvc(options =>
+                {
+                    AddCoderrToMvc(options);
+                    options.Filters.Add<InstallAuthorizationFilter>();
+                    options.Filters.Add<TransactionalAttribute2>();
+                })
+                .AddJsonOptions(jsonOptions =>
+                {
+                    jsonOptions.SerializerSettings.ContractResolver = new IncludeNonPublicMembersContractResolver();
+                });
+
 
             var authenticationBuilder = services.AddAuthentication("Cookies");
             authenticationBuilder.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>

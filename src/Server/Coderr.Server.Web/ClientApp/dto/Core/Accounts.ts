@@ -1,3 +1,4 @@
+// ReSharper disable InconsistentNaming
 export class RegisterSimple
 {
     public static TYPE_NAME: string = 'RegisterSimple';
