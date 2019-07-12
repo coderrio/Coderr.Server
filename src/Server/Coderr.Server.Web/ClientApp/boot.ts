@@ -3,7 +3,6 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import moment from "moment";
 import { AppRoot } from "./services/AppRoot"
-//import VeeValidate from 'vee-validate';
 import { IUser } from "./vue-shim";
 
 //Vue.use(VeeValidate);

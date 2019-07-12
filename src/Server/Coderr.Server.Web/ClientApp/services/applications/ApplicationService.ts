@@ -13,6 +13,7 @@ export class AppEvents {
     static readonly Created: string = "application/created";
     static readonly Removed: string = "application/removed";
     static readonly Updated: string = "application/updated";
+    static readonly Selected: string = "application/selected";
 };
 
 export class ApplicationCreated {

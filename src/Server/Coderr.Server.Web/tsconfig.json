@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
-    "emitDecoratorMetadata":  true,
+    "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "lib": [ "es2015", "dom" ],
     "module": "es2015",
@@ -9,10 +9,13 @@
     "target": "es5",
     "sourceMap": true,
     "skipDefaultLibCheck": true,
-    "strictNullChecks":  false, 
+    "strictNullChecks": false,
     "strict": true,
-    "types": ["webpack-env"]
+    "types": [ "webpack-env" ]
   },
+  "include": [
+    "ClientApp/**/*"
+  ],
   "exclude": [
     "bin",
     "node_modules",

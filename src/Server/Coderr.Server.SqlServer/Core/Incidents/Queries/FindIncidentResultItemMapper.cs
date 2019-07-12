@@ -20,7 +20,7 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
         public void Map(IDataRecord source, FindIncidentsResultItem destination)
         {
             destination.ApplicationName = (string) source["ApplicationName"];
-            destination.ApplicationId = source["ApplicationId"].ToString();
+            destination.ApplicationId = (int)source["ApplicationId"];
             destination.IsReOpened = source["IsReopened"].Equals(1);
             destination.ReportCount = (int) source["ReportCount"];
             destination.CreatedAtUtc = (DateTime)source["CreatedAtUtc"];
@@ -31,6 +31,9 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
 
             value = source["LastReportAtUtc"];
             destination.LastReportReceivedAtUtc = (DateTime) (value is DBNull ? destination.LastUpdateAtUtc : value);
+
+            value = source["AssignedAtUtc"];
+            destination.AssignedAtUtc = (DateTime?)(value is DBNull ? null : value);
         }
     }
 }

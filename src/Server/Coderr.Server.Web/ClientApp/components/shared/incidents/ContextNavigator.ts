@@ -97,7 +97,6 @@ export default class ContextNavigatorComponent extends Vue {
                         item.htmlValue = '<img src="data:image/png;base64, ' + item.value + '" />';
                         item.value = null;
                     }
-                    console.log('Adding', item);
                     this.currentCollectionProperties.push(item);
                 };
                 return;

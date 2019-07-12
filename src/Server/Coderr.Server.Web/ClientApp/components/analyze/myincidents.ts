@@ -2,6 +2,7 @@ import * as MenuApi from "../../services/menu/MenuApi";
 import { AppRoot } from "../../services/AppRoot";
 import { PubSubService, MessageContext } from "../../services/PubSub";
 import { IncidentTopcis, IncidentAssigned, IncidentClosed, IncidentIgnored } from "../../services/incidents/IncidentService";
+import * as incidents from "../../dto/Core/Incidents";
 
 /**
  * null if the user do not have any assigned incidents (for the selected application)
@@ -22,6 +23,7 @@ export interface IMyIncident {
     incidentId: number;
     applicationId: number;
     applicationName: string;
+    createdAtUtc: Date;
     assignedAtUtc: Date;
     title: string;
 
@@ -148,10 +150,11 @@ export class MyIncidents {
                         assignedIncident.Id,
                         assignedIncident.ApplicationId,
                         '',
+                        assignedIncident.CreatedAtUtc,
                         assignedIncident.AssignedAtUtc,
                         assignedIncident.Description
                     );
-                    AppRoot.Instance.applicationService.get(item.applicationId)
+                    AppRoot.Instance.applicationService.get(assignedIncident.ApplicationId)
                         .then(x => item.applicationName = x.name);
                     this.allMyIncidents$.push(item);
                 } else {
@@ -190,9 +193,7 @@ export class MyIncidents {
         }
         mine.forEach(dto => {
             if (!this.allMyIncidents$.find(item => item.incidentId === dto.Id)) {
-                var item = this.createItem(dto.Id, parseInt(dto.ApplicationId, 10), '', dto.CreatedAtUtc, dto.Name);
-                AppRoot.Instance.applicationService.get(item.applicationId)
-                    .then(x => item.applicationName = x.name);
+                var item = this.createItem2(dto);
                 this.allMyIncidents$.push(item);
             }
         });
@@ -210,7 +211,7 @@ export class MyIncidents {
         });
     }
 
-    private createItem(incidentId: number, applicationId: number, applicationName: string, assignedAtUtc: Date, title: string): IMyIncident {
+    private createItem(incidentId: number, applicationId: number, applicationName: string, createdAtUtc: Date, assignedAtUtc: Date, title: string): IMyIncident {
         let shortTitle = title;
         if (shortTitle.length > 50) {
             shortTitle = title.substr(0, 45) + '[...]';
@@ -220,9 +221,28 @@ export class MyIncidents {
             title: title,
             shortTitle: shortTitle,
             incidentId: incidentId,
+            createdAtUtc: createdAtUtc,
             applicationId: applicationId,
             applicationName: applicationName,
             assignedAtUtc: assignedAtUtc
+        };
+        return item;
+    }
+
+    private createItem2(incident: incidents.FindIncidentsResultItem): IMyIncident {
+        let shortTitle = incident.Name;
+        if (shortTitle.length > 50) {
+            shortTitle = incident.Name.substr(0, 45) + '[...]';
+        }
+
+        var item: IMyIncident = {
+            title: incident.Name,
+            shortTitle: shortTitle,
+            incidentId: incident.Id,
+            createdAtUtc: incident.CreatedAtUtc,
+            applicationId: incident.ApplicationId,
+            applicationName: incident.ApplicationName,
+            assignedAtUtc: incident.AssignedAtUtc
         };
         return item;
     }
@@ -239,7 +259,7 @@ export class MyIncidents {
         var foundItem: IMyIncident = null;
         allMine.forEach(myIncident => {
             if (myIncident.Id === incidentId) {
-                var item = this.createItem(myIncident.Id, parseInt(myIncident.ApplicationId, 10), myIncident.Name);
+                var item = this.createItem2(myIncident);
                 this.allMyIncidents$.push(item);
                 foundItem = item;
             }

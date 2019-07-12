@@ -1,3 +1,5 @@
+// ReSharper disable InconsistentNaming
+
 export class GetApiKey
 {
     public static TYPE_NAME: string = 'GetApiKey';

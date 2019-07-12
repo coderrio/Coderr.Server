@@ -239,7 +239,7 @@ export class IncidentService {
     async getMine(applicationId?: number, ignoreId?: number): Promise<FindIncidentsResultItem[]> {
         if (this.myIncidents.length > 0 && this.haveFetchedMine) {
             if (applicationId) {
-                return this.myIncidents.filter(x => x.ApplicationId === applicationId.toString());
+                return this.myIncidents.filter(x => x.ApplicationId === applicationId);
             }
             return this.myIncidents;
         }
@@ -338,7 +338,7 @@ export class IncidentService {
 
             let myItem = new FindIncidentsResultItem();
             myItem.Id = item.Id;
-            myItem.ApplicationId = item.ApplicationId.toString();
+            myItem.ApplicationId = item.ApplicationId;
             myItem.CreatedAtUtc = item.CreatedAtUtc;
             myItem.ReportCount = item.ReportCount;
             myItem.LastReportReceivedAtUtc = item.LastReportReceivedAtUtc;
@@ -349,7 +349,7 @@ export class IncidentService {
             var incident = await this.get(incidentId);
             let myItem = new FindIncidentsResultItem();
             myItem.Id = incident.Id;
-            myItem.ApplicationId = incident.ApplicationId.toString();
+            myItem.ApplicationId = incident.ApplicationId;
             myItem.CreatedAtUtc = incident.CreatedAtUtc;
             myItem.ReportCount = incident.ReportCount;
             myItem.LastReportReceivedAtUtc = incident.LastReportReceivedAtUtc;
