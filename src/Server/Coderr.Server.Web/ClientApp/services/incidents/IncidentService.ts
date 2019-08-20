@@ -7,6 +7,7 @@ import {
     AssignIncident,
     IgnoreIncident,
     CloseIncident,
+    DeleteIncident,
     GetIncidentForClosePage, GetIncidentForClosePageResult,
     FindIncidents, FindIncidentsResult, FindIncidentsResultItem,
 } from "../../dto/Core/Incidents";
@@ -23,7 +24,10 @@ export interface IncidentClosed {
     incidentId: number;
     userId: number;
 }
-
+export interface IncidentDeleted {
+    incidentId: number;
+    userId: number;
+}
 export interface IncidentIgnored {
     incidentId: number;
     userId: number;
@@ -34,6 +38,7 @@ export class IncidentTopcis {
     static readonly Assigned = "/incidents/assigned";
     static readonly Closed = "/incidents/closed";
     static readonly Ignored = "/incidents/ignored";
+    static readonly Deleted = "/incidents/deleted";
 }
 
 export class IncidentService {
@@ -96,6 +101,26 @@ export class IncidentService {
             userId: userId
         };
         PubSubService.Instance.publish(IncidentTopcis.Assigned, msg);
+    }
+
+    async delete(incidentId: number, areYouSure: string) {
+        if (!incidentId) {
+            throw new Error("incidentId is required.");
+        }
+        if (areYouSure !== "yes") {
+            throw new Error("Please be sure!");
+        }
+
+        const cmd = new DeleteIncident();
+        cmd.IncidentId = incidentId;
+        cmd.AreYouSure = "yes";
+        await this.apiClient.command(cmd);
+
+        var msg: IncidentDeleted = {
+            incidentId: incidentId,
+            userId: -1
+        };
+        PubSubService.Instance.publish(IncidentTopcis.Deleted, msg);
     }
 
     /**

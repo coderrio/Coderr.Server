@@ -198,6 +198,11 @@ export class CloseIncident
     public UserId: number;
     public ApplicationVersion: string;
 }
+export class DeleteIncident {
+    public static TYPE_NAME: string = 'DeleteIncident';
+    public AreYouSure: string;
+    public IncidentId: number;
+}
 export class IgnoreIncident
 {
     public static TYPE_NAME: string = 'IgnoreIncident';

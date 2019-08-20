@@ -320,13 +320,13 @@ export default class IncidentSearchComponent extends Vue {
         setTimeout(() => { this.search() }, 1000);
     }
 
-    closeSelectedIncidents() {
+    deleteSelectedIncidents() {
         const elems = document.querySelectorAll('#searchTable tbody input[type="checkbox"]:checked');
         for (let i = 0; i < elems.length; i++) {
             const elem = <HTMLInputElement>elems[i];
-            this.incidentService$.close(parseInt(elem.value), "Mass close from search.");
+            this.incidentService$.delete(parseInt(elem.value), "yes");
         }
-        AppRoot.notify('All selected incidents have closed.');
+        AppRoot.notify('All selected incidents have deleted.');
         setTimeout(() => { this.search() }, 1000);
     }
 

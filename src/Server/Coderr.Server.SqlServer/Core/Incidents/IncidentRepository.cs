@@ -24,7 +24,7 @@ namespace Coderr.Server.SqlServer.Core.Incidents
 
         public async Task UpdateAsync(Incident incident)
         {
-            using (var cmd = (DbCommand) _uow.CreateCommand())
+            using (var cmd = (DbCommand)_uow.CreateCommand())
             {
                 cmd.CommandText =
                     @"UPDATE Incidents SET 
@@ -59,12 +59,12 @@ namespace Coderr.Server.SqlServer.Core.Incidents
 
         public async Task<int> GetTotalCountForAppInfoAsync(int applicationId)
         {
-            using (var cmd = (DbCommand) _uow.CreateCommand())
+            using (var cmd = (DbCommand)_uow.CreateCommand())
             {
                 cmd.CommandText =
                     @"SELECT CAST(count(*) as int) FROM Incidents WHERE ApplicationId = @ApplicationId";
                 cmd.AddParameter("ApplicationId", applicationId);
-                var result = (int) await cmd.ExecuteScalarAsync();
+                var result = (int)await cmd.ExecuteScalarAsync();
                 return result;
             }
         }
@@ -84,9 +84,20 @@ namespace Coderr.Server.SqlServer.Core.Incidents
             }
         }
 
+        public async Task Delete(int incidentId)
+        {
+            using (var cmd = (DbCommand)_uow.CreateCommand())
+            {
+                cmd.CommandText =
+                    @"DELETE FROM Incidents WHERE Id = @id";
+                cmd.AddParameter("Id", incidentId);
+                await cmd.ExecuteNonQueryAsync();
+            }
+        }
+
         public Task<Incident> GetAsync(int id)
         {
-            using (var cmd = (DbCommand) _uow.CreateCommand())
+            using (var cmd = (DbCommand)_uow.CreateCommand())
             {
                 cmd.CommandText =
                     "SELECT TOP 1 * FROM Incidents WHERE Id = @id";
@@ -107,7 +118,7 @@ namespace Coderr.Server.SqlServer.Core.Incidents
                 return cmd.FirstOrDefault(new IncidentMapper());
             }
         }
-        
+
         public Incident Get(int id)
         {
             using (var cmd = _uow.CreateCommand())

@@ -27,6 +27,7 @@ export default class AnalyzeIncidentComponent extends Vue {
     currentCollectionName: string = '';
 
     created() {
+        this.incidentId = parseInt(this.$route.params.incidentId, 10);
     }
 
     mounted() {

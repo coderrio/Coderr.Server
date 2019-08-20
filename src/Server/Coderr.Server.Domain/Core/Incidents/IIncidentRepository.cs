@@ -10,6 +10,13 @@ namespace Coderr.Server.Domain.Core.Incidents
     public interface IIncidentRepository
     {
         /// <summary>
+        /// Delete an incident
+        /// </summary>
+        /// <param name="incidentId">id</param>
+        /// <returns></returns>
+        Task Delete(int incidentId);
+
+        /// <summary>
         ///     Get incident
         /// </summary>
         /// <param name="id">incident id</param>
