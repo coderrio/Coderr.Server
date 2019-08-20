@@ -37,15 +37,18 @@ export default class NavMenuComponent extends Vue {
 
     @Watch('$route.params.applicationId')
     onApplicationChanged(value: string, oldValue: string) {
+
         if (!value) {
             // analyze uses it's own logic
             if (this.$route.path.indexOf('/analyze/') !== -1)
                 return;
 
+            AppRoot.Instance.currentApplicationId = null;
             this.updateCurrent(0);
             return;
         }
         var applicationId = parseInt(value);
+        AppRoot.Instance.currentApplicationId = applicationId; 
         this.updateCurrent(applicationId);
     }
 

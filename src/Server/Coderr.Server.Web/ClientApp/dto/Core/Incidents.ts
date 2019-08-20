@@ -1,4 +1,6 @@
 import {ReportDTO} from './Reports'
+// ReSharper disable InconsistentNaming
+
 export enum IncidentOrder
 {
     Newest = 0,
@@ -52,8 +54,9 @@ export class FindIncidentsResult
 export class FindIncidentsResultItem
 {
     public static TYPE_NAME: string = 'FindIncidentsResultItem';
-    public ApplicationId: string;
+    public ApplicationId: number;
     public ApplicationName: string;
+    public AssignedAtUtc: Date|null;
     public CreatedAtUtc: Date;
     public Id: number;
     public IsReOpened: boolean;

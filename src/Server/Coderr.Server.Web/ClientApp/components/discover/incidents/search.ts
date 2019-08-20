@@ -289,7 +289,7 @@ export default class IncidentSearchComponent extends Vue {
                 this.incidents.splice(0);
                 result.Items.forEach(item => {
                     var entity: Incident = {
-                        ApplicationId: parseInt(item.ApplicationId, 10),
+                        ApplicationId: item.ApplicationId,
                         ApplicationName: item.ApplicationName,
                         CreatedAtUtc: item.CreatedAtUtc,
                         Id: item.Id,

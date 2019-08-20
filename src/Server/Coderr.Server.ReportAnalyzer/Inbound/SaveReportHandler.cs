@@ -64,7 +64,8 @@ namespace Coderr.Server.ReportAnalyzer.Inbound
                 throw new InvalidCredentialException($"AppKey was not found in the database. Key '{appKey}'.");
             }
 
-            if (!ReportValidator.ValidateBody(application.SharedSecret, signatureProvidedByTheClient, reportBody))
+            // web(js) applications do not sign the body
+            if (signatureProvidedByTheClient != null && !ReportValidator.ValidateBody(application.SharedSecret, signatureProvidedByTheClient, reportBody))
             {
                 await StoreInvalidReportAsync(appKey, signatureProvidedByTheClient, remoteAddress, reportBody);
                 throw new AuthenticationException(
@@ -158,6 +159,21 @@ namespace Coderr.Server.ReportAnalyzer.Inbound
 
             if (string.IsNullOrEmpty(dto.EnvironmentName) && !string.IsNullOrEmpty(dto.Environment))
                 dto.EnvironmentName = dto.Environment;
+
+            // Safeguard against malformed reports (other clients than the built in ones)
+            if (dto.Exception == null)
+                return null;
+            if (string.IsNullOrWhiteSpace(dto.Exception.Name) && string.IsNullOrWhiteSpace(dto.Exception.FullName))
+                return null;
+            if (string.IsNullOrWhiteSpace(dto.Exception.Name))
+                dto.Exception.Name = dto.Exception.FullName;
+            if (string.IsNullOrWhiteSpace(dto.Exception.FullName))
+                dto.Exception.FullName = dto.Exception.Name;
+            if (dto.Exception.BaseClasses == null)
+                dto.Exception.BaseClasses = new string[0];
+            if (dto.Exception.Namespace == null)
+                dto.Exception.Namespace = "";
+
             return dto;
         }
 

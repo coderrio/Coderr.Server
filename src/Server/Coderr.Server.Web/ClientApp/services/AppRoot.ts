@@ -50,6 +50,7 @@ export class AppRoot {
     public apiClient: ApiClient;
     public incidentService: IncidentService;
     public applicationService: ApplicationService;
+    public currentApplicationId: number | null;
 
     constructor() {
         var base = <HTMLBaseElement>document.head.querySelector('base');
