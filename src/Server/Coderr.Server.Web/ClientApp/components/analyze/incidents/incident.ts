@@ -33,7 +33,7 @@ export default class AnalyzeIncidentComponent extends Vue {
 
     mounted() {
         var incidentId = parseInt(this.$route.params.incidentId, 10);
-        this.loadIncident(incidentId);
+        this.loadIncident();
         MyIncidents.Instance.subscribeOnSelectedIncident(this.selectIncident);
     }
 
@@ -72,13 +72,8 @@ export default class AnalyzeIncidentComponent extends Vue {
 
     }
 
-    private loadIncident(id: number) {
-        if (!id) {
-            throw new Error("Expected an incidentId.");
-        }
-
-        this.incidentId = id;
-        AppRoot.Instance.incidentService.get(id)
+    private loadIncident() {
+        AppRoot.Instance.incidentService.get(this.incidentId)
             .then(incident => {
                 this.incident = incident;
                 AppRoot.Instance.applicationService.getTeam(incident.ApplicationId)
@@ -88,7 +83,7 @@ export default class AnalyzeIncidentComponent extends Vue {
             });
 
         var q = new GetReportList();
-        q.IncidentId = id;
+        q.IncidentId = this.incidentId;
         AppRoot.Instance.apiClient.query<GetReportListResult>(q)
             .then(list => {
                 this.reports = list.Items;
@@ -166,7 +161,8 @@ export default class AnalyzeIncidentComponent extends Vue {
         if (myIncident == null) {
             this.$router.push({ name: 'analyzeHome' });
         } else {
-            this.loadIncident(myIncident.incidentId);
+            this.incidentId = myIncident.incidentId;
+            this.loadIncident();
         }
     }
 }

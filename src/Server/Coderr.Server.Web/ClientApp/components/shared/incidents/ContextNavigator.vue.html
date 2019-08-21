@@ -30,7 +30,7 @@
                 <tbody>
                     <tr v-for="prop in currentCollectionProperties">
                         <th>{{prop.name}}</th>
-                        <td>
+                        <td style="width: 90%">
                             <span v-if="prop.htmlValue" v-html="prop.htmlValue"></span>
                             <span v-else>{{prop.value}}</span>
                             
