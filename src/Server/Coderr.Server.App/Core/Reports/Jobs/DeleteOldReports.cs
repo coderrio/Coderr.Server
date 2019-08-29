@@ -69,7 +69,8 @@ namespace Coderr.Server.App.Core.Reports.Jobs
 
                                 FETCH NEXT FROM OldReportsCursor INTO @ReportId
 
-                                WHILE @@FETCH_STATUS = 0 
+                                -- don't lock jobs because one DB gets filled (cloud service)
+                                WHILE @@FETCH_STATUS = 0  AND @counter < 10000
                                 BEGIN
                                     set @counter = @counter + 1
                                     DELETE FROM ErrorReports WHERE Id = @ReportId

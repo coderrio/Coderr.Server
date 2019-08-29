@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Threading.Tasks;
 using Coderr.Server.Domain.Core.ErrorReports;
 using Griffin.Data;
+using log4net;
 
 namespace Coderr.Server.SqlServer.ReportAnalyzer.Jobs
 {
@@ -11,6 +12,8 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer.Jobs
     {
         private readonly SqlTransaction _transaction;
         private readonly DataTable _dataTable = new DataTable();
+        private ILog _logger = LogManager.GetLogger(typeof(Importer));
+
 
         public Importer(SqlTransaction transaction)
         {
@@ -26,10 +29,17 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer.Jobs
         {
             foreach (var context in contexts)
             {
+                if (context.Properties.Count > 300)
+                {
+                    _logger.Warn($"Report {reportId}, Ignoring collection {context.Name}, since it got {context.Properties.Count} properties");
+                    continue;
+                }
+
                 foreach (var property in context.Properties)
                 {
                     if (property.Value == null)
                         continue;
+                    
                     var row = CreateDataTableRow(_dataTable, reportId, context, property);
                     _dataTable.Rows.Add(row);
                 }
