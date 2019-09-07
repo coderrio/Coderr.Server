@@ -57,6 +57,22 @@ namespace Coderr.Server.SqlServer.Core.Incidents
             }
         }
 
+        public Task MapCorrelationId(int incidentId, string correlationId)
+        {
+            var correlationPk = _uow.ExecuteScalar("SELECT Id FROM CorrelationIds WHERE Value = @value",
+                new {value = correlationId});
+
+            var sql = @"MERGE INTO IncidentCorrelations IC
+   USING IncidentCorrelations ICE 
+      ON IC.CorrelationId = ICE.id
+         AND S.tsql = 'cool'
+WHEN MATCHED THEN
+   UPDATE 
+      SET col1 = S.col1, 
+          col2 = S.col2;"
+            throw new NotImplementedException();
+        }
+
         public async Task<int> GetTotalCountForAppInfoAsync(int applicationId)
         {
             using (var cmd = (DbCommand)_uow.CreateCommand())

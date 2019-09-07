@@ -47,5 +47,7 @@ namespace Coderr.Server.Domain.Core.Incidents
         /// <returns>task</returns>
         /// <exception cref="ArgumentNullException">incident</exception>
         Task UpdateAsync(Incident incident);
+
+        Task MapCorrelationId(int incidentId, string correlationId);
     }
 }

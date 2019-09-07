@@ -35,7 +35,7 @@ namespace Coderr.Server.ReportAnalyzer.Abstractions.Incidents
         /// <summary>
         ///     Incident that the report was added to.
         /// </summary>
-        public IncidentSummaryDTO Incident { get; private set; }
+        public IncidentSummaryDTO Incident { get; }
 
         /// <summary>
         ///     Incident was marked as closed, so the received report opened it again.
@@ -43,8 +43,16 @@ namespace Coderr.Server.ReportAnalyzer.Abstractions.Incidents
         public bool IsReOpened { get; set; }
 
         /// <summary>
+        ///     Is the incident new, i.e. this is the first report for an incident.
+        /// </summary>
+        /// <remarks>
+        ///     New parameter in later versions = nullable.
+        /// </remarks>
+        public bool? IsNewIncident { get; set; }
+
+        /// <summary>
         ///     Received report.
         /// </summary>
-        public ReportDTO Report { get; private set; }
+        public ReportDTO Report { get; }
     }
 }
