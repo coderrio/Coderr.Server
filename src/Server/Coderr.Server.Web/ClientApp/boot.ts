@@ -233,6 +233,11 @@ const routes = [
                 name: "createApiKey",
                 path: "apikeys/create",
                 component: require("./components/manage/system/apikeys/apikey-create.vue.html").default
+            },
+            {
+                name: "manageWhitelistedDomains",
+                path: "domains/whitelist/",
+                component: require("./components/manage/system/whitelist/home.vue.html").default
             }
         ]
     },

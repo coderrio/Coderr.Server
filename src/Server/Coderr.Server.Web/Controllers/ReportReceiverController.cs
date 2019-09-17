@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Security.Authentication;
 using System.Security.Claims;
@@ -73,7 +74,25 @@ namespace Coderr.Server.Web.Controllers
                 var config = new ReportConfigWrapper(reportConfig);
                 var handler = new SaveReportHandler(_messageQueue, _unitOfWork, config);
                 var principal = CreateReporterPrincipal();
+
                 var remoteIp = Request.HttpContext.Connection.RemoteIpAddress.ToString();
+                bool isAllowed = false;
+                var referrer = Request.Headers["Referer"].ToString();
+                if (!string.IsNullOrWhiteSpace(referrer))
+                {
+                    var uri = new Uri(referrer);
+                    if (uri.Host == "localhost" && (remoteIp == "::1" || remoteIp == "127.0.0.1"))
+                    {
+                        isAllowed = true;
+                    }
+                    var entry = Dns.GetHostEntry(uri.Host);
+                    var ip = IPAddress.Parse(remoteIp);
+                    if (entry.AddressList.Contains(ip))
+                    {
+                        isAllowed = true;
+                    }
+                }
+
                 await handler.BuildReportAsync(principal, appKey, sig, remoteIp, buffer);
                 return NoContent();
             }
