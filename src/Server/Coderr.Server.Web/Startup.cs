@@ -24,6 +24,7 @@ using Coderr.Server.Web.Boot;
 using Coderr.Server.Web.Boot.Adapters;
 using Coderr.Server.Web.Controllers;
 using Coderr.Server.Web.Infrastructure;
+using Coderr.Server.Web.Infrastructure.Authentication.ApiKeys;
 using log4net;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -93,6 +94,8 @@ namespace Coderr.Server.Web
                 ContentTypeProvider = provider
             });
 
+
+            app.UseApiKeyMiddleware(() => OpenConnection(CoderrClaims.SystemPrincipal));
             app.UseAuthentication();
 
             app.UseMvc(routes =>
@@ -186,6 +189,12 @@ namespace Coderr.Server.Web
                     return Task.CompletedTask;
                 };
             });
+            authenticationBuilder.AddScheme<ApiKeyAuthOptions, ApiKeyAuthenticator>(ApiKeyAuthOptions.DefaultSchemeName, "ApiKey authentication",
+                options =>
+                {
+                    options.OpenDb = () => OpenConnection(CoderrClaims.SystemPrincipal);
+                    options.AuthenticationScheme = ApiKeyAuthOptions.DefaultSchemeName;
+                });
 
             if (!IsConfigured)
             {

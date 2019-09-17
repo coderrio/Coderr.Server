@@ -124,8 +124,8 @@
                     <em>No incidents have been reported (or nothing matched your search).</em>
                 </div>
                 <div v-else>
-                    <button class="btn btn-blue" v-on:click.prevent="assignAllToMe">Assign selected incidents to me</button>
-                    <button class="btn btn-light" v-on:click.prevent="deleteSelectedIncidents">Delete selected incidents</button>
+                    <button name="assignToMe" class="btn btn-blue" v-on:click.prevent="assignAllToMe">Assign selected incidents to me</button>
+                    <button name="deleteSelected" class="btn btn-light" v-on:click.prevent="deleteSelectedIncidents">Delete selected incidents</button>
                 </div>
             </div>
         </div>

@@ -102,11 +102,12 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
             }
             else
             {
-                if (incident.ReportCount > 1000)
+                await _repository.StoreReportStats(new ReportMapping()
                 {
-                    _logger.Debug("Report count is more than 10000. Ignoring report for incident " + incident.Id);
-                    return;
-                }
+                    IncidentId = incident.Id,
+                    ErrorId = report.ClientReportId,
+                    ReceivedAtUtc = report.CreatedAtUtc
+                });
 
                 if (incident.IsIgnored)
                 {
@@ -139,6 +140,11 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
 
                 incident.AddReport(report);
                 _repository.UpdateIncident(incident);
+                if (incident.ReportCount > 25)
+                {
+                    _logger.Debug("Report count is more than 25. Storing only report stats for incident " + incident.Id);
+                    return;
+                }
             }
 
             if (!string.IsNullOrWhiteSpace(report.EnvironmentName))

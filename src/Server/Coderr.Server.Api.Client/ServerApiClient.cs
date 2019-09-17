@@ -106,8 +106,15 @@ namespace Coderr.Server.Api.Client
         private async Task<TResult> DeserializeResponse<TResult>(HttpContent content)
         {
             var jsonStr = await content.ReadAsStringAsync();
-            var responseObj = JsonConvert.DeserializeObject(jsonStr, typeof(TResult), _jsonSerializerSettings);
-            return (TResult)responseObj;
+            try
+            {
+                var responseObj = JsonConvert.DeserializeObject(jsonStr, typeof(TResult), _jsonSerializerSettings);
+                return (TResult) responseObj;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Failed to deserialize " + jsonStr, ex);
+            }
         }
 
         private async Task<HttpResponseMessage> RequestAsync(HttpMethod httpMethod, string cqsType, object cqsObject)

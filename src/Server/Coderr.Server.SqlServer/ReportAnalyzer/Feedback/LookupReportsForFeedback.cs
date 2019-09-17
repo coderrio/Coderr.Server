@@ -86,15 +86,19 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer.Feedback
             {
                 using (var cmd = (DbCommand) _unitOfWork.CreateCommand())
                 {
-                    cmd.CommandText = "SELECT Id, ApplicationId, IncidentId FROM ErrorReports WITH(NOLOCK) WHERE ";
                     if (item.ErrorId != null)
                     {
-                        cmd.CommandText += "ErrorId = @id";
+                        cmd.CommandText = @"SELECT Id, ApplicationId, IncidentId 
+                                                FROM IncidentReports  WITH(NOLOCK) 
+                                                JOIN Incidents ON (Incidents.Id = IncidentId) WITH(NOLOCK) 
+                                                WHERE ErrorId = @id";
                         cmd.AddParameter("id", item.ErrorId);
                     }
                     else
                     {
-                        cmd.CommandText += "Id = @id";
+                        cmd.CommandText = @"SELECT Id, ApplicationId, IncidentId 
+                                            FROM ErrorReports WITH(NOLOCK) 
+                                            WHERE Id = @id";
                         cmd.AddParameter("id", item.ReportId);
                     }
 
