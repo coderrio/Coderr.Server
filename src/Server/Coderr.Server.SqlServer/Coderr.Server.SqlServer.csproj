@@ -26,7 +26,4 @@
     <EmbeddedResource Include="Schema\*.sql" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Remove="Schema\Coderr.v19.sql" />
-  </ItemGroup>
 </Project>

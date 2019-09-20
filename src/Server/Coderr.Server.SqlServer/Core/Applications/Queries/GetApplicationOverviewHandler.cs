@@ -57,13 +57,13 @@ namespace Coderr.Server.SqlServer.Core.Applications.Queries
                     filter1 = "WHERE ";
                     filter2 = "WHERE ";
                 }
-                var sql = @"select cast(Incidents.CreatedAtUtc as date), count(Id)
+                var sql = @"select cast(Incidents.CreatedAtUtc as date), count(Incidents.Id)
 from Incidents
 {2} Incidents.CreatedAtUtc >= @minDate
 AND Incidents.CreatedAtUtc <= GetUtcDate()
 {0}
 group by cast(Incidents.CreatedAtUtc as date);
-select cast(IncidentReports.CreatedAtUtc as date), count(Id)
+select cast(IncidentReports.ReceivedAtUtc as date), count(IncidentReports.Id)
 from IncidentReports
 join Incidents isa ON (isa.Id = IncidentReports.IncidentId)
 {3} IncidentReports.ReceivedAtUtc >= @minDate
@@ -135,7 +135,8 @@ AND ReceivedAtUtc >= @minDate
 AND ReceivedAtUtc <= GetUtcDate()
 AND ApplicationId = @appId;
 
-SELECT count(distinct emailaddress) from IncidentFeedback
+SELECT count(distinct emailaddress) 
+from IncidentFeedback
 JOIN IncidentVersions ON (IncidentFeedback.IncidentId = IncidentVersions.IncidentId)
 WHERE IncidentVersions.VersionId = @versionId
 AND CreatedAtUtc >= @minDate
@@ -144,7 +145,8 @@ AND ApplicationId = @appId
 AND emailaddress is not null
 AND DATALENGTH(emailaddress) > 0;
 
-select count(*) from IncidentFeedback 
+select count(*) 
+from IncidentFeedback 
 JOIN IncidentVersions ON (IncidentFeedback.IncidentId = IncidentVersions.IncidentId)
 WHERE IncidentVersions.VersionId = @versionId
 AND CreatedAtUtc >= @minDate
@@ -163,21 +165,23 @@ AND ApplicationId = @appId
 AND Incidents.State <> {(int)IncidentState.Ignored}
 AND Incidents.State <> {(int)IncidentState.Closed};
 
-SELECT count(id) 
+SELECT count(IncidentReports.id) 
 FROM IncidentReports
 JOIN Incidents ON (Incidents.Id = IncidentReports.IncidentId)
 WHERE ReceivedAtUtc >= @minDate
 AND ReceivedAtUtc <= GetUtcDate()
 AND ApplicationId = @appId;
 
-select count(distinct emailaddress) from IncidentFeedback
+select count(distinct emailaddress) 
+from IncidentFeedback
 where CreatedAtUtc >= @minDate
 AND CreatedAtUtc <= GetUtcDate()
 AND ApplicationId = @appId
 AND emailaddress is not null
 AND DATALENGTH(emailaddress) > 0;
 
-select count(*) from IncidentFeedback 
+select count(*) 
+from IncidentFeedback 
 where CreatedAtUtc >= @minDate
 AND CreatedAtUtc <= GetUtcDate()
 AND ApplicationId = @appId
