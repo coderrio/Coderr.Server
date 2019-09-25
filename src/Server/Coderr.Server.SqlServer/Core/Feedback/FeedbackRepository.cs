@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Domain.Core.Feedback;
@@ -22,7 +23,7 @@ namespace Coderr.Server.SqlServer.Core.Feedback
 
         public async Task<UserFeedback> FindPendingAsync(string reportId)
         {
-            return await _unitOfWork.FirstOrDefaultAsync<UserFeedback>(new {ErrorId = reportId});
+            return await _unitOfWork.FirstOrDefaultAsync<UserFeedback>(new { ErrorId = reportId });
         }
 
         public async Task UpdateAsync(UserFeedback feedback)
@@ -42,7 +43,9 @@ namespace Coderr.Server.SqlServer.Core.Feedback
                 {
                     while (await reader.ReadAsync())
                     {
-                        emailAddresses.Add(reader.GetString(0));
+                        var email = reader.GetString(0);
+                        if (!emailAddresses.Any(x => x.Equals(email, StringComparison.OrdinalIgnoreCase)))
+                            emailAddresses.Add(email);
                     }
                 }
             }

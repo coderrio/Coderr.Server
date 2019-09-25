@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Threading;
+using Coderr.Server.Abstractions.Config;
 using Coderr.Server.App.Tests.Configuration.TestEntitites;
-using Coderr.Server.Infrastructure.Configuration;
 using FluentAssertions;
 using Xunit;
 

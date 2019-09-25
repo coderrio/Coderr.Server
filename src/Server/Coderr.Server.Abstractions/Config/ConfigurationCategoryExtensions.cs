@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Coderr.Server.Abstractions.Config;
 
-namespace Coderr.Server.Infrastructure.Configuration
+namespace Coderr.Server.Abstractions.Config
 {
     /// <summary>
     ///     Extensions used to convert between a flat object and a configuration dictionary
