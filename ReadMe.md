@@ -3,7 +3,7 @@ Coderr Community Server
 
 [![Build status](https://1tcompany.visualstudio.com/_apis/public/build/definitions/75570083-b1ef-4e78-88e2-5db4982f756c/6/badge)]() [![Github All Releases](https://img.shields.io/github/downloads/coderrio/coderr.server/total.svg?style=flat-square)]()
 
-# Discover more errors and solve them faster!
+## Discover more errors and solve them faster!
 
 ![Welcome screen](docs/dashboard.png)
 
