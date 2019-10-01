@@ -86,8 +86,8 @@
                             <th><input class="form-check-inline" type="checkbox" v-on:change="checkAll($event)" /> Name</th>
                             <th v-if="showApplicationColumn">Application</th>
                             <th style="width: 150px" class="sortable" v-on:click.prevent="sort($event)" data-value="0">Created <i class="fa"></i></th>
-                            <th style="width: 130px" class="sortable" v-on:click.prevent="sort($event)" data-value="1">Last report <i class="fa"></i></th>
-                            <th style="width: 130px" class="sortable" v-on:click.prevent="sort($event)" data-value="2">Report count <i class="fa fa-chevron-up"></i></th>
+                            <th style="width: 130px" class="sortable" v-on:click.prevent="sort($event)" data-value="1">Last report <i class="fa fa-chevron-down"></i></th>
+                            <th style="width: 130px" class="sortable" v-on:click.prevent="sort($event)" data-value="2">Report count <i class="fa"></i></th>
                         </tr>
                     </thead>
                     <tbody>
