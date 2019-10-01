@@ -48,7 +48,7 @@ namespace Coderr.Server.SqlServer.Core.Applications.Queries
                         new { version = query.Version });
                     filter1 = @"JOIN IncidentVersions On (Incidents.Id = IncidentVersions.IncidentId)
                             WHERE IncidentVersions.VersionId = @versionId AND ";
-                    filter2 = @"JOIN IncidentVersions On (ErrorReports.IncidentId = IncidentVersions.IncidentId)
+                    filter2 = @"JOIN IncidentVersions On (IncidentReports.IncidentId = IncidentVersions.IncidentId)
                             WHERE IncidentVersions.VersionId = @versionId AND ";
                     cmd.AddParameter("versionId", id);
                 }
@@ -57,24 +57,25 @@ namespace Coderr.Server.SqlServer.Core.Applications.Queries
                     filter1 = "WHERE ";
                     filter2 = "WHERE ";
                 }
-                var sql = @"select cast(Incidents.CreatedAtUtc as date), count(Id)
+                var sql = @"select cast(Incidents.CreatedAtUtc as date), count(Incidents.Id)
 from Incidents
 {2} Incidents.CreatedAtUtc >= @minDate
 AND Incidents.CreatedAtUtc <= GetUtcDate()
 {0}
 group by cast(Incidents.CreatedAtUtc as date);
-select cast(ErrorReports.CreatedAtUtc as date), count(Id)
-from ErrorReports
-{3} ErrorReports.CreatedAtUtc >= @minDate
-AND ErrorReports.CreatedAtUtc <= GetUtcDate()
+select cast(IncidentReports.ReceivedAtUtc as date), count(IncidentReports.Id)
+from IncidentReports
+join Incidents isa ON (isa.Id = IncidentReports.IncidentId)
+{3} IncidentReports.ReceivedAtUtc >= @minDate
+AND IncidentReports.ReceivedAtUtc <= GetUtcDate()
 {1}
-group by cast(ErrorReports.CreatedAtUtc as date);";
+group by cast(IncidentReports.ReceivedAtUtc as date);";
 
                 if (query.ApplicationId > 0)
                 {
                     cmd.CommandText = string.Format(sql,
                         " AND Incidents.ApplicationId = @appId",
-                        " AND ErrorReports.ApplicationId = @appId",
+                        " AND isa.ApplicationId = @appId",
                         filter1, filter2);
                     cmd.AddParameter("appId", query.ApplicationId);
                 }
@@ -127,14 +128,15 @@ AND ApplicationId = @appId
 AND Incidents.State <> {(int)IncidentState.Ignored}
 AND Incidents.State <> {(int)IncidentState.Closed};
 
-SELECT count(id) from ErrorReports 
-JOIN IncidentVersions ON (ErrorReports.IncidentId = IncidentVersions.IncidentId)
+SELECT count(id) from IncidentReports
+JOIN IncidentVersions ON (IncidentReports.IncidentId = IncidentVersions.IncidentId)
 WHERE IncidentVersions.VersionId = @versionId
-AND CreatedAtUtc >= @minDate
-AND CreatedAtUtc <= GetUtcDate()
+AND ReceivedAtUtc >= @minDate
+AND ReceivedAtUtc <= GetUtcDate()
 AND ApplicationId = @appId;
 
-SELECT count(distinct emailaddress) from IncidentFeedback
+SELECT count(distinct emailaddress) 
+from IncidentFeedback
 JOIN IncidentVersions ON (IncidentFeedback.IncidentId = IncidentVersions.IncidentId)
 WHERE IncidentVersions.VersionId = @versionId
 AND CreatedAtUtc >= @minDate
@@ -143,7 +145,8 @@ AND ApplicationId = @appId
 AND emailaddress is not null
 AND DATALENGTH(emailaddress) > 0;
 
-select count(*) from IncidentFeedback 
+select count(*) 
+from IncidentFeedback 
 JOIN IncidentVersions ON (IncidentFeedback.IncidentId = IncidentVersions.IncidentId)
 WHERE IncidentVersions.VersionId = @versionId
 AND CreatedAtUtc >= @minDate
@@ -162,19 +165,23 @@ AND ApplicationId = @appId
 AND Incidents.State <> {(int)IncidentState.Ignored}
 AND Incidents.State <> {(int)IncidentState.Closed};
 
-select count(id) from ErrorReports 
-where CreatedAtUtc >= @minDate
-AND CreatedAtUtc <= GetUtcDate()
+SELECT count(IncidentReports.id) 
+FROM IncidentReports
+JOIN Incidents ON (Incidents.Id = IncidentReports.IncidentId)
+WHERE ReceivedAtUtc >= @minDate
+AND ReceivedAtUtc <= GetUtcDate()
 AND ApplicationId = @appId;
 
-select count(distinct emailaddress) from IncidentFeedback
+select count(distinct emailaddress) 
+from IncidentFeedback
 where CreatedAtUtc >= @minDate
 AND CreatedAtUtc <= GetUtcDate()
 AND ApplicationId = @appId
 AND emailaddress is not null
 AND DATALENGTH(emailaddress) > 0;
 
-select count(*) from IncidentFeedback 
+select count(*) 
+from IncidentFeedback 
 where CreatedAtUtc >= @minDate
 AND CreatedAtUtc <= GetUtcDate()
 AND ApplicationId = @appId
@@ -236,7 +243,7 @@ AND DATALENGTH(Description) > 0;";
                         new { version = query.Version });
                     filter1 = @"JOIN IncidentVersions On (Incidents.Id = IncidentVersions.IncidentId)
                             WHERE IncidentVersions.VersionId = @versionId AND ";
-                    filter2 = @"JOIN IncidentVersions On (ErrorReports.IncidentId = IncidentVersions.IncidentId)
+                    filter2 = @"JOIN IncidentVersions On (IncidentReports.IncidentId = IncidentVersions.IncidentId)
                             WHERE IncidentVersions.VersionId = @versionId AND ";
                     cmd.AddParameter("versionId", id);
                 }
@@ -252,12 +259,13 @@ AND DATALENGTH(Description) > 0;";
  AND Incidents.CreatedAtUtc <= GetUtcDate()
  AND Incidents.ApplicationId = @appId
  group by DATEPART(HOUR, Incidents.CreatedAtUtc);
- select DATEPART(HOUR, ErrorReports.CreatedAtUtc), cast(count(Id) as int)
- from ErrorReports
- {1} ErrorReports.CreatedAtUtc >= @minDate
- AND ErrorReports.CreatedAtUtc <= GetUtcDate()
- AND ErrorReports.ApplicationId = @appId
- group by DATEPART(HOUR, ErrorReports.CreatedAtUtc);";
+ select DATEPART(HOUR, IncidentReports.ReceivedAtUtc), cast(count(Id) as int)
+ from IncidentReports
+ JOIN Incidents ice ON (ice.Id = IncidentId)
+ {1} IncidentReports.ReceivedAtUtc >= @minDate
+ AND IncidentReports.ReceivedAtUtc <= GetUtcDate()
+ AND ice.ApplicationId = @appId
+ group by DATEPART(HOUR, IncidentReports.ReceivedAtUtc);";
 
                 cmd.CommandText = string.Format(sql, filter1, filter2);
                 cmd.AddParameter("appId", query.ApplicationId);

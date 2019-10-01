@@ -65,7 +65,11 @@ namespace Coderr.Server.SqlServer.Modules.ReportSpikes
             using (var cmd = _unitOfWork.CreateDbCommand())
             {
                 cmd.CommandText =
-                    @"SELECT count(*) FROM ErrorReports WHERE ApplicationId = @appId AND CreatedAtUtc >= @date";
+                    @"SELECT count(IncidentReports.Id) 
+                        FROM IncidentReports
+                        JOIN Incidents ON (Incidents.Id = IncidentId)
+                        WHERE ApplicationId = @appId 
+                            AND CreatedAtUtc >= @date";
                 cmd.AddParameter("date", DateTime.UtcNow.AddHours(-24));
                 cmd.AddParameter("appId", applicationId);
                 return (int) await cmd.ExecuteScalarAsync();

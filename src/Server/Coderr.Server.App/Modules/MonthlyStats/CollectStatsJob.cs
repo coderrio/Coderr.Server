@@ -174,8 +174,10 @@ namespace Coderr.Server.App.Modules.MonthlyStats
             using (var cmd = _unitOfWork.CreateDbCommand())
             {
                 cmd.CommandText = @"SELECT ApplicationId, count(*)
-                                    FROM ErrorReports
-                                    where CreatedAtUtc >= @fromDate AND CreatedAtUtc < @toDate
+                                    FROM IncidentReports
+                                    JOIN Incidents ON (Incidents.Id = IncidentId)
+                                    where IncidentReports.ReceivedAtUtc >= @fromDate 
+                                        AND IncidentReports.ReceivedAtUtc < @toDate
                                     group by ApplicationId";
                 cmd.AddParameter("fromDate", lastMonth);
                 cmd.AddParameter("toDate", lastMonth.AddMonths(1));

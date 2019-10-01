@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Domain.Core.ErrorReports;
 using Coderr.Server.Infrastructure;
@@ -136,7 +137,7 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer
                 var to = DateTime.UtcNow;
 
                 cmd.CommandText =
-                    "SELECT count(*) FROM ErrorReports WHERE CreatedAtUtc >= @from ANd CreatedAtUtc <= @to";
+                    "SELECT count(*) FROM IncidentReports WHERE ReceivedAtUtc >= @from ANd ReceivedAtUtc <= @to";
                 cmd.AddParameter("from", from);
                 cmd.AddParameter("to", to);
                 return (int)cmd.ExecuteScalar();
@@ -153,6 +154,11 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer
                 cmd.AddParameter("date", date.Date);
                 cmd.ExecuteNonQuery();
             }
+        }
+
+        public async Task StoreReportStats(ReportMapping mapping)
+        {
+            await _unitOfWork.InsertAsync(mapping);
         }
 
         public void CreateReport(ErrorReportEntity report)

@@ -82,15 +82,18 @@ namespace Coderr.Server.SqlServer.Core.Reports
             return report;
         }
 
-        public async Task<ErrorReportEntity> FindByErrorIdAsync(string errorId)
+        public async Task<ReportMapping> FindByErrorIdAsync(string errorId)
         {
             using (var cmd = (DbCommand)_uow.CreateCommand())
             {
                 cmd.CommandText =
-                    "SELECT * FROM ErrorReports WHERE ErrorId = @id";
+                    @"SELECT ir.Id, ir.IncidentId, i.ApplicationId, ir.ReceivedAtUtc, ir.ErrorId
+                        FROM IncidentReports ir
+                        JOIN Incidents i ON (i.Id = ir.IncidentId)
+                        WHERE ErrorId = @id";
 
                 cmd.AddParameter("id", errorId);
-                return await cmd.FirstOrDefaultAsync<ErrorReportEntity>();
+                return await cmd.FirstOrDefaultAsync<ReportMapping>();
             }
         }
 

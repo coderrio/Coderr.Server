@@ -1,6 +1,9 @@
 @import "coderr-variables.scss";
 @import "mixins/_breakpoints.scss";
 
+.btn.btn-outline-primary{
+    color:#fff;
+}
 .minimal-gutters {
     margin-right: 1px;
     margin-left: 1px;

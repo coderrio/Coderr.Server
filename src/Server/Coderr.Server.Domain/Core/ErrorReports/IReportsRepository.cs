@@ -15,7 +15,7 @@ namespace Coderr.Server.Domain.Core.ErrorReports
         /// <param name="errorId">Customer generated id (from the client library).</param>
         /// <returns>report if found; otherwise <c>null</c>.</returns>
         /// <exception cref="ArgumentNullException">errorId</exception>
-        Task<ErrorReportEntity> FindByErrorIdAsync(string errorId);
+        Task<ReportMapping> FindByErrorIdAsync(string errorId);
 
 
         /// <summary>

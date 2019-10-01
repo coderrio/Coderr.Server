@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Coderr.Server.Domain.Core.ErrorReports;
 using Coderr.Server.ReportAnalyzer.Incidents;
 
@@ -71,5 +72,6 @@ namespace Coderr.Server.ReportAnalyzer
         int GetMonthReportCount();
 
         void AddMissedReport(DateTime date);
+        Task StoreReportStats(ReportMapping mapping);
     }
 }

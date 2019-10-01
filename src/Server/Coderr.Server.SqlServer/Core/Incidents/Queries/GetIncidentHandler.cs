@@ -193,11 +193,11 @@ where IncidentId=@incidentId";
         {
             using (var cmd = _unitOfWork.CreateCommand())
             {
-                cmd.CommandText = @"select cast(createdatutc as date) as Date, count(*) as Count
-from errorreports WITH(READUNCOMMITTED)
+                cmd.CommandText = @"select cast(ReceivedAtUtc as date) as Date, count(*) as Count
+from IncidentReports WITH(READUNCOMMITTED)
 where incidentid=@incidentId
-AND CreatedAtUtc > @date
-group by cast(createdatutc as date)";
+AND ReceivedAtUtc > @date
+group by cast(ReceivedAtUtc as date)";
                 var startDate = DateTime.Today.AddDays(-29);
                 cmd.AddParameter("date", startDate);
                 cmd.AddParameter("incidentId", result.Id);

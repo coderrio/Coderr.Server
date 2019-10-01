@@ -32,15 +32,25 @@ namespace Coderr.Server.SqlServer.Core.Feedback
                     return;
             }
 
-            ErrorReportEntity report;
+            ReportMapping report2;
+            int? reportId = null;
             if (command.ReportId > 0)
-                report = await _reportsRepository.GetAsync(command.ReportId);
+            {
+                var report = await _reportsRepository.GetAsync(command.ReportId);
+                report2 = new ReportMapping
+                {
+                    ApplicationId = report.ApplicationId,
+                    ErrorId = report.ClientReportId,
+                    IncidentId = report.IncidentId,
+                    ReceivedAtUtc = report.CreatedAtUtc
+                };
+                reportId = report.Id;
+            }
             else
-                report = await _reportsRepository.FindByErrorIdAsync(command.ErrorId);
-
+                report2 = await _reportsRepository.FindByErrorIdAsync(command.ErrorId);
 
             // storing it without connections as the report might not have been uploaded yet.
-            if (report == null)
+            if (report2 == null)
             {
                 _logger.InfoFormat(
                     "Failed to find report. Let's enqueue it instead for report {0}/{1}. Email: {2}, Feedback: {3}",
@@ -76,9 +86,9 @@ namespace Coderr.Server.SqlServer.Core.Feedback
                                   +
                                   "VALUES (@ErrorReportId, @ApplicationId, @ReportId, @IncidentId, @RemoteAddress, @Description, @EmailAddress, @CreatedAtUtc, @Conversation, 0)";
                 cmd.AddParameter("ErrorReportId", command.ErrorId);
-                cmd.AddParameter("ApplicationId", report.ApplicationId);
-                cmd.AddParameter("ReportId", report.Id);
-                cmd.AddParameter("IncidentId", report.IncidentId);
+                cmd.AddParameter("ApplicationId", report2.ApplicationId);
+                cmd.AddParameter("ReportId", reportId);
+                cmd.AddParameter("IncidentId", report2.IncidentId);
                 cmd.AddParameter("RemoteAddress", command.RemoteAddress);
                 cmd.AddParameter("Description", command.Feedback);
                 cmd.AddParameter("EmailAddress", command.Email);
@@ -89,7 +99,7 @@ namespace Coderr.Server.SqlServer.Core.Feedback
                 {
                     Message = command.Feedback,
                     UserEmailAddress = command.Email,
-                    IncidentId = report.IncidentId
+                    IncidentId = report2.IncidentId
                 };
                 await context.SendAsync(evt);
 

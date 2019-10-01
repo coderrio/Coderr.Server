@@ -18,6 +18,11 @@ namespace Coderr.Server.Web.Infrastructure
             if (filterContext.Exception == null && filterContext.ModelState.IsValid && isMethodTransactional)
             {
                 var uow = (IAdoNetUnitOfWork) filterContext.HttpContext.RequestServices.GetService(typeof(IAdoNetUnitOfWork));
+
+                //NULL when the setup is running.
+                if (uow == null)
+                    return;
+                
                 uow.SaveChanges();
             }
                 
