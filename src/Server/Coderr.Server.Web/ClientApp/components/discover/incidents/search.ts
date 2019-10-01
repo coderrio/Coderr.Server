@@ -63,8 +63,8 @@ export default class IncidentSearchComponent extends Vue {
     // incidents to assign
     checkedIncidents: number[] = [];
 
-    sortKey = 0;
-    ascendingSort = true;
+    sortKey = 1;
+    ascendingSort = false;
 
     //for the close dialog
     currentIncidentId = 0;

@@ -57,6 +57,31 @@ namespace Coderr.Server.SqlServer.Core.Incidents
             }
         }
 
+        public async Task MapCorrelationId(int incidentId, string correlationId)
+        {
+            var sql = @"declare @id int;
+                        select @id = Id FROM CorrelationIds WHERE Value = @value;
+                        if (@id is NULL)
+                        BEGIN
+                            INSERT INTO CorrelationIds(Value) VALUES(@value);
+                            set @id = scope_identity();
+                        END;
+                        BEGIN TRY
+                          INSERT INTO IncidentCorrelations (CorrelationId, IncidentId) VALUES (@id, @incidentId);  
+                        END TRY
+                        BEGIN CATCH
+                          IF ERROR_NUMBER() NOT IN (2601, 2627) 
+                            THROW;
+                        END CATCH";
+            using (var cmd = _uow.CreateDbCommand())
+            {
+                cmd.CommandText = sql;
+                cmd.AddParameter("value", correlationId);
+                cmd.AddParameter("incidentId", incidentId);
+                await cmd.ExecuteNonQueryAsync();
+            }
+        }
+
         public async Task<int> GetTotalCountForAppInfoAsync(int applicationId)
         {
             using (var cmd = (DbCommand)_uow.CreateCommand())

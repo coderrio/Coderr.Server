@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Security.Cryptography;
+using Coderr.Client;
+using Coderr.Client.ContextCollections;
 using Coderr.Server.SqlServer.ReportAnalyzer;
 using Griffin.Data.Mapper;
 using log4net;
@@ -54,7 +57,7 @@ namespace Coderr.Server.Web
             var repos = LogManager.GetRepository(Assembly.GetEntryAssembly());
             XmlConfigurator.ConfigureAndWatch(repos, new FileInfo(logPath));
             _logger = LogManager.GetLogger(typeof(Program));
-            _logger.Info("Started " + env + " from path " + logPath);
+            _logger.Info($"Started {env} from path {logPath}.");
         }
     }
 

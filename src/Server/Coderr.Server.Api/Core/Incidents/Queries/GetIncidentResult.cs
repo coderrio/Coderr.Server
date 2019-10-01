@@ -165,5 +165,7 @@ namespace Coderr.Server.Api.Core.Incidents.Queries
 
         public SuggestedIncidentSolution[] SuggestedSolutions { get; set; }
         public HighlightedContextData[] HighlightedContextData { get; set; }
+
+        public RelatedIncident[] RelatedIncidents { get; set; }
     }
 }

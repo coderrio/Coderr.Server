@@ -1,1 +1,1 @@
-﻿Commands used to trigger the processing.
+﻿Commands used to store inbound error reports for processing.

@@ -62,7 +62,7 @@ namespace Coderr.Server.ReportAnalyzer
         ///     Update incident
         /// </summary>
         /// <param name="incidentAnalysis">incident to persist</param>
-        /// <exception cref="ArgumentNullException">incentAnalysis</exception>
+        /// <exception cref="ArgumentNullException">incidentAnalysis</exception>
         void UpdateIncident(IncidentBeingAnalyzed incidentAnalysis);
 
         /// <summary>

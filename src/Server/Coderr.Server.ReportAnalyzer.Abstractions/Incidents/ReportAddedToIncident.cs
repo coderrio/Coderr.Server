@@ -43,6 +43,14 @@ namespace Coderr.Server.ReportAnalyzer.Abstractions.Incidents
         public bool IsReOpened { get; set; }
 
         /// <summary>
+        ///     Is the incident new, i.e. this is the first report for an incident.
+        /// </summary>
+        /// <remarks>
+        ///     New parameter in later versions = nullable.
+        /// </remarks>
+        public bool? IsNewIncident { get; set; }
+
+        /// <summary>
         ///     Received report.
         /// </summary>
         public ReportDTO Report { get; private set; }

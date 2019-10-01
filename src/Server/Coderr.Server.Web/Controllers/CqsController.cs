@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -90,7 +91,7 @@ namespace Coderr.Server.Web.Controllers
             var cqsName = headerValue.Count > 0
                 ? headerValue[0]
                 : null;
-
+            var sw = Stopwatch.StartNew();
             string json;
             using (var reader
                 = new StreamReader(Request.Body, Encoding.UTF8, true, 8192, true))
@@ -164,7 +165,11 @@ namespace Coderr.Server.Web.Controllers
                 _logger.Error("Failed to process2 '" + json + "'.", e1);
                 ex = e1;
             }
-
+            sw.Stop();
+            if (sw.ElapsedMilliseconds > 200)
+            {
+                _logger.Info($"Took {sw.ElapsedMilliseconds}ms: {json}");
+            }
 
             if (ex is EntityNotFoundException || ex is Griffin.Data.EntityNotFoundException)
             {
@@ -183,7 +188,7 @@ namespace Coderr.Server.Web.Controllers
                 return BadRequest(new ErrorMessage(FirstLine(ex.Message)));
             }
 
-            var result = new ContentResult {ContentType = "application/json"};
+            var result = new ContentResult { ContentType = "application/json" };
 
             // for instance commands do not have a return value.
             if (cqsReplyObject != null)
