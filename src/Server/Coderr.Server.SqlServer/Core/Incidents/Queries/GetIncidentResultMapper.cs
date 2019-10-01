@@ -20,7 +20,7 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
             Property(x => x.IncidentState)
                 .ColumnName("State");
             Property(x => x.AssignedToId)
-                .ToPropertyValue(x => x is DBNull ? (int?) null : (int) x);
+                .ToPropertyValue(x => x is DBNull ? (int?)null : (int)x);
 
             Property(x => x.Solution)
                 .ToPropertyValue(x => EntitySerializer.Deserialize<IncidentSolution>(x)?.Description);
@@ -35,7 +35,8 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
             Property(x => x.IsSolutionShared)
                 .ToPropertyValue(DbConverters.BoolFromByteArray);
 
-            
+            Property(x => x.RelatedIncidents)
+                .Ignore();
         }
 
     }

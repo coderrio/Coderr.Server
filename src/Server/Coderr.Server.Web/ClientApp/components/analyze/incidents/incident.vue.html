@@ -54,10 +54,15 @@
                             <div>
                                 <table class="table table-borderless">
                                     <tbody>
-                                        <tr v-for="prop in incident.Facts" v-if="prop.Value != '0'">
-                                            <td>{{prop.Title}}</td>
-                                            <td><span v-html="prop.Value"></span></td>
-                                        </tr>
+                                    <tr v-for="prop in incident.Facts" v-if="prop.Value != '0'">
+                                        <td>{{prop.Title}}</td>
+                                        <td><span v-html="prop.Value"></span></td>
+                                    </tr>
+                                    <tr v-for="rel in incident.RelatedIncidents">
+                                        <td>Related Incident</td>
+                                        <td><a class="text-red" :href="'/discover/incidents/' + rel.ApplicationId + '/incident/' + rel.IncidentId">{{rel.Title}}</a></td>
+                                    </tr>
+
                                     </tbody>
                                 </table>
                             </div>

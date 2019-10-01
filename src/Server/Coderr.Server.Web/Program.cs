@@ -57,7 +57,7 @@ namespace Coderr.Server.Web
             var repos = LogManager.GetRepository(Assembly.GetEntryAssembly());
             XmlConfigurator.ConfigureAndWatch(repos, new FileInfo(logPath));
             _logger = LogManager.GetLogger(typeof(Program));
-            _logger.Info("Started " + env + " from path " + logPath);
+            _logger.Info($"Started {env} from path {logPath}.");
         }
     }
 

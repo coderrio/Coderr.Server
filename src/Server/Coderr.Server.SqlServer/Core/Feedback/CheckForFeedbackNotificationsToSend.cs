@@ -10,11 +10,12 @@ using Coderr.Server.ReportAnalyzer.Abstractions.Feedback;
 using Coderr.Server.ReportAnalyzer.UserNotifications.Handlers;
 using DotNetCqs;
 
-namespace Coderr.Server.ReportAnalyzer.Feedback.Handlers
+namespace Coderr.Server.SqlServer.Core.Feedback
 {
     /// <summary>
     ///     Responsible of sending notifications when a new report have been analyzed.
     /// </summary>
+    // MUST be here so that it's used from both queues.
     public class CheckForFeedbackNotificationsToSend :
         IMessageHandler<FeedbackAttachedToIncident>
     {

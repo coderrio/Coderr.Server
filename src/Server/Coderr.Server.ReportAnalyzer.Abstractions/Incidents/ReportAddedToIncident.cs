@@ -35,7 +35,7 @@ namespace Coderr.Server.ReportAnalyzer.Abstractions.Incidents
         /// <summary>
         ///     Incident that the report was added to.
         /// </summary>
-        public IncidentSummaryDTO Incident { get; }
+        public IncidentSummaryDTO Incident { get; private set; }
 
         /// <summary>
         ///     Incident was marked as closed, so the received report opened it again.
@@ -53,6 +53,6 @@ namespace Coderr.Server.ReportAnalyzer.Abstractions.Incidents
         /// <summary>
         ///     Received report.
         /// </summary>
-        public ReportDTO Report { get; }
+        public ReportDTO Report { get; private set; }
     }
 }

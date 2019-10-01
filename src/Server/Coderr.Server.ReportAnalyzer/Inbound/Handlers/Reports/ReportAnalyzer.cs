@@ -85,8 +85,10 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
             var isReOpened = false;
             var firstLine = report.GenerateHashCodeIdentifier();
             var incident = _repository.FindIncidentForReport(report.ApplicationId, report.ReportHashCode, firstLine);
+            var isNewIncident = false;
             if (incident == null)
             {
+                isNewIncident = true;
                 incident = BuildIncident(report);
                 _repository.CreateIncident(incident);
 
@@ -96,7 +98,6 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
                     CreatedAtUtc = incident.CreatedAtUtc,
                     ApplicationVersion = applicationVersion,
                 };
-
                 await _domainQueue.PublishAsync(context.Principal, evt);
                 await context.SendAsync(evt);
             }
@@ -162,7 +163,10 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
             var sw = new Stopwatch();
             sw.Start();
             _logger.Debug("Publishing now: " + report.ClientReportId);
-            var e = new ReportAddedToIncident(summary, ConvertToCoreReport(report, applicationVersion), isReOpened);
+            var e = new ReportAddedToIncident(summary, ConvertToCoreReport(report, applicationVersion), isReOpened)
+            {
+                IsNewIncident = true
+            };
             await context.SendAsync(e);
 
             await context.SendAsync(new ProcessInboundContextCollections());

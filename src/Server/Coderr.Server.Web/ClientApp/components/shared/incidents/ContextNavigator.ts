@@ -39,7 +39,6 @@ export default class ContextNavigatorComponent extends Vue {
         q.PageSize = 50;
         AppRoot.Instance.apiClient.query<GetReportListResult>(q)
             .then(list => {
-                console.log('reports', list);
                 this.reports = list.Items;
                 if (this.reports.length > 0) {
                     this.loadReport(this.reports[0].Id);

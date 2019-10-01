@@ -59,7 +59,8 @@ namespace Coderr.Server.SqlServer.Core.Incidents
 
         public async Task MapCorrelationId(int incidentId, string correlationId)
         {
-            var sql = @"select @id = Id FROM CorrelationIds WHERE Value = @value;
+            var sql = @"declare @id int;
+                        select @id = Id FROM CorrelationIds WHERE Value = @value;
                         if (@id is NULL)
                         BEGIN
                             INSERT INTO CorrelationIds(Value) VALUES(@value);

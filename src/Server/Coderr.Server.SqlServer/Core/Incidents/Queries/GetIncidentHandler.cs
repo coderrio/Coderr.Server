@@ -122,6 +122,7 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
             }
             _logger.Info("GetIncident step 8");
 
+            result.RelatedIncidents = await GetRelatedIncidents(query.IncidentId);
             result.Facts = facts.ToArray();
             result.SuggestedSolutions = solutions.ToArray();
             result.HighlightedContextData = contextData.ToArray();
@@ -145,6 +146,45 @@ where IncidentId=@incidentId";
                         names.Add(reader.GetString(0));
                     }
                     result.ContextCollections = names.ToArray();
+                }
+            }
+        }
+
+        private async Task<RelatedIncident[]> GetRelatedIncidents(int incidentId)
+        {
+            using (var cmd = _unitOfWork.CreateDbCommand())
+            {
+                cmd.CommandText = @"with cte (IncidentId)
+                                    AS
+                                    (
+                                      select distinct ic1.IncidentId
+                                      FROM IncidentCorrelations ic1 
+                                      JOIN IncidentCorrelations ic2 ON (ic1.CorrelationId = ic2.CorrelationId)
+                                      WHERE ic2.IncidentId = @id and ic1.IncidentId <> @id
+                                    )
+
+                                    select i.Id IncidentId, i.Description Title, i.CreatedAtUtc, i.ApplicationId, a.Name ApplicationName
+                                    FROM Incidents i
+                                    JOIN Applications a ON (a.Id = i.ApplicationId)
+                                    JOIN CTE ON (IncidentId = i.Id)";
+                cmd.AddParameter("id", incidentId);
+                using (var reader = await cmd.ExecuteReaderAsync())
+                {
+                    var result = new List<RelatedIncident>();
+                    while (await reader.ReadAsync())
+                    {
+                        var item = new RelatedIncident
+                        {
+                            IncidentId = reader.GetInt32(0),
+                            Title = reader.GetString(1),
+                            CreatedAtUtc = reader.GetDateTime(2),
+                            ApplicationId = reader.GetInt32(3),
+                            ApplicationName = reader.GetString(4)
+                        };
+                        result.Add(item);
+                    }
+
+                    return result.ToArray();
                 }
             }
         }

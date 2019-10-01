@@ -5,21 +5,15 @@ using Coderr.Server.ReportAnalyzer.Abstractions.ErrorReports;
 using Coderr.Server.ReportAnalyzer.Abstractions.Incidents;
 using DotNetCqs;
 
-namespace Coderr.Server.App.Core.Incidents.Events
+namespace Coderr.Server.ReportAnalyzer.Incidents
 {
-    class IncidentCreatedHandler : IMessageHandler<IncidentCreated>, IMessageHandler<ReportAddedToIncident>
+    class IncidentCreatedHandler : IMessageHandler<ReportAddedToIncident>
     {
         private IIncidentRepository _incidentRepository;
 
         public IncidentCreatedHandler(IIncidentRepository incidentRepository)
         {
             _incidentRepository = incidentRepository;
-        }
-
-        public async Task HandleAsync(IMessageContext context, IncidentCreated message)
-        {
-            var incident = await _incidentRepository.GetAsync(message.IncidentId);
-            
         }
 
         public async Task HandleAsync(IMessageContext context, ReportAddedToIncident message)
