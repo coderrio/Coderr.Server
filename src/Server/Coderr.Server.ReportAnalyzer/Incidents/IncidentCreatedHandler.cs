@@ -21,6 +21,9 @@ namespace Coderr.Server.ReportAnalyzer.Incidents
             if (message.IsNewIncident != true)
                 return;
             var collection = message.Report.GetCoderrCollection();
+            if (collection == null)
+                return;
+
             if (!collection.Properties.TryGetValue("CorrelationId", out var correlationId))
                 return;
 
