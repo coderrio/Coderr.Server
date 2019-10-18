@@ -1,4 +1,4 @@
-﻿namespace Coderr.Server.ReportAnalyzer.Abstractions.Inbound.Whitelists.Commands
+﻿namespace Coderr.Server.Api.Modules.Whitelists.Commands
 {
     /// <summary>
     ///     Add a domain that may post error reports without using a shared secret (javascript applications)
@@ -8,12 +8,7 @@
         /// <summary>
         ///     Application that the domain is allowed for.
         /// </summary>
-        /// <remarks>
-        ///     <para>
-        ///         ´<c>null if allowed for all applications</c>
-        ///     </para>
-        /// </remarks>
-        public int? ApplicationId { get; set; }
+        public int ApplicationId { get; set; }
 
         /// <summary>
         ///     For instance <c>yourdomain.com</c>.

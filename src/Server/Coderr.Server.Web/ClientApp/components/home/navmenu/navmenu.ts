@@ -1,7 +1,7 @@
 import { PubSubService, MessageContext } from "../../../services/PubSub";
 import * as MenuApi from "../../../services/menu/MenuApi";
 import { AppRoot } from "../../../services/AppRoot";
-import { ApplicationSummary } from "../../../services/applications/ApplicationService";
+import { AppEvents } from "../../../services/applications/ApplicationService";
 import Vue from 'vue';
 import { Component, Watch } from 'vue-property-decorator';
 import * as Router from "vue-router";
@@ -91,6 +91,12 @@ export default class NavMenuComponent extends Vue {
             var msg = <MenuApi.SetApplication>ctx.message.body;
             this.changeApplication(msg.applicationId);
         });
+        PubSubService.Instance.subscribe(AppEvents.Removed, ctx => {
+            this.myApplications = this.myApplications.filter(x => x.tag !== ctx.message.body);
+            if (this.currentApplicationId === <number>ctx.message.body) {
+                this.changeApplication(null);
+            }
+        });
     }
 
     mounted() {
@@ -104,7 +110,7 @@ export default class NavMenuComponent extends Vue {
         }
     }
 
-    changeApplication(applicationId: number) {
+    changeApplication(applicationId: number|null) {
         if (applicationId == null) {
             this.updateCurrent(0);
         } else {

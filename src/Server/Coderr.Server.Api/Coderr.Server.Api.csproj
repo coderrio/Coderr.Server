@@ -5,21 +5,21 @@
     <RootNamespace>Coderr.Server.Api</RootNamespace>
     <AssemblyName>Coderr.Server.Api</AssemblyName>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\codeRR.Server.Api.xml</DocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Coderr.Server.Api.xml</DocumentationFile>
   </PropertyGroup>
-    <PropertyGroup>
-    <PackageId>codeRR.Server.Api</PackageId>
+  <PropertyGroup>
+    <PackageId>Coderr.Server.Api</PackageId>
     <Authors>1TCompany AB</Authors>
-    <Description>CQRS API definition for codeRR Server.</Description>
+    <Description>API object definitions for Coderr Server, use the ApiClient package to communicate with the Coderr Server.</Description>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes>First release</PackageReleaseNotes>
-    <Copyright>Copyright 2017 © 1TCompany AB. All rights reserved.</Copyright>
+    <Copyright>Copyright 2019 © 1TCompany AB. All rights reserved.</Copyright>
     <PackageTags>logger exceptions analysis .net-core netstandard</PackageTags>
-    <PackageIconUrl>http://coderrapp.com/images/nuget_icon.png</PackageIconUrl>
-    <RepositoryUrl>https://github.com/coderr/coderr.server</RepositoryUrl>
+    <PackageIconUrl>https://coderr.io/images/nuget_icon.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/coderrio/coderr.server</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/coderr/codeRR.Server/master/LICENSE</PackageLicenseUrl>
-    <PackageProjectUrl>https://coderrapp.com</PackageProjectUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://coderr.io</PackageProjectUrl>
   </PropertyGroup>
   <PropertyGroup>
     <NoWarn>1701;1702;1705;1591</NoWarn>

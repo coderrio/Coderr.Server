@@ -6,7 +6,7 @@ import {
     GetApplicationTeam, GetApplicationTeamResult, GetApplicationTeamMember,
     GetApplicationInfo, GetApplicationInfoResult,
     CreateApplication, TypeOfApplication,
-    UpdateApplication
+    UpdateApplication, DeleteApplication
 } from "../../dto/Core/Applications"
 
 export class AppEvents {
@@ -157,6 +157,15 @@ export class ApplicationService {
 
         await this.apiClient.command(cmd);
         return cmd.ApplicationKey;
+    }
+
+    async delete(applicationId: number) {
+        var cmd = new DeleteApplication();
+        cmd.Id = applicationId;
+        await this.apiClient.command(cmd);
+
+        this.applications = this.applications.filter(x => x.id !== applicationId);
+        PubSubService.Instance.publish(AppEvents.Removed, applicationId);
     }
 
     async getTeam(id: number): Promise<ApplicationMember[]> {

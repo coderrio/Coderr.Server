@@ -1,4 +1,4 @@
-﻿namespace Coderr.Server.ReportAnalyzer.Abstractions.Inbound.Whitelists.Queries
+﻿namespace Coderr.Server.Api.Modules.Whitelists.Queries
 {
     /// <summary>
     /// Result for <see cref="GetWhitelistEntries"/>.

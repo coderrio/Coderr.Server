@@ -6,47 +6,55 @@
                     <div class="card-header">
                         Whitelisted domains
                         <div class="float-right">
-                            <router-link class="btn-sm btn btn-outline-primary text-blue" :to="{ name: 'createEntry' }">Add domain</router-link>
+                            <a class="btn-sm btn btn-outline-primary text-blue" @click.prevent="showAdd">Add domain</a>
                         </div>
                     </div>
                     <div class="card-body">
+                        <p>
+                            <em>
+                                To make sure that no fake error reports are processed by Coderr, a shared secret are required to sign reports. But for browser applications
+                                you don't want to include the shared secret as anyone could then see and use it.
+                            </em>
+                        </p>
+                        <p>
+                            <em>Instead, we allow reporting without a shared secret as long as you whitelisted the domains.</em>
+                        </p>
                         <table class="table mb-3 transparent" v-if="entries.length > 0">
                             <thead>
-                                <tr>
-                                    <th>Domain</th>
-                                    <th>Application</th>
-                                    <th>&nbsp;</th>
-                                </tr>
+                            <tr>
+                                <th>Domain</th>
+                                <th>Application</th>
+                                <th>&nbsp;</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="key in keys">
-                                    <td>
-                                        {{key.ApplicationName}}
-                                    </td>
-                                    <td>
-                                        {{key.ApiKey}}
-                                    </td>
-                                    <td>
-                                        <router-link :to="{name: 'manageApiKey', params: { apiKey: key.Id.toString() }}"><i class="fa fa-info-circle"></i></router-link>
-                                    </td>
-                                </tr>
+                            <tr v-for="key in keys">
+                                <td>
+                                    {{key.ApplicationName}}
+                                </td>
+                                <td>
+                                    {{key.ApiKey}}
+                                </td>
+                                <td>
+                                    <router-link :to="{name: 'manageApiKey', params: { apiKey: key.Id.toString() }}"><i class="fa fa-info-circle"></i></router-link>
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                         <div v-if="entries.length == 0">
-                            <em>No domains have been whitelisted.</em>
                             <hr />
+                            <em><strong>No domains have been whitelisted.</strong></em>
                         </div>
-                        <p>
-                            <em>To make sure that no fake error reports are processed by Coderr, a shared secret are required to sign reports. But for browser applications
-                                you don't want to include the shared secret as anyone could then see and use it.</em>
-                        </p>
-                        <p>
-                            <em>Instead, we allow reporting without a shared secret as long as you whitelist the domains.</em>
-                        </p>
-
-
-
                     </div>
+                </div>
+            </div>
+        </div>
+        <div style="display: none">
+            <div id="add-item">
+                <div class="form-group">
+                    <label class="label">Domain name</label>
+                    <input class="form-control" type="text" name="domain-name" placeholder="sub.yourdomain.com"/>
+                    <em class="small">Must be exact match (including subdomain)</em>
                 </div>
             </div>
         </div>
