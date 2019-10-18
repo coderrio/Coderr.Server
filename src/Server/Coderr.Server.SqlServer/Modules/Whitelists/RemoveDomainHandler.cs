@@ -1,10 +1,11 @@
 ﻿using System.Threading.Tasks;
-using Coderr.Server.ReportAnalyzer.Abstractions.Inbound.Whitelists.Commands;
+using Coderr.Server.Api.Modules.Whitelists.Commands;
+using Coderr.Server.App.Modules.Whitelists;
 using DotNetCqs;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 
-namespace Coderr.Server.ReportAnalyzer.Inbound.Whitelist
+namespace Coderr.Server.SqlServer.Modules.Whitelist
 {
     internal class RemoveDomainHandler : IMessageHandler<RemoveEntry>
     {

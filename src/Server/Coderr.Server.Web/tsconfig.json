@@ -8,7 +8,7 @@
     "moduleResolution": "node",
     "target": "es5",
     "sourceMap": true,
-    "skipDefaultLibCheck": true,
+    //"skipDefaultLibCheck": true,
     "strictNullChecks": false,
     "strict": true,
     "types": [ "webpack-env" ]

@@ -1,4 +1,4 @@
-﻿namespace Coderr.Server.ReportAnalyzer.Abstractions.Inbound.Whitelists.Commands
+﻿namespace Coderr.Server.Api.Modules.Whitelists.Commands
 {
     /// <summary>
     ///     Remove a previously added white list entry

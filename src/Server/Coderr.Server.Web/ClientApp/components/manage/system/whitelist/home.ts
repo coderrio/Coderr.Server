@@ -1,4 +1,4 @@
-import { AppRoot } from "../../../../services/AppRoot";
+import { AppRoot, IModalContext } from "../../../../services/AppRoot";
 import * as whitelist from "../../../../dto/Core/Whitelist";
 import { GetWhitelistEntries } from "../../../../dto/Core/Whitelist";
 import Vue from "vue";
@@ -20,5 +20,17 @@ export default class ManageWhitelistComponent extends Vue {
 
 
     mounted() {
+    }
+
+    showAdd() {
+        var ctx: IModalContext = {
+            contentId: 'add-item',
+            title: 'Add domain',
+            submitButtonText: 'Save',
+            cancelButtonText: 'Cancel'
+        }
+        AppRoot.modal(ctx).then(x => {
+            console.log('success');
+        });
     }
 }

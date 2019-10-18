@@ -1,15 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Coderr.Server.ReportAnalyzer.Abstractions.Inbound.Whitelists.Queries;
+using Coderr.Server.Api.Modules.Whitelists.Queries;
 using DotNetCqs;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 
-namespace Coderr.Server.ReportAnalyzer.Inbound.Whitelist
+namespace Coderr.Server.SqlServer.Modules.Whitelist
 {
     public class GetWhitelistEntriesHandler : IQueryHandler<GetWhitelistEntries, GetWhitelistEntriesResult>
     {
         private readonly IAdoNetUnitOfWork _unitOfWork;
+        private readonly IEntityMapper<GetWhitelistEntriesResultItem> _mapper =
+            new MirrorMapper<GetWhitelistEntriesResultItem>();
 
         public GetWhitelistEntriesHandler(IAdoNetUnitOfWork unitOfWork)
         {
@@ -20,7 +22,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Whitelist
         {
             List<GetWhitelistEntriesResultItem> entries;
             if (message.ApplicationId != null && !string.IsNullOrWhiteSpace(message.DomainName))
-                entries = await _unitOfWork.ToListAsync<GetWhitelistEntriesResultItem>(
+                entries = await _unitOfWork.ToListAsync<GetWhitelistEntriesResultItem>(_mapper, 
                     "ApplicationId = @applicationId AND DomainName = @domainNAme",
                     new {message.ApplicationId, message.DomainName});
             else if (message.ApplicationId != null)

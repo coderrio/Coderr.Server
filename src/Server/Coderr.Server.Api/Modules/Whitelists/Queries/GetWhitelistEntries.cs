@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Coderr.Server.Api;
-using DotNetCqs;
+﻿using DotNetCqs;
 
-namespace Coderr.Server.ReportAnalyzer.Abstractions.Inbound.Whitelists.Queries
+namespace Coderr.Server.Api.Modules.Whitelists.Queries
 {
     /// <summary>
     /// Get whitelist either by application id or DomainName

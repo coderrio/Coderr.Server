@@ -5,6 +5,7 @@
     <AssemblyName>Coderr.Server.SqlServer</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="DnsClient" Version="1.2.0" />
     <PackageReference Include="DotNetCqs" Version="2.0.14" />
     <PackageReference Include="Griffin.Framework" Version="2.1.1" />
     <PackageReference Include="log4net" Version="2.0.8" />
@@ -24,6 +25,10 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Schema\*.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Schema\Coderr.v21.sql" />
   </ItemGroup>
 
 </Project>
