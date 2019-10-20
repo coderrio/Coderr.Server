@@ -17,6 +17,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers
         {
             try
             {
+                _logger.Debug("** Enquing feedback");
                 var submitCmd = new SubmitFeedback(message.ReportId, message.RemoteAddress)
                 {
                     CreatedAtUtc = message.ReceivedAtUtc,

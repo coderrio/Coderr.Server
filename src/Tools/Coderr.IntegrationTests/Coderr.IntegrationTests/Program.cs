@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Reflection;
 using System.Threading.Tasks;
+using Coderr.IntegrationTests.Core.TestFramework;
+using Coderr.IntegrationTests.Core.TestFramework.Loggers;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Coderr.IntegrationTests.Core
 {
@@ -10,15 +14,21 @@ namespace Coderr.IntegrationTests.Core
 
         static async Task Main(string[] args)
         {
-            var apiClient = await CreateApiClient();
-            var reporter = CreateReporter(ApplicationClient._applicationId);
+            var client = new ApplicationClient(ServerAddress, DbName);
+            await client.Open();
 
-            var report = reporter.ReportUnique("Hello world");
-            reporter.ReportCopy(report);
-            var incident = await apiClient.GetIncident(ApplicationClient._applicationId, "Hello world");
+            var runner = new TestRunner();
+            runner.RegisterServices(x =>
+            {
+                x.AddSingleton(client);
+                x.AddSingleton<IEventReceiver>(new ConsoleLogger());
+            });
+            runner.Load(new[] { Assembly.GetExecutingAssembly() });
 
-                
-            Console.WriteLine("Hello World!");
+            await runner.RunAll();
+
+
+            Console.ReadLine();
         }
     }
 }

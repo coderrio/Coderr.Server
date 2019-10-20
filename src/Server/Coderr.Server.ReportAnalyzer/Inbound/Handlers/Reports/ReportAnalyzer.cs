@@ -103,13 +103,6 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
             }
             else
             {
-                await _repository.StoreReportStats(new ReportMapping()
-                {
-                    IncidentId = incident.Id,
-                    ErrorId = report.ClientReportId,
-                    ReceivedAtUtc = report.CreatedAtUtc
-                });
-
                 if (incident.IsIgnored)
                 {
                     _logger.Info("Incident is ignored: " + JsonConvert.SerializeObject(report));
@@ -154,8 +147,15 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
             report.IncidentId = incident.Id;
             _repository.CreateReport(report);
             _logger.Debug("saving report " + report.Id + " for incident " + incident.Id);
-            var appName = _repository.GetAppName(incident.ApplicationId);
 
+            await _repository.StoreReportStats(new ReportMapping()
+            {
+                IncidentId = incident.Id,
+                ErrorId = report.ClientReportId,
+                ReceivedAtUtc = report.CreatedAtUtc
+            });
+
+            var appName = _repository.GetAppName(incident.ApplicationId);
             var summary = new IncidentSummaryDTO(incident.Id, incident.Description)
             {
                 ApplicationId = incident.ApplicationId,

@@ -77,15 +77,15 @@ namespace Coderr.Server.Web.Controllers
                 return Encoding.UTF8.GetString(buffer);
             }
 
-            var ms =  new MemoryStream(buffer);
-            ms.SetLength(buffer.Length);
-            using (var zipStream = new GZipStream(ms, CompressionMode.Decompress))
+            var ms1 = new MemoryStream(buffer, 0, buffer.Length);
+            var ms2 = new MemoryStream(buffer.Length);
+            using (var zipStream = new GZipStream(ms1, CompressionMode.Decompress, true))
             {
-                await zipStream.CopyToAsync(ms);
+                await zipStream.CopyToAsync(ms2);
             }
 
-            ms.Position = 0;
-            var sr = new StreamReader(ms, Encoding.UTF8);
+            ms2.Position = 0;
+            var sr = new StreamReader(ms2, Encoding.UTF8);
             return sr.ReadToEnd();
         }
     }

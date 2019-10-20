@@ -206,13 +206,13 @@ namespace Coderr.Server.ReportAnalyzer.Incidents
         /// <summary>
         ///     Check if this incident is ignored in the version that we received in the newest error report.
         /// </summary>
-        /// <param name="applicationVersion"></param>
+        /// <param name="reportedVersion">Version in the report that we just received.</param>
         /// <returns></returns>
-        public bool IsReportIgnored(string applicationVersion)
+        public bool IsReportIgnored(string reportedVersion)
         {
-            if (applicationVersion == null) throw new ArgumentNullException(nameof(applicationVersion));
+            if (reportedVersion == null) throw new ArgumentNullException(nameof(reportedVersion));
             var comparer = new ApplicationVersionComparer();
-            return comparer.Compare(IgnoredUntilVersion, applicationVersion) < 0;
+            return comparer.Compare(reportedVersion, IgnoredUntilVersion) < 0;
         }
 
         /// <summary>
@@ -224,6 +224,7 @@ namespace Coderr.Server.ReportAnalyzer.Incidents
             PreviousSolutionAtUtc = SolvedAtUtc;
             State = AnalyzedIncidentState.New;
             ReOpenedAtUtc = DateTime.UtcNow;
+            UpdatedAtUtc = DateTime.UtcNow;
             IsReOpened = true;
         }
 
@@ -232,7 +233,7 @@ namespace Coderr.Server.ReportAnalyzer.Incidents
         /// </summary>
         public void WasJustIgnored()
         {
-            UpdatedAtUtc = DateTime.UtcNow;
+            LastReportAtUtc = DateTime.UtcNow;
             ReportCount++;
         }
     }

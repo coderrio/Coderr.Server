@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Coderr.IntegrationTests.Core.TestFramework;
 using Coderr.Server.Api.Core.Reports.Queries;
 
 namespace Coderr.IntegrationTests.Core.Tools

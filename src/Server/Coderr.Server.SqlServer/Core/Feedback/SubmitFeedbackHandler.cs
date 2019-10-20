@@ -69,6 +69,7 @@ namespace Coderr.Server.SqlServer.Core.Feedback
                         cmd.AddParameter("CreatedAtUtc", DateTime.UtcNow);
                         cmd.ExecuteNonQuery();
                     }
+                    _logger.Info("** STORING FEEDBACK");
                 }
                 catch (Exception exception)
                 {
@@ -103,6 +104,7 @@ namespace Coderr.Server.SqlServer.Core.Feedback
                 };
                 await context.SendAsync(evt);
 
+                _logger.Info("** STORING FEEDBACK");
                 await cmd.ExecuteNonQueryAsync();
             }
         }
