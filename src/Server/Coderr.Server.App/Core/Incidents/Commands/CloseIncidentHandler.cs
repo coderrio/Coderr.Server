@@ -42,7 +42,7 @@ namespace Coderr.Server.App.Core.Incidents.Commands
             if (command == null) throw new ArgumentNullException("command");
 
             var incident = await _repository.GetAsync(command.IncidentId);
-            incident.Close(command.UserId, command.Solution);
+            incident.Close(command.UserId, command.Solution, command.ApplicationVersion);
             if (command.ShareSolution)
                 incident.ShareSolution();
 

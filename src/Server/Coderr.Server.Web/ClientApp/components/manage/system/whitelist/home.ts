@@ -1,6 +1,6 @@
 import { AppRoot, IModalContext } from "../../../../services/AppRoot";
 import * as whitelist from "../../../../dto/Core/Whitelist";
-import { GetWhitelistEntries } from "../../../../dto/Core/Whitelist";
+import { AddDomain, GetWhitelistEntries } from "../../../../dto/Core/Whitelist";
 import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
 
@@ -8,6 +8,7 @@ import { Component, Watch } from "vue-property-decorator";
 @Component
 export default class ManageWhitelistComponent extends Vue {
     entries: whitelist.GetWhitelistEntriesResultItem[] = [];
+    newDomainName: string = '';
 
     created() {
         var q = new GetWhitelistEntries();
@@ -30,7 +31,11 @@ export default class ManageWhitelistComponent extends Vue {
             cancelButtonText: 'Cancel'
         }
         AppRoot.modal(ctx).then(x => {
-            console.log('success');
+            var cmd = new AddDomain();
+            cmd.ApplicationId = AppRoot.Instance.currentApplicationId;
+            cmd.DomainName = this.newDomainName;
+            AppRoot.Instance.apiClient.command(cmd);
+            console.log('success', this.newDomainName);
         });
     }
 }

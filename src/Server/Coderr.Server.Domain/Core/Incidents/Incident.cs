@@ -168,19 +168,26 @@ namespace Coderr.Server.Domain.Core.Incidents
         /// </summary>
         /// <param name="solvedBy">AccountId for whoever wrote the solution</param>
         /// <param name="solution">Actual solution</param>
+        /// <param name="correctedInVersion">All future reports are ignored if they are reported for app versions less that the specified one.</param>
         /// <param name="when">When was the incident closed by the user?</param>
         /// <exception cref="ArgumentNullException">solution</exception>
         /// <exception cref="ArgumentOutOfRangeException">solvedBy</exception>
-        public void Close(int solvedBy, string solution, DateTime? when = null)
+        public void Close(int solvedBy, string solution, string correctedInVersion, DateTime? when = null)
         {
             if (solution == null) throw new ArgumentNullException("solution");
             if (solvedBy <= 0) throw new ArgumentOutOfRangeException("solvedBy", solvedBy, "Must specify a solver.");
 
+            IgnoredUntilVersion = correctedInVersion;
             Solution = new IncidentSolution(solvedBy, solution);
             UpdatedAtUtc = DateTime.UtcNow;
             SolvedAtUtc = when ?? DateTime.UtcNow;
             State = IncidentState.Closed;
         }
+
+        /// <summary>
+        /// Version that the error is corrected in. All inbound error reports will be ignored if they are from older application versions.
+        /// </summary>
+        public string IgnoredUntilVersion { get; set; }
 
         /// <summary>
         ///     Do not want to store reports or receive notifications for this incident.

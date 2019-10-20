@@ -38,7 +38,8 @@ namespace Coderr.Server.SqlServer.Core.Incidents
                         AssignedAtUtc = @AssignedAtUtc,
                         State = @state,
                         IgnoringReportsSinceUtc = @IgnoringReportsSinceUtc,
-                        IgnoringRequestedBy = @IgnoringRequestedBy
+                        IgnoringRequestedBy = @IgnoringRequestedBy,
+                        IgnoredUntilVersion = @IgnoredUntilVersion
                         WHERE Id = @id";
                 cmd.AddParameter("Id", incident.Id);
                 cmd.AddParameter("ApplicationId", incident.ApplicationId);
@@ -53,6 +54,7 @@ namespace Coderr.Server.SqlServer.Core.Incidents
                 cmd.AddParameter("Solution",
                     incident.Solution == null ? null : EntitySerializer.Serialize(incident.Solution));
                 cmd.AddParameter("IsSolutionShared", incident.IsSolutionShared);
+                cmd.AddParameter("IgnoredUntilVersion", incident.IgnoredUntilVersion);
                 await cmd.ExecuteNonQueryAsync();
             }
         }

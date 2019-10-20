@@ -13,6 +13,7 @@ namespace Coderr.Server.SqlServer.Modules.Whitelist
         private readonly IEntityMapper<GetWhitelistEntriesResultItem> _mapper =
             new MirrorMapper<GetWhitelistEntriesResultItem>();
 
+
         public GetWhitelistEntriesHandler(IAdoNetUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
@@ -22,18 +23,18 @@ namespace Coderr.Server.SqlServer.Modules.Whitelist
         {
             List<GetWhitelistEntriesResultItem> entries;
             if (message.ApplicationId != null && !string.IsNullOrWhiteSpace(message.DomainName))
-                entries = await _unitOfWork.ToListAsync<GetWhitelistEntriesResultItem>(_mapper, 
-                    "ApplicationId = @applicationId AND DomainName = @domainNAme",
+                entries = await _unitOfWork.ToListAsync(_mapper,
+                    "SELECT * FROM WhitelistedDomains WHERE ApplicationId = @applicationId AND DomainName = @domainNAme",
                     new {message.ApplicationId, message.DomainName});
             else if (message.ApplicationId != null)
                 entries =
-                    await _unitOfWork.ToListAsync<GetWhitelistEntriesResultItem>(
-                        "ApplicationId = @applicationId",
+                    await _unitOfWork.ToListAsync(_mapper,
+                        "SELECT * FROM WhitelistedDomains WHERE ApplicationId = @applicationId",
                         new {message.ApplicationId});
             else
                 entries =
-                    await _unitOfWork.ToListAsync<GetWhitelistEntriesResultItem>(
-                        "DomanName = @domainName",
+                    await _unitOfWork.ToListAsync(_mapper,
+                        "SELECT * FROM WhitelistedDomains WHERE DomainName = @domainName",
                         new {message.DomainName});
 
             return new GetWhitelistEntriesResult {Entries = entries.ToArray()};
