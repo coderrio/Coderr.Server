@@ -37,6 +37,7 @@ using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Npgsql;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace Coderr.Server.Web
@@ -131,7 +132,7 @@ namespace Coderr.Server.Web
         private void UpgradeDatabaseSchema()
         {
             // Dont run for new installations
-            if (!IsConfigured) 
+            if (!IsConfigured)
                 return;
 
             try
@@ -142,7 +143,7 @@ namespace Coderr.Server.Web
             catch (Exception ex)
             {
                 _logger.Fatal("DB Migration failed.", ex);
-                Err.Report(ex, new {Migration = true});
+                Err.Report(ex, new { Migration = true });
             }
         }
 
@@ -290,8 +291,11 @@ namespace Coderr.Server.Web
         private IDbConnection OpenConnection(ClaimsPrincipal arg)
         {
             var db = Configuration.GetConnectionString("Db");
-            var con = new SqlConnection(db);
+            var con = new NpgsqlConnection(db);
             con.Open();
+
+            //var con = new SqlConnection(db);
+            //con.Open();
             return con;
         }
 

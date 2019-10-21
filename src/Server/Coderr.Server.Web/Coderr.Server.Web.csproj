@@ -20,6 +20,7 @@
     <PackageReference Include="Griffin.Framework" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
+    <PackageReference Include="Npgsql" Version="4.1.1" />
   </ItemGroup>
 
   <ItemGroup>
