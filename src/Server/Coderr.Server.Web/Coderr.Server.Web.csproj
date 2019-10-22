@@ -20,6 +20,7 @@
     <PackageReference Include="Griffin.Framework" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
+    <PackageReference Include="Npgsql" Version="4.1.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,6 +33,7 @@
     <ProjectReference Include="..\Coderr.Server.Domain\Coderr.Server.Domain.csproj" />
     <ProjectReference Include="..\Coderr.Server.Infrastructure\Coderr.Server.Infrastructure.csproj" />
     <ProjectReference Include="..\Coderr.Server.Abstractions\Coderr.Server.Abstractions.csproj" />
+    <ProjectReference Include="..\Coderr.Server.PostgreSQL\Coderr.Server.PostgreSQL.csproj" />
     <ProjectReference Include="..\Coderr.Server.ReportAnalyzer\Coderr.Server.ReportAnalyzer.csproj" />
     <ProjectReference Include="..\Coderr.Server.SqlServer\Coderr.Server.SqlServer.csproj" />
   </ItemGroup>

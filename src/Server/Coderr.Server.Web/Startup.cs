@@ -16,6 +16,7 @@ using Coderr.Server.Infrastructure;
 using Coderr.Server.Infrastructure.Configuration;
 using Coderr.Server.Infrastructure.Configuration.Database;
 using Coderr.Server.Infrastructure.Messaging;
+using Coderr.Server.PostgreSQL;
 using Coderr.Server.SqlServer;
 using Coderr.Server.SqlServer.Migrations;
 using Coderr.Server.SqlServer.Schema;
@@ -37,6 +38,7 @@ using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Npgsql;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace Coderr.Server.Web
@@ -131,7 +133,7 @@ namespace Coderr.Server.Web
         private void UpgradeDatabaseSchema()
         {
             // Dont run for new installations
-            if (!IsConfigured) 
+            if (!IsConfigured)
                 return;
 
             try
@@ -142,7 +144,7 @@ namespace Coderr.Server.Web
             catch (Exception ex)
             {
                 _logger.Fatal("DB Migration failed.", ex);
-                Err.Report(ex, new {Migration = true});
+                Err.Report(ex, new { Migration = true });
             }
         }
 
@@ -232,6 +234,16 @@ namespace Coderr.Server.Web
             Err.Configuration.ThrowExceptions = false;
             app.CatchOwinExceptions();
 
+            //TODO: we need to automate this block.
+            //TODO: you can use according to the one you need.
+
+            //SetupTools.DbTools =
+            //       new SqlServerTools(Configuration.GetConnectionString("Db"),
+            //           CoderrClaims.SystemPrincipal);
+
+            SetupTools.DbTools =
+                new PostgreSQLTools(Configuration.GetConnectionString("Db"),
+                    CoderrClaims.SystemPrincipal);
 
             if (!IsConfigured)
                 return;
@@ -239,7 +251,7 @@ namespace Coderr.Server.Web
             CoderrConfigSection config;
 
             try
-            {
+            { 
                 var dbStore = new DatabaseStore(() => OpenConnection(CoderrClaims.SystemPrincipal));
                 config = dbStore.Load<CoderrConfigSection>();
                 if (config == null)
@@ -290,8 +302,7 @@ namespace Coderr.Server.Web
         private IDbConnection OpenConnection(ClaimsPrincipal arg)
         {
             var db = Configuration.GetConnectionString("Db");
-            var con = new SqlConnection(db);
-            con.Open();
+            var con = SetupTools.DbTools.OpenConnection();
             return con;
         }
 
@@ -304,7 +315,6 @@ namespace Coderr.Server.Web
 
         private void RegisterInstallationConfiguration(IServiceCollection services)
         {
-            SetupTools.DbTools = new SqlServerTools(() => OpenConnection(CoderrClaims.SystemPrincipal));
             var store = new DatabaseStore(() => OpenConnection(CoderrClaims.SystemPrincipal));
             services.AddSingleton<ConfigurationStore>(store);
             services.Configure<InstallationOptions>(Configuration.GetSection("Installation"));

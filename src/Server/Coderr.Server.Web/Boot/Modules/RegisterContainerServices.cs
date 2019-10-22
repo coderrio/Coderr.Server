@@ -1,5 +1,6 @@
 ﻿using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.App.Core.Accounts;
+using Coderr.Server.PostgreSQL;
 using Coderr.Server.SqlServer;
 
 namespace Coderr.Server.Web.Boot.Modules
@@ -12,6 +13,9 @@ namespace Coderr.Server.Web.Boot.Modules
             context.Services.RegisterContainerServices(assembly);
 
             assembly = typeof(SqlServerTools).Assembly;
+            context.Services.RegisterContainerServices(assembly);
+
+            assembly = typeof(PostgreSQLTools).Assembly;
             context.Services.RegisterContainerServices(assembly);
         }
 

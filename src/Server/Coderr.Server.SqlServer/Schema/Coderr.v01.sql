@@ -1,4 +1,4 @@
-﻿IF OBJECT_ID(N'dbo.[Settings]', N'U') IS NULL
+﻿xIF OBJECT_ID(N'dbo.[Settings]', N'U') IS NULL
 BEGIN
 	CREATE TABLE [dbo].[Settings](
 		[Section] [varchar](50) NOT NULL,

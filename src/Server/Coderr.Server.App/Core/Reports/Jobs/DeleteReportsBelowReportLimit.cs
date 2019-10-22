@@ -51,6 +51,7 @@ namespace Coderr.Server.App.Core.Reports.Jobs
         {
             using (var cmd = _connection.CreateCommand())
             {
+                //TODO:  # not support in Coderr.Server.PostgreSQL but need a procedure or view in this case.
                 var sql = $@"CREATE TABLE #Incidents (Id int NOT NULL PRIMARY KEY, NumberOfItems int)
                             INSERT #Incidents (Id, NumberOfItems)
                             SELECT TOP(100) IncidentId, Count(Id) - @max
