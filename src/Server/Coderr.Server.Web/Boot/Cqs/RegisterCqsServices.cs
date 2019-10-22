@@ -10,6 +10,7 @@ using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Abstractions.Security;
 using Coderr.Server.App.Core.Accounts;
 using Coderr.Server.Infrastructure.Messaging;
+using Coderr.Server.PostgreSQL;
 using Coderr.Server.SqlServer;
 using Coderr.Server.Web.Boot.Adapters;
 using DotNetCqs;
@@ -54,6 +55,9 @@ namespace Coderr.Server.Web.Boot.Cqs
             context.Services.RegisterMessageHandlers(assembly);
 
             assembly = typeof(SqlServerTools).Assembly;
+            context.Services.RegisterMessageHandlers(assembly);
+
+            assembly = typeof(PostgreSQLTools).Assembly;
             context.Services.RegisterMessageHandlers(assembly);
 
             context.Services.AddScoped<ScopeCommitter>();

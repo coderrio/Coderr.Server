@@ -1,12 +1,12 @@
-﻿CREATE TABLE MessageQueue 
+﻿CREATE TABLE IF NOT EXISTS  MessageQueue 
 ( 
-    Id int not null identity primary key,
+    Id int GENERATED ALWAYS AS IDENTITY NOT NULL,
     QueueName varchar(40) not null,
-    CreatedAtUtc datetime not null,
+    CreatedAtUtc timestamp not null,
     MessageType varchar(512) not null,
-    Body nvarchar(MAX) not null
+    Body varchar not null
 );
 
-DROP TABLE QueueEvents;
-DROP TABLE QueueFeedback;
-DROP TABLE QueueReports;
+DROP TABLE IF EXISTS QueueEvents;
+DROP TABLE IF EXISTS QueueFeedback;
+DROP TABLE IF EXISTS QueueReports;

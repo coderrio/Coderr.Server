@@ -108,6 +108,7 @@ namespace Coderr.Server.Web.Areas.Installation.Controllers
             {
                 using (var uow = new AdoNetUnitOfWork(con))
                 {
+                    //TODO: TOP not support in Coderr.Server.PostgreSQL but LIMIT yes.
                     var id = uow.ExecuteScalar("SELECT TOP 1 Id FROM Accounts");
                     if (id != null)
                         ViewBag.AlreadyCreated = true;

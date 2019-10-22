@@ -1,12 +1,11 @@
-﻿create table Environments
+﻿CREATE TABLE IF NOT EXISTS Environments
 (
-    Id int identity not null primary key,
-    Name varchar(100) not null,
+   	Id int GENERATED ALWAYS AS IDENTITY NOT NULL,
+    Name varchar(100) not null
 );
 
-drop table IncidentEnvironments;
-CREATE TABLE IncidentEnvironments
+CREATE TABLE IF NOT EXISTS IncidentEnvironments
 (
-    IncidentId int not null constraint FK_IncidentEnvironment_Incident foreign key references Incidents(Id) ON DELETE CASCADE,
-    EnvironmentId int not null constraint FK_IncidentEnvironment_Environments foreign key  references Environments(Id),
+    IncidentId int not null  ,
+    EnvironmentId int not null 
 );

@@ -1,8 +1,8 @@
-﻿create table ErrorReportSpikes
+﻿CREATE TABLE IF NOT EXISTS ErrorReportSpikes
 (
-    Id int identity not null primary key,
-    ApplicationId int not null constraint FK_ErrorReportSpikes_Applications REFERENCES Applications(Id) ON DELETE CASCADE,
-    SpikeDate datetime not null,
+   	Id int GENERATED ALWAYS AS IDENTITY NOT NULL,
+    ApplicationId int not null  ,
+    SpikeDate timestamp not null,
     Count int not null,
-    NotifiedAccounts varchar(max) not null
+    NotifiedAccounts varchar  not null
 );

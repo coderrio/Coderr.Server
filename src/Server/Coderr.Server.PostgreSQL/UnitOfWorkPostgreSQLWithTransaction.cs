@@ -3,24 +3,25 @@ using System.Data;
 using System.Data.SqlClient;
 using Griffin.Data;
 using log4net;
+using Npgsql;
 
 namespace Coderr.Server.PostgreSQL
 {
     /// <summary>
     ///     Required for background jobs which uses
     /// </summary>
-    public class UnitOfWorkWithTransaction : IAdoNetUnitOfWork
+    public class UnitOfWorkPostgreSQLWithTransaction : IAdoNetUnitOfWork
     {
-        private ILog _logger = LogManager.GetLogger(typeof(UnitOfWorkWithTransaction));
-        private SqlCommand _lastCommand;
+        private ILog _logger = LogManager.GetLogger(typeof(UnitOfWorkPostgreSQLWithTransaction));
+        private NpgsqlCommand _lastCommand;
 
 
-        public UnitOfWorkWithTransaction(SqlTransaction transaction)
+        public UnitOfWorkPostgreSQLWithTransaction(NpgsqlTransaction transaction)
         {
             Transaction = transaction;
         }
 
-        public SqlTransaction Transaction { get; private set; }
+        public NpgsqlTransaction Transaction { get; private set; }
 
         public void Dispose()
         {

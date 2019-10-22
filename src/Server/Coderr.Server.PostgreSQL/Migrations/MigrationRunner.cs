@@ -95,25 +95,18 @@ namespace Coderr.Server.PostgreSQL.Migrations
 
         public int GetCurrentSchemaVersion()
         {
+            //TODO: its only this support in Coderr.Server.PostgreSQL.
             string[] scripts = new[]
             {
-                @"IF OBJECT_ID (N'DatabaseSchema', N'U') IS NULL
-                        BEGIN
-                            CREATE TABLE [dbo].DatabaseSchema (
-                                [Version] int not null default 1,
-                                [Name] varchar(50) NOT NULL
-                            );
-                        END",
-
-                @"IF COL_LENGTH('DatabaseSchema', 'Name') IS NULL
-                    BEGIN
-                        ALTER TABLE DatabaseSchema ADD [Name] varchar(50) NULL;
-                    END;",
+                @"CREATE TABLE IF NOT EXISTS DatabaseSchema (
+                                Version int not null default 1,
+                                Name varchar(50) NOT NULL
+                            ); ", 
                 @"UPDATE DatabaseSchema SET Name = 'coderr' WHERE Name IS NULL"
             };
 
             using (var con = _connectionFactory())
-            {
+            { 
                 foreach (var script in scripts)
                 {
                     using (var cmd = con.CreateCommand())

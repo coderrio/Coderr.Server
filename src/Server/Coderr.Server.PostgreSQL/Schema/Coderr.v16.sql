@@ -1,1 +1,1 @@
-﻿alter table applications alter column NumberOfFtes decimal(4,1) null;
+﻿--alter table applications alter column NumberOfFtes decimal(4,1) null;

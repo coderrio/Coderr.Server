@@ -1,10 +1,11 @@
-﻿create Table IgnoredReports
+﻿CREATE TABLE IF NOT EXISTS IgnoredReports
 (
-    Id int not null identity primary key,
+  	Id int GENERATED ALWAYS AS IDENTITY NOT NULL,
     NumberOfReports int not null,
-    Date datetime not null
+    Date timestamp not null,
+     NumberOfFtes decimal,
+     EstimatedNumberOfErrors int, 
+     MuteStatisticsQuestion BOOLEAN not null
 );
 
-alter table Applications add NumberOfFtes decimal;
-alter table Applications add [EstimatedNumberOfErrors] int;
-alter table Applications add [MuteStatisticsQuestion] bit not null default 0;
+ 

@@ -91,8 +91,8 @@ namespace Coderr.Server.Infrastructure.Configuration.Database
                     {
                         cmd.CommandText +=
                             string.Format(
-                                "INSERT INTO Settings (Section, Name, Value) VALUES(@section, @name{0}, @value{0})",
-                                index);
+                                "INSERT INTO Settings (Section, Name, Value) VALUES(@section, @name{0}, @value{0});",
+                                index) ;
                         cmd.AddParameter("name" + index, kvp.Key);
                         cmd.AddParameter("value" + index, kvp.Value);
                         ++index;

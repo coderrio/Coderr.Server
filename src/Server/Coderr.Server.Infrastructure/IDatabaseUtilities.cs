@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Security.Claims;
 
 namespace Coderr.Server.Infrastructure
 {
@@ -19,7 +20,7 @@ namespace Coderr.Server.Infrastructure
         /// </summary>
         /// <returns>Connection</returns>
         IDbConnection OpenConnection();
-
+        IDbConnection GetConnection(string connectionString, ClaimsPrincipal arg);
         void TestConnection(string connectionString);
     }
 }

@@ -1,11 +1,11 @@
-﻿CREATE TABLE IncidentReports
+﻿CREATE TABLE IF NOT EXISTS IncidentReports
 (
-    Id int not null identity primary key,
-    IncidentId int not null constraint FK_IncidentReports_Incidents foreign key references Incidents(Id) on delete cascade,
-    ReceivedAtUtc datetime not null,
+       	Id int GENERATED ALWAYS AS IDENTITY NOT NULL,
+    IncidentId int not null  ,
+    ReceivedAtUtc timestamp not null,
     ErrorId varchar(40) not null
 );
-create index IDX_IncidentReports_IncidentId ON IncidentReports (IncidentId, ReceivedAtUtc);
+--create index IDX_IncidentReports_IncidentId ON IncidentReports (IncidentId, ReceivedAtUtc);
 
 insert into IncidentReports (IncidentId, ReceivedAtUtc, ErrorId)
 SELECT IncidentId, CreatedAtUtc, ErrorId
