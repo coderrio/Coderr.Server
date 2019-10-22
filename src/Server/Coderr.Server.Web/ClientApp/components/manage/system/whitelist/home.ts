@@ -4,11 +4,17 @@ import { AddDomain, GetWhitelistEntries } from "../../../../dto/Core/Whitelist";
 import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
 
+interface IApp {
+    selected: boolean;
+    id: number;
+    name: string;
+}
 
 @Component
 export default class ManageWhitelistComponent extends Vue {
     entries: whitelist.GetWhitelistEntriesResultItem[] = [];
     newDomainName: string = '';
+    newApps: IApp[] = [];
 
     created() {
         var q = new GetWhitelistEntries();
@@ -16,7 +22,20 @@ export default class ManageWhitelistComponent extends Vue {
             .then(x => {
                 this.entries = x.Entries;
             });
-
+        AppRoot.Instance.applicationService.list().then(x => {
+            this.newApps.push({
+                id: 0,
+                name: '(All)',
+                selected: true
+            });
+            x.forEach(app => {
+                this.newApps.push({
+                    id: app.id,
+                    name: app.name,
+                    selected: false
+                });
+            });
+        });
     }
 
 

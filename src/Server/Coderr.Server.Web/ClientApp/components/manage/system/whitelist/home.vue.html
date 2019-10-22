@@ -13,11 +13,11 @@
                         <p>
                             <em>
                                 To make sure that no fake error reports are processed by Coderr, a shared secret are required to sign reports. But for browser applications
-                                you don't want to include the shared secret as anyone could then see and use it.
+                                you don't want to include the shared secret as anyone could then see and use it. Instead, we allow reporting without a shared secret as long as you whitelisted the domains.
                             </em>
                         </p>
                         <p>
-                            <em>Instead, we allow reporting without a shared secret as long as you whitelisted the domains.</em>
+                            <em>Empty whitelist = allow reports from everywhere.</em>
                         </p>
                         <table class="table mb-3 transparent" v-if="entries.length > 0">
                             <thead>
@@ -53,8 +53,20 @@
             <div id="add-item">
                 <div class="form-group">
                     <label class="label">Domain name</label>
-                    <input class="form-control" type="text" name="domain-name" v-bind="newDomainName" placeholder="sub.yourdomain.com"/>
-                    <em class="small">Must be exact match (including subdomain)</em>
+                    <input class="form-control" type="text" name="domain-name" v-bind="newDomainName" placeholder="sub.yourdomain.com" />
+                    <em class="small">Must be exact match, including sub domain. May also be an ip address.</em>
+                </div>
+                <div class="form-group">
+                    <label class="label">Applications</label>
+                    <table>
+                        <tr v-for="app in newApps">
+                            <td><input type="checkbox" v-bind:value="app.id" v-model="app.selected" /></td>
+                            <td>
+                                {{app.name}}
+                            </td>
+                        </tr>
+                    </table>
+                    <em class="small">Application(s) that the domain may report errors for.</em>
                 </div>
             </div>
         </div>
