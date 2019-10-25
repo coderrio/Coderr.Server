@@ -77,7 +77,7 @@ namespace Coderr.Server.App.Modules.Whitelists
             return false;
         }
 
-        private async Task<bool> Lookup(WhitelistedDomain domain, IPAddress remoteAddress)
+        private async Task<bool> Lookup(Whitelist domain, IPAddress remoteAddress)
         {
             var found = false;
             var lookup = new LookupClient();

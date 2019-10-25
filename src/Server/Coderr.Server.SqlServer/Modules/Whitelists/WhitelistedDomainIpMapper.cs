@@ -15,8 +15,8 @@ namespace Coderr.Server.SqlServer.Modules.Whitelists
                 .ToColumnValue(x => x.ToString())
                 .ToPropertyValue(x => IPAddress.Parse((string)x));
             Property(x => x.IpType)
-                .ToColumnValue(x => (int) x)
-                .ToPropertyValue(x => (IpType) x);
+                .ToColumnValue(x => (int)x)
+                .ToPropertyValue(x => (IpType)x);
         }
     }
 }

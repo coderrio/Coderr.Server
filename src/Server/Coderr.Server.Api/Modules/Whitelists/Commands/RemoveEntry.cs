@@ -3,6 +3,7 @@
     /// <summary>
     ///     Remove a previously added white list entry
     /// </summary>
+    [Command]
     public class RemoveEntry
     {
         /// <summary>

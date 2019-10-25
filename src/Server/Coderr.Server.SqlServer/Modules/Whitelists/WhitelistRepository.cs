@@ -26,9 +26,9 @@ namespace Coderr.Server.SqlServer.Modules.Whitelists
                 new {applicationId, address = address.ToString()});
         }
 
-        public async Task<IReadOnlyList<WhitelistedDomain>> GetWhitelist(int applicationId)
+        public async Task<IReadOnlyList<App.Modules.Whitelists.Whitelist>> GetWhitelist(int applicationId)
         {
-            var domains = await _unitOfWork.ToListAsync<WhitelistedDomain>("ApplicationId = @applicationId",
+            var domains = await _unitOfWork.ToListAsync<App.Modules.Whitelists.Whitelist>("ApplicationId = @applicationId",
                 new {applicationId});
 
             var ids = string.Join(", ", domains.Select(x => x.Id));

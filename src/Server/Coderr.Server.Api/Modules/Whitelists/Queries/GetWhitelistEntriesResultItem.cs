@@ -6,7 +6,8 @@
     public class GetWhitelistEntriesResultItem
     {
         public int Id { get; set; }
-        public int? ApplicationId { get; set; }
+        public GetWhitelistEntriesResultItemIp[] IpAddresses { get; set; }
+        public GetWhitelistEntriesResultItemApp[] Applications { get; set; }
         public string DomainName { get; set; }
     }
 }
