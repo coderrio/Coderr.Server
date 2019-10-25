@@ -3,18 +3,8 @@
     /// <summary>
     ///     Domain that is allowed to report errors without
     /// </summary>
-    public class WhitelistedDomain
+    public class Whitelist
     {
-        /// <summary>
-        ///     Application that the domain is allowed to report for.
-        /// </summary>
-        /// <remarks>
-        ///     <para>
-        ///         <c>null</c> = all applications.
-        ///     </para>
-        /// </remarks>
-        public int? ApplicationId { get; set; }
-
         /// <summary>
         ///     Domain name, must be an exact match. Can also be an IP address
         /// </summary>
@@ -29,5 +19,10 @@
         ///     Addresses that have been stored for this domain
         /// </summary>
         public WhitelistedDomainIp[] IpAddresses { get; set; }
+
+        /// <summary>
+        /// Applications that this whitelist is allowed for
+        /// </summary>
+        public int[] ApplicationIds { get; set; }
     }
 }

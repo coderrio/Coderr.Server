@@ -1,15 +1,16 @@
-﻿using Coderr.Server.App.Modules.Whitelists;
-using Griffin.Data.Mapper;
+﻿using Griffin.Data.Mapper;
 
-namespace Coderr.Server.SqlServer.Modules.Whitelist
+namespace Coderr.Server.SqlServer.Modules.Whitelists
 {
-    class WhitelistedDomainMapper : CrudEntityMapper<WhitelistedDomain>
+    class WhitelistMapper : CrudEntityMapper<App.Modules.Whitelists.Whitelist>
     {
-        public WhitelistedDomainMapper() : base("WhitelistedDomains")
+        public WhitelistMapper() : base("WhitelistedDomains")
         {
             Property(x => x.Id)
                 .PrimaryKey(true);
             Property(x => x.IpAddresses)
+                .Ignore();
+            Property(x => x.ApplicationIds)
                 .Ignore();
         }
     }

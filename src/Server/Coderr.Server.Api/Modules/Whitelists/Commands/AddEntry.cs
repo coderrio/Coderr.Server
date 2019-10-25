@@ -3,16 +3,22 @@
     /// <summary>
     ///     Add a domain that may post error reports without using a shared secret (javascript applications)
     /// </summary>
-    public class AddDomain
+    [Command]
+    public class AddEntry
     {
         /// <summary>
-        ///     Application that the domain is allowed for.
+        ///     Applications that the domain is allowed for.
         /// </summary>
-        public int ApplicationId { get; set; }
+        public int[] ApplicationIds { get; set; }
 
         /// <summary>
         ///     For instance <c>yourdomain.com</c>.
         /// </summary>
         public string DomainName { get; set; }
+
+        /// <summary>
+        ///     To manually specify which IP addresses the domain matches.
+        /// </summary>
+        public string[] IpAddresses { get; set; }
     }
 }

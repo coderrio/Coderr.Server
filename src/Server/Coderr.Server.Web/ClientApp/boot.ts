@@ -238,6 +238,16 @@ const routes = [
                 name: "manageWhitelistedDomains",
                 path: "domains/whitelist/",
                 component: require("./components/manage/system/whitelist/home.vue.html").default
+            },
+            {
+                name: "addWhitelistedDomain",
+                path: "domains/add/whitelist/",
+                component: require("./components/manage/system/whitelist/add.vue.html").default
+            },
+            {
+                name: "editWhitelistedDomain",
+                path: "domains/edit/whitelist/:id",
+                component: require("./components/manage/system/whitelist/edit.vue.html").default
             }
         ]
     },
@@ -262,9 +272,9 @@ const routes = [
 ];
 
 var hooks = {
-    mounted: function(instance:Vue) {},
-    created: function(instance:Vue) {},
-    afterRoute: function (to: string, from: string) {}
+    mounted: function (instance: Vue) { },
+    created: function (instance: Vue) { },
+    afterRoute: function (to: string, from: string) { }
 };
 
 // Hack for tests

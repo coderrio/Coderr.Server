@@ -1,9 +1,9 @@
-﻿namespace Coderr.Server.App.Modules.Whitelists
+﻿namespace Coderr.Server.Api.Modules.Whitelists.Queries
 {
     /// <summary>
     ///     Typ of stored IP record.
     /// </summary>
-    public enum IpType
+    public enum ResultItemIpType
     {
         /// <summary>
         ///     Added when doing a lookup for the domain
