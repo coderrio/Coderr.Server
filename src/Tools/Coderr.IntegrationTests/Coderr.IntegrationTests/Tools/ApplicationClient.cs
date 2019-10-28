@@ -28,6 +28,13 @@ namespace Coderr.IntegrationTests.Core.Tools
             return wrapper;
         }
 
+        public async Task<IncidentWrapper> CreateIncidentWithoutSignature(Action<ErrorReportDTO> callback = null)
+        {
+            var wrapper = new IncidentWrapper(_apiClient, _reporter, ApplicationId);
+            await wrapper.CreateWithoutSignature(callback);
+            return wrapper;
+        }
+
         public async Task<IncidentWrapper> CreateIncident(object contextData, Action<ErrorReportDTO> callback = null)
         {
             var wrapper = new IncidentWrapper(_apiClient, _reporter, ApplicationId);

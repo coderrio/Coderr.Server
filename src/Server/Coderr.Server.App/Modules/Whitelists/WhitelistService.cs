@@ -41,23 +41,14 @@ namespace Coderr.Server.App.Modules.Whitelists
             var ipEntry = await _repository.FindIp(applicationId, remoteAddress);
             if (ipEntry != null) return ipEntry.IpType != IpType.Denied;
 
-            var domains = await _repository.GetWhitelist(applicationId);
+            var domains = await _repository.FindWhitelists(applicationId);
 
-            // Allow everything if no domains are listed.
+            // Allow nothing if the whitelist is empty
             if (!domains.Any())
-                return true;
+                return false;
 
             foreach (var domain in domains)
             {
-                // User stored an IP.
-                if (IPAddress.TryParse(domain.DomainName, out var ip))
-                {
-                    if (ip.Equals(remoteAddress))
-                        return true;
-
-                    continue;
-                }
-
                 var found = await Lookup(domain, remoteAddress);
                 if (found)
                     return true;

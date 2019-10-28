@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Coderr.IntegrationTests.Core.Entities;
 using Coderr.IntegrationTests.Core.TestFramework;
 using Coderr.IntegrationTests.Core.Tools;
 using Coderr.Server.Api.Client;
@@ -42,7 +43,7 @@ namespace Coderr.IntegrationTests.Core.TestCases
             var cmd = new AddEntry
             {
                 DomainName = "app.coderr.io",
-                ApplicationIds = new[] {1}
+                ApplicationIds = new[] { 1 }
             };
             await _apiClient.SendAsync(cmd);
 
@@ -58,8 +59,8 @@ namespace Coderr.IntegrationTests.Core.TestCases
             var cmd = new AddEntry
             {
                 DomainName = "report3.coderr.io",
-                ApplicationIds = new[] {1},
-                IpAddresses = new[] {"1.2.3.4"}
+                ApplicationIds = new[] { 1 },
+                IpAddresses = new[] { "1.2.3.4" }
             };
             await _apiClient.SendAsync(cmd);
 
@@ -88,7 +89,7 @@ namespace Coderr.IntegrationTests.Core.TestCases
             var cmd = new AddEntry
             {
                 DomainName = "report2.coderr.io",
-                IpAddresses = new[] {"1.2.3.4"}
+                IpAddresses = new[] { "1.2.3.4" }
             };
             await _apiClient.SendAsync(cmd);
 
@@ -96,20 +97,22 @@ namespace Coderr.IntegrationTests.Core.TestCases
             actual.IpAddresses.Single().Address.Should().Be("1.2.3.4");
         }
 
+
+
         [Test]
         public async Task Should_be_able_to_delete_an_entry()
         {
             var cmd1 = new AddEntry
             {
                 DomainName = "report4.coderr.io",
-                ApplicationIds = new[] {1},
-                IpAddresses = new[] {"1.2.3.4"}
+                ApplicationIds = new[] { 1 },
+                IpAddresses = new[] { "1.2.3.4" }
             };
             await _apiClient.SendAsync(cmd1);
             var entry = await GetEntry(x => x.DomainName == cmd1.DomainName);
 
             var cmd = new RemoveEntry
-                {Id = entry.Id};
+            { Id = entry.Id };
             await _apiClient.SendAsync(cmd);
 
             await GetEmptyList();
@@ -121,17 +124,80 @@ namespace Coderr.IntegrationTests.Core.TestCases
             var cmd1 = new AddEntry
             {
                 DomainName = "report4.coderr.io",
-                ApplicationIds = new[] {1},
-                IpAddresses = new[] {"1.2.3.4"}
+                ApplicationIds = new[] { 1 },
+                IpAddresses = new[] { "1.2.3.4" }
             };
             await _apiClient.SendAsync(cmd1);
             var entry = await GetEntry(x => x.DomainName == cmd1.DomainName);
 
             var cmd = new EditEntry
-                {Id = entry.Id, IpAddresses = new[] {"2.3.4.5"}};
+            { Id = entry.Id, IpAddresses = new[] { "2.3.4.5" } };
             await _apiClient.SendAsync(cmd);
 
             await GetEntry(x => x.DomainName == cmd1.DomainName && x.IpAddresses[0].Address == cmd.IpAddresses[0]);
+        }
+
+        [Test]
+        public async Task Should_not_add_report_when_being_blocked()
+        {
+            var cmd = new AddEntry
+            {
+                DomainName = "report4.coderr.io",
+                ApplicationIds = new[] { 1 },
+                IpAddresses = new[] { "1.2.3.4" }
+            };
+            await _apiClient.SendAsync(cmd);
+            await GetEntry(x => x.DomainName == cmd.DomainName);
+
+            IncidentWrapper entry = null;
+            try
+            {
+                entry = await _applicationClient.CreateIncidentWithoutSignature();
+            }
+            catch
+            {
+                // should throw since the report should be ignored.
+            }
+
+            entry.Should().BeNull();
+        }
+
+        [Test]
+        public async Task Should_ban_non_matching_ip()
+        {
+            var cmd = new AddEntry
+            {
+                DomainName = "report4.coderr.io",
+            };
+            await _apiClient.SendAsync(cmd);
+            await GetEntry(x => x.DomainName == cmd.DomainName);
+            try
+            {
+                await _applicationClient.CreateIncidentWithoutSignature();
+            }
+            catch
+            {
+                // should throw since the report should be ignored.
+            }
+
+            await GetEntry(x => x.IpAddresses.Any(y => y.Address == "::1"));
+        }
+
+        [Test]
+        public async Task Should_add_report_when_ip_is_allowed()
+        {
+            var cmd = new AddEntry
+            {
+                DomainName = "report5.coderr.io",
+                ApplicationIds = new[] { _applicationClient.ApplicationId },
+                IpAddresses = new[] { "::1" }
+            };
+            await _apiClient.SendAsync(cmd);
+            await GetEntry(x => x.DomainName == cmd.DomainName);
+
+            var entry = await _applicationClient.CreateIncidentWithoutSignature();
+
+            entry.Should().NotBeNull();
         }
 
         private async Task GetEmptyList()

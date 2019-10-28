@@ -17,7 +17,10 @@ namespace Coderr.Server.SqlServer.Modules.Whitelists
 
         public async Task HandleAsync(IMessageContext context, RemoveEntry message)
         {
-            var item = await _uow.FirstAsync<App.Modules.Whitelists.Whitelist>("Id = @id", new {message.Id});
+            var item = await _uow.FirstOrDefaultAsync<App.Modules.Whitelists.Whitelist>("Id = @id", new {message.Id});
+            if (item == null)
+                return;
+
             await _uow.DeleteAsync(item);
         }
     }
