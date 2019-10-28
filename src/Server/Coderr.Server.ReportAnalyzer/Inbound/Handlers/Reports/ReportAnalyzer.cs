@@ -168,7 +168,6 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
             };
             var sw = new Stopwatch();
             sw.Start();
-            _logger.Debug("Publishing now: " + report.ClientReportId);
             var e = new ReportAddedToIncident(summary, ConvertToCoreReport(report, applicationVersion), isReOpened)
             {
                 IsNewIncident = isNewIncident

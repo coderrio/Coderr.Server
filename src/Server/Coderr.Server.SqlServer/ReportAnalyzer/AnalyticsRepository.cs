@@ -119,7 +119,8 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer
                                     end;";
                 cmd.AddParameter("incidentId", incidentId);
                 cmd.AddParameter("name", environmentName);
-                cmd.ExecuteNonQuery();
+                var rows = cmd.ExecuteNonQuery();
+                _logger.Debug($"saved environment {environmentName} for incident {incidentId}, affected: {rows}");
             }
         }
 
