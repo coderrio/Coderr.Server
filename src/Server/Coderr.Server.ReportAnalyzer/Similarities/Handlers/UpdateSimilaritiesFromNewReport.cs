@@ -23,12 +23,11 @@ namespace Coderr.Server.ReportAnalyzer.Similarities.Handlers
         /// <summary>
         ///     Creates a new instance of <see cref="UpdateSimilaritiesFromNewReport" />.
         /// </summary>
-        /// <param name="similarityRepository">epos</param>
-        /// <exception cref="ArgumentNullException">similarityReposiotry</exception>
+        /// <param name="similarityRepository">repository</param>
+        /// <exception cref="ArgumentNullException">similarityRepository</exception>
         public UpdateSimilaritiesFromNewReport(ISimilarityRepository similarityRepository)
         {
-            if (similarityRepository == null) throw new ArgumentNullException("similarityRepository");
-            _similarityRepository = similarityRepository;
+            _similarityRepository = similarityRepository ?? throw new ArgumentNullException(nameof(similarityRepository));
         }
 
         /// <summary>

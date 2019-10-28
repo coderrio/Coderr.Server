@@ -66,5 +66,10 @@ namespace Coderr.IntegrationTests.Core.Tools
             var reporter = new Reporter(new Uri(_serverAddress), appKey, appSecret);
             return reporter;
         }
+
+        public void ClearEnvironment(string environmentName)
+        {
+            
+        }
     }
 }
