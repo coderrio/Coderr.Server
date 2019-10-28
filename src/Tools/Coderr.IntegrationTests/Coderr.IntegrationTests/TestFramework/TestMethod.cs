@@ -18,9 +18,14 @@ namespace Coderr.IntegrationTests.Core.TestFramework
         public Exception Exception { get; set; }
 
         public TimeSpan ExecutionTime { get; set; }
-        public DateTime StartedAtUtc { get; set; }
 
         public string Name => _methodInfo.Name;
+        public DateTime StartedAtUtc { get; set; }
+
+        public T GetCustomAttribute<T>() where T : Attribute
+        {
+            return _methodInfo.GetCustomAttribute<T>();
+        }
 
         public async Task Invoke(object instance, IEventReceiver eventReceiver)
         {

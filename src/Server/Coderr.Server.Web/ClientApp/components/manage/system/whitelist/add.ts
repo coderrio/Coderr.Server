@@ -66,8 +66,8 @@ export default class ManageWhitelistComponent extends Vue {
         cmd.DomainName = this.domainName;
         cmd.IpAddresses = this.ipAddresses.map(x => x.address);
         AppRoot.Instance.apiClient.command(cmd);
-        AppRoot.notify('Whitelist entry is being added..');
-        this.$router.push({ name: 'manageWhitelistedDomains' });
+        AppRoot.notify('Whitelist entry is being added..', 'fa-info', 'success');
+        this.$router.push({ name: 'manageWhitelistedDomains', params: { updated: '1' } });
     }
 
     addNewIp(e: MouseEvent) {

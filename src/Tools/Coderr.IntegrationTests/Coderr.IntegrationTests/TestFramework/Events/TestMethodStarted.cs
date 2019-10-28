@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 
 namespace Coderr.IntegrationTests.Core.TestFramework.Events
 {

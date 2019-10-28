@@ -1,8 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Coderr.Client.ContextCollections;
 using Coderr.IntegrationTests.Core.TestFramework;
+using Coderr.IntegrationTests.Core.Tools;
 using FluentAssertions;
 
 namespace Coderr.IntegrationTests.Core.TestCases
@@ -19,16 +19,22 @@ namespace Coderr.IntegrationTests.Core.TestCases
         [Test]
         public async Task Basic_flow_should_work()
         {
-            var incident = await _applicationClient.CreateIncident(x =>
-            {
-                Console.WriteLine(x.EnvironmentName);
-            });
+            var incident = await _applicationClient.CreateIncident();
             incident.Environments.Should().Be("IntegrationTests");
             await incident.Assign(1);
             await incident.Close(1, "Fixed it", "1.1.0");
             await incident.Report();
             await incident.UpdateByLastReceivedReport();
             incident.IsClosed.Should().BeTrue();
+        }
+
+        [Test]
+        public async Task Should_attach_context_data()
+        {
+            var incident = await _applicationClient.CreateIncident(new {helloWorld = true});
+            var report = await incident.GetReport();
+            var data = report.ContextCollections.First(x => x.Name == "ContextData");
+            data.Properties.First(x => x.Key == "helloWorld").Value.Should().Be("True");
         }
 
         [Test]
@@ -45,22 +51,5 @@ namespace Coderr.IntegrationTests.Core.TestCases
             await incident.UpdateByLastReceivedReport();
             incident.IsClosed.Should().BeFalse();
         }
-
-        [Test]
-        public async Task Should_attach_context_data()
-        {
-            var incident = await _applicationClient.CreateIncident(new { helloWorld = true });
-            var report = await incident.GetReport();
-            var data = report.ContextCollections.First(x => x.Name == "ContextData");
-            data.Properties.First(x => x.Key == "helloWorld").Value.Should().Be("True");
-        }
-
-        [Test]
-        public async Task Should_be_able_to_attach_feedback()
-        {
-            var incident = await _applicationClient.CreateIncident(new { helloWorld = true });
-            await incident.LeaveFeedback("Hello world");
-        }
-
     }
 }

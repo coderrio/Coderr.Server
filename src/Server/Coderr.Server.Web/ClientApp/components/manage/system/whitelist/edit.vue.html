@@ -33,7 +33,12 @@
                                     </p>
                                     <table>
                                         <tr v-for="ip in ipAddresses">
-                                            <td><input class="form-control" type="text" :id="'ip' + ip.id" v-model="ip.address" /></td>
+                                            <td class="input-group">
+                                                <div class="float-right">
+                                                    <a href="#" @click.prevent="removeIp(ip.address)"><i class="fa fa-trash-alt"></i></a>
+                                                </div>
+                                                <input class="form-control" style="width: 90%" type="text" :id="'ip' + ip.id" v-model="ip.address" />
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>

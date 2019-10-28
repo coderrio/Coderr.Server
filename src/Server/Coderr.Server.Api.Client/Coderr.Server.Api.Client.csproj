@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
-    <Version>1.1.0</Version>
+    <Version>2.1.3</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Coderr.Server.Api.Client.xml</DocumentationFile>
     <RootNamespace>Coderr.Server.Api.Client</RootNamespace>
@@ -22,7 +22,7 @@
     <PackageProjectUrl>https://coderr.io</PackageProjectUrl>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="DotNetCqs" Version="2.0.14" />
+    <PackageReference Include="DotNetCqs" Version="2.0.15" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.6.0" />
   </ItemGroup>
   <ItemGroup>

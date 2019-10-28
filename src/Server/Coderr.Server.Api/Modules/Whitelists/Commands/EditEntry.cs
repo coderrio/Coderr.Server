@@ -14,12 +14,12 @@
         /// <summary>
         ///     Applications that the domain is allowed for.
         /// </summary>
-        public int[] ApplicationIds { get; set; }
+        public int[] ApplicationIds { get; set; } = new int[0];
 
 
         /// <summary>
         ///     Only manually specified ip addresses.
         /// </summary>
-        public string[] IpAddresses { get; set; }
+        public string[] IpAddresses { get; set; } = new string[0];
     }
 }

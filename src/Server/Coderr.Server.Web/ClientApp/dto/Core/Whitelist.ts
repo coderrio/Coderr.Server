@@ -15,17 +15,17 @@ export class GetWhitelistEntriesResultItem {
     public IpAddresses: GetWhiteListEntriesResultIp[];
 }
 export class GetWhiteListEntriesResultApp {
-    public Id: number;
+    public ApplicationId: number;
     public Name: string;
 }
 export class GetWhiteListEntriesResultIp {
     public Id: number;
     public Address: string;
-    public IpType: IpType;
+    public Type: IpType;
 }
 export enum IpType {
     Lookup,
-    Specified,
+    Manual,
     Denied
 }
 export class DomainIpAddress {

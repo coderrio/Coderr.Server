@@ -9,6 +9,11 @@ namespace Coderr.Server.App.Modules.Whitelists
     public class WhitelistedDomainIp
     {
         /// <summary>
+        /// 
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
         ///     Domain that this entry is for.
         /// </summary>
         public int DomainId { get; set; }

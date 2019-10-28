@@ -9,8 +9,8 @@ namespace Coderr.IntegrationTests.Core.TestFramework
 {
     internal class TestRunner
     {
-        private ServiceProvider _container;
         private readonly List<TestClass> _testClasses = new List<TestClass>();
+        private ServiceProvider _container;
         private Action<ServiceCollection> _registerCallback;
 
         public void Load(IEnumerable<Assembly> assemblies)
@@ -45,6 +45,11 @@ namespace Coderr.IntegrationTests.Core.TestFramework
             _container = builder.BuildServiceProvider();
         }
 
+        public void RegisterServices(Action<ServiceCollection> action)
+        {
+            _registerCallback = action;
+        }
+
         public async Task Run<T>()
         {
             var testClass = _testClasses.FirstOrDefault(x => x.Type == typeof(T));
@@ -56,6 +61,25 @@ namespace Coderr.IntegrationTests.Core.TestFramework
 
         public async Task RunAll()
         {
+            // Se if we got a specific class in which all tests should be run
+            var test = _testClasses.FirstOrDefault(x =>
+                x.GetCustomAttribute<RunOnlyThisOneAttribute>() != null);
+            if (test != null)
+            {
+                await RunTestClass(test);
+                return;
+            }
+
+            // See if we got a class in which we have chosen tests
+            foreach (var tc in _testClasses)
+            {
+                if (tc.Methods.All(testMethod => testMethod.GetCustomAttribute<RunOnlyThisOneAttribute>() == null))
+                    continue;
+
+                await RunTestClass(tc);
+                return;
+            }
+
             foreach (var testClass in _testClasses) await RunTestClass(testClass);
         }
 
@@ -77,23 +101,23 @@ namespace Coderr.IntegrationTests.Core.TestFramework
 
         private async Task RunTestClass(TestClass testClass)
         {
+            var methodToRun = testClass
+                .Methods
+                .FirstOrDefault(testMethod => testMethod.GetCustomAttribute<RunOnlyThisOneAttribute>() != null);
+
+
             using (var scope = _container.CreateScope())
             {
                 var test = scope.ServiceProvider.GetService(testClass.Type);
                 if (test == null)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(testClass), testClass, "Given test class has not been registered.");
-                }
+                    throw new ArgumentOutOfRangeException(nameof(testClass), testClass,
+                        "Given test class has not been registered.");
+
 
                 var eventReceivers = scope.ServiceProvider.GetServices<IEventReceiver>();
                 var aggregateReceiver = new AggregateEventReceiver(eventReceivers);
-                await testClass.Run(test, aggregateReceiver);
+                await testClass.Run(test, aggregateReceiver, methodToRun);
             }
-        }
-
-        public void RegisterServices(Action<ServiceCollection> action)
-        {
-            _registerCallback = action;
         }
     }
 }

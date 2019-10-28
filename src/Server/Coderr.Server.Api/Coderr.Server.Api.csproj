@@ -1,18 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>1.1.0</Version>
+    <Version>2.1.4</Version>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Coderr.Server.Api.xml</DocumentationFile>
+    <PackageReleaseNotes>Added the whitelist API</PackageReleaseNotes>
+  </PropertyGroup>
+  <PropertyGroup>
     <RootNamespace>Coderr.Server.Api</RootNamespace>
     <AssemblyName>Coderr.Server.Api</AssemblyName>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Coderr.Server.Api.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup>
     <PackageId>Coderr.Server.Api</PackageId>
     <Authors>1TCompany AB</Authors>
     <Description>API object definitions for Coderr Server, use the ApiClient package to communicate with the Coderr Server.</Description>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>First release</PackageReleaseNotes>
     <Copyright>Copyright 2019 © 1TCompany AB. All rights reserved.</Copyright>
     <PackageTags>logger exceptions analysis .net-core netstandard</PackageTags>
     <PackageIconUrl>https://coderr.io/images/nuget_icon.png</PackageIconUrl>
@@ -25,7 +25,7 @@
     <NoWarn>1701;1702;1705;1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="DotNetCqs" Version="2.0.14" />
+    <PackageReference Include="DotNetCqs" Version="2.0.15" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net452'">
     <Reference Include="System.Net.Http" />

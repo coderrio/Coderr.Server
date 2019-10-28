@@ -28,22 +28,23 @@
                             <tbody>
                                 <tr v-for="entry in entries">
                                     <td>
-                                        {{entry.DomainName}}
+                                        {{entry.domainName}}
                                     </td>
                                     <td>
                                         <table>
-                                            <tr v-for="app in entry.Applications">
-                                                <td>{{app.Name}}</td>
+                                            <tr v-for="app in entry.apps">
+                                                <td>{{app.name}}</td>
                                             </tr>
                                         </table>
                                     </td>
                                     <td>
-                                        <span v-for="ip in entry.IpAddresses">
-                                            {{ip.Address}}
-                                        </span>
+                                        <div v-for="ip in entry.ips">
+                                            {{ip.value}} <i :class="'text-blue small fa ' + ip.icon" :title="ip.tooltip"></i>
+                                        </div>
                                     </td>
                                     <td>
-                                        <router-link :to="{name: 'editWhitelistedDomain', params: { id: entry.Id.toString() }}"><i class="fa fa-info-circle"></i></router-link>
+                                        <router-link :to="{name: 'editWhitelistedDomain', params: { id: entry.id.toString() }}"><i class="fa fa-edit text-red"></i></router-link>
+                                        <a href="#" @click.prevent="removeEntry(entry)"><i class="fa fa-trash text-red"></i></a>
                                     </td>
                                 </tr>
                             </tbody>

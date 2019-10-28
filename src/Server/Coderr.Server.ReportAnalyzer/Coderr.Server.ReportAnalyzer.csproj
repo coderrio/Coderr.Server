@@ -6,8 +6,8 @@
     <DefaultItemExcludes>$(DefaultItemExcludes);**\*.DotSettings;</DefaultItemExcludes>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Coderr.Client.NetStd" Version="1.2.5" />
-    <PackageReference Include="DotNetCqs" Version="2.0.14" />
+    <PackageReference Include="Coderr.Client.NetStd" Version="1.2.8" />
+    <PackageReference Include="DotNetCqs" Version="2.0.15" />
     <PackageReference Include="DotNetCqs.DependencyInjection.Microsoft" Version="1.0.1" />
     <PackageReference Include="DotNetCqs.Queues.AdoNet" Version="1.0.7" />
     <PackageReference Include="Griffin.Framework" Version="2.1.1" />
