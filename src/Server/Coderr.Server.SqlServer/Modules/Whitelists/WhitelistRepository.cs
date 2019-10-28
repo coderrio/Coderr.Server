@@ -21,18 +21,50 @@ namespace Coderr.Server.SqlServer.Modules.Whitelists
 
         public async Task<WhitelistedDomainIp> FindIp(int applicationId, IPAddress address)
         {
-            return await _unitOfWork.FirstOrDefaultAsync<WhitelistedDomainIp>(
-                "ApplicationId = @applicationId AND IpAddress=@address",
-                new {applicationId, address = address.ToString()});
+            using (var cmd = _unitOfWork.CreateDbCommand())
+            {
+                // ORDER BY appId desc = get specific one first, then the generic one.
+                cmd.CommandText = @"select ip.* 
+                                    from WhitelistedDomains d
+                                    left join WhitelistedDomainIps ip ON (d.Id = ip.DomainId)
+                                    left join WhitelistedDomainApps app ON (d.Id = app.DomainId)
+                                    WHERE ip.IpAddress = @ip
+                                    AND (app.ApplicationId = @appId OR app.ApplicationId is NULL)
+                                    order by app.ApplicationId desc";
+                cmd.AddParameter("ip", address.ToString());
+                cmd.AddParameter("appId", applicationId);
+
+                return await cmd.FirstOrDefaultAsync<WhitelistedDomainIp>();
+            }
         }
 
-        public async Task<IReadOnlyList<App.Modules.Whitelists.Whitelist>> GetWhitelist(int applicationId)
+        public async Task<IReadOnlyList<App.Modules.Whitelists.Whitelist>> FindWhitelists(int applicationId)
         {
-            var domains = await _unitOfWork.ToListAsync<App.Modules.Whitelists.Whitelist>("ApplicationId = @applicationId",
-                new {applicationId});
+            var domains = new List<Whitelist>();
+            using (var cmd = _unitOfWork.CreateDbCommand())
+            {
+                // ORDER BY appId desc = get specific one first, then the generic one.
+                cmd.CommandText = @"select d.* 
+                                    from WhitelistedDomains d
+                                    left join WhitelistedDomainApps app ON (d.Id = app.DomainId)
+                                    WHERE app.ApplicationId = @appId OR app.ApplicationId is NULL
+                                    order by app.ApplicationId desc";
+                cmd.AddParameter("appId", applicationId);
+
+                var entries= await cmd.ToListAsync<Whitelist>();
+                foreach (var entry in entries)
+                {
+                    if (domains.Any(x => x.Id == entry.Id))
+                        continue;
+                    domains.Add(entry);
+                }
+            }
+
+            if (!domains.Any())
+                return domains;
 
             var ids = string.Join(", ", domains.Select(x => x.Id));
-            var ips = await _unitOfWork.ToListAsync<WhitelistedDomainIp>($"DomainId IN ({ids})");
+            var ips = await _unitOfWork.ToListAsync<WhitelistedDomainIp>($"SELECT * FROM WhitelistedDomainIps WHERE DomainId IN ({ids})");
             var ipsPerDomain = ips.GroupBy(x => x.DomainId);
             foreach (var domainIps in ipsPerDomain)
             {

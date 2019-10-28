@@ -27,12 +27,16 @@ namespace Coderr.IntegrationTests.Core.TestFramework.Loggers
                 Console.ResetColor();
                 if (testEvent is TestMethodStarted t2)
                 {
-                    Console.Write(t2.Method.Name.PadRight(60, ' '));
+                    Console.Write(t2.Method.Name.PadRight(60, ' ').Replace('_', ' '));
                 }
                 else if (testEvent is TestClassStarted t3)
                 {
                     Console.WriteLine(t3.TestClassInstance.GetType().Name);
                     Console.WriteLine("====================================");
+                }
+                else if (testEvent is TestClassFinished)
+                {
+                    Console.WriteLine();
                 }
             }
         }

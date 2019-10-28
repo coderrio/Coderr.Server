@@ -74,6 +74,15 @@ namespace Coderr.IntegrationTests.Core.Entities
                 throw new TestFailedException($"Incident {DTO.Id} was not closed.");
         }
 
+        public async Task CreateWithoutSignature(Action<ErrorReportDTO> visitor = null)
+        {
+            _reporter.DisableSignature();
+            _report = _reporter.ReportUnique(Guid.NewGuid().ToString("N"), visitor);
+            _reporter.EnableSignature();
+
+            DTO = await _apiClient.GetIncident(_applicationId, _report.Exception.Message);
+        }
+
         public async Task Create(Action<ErrorReportDTO> visitor = null)
         {
             _report = _reporter.ReportUnique(Guid.NewGuid().ToString("N"), visitor);

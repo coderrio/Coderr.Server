@@ -10,7 +10,7 @@ namespace Coderr.Server.App.Modules.Whitelists
     public interface IWhitelistRepository
     {
         Task<WhitelistedDomainIp> FindIp(int applicationId, IPAddress address);
-        Task<IReadOnlyList<Whitelist>> GetWhitelist(int applicationId);
+        Task<IReadOnlyList<Whitelist>> FindWhitelists(int applicationId);
 
         Task SaveIp(WhitelistedDomainIp entry);
     }

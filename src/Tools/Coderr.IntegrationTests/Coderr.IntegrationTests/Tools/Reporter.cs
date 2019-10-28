@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Security;
 using Coderr.Client.Config;
 using Coderr.Client.ContextCollections;
@@ -30,6 +31,7 @@ namespace Coderr.IntegrationTests.Core.Tools
         private readonly ExceptionProcessor _processor;
 
         private readonly Random _random = new Random();
+        private readonly UploadToCoderr _uploader;
 
         public Reporter(Uri address, string appKey, string sharedSecret)
         {
@@ -40,7 +42,8 @@ namespace Coderr.IntegrationTests.Core.Tools
                 context.ContextCollections.GetCoderrCollection().Properties.Add("Hello", "Test");
 
             _config.EnvironmentName = "IntegrationTests";
-            _config.Uploaders.Register(new UploadToCoderr(address, appKey, sharedSecret));
+            _uploader = new UploadToCoderr(address, appKey, sharedSecret);
+            _config.Uploaders.Register(_uploader);
             _processor = new ExceptionProcessor(_config);
         }
 
@@ -56,6 +59,16 @@ namespace Coderr.IntegrationTests.Core.Tools
             {
                 return ex;
             }
+        }
+
+        public void DisableSignature()
+        {
+            _uploader.GetType().GetField("_signReport", BindingFlags.NonPublic|BindingFlags.Instance).SetValue(_uploader, false);
+        }
+
+        public void EnableSignature()
+        {
+            _uploader.GetType().GetField("_signReport", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(_uploader, true);
         }
 
         public void LeaveFeedback(string reportId, string message, string email)
