@@ -14,6 +14,8 @@ namespace Coderr.IntegrationTests.Core.Tools
 {
     public class Reporter
     {
+        private readonly CoderrConfiguration _config;
+
         private readonly List<Func<string, Exception>> _exceptions = new List<Func<string, Exception>>
         {
             msg => new InvalidOperationException(msg),
@@ -25,10 +27,9 @@ namespace Coderr.IntegrationTests.Core.Tools
             msg => new SecurityException(msg)
         };
 
-        private readonly Random _random = new Random();
-
         private readonly ExceptionProcessor _processor;
-        private readonly CoderrConfiguration _config;
+
+        private readonly Random _random = new Random();
 
         public Reporter(Uri address, string appKey, string sharedSecret)
         {
@@ -57,46 +58,14 @@ namespace Coderr.IntegrationTests.Core.Tools
             }
         }
 
-        public ErrorReportDTO ReportUnique(string message, Action<ErrorReportDTO> customizations = null)
+        public void LeaveFeedback(string reportId, string message, string email)
         {
-            var ex = CreateException(message);
-            var report = _processor.Build(ex);
-            customizations?.Invoke(report);
-
-            SetUniqueStackTrace(report);
-
-            _config.Uploaders.Upload(report);
-            return report;
-        }
-
-        private static void SetUniqueStackTrace(ErrorReportDTO report)
-        {
-            var exType = report.Exception.GetType();
-            var value = exType.GetProperty("StackTrace").GetValue(report.Exception);
-            value = "  at " + Guid.NewGuid().ToString("N") + ":line 40\r\n" + value;
-            exType.GetProperty("StackTrace").SetValue(report.Exception, value);
-        }
-
-
-        public ErrorReportDTO ReportUnique(string message, object contextData, Action<ErrorReportDTO> customizations = null)
-        {
-            var ex = CreateException(message);
-            var report =_processor.Build(ex, contextData);
-
-            customizations?.Invoke(report);
-            SetUniqueStackTrace(report);
-            _config.Uploaders.Upload(report);
-            return report;
-        }
-
-        public ErrorReportDTO ReportCopy(ErrorReportDTO blueprint, string message, Action<ErrorReportDTO> customizations = null)
-        {
-            var id = ReportIdGenerator.Generate(new Exception());
-            var newDto = new ExceptionDTO(blueprint.Exception);
-            var newReport = new ErrorReportDTO(id, blueprint.Exception, blueprint.ContextCollections);
-            customizations?.Invoke(newReport);
-            _config.Uploaders.Upload(newReport);
-            return newReport;
+            _config.Uploaders.Upload(new FeedbackDTO
+            {
+                Description = message,
+                EmailAddress = email,
+                ReportId = reportId
+            });
         }
 
         public void Report(Exception ex)
@@ -109,14 +78,48 @@ namespace Coderr.IntegrationTests.Core.Tools
             _processor.Process(context);
         }
 
-        public void LeaveFeedback(string reportId, string message, string email)
+        public ErrorReportDTO ReportCopy(ErrorReportDTO blueprint, string message,
+            Action<ErrorReportDTO> customizations = null)
         {
-            _config.Uploaders.Upload(new FeedbackDTO
-            {
-                Description = message,
-                EmailAddress = email,
-                ReportId = reportId
-            });
+            var id = ReportIdGenerator.Generate(new Exception());
+            var newDto = new ExceptionDTO(blueprint.Exception);
+            var newReport = new ErrorReportDTO(id, blueprint.Exception, blueprint.ContextCollections);
+            customizations?.Invoke(newReport);
+            _config.Uploaders.Upload(newReport);
+            return newReport;
+        }
+
+        public ErrorReportDTO ReportUnique(string message, Action<ErrorReportDTO> customizations = null)
+        {
+            var ex = CreateException(message);
+            var report = _processor.Build(ex);
+            customizations?.Invoke(report);
+
+            SetUniqueStackTrace(report);
+
+            _config.Uploaders.Upload(report);
+            return report;
+        }
+
+
+        public ErrorReportDTO ReportUnique(string message, object contextData,
+            Action<ErrorReportDTO> customizations = null)
+        {
+            var ex = CreateException(message);
+            var report = _processor.Build(ex, contextData);
+
+            customizations?.Invoke(report);
+            SetUniqueStackTrace(report);
+            _config.Uploaders.Upload(report);
+            return report;
+        }
+
+        private static void SetUniqueStackTrace(ErrorReportDTO report)
+        {
+            var exType = report.Exception.GetType();
+            var value = exType.GetProperty("StackTrace").GetValue(report.Exception);
+            value = "  at " + Guid.NewGuid().ToString("N") + ":line 40\r\n" + value;
+            exType.GetProperty("StackTrace").SetValue(report.Exception, value);
         }
     }
 }

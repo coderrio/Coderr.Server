@@ -29,6 +29,7 @@ export default class EditWhitelistComponent extends Vue {
     apps: IApp[] = [];
     ipAddresses: IIpAddress[] = [];
     newIpAddress: string = '';
+    disableCheckToggle = false;
 
     created() {
         this.id = parseInt(this.$route.params.id);
@@ -37,7 +38,7 @@ export default class EditWhitelistComponent extends Vue {
             this.apps.push({
                 id: 0,
                 name: '(All)',
-                selected: true
+                selected: false
             });
             x.forEach(app => {
                 this.apps.push({
@@ -46,25 +47,48 @@ export default class EditWhitelistComponent extends Vue {
                     selected: false
                 });
             });
-        });
-        var q = new whitelist.GetWhitelistEntries();
-        AppRoot.Instance.apiClient.query<whitelist.GetWhitelistEntriesResult>(q)
-            .then(result => {
-                var entry = result.Entries.find(x => x.Id === this.id);
-                this.domainName = entry.DomainName;
-                this.ipAddresses = entry.IpAddresses
-                    .filter(x => x.IpType === whitelist.IpType.Specified)
-                    .map<IIpAddress>(x => <IIpAddress>{
-                        id: x.Id,
-                        address: x.Address,
-                        type: <number>x.IpType
+
+            var q = new whitelist.GetWhitelistEntries();
+            AppRoot.Instance.apiClient.query<whitelist.GetWhitelistEntriesResult>(q)
+                .then(result => {
+
+                    var entry = result.Entries.find(x => x.Id === this.id);
+                    if (entry.Applications == null)
+                        entry.Applications = [];
+                    if (entry.IpAddresses == null)
+                        entry.IpAddresses = [];
+
+                    this.disableCheckToggle = true;
+                    let anySelected = false;
+                    entry.Applications.forEach(x => {
+                        const app = this.apps.find(y => y.id === x.ApplicationId);
+                        if (app != null) {
+                            app.selected = true;
+                            anySelected = true;
+                        }
                     });
-            });
+                    this.apps[0].selected = !anySelected;
+                    this.disableCheckToggle = false;
+                    this.domainName = entry.DomainName;
+                    this.ipAddresses = entry.IpAddresses
+                        .filter(x => x.Type.toString() === whitelist.IpType[whitelist.IpType.Manual])
+                        .map<IIpAddress>(x => <IIpAddress>{
+                            id: x.Id,
+                            address: x.Address,
+                            type: <number>x.Type
+                        });
+                });
+        });
+
 
     }
 
 
     mounted() {
+    }
+
+    removeIp(address: string) {
+        this.ipAddresses = this.ipAddresses.filter(x => x.address !== address);
     }
 
     saveEntry() {
@@ -79,12 +103,13 @@ export default class EditWhitelistComponent extends Vue {
             }
         });
         var cmd = new whitelist.EditEntry();
+        cmd.Id = this.id;
         cmd.ApplicationIds = myApps;
         cmd.DomainName = this.domainName;
         cmd.IpAddresses = this.ipAddresses.map(x => x.address);
         AppRoot.Instance.apiClient.command(cmd);
-        AppRoot.notify('Whitelist entry is being added..');
-        this.$router.push({ name: 'manageWhitelistedDomains' });
+        AppRoot.notify('Whitelist entry is being updated..', 'fa-info', 'success');
+        this.$router.push({ name: 'manageWhitelistedDomains', params: {updated: '1'} });
     }
 
     addNewIp(e: MouseEvent) {
@@ -96,6 +121,9 @@ export default class EditWhitelistComponent extends Vue {
         this.newIpAddress = '';
     }
     toggleAllOnChecked(e: any) {
+        if (this.disableCheckToggle) {
+            return;
+        }
         if (e.target.value === "0") {
             if (e.target.checked) {
                 this.apps.forEach(x => {

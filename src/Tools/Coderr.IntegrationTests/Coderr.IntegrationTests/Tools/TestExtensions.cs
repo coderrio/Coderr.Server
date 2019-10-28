@@ -14,7 +14,17 @@ namespace Coderr.IntegrationTests.Core.Tools
 
             var kvp = collection.Properties.FirstOrDefault(x => x.Key == propertyName);
             if (kvp == null)
-                throw new TestFailedException($"Failed to find property '{propertyName}' collection '{collectionName}'.");
+                throw new TestFailedException(
+                    $"Failed to find property '{propertyName}' collection '{collectionName}'.");
+
+            return kvp.Value;
+        }
+
+        public static string Property(this GetReportResultContextCollection collection, string propertyName)
+        {
+            var kvp = collection.Properties.FirstOrDefault(x => x.Key == propertyName);
+            if (kvp == null)
+                throw new TestFailedException($"Failed to find property '{propertyName}'.");
 
             return kvp.Value;
         }

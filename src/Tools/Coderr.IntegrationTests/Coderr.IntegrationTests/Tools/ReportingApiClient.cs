@@ -21,7 +21,7 @@ namespace Coderr.IntegrationTests.Core.Tools
         public static async Task<bool> CheckIfReportExists(this ServerApiClient client, int applicationId,
             string genericMessage, string reportDetails)
         {
-            var report = await client.GetReportAsync(applicationId, reportDetails);
+            var report = await client.FindReport(applicationId, reportDetails);
             return report != null;
         }
 
@@ -54,6 +54,29 @@ namespace Coderr.IntegrationTests.Core.Tools
             throw new TestFailedException("Could not create application.");
         }
 
+        public static async Task<GetReportResult> FindReport(this ServerApiClient client, int incidentId,
+            string partOfErrorMessage, Func<GetReportResult, bool> filter = null)
+        {
+            var reportListItem = await client.GetReportListItem(incidentId, partOfErrorMessage);
+            if (reportListItem == null)
+                throw new InvalidOperationException("Failed to find our uploaded report");
+
+            GetReportResult result = null;
+            await Repeat(async () =>
+            {
+                var query3 = new GetReport(reportListItem.Id);
+                result = await client.QueryAsync(query3);
+                if (result == null)
+                    return false;
+
+                if (filter != null && filter(result))
+                    return true;
+
+                return result.ContextCollections.Any();
+            });
+            return result;
+        }
+
         public static async Task<GetIncidentResult> GetIncident(this ServerApiClient client, int applicationId,
             string incidentMessage, string reportMessage = null)
         {
@@ -66,14 +89,23 @@ namespace Coderr.IntegrationTests.Core.Tools
             return await client.QueryAsync(query);
         }
 
-        public static async Task<GetReportResult> GetReport(this ServerApiClient client, int incidentId, string partOfErrorMessage)
+        public static async Task<GetReportListResultItem> GetReportListItem(this ServerApiClient client, int incidentId,
+            string partOfErrorMessage)
         {
-            var reportListItem = await client.GetReportAsync(incidentId, partOfErrorMessage);
-            if (reportListItem == null)
-                throw new InvalidOperationException("Failed to find our uploaded report");
+            var attempt = 0;
+            while (attempt++ < 6)
+            {
+                var query2 = new GetReportList(incidentId);
+                var result2 = await client.QueryAsync(query2);
+                var report = result2.Items.FirstOrDefault(x => x.Message.Contains(partOfErrorMessage));
+                if (report != null)
+                    return report;
 
-            var query3 = new GetReport(reportListItem.Id);
-            return await client.QueryAsync(query3);
+
+                await Task.Delay(attempt * 150);
+            }
+
+            return null;
         }
 
         public static async Task Reset(this ServerApiClient client, int applicationId, string environmentName)
@@ -98,7 +130,7 @@ namespace Coderr.IntegrationTests.Core.Tools
             {
                 var query = new FindIncidents
                 {
-                    ApplicationIds = new[] { applicationId },
+                    ApplicationIds = new[] {applicationId},
                     FreeText = incidentMessage,
                     SortType = IncidentOrder.Newest
                 };
@@ -143,45 +175,28 @@ namespace Coderr.IntegrationTests.Core.Tools
             return returnValue;
         }
 
-        private static async Task<GetReportListResultItem> GetReportAsync(this ServerApiClient client, int incidentId, string partOfErrorMessage)
-        {
-            var triesLeft = 3;
-            while (triesLeft-- > 0)
-            {
-                var query2 = new GetReportList(incidentId);
-                var result2 = await client.QueryAsync(query2);
-                var report = result2.Items.FirstOrDefault(x => x.Message.Contains(partOfErrorMessage));
-                if (report != null)
-                    return report;
-
-                await Task.Delay((3 - triesLeft) * 2000);
-            }
-
-            return null;
-        }
-
         private static async Task Repeat(Func<Task<bool>> logic)
         {
-            var triesLeft = 3;
-            while (triesLeft-- > 0)
+            var attempt = 0;
+            while (attempt++ < 6)
             {
                 if (await logic())
                     break;
 
-                await Task.Delay((3 - triesLeft) * 2000);
+                await Task.Delay(attempt * 150);
             }
         }
 
         private static async Task<TResult> TryQuery<TQuery, TResult>(this ServerApiClient client, TQuery query)
             where TQuery : Query<TResult>
         {
-            var triesLeft = 3;
-            while (triesLeft-- > 0)
+            var attempt = 0;
+            while (attempt++ < 6)
             {
                 var result = await client.QueryAsync(query);
                 if (result != null)
                 {
-                    var collection = (IList)result.GetType().GetProperty("Items")?.GetValue(result);
+                    var collection = (IList) result.GetType().GetProperty("Items")?.GetValue(result);
                     if (collection != null)
                         if (collection.Count > 0)
                             return result;
@@ -191,13 +206,13 @@ namespace Coderr.IntegrationTests.Core.Tools
                     if (prop != null)
                     {
                         var collection2 = prop.GetValue(result);
-                        var value = (int)collection2.GetType().GetProperty("Count").GetValue(collection2);
+                        var value = (int) collection2.GetType().GetProperty("Count").GetValue(collection2);
                         if (value > 0)
                             return result;
                     }
                 }
 
-                await Task.Delay((3 - triesLeft) * 2000);
+                await Task.Delay(attempt * 150);
             }
 
             return default;

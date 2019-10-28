@@ -6,7 +6,6 @@ namespace Coderr.IntegrationTests.Core.TestFramework
     {
         public TestFailedException(string errorMessage) : base(errorMessage)
         {
-
         }
     }
 }

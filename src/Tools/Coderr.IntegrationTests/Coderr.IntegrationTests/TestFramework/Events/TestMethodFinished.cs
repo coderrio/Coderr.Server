@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Coderr.IntegrationTests.Core.TestFramework
+namespace Coderr.IntegrationTests.Core.TestFramework.Events
 {
     public class TestMethodFinished
     {

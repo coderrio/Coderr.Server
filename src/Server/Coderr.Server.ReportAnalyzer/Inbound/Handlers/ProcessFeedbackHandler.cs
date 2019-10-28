@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Coderr.Server.Api.Core.Feedback.Commands;
 using DotNetCqs;
-using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.ReportAnalyzer.Abstractions.Inbound.Commands;
 using log4net;
 using Newtonsoft.Json;
@@ -17,7 +16,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers
         {
             try
             {
-                _logger.Debug("** Enquing feedback");
+                _logger.Debug("** Queuing feedback");
                 var submitCmd = new SubmitFeedback(message.ReportId, message.RemoteAddress)
                 {
                     CreatedAtUtc = message.ReceivedAtUtc,

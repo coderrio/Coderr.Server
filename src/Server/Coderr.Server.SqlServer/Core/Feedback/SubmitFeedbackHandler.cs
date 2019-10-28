@@ -47,7 +47,13 @@ namespace Coderr.Server.SqlServer.Core.Feedback
                 reportId = report.Id;
             }
             else
+            {
                 report2 = await _reportsRepository.FindByErrorIdAsync(command.ErrorId);
+                if (report2 == null)
+                {
+                    _logger.Warn("Failed to find report by error id: " + command.ErrorId);
+                }
+            }
 
             // storing it without connections as the report might not have been uploaded yet.
             if (report2 == null)

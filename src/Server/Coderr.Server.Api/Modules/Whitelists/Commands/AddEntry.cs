@@ -9,7 +9,7 @@
         /// <summary>
         ///     Applications that the domain is allowed for.
         /// </summary>
-        public int[] ApplicationIds { get; set; }
+        public int[] ApplicationIds { get; set; } = new int[0];
 
         /// <summary>
         ///     For instance <c>yourdomain.com</c>.
@@ -19,6 +19,6 @@
         /// <summary>
         ///     To manually specify which IP addresses the domain matches.
         /// </summary>
-        public string[] IpAddresses { get; set; }
+        public string[] IpAddresses { get; set; } = new string[0];
     }
 }

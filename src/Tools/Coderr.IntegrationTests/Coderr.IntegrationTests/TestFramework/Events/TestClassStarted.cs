@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Coderr.IntegrationTests.Core.TestFramework
+namespace Coderr.IntegrationTests.Core.TestFramework.Events
 {
     public class TestClassStarted
     {
@@ -10,7 +10,7 @@ namespace Coderr.IntegrationTests.Core.TestFramework
             StartedAtUtc = DateTime.UtcNow;
         }
 
-        public DateTime StartedAtUtc { get;  }
+        public DateTime StartedAtUtc { get; }
 
         public object TestClassInstance { get; }
     }
