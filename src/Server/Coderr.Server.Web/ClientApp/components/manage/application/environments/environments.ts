@@ -25,10 +25,10 @@ export default class ManageEnvironmentsComponent extends Vue {
         this.load();
     }
 
-    resetEnvironment(environmentId: number) {
+    resetEnvironment() {
         var cmd = new ResetEnvironment();
         cmd.ApplicationId = this.applicationId;
-        cmd.EnvironmentId = environmentId;
+        cmd.EnvironmentId = this.selectedResetEnvironment;
         AppRoot.Instance.apiClient.command(cmd)
             .then(result => {
                 AppRoot.notify('All incidents were deleted in that environment.');
