@@ -22,7 +22,7 @@ namespace Coderr.Server.Web.Boot.Modules
             _backgroundJobManager.ExecuteSequentially = true;
             _backgroundJobManager.JobFailed += OnBackgroundJobFailed;
             _backgroundJobManager.StartInterval = TimeSpan.FromSeconds(Debugger.IsAttached ? 0 : 10);
-            _backgroundJobManager.ExecuteInterval = TimeSpan.FromMinutes(3);
+            _backgroundJobManager.ExecuteInterval = TimeSpan.FromSeconds(Debugger.IsAttached ? 0 : 30);
             _backgroundJobManager.ScopeClosing += OnBackgroundJobScopeClosing;
             _backgroundJobManager.Start();
         }

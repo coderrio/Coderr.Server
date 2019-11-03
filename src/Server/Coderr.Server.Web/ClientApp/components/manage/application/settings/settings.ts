@@ -35,6 +35,14 @@ export default class ManageAppSettingsComponent extends Vue {
             });
     }
 
+    deleteApp() {
+        var result = confirm("Do you really want to delete '" + this.applicationName + "'.");
+        if (result) {
+            AppRoot.Instance.applicationService.delete(this.applicationId);
+            AppRoot.notify("Application have been queued for deletion. Might take time depending on the number of incidents.", "fa-info", "success");
+            this.$router.push('manageHome');
+        }
+    }
     updateApp() {
         AppRoot.Instance.applicationService.update(this.applicationId, this.applicationName);
         AppRoot.notify('Application settings have been saved.');

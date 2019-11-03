@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Coderr.Server.Abstractions.Config;
 using Coderr.Server.Abstractions.Security;
 using Coderr.Server.App.Core.Reports.Config;
+using Coderr.Server.App.Modules.Whitelists;
+using Coderr.Server.Domain.Core.Applications;
 using Coderr.Server.ReportAnalyzer.Inbound;
 using Coderr.Server.Web.Infrastructure;
 using Coderr.Server.Web.Infrastructure.Results;
@@ -28,12 +30,14 @@ namespace Coderr.Server.Web.Controllers
         private readonly ILog _logger = LogManager.GetLogger(typeof(ReportReceiverController));
         private readonly IMessageQueue _messageQueue;
         private readonly IAdoNetUnitOfWork _unitOfWork;
+        private IWhitelistService _whitelistService;
 
         public ReportReceiverController(IMessageQueueProvider queueProvider, IAdoNetUnitOfWork unitOfWork,
-            ConfigurationStore configStore)
+            ConfigurationStore configStore, IWhitelistService whitelistService)
         {
             _unitOfWork = unitOfWork;
             _configStore = configStore;
+            _whitelistService = whitelistService;
             _messageQueue = queueProvider.Open("ErrorReports");
         }
 
@@ -53,12 +57,14 @@ namespace Coderr.Server.Web.Controllers
                 return await KillLargeReportAsync(appKey);
             if (contentLength == null || contentLength < 1)
                 return BadRequest("Content required.");
+            var remoteIp = Request.HttpContext.Connection.RemoteIpAddress;
 
             // Sig may be null for web applications
             // as I don't know how to protect the secretKey in web applications
-            if (sig == null && Request.ContentType != "application/json")
+            if (sig == null)
             {
-                return BadRequest("Must sign error report with the sharedSecret");
+                if (!await _whitelistService.Validate(appKey, remoteIp))
+                    return BadRequest("Must sign error report with the sharedSecret");
             }
 
             try
@@ -75,25 +81,7 @@ namespace Coderr.Server.Web.Controllers
                 var handler = new SaveReportHandler(_messageQueue, _unitOfWork, config);
                 var principal = CreateReporterPrincipal();
 
-                var remoteIp = Request.HttpContext.Connection.RemoteIpAddress.ToString();
-                bool isAllowed = false;
-                var referrer = Request.Headers["Referer"].ToString();
-                if (!string.IsNullOrWhiteSpace(referrer))
-                {
-                    var uri = new Uri(referrer);
-                    if (uri.Host == "localhost" && (remoteIp == "::1" || remoteIp == "127.0.0.1"))
-                    {
-                        isAllowed = true;
-                    }
-                    var entry = Dns.GetHostEntry(uri.Host);
-                    var ip = IPAddress.Parse(remoteIp);
-                    if (entry.AddressList.Contains(ip))
-                    {
-                        isAllowed = true;
-                    }
-                }
-
-                await handler.BuildReportAsync(principal, appKey, sig, remoteIp, buffer);
+                await handler.BuildReportAsync(principal, appKey, sig, remoteIp.ToString(), buffer);
                 return NoContent();
             }
             catch (InvalidCredentialException)
@@ -106,7 +94,8 @@ namespace Coderr.Server.Web.Controllers
                 return new ContentResult
                 {
                     Content = ex.Message,
-                    StatusCode = ex.HttpCode
+                    StatusCode = ex.HttpCode,
+                    ContentType = "text/plain"
                 };
             }
             catch (Exception exception)
@@ -117,7 +106,8 @@ namespace Coderr.Server.Web.Controllers
                 return new ContentResult
                 {
                     Content = exception.Message,
-                    StatusCode = (int) HttpStatusCode.InternalServerError
+                    StatusCode = (int) HttpStatusCode.InternalServerError,
+                    ContentType = "text/plain"
                 };
             }
         }
@@ -129,7 +119,7 @@ namespace Coderr.Server.Web.Controllers
                 new Claim(ClaimTypes.Name, "ReportReceiver"),
                 new Claim(ClaimTypes.NameIdentifier, "0"),
                 new Claim(ClaimTypes.Role, CoderrRoles.System)
-            }));
+            }, "AppKey"));
             return principal;
         }
 

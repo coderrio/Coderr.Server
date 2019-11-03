@@ -42,6 +42,7 @@ export class FindIncidents
     public ContextCollectionName: string;
     public ContextCollectionPropertyName: string;
     public ContextCollectionPropertyValue: string;
+    public EnvironmentIds: number[];
 }
 export class FindIncidentsResult
 {

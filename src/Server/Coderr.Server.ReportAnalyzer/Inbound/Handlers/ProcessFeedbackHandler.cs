@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Coderr.Server.Api.Core.Feedback.Commands;
 using DotNetCqs;
-using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.ReportAnalyzer.Abstractions.Inbound.Commands;
 using log4net;
 using Newtonsoft.Json;
