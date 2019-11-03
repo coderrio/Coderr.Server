@@ -22,13 +22,15 @@ namespace Coderr.IntegrationTests.Core.TestCases
             _apiClient = apiClient;
         }
 
-        [Test, RunOnlyThisOne]
+        [Test]
         public async Task Clearing_environment_should_remove_all_incidents_in_it()
         {
             await _applicationClient.CreateIncident(x => { x.EnvironmentName = "Mock"; });
 
             var id = await _apiClient.Reset(_applicationClient.ApplicationId, "Mock");
 
+            // required for some reason. TODO: Investigate ;)
+            await Task.Delay(500);
             var actual = await _apiClient.QueryAsync(new FindIncidents()
             {
                 ApplicationIds = new[] { _applicationClient.ApplicationId },
