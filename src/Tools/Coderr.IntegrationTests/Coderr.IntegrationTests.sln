@@ -3,7 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.452
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coderr.IntegrationTests.Core", "Coderr.IntegrationTests\Coderr.IntegrationTests.Core.csproj", "{34664F2D-1E01-4F53-BB58-D6ADEC5BC198}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coderr.IntegrationTests.Core", "Coderr.IntegrationTests\Coderr.IntegrationTests.Core.csproj", "{34664F2D-1E01-4F53-BB58-D6ADEC5BC198}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coderr.Tests.VisualStudio.TestAdapter", "Coderr.Tests.VisualStudio.TestAdapter\Coderr.Tests.VisualStudio.TestAdapter.csproj", "{10BEBD15-0E6C-459E-98EF-B96EBD0F7340}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coderr.Tests", "Coderr.Tests\Coderr.Tests.csproj", "{58481A6A-C5E1-4A71-ADBD-618F07D4A8CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coderr.Tests.Runner.Resharper", "Coderr.Tests.Runner.Resharper\Coderr.Tests.Runner.Resharper.csproj", "{61621E11-78E5-4C60-A7C7-440A8B01BBE3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{5001CA6D-CC0C-410E-9D96-E348F1244C05}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +23,22 @@ Global
 		{34664F2D-1E01-4F53-BB58-D6ADEC5BC198}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34664F2D-1E01-4F53-BB58-D6ADEC5BC198}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34664F2D-1E01-4F53-BB58-D6ADEC5BC198}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10BEBD15-0E6C-459E-98EF-B96EBD0F7340}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10BEBD15-0E6C-459E-98EF-B96EBD0F7340}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10BEBD15-0E6C-459E-98EF-B96EBD0F7340}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10BEBD15-0E6C-459E-98EF-B96EBD0F7340}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58481A6A-C5E1-4A71-ADBD-618F07D4A8CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58481A6A-C5E1-4A71-ADBD-618F07D4A8CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58481A6A-C5E1-4A71-ADBD-618F07D4A8CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58481A6A-C5E1-4A71-ADBD-618F07D4A8CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61621E11-78E5-4C60-A7C7-440A8B01BBE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61621E11-78E5-4C60-A7C7-440A8B01BBE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61621E11-78E5-4C60-A7C7-440A8B01BBE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61621E11-78E5-4C60-A7C7-440A8B01BBE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5001CA6D-CC0C-410E-9D96-E348F1244C05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5001CA6D-CC0C-410E-9D96-E348F1244C05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5001CA6D-CC0C-410E-9D96-E348F1244C05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5001CA6D-CC0C-410E-9D96-E348F1244C05}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

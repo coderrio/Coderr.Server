@@ -1,6 +1,6 @@
 ﻿using System.Linq;
-using Coderr.IntegrationTests.Core.TestFramework;
 using Coderr.Server.Api.Core.Reports.Queries;
+using Coderr.Tests;
 
 namespace Coderr.IntegrationTests.Core.Tools
 {

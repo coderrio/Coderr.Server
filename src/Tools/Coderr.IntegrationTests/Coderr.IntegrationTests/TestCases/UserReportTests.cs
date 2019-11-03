@@ -3,11 +3,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Coderr.Client.Contracts;
 using Coderr.IntegrationTests.Core.Entities;
-using Coderr.IntegrationTests.Core.TestFramework;
 using Coderr.IntegrationTests.Core.Tools;
 using Coderr.Server.Api.Client;
 using Coderr.Server.Api.Core.Reports.Queries;
 using Coderr.Server.Api.Web.Feedback.Queries;
+using Coderr.Tests.Attributes;
 using FluentAssertions;
 
 namespace Coderr.IntegrationTests.Core.TestCases

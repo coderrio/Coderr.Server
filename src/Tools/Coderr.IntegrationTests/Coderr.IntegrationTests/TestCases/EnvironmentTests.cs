@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using Coderr.IntegrationTests.Core.TestFramework;
 using Coderr.IntegrationTests.Core.Tools;
 using Coderr.Server.Api.Client;
 using Coderr.Server.Api.Core.Environments.Commands;
 using Coderr.Server.Api.Core.Incidents.Queries;
+using Coderr.Tests.Attributes;
 using FluentAssertions;
 
 namespace Coderr.IntegrationTests.Core.TestCases
@@ -27,10 +27,15 @@ namespace Coderr.IntegrationTests.Core.TestCases
         {
             await _applicationClient.CreateIncident(x => { x.EnvironmentName = "Mock"; });
 
-            await _apiClient.Reset(_applicationClient.ApplicationId, "Mock");
+            var id = await _apiClient.Reset(_applicationClient.ApplicationId, "Mock");
 
             var actual = await _apiClient.QueryAsync(new FindIncidents()
-                {ApplicationIds = new[] {_applicationClient.ApplicationId}});
+            {
+                ApplicationIds = new[] { _applicationClient.ApplicationId },
+                EnvironmentIds = new[] { id }
+
+            }
+            );
             actual.Items.Should().BeEmpty();
         }
     }
