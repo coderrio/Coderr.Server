@@ -2,12 +2,14 @@
 using Coderr.Server.Api.Core.Environments.Commands;
 using DotNetCqs;
 using Griffin.Data;
+using log4net;
 
 namespace Coderr.Server.SqlServer.Core.Environments
 {
     internal class ResetEnvironmentHandler : IMessageHandler<ResetEnvironment>
     {
         private readonly IAdoNetUnitOfWork _unitOfWork;
+        private ILog _loggr = LogManager.GetLogger(typeof(ResetEnvironmentHandler));
 
         public ResetEnvironmentHandler(IAdoNetUnitOfWork unitOfWork)
         {
@@ -16,6 +18,7 @@ namespace Coderr.Server.SqlServer.Core.Environments
 
         public Task HandleAsync(IMessageContext context, ResetEnvironment message)
         {
+
             var sql = @"WITH JustOurIncidents (IncidentId) AS
                             (
 	                            select ie.IncidentId
@@ -32,6 +35,7 @@ namespace Coderr.Server.SqlServer.Core.Environments
                             WHERE IncidentEnvironments.EnvironmentId = @environmentId";
 
             _unitOfWork.ExecuteNonQuery(sql, new {message.ApplicationId, message.EnvironmentId});
+            _loggr.Info("Resetting environmentId " + message.EnvironmentId + " for app " + message.ApplicationId);
             return Task.CompletedTask;
         }
     }
