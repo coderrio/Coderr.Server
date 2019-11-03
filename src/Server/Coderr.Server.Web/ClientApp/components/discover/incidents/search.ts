@@ -151,13 +151,14 @@ export default class IncidentSearchComponent extends Vue {
                     }
                 } else {
                     this.highlightActiveApps();
+                    this.showApplicationColumn = true;
                 }
 
                 this.highlightActiveTags();
                 this.highlightActiveEnvironments();
                 this.drawSearchUi();
                 this.highlightIncidentState(this.incidentState);
-                this.search(true);
+                this.searchInternal(true);
             });
     }
 
@@ -228,10 +229,14 @@ export default class IncidentSearchComponent extends Vue {
         }
 
         this.drawSearchUi();
-        this.search();
+        this.searchInternal();
     }
 
-    search(byCode?: boolean) {
+    public search() {
+        // Required, or vue will pass the mouse event to the method.
+        this.searchInternal(false);
+    }
+    private searchInternal(byCode?: boolean) {
         var query = new FindIncidents();
         query.FreeText = this.freeText;
 
@@ -260,7 +265,11 @@ export default class IncidentSearchComponent extends Vue {
             query.ApplicationIds = this.activeApplications;
         }
 
-        if (!byCode) {
+        if (this.activeEnvironment.length > 0) {
+            query.EnvironmentIds = this.activeEnvironment;
+        }
+
+        if (byCode !== true) {
             AppRoot.Instance.storeState({
                 name: 'incident-search',
                 component: this,
@@ -317,7 +326,7 @@ export default class IncidentSearchComponent extends Vue {
             this.incidentService$.assignToMe(parseInt(elem.value));
         }
         AppRoot.notify('All selected incidents have been assigned to you. Click on the "Analyze" menu to start working with them.');
-        setTimeout(() => { this.search() }, 1000);
+        setTimeout(() => { this.searchInternal() }, 1000);
     }
 
     deleteSelectedIncidents() {
@@ -327,7 +336,7 @@ export default class IncidentSearchComponent extends Vue {
             this.incidentService$.delete(parseInt(elem.value), "yes");
         }
         AppRoot.notify('All selected incidents have deleted.');
-        setTimeout(() => { this.search() }, 1000);
+        setTimeout(() => { this.searchInternal() }, 1000);
     }
 
     close(incidentId: number) {
@@ -358,7 +367,7 @@ export default class IncidentSearchComponent extends Vue {
             this.showApplicationColumn = false;
         }
 
-        this.search();
+        this.searchInternal();
     }
     private drawSearchUi() {
         var els = document.querySelectorAll('.search-head th i');
