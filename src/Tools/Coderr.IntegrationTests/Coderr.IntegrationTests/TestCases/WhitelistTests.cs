@@ -2,11 +2,12 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Coderr.IntegrationTests.Core.Entities;
-using Coderr.IntegrationTests.Core.TestFramework;
 using Coderr.IntegrationTests.Core.Tools;
 using Coderr.Server.Api.Client;
 using Coderr.Server.Api.Modules.Whitelists.Commands;
 using Coderr.Server.Api.Modules.Whitelists.Queries;
+using Coderr.Tests;
+using Coderr.Tests.Attributes;
 using FluentAssertions;
 
 namespace Coderr.IntegrationTests.Core.TestCases

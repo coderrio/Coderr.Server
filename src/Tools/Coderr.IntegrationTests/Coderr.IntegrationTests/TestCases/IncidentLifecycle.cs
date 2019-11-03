@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Coderr.Client.ContextCollections;
-using Coderr.IntegrationTests.Core.TestFramework;
 using Coderr.IntegrationTests.Core.Tools;
+using Coderr.Tests.Attributes;
 using FluentAssertions;
 
 namespace Coderr.IntegrationTests.Core.TestCases

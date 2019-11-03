@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Linq;
 using System.Threading.Tasks;
-using Coderr.IntegrationTests.Core.TestFramework;
 using Coderr.Server.Api.Client;
 using Coderr.Server.Api.Core.Applications;
 using Coderr.Server.Api.Core.Applications.Commands;
@@ -12,6 +11,7 @@ using Coderr.Server.Api.Core.Environments.Queries;
 using Coderr.Server.Api.Core.Incidents;
 using Coderr.Server.Api.Core.Incidents.Queries;
 using Coderr.Server.Api.Core.Reports.Queries;
+using Coderr.Tests;
 using DotNetCqs;
 
 namespace Coderr.IntegrationTests.Core.Tools
@@ -108,7 +108,7 @@ namespace Coderr.IntegrationTests.Core.Tools
             return null;
         }
 
-        public static async Task Reset(this ServerApiClient client, int applicationId, string environmentName)
+        public static async Task<int> Reset(this ServerApiClient client, int applicationId, string environmentName)
         {
             var envs = new GetEnvironments();
             var result = await client.QueryAsync(envs);
@@ -116,10 +116,11 @@ namespace Coderr.IntegrationTests.Core.Tools
 
             // haven't reported for that environment yet
             if (id == null)
-                return;
+                return id ?? 0;
 
             var cmd = new ResetEnvironment(applicationId, id.Value);
             await client.SendAsync(cmd);
+            return id ?? 0;
         }
 
         private static async Task<int?> GetIncidentId(this ServerApiClient client, int applicationId,
