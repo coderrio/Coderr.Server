@@ -18,7 +18,9 @@ namespace Coderr.Server.SqlServer.Core.Environments
 
         public Task HandleAsync(IMessageContext context, ResetEnvironment message)
         {
+            _loggr.Info("Resetting environmentId " + message.EnvironmentId + " for app " + message.ApplicationId);
 
+            // Start by deleting incidents that are in just our environment.
             var sql = @"WITH JustOurIncidents (IncidentId) AS
                             (
 	                            select ie.IncidentId
@@ -29,12 +31,29 @@ namespace Coderr.Server.SqlServer.Core.Environments
 	                            group by ie.IncidentId
 	                            having count(e.Id) = 1
                             )
+                            DELETE Incidents
+                            FROM IncidentEnvironments
+                            JOIN JustOurIncidents ON (JustOurIncidents.IncidentId = IncidentEnvironments.IncidentId)
+                            WHERE IncidentEnvironments.EnvironmentId = @environmentId";
+
+            _unitOfWork.ExecuteNonQuery(sql, new { message.ApplicationId, message.EnvironmentId });
+
+            // Next delete all environment mappings that are for the given environment.
+            sql = @"WITH JustOurIncidents (IncidentId) AS
+                            (
+	                            select ie.IncidentId
+	                            from IncidentEnvironments ie 
+	                            join Incidents i ON (i.Id = ie.IncidentId)
+	                            join Environments e ON (ie.EnvironmentId = e.Id)
+	                            where i.ApplicationId = @applicationId
+	                            group by ie.IncidentId
+                            )
                             DELETE IncidentEnvironments
                             FROM IncidentEnvironments
                             JOIN JustOurIncidents ON (JustOurIncidents.IncidentId = IncidentEnvironments.IncidentId)
                             WHERE IncidentEnvironments.EnvironmentId = @environmentId";
 
-            _unitOfWork.ExecuteNonQuery(sql, new {message.ApplicationId, message.EnvironmentId});
+            _unitOfWork.ExecuteNonQuery(sql, new { message.ApplicationId, message.EnvironmentId });
             _loggr.Info("Resetting environmentId " + message.EnvironmentId + " for app " + message.ApplicationId);
             return Task.CompletedTask;
         }
