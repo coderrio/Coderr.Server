@@ -54,7 +54,7 @@ namespace Coderr.Server.SqlServer.Core.Environments
                             WHERE IncidentEnvironments.EnvironmentId = @environmentId";
 
             _unitOfWork.ExecuteNonQuery(sql, new { message.ApplicationId, message.EnvironmentId });
-
+            _loggr.Info("Resetting environmentId " + message.EnvironmentId + " for app " + message.ApplicationId);
             return Task.CompletedTask;
         }
     }
