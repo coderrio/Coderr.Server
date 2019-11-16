@@ -148,7 +148,7 @@ namespace Coderr.Server.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            if (Configuration["EnableCors"].Equals("true", StringComparison.OrdinalIgnoreCase))
+            if (Configuration["EnableCors"]?.Equals("true", StringComparison.OrdinalIgnoreCase) == true)
             {
                 services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
                 {

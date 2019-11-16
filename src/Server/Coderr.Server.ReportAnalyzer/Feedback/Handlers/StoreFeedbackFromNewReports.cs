@@ -26,13 +26,13 @@ namespace Coderr.Server.ReportAnalyzer.Feedback.Handlers
         {
             try
             {
-                var userInfo = Enumerable.FirstOrDefault(e.Report.ContextCollections, x => x.Name == "UserSuppliedInformation");
+                var userInfo = e.Report.ContextCollections.FirstOrDefault(x => x.Name == "UserSuppliedInformation");
                 if (userInfo == null)
                     return;
 
                 userInfo.Properties.TryGetValue("Description", out var description);
                 userInfo.Properties.TryGetValue("Email", out var email);
-                _logger.Debug($"storing feedback for report {e.Report.ReportId}: {email} {description}");
+                _logger.Debug($"queueing feedback attached to report {e.Report.ReportId}: {email} {description}");
                 var cmd = new SubmitFeedback(e.Report.ReportId, e.Report.RemoteAddress ?? "")
                 {
                     Feedback = description,

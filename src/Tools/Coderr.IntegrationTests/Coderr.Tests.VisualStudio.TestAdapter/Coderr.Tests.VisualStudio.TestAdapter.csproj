@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net461</TargetFramework>
+    <Version>1.0.0-rc21</Version>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Coderr.Tests.TestAdapter.VisualStudio.xml</DocumentationFile>
+    <PackageReleaseNotes>First release</PackageReleaseNotes>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>Coderr.Tests.VisualStudio.TestAdapter</PackageId>
+    <Authors>1TCompany AB</Authors>
+    <Description>Enables Visual Studio to run Coderr Tests.</Description>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Copyright>Copyright 2019 © 1TCompany AB. All rights reserved.</Copyright>
+    <PackageTags>logger exceptions analysis .net-core netstandard</PackageTags>
+    <PackageIconUrl>https://coderr.io/images/nuget_icon.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/coderrio/coderr.server</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://coderr.io</PackageProjectUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Coderr.Tests\Coderr.Tests.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="11.0.0" />
+  </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="del /q  $(OutDir)..\*.nupkg" ContinueOnError="true" />
+    <Exec Command="del /q  \src\nuget\$(TargetName)*.nupkg" ContinueOnError="true" />
+  </Target>
+
+  <Target Name="PostBuild" AfterTargets="Pack">
+    <Exec Command="copy /y $(OutDir)..\*.nupkg \src\nuget\" />
+  </Target>
+
+
+</Project>

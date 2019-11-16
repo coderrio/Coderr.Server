@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Coderr.Server.Domain.Core.ErrorReports;
+﻿using Coderr.Server.Domain.Core.ErrorReports;
 using Griffin.Data.Mapper;
 
 namespace Coderr.Server.SqlServer.Core.Reports
@@ -13,7 +10,7 @@ namespace Coderr.Server.SqlServer.Core.Reports
             Property(x => x.Id)
                 .PrimaryKey(true);
             Property(x => x.ApplicationId)
-                .Ignore();
+                .NotForCrud();
         }
     }
 }

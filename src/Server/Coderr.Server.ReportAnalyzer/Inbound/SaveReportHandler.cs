@@ -22,6 +22,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound
     /// </summary>
     public class SaveReportHandler
     {
+        
         private readonly List<Func<NewReportDTO, bool>> _filters = new List<Func<NewReportDTO, bool>>();
         private readonly ILog _logger = LogManager.GetLogger(typeof(SaveReportHandler));
         private readonly IMessageQueue _queue;

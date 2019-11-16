@@ -290,8 +290,13 @@ namespace Coderr.Server.Web.Controllers
             if (prop == null || !prop.CanRead)
                 return;
 
-            var value = (int)prop.GetValue(cqsObject);
-            if (!User.IsApplicationMember(value) && value != 0)
+            //appId can for instance be null in the GetApplication query
+            var value = prop.GetValue(cqsObject);
+            if (value == null)
+                return;
+
+            var appId = (int)value;
+            if (appId != 0 && !User.IsApplicationMember(appId))
             {
                 _logger.Warn("Tried to access an application without privileges. accountId: " + User.Identity.Name +
                              ", appId: " + value);
