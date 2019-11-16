@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <PackageReference Include="Coderr.Client.AspNetCore.Mvc" Version="1.1.6" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.2.5" />
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.5" />
     <PackageReference Include="Griffin.Framework" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
