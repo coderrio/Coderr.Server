@@ -17,9 +17,6 @@ namespace Coderr.Server.SqlServer.Core.Notifications
             Property(x => x.ReopenedIncident)
                 .ToColumnValue(StringToEnum)
                 .ToPropertyValue(EnumToString<NotificationState>);
-            Property(x => x.NewReport)
-                .ToColumnValue(StringToEnum)
-                .ToPropertyValue(EnumToString<NotificationState>);
             Property(x => x.UserFeedback)
                 .ToColumnValue(StringToEnum)
                 .ToPropertyValue(EnumToString<NotificationState>);

@@ -29,7 +29,11 @@ namespace Coderr.Server.Web.Boot.Cqs
             ContractResolver = new IncludeNonPublicMembersContractResolver(),
             NullValueHandling = NullValueHandling.Ignore,
             ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
-            Converters = new List<JsonConverter> { new StringEnumConverter() }
+
+            // Typescript requires numbers for easier enum handling
+            // otherwise we have to redefine all enums so that the keys are strings.
+
+            //Converters = new List<JsonConverter> { new StringEnumConverter() }
         };
         public bool IsEmpty => _cqsTypes.Count == 0;
 
@@ -48,6 +52,16 @@ namespace Coderr.Server.Web.Boot.Cqs
             return string.IsNullOrEmpty(json)
                 ? Activator.CreateInstance(type, true)
                 : JsonConvert.DeserializeObject(json, type, _jsonSerializerSettings);
+        }
+
+        /// <summary>
+        /// We just have this method to make sure that the serialization is exactly the same in both directions.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public string Serialize(object value)
+        {
+            return JsonConvert.SerializeObject(value, _jsonSerializerSettings);
         }
 
         /// <summary>

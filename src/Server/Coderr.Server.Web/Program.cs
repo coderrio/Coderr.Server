@@ -12,7 +12,7 @@ using log4net;
 using log4net.Config;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-
+//https://github.com/MicrosoftEdge/pushnotifications-demo-aspnetcore/tree/master/PushnotificationsDemo
 namespace Coderr.Server.Web
 {
     public class Program

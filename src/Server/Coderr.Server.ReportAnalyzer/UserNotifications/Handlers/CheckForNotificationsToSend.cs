@@ -6,7 +6,6 @@ using Coderr.Server.Infrastructure.Configuration;
 using Coderr.Server.ReportAnalyzer.Abstractions.Incidents;
 using Coderr.Server.ReportAnalyzer.UserNotifications.Handlers.Tasks;
 using DotNetCqs;
-using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Abstractions.Config;
 using log4net;
 
@@ -54,10 +53,6 @@ namespace Coderr.Server.ReportAnalyzer.UserNotifications.Handlers
                 if (setting.NewIncident != NotificationState.Disabled && e.Incident.ReportCount == 1)
                 {
                     await CreateNotification(context, e, setting.AccountId, setting.NewIncident);
-                }
-                else if (setting.NewReport != NotificationState.Disabled)
-                {
-                    await CreateNotification(context, e, setting.AccountId, setting.NewReport);
                 }
                 else if (setting.ReopenedIncident != NotificationState.Disabled && e.IsReOpened)
                 {

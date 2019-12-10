@@ -1,25 +1,30 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "lib": [ "es2015", "dom" ],
     "module": "es2015",
     "moduleResolution": "node",
-    "target": "es5",
+    "paths": {
+      "@/*": [ "ClientApp/*" ]
+    },
     "sourceMap": true,
+    "strict": true,
     //"skipDefaultLibCheck": true,
     "strictNullChecks": false,
-    "strict": true,
+    "target": "es5",
     "types": [ "webpack-env" ]
+
   },
   "include": [
     "ClientApp/**/*.ts"
   ],
   "exclude": [
     "bin",
-    "node_modules",
-    "ClientApp/dto/**/*.ts"
+    "node_modules"//,
+//    "ClientApp/dto/**/*.ts"
   ]
 }
 //{

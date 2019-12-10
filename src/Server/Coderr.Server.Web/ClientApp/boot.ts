@@ -199,6 +199,17 @@ const routes = [
         ]
     },
     {
+        path: "/manage/account/",
+        component: require("./components/manage/account/manage.vue.html").default,
+        children: [
+            {
+                name: "manageAccount",
+                path: "",
+                component: require("./components/manage/account/home/home.vue.html").default
+            }
+        ]
+    },
+    {
         path: "/manage/",
         component: require("./components/manage/system/manage.vue.html").default,
         children: [
@@ -206,7 +217,6 @@ const routes = [
                 name: "manageHome",
                 path: "",
                 component: require("./components/manage/system/home/home.vue.html").default,
-
             },
             {
                 name: "createApp",

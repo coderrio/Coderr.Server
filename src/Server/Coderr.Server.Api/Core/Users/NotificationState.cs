@@ -8,21 +8,26 @@
         /// <summary>
         ///     Use global setting
         /// </summary>
-        UseGlobalSetting,
+        UseGlobalSetting = 0,
 
         /// <summary>
         ///     Do not notify
         /// </summary>
-        Disabled,
+        Disabled = 1,
 
         /// <summary>
         ///     By cellphone (text message)
         /// </summary>
-        Cellphone,
+        Cellphone = 2,
 
         /// <summary>
         ///     By email
         /// </summary>
-        Email
+        Email = 3,
+
+        /// <summary>
+        /// Use browser/desktop notifications.
+        /// </summary>
+        BrowserNotification = 4
     }
 }
