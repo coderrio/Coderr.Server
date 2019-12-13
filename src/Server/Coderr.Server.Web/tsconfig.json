@@ -19,7 +19,7 @@
 
   },
   "include": [
-    "ClientApp/**/*.ts"
+    "ClientApp/**/*.ts", "wwwroot/js/service-worker.js"
   ],
   "exclude": [
     "bin",

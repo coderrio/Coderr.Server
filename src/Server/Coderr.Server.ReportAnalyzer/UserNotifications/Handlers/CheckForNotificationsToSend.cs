@@ -70,23 +70,22 @@ namespace Coderr.Server.ReportAnalyzer.UserNotifications.Handlers
         {
             if (state == NotificationState.BrowserNotification)
             {
-                var notification = new Notification("haha");
-                notification.Actions.Add(new NotificationAction()
-                {
-                    Title = "Assign to me",
-                    Action = "AssignToMe"
-                });
-                notification.Actions.Add(new NotificationAction()
-                {
-                    Title = "View",
-                    Action = "View"
-                });
-                notification.Icon = "https://coderr.io/images/nuget_icon.png";
+                var notification = new Notification($"Application: {e.Incident.ApplicationName}\r\n{e.Incident.Name}");
+                //notification.Actions.Add(new NotificationAction()
+                //{
+                //    Title = "Assign to me",
+                //    Action = "AssignToMe"
+                //});
+                //notification.Actions.Add(new NotificationAction()
+                //{
+                //    Title = "View",
+                //    Action = "View"
+                //});
+                //notification.Icon = "https://coderr.io/images/nuget_icon.png";
                 notification.Timestamp = e.Report.CreatedAtUtc;
                 notification.Title = e.IsNewIncident == true 
                     ?"New incident"
                     :"Re-opened incident";
-                notification.Body = $"Application: {e.Incident.ApplicationName}\r\n{e.Incident.Name}";
                 
                 await _notificationService.SendBrowserNotification(accountId, notification);
             }

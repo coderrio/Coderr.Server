@@ -15,9 +15,13 @@ using Coderr.Server.App.Core.Reports.Config;
 using Coderr.Server.Infrastructure;
 using Coderr.Server.Infrastructure.Configuration;
 using Coderr.Server.Infrastructure.Configuration.Database;
-using Coderr.Server.Infrastructure.Messaging;
+using Coderr.Server.ReportAnalyzer;
+using Coderr.Server.ReportAnalyzer.UserNotifications;
+using Coderr.Server.ReportAnalyzer.UserNotifications.Dtos;
 using Coderr.Server.SqlServer;
+using Coderr.Server.SqlServer.Core.Notifications;
 using Coderr.Server.SqlServer.Migrations;
+using Coderr.Server.SqlServer.ReportAnalyzer;
 using Coderr.Server.SqlServer.Schema;
 using Coderr.Server.Web.Areas.Installation;
 using Coderr.Server.Web.Boot;
@@ -25,6 +29,8 @@ using Coderr.Server.Web.Boot.Adapters;
 using Coderr.Server.Web.Controllers;
 using Coderr.Server.Web.Infrastructure;
 using Coderr.Server.Web.Infrastructure.Authentication.ApiKeys;
+using Coderr.Server.Web.Services;
+using Griffin.Data.Mapper;
 using log4net;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -37,7 +43,9 @@ using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WebPush;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
+using IncludeNonPublicMembersContractResolver = Coderr.Server.Infrastructure.Messaging.IncludeNonPublicMembersContractResolver;
 
 namespace Coderr.Server.Web
 {
@@ -51,6 +59,34 @@ namespace Coderr.Server.Web
         {
             Configuration = configuration;
             _moduleStarter = new ModuleStarter(configuration);
+
+            TryPush(configuration);
+        }
+
+        private static void TryPush(IConfiguration configuration)
+        {
+            var subscription = new WebPush.PushSubscription(
+                "https://fcm.googleapis.com/fcm/send/fULzZUDiWbk:APA91bGwiUSBrqj_ziXfIxf29KOF9f_R1Ts6jNebD9kTDrO_2_53_pCngSIRg3LIvyuYQFBAJUpYJzQnDJDSkSsDexmo2u0Gj73sZf1-z28FtocvIrGBpVls0fnnDAp6D3tRnWgL-1xx",
+                "BDdDu20tT8S2ML4eXYbpBy8-QlYyWubCpm_EZ4HGJ9ErmV78RfiIjlW61q6EachmTT6clTo2ZrUG4QMmyf8RfN4",
+                "Gb5n8071KLYtApBSLP8gdQ");
+            var vapid = new VapidDetails("mailto:jonas@coderr.io",
+                "BOR4-9kebnuVVulb0EF8R9Har8r8mZbLW7cy1raZz3gtMS_7oMSggv7uRYWCl0TfidSorbkCXd074Boszj--9FI",
+                "JDPbMSR-GRLcTj68mYLSTYm7PhdcsvCHV1f9NLW6Mbw");
+            var client = new WebPushClient();
+            var json = @"{
+	""title"": ""Interested in how to do this?"",
+	""lang"": ""en"",
+	""body"": ""Click on this notification to get back to the tutorial to learn how to do this!"",
+	""tag"": null,
+	""image"": null,
+	""icon"": null,
+	""badge"": null,
+	""timestamp"": ""2019-12-13T09:50:59.5266191+01:00"",
+	""requireInteraction"": false,
+	""actions"": []
+}";
+            client.SendNotification(subscription, json, vapid);
+            Environment.Exit(0);
         }
 
         public static IConfiguration Configuration { get; private set; }

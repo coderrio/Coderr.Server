@@ -1,15 +1,18 @@
 ﻿'use strict';
 
 self.addEventListener('install', function (event) {
+    console.log('installing');
     self.skipWaiting();
 });
 
 self.addEventListener('activate', function (event) {
+    console.log('active');
     event.waitUntil(clients.claim());
 });
 
 // Respond to a server push with a user notification
 self.addEventListener('push', function (event) {
+    console.log('push', event.data);
     if (event.data) {
         const { title, lang = 'en', body, tag, timestamp, requireInteraction, actions, image } = event.data.json();
 
@@ -21,8 +24,8 @@ self.addEventListener('push', function (event) {
             timestamp: timestamp ? Date.parse(timestamp) : undefined,
             actions: actions || undefined,
             image: image || undefined,
-            badge: '/images/favicon.png',
-            icon: '/images/toast-image.jpg'
+            badge: 'https://coderr.io/images/favicon.png',
+            icon: 'https://coderr.io/images/nuget-icon.jpg'
         });
 
         // Ensure the toast notification is displayed before exiting this function
@@ -54,6 +57,7 @@ self.addEventListener('notificationclick', function (event) {
 });
 
 self.addEventListener('pushsubscriptionchange', function (event) {
+    console.log('pushsubscriptionchange');
     event.waitUntil(
         Promise.all([
             Promise.resolve(event.oldSubscription ? deleteSubscription(event.oldSubscription) : true),
