@@ -14,18 +14,19 @@ self.addEventListener('activate', function (event) {
 self.addEventListener('push', function (event) {
     console.log('push', event.data);
     if (event.data) {
-        const { title, lang = 'en', body, tag, timestamp, requireInteraction, actions, image } = event.data.json();
+        const { title, lang = 'en', badge, body, tag, timestamp, requireInteraction, actions, image, data } = event.data.json();
 
         const promiseChain = self.registration.showNotification(title, {
             lang,
             body,
+            data,
             requireInteraction,
             tag: tag || undefined,
             timestamp: timestamp ? Date.parse(timestamp) : undefined,
             actions: actions || undefined,
             image: image || undefined,
-            badge: 'https://coderr.io/images/favicon.png',
-            icon: 'https://coderr.io/images/nuget-icon.jpg'
+            icon: '/favicon-32x32.png',
+            badge: badge || undefined
         });
 
         // Ensure the toast notification is displayed before exiting this function
@@ -34,26 +35,36 @@ self.addEventListener('push', function (event) {
 });
 
 self.addEventListener('notificationclick', function (event) {
-    event.notification.close();
+    console.log('clicking');
+    var notification = event.notification;
+    var action = event.action;
+    notification.close();
+    var url = '/discover/incidents/' + notification.data.applicationId + '/incident/' + notification.data.incidentId;
+    if (action === 'AssignToMe') {
+        url = '/discover/assign/incident/' + notification.data.incidentId;
+    }
+    console.log('opening', url);
+    clients.openWindow(url);
+    //event.waitUntil(
+    //    clients.matchAll({ type: 'window', includeUncontrolled: true })
+    //        .then(function (clientList) {
+    //            if (clientList.length > 0) {
+    //                let client = clientList[0];
 
-    event.waitUntil(
-        clients.matchAll({ type: 'window', includeUncontrolled: true })
-            .then(function (clientList) {
-                if (clientList.length > 0) {
-                    let client = clientList[0];
+    //                for (let i = 0; i < clientList.length; i++) {
+    //                    if (clientList[i].focused) {
+    //                        client = clientList[i];
+    //                    }
+    //                }
 
-                    for (let i = 0; i < clientList.length; i++) {
-                        if (clientList[i].focused) {
-                            client = clientList[i];
-                        }
-                    }
+    //                return client.focus();
+    //            }
 
-                    return client.focus();
-                }
 
-                return clients.openWindow('/');
-            })
-    );
+    //            console.log('clicked', event);
+    //            return clients.openWindow('/');
+    //        })
+    //);
 });
 
 self.addEventListener('pushsubscriptionchange', function (event) {

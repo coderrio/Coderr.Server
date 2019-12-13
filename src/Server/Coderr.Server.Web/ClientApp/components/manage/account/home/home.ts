@@ -13,6 +13,9 @@ export default class ManageHomeComponent extends Vue {
     notifyOnPeaks = dto.NotificationState.Disabled;
     notifyOnReOpenedIncident = dto.NotificationState.Disabled;
     notifyOnUserFeedback = dto.NotificationState.Disabled;
+    missingKeys = false;
+    generatedPublicKey = '';
+    generatedPrivateKey = '';
 
     created() {
         if (this.$route.params.applicationId) {
@@ -38,7 +41,12 @@ export default class ManageHomeComponent extends Vue {
         navigator.serviceWorker.ready.then(registration => {
             registration.pushManager.getSubscription().then(subscription => console.log(JSON.stringify(subscription)));
         });
-        
+
+        this.getPublicKey().then(key => {
+            if (key) {
+                return;
+            }
+        });
     }
 
     save() {
@@ -61,13 +69,11 @@ export default class ManageHomeComponent extends Vue {
                 return;
             }
 
-            console.log('regging')
             this.registerPushSubscription();
         } else {
             this.deleteSubscription();
         }
     }
-
 
     private async deleteSubscription() {
         if (!navigator.serviceWorker)
@@ -100,12 +106,14 @@ export default class ManageHomeComponent extends Vue {
         return true;
     }
 
+    private async generateKeyPair() {
+        const response = await fetch('./push/keys/generate');
+        return await response.json();
+    }
+
     private async registerPushSubscription(): Promise<any> {
-        console.log('register')
         navigator.serviceWorker.register(this.workerUrl);
-        console.log('waiting ready', navigator.serviceWorker.ready)
         const registration = await navigator.serviceWorker.ready;
-        console.log('getsub')
         let subscription = await registration.pushManager.getSubscription();
         if (subscription) {
             return subscription;
@@ -114,10 +122,9 @@ export default class ManageHomeComponent extends Vue {
         const key = await this.getPublicKey();
         subscription = await registration.pushManager.subscribe({
             userVisibleOnly: true,
-            applicationServerKey: this.urlBase64ToUint8Array(key)
+            applicationServerKey: key
         });
 
-        console.log('Got ', subscription);
         this.storeBrowserSubscription(subscription);
     }
 
@@ -128,19 +135,23 @@ export default class ManageHomeComponent extends Vue {
         cmd.ExpirationTime = subscription.expirationTime;
 
         // Know a better way which isn't allocate a lot of objects?
-        console.log(JSON.stringify(subscription));
         var obj = JSON.parse(JSON.stringify(subscription));
 
         cmd.PublicKey = obj.keys.p256dh;
         cmd.AuthenticationSecret = obj.keys.auth;
 
-        console.log(JSON.stringify(cmd));
         AppRoot.Instance.apiClient.command(cmd);
     }
 
-    private async getPublicKey() {
-        var response = await fetch('./push/vapidpublickey');
-        return await response.json();
+    private async getPublicKey(): Promise<Uint8Array> {
+        const response = await fetch('./push/vapidpublickey');
+        if (response.status === 204) {
+            return null;
+        }
+
+        const json = await response.json();
+        var value = this.urlBase64ToUint8Array(json);
+        return value;
     }
 
     private urlBase64ToUint8Array(base64String: string) {

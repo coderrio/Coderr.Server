@@ -9,76 +9,75 @@
                         </div>
                         <div class="card-body">
                             <p>
-                                Enable notifications to reduce the time to action.
+                                Enable notifications to get notified directly when something important happens.
                             </p>
-
-                    <div class="form-group">
-                        <h5>New incident</h5>
-                        <div>
-                            <p>Notify when a new incident have been received.</p>
-                        </div>
-                        <div>
-                            <label v-if="applicationId">
-                                <input type="radio" id="id0" value="1" v-model.number="notifyOnNewIncidents" checked> Default
-                            </label>
-                            <label>
-                                <input type="radio" id="id1" value="2" v-model.number="notifyOnNewIncidents"> Disabled
-                            </label>
-                            <label>
-                                <input type="radio" id="id3" value="4" v-model.number="notifyOnNewIncidents"> Email
-                            </label>
-                            <label>
-                                <input type="radio" id="id4" value="5" v-model.number="notifyOnNewIncidents"> Browser notification
-                            </label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <h5 class=" mt-4">Re-opened incident</h5>
-                        <div>
-                            <p>Notify when a closed incident is reopened (an error report is received in a newer application version than the one that you closed the incident for).</p>
-                        </div>
-                        <div>
-                            <label v-if="applicationId">
-                                <input type="radio" value="1" v-model.number="notifyOnReOpenedIncident" checked> Default
-                            </label>
-                            <label>
-                                <input type="radio" value="2" v-model.number="notifyOnReOpenedIncident"> Disabled
-                            </label>
-                            <label>
-                                <input type="radio" value="4" v-model.number="notifyOnReOpenedIncident"> Email
-                            </label>
-                            <label>
-                                <input type="radio" value="5" v-model.number="notifyOnReOpenedIncident"> Browser notification
-                            </label>
-                        </div>
-
-                    </div>
-                    <div class="form-group mt-4">
-                        <h5>New user feedback</h5>
-                        <div>
-                            <p>An user have written an error report for an incident.</p>
-                        </div>
-                        <div>
-                            <div>
-                                <label v-if="applicationId">
-                                    <input type="radio" value="1" v-model.number="notifyOnUserFeedback"> Default
-                                </label>
-                                <label>
-                                    <input type="radio" value="2" v-model.number="notifyOnUserFeedback"> Disabled
-                                </label>
-                                <label>
-                                    <input type="radio" value="4" v-model.number="notifyOnUserFeedback"> Email
-                                </label>
-                                <label>
-                                    <input type="radio" value="5" v-model.number="notifyOnUserFeedback"> Browser notification
-                                </label>
+                            <div class="form-group">
+                                <h5>New incident</h5>
+                                <div>
+                                    <p>Notify when a new incident have been received.</p>
+                                </div>
+                                <div>
+                                    <label v-if="applicationId">
+                                        <input type="radio" id="id0" value="1" v-model.number="notifyOnNewIncidents" checked> Default
+                                    </label>
+                                    <label>
+                                        <input type="radio" id="id1" value="2" v-model.number="notifyOnNewIncidents"> Disabled
+                                    </label>
+                                    <label>
+                                        <input type="radio" id="id3" value="4" v-model.number="notifyOnNewIncidents"> Email
+                                    </label>
+                                    <label>
+                                        <input type="radio" id="id4" value="5" v-model.number="notifyOnNewIncidents"> Browser notification
+                                    </label>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                        <div class="form-group">
-                            <hr/>
-                            <button class="btn btn-block btn-blue" @click.prevent="save">Save changes</button>
-                        </div>
+                            <div class="form-group">
+                                <h5 class=" mt-4">Re-opened incident</h5>
+                                <div>
+                                    <p>Notify when a closed incident is reopened (an error report is received in a newer application version than the one that you closed the incident for).</p>
+                                </div>
+                                <div>
+                                    <label v-if="applicationId">
+                                        <input type="radio" value="1" v-model.number="notifyOnReOpenedIncident" checked> Default
+                                    </label>
+                                    <label>
+                                        <input type="radio" value="2" v-model.number="notifyOnReOpenedIncident"> Disabled
+                                    </label>
+                                    <label>
+                                        <input type="radio" value="4" v-model.number="notifyOnReOpenedIncident"> Email
+                                    </label>
+                                    <label>
+                                        <input type="radio" value="5" v-model.number="notifyOnReOpenedIncident"> Browser notification
+                                    </label>
+                                </div>
+
+                            </div>
+                            <div class="form-group mt-4">
+                                <h5>New user feedback</h5>
+                                <div>
+                                    <p>An user have written an error report for an incident.</p>
+                                </div>
+                                <div>
+                                    <div>
+                                        <label v-if="applicationId">
+                                            <input type="radio" value="1" v-model.number="notifyOnUserFeedback"> Default
+                                        </label>
+                                        <label>
+                                            <input type="radio" value="2" v-model.number="notifyOnUserFeedback"> Disabled
+                                        </label>
+                                        <label>
+                                            <input type="radio" value="4" v-model.number="notifyOnUserFeedback"> Email
+                                        </label>
+                                        <label>
+                                            <input type="radio" value="5" v-model.number="notifyOnUserFeedback"> Browser notification
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <hr />
+                                <button class="btn btn-block btn-blue" @click.prevent="save">Save changes</button>
+                            </div>
                         </div>
                     </div>
 

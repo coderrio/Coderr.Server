@@ -46,5 +46,5 @@ namespace Coderr.Server.ReportAnalyzer.UserNotifications
                 }
             }
         }
-    }
+   }
 }

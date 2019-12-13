@@ -22,6 +22,9 @@ namespace Coderr.Server.ReportAnalyzer.UserNotifications.Dtos
         public List<NotificationAction> Actions { get; set; } =
             new List<NotificationAction>();
 
+        [JsonProperty("data", TypeNameHandling = TypeNameHandling.None)]
+        public object Data { get; set; }
+
         [JsonProperty("badge")] public string Badge { get; set; }
 
         [JsonProperty("body")] public string Body { get; set; }

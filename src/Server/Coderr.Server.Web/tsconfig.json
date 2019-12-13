@@ -19,7 +19,7 @@
 
   },
   "include": [
-    "ClientApp/**/*.ts", "wwwroot/js/service-worker.js"
+    "ClientApp/**/*.ts", "wwwroot/js/service-worker.js", "../Coderr.Server.ReportAnalyzer/UserNotifications/BrowserNotificationConfig.cs"
   ],
   "exclude": [
     "bin",

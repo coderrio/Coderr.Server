@@ -1,13 +1,12 @@
 ﻿using System.Threading.Tasks;
 using Coderr.Server.Abstractions.Boot;
-using Coderr.Server.App.Core.Notifications;
+using Coderr.Server.Abstractions.Config;
 using Coderr.Server.Domain.Modules.UserNotifications;
+using Coderr.Server.Infrastructure.Configuration;
 using Coderr.Server.ReportAnalyzer.UserNotifications;
 using Coderr.Server.ReportAnalyzer.UserNotifications.Dtos;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using WebPush;
-using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace Coderr.Server.Web.Services
 {
@@ -17,12 +16,9 @@ namespace Coderr.Server.Web.Services
         private readonly WebPushClient _client = new WebPushClient();
         private readonly VapidDetails _vapid;
 
-        public PushClient(IConfiguration configuration)
+        public PushClient(IConfiguration<BrowserNotificationConfig> pushConfiguration, IConfiguration<BaseConfiguration> baseConfiguration)
         {
-            var subject = configuration.GetValue<string>("Vapid:Subject");
-            var key = configuration.GetValue<string>("Vapid:PublicKey");
-            var secret = configuration.GetValue<string>("Vapid:PrivateKey");
-            _vapid = new VapidDetails(subject, key, secret);
+            _vapid = new VapidDetails("mailto:" + baseConfiguration.Value.SupportEmail, pushConfiguration.Value.PublicKey, pushConfiguration.Value.PrivateKey);
         }
 
         public async Task SendNotification(BrowserSubscription subscription, Notification notification)

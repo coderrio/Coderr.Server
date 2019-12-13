@@ -75,13 +75,18 @@ const routes = [
         component: require("./components/discover/discover.vue.html").default,
         children: [
             {
+                name: "assignIncident",
+                path: "assign/incident/:incidentId/",
+                component: require("./components/discover/incidents/assign.vue.html").default
+            },
+            {
                 name: "findIncidents",
                 path: "incidents/:applicationId?",
                 component: require("./components/discover/incidents/search.vue.html").default
             },
             {
                 name: "discoverIncident",
-                path: "incidents/:applicationId/incident/:incidentId",
+                path: "incidents/:applicationId/incident/:incidentId/",
                 component: require("./components/discover/incidents/incident.vue.html").default
             },
             {
@@ -314,7 +319,7 @@ AppRoot.Instance.loadCurrentUser()
         //});
         ourVue.$router.afterEach((to, from) => {
             hooks.afterRoute(to.path, from.path);
-        })
+        });
         ourVue.user$ = user;
 
         if (v["Cypress"]) {
