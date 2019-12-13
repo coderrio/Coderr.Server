@@ -13,7 +13,7 @@ using log4net;
 namespace Coderr.Server.App.Core.Incidents.Jobs
 {
     /// <summary>
-    ///     DeleteBrowserSubscription incidents where all reports have been deleted (due to retention days).
+    ///     Delete incidents where all reports have been deleted (due to retention days).
     /// </summary>
     /// <remarks>
     ///     <para>

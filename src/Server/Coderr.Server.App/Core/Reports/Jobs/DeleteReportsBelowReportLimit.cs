@@ -1,6 +1,4 @@
-using System;
 using System.Data;
-using System.Diagnostics;
 using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Abstractions.Config;
 using Coderr.Server.App.Core.Reports.Config;
@@ -11,7 +9,7 @@ using log4net;
 namespace Coderr.Server.App.Core.Reports.Jobs
 {
     /// <summary>
-    ///     DeleteBrowserSubscription oldest reports for incidents with report count cap.
+    ///     Delete oldest reports for incidents with report count cap.
     /// </summary>
     /// <remarks>
     ///     <para>

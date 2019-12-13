@@ -160,7 +160,7 @@ namespace Coderr.Server.SqlServer.Core.Applications
                 cmd.CommandText =
                     "DELETE FROM Applications WHERE Id = @id";
 
-                //TODO: DeleteBrowserSubscription reports??
+                //TODO: Delete reports??
                 // or save them for future analysis?
 
                 cmd.AddParameter("id", applicationId);

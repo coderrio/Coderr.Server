@@ -17,7 +17,7 @@ namespace Coderr.Server.App.Core.Invitations
         Task CreateAsync(Invitation invitation);
 
         /// <summary>
-        ///     DeleteBrowserSubscription invitation
+        ///     Delete invitation
         /// </summary>
         /// <param name="invitationKey">Key that was sent out in the invitation email</param>
         /// <returns>task</returns>
