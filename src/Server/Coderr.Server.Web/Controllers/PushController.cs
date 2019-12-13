@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Coderr.Server.Web.Services;
+﻿using Coderr.Server.ReportAnalyzer.UserNotifications;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebPush;
 
 namespace Coderr.Server.Web.Controllers
 {
@@ -13,19 +10,14 @@ namespace Coderr.Server.Web.Controllers
     [ApiController]
     public class PushController : ControllerBase
     {
-        private PushService _pushService;
 
-        public PushController(PushService pushService)
-        {
-            _pushService = pushService;
-        }
-
-        [HttpGet, Route("vapidpublickey")]
+        [HttpGet]
+        [Route("vapidpublickey")]
         [Authorize]
-        public PushService.VapidKey VapidPublicKey()
+        public ActionResult<string> VapidPublicKey()
         {
-            return _pushService.Generate();
+            var keys = VapidHelper.GenerateVapidKeys();
+            return Ok(keys.PublicKey);
         }
-
     }
 }

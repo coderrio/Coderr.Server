@@ -7,6 +7,8 @@ using Coderr.Server.ReportAnalyzer.Abstractions.Incidents;
 using Coderr.Server.ReportAnalyzer.UserNotifications.Handlers.Tasks;
 using DotNetCqs;
 using Coderr.Server.Abstractions.Config;
+using Coderr.Server.Api.Core.Incidents.Queries;
+using Coderr.Server.ReportAnalyzer.UserNotifications.Dtos;
 using log4net;
 
 namespace Coderr.Server.ReportAnalyzer.UserNotifications.Handlers
@@ -19,7 +21,8 @@ namespace Coderr.Server.ReportAnalyzer.UserNotifications.Handlers
         private readonly IUserNotificationsRepository _notificationsRepository;
         private readonly IUserRepository _userRepository;
         private readonly BaseConfiguration _configuration;
-        private ILog _log = LogManager.GetLogger(typeof(CheckForNotificationsToSend));
+        private readonly ILog _log = LogManager.GetLogger(typeof(CheckForNotificationsToSend));
+        private INotificationService _notificationService;
 
         /// <summary>
         ///     Creates a new instance of <see cref="CheckForNotificationsToSend" />.
@@ -27,10 +30,11 @@ namespace Coderr.Server.ReportAnalyzer.UserNotifications.Handlers
         /// <param name="notificationsRepository">To load notification configuration</param>
         /// <param name="userRepository">To load user info</param>
         public CheckForNotificationsToSend(IUserNotificationsRepository notificationsRepository,
-            IUserRepository userRepository, IConfiguration<BaseConfiguration> configuration)
+            IUserRepository userRepository, IConfiguration<BaseConfiguration> configuration, INotificationService notificationService)
         {
             _notificationsRepository = notificationsRepository;
             _userRepository = userRepository;
+            _notificationService = notificationService;
             _configuration = configuration.Value;
         }
 
@@ -43,14 +47,14 @@ namespace Coderr.Server.ReportAnalyzer.UserNotifications.Handlers
         /// </returns>
         public async Task HandleAsync(IMessageContext context, ReportAddedToIncident e)
         {
-            if (e == null) throw new ArgumentNullException("e");
+            if (e == null) throw new ArgumentNullException(nameof(e));
 
             _log.Info("ReportId: " + e.Report.Id);
 
             var settings = await _notificationsRepository.GetAllAsync(e.Incident.ApplicationId);
             foreach (var setting in settings)
             {
-                if (setting.NewIncident != NotificationState.Disabled && e.Incident.ReportCount == 1)
+                if (setting.NewIncident != NotificationState.Disabled && e.IsNewIncident == true)
                 {
                     await CreateNotification(context, e, setting.AccountId, setting.NewIncident);
                 }
@@ -64,7 +68,29 @@ namespace Coderr.Server.ReportAnalyzer.UserNotifications.Handlers
         private async Task CreateNotification(IMessageContext context, ReportAddedToIncident e, int accountId,
             NotificationState state)
         {
-            if (state == NotificationState.Email)
+            if (state == NotificationState.BrowserNotification)
+            {
+                var notification = new Notification("haha");
+                notification.Actions.Add(new NotificationAction()
+                {
+                    Title = "Assign to me",
+                    Action = "AssignToMe"
+                });
+                notification.Actions.Add(new NotificationAction()
+                {
+                    Title = "View",
+                    Action = "View"
+                });
+                notification.Icon = "https://coderr.io/images/nuget_icon.png";
+                notification.Timestamp = e.Report.CreatedAtUtc;
+                notification.Title = e.IsNewIncident == true 
+                    ?"New incident"
+                    :"Re-opened incident";
+                notification.Body = $"Application: {e.Incident.ApplicationName}\r\n{e.Incident.Name}";
+                
+                await _notificationService.SendBrowserNotification(accountId, notification);
+            }
+            else if (state == NotificationState.Email)
             {
                 var email = new SendIncidentEmail(_configuration);
                 await email.SendAsync(context, accountId.ToString(), e.Incident, e.Report);

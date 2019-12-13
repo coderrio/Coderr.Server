@@ -17,7 +17,7 @@ namespace Coderr.Server.App.Modules.Triggers
         Task CreateAsync(Trigger trigger);
 
         /// <summary>
-        ///     Delete a trigger
+        ///     DeleteBrowserSubscription a trigger
         /// </summary>
         /// <param name="id">trigger PK</param>
         /// <returns>task</returns>

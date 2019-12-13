@@ -53,7 +53,7 @@ namespace Coderr.Server.Web
             _moduleStarter = new ModuleStarter(configuration);
         }
 
-        public IConfiguration Configuration { get; }
+        public static IConfiguration Configuration { get; private set; }
 
         private bool IsConfigured
         {

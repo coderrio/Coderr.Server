@@ -23,6 +23,16 @@
         /// <summary>
         ///     By email
         /// </summary>
-        Email = 4
+        Email = 4,
+
+        /// <summary>
+        ///     Send a browser notification to the user
+        /// </summary>
+        /// <remarks>
+        ///     <para>
+        ///         Requires that the user have approved it (by a javascript request).
+        ///     </para>
+        /// </remarks>
+        BrowserNotification = 5
     }
 }

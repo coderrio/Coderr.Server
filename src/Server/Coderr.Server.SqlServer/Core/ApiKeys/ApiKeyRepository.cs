@@ -31,7 +31,7 @@ namespace Coderr.Server.SqlServer.Core.ApiKeys
         }
 
         /// <summary>
-        ///     Delete all mappings that are for a specific application
+        ///     DeleteBrowserSubscription all mappings that are for a specific application
         /// </summary>
         /// <param name="apiKeyId">id for the ApiKey that the application is associated with</param>
         /// <param name="applicationId">Application to remove mapping for</param>
@@ -44,7 +44,7 @@ namespace Coderr.Server.SqlServer.Core.ApiKeys
         }
 
         /// <summary>
-        ///     Delete a specific ApiKey.
+        ///     DeleteBrowserSubscription a specific ApiKey.
         /// </summary>
         /// <param name="keyId"></param>
         /// <returns></returns>

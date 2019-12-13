@@ -29,6 +29,7 @@
 
   <ItemGroup>
     <None Remove="Schema\Coderr.v21.sql" />
+    <None Remove="Schema\Coderr.v22.sql" />
   </ItemGroup>
 
 </Project>

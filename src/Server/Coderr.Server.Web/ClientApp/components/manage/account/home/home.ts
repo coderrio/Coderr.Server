@@ -8,6 +8,7 @@ import { Component, Vue } from "vue-property-decorator";
 export default class ManageHomeComponent extends Vue {
     applicationId: number | null = null;
     appNotice: string;
+    private workerUrl = '/js/pushworker.js';
     notifyOnNewIncidents = dto.NotificationState.Disabled;
     notifyOnPeaks = dto.NotificationState.Disabled;
     notifyOnReOpenedIncident = dto.NotificationState.Disabled;
@@ -47,27 +48,40 @@ export default class ManageHomeComponent extends Vue {
         AppRoot.Instance.apiClient.command(cmd);
 
         var value = dto.NotificationState.BrowserNotification;
-        console.log(value, this.notifyOnReOpenedIncident);
-        //console.log(this.notifyOnNewIncidents, this.notifyOnNewIncidents === dto.NotificationState.BrowserNotification.toString());
         if (this.notifyOnNewIncidents === value ||
             this.notifyOnPeaks === value ||
             this.notifyOnReOpenedIncident === value ||
             this.notifyOnUserFeedback === value) {
-            console.log('here here');
             if (!this.isNotificationsSupported()) {
                 AppRoot.notify("Your browser do not support notifications");
                 return;
             }
 
             this.storeSubscription();
+        } else {
+            this.deleteSubscription();
         }
     }
 
     private async storeSubscription() {
         await this.askForPermission();
-        await this.registerServiceWorker();
         var subscription = await this.subscribeUserToPush();
         this.storeBrowserSubscription(subscription);
+    }
+
+    private async deleteSubscription() {
+        var sw = await this.getRegistration();
+        const reg = await sw.pushManager.getSubscription();
+        if (reg == null) {
+            return;
+        }
+
+        reg.unsubscribe();
+
+        var cmd = new dto.DeleteBrowserSubscription();
+        cmd.Endpoint = reg.endpoint;
+        cmd.UserId = AppRoot.Instance.currentUser.id;
+        AppRoot.Instance.apiClient.command(cmd);
     }
 
 
@@ -83,8 +97,15 @@ export default class ManageHomeComponent extends Vue {
         return true;
     }
 
-    async registerServiceWorker() {
-        await navigator.serviceWorker.register('/js/pushworker.js');
+    async getRegistration(): Promise<ServiceWorkerRegistration> {
+        let registration = await navigator.serviceWorker.getRegistration(this.workerUrl);
+        console.log('regurl', registration);
+        if (registration == null) {
+            registration = await navigator.serviceWorker.register(this.workerUrl);
+            console.log('regurl2', registration);
+        }
+
+        return registration;
     }
 
     async askForPermission() {
@@ -95,12 +116,18 @@ export default class ManageHomeComponent extends Vue {
     }
 
     async subscribeUserToPush() {
-        var key = await this.getPublicKey();
-        var registration = await navigator.serviceWorker.register('/js/pushworker.js');
+        const key = await this.getPublicKey();
+        console.log('publicKey', key);
         const subscribeOptions = {
             userVisibleOnly: true,
             applicationServerKey: this.urlBase64ToUint8Array(key)
         };
+
+        var registration = await this.getRegistration();
+        const subscription = await registration.pushManager.getSubscription();
+        if (subscription !== null) {
+            return subscription;
+        }
 
         return await registration.pushManager.subscribe(subscribeOptions);
     }
@@ -109,14 +136,21 @@ export default class ManageHomeComponent extends Vue {
         var cmd = new dto.StoreBrowserSubscription();
         cmd.UserId=AppRoot.Instance.currentUser.id;
         cmd.Endpoint = subscription.endpoint;
-        //cmd.ExpirationTime = new Date(new Date() + subscription.expirationTime);
-        console.log(JSON.stringify({
-            subscription: subscription
-        }));
+        cmd.ExpirationTime = subscription.expirationTime;
+
+        // Know a better way which isn't allocate a lot of objects?
+        console.log(JSON.stringify(subscription));
+        var obj = JSON.parse(JSON.stringify(subscription));
+
+        cmd.PublicKey = obj.keys.p256dh;
+        cmd.AuthenticationSecret = obj.keys.auth;
+
+        console.log(JSON.stringify(cmd));
+        AppRoot.Instance.apiClient.command(cmd);
     }
 
     private async getPublicKey() {
-        var response = await fetch('./cqs/vapidpublickey');
+        var response = await fetch('./push/vapidpublickey');
         return await response.json();
     }
 
@@ -136,4 +170,13 @@ export default class ManageHomeComponent extends Vue {
         return outputArray;
     }
 
+    private arrayBufferToBase64(buffer: ArrayBuffer) {
+        var binary = '';
+        var bytes = new Uint8Array(buffer);
+        var len = bytes.byteLength;
+        for (var i = 0; i < len; i++) {
+            binary += String.fromCharCode(bytes[i]);
+        }
+        return window.btoa(binary);
+    }
 }

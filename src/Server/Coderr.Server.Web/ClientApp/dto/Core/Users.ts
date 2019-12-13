@@ -8,11 +8,11 @@ export class NotificationSettings
 }
 export enum NotificationState
 {
-    UseGlobalSetting = 0,
-    Disabled = 1,
-    Cellphone = 2,
-    Email = 3,
-    BrowserNotification = 4
+    UseGlobalSetting = 1,
+    Disabled = 2,
+    Cellphone = 3,
+    Email = 4,
+    BrowserNotification = 5
 }
 export class GetUserSettings
 {
@@ -52,4 +52,12 @@ export class StoreBrowserSubscription {
     public UserId: number | null;
     public Endpoint?: string;
     public ExpirationTime?: number;
+    public PublicKey: string;
+    public AuthenticationSecret: string;
+}
+
+export class DeleteBrowserSubscription {
+    public static TYPE_NAME: string = 'DeleteBrowserSubscription';
+    public UserId: number | null;
+    public Endpoint: string;
 }

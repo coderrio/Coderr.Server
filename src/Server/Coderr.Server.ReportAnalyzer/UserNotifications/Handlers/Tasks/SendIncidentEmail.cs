@@ -41,11 +41,8 @@ namespace Coderr.Server.ReportAnalyzer.UserNotifications.Handlers.Tasks
                 : incident.Name;
 
             var pos = shortName.IndexOfAny(new[] {'\r', '\n'});
-            if (pos != -1)
-            {
-                shortName = shortName.Substring(0, pos) + "[...]";
-            }
-            
+            if (pos != -1) shortName = shortName.Substring(0, pos) + "[...]";
+
 
             var baseUrl = _baseConfiguration.BaseUrl.ToString().TrimEnd('/');
             var incidentUrl =

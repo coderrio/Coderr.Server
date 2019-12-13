@@ -16,5 +16,9 @@ namespace Coderr.Server.Domain.Modules.UserNotifications
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         Task<IEnumerable<UserNotificationSettings>> GetAllAsync(int applicationId);
+
+        Task<IReadOnlyList<BrowserSubscription>> GetSubscriptions(int accountId);
+        Task Delete(BrowserSubscription subscription);
+
     }
 }

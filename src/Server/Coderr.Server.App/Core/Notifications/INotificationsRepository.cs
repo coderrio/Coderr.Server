@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
+using Coderr.Server.Api.Core.Users.Commands;
 using Coderr.Server.Domain.Modules.UserNotifications;
 
 namespace Coderr.Server.App.Core.Notifications
 {
     /// <summary>
-    ///     Repository for notification settings
+    ///     Repository for managing notification settings
     /// </summary>
     public interface INotificationsRepository
     {
@@ -45,5 +46,8 @@ namespace Coderr.Server.App.Core.Notifications
         /// <returns>task</returns>
         /// <exception cref="ArgumentNullException">notificationSettings</exception>
         Task UpdateAsync(UserNotificationSettings notificationSettings);
+
+        Task Save(BrowserSubscription message);
+        Task DeleteBrowserSubscription(int accountId, string endpoint);
     }
 }
