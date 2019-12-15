@@ -73,6 +73,8 @@ export default class ManageHomeComponent extends Vue {
         } else {
             this.deleteSubscription();
         }
+
+        AppRoot.notify('Saved OK', 'fa-info', 'success');
     }
 
     private async deleteSubscription() {
@@ -104,11 +106,6 @@ export default class ManageHomeComponent extends Vue {
         }
 
         return true;
-    }
-
-    private async generateKeyPair() {
-        const response = await fetch('./push/keys/generate');
-        return await response.json();
     }
 
     private async registerPushSubscription(): Promise<any> {

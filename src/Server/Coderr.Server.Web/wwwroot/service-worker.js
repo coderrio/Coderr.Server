@@ -35,15 +35,22 @@ self.addEventListener('push', function (event) {
 });
 
 self.addEventListener('notificationclick', function (event) {
-    console.log('clicking');
     var notification = event.notification;
     var action = event.action;
     notification.close();
+
+    // When data have the url attached, just visit it.
+    var storedUrl = notification.data[action + 'Url'];
+    if (storedUrl) {
+        clients.openWindow(storedUrl);
+        return;
+    }
+
     var url = '/discover/incidents/' + notification.data.applicationId + '/incident/' + notification.data.incidentId;
     if (action === 'AssignToMe') {
         url = '/discover/assign/incident/' + notification.data.incidentId;
     }
-    console.log('opening', url);
+
     clients.openWindow(url);
     //event.waitUntil(
     //    clients.matchAll({ type: 'window', includeUncontrolled: true })

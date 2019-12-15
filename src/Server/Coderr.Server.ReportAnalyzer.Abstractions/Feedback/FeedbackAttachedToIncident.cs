@@ -6,6 +6,16 @@
     public class FeedbackAttachedToIncident
     {
         /// <summary>
+        ///     Application that the incident belongs to.
+        /// </summary>
+        public int ApplicationId { get; set; }
+
+        /// <summary>
+        ///     Name of the application that the feedback is for.
+        /// </summary>
+        public string ApplicationName { get; set; }
+
+        /// <summary>
         ///     Incident that the feedback was attached to.
         /// </summary>
         public int IncidentId { get; set; }

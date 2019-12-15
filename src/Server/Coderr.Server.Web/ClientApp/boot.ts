@@ -85,6 +85,11 @@ const routes = [
                 component: require("./components/discover/incidents/search.vue.html").default
             },
             {
+                name: "discoverFeedback",
+                path: "feedback/:applicationId?",
+                component: require("./components/discover/feedback/feedback.vue.html").default
+            },
+            {
                 name: "discoverIncident",
                 path: "incidents/:applicationId/incident/:incidentId/",
                 component: require("./components/discover/incidents/incident.vue.html").default

@@ -9,6 +9,9 @@
                     <router-link class="nav-link" :to="{name: 'findIncidents', params: {applicationId: currentApplicationId }}"><i class="fa fa-table"></i> Incidents</router-link>
                 </li>
                 <li class="nav-item">
+                    <router-link class="nav-link" :to="{name: 'discoverFeedback', params: {applicationId: currentApplicationId }}"><i class="fa fa-table"></i> Feedback</router-link>
+                </li>
+                <li class="nav-item">
                     <router-link class="nav-link" :to="{name: 'configureApplication', params: {applicationId: currentApplicationId }}" v-if="currentApplicationId"><i class="fa fa-cog"></i> Configure your application</router-link>
                 </li>
             </ul>

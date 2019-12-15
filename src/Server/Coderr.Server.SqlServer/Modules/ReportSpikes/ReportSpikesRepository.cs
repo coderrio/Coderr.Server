@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Domain.Modules.ReportSpikes;
-using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 
@@ -27,12 +26,12 @@ namespace Coderr.Server.SqlServer.Modules.ReportSpikes
             using (var cmd = (DbCommand) _unitOfWork.CreateCommand())
             {
                 cmd.CommandText = @"SELECT 
-          [Day]  = DATENAME(WEEKDAY, createdatutc),
-          Totals = cast (COUNT(*) as int)
-        FROM errorreports
-            WHERE applicationid=@appId
-        GROUP BY 
-          DATENAME(WEEKDAY, createdatutc)";
+                                        [Day]  = DATENAME(WEEKDAY, ReceivedAtUtc),
+                                        Totals = cast (COUNT(IncidentReports.Id) as int)
+                                    FROM IncidentReports
+                                    JOIN Incidents ON (Incidents.Id = IncidentReports.IncidentId)
+                                    WHERE applicationid = @appid
+                                    GROUP BY DATENAME(WEEKDAY, ReceivedAtUtc)";
                 cmd.AddParameter("appId", applicationId);
                 var numbers = new List<int>();
                 using (var reader = await cmd.ExecuteReaderAsync())

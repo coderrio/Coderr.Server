@@ -2,6 +2,7 @@
 using System.Data.Common;
 using System.Threading.Tasks;
 using Coderr.Server.Api.Core.Feedback.Commands;
+using Coderr.Server.Domain.Core.Applications;
 using Coderr.Server.Domain.Core.ErrorReports;
 using Coderr.Server.ReportAnalyzer.Abstractions.Feedback;
 using DotNetCqs;
@@ -12,14 +13,17 @@ namespace Coderr.Server.SqlServer.Core.Feedback
 {
     public class SubmitFeedbackHandler : IMessageHandler<SubmitFeedback>
     {
+        private readonly IApplicationRepository _applicationRepository;
         private readonly ILog _logger = LogManager.GetLogger(typeof(SubmitFeedbackHandler));
         private readonly IReportsRepository _reportsRepository;
         private readonly IAdoNetUnitOfWork _unitOfWork;
 
-        public SubmitFeedbackHandler(IAdoNetUnitOfWork unitOfWork, IReportsRepository reportsRepository)
+        public SubmitFeedbackHandler(IAdoNetUnitOfWork unitOfWork, IReportsRepository reportsRepository,
+            IApplicationRepository applicationRepository)
         {
             _unitOfWork = unitOfWork;
             _reportsRepository = reportsRepository;
+            _applicationRepository = applicationRepository;
         }
 
         public async Task HandleAsync(IMessageContext context, SubmitFeedback command)
@@ -49,10 +53,7 @@ namespace Coderr.Server.SqlServer.Core.Feedback
             else
             {
                 report2 = await _reportsRepository.FindByErrorIdAsync(command.ErrorId);
-                if (report2 == null)
-                {
-                    _logger.Warn("Failed to find report by error id: " + command.ErrorId);
-                }
+                if (report2 == null) _logger.Warn("Failed to find report by error id: " + command.ErrorId);
             }
 
             // storing it without connections as the report might not have been uploaded yet.
@@ -65,9 +66,10 @@ namespace Coderr.Server.SqlServer.Core.Feedback
                 {
                     using (var cmd = _unitOfWork.CreateCommand())
                     {
-                        cmd.CommandText = "INSERT INTO IncidentFeedback (ErrorReportId, RemoteAddress, Description, EmailAddress, CreatedAtUtc, Conversation, ConversationLength) "
-                                          +
-                                          "VALUES (@ErrorReportId, @RemoteAddress, @Description, @EmailAddress, @CreatedAtUtc, '', 0)";
+                        cmd.CommandText =
+                            "INSERT INTO IncidentFeedback (ErrorReportId, RemoteAddress, Description, EmailAddress, CreatedAtUtc, Conversation, ConversationLength) "
+                            +
+                            "VALUES (@ErrorReportId, @RemoteAddress, @Description, @EmailAddress, @CreatedAtUtc, '', 0)";
                         cmd.AddParameter("ErrorReportId", command.ErrorId);
                         cmd.AddParameter("RemoteAddress", command.RemoteAddress);
                         cmd.AddParameter("Description", command.Feedback);
@@ -75,6 +77,7 @@ namespace Coderr.Server.SqlServer.Core.Feedback
                         cmd.AddParameter("CreatedAtUtc", DateTime.UtcNow);
                         cmd.ExecuteNonQuery();
                     }
+
                     _logger.Info("** STORING FEEDBACK");
                 }
                 catch (Exception exception)
@@ -87,11 +90,12 @@ namespace Coderr.Server.SqlServer.Core.Feedback
                 return;
             }
 
-            using (var cmd = (DbCommand) _unitOfWork.CreateCommand())
+            using (var cmd = (DbCommand)_unitOfWork.CreateCommand())
             {
-                cmd.CommandText = "INSERT INTO IncidentFeedback (ErrorReportId, ApplicationId, ReportId, IncidentId, RemoteAddress, Description, EmailAddress, CreatedAtUtc, Conversation, ConversationLength) "
-                                  +
-                                  "VALUES (@ErrorReportId, @ApplicationId, @ReportId, @IncidentId, @RemoteAddress, @Description, @EmailAddress, @CreatedAtUtc, @Conversation, 0)";
+                cmd.CommandText =
+                    "INSERT INTO IncidentFeedback (ErrorReportId, ApplicationId, ReportId, IncidentId, RemoteAddress, Description, EmailAddress, CreatedAtUtc, Conversation, ConversationLength) "
+                    +
+                    "VALUES (@ErrorReportId, @ApplicationId, @ReportId, @IncidentId, @RemoteAddress, @Description, @EmailAddress, @CreatedAtUtc, @Conversation, 0)";
                 cmd.AddParameter("ErrorReportId", command.ErrorId);
                 cmd.AddParameter("ApplicationId", report2.ApplicationId);
                 cmd.AddParameter("ReportId", reportId);
@@ -102,15 +106,17 @@ namespace Coderr.Server.SqlServer.Core.Feedback
                 cmd.AddParameter("Conversation", "");
                 cmd.AddParameter("CreatedAtUtc", DateTime.UtcNow);
 
+                var app = await _applicationRepository.GetByIdAsync(report2.ApplicationId);
                 var evt = new FeedbackAttachedToIncident
                 {
+                    ApplicationId = report2.ApplicationId,
+                    ApplicationName = app.Name,
                     Message = command.Feedback,
                     UserEmailAddress = command.Email,
                     IncidentId = report2.IncidentId
                 };
                 await context.SendAsync(evt);
 
-                _logger.Info("** STORING FEEDBACK");
                 await cmd.ExecuteNonQueryAsync();
             }
         }
