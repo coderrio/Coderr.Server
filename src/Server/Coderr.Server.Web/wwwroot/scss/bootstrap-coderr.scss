@@ -18,6 +18,7 @@ $theme-colors: map-remove($theme-colors, "success", "info", "danger", "warning",
 //@import "tables";
 @import "forms";
 @import "buttons";
+@import "button-group";
 //@import "transitions";
 @import "dropdown";
 //@import "button-group";

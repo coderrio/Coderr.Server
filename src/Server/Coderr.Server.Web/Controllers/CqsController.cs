@@ -30,7 +30,6 @@ namespace Coderr.Server.Web.Controllers
     public class CqsController : Controller
     {
         internal static readonly CqsObjectMapper _cqsObjectMapper = new CqsObjectMapper();
-        private static readonly MessagingSerializer _serializer = new MessagingSerializer();
         private static readonly MethodInfo _queryMethod;
         private static readonly MethodInfo _sendMethod;
         private readonly ILog _logger = LogManager.GetLogger(typeof(CqsController));
@@ -198,7 +197,7 @@ namespace Coderr.Server.Web.Controllers
                 if (cqsReplyObject is Exception)
                     result.StatusCode = 500;
 
-                json = _serializer.Serialize(cqsReplyObject, out var cnt);
+                json = _cqsObjectMapper.Serialize(cqsReplyObject);
                 _logger.Debug("Reply to " + cqsObject.GetType().Name + ": " + json);
                 result.Content = json;
             }

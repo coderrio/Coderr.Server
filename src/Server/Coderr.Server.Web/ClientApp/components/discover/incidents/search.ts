@@ -7,8 +7,7 @@ import { ApplicationService, AppEvents, ApplicationCreated } from "../../../serv
 import { ApiClient } from '../../../services/ApiClient';
 import { AppRoot } from "../../../services/AppRoot";
 import { IncidentService } from "../../../services/incidents/IncidentService";
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 
 declare var $: any;
 interface Incident {

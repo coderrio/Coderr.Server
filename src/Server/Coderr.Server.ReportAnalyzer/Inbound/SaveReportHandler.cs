@@ -182,8 +182,9 @@ namespace Coderr.Server.ReportAnalyzer.Inbound
         {
             using (var cmd = _unitOfWork.CreateDbCommand())
             {
-                cmd.CommandText = "SELECT Id, SharedSecret FROM Applications WHERE AppKey = @key";
+                cmd.CommandText = "SELECT Id, SharedSecret FROM Applications WHERE AppKey = @key OR AppKey = @key2";
                 cmd.AddParameter("key", appKey);
+                cmd.AddParameter("key2", appKey.Replace("-", ""));
                 using (var reader = await cmd.ExecuteReaderAsync())
                 {
                     if (!await reader.ReadAsync())

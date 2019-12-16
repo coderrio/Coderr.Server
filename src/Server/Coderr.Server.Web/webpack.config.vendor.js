@@ -1,7 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 module.exports = (env) => {
     const isDevBuild = !(env && env.prod);
@@ -11,7 +12,10 @@ module.exports = (env) => {
     return [{
         mode: devMode,
         stats: { modules: false },
-        resolve: { extensions: ['.js'] },
+        resolve: {
+            plugins: [new TsconfigPathsPlugin({})],
+            extensions: ['.js']
+        },
         entry: {
             vendor: [
                 'bootstrap',
@@ -33,7 +37,7 @@ module.exports = (env) => {
             path: path.join(__dirname, 'wwwroot', 'dist'),
             publicPath: 'dist/',
             filename: '[name].js',
-            library: '[name]_[hash]'
+            library: '[name]'
         },
         plugins: [
             extractCSS,
@@ -43,7 +47,7 @@ module.exports = (env) => {
             }),
             new webpack.DllPlugin({
                 path: path.join(__dirname, 'wwwroot', 'dist', '[name]-manifest.json'),
-                name: '[name]_[hash]'
+                name: '[name]'
             })
         ].concat(isDevBuild ? [] : [
             new UglifyJsPlugin()

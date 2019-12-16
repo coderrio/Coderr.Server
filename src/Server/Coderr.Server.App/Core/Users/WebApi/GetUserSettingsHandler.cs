@@ -38,7 +38,6 @@ namespace Coderr.Server.App.Core.Users.WebApi
                     NotifyOnReOpenedIncident = settings.ReopenedIncident.ConvertEnum<NotificationState>(),
                     NotifyOnUserFeedback = settings.UserFeedback.ConvertEnum<NotificationState>(),
                     NotifyOnPeaks = settings.ApplicationSpike.ConvertEnum<NotificationState>(),
-                    NotifyOnNewReport = settings.NewReport.ConvertEnum<NotificationState>(),
                     NotifyOnNewIncidents = settings.NewIncident.ConvertEnum<NotificationState>()
                 }
             };

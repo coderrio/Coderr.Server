@@ -16,9 +16,9 @@ interface IIpAddress {
 }
 
 enum IpType {
-    Lookup,
-    Manual,
-    Rejected
+    Lookup = 0,
+    Manual = 1,
+    Rejected = 2
 }
 
 

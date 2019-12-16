@@ -13,11 +13,6 @@ namespace Coderr.Server.Api.Core.Users
         public NotificationState NotifyOnNewIncidents { get; set; }
 
         /// <summary>
-        ///     How to notify when a new report is created (receive an exception)
-        /// </summary>
-        public NotificationState NotifyOnNewReport { get; set; }
-
-        /// <summary>
         ///     How to notify user when a peak is detected
         /// </summary>
         public NotificationState NotifyOnPeaks { get; set; }

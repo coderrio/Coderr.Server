@@ -5,17 +5,14 @@ using System.Data.SqlClient;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Coderr.Client;
-using Coderr.Client.AspNetCore.Mvc;
 using Coderr.Client.ContextCollections;
 using Coderr.Client.Contracts;
 using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Abstractions.Config;
 using Coderr.Server.Abstractions.Security;
-using Coderr.Server.App.Core.Reports.Config;
 using Coderr.Server.Infrastructure;
 using Coderr.Server.Infrastructure.Configuration;
 using Coderr.Server.Infrastructure.Configuration.Database;
-using Coderr.Server.Infrastructure.Messaging;
 using Coderr.Server.SqlServer;
 using Coderr.Server.SqlServer.Migrations;
 using Coderr.Server.SqlServer.Schema;
@@ -38,6 +35,7 @@ using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
+using IncludeNonPublicMembersContractResolver = Coderr.Server.Infrastructure.Messaging.IncludeNonPublicMembersContractResolver;
 
 namespace Coderr.Server.Web
 {
@@ -53,7 +51,7 @@ namespace Coderr.Server.Web
             _moduleStarter = new ModuleStarter(configuration);
         }
 
-        public IConfiguration Configuration { get; }
+        public static IConfiguration Configuration { get; private set; }
 
         private bool IsConfigured
         {

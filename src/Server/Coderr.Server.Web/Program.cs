@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -6,13 +7,20 @@ using System.Security.Cryptography;
 using Coderr.Client;
 using Coderr.Client.ContextCollections;
 using Coderr.Server.App.Modules.Whitelists;
+using Coderr.Server.Domain.Modules.UserNotifications;
+using Coderr.Server.ReportAnalyzer;
+using Coderr.Server.ReportAnalyzer.UserNotifications;
+using Coderr.Server.SqlServer.Core.Notifications;
 using Coderr.Server.SqlServer.ReportAnalyzer;
+using Coderr.Server.Web.Services;
 using Griffin.Data.Mapper;
 using log4net;
 using log4net.Config;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using WebPush;
 
+//https://github.com/MicrosoftEdge/pushnotifications-demo-aspnetcore/tree/master/PushnotificationsDemo
 namespace Coderr.Server.Web
 {
     public class Program

@@ -25,9 +25,10 @@ namespace Coderr.Server.ReportAnalyzer.Feedback.Handlers
                 return;
 
             feedback.AssignToReport(e.Report.Id, e.Incident.Id, e.Incident.ApplicationId);
-
             var evt = new FeedbackAttachedToIncident
             {
+                ApplicationId = e.Incident.ApplicationId,
+                ApplicationName = e.Incident.ApplicationName,
                 IncidentId = e.Incident.Id,
                 Message = feedback.Description,
                 UserEmailAddress = feedback.EmailAddress

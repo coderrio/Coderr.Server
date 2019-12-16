@@ -75,13 +75,23 @@ const routes = [
         component: require("./components/discover/discover.vue.html").default,
         children: [
             {
+                name: "assignIncident",
+                path: "assign/incident/:incidentId/",
+                component: require("./components/discover/incidents/assign.vue.html").default
+            },
+            {
                 name: "findIncidents",
                 path: "incidents/:applicationId?",
                 component: require("./components/discover/incidents/search.vue.html").default
             },
             {
+                name: "discoverFeedback",
+                path: "feedback/:applicationId?",
+                component: require("./components/discover/feedback/feedback.vue.html").default
+            },
+            {
                 name: "discoverIncident",
-                path: "incidents/:applicationId/incident/:incidentId",
+                path: "incidents/:applicationId/incident/:incidentId/",
                 component: require("./components/discover/incidents/incident.vue.html").default
             },
             {
@@ -199,6 +209,17 @@ const routes = [
         ]
     },
     {
+        path: "/manage/account/",
+        component: require("./components/manage/account/manage.vue.html").default,
+        children: [
+            {
+                name: "manageAccount",
+                path: "",
+                component: require("./components/manage/account/home/home.vue.html").default
+            }
+        ]
+    },
+    {
         path: "/manage/",
         component: require("./components/manage/system/manage.vue.html").default,
         children: [
@@ -206,7 +227,6 @@ const routes = [
                 name: "manageHome",
                 path: "",
                 component: require("./components/manage/system/home/home.vue.html").default,
-
             },
             {
                 name: "createApp",
@@ -304,7 +324,7 @@ AppRoot.Instance.loadCurrentUser()
         //});
         ourVue.$router.afterEach((to, from) => {
             hooks.afterRoute(to.path, from.path);
-        })
+        });
         ourVue.user$ = user;
 
         if (v["Cypress"]) {

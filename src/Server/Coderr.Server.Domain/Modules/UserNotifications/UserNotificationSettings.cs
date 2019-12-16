@@ -18,6 +18,13 @@ namespace Coderr.Server.Domain.Modules.UserNotifications
             if (accountId <= 0) throw new ArgumentOutOfRangeException("accountId");
             AccountId = accountId;
             ApplicationId = applicationId;
+            if (applicationId != 0)
+                return;
+
+            ApplicationSpike = NotificationState.Disabled;
+            NewIncident = NotificationState.Disabled;
+            ReopenedIncident = NotificationState.Disabled;
+            UserFeedback = NotificationState.Disabled;
         }
 
         /// <summary>
@@ -46,11 +53,6 @@ namespace Coderr.Server.Domain.Modules.UserNotifications
         ///     How to notify when a new incident is created (received a new unique exception).
         /// </summary>
         public NotificationState NewIncident { get; set; }
-
-        /// <summary>
-        ///     Notify each time a new exception is received (no matter if it's unique or not)
-        /// </summary>
-        public NotificationState NewReport { get; set; }
 
         /// <summary>
         ///     Notify when we received a report for an incident that has been closed
