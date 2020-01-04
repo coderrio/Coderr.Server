@@ -11,6 +11,10 @@ import {
     GetIncidentForClosePage, GetIncidentForClosePageResult,
     FindIncidents, FindIncidentsResult, FindIncidentsResultItem,
 } from "../../dto/Core/Incidents";
+import {
+    GetReport, GetReportResult,
+    GetReportList, GetReportListResult
+} from "../../dto/Core/Reports";
 
 export interface ICloseResult {
     requiresStatusUpdate: boolean
@@ -33,6 +37,13 @@ export interface IncidentIgnored {
     userId: number;
 }
 
+/**
+ * Highlighted context collection/property.
+ */
+export interface IHighlight {
+    name: string;
+    value: string;
+}
 
 export class IncidentTopcis {
     static readonly Assigned = "/incidents/assigned";
@@ -299,6 +310,59 @@ export class IncidentService {
 
         return this.myIncidents;
     }
+
+    async collectHighlightedData(incident: GetIncidentResult): Promise<IHighlight[]> {
+        let highlights: IHighlight[] = [];
+        incident.HighlightedContextData.forEach(x => {
+            highlights.push({ name: x.Name, value: x.Value[0] });
+        });
+
+        const q = new GetReportList();
+        q.IncidentId = incident.Id;
+        q.PageNumber = 1;
+        q.PageSize = 1;
+        const list = await AppRoot.Instance.apiClient.query<GetReportListResult>(q);
+        if (list.Items.length === 0) {
+            return null;
+        }
+
+        const reportQuery = new GetReport();
+        reportQuery.ReportId = list.Items[0].Id;
+        const report = await AppRoot.Instance.apiClient.query<GetReportResult>(reportQuery);
+        console.log(report, q);
+        let collectionsToGet: string[] = [];
+        let propertiesToGet: any[] = [];
+        report.ContextCollections.forEach(x => {
+            if (x.Name !== "CoderrData") {
+                return;
+            }
+
+            x.Properties.forEach(y => {
+                if (y.Key === "HighlightCollections") {
+                    collectionsToGet = y.Value.split(",");
+                }
+                //if (y.Key === "HighlightProperties") {
+                //    collectionsToGet = y.Value.split(",");
+                //}
+
+            });
+        });
+        report.ContextCollections.forEach(x => {
+            var match = collectionsToGet.find(y => y === x.Name);
+            if (match) {
+                x.Properties.forEach(z => {
+                    highlights.push({ name: `${x.Name}.${z.Key}`, value: z.Value });
+                });
+            }
+        });
+
+        if (collectionsToGet.length === 1 || propertiesToGet.length === 0) {
+            return [];
+        }
+
+        return highlights;
+    }
+
 
     private getFromCache(id: number): GetIncidentResult | null {
         if (!id) {

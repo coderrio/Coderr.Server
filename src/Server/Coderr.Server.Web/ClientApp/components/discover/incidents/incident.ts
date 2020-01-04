@@ -1,4 +1,5 @@
 import { PubSubService } from "../../../services/PubSub";
+import { IHighlight, IncidentService } from "@/services/incidents/IncidentService";
 import { AppRoot } from '../../../services/AppRoot';
 import { ApplicationMember } from "../../../services/applications/ApplicationService";
 import { GetIncident, GetIncidentResult, GetIncidentStatistics, GetIncidentStatisticsResult, ReportDay, QuickFact } from "../../../dto/Core/Incidents";
@@ -16,6 +17,8 @@ export default class IncidentComponent extends Vue {
     incident: GetIncidentResult = new GetIncidentResult;
     isIgnored: boolean = false;
     isClosed = false;
+
+    highlights: IHighlight[] = [];
 
     team: ApplicationMember[] = [];
     created() {
@@ -39,6 +42,11 @@ export default class IncidentComponent extends Vue {
                 AppRoot.Instance.applicationService.getTeam(result.ApplicationId)
                     .then(x => {
                         this.team = x;
+                    });
+
+                AppRoot.Instance.incidentService.collectHighlightedData(result)
+                    .then(data => {
+                        //this.highlights = data;
                     });
             });
     }

@@ -39,32 +39,13 @@
                         <router-link :to="{name: 'configureApplication', params: {applicationId: firstApplicationId }}" class="btn btn-dark">Configure your application</router-link>
                     </div>
                 </div>
-                <div class="card" v-if="myIncidents.length > 0">
-                    <div class="card-header">
-                        My incidents
-                    </div>
-                    <div class="card-body">
-                        <ul>
-                            <li v-for="incident in myIncidents">
-                                <router-link :to="{ name: 'analyzeIncident', params: { applicationId: incident.applicationId, incidentId: incident.Id }}">{{incident.Name}}</router-link>
-                            </li>
-                        </ul>
-                        <div v-if="myIncidents.length == 0">
-                            <p class="text-info">
-                                You are currently not working with an incident.
-                            </p>
-                            <router-link class="btn btn-primary" to="incidents">Find incidents</router-link>
-                        </div>
-                        <div v-if="myBestSuggestion">
-                            <hr />
-                            We suggest that you work with:
-                            <router-link :to="{ name: 'analyzeIncident', params: { applicationId: myBestSuggestion.applicationId, myBestSuggestion: incident.Id }}">{{myBestSuggestion.Description}}</router-link>
-                            <router-link class="btn btn-primary btn-sm" v-bind:click="assignBestToMe">{{myBestSuggestion.Description}}</router-link>
-                        </div>
-                    </div>
-                </div>
             </div>
             <div class="col-lg-9">
+                <div class="alert-dark" v-if="myBestSuggestion">
+                    We suggest that you work with:
+                    <router-link :to="{ name: 'analyzeIncident', params: { applicationId: myBestSuggestion.applicationId, myBestSuggestion: incident.Id }}">{{myBestSuggestion.Description}}</router-link>
+                    <router-link class="btn btn-primary btn-sm" v-bind:click="assignBestToMe">{{myBestSuggestion.Description}}</router-link>
+                </div>
                 <div class="card bg-dark">
                     <div class="card-body trend">
                         <div class="position-relative coderr-chart" style="padding-left: 16px;">

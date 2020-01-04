@@ -42,6 +42,16 @@
                 <div class="col-xl-8 col-lg-6">
                     <div class="card">
                         <div class="card-body">
+
+                            <div v-if="highlights.length > 0" class="p-3">
+                                <table class="w-100">
+                                    <tr v-for="high in highlights">
+                                        <th>{{high.name}}</th>
+                                        <td style="width: 100%">{{high.value}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+
                             <h3>Stack trace</h3>
                             <pre style="min-height: 200px"><code>{{incident.StackTrace}}</code></pre>
                         </div>
@@ -91,8 +101,13 @@
             </div>
         </div>
         <div id="CloseBody" style="display: none">
+            <div>
+                Corrected in version
+            </div>
+            <input type="text" name="version" class="mb-3" size="10" placeholder="Which version is the error corrected in? (format: 1.2.10)" pattern="[0-9\.]*" title="You can use semantic versioning, including pre-releases, but must specify the release version here."/>
+
+            <div>Solution</div>
             <textarea id="CloseArea" class="w-100" rows="10" placeholder="How did you solve the error?" autofocus="autofocus"></textarea>
-            <input type="text" name="version" class="form-control mb-3" size="10" placeholder="Which version is the error corrected in? (format: 1.2.10)" pattern="[0-9\.]*" title="You can use semantic versioning, including pre-releases, but must specify the release version here." />
             <div>
                 <em><a href="https://coderr.io/documentation/features/incidents/close/">Learn more about this feature</a></em>
                 <em class="float-right"><router-link :to="{name: 'closeIncident', params: { incidentId: incidentId }}">Go to full screen editor</router-link></em>

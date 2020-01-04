@@ -1,30 +1,33 @@
 import { MyIncidents, IMyIncident } from "../myincidents";
-import { ApplicationMember } from "../../../services/applications/ApplicationService";
-import { ApiClient } from '../../../services/ApiClient';
-import { AppRoot } from '../../../services/AppRoot';
-import { GetIncidentResult, GetIncidentStatistics, GetIncidentStatisticsResult } from "../../../dto/Core/Incidents";
-import { GetReportList, GetReportListResult, GetReportListResultItem, GetReport, GetReportResult, GetReportResultContextCollection } from "../../../dto/Core/Reports";
-import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
-
-
+import { ApplicationMember } from "@/services/applications/ApplicationService";
+import { IHighlight, IncidentService } from "@/services/incidents/IncidentService";
+import { ApiClient } from "@/services/ApiClient";
+import { AppRoot } from "@/services/AppRoot";
+import { GetIncidentResult } from "@/dto/Core/Incidents";
+import { GetApplicationVersions, GetApplicationVersionsResult } from "@/dto/Core/Applications";
+import { GetReportList, GetReportListResult, GetReportListResultItem, GetReport, GetReportResult, GetReportResultContextCollection } from "@/dto/Core/Reports";
+import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class AnalyzeIncidentComponent extends Vue {
-    private static activeBtnTheme: string = 'btn-dark';
+    private static activeBtnTheme: string = "btn-dark";
     private apiClient: ApiClient = AppRoot.Instance.apiClient;
-    private static readonly selectCollectionTitle: string = '(select collection)';
+    private static readonly selectCollectionTitle: string = "(select collection)";
     private team: ApplicationMember[] = [];
 
-    name = '';
+    name = "";
     incidentId = 0;
     incident = new GetIncidentResult();
     reports: GetReportListResultItem[] = [];
     currentReport = new GetReportResult();
     currentCollection = new GetReportResultContextCollection();
 
-    currentReportName = '(select report)';
-    currentCollectionName: string = '';
+    currentReportName = "(select report)";
+    currentCollectionName: string = "";
+
+    closeVersion = '';
+
+    highlights: IHighlight[] = [];
 
     created() {
         // required for contextnavigator
@@ -43,7 +46,7 @@ export default class AnalyzeIncidentComponent extends Vue {
 
     reAssign() {
         AppRoot.modal({
-            contentId: 'assignToModal',
+            contentId: "assignToModal",
             showFooter: false
         }).then(result => {
             var value = result.pressedButton.value;
@@ -51,7 +54,7 @@ export default class AnalyzeIncidentComponent extends Vue {
             var member = <ApplicationMember>this.team.find((x, index) => x.id === accountId);
             AppRoot.Instance.incidentService
                 .assign(this.incident.Id, accountId, member.name)
-                .then(x => AppRoot.notify('Incident have been assigned', 'fa-check'));
+                .then(x => AppRoot.notify("Incident have been assigned", "fa-check"));
         });
     }
 
@@ -60,7 +63,7 @@ export default class AnalyzeIncidentComponent extends Vue {
             .then(x => {
                 if (x.requiresStatusUpdate) {
                     this.$router.push({
-                        name: 'notifyUsers',
+                        name: "notifyUsers",
                         params: { incidentId: this.incident.Id.toString() }
                     });
                     return;
@@ -72,6 +75,21 @@ export default class AnalyzeIncidentComponent extends Vue {
 
     }
 
+    private trimVersion(version: string): string {
+        let parts = version.split(".");
+        if (parts.length > 3 && parts[parts.length-1] === "0") {
+            parts.splice(parts.length - 1, 1);
+        }
+        return parts.join('.');
+    }
+
+    private bumpVersion(version: string): string {
+        const parts = version.split(".");
+        var value = parseInt(parts[parts.length - 1]) + 1;
+        parts[parts.length - 1] = value.toString();
+        return parts.join('.');
+    }
+
     private loadIncident() {
         AppRoot.Instance.incidentService.get(this.incidentId)
             .then(incident => {
@@ -80,6 +98,24 @@ export default class AnalyzeIncidentComponent extends Vue {
                     .then(x => {
                         this.team = x;
                     });
+
+                AppRoot.Instance.incidentService.collectHighlightedData(incident)
+                    .then(data => {
+                        this.highlights = data;
+                    });
+
+                var query = new GetApplicationVersions();
+                query.ApplicationId = this.incident.ApplicationId;
+                this.apiClient.query<GetApplicationVersionsResult>(query).then(x => {
+                    var version = x.Items[0].Version;
+                    version = this.trimVersion(version);
+                    this.closeVersion = this.bumpVersion(version);
+
+                    // Couldn't get binding to work.
+                    // fix this if you know Vue better than me :)
+                    document.querySelector("[name='version']").setAttribute('value', this.closeVersion);
+                });
+
             });
 
         var q = new GetReportList();
@@ -116,9 +152,9 @@ export default class AnalyzeIncidentComponent extends Vue {
     }
 
     private loadCollection(name: string) {
-        if (name === AnalyzeIncidentComponent.selectCollectionTitle || name === '') {
+        if (name === AnalyzeIncidentComponent.selectCollectionTitle || name === "") {
             name = null;
-            var namesToFind = ['ContextData', 'ViewModel', 'HttpRequest', 'ExceptionProperties'];
+            var namesToFind = ["ContextData", "ViewModel", "HttpRequest", "ExceptionProperties"];
             this.currentReport.ContextCollections.forEach(x => {
                 if (namesToFind.indexOf(x.Name) !== -1 && name == null) {
                     name = x.Name;
@@ -143,7 +179,7 @@ export default class AnalyzeIncidentComponent extends Vue {
                 if (name === "Screenshots") {
                     for (var j = 0; j < this.currentCollection.Properties.length; j++) {
                         var kvp = this.currentCollection.Properties[j];
-                        if (kvp.Value.substr(0, 1) !== '<') {
+                        if (kvp.Value.substr(0, 1) !== "<") {
                             kvp.Value = '<img src="data:image/png;base64, ' + kvp.Value + '" />';
                         }
                     }
@@ -159,7 +195,7 @@ export default class AnalyzeIncidentComponent extends Vue {
 
     selectIncident(myIncident: IMyIncident | null): void {
         if (myIncident == null) {
-            this.$router.push({ name: 'analyzeHome' });
+            this.$router.push({ name: "analyzeHome" });
         } else {
             this.incidentId = myIncident.incidentId;
             this.loadIncident();

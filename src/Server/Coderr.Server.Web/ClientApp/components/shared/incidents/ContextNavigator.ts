@@ -1,5 +1,5 @@
-﻿import { ApiClient } from '../../../services/ApiClient';
-import { AppRoot } from '../../../services/AppRoot';
+﻿import { ApiClient } from "../../../services/ApiClient";
+import { AppRoot } from "../../../services/AppRoot";
 import { GetReport, GetReportList, GetReportListResult, GetReportListResultItem, GetReportResult, GetReportResultContextCollection } from "../../../dto/Core/Reports";
 import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
@@ -13,12 +13,12 @@ interface Property {
 @Component
 export default class ContextNavigatorComponent extends Vue {
     private apiClient: ApiClient = AppRoot.Instance.apiClient;
-    private static readonly selectCollectionTitle: string = '(select collection)';
+    private static readonly selectCollectionTitle: string = "(select collection)";
     reports: GetReportListResultItem[] = [];
     currentCollectionProperties: Property[] = [];
-    currentCollectionName: string = '';
+    currentCollectionName: string = "";
     currentReport = new GetReportResult();
-    currentReportName = '';
+    currentReportName = "";
     @Prop() incidentId: number;
     @Prop() showAnalyzeFooter: boolean;
 
@@ -26,7 +26,7 @@ export default class ContextNavigatorComponent extends Vue {
         this.loadReports(this.incidentId);
     }
 
-    @Watch('incidentId')
+    @Watch("incidentId")
     onPropertyChanged(value: string, oldValue: string) {
         var incidentId = parseInt(value, 10);
         this.loadReports(incidentId);
@@ -64,9 +64,25 @@ export default class ContextNavigatorComponent extends Vue {
     }
 
     private loadCollection(name: string) {
-        if (name === ContextNavigatorComponent.selectCollectionTitle || name === '') {
+        let isNameSet = name !== ContextNavigatorComponent.selectCollectionTitle && name !== "";
+
+        const collection = this.currentReport.ContextCollections.filter(x => x.Name === "CoderrData")[0];
+        if (collection && !isNameSet) {
+            for (let j = 0; j < collection.Properties.length; j++) {
+                const prop = collection.Properties[j];
+                if (prop.Key === "HighlightCollections") {
+                    const collections = prop.Value.split(",");
+                    if (collections.length === 1) {
+                        name = collections[0];
+                        isNameSet = true;
+                    }
+                }
+            }
+        }
+        
+        if (!isNameSet) {
             name = null;
-            var namesToFind = ['ContextData', 'ViewModel', 'HttpRequest', 'ExceptionProperties'];
+            var namesToFind = ["ContextData", "ViewModel", "HttpRequest", "ExceptionProperties"];
             this.currentReport.ContextCollections.forEach(x => {
                 if (namesToFind.indexOf(x.Name) !== -1 && name == null) {
                     name = x.Name;
@@ -77,7 +93,6 @@ export default class ContextNavigatorComponent extends Vue {
                 name = this.currentReport.ContextCollections[0].Name;
             }
         }
-
         for (var i = 0; i < this.currentReport.ContextCollections.length; i++) {
             let col = this.currentReport.ContextCollections[i];
             for (let j = 0; j < col.Properties.length; j++) {

@@ -41,8 +41,17 @@
             <div class="col-lg-8">
                 <div class="card">
                     <div class="card-body">
-                        <pre><code>{{incident.StackTrace}}
-</code></pre>
+
+                        <div v-if="highlights.length > 0" class="p-3">
+                            <table class="w-100">
+                                <tr v-for="high in highlights">
+                                    <th>{{high.name}}</th>
+                                    <td style="width: 100%">{{high.value}}</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <pre><code>{{incident.StackTrace}}</code></pre>
                         <div class="tags">
                             <span v-for="tag in incident.Tags" class="badge badge-dark">{{tag}}</span>
                             <span class="badge badge-dark" v-if="isIgnored">incident-ignored</span>

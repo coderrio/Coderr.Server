@@ -143,3 +143,21 @@ export class UpdateRoles {
     public UserToUpdate: number;
     public Roles: string[];
 }
+
+
+export class GetApplicationVersions {
+    public static TYPE_NAME: string = 'GetApplicationVersions';
+    public ApplicationId: number;
+}
+
+export class GetApplicationVersionsResult {
+    public Items: GetApplicationVersionsResultItem[];
+}
+
+export class GetApplicationVersionsResultItem {
+    public FirstReportReceivedAtUtc: Date;
+    public IncidentCount: number;
+    public LastReportReceivedAtUtc: Date;
+    public ReportCount: number;
+    public Version: string;
+}
