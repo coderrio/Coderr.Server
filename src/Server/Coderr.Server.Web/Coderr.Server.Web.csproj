@@ -6,7 +6,7 @@
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <IsPackable>false</IsPackable>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <Version>2.2.1</Version>
+    <Version>2.3</Version>
     <UserSecretsId>18bfcacd-1b5d-435b-bc30-febb568a29b2</UserSecretsId>
   </PropertyGroup>
 
@@ -15,7 +15,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Coderr.Client.AspNetCore.Mvc" Version="1.1.7" />
+    <PackageReference Include="Coderr.Client.AspNetCore.Mvc" Version="1.1.9" />
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.5" />
     <PackageReference Include="Griffin.Framework" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />

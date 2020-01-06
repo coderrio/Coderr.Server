@@ -1,6 +1,11 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using Coderr.IntegrationTests.Core.Entities;
 using Coderr.IntegrationTests.Core.TestCases;
+using Coderr.Tests;
 using Coderr.Tests.Runners;
 using Coderr.Tests.Runners.AppDomain.DTO;
 
@@ -10,11 +15,18 @@ namespace ConsoleApp1
     {
         static async Task Main(string[] args)
         {
-            var cmd = new RunTests()
+            var discoverer = new TestDiscoverer();
+            discoverer.Load(new[] {typeof(IncidentWrapper).Assembly});
+            var runner = new TestRunner(discoverer);
+            runner.Load(new[] {typeof(IncidentWrapper).Assembly}).GetAwaiter().GetResult();
+            var result = runner.RunAll().GetAwaiter().GetResult();
+            var faulty = result.Where(x => !x.IsSuccess).ToList();
+
+            var cmd = new RunTests
             {
                 AssemblyName = typeof(EnvironmentTests).Assembly.GetName().Name,
                 AssemblyPath = Path.GetDirectoryName(typeof(EnvironmentTests).Assembly.Location),
-                TestCases = new TestCaseToRun[]
+                TestCases = new[]
                 {
                     new TestCaseToRun("Coderr.IntegrationTests.Core.TestCases.EnvironmentTests.Clearing_environment_should_remove_all_incidents_in_it")
                     {

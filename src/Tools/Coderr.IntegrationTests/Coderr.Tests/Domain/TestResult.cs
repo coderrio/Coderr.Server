@@ -49,5 +49,10 @@ namespace Coderr.Tests.Domain
             IsSuccess = true;
             EndedAtUtc = DateTime.UtcNow;
         }
+
+        public override string ToString()
+        {
+            return $"{(IsSuccess ? "  OK" : "FAIL")} {TestClass.Type.Name}.{Method.Name} {Exception?.Message}";
+        }
     }
 }
