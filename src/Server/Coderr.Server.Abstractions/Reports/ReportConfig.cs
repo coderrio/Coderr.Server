@@ -13,13 +13,13 @@ namespace Coderr.Server.Abstractions.Reports
         /// </summary>
         /// <remarks>
         ///     <para>
-        ///         Sets default of MaxReportJsonSize to 2000000, MaxReportsPerIncident to 500 and RetentionDays to 90.
+        ///         Sets default of MaxReportJsonSize to 2000000, MaxReportsPerIncident to 25 and RetentionDays to 90.
         ///     </para>
         /// </remarks>
         public ReportConfig()
         {
             MaxReportJsonSize = 2000000;
-            MaxReportsPerIncident = 500;
+            MaxReportsPerIncident = 25;
             RetentionDays = 90;
         }
 
