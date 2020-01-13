@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Coderr.Server.Abstractions.Config;
 
-namespace Coderr.Server.App.Core.Reports.Config
+namespace Coderr.Server.Abstractions.Reports
 {
     /// <summary>
     ///     Configuration settings for reports.

@@ -22,7 +22,7 @@ namespace Coderr.Server.ReportAnalyzer.ReportSpikes.Handlers
 {
     /// <summary>
     /// </summary>
-    public class CheckForReportPeak : IMessageHandler<ReportAddedToIncident>
+    public class CheckForReportSpike : IMessageHandler<ReportAddedToIncident>
     {
         private readonly IUserNotificationsRepository _repository;
         private readonly IReportSpikeRepository _spikeRepository;
@@ -30,12 +30,12 @@ namespace Coderr.Server.ReportAnalyzer.ReportSpikes.Handlers
         private readonly INotificationService _notificationService;
 
         /// <summary>
-        ///     Creates a new instance of <see cref="CheckForReportPeak" />.
+        ///     Creates a new instance of <see cref="CheckForReportSpike" />.
         /// </summary>
         /// <param name="repository">To check if spikes should be analyzed</param>
         /// <param name="spikeRepository">store/fetch information of current spikes.</param>
         /// <param name="baseConfiguration"></param>
-        public CheckForReportPeak(IUserNotificationsRepository repository, IReportSpikeRepository spikeRepository, IConfiguration<BaseConfiguration> baseConfiguration, INotificationService notificationService)
+        public CheckForReportSpike(IUserNotificationsRepository repository, IReportSpikeRepository spikeRepository, IConfiguration<BaseConfiguration> baseConfiguration, INotificationService notificationService)
         {
             _repository = repository;
             _spikeRepository = spikeRepository;
@@ -138,7 +138,7 @@ namespace Coderr.Server.ReportAnalyzer.ReportSpikes.Handlers
             {
                 Subject = $"Spike detected for {e.Incident.ApplicationName} ({countToday} reports)",
                 HtmlBody =
-                    $"We've detected a spike in incoming reports for application <a href=\"{_baseConfiguration.BaseUrl}/discover/{e.Incident.ApplicationId}/\">{e.Incident.ApplicationName}</a>\r\n" +
+                    $"We've detected a spike in incoming reports for application <a href=\"{_baseConfiguration.BaseUrl}discover/{e.Incident.ApplicationId}/\">{e.Incident.ApplicationName}</a>\r\n" +
                     "\r\n" +
                     $"We've received {countToday.SpikeCount} reports so far. Day average is {countToday.DayAverage}\r\n" +
                     "\r\n" + "No further spike emails will be sent today for this application."

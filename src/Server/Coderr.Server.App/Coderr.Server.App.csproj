@@ -40,5 +40,6 @@
   <ItemGroup>
     <Folder Include="Core\Environments\" />
     <Folder Include="Core\Incidents\Events\" />
+    <Folder Include="Core\Reports\Config\" />
   </ItemGroup>
 </Project>

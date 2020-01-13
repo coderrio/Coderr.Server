@@ -138,7 +138,15 @@ namespace Coderr.Server.ReportAnalyzer.Incidents
         /// </summary>
         public bool IsReOpened { get; set; }
 
+        /// <summary>
+        /// When we received a report (just to keep track of how fresh this incident is).
+        /// </summary>
         public DateTime LastReportAtUtc { get; set; }
+
+        /// <summary>
+        /// When we received a report that we stored.
+        /// </summary>
+        public DateTime LastStoredReportUtc { get; set; }
 
         /// <summary>
         ///     Set if incident was closed and a solution was written

@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Abstractions.Config;
-using Coderr.Server.App.Core.Reports.Config;
+using Coderr.Server.Abstractions.Reports;
 using Griffin.ApplicationServices;
 using Griffin.Data;
 using Griffin.Data.Mapper;

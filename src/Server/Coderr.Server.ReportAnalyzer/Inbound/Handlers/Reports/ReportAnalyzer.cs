@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Coderr.Server.Abstractions.Boot;
+using Coderr.Server.Abstractions.Config;
+using Coderr.Server.Abstractions.Reports;
 using Coderr.Server.Domain.Core.ErrorReports;
 using Coderr.Server.Domain.Core.Incidents.Events;
 using Coderr.Server.ReportAnalyzer.Abstractions;
@@ -27,7 +29,8 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
         private readonly IHashCodeGenerator _hashCodeGenerator;
         private readonly ILog _logger = LogManager.GetLogger(typeof(ReportAnalyzer));
         private readonly IAnalyticsRepository _repository;
-        private IDomainQueue _domainQueue;
+        private readonly IDomainQueue _domainQueue;
+
         /// <summary>
         ///     Creates a new instance of <see cref="ReportAnalyzer" />.
         /// </summary>
@@ -77,7 +80,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
                 var reportJson = JsonConvert.SerializeObject(report);
                 if (reportJson.Length > 1000000)
                     reportJson = reportJson.Substring(0, 100000) + "[....]";
-                _logger.Fatal("Failed to init report " + reportJson, ex);
+                _logger.Fatal($"Failed to init report {reportJson}", ex);
                 return;
             }
 
@@ -133,12 +136,20 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
                 }
 
                 incident.AddReport(report);
-                _repository.UpdateIncident(incident);
-                if (incident.ReportCount > 25)
+
+                // Let's continue to receive reports once a day when
+                // limit is reached (to get more fresh data, and still not load the system unnecessary).
+                var timesSinceLastReport = DateTime.UtcNow.Subtract(incident.LastStoredReportUtc);
+                if (incident.ReportCount > 25
+                    && timesSinceLastReport < TimeSpan.FromDays(1))
                 {
-                    _logger.Debug("Report count is more than 25. Storing only report stats for incident " + incident.Id);
+                    _repository.UpdateIncident(incident);
+                    _logger.Debug($"Report count is more than 25. Ignoring report for incident {incident.Id}.");
                     return;
                 }
+
+                incident.LastStoredReportUtc = DateTime.UtcNow;
+                _repository.UpdateIncident(incident);
             }
 
             if (!string.IsNullOrWhiteSpace(report.EnvironmentName))
@@ -146,7 +157,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
 
             report.IncidentId = incident.Id;
             _repository.CreateReport(report);
-            _logger.Debug("saving report " + report.Id + " for incident " + incident.Id);
+            _logger.Debug($"saving report {report.Id} for incident {incident.Id}");
 
             await _repository.StoreReportStats(new ReportMapping()
             {
@@ -177,7 +188,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
             await context.SendAsync(new ProcessInboundContextCollections());
 
             if (sw.ElapsedMilliseconds > 200)
-                _logger.Debug("PublishAsync took " + sw.ElapsedMilliseconds);
+                _logger.Debug($"PublishAsync took {sw.ElapsedMilliseconds}");
             sw.Stop();
         }
 

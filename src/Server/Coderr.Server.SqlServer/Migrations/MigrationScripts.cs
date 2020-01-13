@@ -75,18 +75,22 @@ namespace Coderr.Server.SqlServer.Migrations
 
         private static void ExecuteSql(IDbConnection connection, string sql)
         {
-            using (var transaction = connection.BeginTransaction())
+            var parts = sql.Split(new[] {"\r\ngo\r\n", "\r\nGO\r\n", "\r\ngo;\r\n"},
+                StringSplitOptions.RemoveEmptyEntries);
+            foreach (var part in parts)
             {
-                using (var cmd = connection.CreateCommand())
+                using (var transaction = connection.BeginTransaction())
                 {
-                    cmd.Transaction = transaction;
-                    cmd.CommandText = sql;
-                    cmd.ExecuteNonQuery();
+                    using (var cmd = connection.CreateCommand())
+                    {
+                        cmd.Transaction = transaction;
+                        cmd.CommandText = part;
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    transaction.Commit();
                 }
-
-                transaction.Commit();
             }
-
         }
 
         public int GetHighestVersion()

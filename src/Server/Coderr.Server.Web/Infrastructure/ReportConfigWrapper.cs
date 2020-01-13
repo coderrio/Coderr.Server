@@ -1,4 +1,4 @@
-﻿using Coderr.Server.App.Core.Reports.Config;
+﻿using Coderr.Server.Abstractions.Reports;
 using Coderr.Server.ReportAnalyzer.Abstractions.ErrorReports;
 
 namespace Coderr.Server.Web.Infrastructure
