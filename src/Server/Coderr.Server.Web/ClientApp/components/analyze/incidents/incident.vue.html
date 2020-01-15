@@ -20,7 +20,6 @@
                     <h3>
                         {{incident.Description}} 
                         <span class="lead text-muted">[{{incident.FullName}}] </span>
-                        <span class="lead text-muted" v-if="applicationName">{{applicationName}}</span>
                     </h3>
                     <div class="tags">
                         <span v-for="tag in incident.Tags" class="badge badge-dark">{{tag}}</span>
@@ -47,6 +46,10 @@
 
                             <div v-if="highlights.length > 0" class="p-3">
                                 <table class="w-100">
+                                    <tr>
+                                        <th>Application</th>
+                                        <td>{{applicationName}}</td>
+                                    </tr>
                                     <tr v-for="high in highlights">
                                         <th>{{high.name}}</th>
                                         <td style="width: 100%">{{high.value}}</td>
