@@ -285,7 +285,7 @@ export class MyIncidents {
             var incident = this.allMyIncidents$[i];
             this.allMyIncidents$.splice(i, 1);
             this.filterMyIncidents();
-            if (this.selectedIncident.incidentId === incident.incidentId) {
+            if (this.selectedIncident != null && this.selectedIncident.incidentId === incident.incidentId) {
                 this.selectedIncident = null;
             }
 
