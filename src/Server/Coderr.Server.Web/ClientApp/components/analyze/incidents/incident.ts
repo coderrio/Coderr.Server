@@ -15,6 +15,7 @@ export default class AnalyzeIncidentComponent extends Vue {
     private static readonly selectCollectionTitle: string = "(select collection)";
     private team: ApplicationMember[] = [];
 
+    applicationName = "";
     name = "";
     incidentId = 0;
     incident = new GetIncidentResult();
@@ -102,6 +103,11 @@ export default class AnalyzeIncidentComponent extends Vue {
                 AppRoot.Instance.incidentService.collectHighlightedData(incident)
                     .then(data => {
                         this.highlights = data;
+                    });
+
+                AppRoot.Instance.applicationService.get(incident.ApplicationId)
+                    .then(x => {
+                        this.applicationName = x.name;
                     });
 
                 var query = new GetApplicationVersions();

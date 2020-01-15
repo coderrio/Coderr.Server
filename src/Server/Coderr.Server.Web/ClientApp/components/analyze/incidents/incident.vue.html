@@ -7,7 +7,7 @@
                         <div class="btn-group" role="group">
                             <a class="btn btn-primary text-light" v-on:click="closeIncident">Close incident</a>
                             <div class="dropdown" style="display: inline-block">
-                                <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                                <button type="button" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                                 <div class="dropdown-menu dropdown-menu-right">
                                     <span class="dropdown-item" v-on:click="reAssign"><i class="fa-redo fa text-muted"></i> Re-assign</span>
                                     <!--<span class="dropdown-item" v-on:click="addToTfs"><i class="fa-code-branch fa text-muted"></i> Add to TFS/VSTS</span>-->
@@ -17,9 +17,11 @@
                         </div>
                     </div>
 
-                    <h3>{{incident.Description}} <span class="lead text-muted">[{{incident.FullName}}]</span></h3>
-
-
+                    <h3>
+                        {{incident.Description}} 
+                        <span class="lead text-muted">[{{incident.FullName}}] </span>
+                        <span class="lead text-muted" v-if="applicationName">{{applicationName}}</span>
+                    </h3>
                     <div class="tags">
                         <span v-for="tag in incident.Tags" class="badge badge-dark">{{tag}}</span>
                     </div>
