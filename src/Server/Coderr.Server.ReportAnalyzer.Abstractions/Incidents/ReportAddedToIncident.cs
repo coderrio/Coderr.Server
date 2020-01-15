@@ -54,5 +54,10 @@ namespace Coderr.Server.ReportAnalyzer.Abstractions.Incidents
         ///     Received report.
         /// </summary>
         public ReportDTO Report { get; private set; }
+
+        /// <summary>
+        /// Report have been stored (i.e. we do not have too many reports yet).
+        /// </summary>
+        public bool? IsStored { get; set; }
     }
 }

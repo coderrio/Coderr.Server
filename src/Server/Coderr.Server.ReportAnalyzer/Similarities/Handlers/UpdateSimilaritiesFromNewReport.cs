@@ -39,6 +39,11 @@ namespace Coderr.Server.ReportAnalyzer.Similarities.Handlers
         /// </returns>
         public async Task HandleAsync(IMessageContext context, ReportAddedToIncident e)
         {
+            if (e.IsStored != true)
+            {
+                return;
+            }
+
             _logger.Debug("Updating similarities " + e.Incident.Id);
             var adapters = _adapterRepository.GetAdapters();
             var sw2 = new Stopwatch();

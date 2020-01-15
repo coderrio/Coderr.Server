@@ -84,6 +84,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
                 return;
             }
 
+            var storeReport = true;
             var applicationVersion = GetVersionFromReport(report);
             var isReOpened = false;
             var firstLine = report.GenerateHashCodeIdentifier();
@@ -145,19 +146,26 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
                 {
                     _repository.UpdateIncident(incident);
                     _logger.Debug($"Report count is more than 25. Ignoring report for incident {incident.Id}.");
-                    return;
+                    storeReport = false;
+                }
+                else
+                {
+                    incident.LastStoredReportUtc = DateTime.UtcNow;
+                    _repository.UpdateIncident(incident);
                 }
 
-                incident.LastStoredReportUtc = DateTime.UtcNow;
-                _repository.UpdateIncident(incident);
             }
 
             if (!string.IsNullOrWhiteSpace(report.EnvironmentName))
                 _repository.SaveEnvironmentName(incident.Id, report.EnvironmentName);
 
             report.IncidentId = incident.Id;
-            _repository.CreateReport(report);
-            _logger.Debug($"saving report {report.Id} for incident {incident.Id}");
+
+            if (storeReport)
+            {
+                _repository.CreateReport(report);
+                _logger.Debug($"saving report {report.Id} for incident {incident.Id}");
+            }
 
             await _repository.StoreReportStats(new ReportMapping()
             {
@@ -181,11 +189,16 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
             sw.Start();
             var e = new ReportAddedToIncident(summary, ConvertToCoreReport(report, applicationVersion), isReOpened)
             {
-                IsNewIncident = isNewIncident
+                IsNewIncident = isNewIncident,
+                IsStored = storeReport
             };
             await context.SendAsync(e);
 
-            await context.SendAsync(new ProcessInboundContextCollections());
+            if (storeReport)
+            {
+                await context.SendAsync(new ProcessInboundContextCollections());
+
+            }
 
             if (sw.ElapsedMilliseconds > 200)
                 _logger.Debug($"PublishAsync took {sw.ElapsedMilliseconds}");
