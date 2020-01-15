@@ -107,6 +107,12 @@ export default class IncidentComponent extends Vue {
             });
     }
 
+    delete() {
+        AppRoot.Instance.incidentService.delete(this.incidentId, "yes");
+        AppRoot.notify("Incident have been removed", 'fa-info', 'success');
+        this.$router.push({ name: 'suggest'});
+    }
+
     private displayChart(days: ReportDay[]) {
         var labels: Date[] = [];
         var series: number[] = [];

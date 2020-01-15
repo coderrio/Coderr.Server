@@ -37,11 +37,15 @@ namespace Coderr.Server.Abstractions.Security
                 throw new InvalidOperationException(
                     "Failed to find ClaimTypes.NameIdentifier, user is probably not logged in.");
 
-            if (!int.TryParse(claim.Value, out var userId))
-                throw new FormatException(
-                    $"UserId {claim.Value} is not a number. All claims: {principal.ToFriendlyString()}");
+            if (int.TryParse(claim.Value, out var userId)) return userId;
+            
+            var ex = new FormatException($"UserId {claim.Value} is not a number.");
+            foreach (var c in principal.Claims)
+            {
+                ex.Data[$"Claim.{c.Type}"] = c.Value;
+            }
 
-            return userId;
+            throw ex;
         }
 
         /// <summary>
