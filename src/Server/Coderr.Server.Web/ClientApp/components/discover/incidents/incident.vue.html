@@ -15,7 +15,7 @@
                                     <a class="dropdown-item" href="#" v-if="incident.IncidentState == 0" v-on:click.prevent="assignToSomeoneElse">Assign to ..</a>
                                     <a class="dropdown-item" href="#" v-if="!isClosed && !isIgnored" v-on:click.prevent="ignore">Ignore</a>
                                     <a class="dropdown-item" href="#" v-if="!isClosed" v-on:click.prevent="close">Close</a>
-                                    <a class="dropdown-item" href="#" v-on:click.prevent="delete">Delete</a>
+                                    <a class="dropdown-item" href="#" v-on:click.prevent="deleteIncident">Delete</a>
                                 </div>
                             </div>
                         </div>

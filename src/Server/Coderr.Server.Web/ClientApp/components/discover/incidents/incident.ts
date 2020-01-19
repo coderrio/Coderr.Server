@@ -107,7 +107,7 @@ export default class IncidentComponent extends Vue {
             });
     }
 
-    delete() {
+    deleteIncident() {
         AppRoot.Instance.incidentService.delete(this.incidentId, "yes");
         AppRoot.notify("Incident have been removed", 'fa-info', 'success');
         this.$router.push({ name: 'suggest'});
