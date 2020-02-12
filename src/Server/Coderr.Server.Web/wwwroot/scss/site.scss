@@ -1,22 +1,72 @@
 @import "coderr-variables.scss";
 @import "mixins/_breakpoints.scss";
+@import "checkbox.scss";
 
-.btn.btn-outline-primary{
-    color:#fff;
-}
-.minimal-gutters {
-    margin-right: 1px;
-    margin-left: 1px;
-}
-
-.minimal-gutters > .col,
-.minimal-gutters > [class*="col-"] {
-    padding-right: 1px;
-    padding-left: 1px;
+.bg-dark {
+    h1, h2, h3, h4, a, span {
+        color: $light;
+    }
 }
 
-.minimal-gutters .card {
-    margin-bottom: 1px;
+.navbar-dark .navbar-nav .nav-link {
+    color: $blue;
+}
+
+.submenu {
+    > div {
+        background-color: white !important;
+
+        ul li a {
+            color: $gray-500 !important;
+        }
+    }
+    // The view main element
+    + div {
+        input[type=text]{
+            background-color: $gray-100 !important;
+        }
+
+        .card-col > div {
+            margin-right: -20px;
+        }
+
+        .card {
+            padding: 0;
+            margin: 20px;
+
+            .card-header{
+                margin-bottom: 0;
+                padding-bottom: 0;
+            }
+            .card-body {
+                margin-top: 0;
+                padding-top: 10px;
+                color: $gray-500;
+
+                table {
+                    width: 100%;
+
+                    tr {
+                        th {
+                            color: $gray-500;
+                            padding-right: 20px;
+                            min-width: 70%;
+                        }
+
+                        td {
+                            max-width: 100px;
+                            padding-left: 10px;
+                            text-align: right;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.btn.btn-outline-primary {
+    color: #fff;
 }
 
 .card .card-body ul {
@@ -54,15 +104,6 @@ pre {
     }
 }
 
-.bg-dark {
-    h1, h2, h3, h4, a, span {
-        color: $light;
-    }
-}
-
-.navbar-dark .navbar-nav .nav-link {
-    color: white;
-}
 
 .submenu {
     background-color: $gray-400;
@@ -113,7 +154,7 @@ button.btn-light, a.btn-light {
 }
 
 .card {
-    border: 0;
+    /*border: 0;
     background-color: white;
     border-radius: 0;
 
@@ -122,8 +163,7 @@ button.btn-light, a.btn-light {
         background-color: $dark;
         color: $light;
         border-bottom: 0;
-    }
-
+    }*/
     .btn-primary {
         background-color: $blue;
         border-color: $blue;

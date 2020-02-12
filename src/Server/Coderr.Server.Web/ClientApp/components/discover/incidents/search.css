@@ -1,8 +1,6 @@
-.bg-dark {
-    color: #fff;
-}
-.bg-dark *, .bg-dark * *, table.table thead.bg-dark th {
-    color: #ccc;
+
+#SearchOptions label {
+    color: #59C1D5;
 }
 
 .tags button, .apps button {
@@ -22,18 +20,15 @@
 
 }
 
+#SearchOptions * {
+    font-size: 0.7rem !important;
+}
+
 #SearchOptions .form-group {
     display: inline-block;
     vertical-align: top;
 }
 
-#SearchOptions label {
-    color: #ccc;
-}
-
-.btn.btn-blue {
-    color: #000;
-}
 #SearchOptions input {
     display: inline !important;
     width: inherit;
@@ -42,14 +37,20 @@
     padding: 2px 4px;
     border: 0;
     line-height: 1.5;
-    background-color: #ccc;
 }
 
-.btn.btn-black {
-    background-color: #000;
-    color: #999;
-    border: 1px solid #333;
+#SearchOptions .btn {
+    background-color: #59C1D5;
+    color: white;
+    border: 0;
+    opacity: 0.6;
+    border: 2px solid white;
 }
+
+    #SearchOptions .btn.active {
+        opacity: 1;
+        border: 2px solid #59C1D5;
+    }
 
 #IncidentSearchView .form-group {
     max-width: 16%;
@@ -57,6 +58,13 @@
 
 #IncidentSearchView .context.form-group {
     max-width: 25vw;
+}
+
+#SearchOptions button[type=submit] {
+    opacity: 1;
+    font-size: 1.2rem !important;
+    box-shadow: 0px 3px 6px #eee;
+    border: 0;
 }
 
 @media screen and (max-width: 1600px) {

@@ -32,7 +32,7 @@ var config = {
         dest: 'wwwroot/dist/css/',
         src: [
             'wwwroot/scss/*.scss',
-            '!**/coderr-variables.scss'
+            '**/coderr-variables.scss'
         ],
         includePaths: ['./node_modules/bootstrap/scss']
     },

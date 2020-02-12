@@ -1,15 +1,3 @@
-.tags button {
-    margin-right: 5px;
-}
-
-.more {
-    display: none;
-}
-
-/*.coderr-chart {
-    margin-right: 40px;
-}*/
-
 .coderr-chart .ct-chart-line {
     overflow: visible !important;
 }
@@ -69,7 +57,7 @@ svg.ct-chart-line, svg.ct-chart-line g.ct-labels, svg.ct-chart-line g.ct-labels 
     overflow: visible;
 }
 
-
-#IncidentSearchView #SearchOptions input {
-    color: #000;
-}
+    svg.ct-chart-line g line.ct-grid {
+        stroke: #eee !important;
+        stroke-dasharray: 0 !important;
+    }

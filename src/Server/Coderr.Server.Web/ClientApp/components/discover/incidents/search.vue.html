@@ -2,131 +2,134 @@
     <div id="IncidentSearchView">
         <div class="row">
             <div class="col">
-                <div id="SearchOptions" class="bg-dark card-body">
-                    <div class="form-group input-group-sm">
-                        <label>Free text</label>
-                        <div>
-                            <input type="text" placeholder="Free text" class="form-control" v-model="freeText" />
+                <div class="card">
+                    <div class="card-body">
+                        <div id="SearchOptions" class="card-body">
+                            <div class="form-group">
+                                <label>Free text</label>
+                                <div>
+                                    <input type="text" placeholder="Free text" class="form-control" v-model="freeText" />
+                                </div>
+                            </div>
+                            <div class="apps form-group" v-if="showApplicationColumn">
+                                <label>Applications</label><br />
+                                <button class="btn" v-for="app in availableApplications" :data-app="app.id" @click="toggleApplication">
+                                    {{ app.name }}
+                                </button>
+                            </div>
+                            <div class="environments form-group">
+                                <label>Application environments</label>
+                                <div>
+                                    <button class="btn" v-for="env in availableEnvironments" :data-environment="env.id" @click="toggleEnvironment">
+                                        {{ env.name }}
+                                    </button>
+                                    <span v-if="availableEnvironments.length === 0">
+                                        No environment names could be found in reported errors.<br />
+                                        <em><a class="text-red" href="https://coderr.io/documentation/client/environments/">Learn how to an add environment name to your reports.</a></em>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="tags form-group">
+                                <label>Tags</label>
+                                <div>
+                                    <button class="btn" v-for="tag in availableTags" :data-tag="tag" @click="toggleTag">
+                                        {{ tag }}
+                                    </button>
+                                    <span v-if="availableTags.length === 0">
+                                        No tags could be found in reported errors.<br />
+                                        <em><a class="text-red" href="https://coderr.io/documentation/client/tags/">Learn how to add tags to your reports.</a></em>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="state form-group">
+                                <label>Incident state</label>
+                                <div>
+                                    <button class="btn active" v-model="incidentState" value="-1" v-on:click.prevent="toggleState(-1, $event)">
+                                        All
+                                    </button>
+                                    <button class="btn" v-model="incidentState" value="0" v-on:click.prevent="toggleState(0, $event)">
+                                        New
+                                    </button>
+                                    <button class="btn" v-model="incidentState" value="1" v-on:click.prevent="toggleState(1, $event)">
+                                        Assigned
+                                    </button>
+                                    <button class="btn" v-model="incidentState" value="3" v-on:click.prevent="toggleState(3, $event)">
+                                        Closed
+                                    </button>
+                                    <button class="btn" v-model="incidentState" value="2" v-on:click.prevent="toggleState(2, $event)">
+                                        Ignored
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-group context">
+                                <label>Context collection</label>
+                                <div>
+                                    <input name="CollectionName" type="text" class="form-control mb-1" placeholder="Collection name" v-model="contextCollectionName" />
+                                    <input name="PropertyName" type="text" class="form-control mb-1" placeholder="Property name" v-model="contextCollectionProperty" />
+                                    <input name="PropertyValue" type="text" class="form-control mb-1" placeholder="Property value" v-model="contextCollectionPropertyValue" />
+                                    <p>
+                                        <em><a class="text-red" href="https://coderr.io/documentation/client/contextcollections/">Learn how to add custom data to reports.</a></em>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>&nbsp;</label>
+                                <br />
+                                <button class="btn" style="float:right" type="submit" v-on:click="search" name="executeSearch">Search</button>
+                            </div>
                         </div>
                     </div>
-                    <div class="apps form-group ml-3" v-if="showApplicationColumn">
-                        <label>Applications</label><br />
-                        <button class="btn btn-black btn-sm" v-for="app in availableApplications" :data-app="app.id" @click="toggleApplication">
-                            {{ app.name }}
-                        </button>
-                    </div>
-                    <div class="environments form-group ml-3">
-                        <label>Application environments</label>
-                        <div>
-                            <button class="btn btn-black btn-sm" v-for="env in availableEnvironments" :data-environment="env.id" @click="toggleEnvironment">
-                                {{ env.name }}
-                            </button>
-                            <span v-if="availableEnvironments.length === 0">
-                                No environment names could be found in reported errors.<br />
-                                <em><a class="text-red" href="https://coderr.io/documentation/client/environments/">Learn how to an add environment name to your reports.</a></em>
-                            </span>
+                    <div v-if="incidents.length > 0">
+                        <div class="col">
+                            <table class="table w-100 table-striped checkboxes" id="searchTable" style="table-layout: fixed">
+                                <thead class="table-light search-head bg-blue">
+                                    <tr>
+                                        <th><input class="form-check-inline" type="checkbox" v-on:change="checkAll($event)" /> Name</th>
+                                        <th v-if="showApplicationColumn">Application</th>
+                                        <th style="width: 150px" class="sortable" v-on:click.prevent="sort($event)" data-value="0">Created <i class="fa"></i></th>
+                                        <th style="width: 130px" class="sortable" v-on:click.prevent="sort($event)" data-value="1">Last report <i class="fa fa-chevron-down"></i></th>
+                                        <th style="width: 130px" class="sortable" v-on:click.prevent="sort($event)" data-value="2">Report count <i class="fa"></i></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="incident in incidents">
+                                        <td style="overflow: hidden; max-width: 60%; white-space: nowrap; text-overflow: ellipsis;">
+                                            <input type="checkbox" :value="incident.Id" name="id" class="form-check-inline" v-model="checkedIncidents" />
+                                            <router-link :to="{ name: 'discoverIncident', params: { applicationId: incident.ApplicationId, incidentId: incident.Id }}">{{ incident.Name }}</router-link>
+                                        </td>
+                                        <td v-if="showApplicationColumn">
+                                            <router-link :to="{ name: 'application', params: { applicationId: incident.ApplicationId }}">{{incident.ApplicationName}}</router-link>
+                                        </td>
+                                        <td>
+                                            {{ incident.CreatedAtUtc | ago }}
+                                        </td>
+                                        <td>
+                                            {{ incident.LastReportReceivedAtUtc | ago }}
+                                        </td>
+                                        <td class="text-right">
+                                            {{ incident.ReportCount }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="CloseBody" style="display: none">
+                            <input type="text" name="version" class="form-control mb-3" size="10" placeholder="Which version is the error corrected in? (format: 1.2.10)" pattern="[0-9\.]*" title="You can use semantic versioning, including pre-releases, but must specify the release version here." />
+                            <textarea style="display: none" id="CloseArea" class="w-100" rows="10" placeholder="How did you solve the error?" autofocus="autofocus"></textarea>
+                            <em><router-link :to="{name: 'closeIncident', params: { incidentId: currentIncidentId }}">Go to full screen editor</router-link></em>
                         </div>
                     </div>
-                    <div class="tags form-group ml-3">
-                        <label>Tags</label>
-                        <div>
-                            <button class="btn btn-black btn-sm" v-for="tag in availableTags" :data-tag="tag" @click="toggleTag">
-                                {{ tag }}
-                            </button>
-                            <span v-if="availableTags.length === 0">
-                                No tags could be found in reported errors.<br />
-                                <em><a class="text-red" href="https://coderr.io/documentation/client/tags/">Learn how to add tags to your reports.</a></em>
-                            </span>
+                    <div>
+                        <div v-if="incidents.length == 0" class="m-4">
+                            <em>No incidents have been reported (or nothing matched your search).</em>
                         </div>
-                    </div>
-                    <div class="state form-group ml-3">
-                        <label>Incident state</label>
-                        <div>
-                            <button class="btn btn-blue btn-sm" v-model="incidentState" value="-1" v-on:click.prevent="toggleState(-1, $event)">
-                                All
-                            </button>
-                            <button class="btn btn-black btn-sm" v-model="incidentState" value="0" v-on:click.prevent="toggleState(0, $event)">
-                                New
-                            </button>
-                            <button class="btn btn-black btn-sm" v-model="incidentState" value="1" v-on:click.prevent="toggleState(1, $event)">
-                                Assigned
-                            </button>
-                            <button class="btn btn-black btn-sm" v-model="incidentState" value="3" v-on:click.prevent="toggleState(3, $event)">
-                                Closed
-                            </button>
-                            <button class="btn btn-black btn-sm" v-model="incidentState" value="2" v-on:click.prevent="toggleState(2, $event)">
-                                Ignored
-                            </button>
+                        <div v-else>
+                            <button name="assignToMe" class="btn btn-blue" v-on:click.prevent="assignAllToMe">Assign selected incidents to me</button>
+                            <button name="deleteSelected" class="btn btn-light" v-on:click.prevent="deleteSelectedIncidents">Delete selected incidents</button>
                         </div>
-                    </div>
-                    <div class="form-group context ml-3 pl-2">
-                        <label>Context collection</label>
-                        <div>
-                            <input name="CollectionName" type="text" class="form-control mb-1" placeholder="Collection name" v-model="contextCollectionName" />
-                            <input name="PropertyName" type="text" class="form-control mb-1" placeholder="Property name" v-model="contextCollectionProperty" />
-                            <input name="PropertyValue" type="text" class="form-control mb-1" placeholder="Property value" v-model="contextCollectionPropertyValue" />
-                            <p>
-                                <em><a class="text-red" href="https://coderr.io/documentation/client/contextcollections/">Learn how to add custom data to reports.</a></em>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="form-group ml-3" style="width: 150px">
-                        <label>&nbsp;</label>
-                        <br />
-                        <button class="btn btn-blue btn-lg" v-on:click="search" name="executeSearch">Search</button>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="row pb-4" v-if="incidents.length > 0">
-            <div class="col">
-                <table class="table w-100 table-striped checkboxes" id="searchTable" style="table-layout: fixed">
-                    <thead class="table-light search-head bg-blue">
-                        <tr>
-                            <th><input class="form-check-inline" type="checkbox" v-on:change="checkAll($event)" /> Name</th>
-                            <th v-if="showApplicationColumn">Application</th>
-                            <th style="width: 150px" class="sortable" v-on:click.prevent="sort($event)" data-value="0">Created <i class="fa"></i></th>
-                            <th style="width: 130px" class="sortable" v-on:click.prevent="sort($event)" data-value="1">Last report <i class="fa fa-chevron-down"></i></th>
-                            <th style="width: 130px" class="sortable" v-on:click.prevent="sort($event)" data-value="2">Report count <i class="fa"></i></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="incident in incidents">
-                            <td style="overflow: hidden; max-width: 60%; white-space: nowrap;text-overflow: ellipsis;">
-                                <input type="checkbox" :value="incident.Id" name="id" class="form-check-inline" v-model="checkedIncidents" />
-                                <router-link :to="{ name: 'discoverIncident', params: { applicationId: incident.ApplicationId, incidentId: incident.Id }}">{{ incident.Name }}</router-link>
-                            </td>
-                            <td v-if="showApplicationColumn">
-                                <router-link :to="{ name: 'application', params: { applicationId: incident.ApplicationId }}">{{incident.ApplicationName}}</router-link>
-                            </td>
-                            <td>
-                                {{ incident.CreatedAtUtc | ago }}
-                            </td>
-                            <td>
-                                {{ incident.LastReportReceivedAtUtc | ago }}
-                            </td>
-                            <td class="text-right">
-                                {{ incident.ReportCount }}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div id="CloseBody" style="display: none">
-                <input type="text" name="version" class="form-control mb-3" size="10" placeholder="Which version is the error corrected in? (format: 1.2.10)" pattern="[0-9\.]*" title="You can use semantic versioning, including pre-releases, but must specify the release version here." />
-                <textarea style="display: none" id="CloseArea" class="w-100" rows="10" placeholder="How did you solve the error?" autofocus="autofocus"></textarea>
-                <em><router-link :to="{name: 'closeIncident', params: { incidentId: currentIncidentId }}">Go to full screen editor</router-link></em>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col bg-dark p-3">
-                <div v-if="incidents.length == 0" class="m-4">
-                    <em>No incidents have been reported (or nothing matched your search).</em>
-                </div>
-                <div v-else>
-                    <button name="assignToMe" class="btn btn-blue" v-on:click.prevent="assignAllToMe">Assign selected incidents to me</button>
-                    <button name="deleteSelected" class="btn btn-light" v-on:click.prevent="deleteSelectedIncidents">Delete selected incidents</button>
-                </div>
+
             </div>
         </div>
     </div>

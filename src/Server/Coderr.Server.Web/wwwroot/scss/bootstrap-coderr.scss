@@ -3,6 +3,39 @@
 // Variable adaptations
 @import "coderr-variables.scss";
 
+$card-cap-bg: white;
+$card-border-color: white;
+
+.card {
+    box-shadow: 0px 3px 6px #00000029;
+    border-radius: 5px;
+    background-color: white;
+    color: $gray-500;
+
+    > .card-header {
+        background: transparent;
+        color: $blue;
+        font-size: 1.5em;
+        font-weight: bold;
+    }
+
+    > .card-body {
+    }
+
+    > .card-footer {
+        a {
+            padding-left: 0.8rem;
+        }
+    }
+}
+
+
+$input-border-radius: 0;
+$input-color: $gray-600;
+$input-bg: $gray-100;
+$input-padding-y: 5px;
+$input-padding-x: 5px;
+$input-placeholder-color: $gray-300;
 
 @import "functions";
 @import "variables";
@@ -42,3 +75,4 @@ $theme-colors: map-remove($theme-colors, "success", "info", "danger", "warning",
 //@import "carousel";
 @import "utilities";
 //@import "print";
+
