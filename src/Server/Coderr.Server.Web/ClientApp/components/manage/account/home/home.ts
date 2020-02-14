@@ -69,8 +69,10 @@ export default class ManageHomeComponent extends Vue {
                 return;
             }
 
+            console.log('registwer');
             this.registerPushSubscription();
         } else {
+            console.log('delete');
             this.deleteSubscription();
         }
 
@@ -113,6 +115,7 @@ export default class ManageHomeComponent extends Vue {
         const registration = await navigator.serviceWorker.ready;
         let subscription = await registration.pushManager.getSubscription();
         if (subscription) {
+            this.storeBrowserSubscription(subscription);
             return subscription;
         }
 

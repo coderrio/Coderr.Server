@@ -68,8 +68,7 @@ export default class IncidentSearchComponent extends Vue {
     //for the close dialog
     currentIncidentId = 0;
 
-    private activeBtn$ = 'btn-blue';
-    private inactiveBtn$ = 'btn-black';
+    private activeBtn$ = 'active';
 
     created() {
         PubSubService.Instance.subscribe(MenuApi.MessagingTopics.ApplicationChanged, this.onApplicationChangedInNavMenu);
@@ -179,10 +178,10 @@ export default class IncidentSearchComponent extends Vue {
         var tag = <string>btn.getAttribute('data-tag');
 
         if (btn.className.indexOf(this.activeBtn$) === -1) {
-            btn.className = `btn btn-sm ${this.activeBtn$}`;
+            btn.className = `btn ${this.activeBtn$}`;
             this.activeTags.push(tag);
         } else {
-            btn.className = `btn btn-sm ${this.inactiveBtn$}`;
+            btn.className = `btn`;
             this.activeTags = this.activeTags.filter(itm => itm !== tag);
         }
     }
@@ -192,10 +191,10 @@ export default class IncidentSearchComponent extends Vue {
         var environmentId = parseInt(btn.getAttribute('data-environment'), 10);
 
         if (btn.className.indexOf(this.activeBtn$) === -1) {
-            btn.className = `btn btn-sm ${this.activeBtn$}`;
+            btn.className = `btn ${this.activeBtn$}`;
             this.activeEnvironment.push(environmentId);
         } else {
-            btn.className = `btn btn-sm ${this.inactiveBtn$}`;
+            btn.className = `btn`;
             this.activeEnvironment = this.activeEnvironment.filter(itm => itm !== environmentId);
         }
     }
@@ -206,10 +205,10 @@ export default class IncidentSearchComponent extends Vue {
         var applicationId = parseInt(<string>attr, 10);
 
         if (btn.className.indexOf(this.activeBtn$) === -1) {
-            btn.className = `btn btn-sm ${this.activeBtn$}`;
+            btn.className = `btn ${this.activeBtn$}`;
             this.activeApplications.push(applicationId);
         } else {
-            btn.className = `btn btn-sm ${this.inactiveBtn$}`;
+            btn.className = `btn`;
             this.activeApplications = this.activeApplications.filter(itm => {
                 return itm !== applicationId;
             });
@@ -401,7 +400,6 @@ export default class IncidentSearchComponent extends Vue {
                 this.activeTags.length = 0;
                 return;
             }
-            elem.classList.remove(this.inactiveBtn$);
             elem.classList.add(this.activeBtn$);
         });
     }
@@ -416,7 +414,6 @@ export default class IncidentSearchComponent extends Vue {
                 this.activeEnvironment.length = 0;
                 return;
             }
-            elem.classList.remove(this.inactiveBtn$);
             elem.classList.add(this.activeBtn$);
         });
     }
@@ -426,12 +423,11 @@ export default class IncidentSearchComponent extends Vue {
         for (var i = 0; i < buttons.length; ++i) {
             var button = <HTMLButtonElement>buttons[i];
 
-            button.classList.remove(this.inactiveBtn$);
             if (button.value === incidentState.toString()) {
-                button.classList.remove(this.inactiveBtn$);
                 button.classList.add(this.activeBtn$);
             } else {
-                button.classList.add(this.inactiveBtn$);
+                if (button.classList.contains(this.activeBtn$))
+                button.classList.remove(this.activeBtn$);
             }
         }
 
@@ -450,7 +446,6 @@ export default class IncidentSearchComponent extends Vue {
                 return;
             }
 
-            elem.classList.remove(this.inactiveBtn$);
             elem.classList.add(this.activeBtn$);
         });
     }

@@ -1,7 +1,3 @@
-.more {
-    display: none;
-}
-
 .buttons {
     padding-top: 1px;
 }
@@ -11,3 +7,7 @@
         display: block;
         width: 100%
     }
+
+.configure-view btn.active {
+    color: #59c1d5;
+}

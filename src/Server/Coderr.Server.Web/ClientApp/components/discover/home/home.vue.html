@@ -1,16 +1,16 @@
 <template>
     <div>
-        <div class="row minimal-gutters">
-            <div class="col-lg-3">
-                <div class="card mb-1">
+        <div class="row">
+            <div class="col-lg-4 col-md-5 card-col">
+                <div class="card">
                     <div class="card-header">
                         Summary (last 30 days)
                     </div>
                     <div class="card-body">
-                        <table class="table th-vertical">
+                        <table class="th-vertical">
                             <tbody>
                                 <tr>
-                                    <th width="30%">Number of incidents</th>
+                                    <th>Number of incidents</th>
                                     <td>{{ incidentCount }}</td>
                                 </tr>
                                 <tr style="white-space: nowrap">
@@ -30,36 +30,40 @@
 
                     </div>
                 </div>
-                <div class="card bg-blue p-2" v-if="reportCount == 0">
-                    <div class="">
-                        <h3>Report exceptions</h3>
-                        <p class="text-white">
+                <div class="card" v-if="reportCount == 0">
+                    <div class="card-header">
+                        Report exceptions
+                    </div>
+                    <div class="card-body">
+                        <p>
                             You have not reported any exceptions yet.
                         </p>
+                    </div>
+                    <div class="card-footer">
                         <router-link :to="{name: 'configureApplication', params: {applicationId: firstApplicationId }}" class="btn btn-dark">Configure your application</router-link>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-9">
+            <div class="col-lg-8 col-md-7">
                 <div class="alert-dark" v-if="myBestSuggestion">
                     We suggest that you work with:
                     <router-link :to="{ name: 'analyzeIncident', params: { applicationId: myBestSuggestion.applicationId, myBestSuggestion: incident.Id }}">{{myBestSuggestion.Description}}</router-link>
                     <router-link class="btn btn-primary btn-sm" v-bind:click="assignBestToMe">{{myBestSuggestion.Description}}</router-link>
                 </div>
-                <div class="card bg-dark">
+                <div class="card">
+                    <div class="card-header">
+                        <span v-if="applicationId == 0">Incident trend per application</span>
+                        <span v-else>Incident trend</span>
+                    </div>
                     <div class="card-body trend">
                         <div class="position-relative coderr-chart" style="padding-left: 16px;">
-                            <h3>
-                                <span v-if="applicationId == 0">Incident trend per application</span>
-                                <span v-else>Incident trend</span>
-                            </h3>
                             <div class="ct-chart ct-major-twelfth">
 
                             </div>
                             <div class="legend">
                                 <div v-for="l in legend" :class="l.className">
                                     <svg width="10" height="10">
-                                        <rect width="10" height="10" class="ct-point" />
+                                        <rect width="10" height="10" class="ct-point"/>
                                     </svg>
                                     {{l.name}}
                                 </div>

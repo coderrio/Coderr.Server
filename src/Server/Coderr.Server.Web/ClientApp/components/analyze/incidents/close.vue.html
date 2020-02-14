@@ -2,8 +2,10 @@
     <div class="CloseView">
         <div class="row">
             <div class="col">
-                <h2>Close incident</h2>
                 <div class="card">
+                    <div class="card-header">
+                        Close incident
+                    </div>
                     <div class="card-body rounded">
                         <textarea class="form-control" v-model="solution" placeholder="How did you solve this error?" rows="10" id="solution" autofocus=""></textarea>
                         <button class="btn btn-primary" v-on:click.prevent="close">Close incident</button>

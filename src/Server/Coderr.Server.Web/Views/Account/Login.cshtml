@@ -11,14 +11,14 @@
 <![endif]-->
 <div classs="container">
     <div cslass="col-sm-12 col-md-6">
-        <div class="card">
-            <div class="card-header">
-                Login
-            </div>
-            <div class="card-body">
-                <form action="@Url.Action("Login")" method="post">
-                    @Html.AntiForgeryToken()
-                    @Html.ValidationSummary(true)
+        <form action="@Url.Action("Login")" method="post">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            <div class="card">
+                <div class="card-header">
+                    Login
+                </div>
+                <div class="card-body">
                     <input type="hidden" asp-for="ReturnUrl" />
                     <div class="row" id="obsoleteLine" style="display: none">
                         <div class="col-lg-12 bg-warning text-white p-3">
@@ -37,24 +37,23 @@
                             <span asp-validation-for="Password"></span>
                         </div>
                     </div>
-                    <div class="form-check">
-                        <label asp-for="RememberMe" class="form-check-label">
-                            <input type="checkbox" asp-for="RememberMe" class="form-check-input" />
+                    <div class="form-group">
+                        <input type="checkbox" asp-for="RememberMe" />
+                        <label asp-for="RememberMe">
                             Remember me
                         </label>
                     </div>
-                    <div class="form-group mt-3">
-                        <input id="login-button" type="submit" class="btn btn-primary" value="Sign in" />
-                        <a asp-action="RequestPasswordReset" class="btn">Reset password</a>
-                        @if (Model.AllowRegistrations)
-                        {
-                            <a asp-action="Register" class="btn">Register</a>
-                        }
-                    </div>
-                </form>
-
+                </div>
+                <div class="card-footer">
+                    <input id="login-button" type="submit" class="btn btn-primary" value="Sign in" />
+                    <a asp-action="RequestPasswordReset">Reset password</a>
+                    @if (Model.AllowRegistrations)
+                    {
+                        <a asp-action="Register">Register</a>
+                    }
+                </div>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 @section scripts

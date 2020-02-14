@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Api.Core.Accounts.Queries;
 using Coderr.Server.Domain.Core.Account;
 using DotNetCqs;
 
 namespace Coderr.Server.SqlServer.Core.Accounts.QueryHandlers
 {
-    [ContainerService]
     public class GetAccountEmailByIdHandler : IQueryHandler<GetAccountEmailById, string>
     {
         private readonly IAccountRepository _accountRepository;
