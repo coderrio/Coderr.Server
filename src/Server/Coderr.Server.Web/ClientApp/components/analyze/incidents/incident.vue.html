@@ -4,7 +4,7 @@
             <div class="col">
                 <div class="float-right">
                     <div class="btn-group" role="group">
-                        <a class="btn btn-blue shadow" href="#" v-if="incident.IncidentState == 0" v-on:click.prevent="assignToMe">Assign to me</a>
+                        <a class="btn btn-blue shadow" href="#" v-if="incident.IncidentState == 0" v-on:click.prevent="closeIncident">Close incident</a>
                         <div class="dropdown" style="display: inline-block">
                             <button class="btn btn-white shadow dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
