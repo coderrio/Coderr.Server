@@ -7,6 +7,7 @@ Coderr Community Server
 
 ![Welcome screen](docs/dashboard.png)
 
+[Watch our intro video](https://www.youtube.com/watch?v=E6q3EkEIwVk)
 
 ## Search function
 
