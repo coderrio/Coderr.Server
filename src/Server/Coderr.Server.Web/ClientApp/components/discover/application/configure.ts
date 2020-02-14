@@ -84,14 +84,13 @@ export default class ConfigureClientComponent extends Vue {
             });
         var buttons = document.querySelectorAll('.buttons button');
         for (var i = 0; i < buttons.length; i++) {
-            if (buttons[i].className.indexOf('btn-red') !== -1) {
-                buttons[i].classList.remove('btn-red');
-                buttons[i].classList.add('btn-light');
+            if (buttons[i].className.indexOf('active') !== -1) {
+                buttons[i].classList.remove('active');
             }
 
         }
         var button = <HTMLElement>document.querySelector(`.buttons [data-lib="${libName}"]`);
-        button.classList.add('btn-red');
+        button.classList.add('active');
     }
 
     completedConfiguration() {

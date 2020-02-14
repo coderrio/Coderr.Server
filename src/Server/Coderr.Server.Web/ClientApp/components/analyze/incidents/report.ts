@@ -24,12 +24,12 @@ export default class AnalyzeReportComponent extends Vue {
     reportId: number;
     incidentId: number;
 
-    userFeedback: string|null = null;
+    userFeedback: string | null = null;
     userOrEmail = 'user';
 
     reports: GetReportListResultItem[] = [];
-    showNextButton= true;
-    showPrevButton=false;
+    showNextButton = true;
+    showPrevButton = false;
 
     contextCollections: GetReportResultContextCollection[] = [];
     currentCollectionName = '';
@@ -62,7 +62,7 @@ export default class AnalyzeReportComponent extends Vue {
             this.loadReport(this.reports[this.currentIndex].Id);
         }
     }
-    
+
     nextReport() {
         this.currentIndex++;
         this.indexInTotalSet++;
@@ -76,7 +76,7 @@ export default class AnalyzeReportComponent extends Vue {
             this.loadReport(this.reports[this.currentIndex].Id);
         }
 
-        
+
     }
 
     private checkNavigationLinks() {
@@ -122,7 +122,7 @@ export default class AnalyzeReportComponent extends Vue {
                     if (!isFound) {
                         this.currentCollectionName = report.ContextCollections[0].Name;
                     }
-                    
+
                     this.loadCollection(this.currentCollectionName);
                 } else {
                     this.currentCollection = new GetReportResultContextCollection();
@@ -144,7 +144,7 @@ export default class AnalyzeReportComponent extends Vue {
         q.PageSize = this.pageSize;
         if (pageNumber) {
             q.PageNumber = pageNumber;
-            
+
         }
 
         AppRoot.Instance.apiClient.query<GetReportListResult>(q)
@@ -172,7 +172,7 @@ export default class AnalyzeReportComponent extends Vue {
 
                     this.checkNavigationLinks();
                 }
-                
+
             });
     }
 
@@ -199,6 +199,16 @@ export default class AnalyzeReportComponent extends Vue {
                         if (kvp.Value.substr(0, 1) !== '<') {
                             kvp.Value = '<img src="data:image/png;base64, ' + kvp.Value + '" />';
                         }
+                        if (kvp.Key === 'Cookie') {
+                            if (kvp.Value.length > 1000)
+                                kvp.Value = kvp.Value.substring(0, 1000) + "[...]";
+                        }
+                    }
+                } else {
+                    for (var j = 0; j < this.currentCollection.Properties.length; j++) {
+                        var kvp = this.currentCollection.Properties[j];
+                        if (kvp.Value.length > 100)
+                            kvp.Value = kvp.Value.replace(/(.{100})/g, "$1<br>");
                     }
                 }
                 return;

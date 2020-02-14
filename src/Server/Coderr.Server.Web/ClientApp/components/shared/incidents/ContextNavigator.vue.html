@@ -1,9 +1,12 @@
 ﻿<template>
-    <div>
-        <h3>Context collections</h3>
-        <div>
+    <div class="card">
+        <div class="card-header">
+            Context collections
+        </div>
+        
+        <div class="card-body">
             <div class="dropdown" style="display: inline">
-                <button type="button" class="btn btn-light dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button type="button" class="btn btn-light text-black-50 dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {{currentReportName}}
                 </button>
                 <div class="dropdown-menu">
@@ -14,7 +17,7 @@
                 </div>
             </div>
             <div class="dropdown" style="display: inline">
-                <button type="button" class="btn btn-light dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="reportChooser">
+                <button type="button" class="btn btn-light text-black-50 dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="reportChooser">
                     {{currentCollectionName}}
                 </button>
                 <div class="dropdown-menu">
@@ -24,26 +27,20 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div v-if="currentReport.Id > 0" style="overflow: auto">
-            <table class="table mt-3 mb-3">
-                <tbody>
+            <div v-if="currentReport.Id > 0" style="overflow: auto">
+                <table class="table mt-3 mb-3">
+                    <tbody>
                     <tr v-for="prop in currentCollectionProperties">
                         <th>{{prop.name}}</th>
-                        <td style="width: 90%">
+                        <td style="width: 90%" class="text-left">
                             <span v-if="prop.htmlValue" v-html="prop.htmlValue"></span>
                             <span v-else>{{prop.value}}</span>
-                            
+
                         </td>
                     </tr>
-                </tbody>
-            </table>
-        </div>
-        <div v-if="showAnalyzeFooter">
-            <hr />
-            <em>
-                <router-link class="btn btn-primary btn-block" :to="{ name: 'analyzeReport', params: { reportId: currentReport.Id, incidentId: incidentId}}">Report browser</router-link>
-            </em>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </template>

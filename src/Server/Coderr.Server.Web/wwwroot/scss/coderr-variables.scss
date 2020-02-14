@@ -8,43 +8,40 @@ $gray-700: #393938;
 $gray-800: #2e2d2c;
 $gray-900: #141414;
 
-$blue:    #59c1d5;
-$blue-60:  #abdbe7;
-$blue-30:  #d8eef4;
+$blue: #59c1d5;
+$blue-60: #abdbe7;
+$blue-30: #d8eef4;
 
-$red:     #f18c65;
-$red-60:     #fac981;
-$red-30:     #feede5;
+$red: #f18c65;
+$red-60: #fac981;
+$red-30: #feede5;
 
-$theme-colors: (
-  "red": $red,
-  "blue": $blue
-);
+$theme-colors: ( "red": $red, "blue": $blue, "white": #fff, "gray": $gray-500 );
 
 
 $gray: $gray-700;
 
-$primary:       $gray;
-$secondary:     $red;
-$light:         $gray-200;
-$middle:        $gray-400;
-$dark:          $gray-700;
+$primary: $blue;
+$secondary: $gray-500;
+$light: $gray-100;
+$middle: $gray-400;
+$dark: $gray-700;
 
-$font-family-sans-serif:      "SofiaProRegular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
-$font-size-base:			  1.0rem;
+$font-family-sans-serif: "SofiaProRegular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
+$font-size-base: 0.9rem;
 
 
-$btn-border-radius:           0;
-$btn-border-radius-lg:        0;
-$btn-border-radius-sm:		  0;
-$btn-padding-y:               .400rem;
-$btn-padding-x:				  .80rem;
-$btn-padding-y-lg:            0.75rem;
-$btn-padding-x-lg:            1.5rem;
+$btn-border-radius: 0;
+$btn-border-radius-lg: 0;
+$btn-border-radius-sm: 0;
+$btn-padding-y: .500rem;
+$btn-padding-x: .90rem;
+$btn-padding-y-lg: 0.75rem;
+$btn-padding-x-lg: 1.5rem;
 
-$h1-font-size:                $font-size-base * 3;
-$h2-font-size:                $font-size-base * 2.5;
-$h3-font-size:                $font-size-base * 2;
-$h4-font-size:                $font-size-base * 1.75;
-$h5-font-size:                $font-size-base * 1.5;
-$h6-font-size:                $font-size-base * 1.25;
+$h1-font-size: $font-size-base * 3;
+$h2-font-size: $font-size-base * 2.5;
+$h3-font-size: $font-size-base * 2;
+$h4-font-size: $font-size-base * 1.75;
+$h5-font-size: $font-size-base * 1.5;
+$h6-font-size: $font-size-base * 1.25;

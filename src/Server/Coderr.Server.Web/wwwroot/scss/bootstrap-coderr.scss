@@ -6,8 +6,19 @@
 $card-cap-bg: white;
 $card-border-color: white;
 
+.text-gray4 {
+    color: $gray-400;
+}
+
+.text-gray6 {
+    color: $gray-600;
+}
+.text-gray7 {
+    color: $gray-700;
+}
+
 .card {
-    box-shadow: 0px 3px 6px #00000029;
+    box-shadow: 0px 3px 6px $gray-400;
     border-radius: 5px;
     background-color: white;
     color: $gray-500;
@@ -24,18 +35,37 @@ $card-border-color: white;
 
     > .card-footer {
         a {
-            padding-left: 0.8rem;
+            padding-left: 10px;
         }
     }
 }
 
+.btn {
+    text-transform: uppercase;
+}
+
+.btn.btn-blue {
+    color: white;
+    font-size: 0.875rem;
+}
+
+.btn.btn-light {
+    color: $blue;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+/*$input-btn-padding-y: .675rem;
+$input-btn-padding-x: 3.05rem;*/
 
 $input-border-radius: 0;
 $input-color: $gray-600;
 $input-bg: $gray-100;
-$input-padding-y: 5px;
-$input-padding-x: 5px;
-$input-placeholder-color: $gray-300;
+$input-padding-y: .375rem;
+$input-padding-x: .75rem;
+$input-placeholder-color: $gray-500;
+
+$text-muted: rgba(0,0,0,50);
 
 @import "functions";
 @import "variables";

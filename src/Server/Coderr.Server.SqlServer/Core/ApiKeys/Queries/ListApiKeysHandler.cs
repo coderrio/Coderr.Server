@@ -23,7 +23,7 @@ namespace Coderr.Server.SqlServer.Core.ApiKeys.Queries
             var keys =
                 await
                     _unitOfWork.ToListAsync(_mapper,
-                        "SELECT ID, GeneratedKey ApiKey, ApplicationName FROM ApiKeys ORDER BY ApplicationName");
+                        "SELECT Id, GeneratedKey ApiKey, ApplicationName FROM ApiKeys ORDER BY ApplicationName");
             return new ListApiKeysResult {Keys = keys.ToArray()};
         }
     }

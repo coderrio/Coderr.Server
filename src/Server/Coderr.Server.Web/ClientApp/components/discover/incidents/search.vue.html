@@ -64,8 +64,8 @@
                             <div class="form-group context">
                                 <label>Context collection</label>
                                 <div>
-                                    <input name="CollectionName" type="text" class="form-control mb-1" placeholder="Collection name" v-model="contextCollectionName" />
-                                    <input name="PropertyName" type="text" class="form-control mb-1" placeholder="Property name" v-model="contextCollectionProperty" />
+                                    <input name="CollectionName" type="text" class="form-control mb-1" placeholder="Collection name" v-model="contextCollectionName" /><br/>
+                                    <input name="PropertyName" type="text" class="form-control mb-1" placeholder="Property name" v-model="contextCollectionProperty" /><br />
                                     <input name="PropertyValue" type="text" class="form-control mb-1" placeholder="Property value" v-model="contextCollectionPropertyValue" />
                                     <p>
                                         <em><a class="text-red" href="https://coderr.io/documentation/client/contextcollections/">Learn how to add custom data to reports.</a></em>
@@ -124,8 +124,10 @@
                             <em>No incidents have been reported (or nothing matched your search).</em>
                         </div>
                         <div v-else>
-                            <button name="assignToMe" class="btn btn-blue" v-on:click.prevent="assignAllToMe">Assign selected incidents to me</button>
-                            <button name="deleteSelected" class="btn btn-light" v-on:click.prevent="deleteSelectedIncidents">Delete selected incidents</button>
+                            <div class="card-body">
+                                <button name="assignToMe" class="btn btn-blue" v-on:click.prevent="assignAllToMe">Assign selected incidents to me</button>
+                                <button name="deleteSelected" class="btn btn-light" v-on:click.prevent="deleteSelectedIncidents">Delete selected incidents</button>
+                            </div>
                         </div>
                     </div>
                 </div>

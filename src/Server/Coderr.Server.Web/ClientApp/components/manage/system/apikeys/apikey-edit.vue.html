@@ -2,48 +2,44 @@
     <div class="mt-4">
         <form @submit.prevent="saveKey">
             <div class="row">
-                <div class="col-md-12">
-                    <h3>
-                        Edit api key
-                    </h3>
-
-                </div>
-            </div>
-            <div class="row">
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-header">
-                            Settings
+                            Edit api key
                         </div>
                         <div class="card-body">
                             <table class="table">
                                 <tbody>
-                                    <tr>
-                                        <td>
-                                            Name
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="text" v-model="forApplicationName" required="required" autofocus="autofocus" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            ApiKey
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="text" v-model="key" required="required" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            SharedSecret
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="text" v-model="sharedSecret" required="required" />
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td>
+                                        Name
+                                    </td>
+                                    <td>
+                                        <input class="form-control" type="text" v-model="forApplicationName" required="required" autofocus="autofocus" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        ApiKey
+                                    </td>
+                                    <td>
+                                        <input class="form-control" type="text" v-model="key" required="required" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        SharedSecret
+                                    </td>
+                                    <td>
+                                        <input class="form-control" type="text" v-model="sharedSecret" required="required" />
+                                    </td>
+                                </tr>
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="card-header">
+                            <button class="btn btn-blue ">Save</button>
+                            <button class="btn btn-red" v-on:click.prevent="deleteKey">Delete</button>
                         </div>
                     </div>
                 </div>
@@ -68,12 +64,6 @@
 
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <button class="btn btn-blue ">Save</button>
-                    <button class="btn btn-danger" v-on:click.prevent="deleteKey">Delete</button>
                 </div>
             </div>
         </form>

@@ -1,49 +1,37 @@
 <template>
     <div class="FeedbackView">
-        <div class="row">
-            <div class="col">
-                <h2>
-                    Feedback
-                </h2>
+        <div class="card" v-show="feedbackList.length == 0" style="display: none">
+            <div class="card-header">
+                Feedback
             </div>
-            <hr />
-        </div>
-        <div class="row mb-2">
-            <div class="col">
-                <router-link :to="{ name: 'analyzeIncident', params: { incidentId: incidentId }}" class="btn btn-light">&lt;&lt; Back to incident..</router-link>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col" v-show="feedbackList.length == 0" style="display: none">
-                <div class="card">
-                    <div class="card-body">
-                        <h3>No feedback has been given.</h3>
-                        <p>This page can contain error descriptions written by your users when this error occur.</p>
-                        <p>Either write your own error page or activate one of our built in ones.</p>
-                        <pre><code>//Example for ASP.NET MVC5
+            <div class="card-body">
+                <h6>No feedback has been given.</h6>
+                <p>This page can contain error descriptions written by your users when this error occur.</p>
+                <p>Either write your own error page or activate one of our built in ones.</p>
+                <pre><code>//Example for ASP.NET MVC5
 Err.Configuration.UserInteraction.AskForFeedback = true;
 Err.Configuration.DisplayErrorPages();
 </code></pre>
-                        <p>You can read more in our <a href="">documentation</a>.</p>
-                    </div>
+                <p>You can read more in our <a href="">documentation</a>.</p>
+            </div>
+        </div>
+        <div class="card" v-for="feedback in feedbackList">
+            <div class="card-header">
+                Written {{feedback.writtenAtUtc|ago}} for
+                <span v-if="feedback.incidentId">
+                    <router-link :to="{name: 'discoverIncident', params: { incidentId: feedback.incidentId }}">{{feedback.incidentName}}</router-link>
+                </span>
+                <span v-else> <router-link :to="{name: 'discoverFeedback', params: { applicationId: feedback.applicationId }}">{{feedback.applicationName}}</router-link></span>
+            </div>
+            <div class="card-body">
+                <div>
+                    {{feedback.description}}
+                </div>
+                <div>
                 </div>
             </div>
-            <div class="feedback col" v-for="feedback in feedbackList">
-                <div class="card">
-                    <div class="card-header">
-                        Written {{feedback.writtenAtUtc|ago}}
-                    </div>
-                    <div class="card-body">
-                        <div>
-                            {{feedback.description}}
-                        </div>
-                        <div>
-                        </div>
-                    </div>
-                    <div class="card-footer" v-if="feedback.email">
-                        <a :href="'mailto:' + feedback.email">{{feedback.email}}</a>
-                    </div>
-                </div>
+            <div class="card-footer" v-if="feedback.email">
+                <a :href="'mailto:' + feedback.email">{{feedback.email}}</a>
             </div>
         </div>
     </div>

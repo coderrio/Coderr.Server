@@ -1,7 +1,8 @@
 <template>
     <div class="navmenu">
-        <div class="navbar navbar-expand-md navbar-dark bg-primary">
+        <div class="navbar navbar-expand-md navbar-dark bg-dark">
             <!--<a class="navbar-brand" href="#">Coderr</a>-->
+            <img src="images/navico.png" height="25px"/>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -18,12 +19,12 @@
             <div class="navbar-collapse collapse" v-if="!onboarding">
                 <ul class="navbar-nav mr-auto" id="mainMenu">
                     <li class="nav-item dropdown">
-                        <a class="btn btn-primary nav-link dropdown-toggle" id="mnuCurrentApplication" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{currentApplicationName}}</a>
+                        <a class="nav-link dropdown-toggle" id="mnuCurrentApplication" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{currentApplicationName}}</a>
                         <div class="dropdown-menu">
                             <a v-on:click.prevent="changeApplication(null)" class="dropdown-item"><i class="fa fa-home"></i> All applications</a>
                             <div class="dropdown-divider"></div>
                             <div v-for="item in myApplications">
-                                <a href="#" v-on:click.prevent="changeApplication(item.tag)" class="dropdown-item"><i class="fa-desktop fa"></i> {{item.title}}</a>
+                                <a href="#" v-on:click.prevent="changeApplication(item.tag)" class="dropdown-item text-black-50"><i class="fa-desktop fa"></i> {{item.title}}</a>
                             </div>
                         </div>
                     </li>

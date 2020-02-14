@@ -34,6 +34,10 @@
     stroke: #1EC2A3 !important;
 }
 
+.coderr-chart .ct-grid.ct-horizontal, .coderr-chart .ct-grid.ct-vertical {
+    stroke: #515151;
+    stroke-dasharray: 4;
+}
 /*.ct-label.ct-label.ct-horizontal {
     position: relative;
     justify-content: flex-end;

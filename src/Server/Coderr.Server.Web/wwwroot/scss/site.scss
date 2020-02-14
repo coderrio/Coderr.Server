@@ -1,6 +1,7 @@
 @import "coderr-variables.scss";
 @import "mixins/_breakpoints.scss";
 @import "checkbox.scss";
+@import "radio.scss";
 
 .bg-dark {
     h1, h2, h3, h4, a, span {
@@ -12,9 +13,18 @@
     color: $blue;
 }
 
+.btn.shadow {
+    box-shadow: 0px 3px 6px rgba(0,0,0,30);
+}
+
+.main-view {
+    padding: 10px 20px;
+}
+
 .submenu {
     > div {
         background-color: white !important;
+
 
         ul li a {
             color: $gray-500 !important;

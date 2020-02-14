@@ -31,8 +31,8 @@
                 </ul>
             </div>
         </div>
-        <div v-show="toggleMenu" class="bg-dark text-blue mt-0 p-5 my-incidents">
-            <h3 class="text-blue">My incidents</h3>
+        <div v-show="toggleMenu" class="text-blue bg-white mt-0 p-5 my-incidents">
+            <h5 class="text-blue">My incidents</h5>
             <table>
                 <tr>
                     <th>Name</th>
@@ -40,9 +40,9 @@
                     <th>Created</th>
                     <th>Assigned since</th>
                 </tr>
-                <tr v-for="item in incidents">
+                <tr v-for="item in incidents" class="text-black-50">
                     <td class="text-left">
-                        <router-link :to="{ name: 'analyzeIncident', params: {incidentId: item.incidentId.toString() }}" :key="item.incidentId">
+                        <router-link :to="{ name: 'analyzeIncident', params: {incidentId: item.incidentId.toString() }}" :key="item.incidentId" class="text-black-50">
                             {{item.title}}
                         </router-link>
                     </td>
