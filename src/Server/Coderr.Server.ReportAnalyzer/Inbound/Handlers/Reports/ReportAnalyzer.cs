@@ -190,7 +190,8 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
             var e = new ReportAddedToIncident(summary, ConvertToCoreReport(report, applicationVersion), isReOpened)
             {
                 IsNewIncident = isNewIncident,
-                IsStored = storeReport
+                IsStored = storeReport,
+                EnvironmentName = report.EnvironmentName
             };
             await context.SendAsync(e);
 

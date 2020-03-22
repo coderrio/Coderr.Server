@@ -56,7 +56,16 @@ namespace Coderr.Server.ReportAnalyzer.UserNotifications.Handlers
             {
                 if (setting.NewIncident != NotificationState.Disabled && e.IsNewIncident == true)
                 {
-                    await CreateNotification(context, e, setting.AccountId, setting.NewIncident);
+                    if (e.EnvironmentName.Equals("production", StringComparison.OrdinalIgnoreCase) ||
+                        e.EnvironmentName.Equals("prod", StringComparison.OrdinalIgnoreCase)
+                        || string.IsNullOrEmpty(e.EnvironmentName))
+                    {
+                        await CreateNotification(context, e, setting.AccountId, setting.NewIncident);
+                    }
+                    else
+                    {
+                        _log.Debug("Error was new, but not for the production environment: " + e.EnvironmentName);
+                    }
                 }
                 else if (setting.ReopenedIncident != NotificationState.Disabled && e.IsReOpened)
                 {

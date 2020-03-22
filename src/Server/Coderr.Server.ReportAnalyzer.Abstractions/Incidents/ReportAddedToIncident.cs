@@ -32,6 +32,12 @@ namespace Coderr.Server.ReportAnalyzer.Abstractions.Incidents
         {
         }
 
+
+        /// <summary>
+        /// Which environment the error was received in.
+        /// </summary>
+        public string EnvironmentName { get; set; }
+
         /// <summary>
         ///     Incident that the report was added to.
         /// </summary>
