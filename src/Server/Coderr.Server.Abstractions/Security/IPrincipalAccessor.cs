@@ -8,5 +8,7 @@ namespace Coderr.Server.Abstractions.Security
     public interface IPrincipalAccessor
     {
         ClaimsPrincipal Principal { get; set; }
+
+        ClaimsPrincipal FindPrincipal();
     }
 }

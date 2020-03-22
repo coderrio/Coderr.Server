@@ -1,8 +1,9 @@
-import * as MenuApi from "../../services/menu/MenuApi";
-import { AppRoot } from "../../services/AppRoot";
-import { PubSubService, MessageContext } from "../../services/PubSub";
-import { IncidentTopcis, IncidentAssigned, IncidentClosed, IncidentIgnored } from "../../services/incidents/IncidentService";
-import * as incidents from "../../dto/Core/Incidents";
+import * as MenuApi from "@/services/menu/MenuApi";
+import { AppRoot } from "@/services/AppRoot";
+import { AppEvents, ApplicationChanged } from "@/services/applications/ApplicationService";
+import { PubSubService, MessageContext } from "@/services/PubSub";
+import { IncidentTopcis, IncidentAssigned, IncidentClosed, IncidentIgnored } from "@/services/incidents/IncidentService";
+import * as incidents from "@/dto/Core/Incidents";
 
 /**
  * null if the user do not have any assigned incidents (for the selected application)
@@ -49,8 +50,8 @@ export class MyIncidents {
     constructor() {
         this.loadPromise$ = this.loadMyIncidentsFromBackend();
 
-        PubSubService.Instance.subscribe(MenuApi.MessagingTopics.ApplicationChanged, x => {
-            var msg = <MenuApi.ApplicationChanged>x.message.body;
+        PubSubService.Instance.subscribe(AppEvents.Selected, x => {
+            var msg = <ApplicationChanged>x.message.body;
             this.switchApplication(msg.applicationId);
         });
 
@@ -100,6 +101,10 @@ export class MyIncidents {
     }
 
     async switchIncident(incidentId: number) {
+        if (this.selectedIncident != null && this.selectedIncident.incidentId === incidentId) {
+            return;
+        }
+
         if (this.loadPromise$) {
             await this.loadPromise$;
         }
@@ -202,6 +207,7 @@ export class MyIncidents {
     }
 
     private filterMyIncidents() {
+
         this.myIncidents = this.allMyIncidents$.filter(item => {
             if (this.selectedApplicationId > 0) {
                 return item.applicationId === this.selectedApplicationId;

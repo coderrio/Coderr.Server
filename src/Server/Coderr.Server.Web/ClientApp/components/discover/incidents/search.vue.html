@@ -64,7 +64,7 @@
                             <div class="form-group context">
                                 <label>Context collection</label>
                                 <div>
-                                    <input name="CollectionName" type="text" class="form-control mb-1" placeholder="Collection name" v-model="contextCollectionName" /><br/>
+                                    <input name="CollectionName" type="text" class="form-control mb-1" placeholder="Collection name" v-model="contextCollectionName" /><br />
                                     <input name="PropertyName" type="text" class="form-control mb-1" placeholder="Property name" v-model="contextCollectionProperty" /><br />
                                     <input name="PropertyValue" type="text" class="form-control mb-1" placeholder="Property value" v-model="contextCollectionPropertyValue" />
                                     <p>
@@ -81,6 +81,10 @@
                     </div>
                     <div v-if="incidents.length > 0">
                         <div class="col">
+                            <div v-show="isLoading" class="loading">
+                                <img src="/images/symbol.png" width="128" height="128" />
+                            </div>
+
                             <table class="table w-100 table-striped checkboxes" id="searchTable" style="table-layout: fixed">
                                 <thead class="table-light search-head bg-blue">
                                     <tr>

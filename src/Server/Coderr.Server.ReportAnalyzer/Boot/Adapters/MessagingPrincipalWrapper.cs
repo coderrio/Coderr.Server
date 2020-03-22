@@ -9,5 +9,9 @@ namespace Coderr.Server.ReportAnalyzer.Boot.Adapters
     internal class MessagingPrincipalWrapper : IPrincipalAccessor
     {
         public ClaimsPrincipal Principal { get; set; }
+        public ClaimsPrincipal FindPrincipal()
+        {
+            return Principal;
+        }
     }
 }

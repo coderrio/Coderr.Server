@@ -6,17 +6,6 @@ export interface MenuItem {
     children?: MenuItem[];
 }
 
-export class MessagingTopics
-{
-    static SetApplication: string = "/menu/application/set/";
-    static ApplicationChanged: string = "/menu/application/changed/";
+export class MessagingTopics {
     static IgnoredReportCountUpdated = "/menu/missedreportcount/updated/";
-}
-
-export class SetApplication {
-    applicationId: number;
-}
-
-export class ApplicationChanged {
-    applicationId: number;
 }

@@ -36,13 +36,7 @@ namespace Coderr.Server.App.Core.Reports.Jobs
         /// <summary>
         ///     Number of reports which can be stored per incident.
         /// </summary>
-        public int MaxReportsPerIncident
-        {
-            get
-            {
-                return _reportConfig?.Value?.MaxReportsPerIncident ?? 100;
-            }
-        }
+        public int MaxReportsPerIncident => _reportConfig?.Value?.MaxReportsPerIncident ?? 25;
 
         /// <inheritdoc />
         public void Execute()

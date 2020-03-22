@@ -31,5 +31,10 @@ namespace Coderr.Server.Web.Boot.Adapters
 
             set => _principal = value;
         }
+
+        public ClaimsPrincipal FindPrincipal()
+        {
+            return _principal ?? _httpContextAccessor.HttpContext?.User;
+        }
     }
 }

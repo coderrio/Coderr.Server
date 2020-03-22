@@ -1,8 +1,7 @@
-import { PubSubService, MessageContext } from "@/services/PubSub";
 import { AppRoot } from '@/services/AppRoot';
-import * as MenuApi from "@/services/menu/MenuApi";
 import * as feedback from "@/dto/Web/Feedback";
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Mixins } from "vue-property-decorator";
+import { AppAware } from "@/AppMixins";
 
 interface IFeedback {
     description: string;
@@ -15,37 +14,27 @@ interface IFeedback {
 }
 
 @Component
-export default class DiscoverFeedbackComponent extends Vue {
+export default class DiscoverFeedbackComponent extends Mixins(AppAware) {
 
     applicationId: number = 0;
     feedbackList: IFeedback[] = [];
-    destroyed$ = false;
 
     created() {
-        PubSubService.Instance.subscribe(MenuApi.MessagingTopics.ApplicationChanged, this.onApplicationChangedInNavMenu);
+        this.onApplicationChanged(applicationId => {
+            if (this.$route.name !== 'discoverFeedback') {
+                return;
+            }
 
-        this.applicationId = parseInt(this.$route.params.applicationId, 10);
-        this.fetchFeedback();
-    }
+            this.feedbackList = [];
+            this.applicationId = applicationId;
+            this.fetchFeedback();
+        });
 
-    destroyed() {
-        PubSubService.Instance.unsubscribe(MenuApi.MessagingTopics.ApplicationChanged, this.onApplicationChangedInNavMenu);
-        this.destroyed$ = true;
-    }
-
-    private onApplicationChangedInNavMenu(ctx: MessageContext) {
-        if (this.$route.name !== 'discoverFeedback') {
-            return;
-        }
-
-        this.feedbackList = [];
-        const body = <MenuApi.ApplicationChanged>ctx.message.body;
-        this.applicationId = body.applicationId;
+        this.applicationId = AppRoot.Instance.currentApplicationId;
         this.fetchFeedback();
     }
 
     private fetchFeedback() {
-        console.log(this.applicationId);
         if (this.applicationId > 0) {
             const q = new feedback.GetFeedbackForApplicationPage();
             q.ApplicationId = this.applicationId;

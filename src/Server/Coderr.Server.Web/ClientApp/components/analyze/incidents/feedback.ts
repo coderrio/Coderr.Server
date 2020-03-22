@@ -1,8 +1,6 @@
-import { PubSubService } from "../../../services/PubSub";
 import { AppRoot } from '../../../services/AppRoot';
 import * as feedback from "../../../dto/Web/Feedback";
-import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 
 interface IFeedback {
     description: string;
@@ -34,7 +32,7 @@ export default class AnalyzeFeedbackComponent extends Vue {
                 });
             });
     }
-    
+
 
 
 }

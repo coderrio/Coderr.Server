@@ -36,7 +36,6 @@ export default class AnalyzeIncidentComponent extends Vue {
     }
 
     mounted() {
-        var incidentId = parseInt(this.$route.params.incidentId, 10);
         this.loadIncident();
         MyIncidents.Instance.subscribeOnSelectedIncident(this.selectIncident);
     }

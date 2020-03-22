@@ -5,6 +5,7 @@ using Coderr.Server.Domain.Modules.UserNotifications;
 using Coderr.Server.Infrastructure.Configuration;
 using Coderr.Server.ReportAnalyzer.UserNotifications;
 using Coderr.Server.ReportAnalyzer.UserNotifications.Dtos;
+using log4net;
 using Newtonsoft.Json;
 using WebPush;
 
@@ -15,6 +16,7 @@ namespace Coderr.Server.Web.Services
     {
         private readonly WebPushClient _client = new WebPushClient();
         private readonly VapidDetails _vapid;
+        private ILog _logger = LogManager.GetLogger(typeof(PushClient));
 
         public PushClient(IConfiguration<BrowserNotificationConfig> pushConfiguration, IConfiguration<BaseConfiguration> baseConfiguration)
         {
@@ -23,6 +25,12 @@ namespace Coderr.Server.Web.Services
 
         public async Task SendNotification(BrowserSubscription subscription, Notification notification)
         {
+            if (_vapid.PrivateKey == null)
+            {
+                _logger.Error("WebPush config is missing keys for accountId " + subscription.AccountId);
+                return;
+            }
+
             var json = JsonConvert.SerializeObject(notification);
             var dto = new PushSubscription(subscription.Endpoint, subscription.PublicKey,
                 subscription.AuthenticationSecret);

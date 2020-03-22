@@ -162,6 +162,16 @@ namespace Coderr.Server.App.Core.Accounts
             return identity;
         }
 
+        public async Task<Account> CreateAsync(string userName, string email)
+        {
+            var password = Guid.NewGuid().ToString("N").Substring(0, 10);
+            var account = new Account(userName, password);
+            account.Activate();
+            account.SetVerifiedEmail(email);
+            await _repository.CreateAsync(account);
+            await _messageBus.SendAsync(new AccountRegistered(account.Id, userName));
+            return account;
+        }
 
         /// <summary>
         ///     Accepts and deletes the invitation. Sends an event which is picked up by the application domain (which transforms

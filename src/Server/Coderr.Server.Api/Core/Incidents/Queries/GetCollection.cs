@@ -22,12 +22,12 @@ namespace Coderr.Server.Api.Core.Incidents.Queries
         /// <summary>
         /// Collection name like "ErrorProperties" or "HttpRequest".
         /// </summary>
-        public string CollectionName { get; }
+        public string CollectionName { get; private set; }
 
         /// <summary>
         /// Incident that the collection belongs to.
         /// </summary>
-        public int IncidentId { get; }
+        public int IncidentId { get; private set; }
 
         /// <summary>
         /// Collection limit.

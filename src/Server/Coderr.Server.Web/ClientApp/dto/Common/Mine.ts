@@ -8,6 +8,7 @@ export class ListMyIncidentsResult
     public static TYPE_NAME: string = 'ListMyIncidentsResult';
     public Items: ListMyIncidentsResultItem[];
     public Suggestions: ListMySuggestedItem[];
+    public Comment: string;
 }
 export class ListMyIncidentsResultItem
 {

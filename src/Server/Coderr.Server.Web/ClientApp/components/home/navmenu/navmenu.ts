@@ -1,11 +1,9 @@
-import { PubSubService, MessageContext } from "../../../services/PubSub";
+import { PubSubService } from "../../../services/PubSub";
 import * as MenuApi from "../../../services/menu/MenuApi";
-import { AppRoot } from "../../../services/AppRoot";
-import { AppEvents } from "../../../services/applications/ApplicationService";
-import Vue from 'vue';
-import { Component, Watch } from 'vue-property-decorator';
+import { AppRoot, IMyApplication } from "../../../services/AppRoot";
+import { AppEvents, ApplicationChanged } from "@/services/applications/ApplicationService";
+import { Component, Vue } from 'vue-property-decorator';
 import * as Router from "vue-router";
-
 
 interface IRouteNavigation {
     routeName: string;
@@ -19,12 +17,14 @@ declare var window: any;
 export default class NavMenuComponent extends Vue {
     private callbacks: NavigationCallback[] = [];
     private loaded = false;
+    private allApps: IMyApplication[] = [];
+
     childMenu: MenuApi.MenuItem[] = [];
 
     myApplicationsPromise: Promise<null>;
-    myApplications: MenuApi.MenuItem[] = [];
     currentApplicationName: string = 'All applications';
     currentApplicationId: number | null = null;
+    myApplications: IMyApplication[] = [];
     missedReportsMessage: string = '';
     isDiscoverActive: boolean = true;
     isAnalyzeActive: boolean = false;
@@ -32,38 +32,17 @@ export default class NavMenuComponent extends Vue {
     lastPublishedId$ = 0;
     onboarding: boolean = false;
     isAdmin = false;
+    licenseText = '';
 
     discoverLink: string = '/discover/';
-
-    @Watch('$route.params.applicationId')
-    onApplicationChanged(value: string, oldValue: string) {
-
-        if (!value) {
-            // analyze uses it's own logic
-            if (this.$route.path.indexOf('/analyze/') !== -1)
-                return;
-
-            AppRoot.Instance.currentApplicationId = null;
-            this.updateCurrent(0);
-            return;
-        }
-        var applicationId = parseInt(value);
-        AppRoot.Instance.currentApplicationId = applicationId; 
-        this.updateCurrent(applicationId);
-    }
 
     created() {
         this.myApplicationsPromise = new Promise((accept, reject) => {
             AppRoot.Instance.loadCurrentUser().then(x => {
-                x.applications.forEach(app => {
-                    var mnuItem = this.createAppMenuItem(app.id, app.name);
-                    this.myApplications.push(mnuItem);
-                });
+                this.allApps = x.applications;
                 accept();
             });
         });
-        this.myApplicationsPromise.then(x => {
-        })
 
         this.$router.beforeEach((to, from, next) => {
             if (to.fullPath.indexOf('/onboarding/') === -1 && this.onboarding) {
@@ -87,12 +66,24 @@ export default class NavMenuComponent extends Vue {
                 this.missedReportsMessage = '';
             }
         });
-        PubSubService.Instance.subscribe(MenuApi.MessagingTopics.SetApplication, ctx => {
-            var msg = <MenuApi.SetApplication>ctx.message.body;
-            this.changeApplication(msg.applicationId);
+        PubSubService.Instance.subscribe(AppEvents.Selected, ctx => {
+            return;
+            var msg = <ApplicationChanged>ctx.message.body;
+            if (msg.applicationId === null || msg.applicationId === 0) {
+
+                // analyze uses it's own logic
+                if (this.$route.path.indexOf('/analyze/') !== -1)
+                    return;
+
+                AppRoot.Instance.currentApplicationId = null;
+                this.updateCurrent(0);
+                return;
+            }
+
+            this.updateCurrent(msg.applicationId);
         });
         PubSubService.Instance.subscribe(AppEvents.Removed, ctx => {
-            this.myApplications = this.myApplications.filter(x => x.tag !== ctx.message.body);
+            this.myApplications = this.myApplications.filter(x => x.id !== ctx.message.body);
             if (this.currentApplicationId === <number>ctx.message.body) {
                 this.changeApplication(null);
             }
@@ -110,7 +101,18 @@ export default class NavMenuComponent extends Vue {
         }
     }
 
-    changeApplication(applicationId: number|null) {
+    changeApplication(applicationId: number | null) {
+        if (applicationId === this.currentApplicationId) {
+            return;
+        }
+        this.currentApplicationId = applicationId;
+        this.updateCurrent(applicationId);
+        if (applicationId == null) {
+            applicationId = 0;
+        }
+        AppRoot.Instance.applicationService.changeApplication(applicationId);
+        return;
+
         if (applicationId == null) {
             this.updateCurrent(0);
         } else {
@@ -137,10 +139,10 @@ export default class NavMenuComponent extends Vue {
         } else if (paramCount === 1 && currentRoute.params.hasOwnProperty('applicationId')) {
             if (applicationId == null) {
                 this.$router.push({ name: currentRoute.name });
-                this.publishApplicationChanged(null);
+                AppRoot.Instance.applicationService.changeApplication(0);
             } else {
                 this.$router.push({ name: currentRoute.name, params: { applicationId: applicationId.toString() } });
-                this.publishApplicationChanged(applicationId);
+                AppRoot.Instance.applicationService.changeApplication(applicationId);
             }
             return;
         } else if (currentRoute.path.indexOf('/discover') === 0) {
@@ -151,12 +153,12 @@ export default class NavMenuComponent extends Vue {
             } else {
                 this.$router.push({ name: 'analyzeHome', params: { applicationId: appIdStr } });
             }
-        } else  {
+        } else {
             const route = { name: currentRoute.name, params: { applicationId: appIdStr } };
             this.$router.push(route);
         }
 
-        this.publishApplicationChanged(applicationId);
+        AppRoot.Instance.applicationService.changeApplication(applicationId);
     }
 
     private askCallbacksForWhichMenu(route: Router.Route): string {
@@ -178,68 +180,34 @@ export default class NavMenuComponent extends Vue {
         return "";
     }
 
+    private logga(message: string) {
+        console.log(new Date().getTime() + " " + message);
+    }
 
     private updateCurrent(applicationId: number) {
-        if (applicationId === 0) {
+        if (applicationId === 0 || applicationId == null) {
             this.currentApplicationName = "All applications";
             this.currentApplicationId = null;
             this.discoverLink = "/discover/";
-            const msg = new MenuApi.ApplicationChanged();
-            msg.applicationId = applicationId;
-            this.publishApplicationChanged(null);
+            //const msg = new MenuApi.ApplicationChanged();
+            //msg.applicationId = applicationId;
             return;
         }
 
+        this.currentApplicationId = applicationId;
         this.myApplicationsPromise.then(x => {
-            var app = this.getApplication(applicationId);
+            var app = this.allApps.find(y => y.id === applicationId);
             this.currentApplicationId = applicationId;
 
-            var title = app.title;
+            var title = app.name;
             if (title.length > 40) {
                 title = title.substr(0, 35) + "[...]";
             }
             this.currentApplicationName = title;
             this.discoverLink = `/discover/${applicationId}`;
-            var msg = new MenuApi.ApplicationChanged();
-            msg.applicationId = applicationId;
-            this.publishApplicationChanged(applicationId);
+            //var msg = new MenuApi.ApplicationChanged();
+            //msg.applicationId = applicationId;
         });
-    }
-
-
-    private createAppMenuItem(applicationId: number, name: string): MenuApi.MenuItem {
-        if (!applicationId) {
-            throw new Error("Expected an applicationId.");
-        }
-
-        const app: MenuApi.MenuItem =
-        {
-            title: name,
-            url: '',
-            tag: applicationId
-        };
-        return app;
-
-    }
-    private getApplication(applicationId: number): MenuApi.MenuItem {
-        for (var i = 0; i < this.myApplications.length; i++) {
-            if (this.myApplications[i].tag === applicationId) {
-                return this.myApplications[i];
-            }
-        }
-
-        throw new Error('Failed to find application ' + applicationId + ".\r\n" + JSON.stringify(this.myApplications));
-    }
-
-    private publishApplicationChanged(applicationId: number) {
-        if (applicationId === this.lastPublishedId$) {
-            return;
-        }
-
-        this.lastPublishedId$ = applicationId;
-        var msg = new MenuApi.ApplicationChanged();
-        msg.applicationId = applicationId;
-        PubSubService.Instance.publish(MenuApi.MessagingTopics.ApplicationChanged, msg);
     }
 
 }

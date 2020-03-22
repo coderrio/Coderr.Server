@@ -27,7 +27,7 @@ namespace Coderr.Server.SqlServer.Core.Environments
 	                            from IncidentEnvironments ie 
 	                            join Incidents i ON (i.Id = ie.IncidentId)
 	                            join Environments e ON (ie.EnvironmentId = e.Id)
-	                            where i.ApplicationId = @applicationId
+	                            where i.ApplicationId = @applicationId AND i.State = 0
 	                            group by ie.IncidentId
 	                            having count(e.Id) = 1
                             )
@@ -45,7 +45,7 @@ namespace Coderr.Server.SqlServer.Core.Environments
 	                            from IncidentEnvironments ie 
 	                            join Incidents i ON (i.Id = ie.IncidentId)
 	                            join Environments e ON (ie.EnvironmentId = e.Id)
-	                            where i.ApplicationId = @applicationId
+	                            where i.ApplicationId = @applicationId AND i.State = 0
 	                            group by ie.IncidentId
                             )
                             DELETE IncidentEnvironments

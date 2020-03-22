@@ -1,14 +1,13 @@
-import { PubSubService, MessageContext } from "../../../services/PubSub";
+import { PubSubService } from "../../../services/PubSub";
 import * as MenuApi from "../../../services/menu/MenuApi";
 import { AppRoot } from "../../../services/AppRoot";
 import { GetOverview, GetOverviewResult } from "../../../dto/Web/Overview"
-import { FindIncidentsResultItem } from "../../../dto/Core/Incidents"
 import { GetApplicationOverview, GetApplicationOverviewResult, GetApplicationList, ApplicationListItem } from "../../../dto/Core/Applications"
-import * as Mine from "../../../dto/Common/Mine"
-import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
+import { Component, Watch, Mixins } from "vue-property-decorator";
+import { AppAware } from "@/AppMixins";
 import Chartist from "chartist";
 import * as moment from "moment";
+import { FindIncidentsResultItem } from "@/dto/Core/Incidents";
 
 interface ISeries {
     name?: string;
@@ -20,7 +19,7 @@ interface ILegend {
 }
 
 @Component
-export default class DiscoverComponent extends Vue {
+export default class DiscoverHomeComponent extends Mixins(AppAware) {
     private static activeBtnTheme: string = 'btn-dark';
 
     applicationId: number = 0;
@@ -34,26 +33,9 @@ export default class DiscoverComponent extends Vue {
     followers: number = 0;
 
     myIncidents: FindIncidentsResultItem[] = [];
-    myBestSuggestion: Mine.ListMySuggestedItem | null = null;
 
+    comment: string = "";
     legend: ILegend[] = [];
-
-    @Watch('$route.params.applicationId')
-    onApplicationChanged(value: string, oldValue: string) {
-        if (!value) {
-            this.applicationId = 0;
-            this.firstApplicationId = 0;
-            this.loadGenericOverview();
-            return;
-        }
-        this.applicationId = parseInt(value);
-        this.firstApplicationId = 0;
-
-        if (this.$route.fullPath.indexOf('/discover/') === -1) {
-            return;
-        }
-        this.loadApplication(this.applicationId);
-    }
 
     created() {
         if (this.$route.params.applicationId && this.$route.params.applicationId !== '0') {
@@ -64,6 +46,26 @@ export default class DiscoverComponent extends Vue {
             this.loadGenericOverview();
             this.firstApplicationId = 0;
         }
+
+        this.onApplicationChanged(applicationId => {
+            if (this.applicationId === applicationId) {
+                return;
+            }
+            if (applicationId === 0) {
+                console.log('generic');
+                this.applicationId = 0;
+                this.firstApplicationId = 0;
+                this.loadGenericOverview();
+                return;
+            }
+            this.applicationId = applicationId;
+            this.firstApplicationId = 0;
+            if (this.$route.fullPath.indexOf('/discover') === -1) {
+                return;
+            }
+
+            this.loadApplication(this.applicationId);
+        });
 
         AppRoot.Instance.apiClient.query<ApplicationListItem[]>(new GetApplicationList())
             .then(result => {
@@ -84,11 +86,11 @@ export default class DiscoverComponent extends Vue {
     beforeDestroy() {
         this.destroyed$ = true;
     }
-    assignBestToMe() {
-
-    }
 
     private loadApplication(applicationId: number) {
+        var route = this.$route;
+        this.$router.push({ name: route.name, params: { applicationId: applicationId.toString() } });
+
         var q = new GetApplicationOverview();
         q.ApplicationId = applicationId;
         q.NumberOfDays = 30;
@@ -103,11 +105,6 @@ export default class DiscoverComponent extends Vue {
                 this.feedbackCount = result.StatSummary.UserFeedback;
                 this.followers = result.StatSummary.Followers;
                 this.displayChartForApplication(result);
-            });
-
-        AppRoot.Instance.incidentService.getMine(applicationId)
-            .then(result => {
-                this.myIncidents = result;
             });
     }
 
@@ -127,11 +124,6 @@ export default class DiscoverComponent extends Vue {
                 this.displayChart(result);
 
                 PubSubService.Instance.publish(MenuApi.MessagingTopics.IgnoredReportCountUpdated, result.MissedReports);
-            });
-
-        AppRoot.Instance.incidentService.getMine()
-            .then(result => {
-                this.myIncidents = result;
             });
     }
 

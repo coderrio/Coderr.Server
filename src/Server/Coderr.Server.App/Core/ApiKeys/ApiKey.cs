@@ -73,6 +73,9 @@ namespace Coderr.Server.App.Core.ApiKeys
             if (applicationId <= 0) throw new ArgumentOutOfRangeException("applicationId");
 
             _claims.Add(new Claim(CoderrClaims.Application, applicationId.ToString(), ClaimValueTypes.Integer32));
+
+            // Api clients typically are allowed to manage everything. Let's do that!
+            _claims.Add(new Claim(CoderrClaims.ApplicationAdmin, applicationId.ToString(), ClaimValueTypes.Integer32));
         }
 
         /// <summary>

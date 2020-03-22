@@ -93,7 +93,7 @@ export default class ManageHomeComponent extends Vue {
         }
     }
 
-    inviteUser() {
+    inviteUser(evt: Event) {
         var cmd = new InviteUser();
         cmd.ApplicationId = this.applicationId;
         cmd.EmailAddress = this.inviteEmail;
@@ -103,6 +103,8 @@ export default class ManageHomeComponent extends Vue {
         dto.EmailAddress = cmd.EmailAddress;
         this.invites.push(dto);
         this.inviteEmail = '';
+        var form = <HTMLFormElement>evt.target;
+        form.reset();
     }
 
 

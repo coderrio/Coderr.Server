@@ -50,7 +50,7 @@ namespace Coderr.Server.App.Core.Incidents.Commands
                 !string.IsNullOrEmpty(command.NotificationText))
             {
                 var emails = await _feedbackRepository.GetEmailAddressesAsync(command.IncidentId);
-                if (emails.Any())
+                if (emails.Distinct().Any())
                 {
                     var emailMessage = new EmailMessage(emails)
                     {

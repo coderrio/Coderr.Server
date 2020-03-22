@@ -74,7 +74,7 @@
                         <table class="table th-vertical">
                             <tr v-for="fact in incident.Facts">
                                 <th>{{fact.Title}}</th>
-                                <td>{{fact.Value}}</td>
+                                <td><span v-html="fact.Value"></span></td>
                             </tr>
                         </table>
                     </div>

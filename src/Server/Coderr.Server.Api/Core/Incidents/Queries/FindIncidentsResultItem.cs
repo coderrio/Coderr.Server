@@ -7,7 +7,6 @@ namespace Coderr.Server.Api.Core.Incidents.Queries
     /// </summary>
     public class FindIncidentsResultItem
     {
-
         /// <summary>
         ///     Creates new instance of <see cref="FindIncidentsResultItem" />.
         /// </summary>
@@ -72,7 +71,7 @@ namespace Coderr.Server.Api.Core.Incidents.Queries
         /// <summary>
         ///     Incident name
         /// </summary>
-        public string Name { get; set; }
+        public string Name { set; get; }
 
         /// <summary>
         ///     Total number of received reports (increased even if the number of stored reports are at the limit)

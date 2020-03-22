@@ -54,6 +54,24 @@ namespace Coderr.Server.Abstractions.Security
         /// <param name="principal">principal to search in</param>
         /// <returns>id</returns>
         /// <exception cref="InvalidOperationException">Claim is not found in the identity/ies.</exception>
+        public static int FindAccountId(this ClaimsPrincipal principal)
+        {
+            var claim = principal.FindFirst(x => x.Type == ClaimTypes.NameIdentifier);
+            if (claim == null)
+                return 0;
+
+            if (int.TryParse(claim.Value, out var userId))
+                return userId;
+
+            return -1;
+        }
+
+        /// <summary>
+        ///     Get account id (<see cref="ClaimTypes.NameIdentifier" />).
+        /// </summary>
+        /// <param name="principal">principal to search in</param>
+        /// <returns>id</returns>
+        /// <exception cref="InvalidOperationException">Claim is not found in the identity/ies.</exception>
         public static int GetAccountId(this IPrincipal principal)
         {
             var prince = principal as ClaimsPrincipal;
@@ -148,7 +166,7 @@ namespace Coderr.Server.Abstractions.Security
         public static string ToFriendlyString(this IPrincipal principal)
         {
             var cc = principal as ClaimsPrincipal;
-            if (cc == null || !principal.Identity.IsAuthenticated)
+            if (cc == null || principal.Identity?.IsAuthenticated != true)
             {
                 return "Anonymous";
             }

@@ -1,9 +1,8 @@
-import { PubSubService, MessageContext } from "../../services/PubSub";
 import * as MenuApi from "../../services/menu/MenuApi";
-import Vue from "vue";
-import { AppRoot } from '../../services/AppRoot';
-import { Component, Watch } from 'vue-property-decorator';
+import { AppRoot } from "@/services/AppRoot";
+import { Component, Watch, Vue, Mixins } from "vue-property-decorator";
 import { MyIncidents, IMyIncident } from "./myincidents";
+import { AppAware } from "@/AppMixins";
 
 interface IRouteNavigation {
     routeName: string;
@@ -11,24 +10,27 @@ interface IRouteNavigation {
     setMenu(name: String): void;
 }
 
-type NavigationCallback = (context: IRouteNavigation) => void;
-
 @Component
-export default class AnalyzeMenuComponent extends Vue {
+export default class AnalyzeMenuComponent extends Mixins(AppAware) {
     childMenu: MenuApi.MenuItem[] = [];
 
     incidents: IMyIncident[] = [];
-    title = '';
+    title = "";
     incidentId: number | null = null;
     toggleMenu = false;
     applicationId: number | null = null;
+    initialIncidentId: number = 0;
 
     created() {
+        this.applicationId = AppRoot.Instance.currentApplicationId;
+        this.onApplicationChanged(x => this.applicationId = x);
+
         if (this.$route.params.incidentId) {
             this.incidentId = parseInt(this.$route.params.incidentId, 10);
+            this.initialIncidentId = this.incidentId;
+            MyIncidents.Instance.switchIncident(this.incidentId);
         }
-        this.applicationId = AppRoot.Instance.currentApplicationId;
-        PubSubService.Instance.subscribe(MenuApi.MessagingTopics.ApplicationChanged, this.onApplicationChangedInNavMenu);
+
         MyIncidents.Instance.subscribeOnSelectedIncident(this.onIncidentSelected);
         MyIncidents.Instance.subscribeOnListChanges(this.onListChanged);
     }
@@ -42,12 +44,12 @@ export default class AnalyzeMenuComponent extends Vue {
                 }
                 this.incidents = MyIncidents.Instance.myIncidents;
             });
+
     }
 
     destroyed() {
         MyIncidents.Instance.unsubscribe(this.onIncidentSelected);
         MyIncidents.Instance.unsubscribe(this.onListChanged);
-        PubSubService.Instance.unsubscribe(MenuApi.MessagingTopics.ApplicationChanged, this.onApplicationChangedInNavMenu);
     }
 
     toggleIncidentMenu() {
@@ -65,32 +67,21 @@ export default class AnalyzeMenuComponent extends Vue {
 
     private onIncidentSelected(incident: IMyIncident | null) {
         if (incident == null) {
-            this.title = '(Select an incident)';
+            this.title = "(Select an incident)";
             this.incidentId = null;
+            this.$router.push({ name: "analyzeHome" });
         } else {
-            this.$router.push({ name: 'analyzeIncident', params: { incidentId: incident.incidentId.toString() } });
+            if (this.initialIncidentId !== incident.incidentId) {
+                this.$router.push({ name: "analyzeIncident", params: { incidentId: incident.incidentId.toString() } });
+            }
             this.title = incident.shortTitle;
             this.incidentId = incident.incidentId;
         }
     }
 
-    @Watch('$route.params.applicationId')
-    onAppRoute(value: string, oldValue: string) {
-        if (!value) {
-            this.applicationId = null;
-            return;
-        } else {
-            this.applicationId = parseInt(value, 10);
-        }
-    }
-    private onApplicationChangedInNavMenu(ctx: MessageContext) {
-        var body = <MenuApi.ApplicationChanged>ctx.message.body;
-        this.applicationId = body.applicationId;
-    }
-
-    @Watch('$route.params.incidentId')
+    @Watch("$route.params.incidentId")
     onIncidentRoute(value: string, oldValue: string) {
-        if (this.$route.fullPath.indexOf('/analyze/') === -1) {
+        if (this.$route.fullPath.indexOf("/analyze/") === -1) {
             return;
         }
         if (!value) {

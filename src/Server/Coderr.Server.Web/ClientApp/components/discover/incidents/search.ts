@@ -3,11 +3,12 @@ import * as MenuApi from "../../../services/menu/MenuApi";
 import { FindIncidents, FindIncidentsResult, IncidentOrder } from "../../../dto/Core/Incidents";
 import { GetTags, TagDTO } from "../../../dto/Modules/Tagging";
 import { GetEnvironments, GetEnvironmentsResult, GetEnvironmentsResultItem } from "../../../dto/Core/Environments";
-import { ApplicationService, AppEvents, ApplicationCreated } from "../../../services/applications/ApplicationService";
+import { ApplicationService, AppEvents, ApplicationCreated, ApplicationChanged } from "../../../services/applications/ApplicationService";
 import { ApiClient } from '../../../services/ApiClient';
 import { AppRoot } from "../../../services/AppRoot";
 import { IncidentService } from "../../../services/incidents/IncidentService";
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Mixins } from "vue-property-decorator";
+import { AppAware } from "@/AppMixins";
 
 declare var $: any;
 interface Incident {
@@ -32,11 +33,11 @@ interface IEnvironment2 {
 }
 
 @Component
-export default class IncidentSearchComponent extends Vue {
+export default class IncidentSearchComponent extends Mixins(AppAware) {
     private apiClient$: ApiClient = AppRoot.Instance.apiClient;
     private incidentService$: IncidentService = AppRoot.Instance.incidentService;
     private readyPromises$: Promise<any>[] = [];
-    private destroyed$ = false;
+    isLoading = false;
 
     //controls
     showFilters: boolean = false;
@@ -71,7 +72,7 @@ export default class IncidentSearchComponent extends Vue {
     private activeBtn$ = 'active';
 
     created() {
-        PubSubService.Instance.subscribe(MenuApi.MessagingTopics.ApplicationChanged, this.onApplicationChangedInNavMenu);
+        this.onApplicationChanged(this.onAppSelected);
 
         //fetch in created since we do not need the DOM
         var promise = new Promise<any>(resolve => {
@@ -104,9 +105,11 @@ export default class IncidentSearchComponent extends Vue {
             AppRoot.Instance.apiClient.query<GetEnvironmentsResult>(q)
                 .then(x => {
                     this.availableEnvironments.length = 0;
+                    console.log('env', x);
                     x.Items.forEach(x => {
                         this.availableEnvironments.push({ id: x.Id, name: x.Name });
                     });
+                    console.log('env2', this.availableEnvironments);
                     resolve();
                 });
         });
@@ -125,7 +128,6 @@ export default class IncidentSearchComponent extends Vue {
     }
 
     destroyed() {
-        PubSubService.Instance.unsubscribe(MenuApi.MessagingTopics.ApplicationChanged, this.onApplicationChangedInNavMenu);
         this.destroyed$ = true;
     }
 
@@ -139,6 +141,7 @@ export default class IncidentSearchComponent extends Vue {
                 if (this.destroyed$) {
                     return;
                 }
+                this.isLoading = false;
 
                 // Since the state contains appId(s), we need to override it.
                 if (this.$route.params.applicationId) {
@@ -237,7 +240,6 @@ export default class IncidentSearchComponent extends Vue {
     private searchInternal(byCode?: boolean) {
         var query = new FindIncidents();
         query.FreeText = this.freeText;
-
         switch (this.incidentState) {
             case -1:
                 break;
@@ -268,10 +270,11 @@ export default class IncidentSearchComponent extends Vue {
         }
 
         if (byCode !== true) {
+            this.isLoading = true;
             AppRoot.Instance.storeState({
                 name: 'incident-search',
                 component: this,
-                excludeProperties: ["incidents", "availableApplications", "availableTags", "checkedIncidents"]
+                excludeProperties: ["incidents", "availableApplications", "availableTags", "checkedIncidents", "availableEnvironments"]
             });
         }
         query.PageNumber = 1;
@@ -286,13 +289,14 @@ export default class IncidentSearchComponent extends Vue {
             query.ContextCollectionPropertyValue = this.contextCollectionPropertyValue;
         }
 
-        
+
         AppRoot.Instance.apiClient.query<FindIncidentsResult>(query)
             .then(result => {
                 if (this.destroyed$) {
                     return;
                 }
 
+                this.isLoading = false;
                 this.incidents.splice(0);
                 result.Items.forEach(item => {
                     var entity: Incident = {
@@ -352,16 +356,15 @@ export default class IncidentSearchComponent extends Vue {
 
     }
 
-    private onApplicationChangedInNavMenu(ctx: MessageContext) {
+    private onAppSelected(applicationId: number) {
         if (this.$route.name !== 'findIncidents') {
             return;
         }
-        var body = <MenuApi.ApplicationChanged>ctx.message.body;
-        if (body.applicationId == null) {
+        if (applicationId == 0) {
             this.activeApplications = [];
             this.showApplicationColumn = true;
         } else {
-            this.activeApplications = [body.applicationId];
+            this.activeApplications = [applicationId];
             this.showApplicationColumn = false;
         }
 
@@ -427,7 +430,7 @@ export default class IncidentSearchComponent extends Vue {
                 button.classList.add(this.activeBtn$);
             } else {
                 if (button.classList.contains(this.activeBtn$))
-                button.classList.remove(this.activeBtn$);
+                    button.classList.remove(this.activeBtn$);
             }
         }
 

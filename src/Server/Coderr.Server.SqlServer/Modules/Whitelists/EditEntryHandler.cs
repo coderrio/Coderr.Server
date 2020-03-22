@@ -135,18 +135,28 @@ namespace Coderr.Server.SqlServer.Modules.Whitelists
         {
             var dbIps = await _uow.ToListAsync<WhitelistedDomainIp>("DomainId = @id", new { id = message.Id });
 
-            //find new
-            var newIps = message.IpAddresses.Except(dbIps.Select(x => x.IpAddress.ToString()));
-            foreach (var newIp in newIps)
+            foreach (var address in message.IpAddresses)
             {
-                var entity = new WhitelistedDomainIp
+                var dbIp = dbIps.FirstOrDefault(x => x.IpAddress.ToString() == address);
+                if (dbIp == null)
                 {
-                    DomainId = whitelist.Id,
-                    IpType = IpType.Manual,
-                    IpAddress = IPAddress.Parse(newIp),
-                    StoredAtUtc = DateTime.UtcNow
-                };
-                await _uow.InsertAsync(entity);
+                    var entity = new WhitelistedDomainIp
+                    {
+                        DomainId = whitelist.Id,
+                        IpType = IpType.Manual,
+                        IpAddress = IPAddress.Parse(address),
+                        StoredAtUtc = DateTime.UtcNow
+                    };
+                    await _uow.InsertAsync(entity);
+                    continue;
+                }
+
+                if (dbIp.IpType == IpType.Manual)
+                    continue;
+
+                dbIp.IpType = IpType.Manual;
+                await _uow.UpdateAsync(dbIp);
+
             }
 
             //find removed

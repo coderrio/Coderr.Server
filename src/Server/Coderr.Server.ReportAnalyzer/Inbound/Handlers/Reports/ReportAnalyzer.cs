@@ -95,6 +95,12 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
                 isNewIncident = true;
                 incident = BuildIncident(report);
                 _repository.CreateIncident(incident);
+                await _repository.StoreReportStats(new ReportMapping()
+                {
+                    IncidentId = incident.Id,
+                    ErrorId = report.ClientReportId,
+                    ReceivedAtUtc = report.CreatedAtUtc
+                });
 
                 var evt = new IncidentCreated(incident.ApplicationId,
                     incident.Id, incident.Description, incident.FullName)
@@ -114,6 +120,15 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
                     _repository.UpdateIncident(incident);
                     return;
                 }
+
+                // Do this before checking closed
+                // as we want to see if it still gets reports.
+                await _repository.StoreReportStats(new ReportMapping()
+                {
+                    IncidentId = incident.Id,
+                    ErrorId = report.ClientReportId,
+                    ReceivedAtUtc = report.CreatedAtUtc
+                });
 
                 if (incident.IsClosed)
                 {
@@ -166,13 +181,6 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
                 _repository.CreateReport(report);
                 _logger.Debug($"saving report {report.Id} for incident {incident.Id}");
             }
-
-            await _repository.StoreReportStats(new ReportMapping()
-            {
-                IncidentId = incident.Id,
-                ErrorId = report.ClientReportId,
-                ReceivedAtUtc = report.CreatedAtUtc
-            });
 
             var appName = _repository.GetAppName(incident.ApplicationId);
             var summary = new IncidentSummaryDTO(incident.Id, incident.Description)

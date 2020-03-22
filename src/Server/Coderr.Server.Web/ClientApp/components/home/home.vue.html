@@ -1,23 +1,20 @@
 <template>
-    <div class="onboarding">
-        <div v-show="showOnboarding" class="pb-5">
+    <div class="onboarding main-view">
+        <div v-show="showOnboarding">
             <div class="row">
-                <div class="col">
-                    <div class="p-4">
-                        <h2>Welcome to Coderr!</h2>
-                        <p class="lead">
-                            Coderr finds errors in production and makes it trivial to reproduce and correct them. 
-                            The best way to get started is to read our <a class="text-red" href="https://coderr.io/documentation/getting-started/">getting started guide</a>.
-                        </p>
-                    </div>
+                <div class="col mb-2 mt-5">
+                    <h2>Welcome to Coderr!</h2>
+                    <p class="lead">
+                        Coderr finds errors in production and makes it trivial to reproduce and correct them. The best way to get started is to read our <a class="text-blue" href="https://coderr.io/documentation/getting-started/">getting started guide</a>.
+                    </p>
 
                 </div>
             </div>
-            <div class="m-4">
-                <div class="row card-group white left w33">
+            <div class="row">
+                <div class="col card-group ">
                     <div class="card">
                         <div class="card-header">
-                            <h3>Report errors</h3>
+                            Report errors
                         </div>
 
                         <div class="card-body">
@@ -34,12 +31,12 @@
 
                         </div>
                         <div class="card-footer">
-                            <button class="btn btn-dark" @click.prevent="start">Configuration wizard</button>
+                            <button class="btn btn-blue" @click.prevent="start">Configuration wizard</button>
                         </div>
                     </div>
                     <div class="card">
                         <div class="card-header">
-                            <h3>Application configuration (admin only)</h3>
+                            Application configuration (admin only)
                         </div>
                         <div class="card-body">
                             <p>
@@ -49,33 +46,20 @@
                                 You can change its name and create more applications by clicking on the Cog wheel (<i class="fa fa-cog text-primary"></i>) at top right.
                             </p>
                         </div>
-                        <div class="card-footer">
-                            <a class="btn btn-dark" :href="`manage/application/${appId}`">
-                                Application settings
-                            </a>
-                        </div>
                     </div>
 
                     <div class="card">
                         <div class="card-header">
-                            <h3>Invite co-workers (admin only)</h3>
+                            Invite co-workers (admin only)
                         </div>
 
                         <div class="card-body">
                             <p>To invite co-workers, use the Cog wheel (<i class="fa fa-cog text-primary"></i>) found in top right menu, select one of your applications and then use the "Security" tab.</p>
                         </div>
-                        <div class="card-footer">
-                            <a class="btn btn-dark" :href="`manage/application/${appId}/security`">
-                                Invite co-workers
-                            </a>
-                        </div>
-
                     </div>
-                </div>
-                <div class="row card-group mt-2">
                     <div class="card">
                         <div class="card-header">
-                            <h3>Before going to production</h3>
+                            Before going to production
                         </div>
                         <div class="card-body">
                             <pre><code>Err.Configuration.ThrowExceptions = false;</code></pre>
@@ -84,14 +68,14 @@
                     </div>
                     <div class="card">
                         <div class="card-header">
-                            <h3>Disable Coderr in Development environments</h3>
+                            Disable Coderr in Development environments
                         </div>
                         <div class="card-body">
                             <p>You typically have full control over errors happening in development environments. Learn how to conditionally enable Coderr to reduce noise.</p>
 
                         </div>
                         <div class="card-footer">
-                            <a class="btn btn-dark" href="https://coderr.io/documentation/getting-started/#before-going-to-production">Learn more</a>
+                            <a class="btn btn-blue" href="https://coderr.io/documentation/getting-started/#before-going-to-production">Learn more</a>
                         </div>
                     </div>
                 </div>
@@ -99,12 +83,10 @@
         </div>
         <div v-show="noApps">
             <div class="row">
-                <div class="bg-dark">
-                    <h1 class="display-4">Welcome to Coderr! </h1>
-                    <p class="lead">
-                        You are not a member of any applications in Coderr yet. Ask your administrator to get invited.
-                    </p>
-                </div>
+                <h1 class="display-4">Welcome to Coderr! </h1>
+                <p class="lead">
+                    You are not a member of any applications in Coderr yet. Ask your administrator to get invited.
+                </p>
             </div>
         </div>
     </div>

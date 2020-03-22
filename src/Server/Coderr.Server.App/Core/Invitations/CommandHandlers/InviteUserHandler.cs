@@ -72,7 +72,7 @@ namespace Coderr.Server.App.Core.Invitations.CommandHandlers
 
                 var member = new ApplicationTeamMember(command.ApplicationId, invitedUser.AccountId, inviter.UserName)
                 {
-                    Roles = new[] {ApplicationRole.Member}
+                    Roles = new[] { ApplicationRole.Member }
                 };
 
                 await _applicationRepository.CreateAsync(member);
@@ -93,7 +93,7 @@ namespace Coderr.Server.App.Core.Invitations.CommandHandlers
             var invitedMember = new ApplicationTeamMember(command.ApplicationId, command.EmailAddress)
             {
                 AddedByName = inviter.UserName,
-                Roles = new[] {ApplicationRole.Member}
+                Roles = new[] { ApplicationRole.Member }
             };
             await _applicationRepository.CreateAsync(invitedMember);
             var invitation = await _invitationRepository.FindByEmailAsync(command.EmailAddress);
@@ -147,7 +147,7 @@ Click on the following link to accept the invitation:
 Best regards,
   The Coderr team
 ",
-                Recipients = new[] {new EmailAddress(invitation.EmailToInvitedUser)}
+                Recipients = new[] { new EmailAddress(invitation.EmailToInvitedUser) }
             };
 
             await context.SendAsync(new SendEmail(msg));

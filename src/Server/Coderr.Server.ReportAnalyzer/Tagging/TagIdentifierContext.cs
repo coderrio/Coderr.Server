@@ -82,9 +82,9 @@ namespace Coderr.Server.ReportAnalyzer.Tagging
         /// <param name="orderNumber">used to customize in which order the tags appear on the web page. 1 = first</param>
         public void AddTag(string tag, int orderNumber)
         {
-            if (_newTags.Any(x => x.Name == tag))
+            if (_newTags.Any(x => x.Name.Equals(tag, StringComparison.OrdinalIgnoreCase)))
                 return;
-            if (_existingTags.Any(x => x.Name == tag))
+            if (_existingTags.Any(x => x.Name.Equals(tag, StringComparison.OrdinalIgnoreCase)))
                 return;
 
             _newTags.Add(new Tag(tag, orderNumber));

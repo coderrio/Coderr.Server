@@ -138,6 +138,7 @@ namespace Coderr.Server.Web.Controllers
             }
 
             RestrictOnApplicationId(cqsObject);
+            _principalSetter.Principal = User as ClaimsPrincipal;
 
             Exception ex = null;
             try

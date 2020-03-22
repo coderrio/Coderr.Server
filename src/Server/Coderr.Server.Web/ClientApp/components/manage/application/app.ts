@@ -1,32 +1,20 @@
-import { PubSubService, MessageContext } from "../../../services/PubSub";
-import * as MenuApi from "../../../services/menu/MenuApi";
-import Vue from 'vue';
-import { Component, Watch } from 'vue-property-decorator';
+import { Component, Mixins } from 'vue-property-decorator';
+import { AppAware } from "@/AppMixins";
 
 @Component({
     components: {
         ManageAppMenu: require('./menu.vue.html').default
     }
 })
-export default class ManageComponent extends Vue {
+export default class ManageComponent extends Mixins(AppAware) {
     created() {
-        PubSubService.Instance.subscribe(MenuApi.MessagingTopics.ApplicationChanged, this.onApplicationChangedInNavMenu);
-    }
-
-    destroyed() {
-        PubSubService.Instance.unsubscribe(MenuApi.MessagingTopics.ApplicationChanged, this.onApplicationChangedInNavMenu);
-    }
-
-    private onApplicationChangedInNavMenu(ctx: MessageContext) {
-        if (this.$route.path.indexOf('/manage/') === -1) {
-            return;
-        }
-        var body = <MenuApi.ApplicationChanged>ctx.message.body;
-        if (body.applicationId == null) {
-            this.$router.push({ name: 'manageHome' });
-        }
-    }
-
-    private testMe(e:any) {
+        this.onApplicationChanged(applicationId => {
+            if (this.$route.path.indexOf('/manage/') === -1) {
+                return;
+            }
+            if (applicationId == null || applicationId === 0) {
+                this.$router.push({ name: 'manageHome' });
+            }
+        });
     }
 }

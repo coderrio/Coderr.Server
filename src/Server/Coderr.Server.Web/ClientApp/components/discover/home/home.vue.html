@@ -4,13 +4,13 @@
             <div class="col-lg-4 col-md-5 card-col">
                 <div class="card">
                     <div class="card-header">
-                        Summary (last 30 days)
+                        <i class="fa fa-chart-line"></i> Summary (last 30 days)
                     </div>
                     <div class="card-body">
                         <table class="th-vertical">
                             <tbody>
                                 <tr>
-                                    <th>Number of incidents</th>
+                                    <th>Number of open incidents</th>
                                     <td>{{ incidentCount }}</td>
                                 </tr>
                                 <tr style="white-space: nowrap">
@@ -32,7 +32,7 @@
                 </div>
                 <div class="card" v-if="reportCount == 0">
                     <div class="card-header">
-                        Report exceptions
+                        <i class="fa fa-tasks"></i> Report exceptions
                     </div>
                     <div class="card-body">
                         <p>

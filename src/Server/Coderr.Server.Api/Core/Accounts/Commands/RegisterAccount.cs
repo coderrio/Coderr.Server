@@ -68,5 +68,14 @@ namespace Coderr.Server.Api.Core.Accounts.Commands
             ActivateDirectly = true;
             AccountId = accountId;
         }
+
+        /// <summary>
+        ///     Activate this account directly
+        /// </summary>
+        public void Activate()
+        {
+            ActivateDirectly = true;
+            AccountId = 0;
+        }
     }
 }

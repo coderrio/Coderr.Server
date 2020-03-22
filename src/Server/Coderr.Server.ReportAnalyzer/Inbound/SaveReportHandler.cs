@@ -212,7 +212,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound
                     cmd.AddParameter("appKey", appKey);
                     cmd.AddParameter("signature", sig);
                     var p = cmd.CreateParameter();
-                    p.SqlDbType = System.Data.SqlDbType.Image;
+                    p.SqlDbType = System.Data.SqlDbType.Binary;
                     p.ParameterName = "reportbody";
                     p.Value = reportBody;
                     cmd.Parameters.Add(p);

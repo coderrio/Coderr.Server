@@ -16,17 +16,50 @@
     cursor: pointer;
 }
 
-.sort-ascending {
+div.loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 128px;
+    height: 128px;
+    margin-left: -64px; /* Half the width */
+    animation: sk-rotateplane 4s infinite ease-in-out;
+}
 
+
+@keyframes sk-rotateplane {
+    0% {
+        transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+    }
+
+    25% {
+        transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+    }
+
+    50% {
+        transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+    }
+
+    75% {
+        transform: perspective(120px) rotateX(0deg) rotateY(-179.9deg);
+    }
+}
+
+.sort-ascending {
 }
 
 #searchTable {
     margin-bottom: 20px;
 }
-#searchTable th {
-    font-weight: normal;
-    color: white;
-}
+
+    #searchTable th {
+        font-weight: normal;
+        color: white;
+    }
+
+    #searchTable tbody td a {
+        color: #666666;
+    }
 
 #SearchOptions * {
     font-size: 0.7rem !important;

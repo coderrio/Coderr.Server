@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Domain.Core.ErrorReports;
 using Coderr.Server.Infrastructure;
+using Coderr.Server.Infrastructure.Security;
 using Coderr.Server.ReportAnalyzer;
 using Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports;
 using Coderr.Server.ReportAnalyzer.Incidents;
@@ -243,7 +244,7 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer
                                 newReport.RemoteAddress = (string) reader["RemoteAddress"];
 
                                 var claims = CoderrDtoSerializer.Deserialize<Claim[]>((string) reader["Claims"]);
-                                newReport.User = new ClaimsPrincipal(new ClaimsIdentity(claims));
+                                newReport.User = new ClaimsPrincipal(new ClaimsIdentity(claims, AuthenticationTypes.Default));
 
                                 reports.Add(newReport);
                                 idsToRemove.Add(reader.GetInt32(0));

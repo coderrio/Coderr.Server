@@ -1,13 +1,7 @@
-import { PubSubService } from '../PubSub';
+import { PubSubService, Message } from '../PubSub';
 import { ApiClient } from '../ApiClient';
 import { AppRoot } from '../AppRoot';
-import {
-    GetApplicationList, ApplicationListItem,
-    GetApplicationTeam, GetApplicationTeamResult, GetApplicationTeamMember,
-    GetApplicationInfo, GetApplicationInfoResult,
-    CreateApplication, TypeOfApplication,
-    UpdateApplication, DeleteApplication
-} from "../../dto/Core/Applications"
+import * as dto from "@/dto/Core/Applications"
 
 export class AppEvents {
     static readonly Created: string = "application/created";
@@ -15,6 +9,10 @@ export class AppEvents {
     static readonly Updated: string = "application/updated";
     static readonly Selected: string = "application/selected";
 };
+
+export class ApplicationChanged {
+    applicationId: number;
+}
 
 export class ApplicationCreated {
     readonly id: number;
@@ -29,8 +27,6 @@ export class ApplicationCreated {
         this.appKey = appKey;
     }
 }
-
-
 
 export class ApplicationSummary {
     readonly id: number;
@@ -80,7 +76,7 @@ class Guid {
 //@IocService()
 export class ApplicationService {
     private applications: ApplicationSummary[] = [];
-    private fetchPromise: Promise<ApplicationListItem[]>;
+    private fetchPromise: Promise<dto.ApplicationListItem[]>;
 
     constructor(private pubSub: PubSubService, private apiClient: ApiClient) {
         if (!pubSub) {
@@ -89,6 +85,18 @@ export class ApplicationService {
         if (!apiClient) {
             throw new Error("ApiClient must be specified");
         }
+    }
+
+    changeApplication(applicationId: number) {
+        if (AppRoot.Instance.currentApplicationId === applicationId) {
+            return;
+        }
+
+        console.log('changing app', applicationId);
+        var body = new ApplicationChanged();
+        body.applicationId = applicationId;
+        AppRoot.Instance.currentApplicationId = applicationId;
+        this.pubSub.publish(AppEvents.Selected, body);
     }
 
     async list(): Promise<ApplicationSummary[]> {
@@ -102,8 +110,8 @@ export class ApplicationService {
             return this.applications;
         }
 
-        var dto = new GetApplicationList();
-        this.fetchPromise = this.apiClient.query<ApplicationListItem[]>(dto);;
+        var query = new dto.GetApplicationList();
+        this.fetchPromise = this.apiClient.query<dto.ApplicationListItem[]>(query);
         var result = await this.fetchPromise;
 
         result.forEach(app => {
@@ -119,9 +127,9 @@ export class ApplicationService {
                 continue;
 
             if (this.applications[i].appKey === 'n/a') {
-                const appQuery = new GetApplicationInfo();
+                const appQuery = new dto.GetApplicationInfo();
                 appQuery.ApplicationId = appId;
-                const appInfo = await this.apiClient.query<GetApplicationInfoResult>(appQuery);
+                const appInfo = await this.apiClient.query<dto.GetApplicationInfoResult>(appQuery);
                 this.applications[i].appKey = appInfo.AppKey;
                 this.applications[i].sharedSecret = appInfo.SharedSecret;
             }
@@ -129,9 +137,9 @@ export class ApplicationService {
             return this.applications[i];
         }
 
-        var q = new GetApplicationInfo();
+        const q = new dto.GetApplicationInfo();
         q.ApplicationId = appId;
-        var result = await this.apiClient.query<GetApplicationInfoResult>(q);
+        const result = await this.apiClient.query<dto.GetApplicationInfoResult>(q);
 
         var summary: ApplicationSummary = {
             id: result.Id,
@@ -148,10 +156,10 @@ export class ApplicationService {
             throw new Error("Application name must be specified.");
         }
 
-        var cmd = new CreateApplication();
+        var cmd = new dto.CreateApplication();
         cmd.Name = applicationName;
         cmd.ApplicationKey = Guid.newGuid().replace(/\-/g, '');
-        cmd.TypeOfApplication = TypeOfApplication.DesktopApplication;
+        cmd.TypeOfApplication = dto.TypeOfApplication.DesktopApplication;
         cmd.NumberOfDevelopers = fullTimeDevelopers;
         cmd.NumberOfErrors = numberOfErrors;
 
@@ -160,7 +168,7 @@ export class ApplicationService {
     }
 
     async delete(applicationId: number) {
-        var cmd = new DeleteApplication();
+        var cmd = new dto.DeleteApplication();
         cmd.Id = applicationId;
         await this.apiClient.command(cmd);
 
@@ -173,9 +181,9 @@ export class ApplicationService {
             throw new Error("Expected an incidentId");
         }
 
-        var q = new GetApplicationTeam();
+        var q = new dto.GetApplicationTeam();
         q.ApplicationId = id;
-        var result = await this.apiClient.query<GetApplicationTeamResult>(q);
+        var result = await this.apiClient.query<dto.GetApplicationTeamResult>(q);
         var members: ApplicationMember[] = [];
         result.Members.forEach(x => {
             members.push({
@@ -187,7 +195,7 @@ export class ApplicationService {
     }
 
     update(applicationId: number, applicationName: string) {
-        var cmd = new UpdateApplication();
+        const cmd = new dto.UpdateApplication();
         cmd.Name = applicationName;
         cmd.ApplicationId = applicationId;
         AppRoot.Instance.apiClient.command(cmd);
