@@ -14,7 +14,8 @@ export default class HomeHomeComponent extends Vue {
     created() {
         AppRoot.Instance.loadState("MainHome", this)
             .then(gotState => {
-                if (gotState) {
+                if (gotState && false) {
+                    
                     if (this.muteOnboarding) {
                         this.$router.push({ name: "discover" });
                     }
