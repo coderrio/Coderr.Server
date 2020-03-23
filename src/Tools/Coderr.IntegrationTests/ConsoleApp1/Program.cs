@@ -26,14 +26,14 @@ namespace ConsoleApp1
             {
                 AssemblyName = typeof(EnvironmentTests).Assembly.GetName().Name,
                 AssemblyPath = Path.GetDirectoryName(typeof(EnvironmentTests).Assembly.Location),
-                TestCases = new[]
-                {
-                    new TestCaseToRun("Coderr.IntegrationTests.Core.TestCases.EnvironmentTests.Clearing_environment_should_remove_all_incidents_in_it")
-                    {
-                        TestClassName = "EnvironmentTests",
-                        TestMethodName = "Clearing_environment_should_remove_all_incidents_in_it"
-                    },
-                },
+                //TestCases = new[]
+                //{
+                //    new TestCaseToRun("Coderr.IntegrationTests.Core.TestCases.EnvironmentTests.Clearing_environment_should_remove_all_incidents_in_it")
+                //    {
+                //        TestClassName = "EnvironmentTests",
+                //        TestMethodName = "Clearing_environment_should_remove_all_incidents_in_it"
+                //    },
+                //},
                 Source = typeof(EnvironmentTests).Assembly.Location
             };
 

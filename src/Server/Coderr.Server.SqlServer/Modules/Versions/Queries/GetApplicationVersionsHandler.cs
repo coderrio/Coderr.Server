@@ -23,8 +23,8 @@ namespace Coderr.Server.SqlServer.Modules.Versions.Queries
         {
             var sql =
                 @"SELECT version, sum(incidentcount) incidentcount, sum(reportcount) reportcount, min(FirstReportDate) as FirstReportDate, max(LastReportDate)as LastReportDate
-  FROM ApplicationVersions
-  join ApplicationVersionMonths on (versionid=applicationversions.id)
+  FROM ApplicationVersions WITH (NoLock)
+  join ApplicationVersionMonths WITH (NoLock) on (versionid=applicationversions.id)
   where applicationid=@appId
   group by version
   order by version

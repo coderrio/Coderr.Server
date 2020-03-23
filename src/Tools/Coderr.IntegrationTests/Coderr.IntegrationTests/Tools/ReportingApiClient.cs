@@ -74,6 +74,11 @@ namespace Coderr.IntegrationTests.Core.Tools
 
                 return result.ContextCollections.Any();
             });
+
+            if (result != null)
+            {
+                Console.WriteLine($"Got report {result.CreatedAtUtc:yyyyMMdd hh:mm:ss.fff}");
+            }
             return result;
         }
 
@@ -86,7 +91,13 @@ namespace Coderr.IntegrationTests.Core.Tools
 
 
             var query = new GetIncident(id.Value);
-            return await client.QueryAsync(query);
+            var result = await client.QueryAsync(query);
+            if (result != null)
+            {
+                Console.WriteLine($"Got incident {result.CreatedAtUtc:yyyyMMdd hh:mm:ss.fff}");
+            }
+
+            return result;
         }
 
         public static async Task<GetReportListResultItem> GetReportListItem(this ServerApiClient client, int incidentId,

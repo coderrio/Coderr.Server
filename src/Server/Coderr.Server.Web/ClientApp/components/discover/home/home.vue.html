@@ -51,7 +51,7 @@
                     <router-link class="btn btn-primary btn-sm" v-bind:click="assignBestToMe">{{myBestSuggestion.Description}}</router-link>
                 </div>
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header" id="chart-summary-header">
                         <span v-if="applicationId == 0">Incident trend per application</span>
                         <span v-else>Incident trend</span>
                     </div>

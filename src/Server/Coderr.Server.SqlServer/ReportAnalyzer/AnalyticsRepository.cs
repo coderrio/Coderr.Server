@@ -71,11 +71,16 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer
             if (string.IsNullOrEmpty(incident.ReportHashCode))
                 throw new InvalidOperationException("ReportHashCode is required to be able to detect duplicates");
 
+            if (incident.LastReportAtUtc == DateTime.MinValue)
+                incident.LastReportAtUtc = DateTime.UtcNow;
+            if (incident.LastStoredReportUtc == DateTime.MinValue)
+                incident.LastStoredReportUtc = DateTime.UtcNow;
+
             using (var cmd = _unitOfWork.CreateCommand())
             {
                 cmd.CommandText =
-                    "INSERT INTO Incidents (ReportHashCode, ApplicationId, CreatedAtUtc, HashCodeIdentifier, StackTrace, ReportCount, UpdatedAtUtc, Description, FullName, IsReOpened, LastReportAtUtc)" +
-                    " VALUES (@ReportHashCode, @ApplicationId, @CreatedAtUtc, @HashCodeIdentifier, @StackTrace, @ReportCount, @UpdatedAtUtc, @Description, @FullName, 0, @LastReportAtUtc);select SCOPE_IDENTITY();";
+                    "INSERT INTO Incidents (ReportHashCode, ApplicationId, CreatedAtUtc, HashCodeIdentifier, StackTrace, ReportCount, UpdatedAtUtc, Description, FullName, IsReOpened, LastStoredReportUtc, LastReportAtUtc)" +
+                    " VALUES (@ReportHashCode, @ApplicationId, @CreatedAtUtc, @HashCodeIdentifier, @StackTrace, @ReportCount, @UpdatedAtUtc, @Description, @FullName, 0, @LastStoredReportUtc, @LastReportAtUtc);select SCOPE_IDENTITY();";
                 cmd.AddParameter("Id", incident.Id);
                 cmd.AddParameter("ReportHashCode", incident.ReportHashCode);
                 cmd.AddParameter("ApplicationId", incident.ApplicationId);
@@ -86,6 +91,7 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer
                 cmd.AddParameter("Description", incident.Description);
                 cmd.AddParameter("StackTrace", incident.StackTrace);
                 cmd.AddParameter("FullName", incident.FullName);
+                cmd.AddParameter("LastStoredReportUtc", incident.LastStoredReportUtc);
                 cmd.AddParameter("LastReportAtUtc", incident.LastReportAtUtc);
                 var id = (int) (decimal) cmd.ExecuteScalar();
                 incident.GetType()

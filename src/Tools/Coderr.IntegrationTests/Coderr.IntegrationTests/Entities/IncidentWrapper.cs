@@ -168,7 +168,12 @@ namespace Coderr.IntegrationTests.Core.Entities
 
         public async Task UpdateByLastReceivedReport(Func<GetIncidentResult, bool> filter = null)
         {
-            await Update(x => x.LastReportReceivedAtUtc > DTO.LastReportReceivedAtUtc);
+            await Update(x =>
+            {
+                Console.WriteLine(
+                    $"Comparing our {DTO.LastReportReceivedAtUtc:yyyyMMdd hh:mm:ss.fff} with server {x.LastReportReceivedAtUtc:yyyyMMdd hh:mm:ss.fff}");
+                return x.LastReportReceivedAtUtc > DTO.LastReportReceivedAtUtc;
+            });
         }
     }
 }

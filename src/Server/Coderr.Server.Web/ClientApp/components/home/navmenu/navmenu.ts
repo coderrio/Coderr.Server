@@ -40,6 +40,7 @@ export default class NavMenuComponent extends Vue {
         this.myApplicationsPromise = new Promise((accept, reject) => {
             AppRoot.Instance.loadCurrentUser().then(x => {
                 this.allApps = x.applications;
+                this.myApplications = x.applications;
                 accept();
             });
         });

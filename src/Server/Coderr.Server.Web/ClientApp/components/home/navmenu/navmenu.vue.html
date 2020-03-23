@@ -24,7 +24,7 @@
                             <a v-on:click.prevent="changeApplication(null)" class="dropdown-item"><i class="fa fa-home"></i> All applications</a>
                             <div class="dropdown-divider"></div>
                             <div v-for="item in myApplications">
-                                <a href="#" v-on:click.prevent="changeApplication(item.tag)" class="dropdown-item text-black-50"><i class="fa-desktop fa"></i> {{item.title}}</a>
+                                <a href="#" v-on:click.prevent="changeApplication(item.id)" class="dropdown-item text-black-50"><i class="fa-desktop fa"></i> {{item.name}}</a>
                             </div>
                         </div>
                     </li>

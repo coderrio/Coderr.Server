@@ -163,7 +163,7 @@ namespace Coderr.IntegrationTests.Core.TestCases
             entry.Should().BeNull();
         }
 
-        [Test]
+        [Test,RunOnlyThisOne]
         public async Task Should_ban_non_matching_ip()
         {
             var cmd = new AddEntry

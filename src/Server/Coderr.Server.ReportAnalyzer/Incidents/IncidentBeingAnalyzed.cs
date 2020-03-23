@@ -93,7 +93,7 @@ namespace Coderr.Server.ReportAnalyzer.Incidents
         }
 
         /// <summary>
-        /// List of all environment names that the developer specified when reporting the errors.
+        ///     List of all environment names that the developer specified when reporting the errors.
         /// </summary>
         public string[] EnvironmentNames { get; set; }
 
@@ -139,13 +139,19 @@ namespace Coderr.Server.ReportAnalyzer.Incidents
         public bool IsReOpened { get; set; }
 
         /// <summary>
-        /// When we received a report (just to keep track of how fresh this incident is).
+        ///     When we received a report (just to keep track of how fresh this incident is).
         /// </summary>
         public DateTime LastReportAtUtc { get; set; }
 
         /// <summary>
-        /// When we received a report that we stored.
+        ///     When we received a report that we actual stored.
         /// </summary>
+        /// <remarks>
+        ///     <para>
+        ///         This field is used to determine if we should store another report today, while <see cref="LastReportAtUtc" />
+        ///         is just used to keep track of when we received the most recent report.
+        ///     </para>
+        /// </remarks>
         public DateTime LastStoredReportUtc { get; set; }
 
         /// <summary>
@@ -204,10 +210,7 @@ namespace Coderr.Server.ReportAnalyzer.Incidents
                 StackTrace = entity.Exception.StackTrace;
             }
 
-            if (LastReportAtUtc < entity.CreatedAtUtc)
-                LastReportAtUtc = entity.CreatedAtUtc;
-
-
+            LastReportAtUtc = entity.CreatedAtUtc;
             ReportCount++;
         }
 

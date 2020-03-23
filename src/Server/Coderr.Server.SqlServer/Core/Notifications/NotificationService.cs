@@ -7,6 +7,7 @@ using log4net;
 
 namespace Coderr.Server.ReportAnalyzer.UserNotifications
 {
+    // Must be here so that it can be used from both queues.
     /// <summary>
     /// Implementation of <see cref="INotificationService"/>.
     /// </summary>

@@ -56,9 +56,9 @@ namespace Coderr.Server.ReportAnalyzer.UserNotifications.Handlers
             {
                 if (setting.NewIncident != NotificationState.Disabled && e.IsNewIncident == true)
                 {
-                    if (e.EnvironmentName.Equals("production", StringComparison.OrdinalIgnoreCase) ||
-                        e.EnvironmentName.Equals("prod", StringComparison.OrdinalIgnoreCase)
-                        || string.IsNullOrEmpty(e.EnvironmentName))
+                    if (string.IsNullOrEmpty(e.EnvironmentName)
+                    || e.EnvironmentName.Equals("production", StringComparison.OrdinalIgnoreCase)
+                        || e.EnvironmentName.Equals("prod", StringComparison.OrdinalIgnoreCase))
                     {
                         await CreateNotification(context, e, setting.AccountId, setting.NewIncident);
                     }
