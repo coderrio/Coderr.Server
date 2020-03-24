@@ -32,7 +32,14 @@ module.exports = (env) => {
                         }
                     ]
                 },
-                { test: /\.css$/, use: isDevBuild ? ['style-loader', 'css-loader'] : ExtractTextPlugin.extract({ use: 'css-loader?minimize' }) },
+                {
+                    test: /\.css$/, use: isDevBuild ? ['style-loader', 'css-loader'] : ExtractTextPlugin.extract({
+                        fallback: 'style-loader',
+                        use: [
+                            { loader: 'css-loader', options: { minimize: true } }
+                        ]
+                    })
+                },
                 { test: /\.(png|jpg|jpeg|gif|svg)$/, use: 'url-loader?limit=25000' }
             ]
         },
@@ -61,7 +68,7 @@ module.exports = (env) => {
         ] : [
                 // Plugins that apply in production builds only
                 new UglifyJsPlugin(),
-                new ExtractTextPlugin('site.css')
+                new ExtractTextPlugin('ClientApp.css')
             ])
     }];
 };

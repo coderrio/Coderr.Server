@@ -228,7 +228,7 @@ namespace Coderr.Server.Web
                 "2b3002d3ab3e4a57ad45cff2210221ab",
                 "f381a5c9797f49bd8a3238b892d02806");
             Err.Configuration.ThrowExceptions = false;
-            app.CatchOwinExceptions();
+            app.CatchMiddlewareExceptions();
 
 
             if (!IsConfigured)
