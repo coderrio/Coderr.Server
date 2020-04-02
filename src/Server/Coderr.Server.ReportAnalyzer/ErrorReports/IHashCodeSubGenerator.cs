@@ -25,8 +25,8 @@ namespace Coderr.Server.ReportAnalyzer.ErrorReports
         ///     Generate a new hash code
         /// </summary>
         /// <param name="entity">entity</param>
-        /// <returns>hashcode</returns>
+        /// <returns>hash code</returns>
         /// <exception cref="ArgumentNullException">entity</exception>
-        string GenerateHashCode(ErrorReportEntity entity);
+        ErrorHashCode GenerateHashCode(ErrorReportEntity entity);
     }
 }

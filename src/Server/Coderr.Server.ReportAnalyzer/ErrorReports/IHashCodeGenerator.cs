@@ -11,6 +11,6 @@ namespace Coderr.Server.ReportAnalyzer.ErrorReports
         /// <param name="entity">entity</param>
         /// <returns>hash code</returns>
         /// <exception cref="ArgumentNullException">entity</exception>
-        string GenerateHashCode(ErrorReportEntity entity);
+        ErrorHashCode GenerateHashCode(ErrorReportEntity entity);
     }
 }

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Coderr.Server.Domain.Core.ErrorReports;
 using Coderr.Server.Abstractions.Boot;
-using Coderr.Server.ReportAnalyzer.Abstractions.Boot;
 
 namespace Coderr.Server.ReportAnalyzer.ErrorReports
 {
@@ -37,7 +36,7 @@ namespace Coderr.Server.ReportAnalyzer.ErrorReports
         /// <param name="entity">entity</param>
         /// <returns>hash code</returns>
         /// <exception cref="ArgumentNullException">entity</exception>
-        public string GenerateHashCode(ErrorReportEntity entity)
+        public ErrorHashCode GenerateHashCode(ErrorReportEntity entity)
         {
             if (entity == null) throw new ArgumentNullException("entity");
             foreach (var generator in _generators)
@@ -60,7 +59,7 @@ namespace Coderr.Server.ReportAnalyzer.ErrorReports
         /// <param name="report">received report</param>
         /// <returns>hash code</returns>
         /// <exception cref="ArgumentNullException">report</exception>
-        protected virtual string DefaultCreateHashCode(ErrorReportEntity report)
+        protected virtual ErrorHashCode DefaultCreateHashCode(ErrorReportEntity report)
         {
             if (report == null) throw new ArgumentNullException("report");
 
@@ -69,7 +68,7 @@ namespace Coderr.Server.ReportAnalyzer.ErrorReports
             var foundHashSource = false;
 
             // the client libraries can by themselves specify how we should identify
-            // unqiue incidents. We then use that identifier in combination with the exception name.
+            // unique incidents. We then use that identifier in combination with the exception name.
             var collection = report.ContextCollections.FirstOrDefault(x => x.Name == "CoderrData");
             if (collection != null)
             {
@@ -100,7 +99,11 @@ namespace Coderr.Server.ReportAnalyzer.ErrorReports
             {
                 hash = hash * 31 + c;
             }
-            return hash.ToString("X");
+            return new ErrorHashCode
+            {
+                CollisionIdentifier = report.GenerateHashCodeIdentifier(),
+                HashCode = hash.ToString("X")
+            };
         }
 
         internal static string StripLineNumbers(string stacktrace)

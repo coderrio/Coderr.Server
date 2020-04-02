@@ -70,10 +70,11 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
                 return;
             }
 
+            ErrorHashCode hashcodeResult;
             try
             {
-                var hashCode = _hashCodeGenerator.GenerateHashCode(report);
-                report.Init(hashCode);
+                hashcodeResult = _hashCodeGenerator.GenerateHashCode(report);
+                report.Init(hashcodeResult.HashCode);
             }
             catch (Exception ex)
             {
@@ -87,8 +88,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
             var storeReport = true;
             var applicationVersion = GetVersionFromReport(report);
             var isReOpened = false;
-            var firstLine = report.GenerateHashCodeIdentifier();
-            var incident = _repository.FindIncidentForReport(report.ApplicationId, report.ReportHashCode, firstLine);
+            var incident = _repository.FindIncidentForReport(report.ApplicationId, report.ReportHashCode, hashcodeResult.CollisionIdentifier);
             var isNewIncident = false;
             if (incident == null)
             {

@@ -33,7 +33,7 @@ namespace Coderr.Server.ReportAnalyzer.ErrorReports.HashcodeGenerators
         /// <param name="entity">entity</param>
         /// <returns>hashcode</returns>
         /// <exception cref="ArgumentNullException">entity</exception>
-        public string GenerateHashCode(ErrorReportEntity entity)
+        public ErrorHashCode GenerateHashCode(ErrorReportEntity entity)
         {
             string requestUrl = null;
             var httpCode = 0;
@@ -58,7 +58,11 @@ namespace Coderr.Server.ReportAnalyzer.ErrorReports.HashcodeGenerators
             if (pos != -1)
                 requestUrl = requestUrl.Remove(pos);
 
-            return HashCodeUtility.GetPersistentHashCode(httpCode + "-" + requestUrl).ToString("X");
+            return new ErrorHashCode
+            {
+                HashCode = HashCodeUtility.GetPersistentHashCode($"{httpCode}-{requestUrl}").ToString("X"),
+                CollisionIdentifier = $"{httpCode}-{requestUrl}"
+            };
         }
     }
 }

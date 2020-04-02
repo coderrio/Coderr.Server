@@ -144,6 +144,50 @@ namespace Coderr.Server.Domain.Core.ErrorReports
             return identifier;
         }
 
+        public string GenerateHashCodeIdentifier2()
+        {
+
+            var hashSource = $"{Exception.FullName ?? Exception.Name}\r\n";
+            var foundHashSource = false;
+
+            // the client libraries can by themselves specify how we should identify
+            // unique incidents. We then use that identifier in combination with the exception name.
+            var collection = ContextCollections.FirstOrDefault(x => x.Name == "CoderrData");
+            if (collection != null)
+            {
+                if (collection.Properties.TryGetValue("HashSource", out var reportHashSource))
+                {
+                    foundHashSource = true;
+                    hashSource += reportHashSource;
+                }
+                else
+                {
+                    var trace = StripLineNumbers(Exception.StackTrace);
+                    var pos = trace.IndexOf("\r\n", StringComparison.Ordinal);
+                    if (pos != -1)
+                        hashSource += trace.Substring(0, pos);
+                }
+            }
+            if (!foundHashSource)
+            {
+                // This identifier is determined by the developer when  the error is generated.
+                foreach (var contextCollection in ContextCollections)
+                {
+                    if (!contextCollection.Properties.TryGetValue("ErrorHashSource", out var ourHashSource))
+                        continue;
+
+                    hashSource = ourHashSource;
+                    break;
+                }
+            }
+
+            var hash = 23;
+            foreach (var c in hashSource)
+            {
+                hash = hash * 31 + c;
+            }
+            return hash.ToString("X");
+        }
         private static string StripLineNumbers(string stacktrace)
         {
             var re = new Regex(RemoveLineNumbersRegEx, RegexOptions.Multiline);
