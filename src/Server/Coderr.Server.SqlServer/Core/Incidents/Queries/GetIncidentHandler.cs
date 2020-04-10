@@ -64,7 +64,7 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
                 {
                     Title = "Report Count",
                     Description = "Number of reports since this incident was discovered",
-                    Value = result.ReportCount.ToString()
+                    Value = result.ReportCount.ToString("### ### ###")
                 }
             };
 
