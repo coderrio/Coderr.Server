@@ -30,6 +30,8 @@ namespace Coderr.Server.ReportAnalyzer.ApplicationVersions.Handlers
             if (version == null)
                 return;
 
+            version = CleanVersionFromUnwantedCharacters(version);
+
             if (version.Length > 20)
             {
                 Err.ReportLogicError("Application version is too large.", new {version, e.Incident.ApplicationName},
@@ -54,6 +56,19 @@ namespace Coderr.Server.ReportAnalyzer.ApplicationVersions.Handlers
             _repository.SaveIncidentVersion(e.Incident.Id, versionEntity.Id);
 
             await IncreaseReportCounter(versionEntity.Id, isNewIncident, e.Report.CreatedAtUtc);
+        }
+
+        private static string CleanVersionFromUnwantedCharacters(string version)
+        {
+            string tmp = "";
+            foreach (var ch in version)
+            {
+                if (char.IsDigit(ch) || ch == '.')
+                    tmp += ch;
+            }
+
+            version = tmp;
+            return version;
         }
 
         private async Task IncreaseReportCounter(int versionId, bool isNewIncident, DateTime reportedAtUtc)

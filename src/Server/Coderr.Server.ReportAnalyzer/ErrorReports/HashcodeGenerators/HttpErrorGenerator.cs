@@ -10,9 +10,9 @@ namespace Coderr.Server.ReportAnalyzer.ErrorReports.HashcodeGenerators
     ///     Generates a hash code based on URLs and status code.
     /// </summary>
     [ContainerService]
-    public class FileNotFoundHttpErrorGenerator : IHashCodeSubGenerator
+    public class HttpErrorGenerator : IHashCodeSubGenerator
     {
-        private readonly ILog _logger = LogManager.GetLogger(typeof(FileNotFoundHttpErrorGenerator));
+        private readonly ILog _logger = LogManager.GetLogger(typeof(HttpErrorGenerator));
 
 
         /// <summary>
@@ -44,6 +44,9 @@ namespace Coderr.Server.ReportAnalyzer.ErrorReports.HashcodeGenerators
                 {
                     int.TryParse(value, out httpCode);
 
+                    // Server side errors are typically handled by other handlers.
+                    if (httpCode == 500)
+                        return null;
                 }
 
                 if (!collection.Properties.TryGetValue("RequestUrl", out requestUrl))
