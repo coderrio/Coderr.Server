@@ -59,6 +59,11 @@ div.loading {
 
     #searchTable tbody td a {
         color: #666666;
+        text-decoration: underline;
+    }
+
+    #searchTable tbody td {
+        color: #666666;
     }
 
 #SearchOptions * {
