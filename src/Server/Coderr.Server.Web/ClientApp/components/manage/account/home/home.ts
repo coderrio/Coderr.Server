@@ -69,10 +69,8 @@ export default class ManageHomeComponent extends Vue {
                 return;
             }
 
-            console.log('registwer');
             this.registerPushSubscription();
         } else {
-            console.log('delete');
             this.deleteSubscription();
         }
 
@@ -111,7 +109,7 @@ export default class ManageHomeComponent extends Vue {
     }
 
     private async registerPushSubscription(): Promise<any> {
-        navigator.serviceWorker.register(this.workerUrl);
+        await navigator.serviceWorker.register(this.workerUrl);
         const registration = await navigator.serviceWorker.ready;
         let subscription = await registration.pushManager.getSubscription();
         if (subscription) {
@@ -120,6 +118,7 @@ export default class ManageHomeComponent extends Vue {
         }
 
         const key = await this.getPublicKey();
+
         subscription = await registration.pushManager.subscribe({
             userVisibleOnly: true,
             applicationServerKey: key
@@ -139,7 +138,6 @@ export default class ManageHomeComponent extends Vue {
 
         cmd.PublicKey = obj.keys.p256dh;
         cmd.AuthenticationSecret = obj.keys.auth;
-
         AppRoot.Instance.apiClient.command(cmd);
     }
 

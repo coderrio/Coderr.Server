@@ -12,6 +12,6 @@
         public string PublicKey { get; set; }
         public string AuthenticationSecret { get; set; }
 
-        public int? ExpirationTime { get; set; }
+        public long? ExpirationTime { get; set; }
     }
 }

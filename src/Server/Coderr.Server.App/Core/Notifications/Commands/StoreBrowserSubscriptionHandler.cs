@@ -25,8 +25,8 @@ namespace Coderr.Server.App.Core.Notifications.Commands
                 Endpoint = message.Endpoint,
                 PublicKey = message.PublicKey,
                 ExpiresAtUtc = message.ExpirationTime == null
-                    ? (DateTime?) null
-                    : DateTime.UtcNow.AddMilliseconds(message.ExpirationTime.Value)
+                    ? (DateTime?)null
+                    : new DateTime(1970, 1, 1).AddMilliseconds(message.ExpirationTime.Value)
             };
             await _notificationsRepository.Save(subscription);
         }

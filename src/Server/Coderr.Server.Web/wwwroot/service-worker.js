@@ -1,18 +1,15 @@
 ﻿'use strict';
 
 self.addEventListener('install', function (event) {
-    console.log('installing');
     self.skipWaiting();
 });
 
 self.addEventListener('activate', function (event) {
-    console.log('active');
     event.waitUntil(clients.claim());
 });
 
 // Respond to a server push with a user notification
 self.addEventListener('push', function (event) {
-    console.log('push', event.data);
     if (event.data) {
         const { title, lang = 'en', badge, body, tag, timestamp, requireInteraction, actions, image, data } = event.data.json();
 
@@ -75,7 +72,6 @@ self.addEventListener('notificationclick', function (event) {
 });
 
 self.addEventListener('pushsubscriptionchange', function (event) {
-    console.log('pushsubscriptionchange');
     event.waitUntil(
         Promise.all([
             Promise.resolve(event.oldSubscription ? deleteSubscription(event.oldSubscription) : true),
