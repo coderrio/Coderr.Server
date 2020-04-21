@@ -67,8 +67,11 @@ export default class NavMenuComponent extends Vue {
                 this.missedReportsMessage = '';
             }
         });
+
+        // we need to do this so that the route is updated.
         PubSubService.Instance.subscribe(AppEvents.Selected, ctx => {
-            return;
+
+
             var msg = <ApplicationChanged>ctx.message.body;
             if (msg.applicationId === null || msg.applicationId === 0) {
 
@@ -77,11 +80,19 @@ export default class NavMenuComponent extends Vue {
                     return;
 
                 AppRoot.Instance.currentApplicationId = null;
-                this.updateCurrent(0);
+                //this.updateCurrent(0);
                 return;
             }
 
-            this.updateCurrent(msg.applicationId);
+            const params = this.$route.params;
+            if (!params.applicationId) {
+                return;
+            }
+
+            params.applicationId = msg.applicationId.toString();
+            this.$router.replace({ name: this.$route.name, params: params });
+
+            //this.updateCurrent(msg.applicationId);
         });
         PubSubService.Instance.subscribe(AppEvents.Removed, ctx => {
             this.myApplications = this.myApplications.filter(x => x.id !== ctx.message.body);

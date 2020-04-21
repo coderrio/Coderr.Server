@@ -55,8 +55,8 @@ export class AppRoot {
     constructor() {
         var base = <HTMLBaseElement>document.head.querySelector('base');
         var apiUrl = base.href + "api/";
-        this.apiClient= new ApiClient(apiUrl);
-        this.incidentService= new IncidentService(this.apiClient);
+        this.apiClient = new ApiClient(apiUrl);
+        this.incidentService = new IncidentService(this.apiClient);
         this.applicationService = new ApplicationService(PubSubService.Instance, this.apiClient);
     }
 
@@ -88,9 +88,21 @@ export class AppRoot {
         return this.currentUser;
     }
 
-    static notify(msg: string, icon: string = 'fa fa-info-sign', type: string = 'info') {
-        toastr[type](msg);
-        return;
+    static notify(msg: string, icon: string = 'fa fa-info-sign', type?: 'info' | 'success' | 'warning') {
+        switch (type) {
+            case 'info':
+                toastr.info(msg);
+                break;
+            case 'success':
+                toastr.success(msg);
+                break;
+            case 'warning':
+                toastr.warning(msg);
+                break;
+            default:
+                toastr.info(msg);
+                break;
+        }
     }
 
     storeState(options: IStoreStateSettings) {
@@ -131,7 +143,7 @@ export class AppRoot {
 
     async loadState(name: string, component: any): Promise<boolean> {
         var result = <any>await localForage.getItem(name);
-        if (!result) 
+        if (!result)
             return false;
 
         var data = result;
@@ -224,7 +236,7 @@ export class AppRoot {
         if (!body) {
             throw new Error("Your div must have a CSS class with name 'modal-body'.");
         }
-        
+
 
         body.innerHTML = ourBody;
         body.style.display = '';

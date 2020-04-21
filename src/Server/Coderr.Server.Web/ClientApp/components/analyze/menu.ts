@@ -23,7 +23,7 @@ export default class AnalyzeMenuComponent extends Mixins(AppAware) {
 
     created() {
         this.applicationId = AppRoot.Instance.currentApplicationId;
-        this.onApplicationChanged(x => this.applicationId = x);
+        this.onApplicationChanged(this.onApplication);
 
         if (this.$route.params.incidentId) {
             this.incidentId = parseInt(this.$route.params.incidentId, 10);
@@ -54,7 +54,16 @@ export default class AnalyzeMenuComponent extends Mixins(AppAware) {
 
     toggleIncidentMenu() {
         this.toggleMenu = !this.toggleMenu;
+        
+    }
 
+    private onApplication(applicationId: number) {
+        this.applicationId = applicationId;
+        if (applicationId === 0) {
+            this.incidents = MyIncidents.Instance.myIncidents;
+        } else {
+            this.incidents = MyIncidents.Instance.myIncidents.filter(x => x.applicationId === applicationId);
+        }
     }
 
     private onListChanged(args: any) {
