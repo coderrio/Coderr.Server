@@ -19,13 +19,14 @@ declare module 'vue/types/vue' {
 Vue.filter("ago",
     (value: string) => {
         if (!value) return "n/a";
+        console.log('ago', value);
         return moment.utc(value).fromNow();
     });
 
 Vue.filter("niceTime",
     (value: string) => {
         if (!value) return "n/a";
-        return moment(value).format("LLLL");
+        return moment.utc(value).local().format("LLLL");
     });
 
 Vue.filter("agoOrDate",
@@ -35,7 +36,7 @@ Vue.filter("agoOrDate",
         var diff = reportDate.diff(today, "days");
 
         if (!value) return "n/a";
-        return moment(value).fromNow();
+        return moment.utc(value).fromNow();
     });
 
 Vue.filter("incidentState",
