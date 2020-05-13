@@ -1,8 +1,9 @@
-import { PubSubService } from "../../../services/PubSub";
-import * as MenuApi from "../../../services/menu/MenuApi";
-import { AppRoot } from "../../../services/AppRoot";
-import { GetOverview, GetOverviewResult } from "../../../dto/Web/Overview"
-import { GetApplicationOverview, GetApplicationOverviewResult, GetApplicationList, ApplicationListItem } from "../../../dto/Core/Applications"
+import { PubSubService } from "@/services/PubSub";
+import * as MenuApi from "@/services/menu/MenuApi";
+import { AppRoot } from "@/services/AppRoot";
+import * as Mine from "@/dto/Common/Mine"
+import { GetOverview, GetOverviewResult } from "@/dto/Web/Overview"
+import { GetApplicationOverview, GetApplicationOverviewResult, GetApplicationList, ApplicationListItem } from "@/dto/Core/Applications"
 import { Component, Watch, Mixins } from "vue-property-decorator";
 import { AppAware } from "@/AppMixins";
 import Chartist from "chartist";
@@ -33,6 +34,7 @@ export default class DiscoverHomeComponent extends Mixins(AppAware) {
     followers: number = 0;
 
     myIncidents: FindIncidentsResultItem[] = [];
+    myBestSuggestion: Mine.ListMySuggestedItem | null = null;
 
     comment: string = "";
     legend: ILegend[] = [];
@@ -89,7 +91,9 @@ export default class DiscoverHomeComponent extends Mixins(AppAware) {
 
     private loadApplication(applicationId: number) {
         var route = this.$route;
-        this.$router.push({ name: route.name, params: { applicationId: applicationId.toString() } });
+        if (this.applicationId !== applicationId) {
+            this.$router.push({ name: route.name, params: { applicationId: applicationId.toString() } });
+        }
 
         var q = new GetApplicationOverview();
         q.ApplicationId = applicationId;

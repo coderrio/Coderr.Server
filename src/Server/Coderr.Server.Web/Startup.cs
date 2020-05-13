@@ -80,7 +80,8 @@ namespace Coderr.Server.Web
                 app.UseDeveloperExceptionPage();
                 app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
                 {
-                    HotModuleReplacement = true
+                    HotModuleReplacement = true,
+                    ConfigFile = "webpack.config.dev.js",
                 });
             }
 

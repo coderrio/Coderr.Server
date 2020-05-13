@@ -85,7 +85,7 @@ export default class NavMenuComponent extends Vue {
             }
 
             const params = this.$route.params;
-            if (!params.applicationId) {
+            if (!params.applicationId || params.applicationId.toString() === msg.applicationId.toString()) {
                 return;
             }
 

@@ -1,74 +1,107 @@
-const path = require('path');
-const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const bundleOutputDir = './wwwroot/dist';
-const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+const path = require("path");
+var webpack = require("webpack");
+const isDevBuild = process.env.NODE_ENV === "development" || process.argv.indexOf("--mode=development") > -1;
+var TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const { VueLoaderPlugin } = require("vue-loader");
 
-module.exports = (env) => {
-    const isDevBuild = !(env && env.prod);
-    const devMode = isDevBuild ? 'development' : 'production';
+var bundleOutputDir = "./wwwroot/dist";
 
-    return [{
-        mode: devMode,
-        stats: { modules: false },
-        context: __dirname,
-        resolve: {
-            plugins: [new TsconfigPathsPlugin({})],
-            extensions: ['.js', '.ts']
+function resolve(dir) {
+    return path.join(__dirname, dir);
+}
+
+const baseConfig = {
+    entry: {
+        'main': "./ClientApp/boot.ts",
+        "styles": [
+            "./wwwroot/scss/bootstrap-coderr.scss",
+            "./wwwroot/scss/checkbox.scss",
+            "./wwwroot/scss/radio.scss",
+            "./wwwroot/scss/common.scss",
+            "./wwwroot/scss/site.scss"
+        ]
+    },
+    stats: 'normal',
+    output: {
+        path: resolve(bundleOutputDir),
+        publicPath: "dist/"
+    },
+    resolve: {
+        extensions: [".ts", ".js", ".vue.html"],
+        alias: {
+            vue$: isDevBuild ? "vue/dist/vue.esm.js" : "vue/dist/vue.runtime.esm.js",
+            '@': resolve("/ClientApp/")
         },
-        entry: { 'main': './ClientApp/boot.ts' },
-        module: {
-            rules: [
-                { test: /\.vue\.html$/, include: /ClientApp/, loader: 'vue-loader', options: { loaders: { js: 'ts-loader' } } },
-                {
-                    test: /\.ts$/, include: /ClientApp/, use: [
-                        {
-                            loader: 'ts-loader',
-                            options: {
-                                appendTsSuffixTo: [/\.vue\.html$/]
-                            }
-                        }
-                    ]
-                },
-                {
-                    test: /\.css$/, use: isDevBuild ? ['style-loader', 'css-loader'] : ExtractTextPlugin.extract({
-                        fallback: 'style-loader',
-                        use: [
-                            { loader: 'css-loader', options: { minimize: true } }
-                        ]
-                    })
-                },
-                { test: /\.(png|jpg|jpeg|gif|svg)$/, use: 'url-loader?limit=25000' }
-            ]
-        },
-        output: {
-            path: path.join(__dirname, bundleOutputDir),
-            filename: '[name].js',
-            publicPath: 'dist/'
-        },
-        plugins: [
-            new VueLoaderPlugin(),
-            new webpack.DefinePlugin({
-                'process.env': {
-                    NODE_ENV: JSON.stringify(isDevBuild ? 'development' : 'production')
+        plugins: [new TsconfigPathsPlugin({})]
+    },
+    module: {
+        rules: [
+            {
+                test: /\.vue.html$/,
+                use: {
+                    loader: "vue-loader"
                 }
-            }),
-            new webpack.DllReferencePlugin({
-                context: __dirname,
-                manifest: require('./wwwroot/dist/vendor-manifest.json')
-            })
-        ].concat(isDevBuild ? [
-            // Plugins that apply in development builds only
-            new webpack.SourceMapDevToolPlugin({
-                filename: '[file].map', // Remove this line if you prefer inline source maps
-                moduleFilenameTemplate: path.relative(bundleOutputDir, '[resourcePath]') // Point sourcemap entries to the original file locations on disk
-            })
-        ] : [
-                // Plugins that apply in production builds only
-                new UglifyJsPlugin(),
-                new ExtractTextPlugin('ClientApp.css')
-            ])
-    }];
+            },
+            {
+                test: /\.ts$/,
+                exclude: /node_modules/,
+                use: [
+                    {
+                        loader: "ts-loader",
+                        options: {
+                            appendTsSuffixTo: [/\.vue.html$/]
+                        }
+                    }
+                ]
+            },
+            {
+                test: /\.css$/,
+                use: isDevBuild
+                    ? ['style-loader', 'css-loader']
+                    : [MiniCssExtractPlugin.loader, 'css-loader']
+            },
+            {
+                test: /\.scss$/,
+                exclude: /coderr-variables.scss/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    'css-loader',
+                    'sass-loader'
+                ]
+            },
+            {
+                test: /\.(eot|svg|ttf|woff|woff2)$/,
+                loader: "url-loader"
+            },
+            {
+                test: /\.(png|jpg|jpeg|gif|svg)$/,
+                use: "url-loader?limit=25000"
+            }
+        ]
+    },
+    plugins: [
+        new CleanWebpackPlugin(),
+        new VueLoaderPlugin(),
+        new MiniCssExtractPlugin(),
+        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: isDevBuild ? "'development'" : "'production'"
+            }
+        }),
+        {
+            apply(compiler) {
+                compiler.hooks.shouldEmit.tap('Remove styles.js from output',
+                    (compilation) => {
+                        delete compilation.assets['styles.js', 'styles.js.map'];
+                        delete compilation.assets['styles.js.map'];
+                        return true;
+                    });
+            }
+        }
+    ]
 };
+
+module.exports = baseConfig;

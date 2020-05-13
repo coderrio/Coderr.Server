@@ -105,11 +105,9 @@ export default class IncidentSearchComponent extends Mixins(AppAware) {
             AppRoot.Instance.apiClient.query<GetEnvironmentsResult>(q)
                 .then(x => {
                     this.availableEnvironments.length = 0;
-                    console.log('env', x);
                     x.Items.forEach(x => {
                         this.availableEnvironments.push({ id: x.Id, name: x.Name });
                     });
-                    console.log('env2', this.availableEnvironments);
                     resolve();
                 });
         });

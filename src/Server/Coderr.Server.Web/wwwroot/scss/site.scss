@@ -1,5 +1,5 @@
 @import "coderr-variables.scss";
-@import "mixins/_breakpoints.scss";
+@import "~bootstrap/scss/mixins/_breakpoints.scss";
 @import "checkbox.scss";
 @import "radio.scss";
 
@@ -7,6 +7,10 @@
     h1, h2, h3, h4, a, span {
         color: $light;
     }
+}
+
+#mainMenu a.dropdown-item {
+    color: $dark;
 }
 
 .navbar-dark .navbar-nav .nav-link {

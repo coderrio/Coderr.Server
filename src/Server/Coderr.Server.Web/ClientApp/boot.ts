@@ -19,7 +19,6 @@ declare module 'vue/types/vue' {
 Vue.filter("ago",
     (value: string) => {
         if (!value) return "n/a";
-        console.log('ago', value);
         return moment.utc(value).fromNow();
     });
 
@@ -159,7 +158,7 @@ const routes = [
     },
     {
         name: "notifyUsers",
-        path: "users/notify/incident/:incidentId/",
+        path: "/users/notify/incident/:incidentId/",
         component: require("./components/analyze/incidents/status.vue.html").default
     },
     {

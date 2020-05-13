@@ -5,15 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Coderr</title>
     <base href="~/" />
-    <environment include="Development">
-        <link rel="stylesheet" href="~/dist/css/bootstrap-coderr.css" />
-        <link rel="stylesheet" href="~/dist/css/site.css" />
-        <link href="~/css/toastr.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="~/dist/css/common.css" />
-    </environment>
-    <environment exclude="Development">
-        <link rel="stylesheet" href="~/dist/css/bundle.min.css" />
-        <link rel="stylesheet" href="~/dist/site.css" />
+    <link rel="stylesheet" href="~/dist/styles.css" />
+    <environment include="Staging,Production">
+        <link rel="stylesheet" href="~/dist/vendor.css" />
+        <link rel="stylesheet" href="~/dist/main.css" />
     </environment>
     <link href="~/css/fontawesome-all.min.css" rel="stylesheet">
     <link rel="apple-touch-icon" sizes="180x180" href="~/apple-touch-icon.png">
@@ -52,7 +47,9 @@
             </div>
         </form>
     </div>
-    <script src="~/dist/vendor.js" asp-append-version="true"></script>
+    <environment include="Staging,Production">
+        <script src="~/dist/vendor.js" asp-append-version="true"></script>
+    </environment>
     @RenderSection("scripts", required: false)
     <script src="~/coderr/js/"></script>
 </body>

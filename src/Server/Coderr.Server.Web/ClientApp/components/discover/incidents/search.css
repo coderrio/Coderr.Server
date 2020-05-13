@@ -96,15 +96,14 @@ div.loading {
 }
 
 #SearchOptions .btn {
-    background-color: #59C1D5;
-    color: white;
-    border: 0;
-    opacity: 0.6;
+    background-color: #abdbe7;
+    color: #000;
     border: 2px solid white;
 }
 
     #SearchOptions .btn.active {
-        opacity: 1;
+        color: white;
+        background-color: #59C1D5;
         border: 2px solid #59C1D5;
     }
 
@@ -118,8 +117,10 @@ div.loading {
 
 
 #SearchOptions button[type=submit] {
-    opacity: 1;
+    background-color: #59C1D5;
     box-shadow: 0px 3px 6px #ccc;
+    font-size: 1.3em;
+    color: white;
     padding: 10px 20px;
     border: 0;
     text-transform: uppercase;
