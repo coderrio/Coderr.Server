@@ -20,5 +20,28 @@ namespace Coderr.Server.Domain.Core.ErrorReports
             return instance.ContextCollections.FirstOrDefault(x => x.Name == "CoderrData");
         }
 
+
+        public static ErrorReportContextCollection FindCollection(this ErrorReportEntity instance, string collectionName)
+        {
+            return instance.ContextCollections.FirstOrDefault(x => x.Name == collectionName);
+        }
+
+        public static string FindCollectionProperty(this ErrorReportEntity instance, string collectionName, string propertyName)
+        {
+            var collection = instance.FindCollection(collectionName);
+            if (collection == null)
+            {
+                return null;
+            }
+
+            if (collection.Properties.TryGetValue(propertyName, out var value))
+            {
+                return value;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

@@ -21,8 +21,10 @@
                                     </p>
                                     <table>
                                         <tr v-for="app in apps">
-                                            <td><input type="checkbox" :id="'app' + app.id" :value="app.id" @change="toggleAllOnChecked" v-model="app.selected" /></td>
-                                            <td>
+                                            <td class="text-left">
+                                                <input type="checkbox" :id="'app' + app.id" :value="app.id" @change="toggleAllOnChecked" v-model="app.selected"/>
+                                            </td>
+                                            <td class="text-left p-0">
                                                 <label :for="'app' + app.id">{{app.name}}</label>
                                             </td>
                                         </tr>

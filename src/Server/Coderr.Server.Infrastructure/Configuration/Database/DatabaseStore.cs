@@ -24,6 +24,11 @@ namespace Coderr.Server.Infrastructure.Configuration.Database
             _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
         }
 
+        protected DatabaseStore()
+        {
+
+        }
+
         /// <summary>
         ///     Load a settings section
         /// </summary>

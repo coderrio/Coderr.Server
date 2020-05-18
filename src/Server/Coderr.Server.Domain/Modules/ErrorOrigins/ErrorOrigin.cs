@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Coderr.Server.Domain.Modules.ErrorOrigins
@@ -16,7 +17,10 @@ namespace Coderr.Server.Domain.Modules.ErrorOrigins
         /// <param name="latitude">Latitude that the IP lookup service returned.</param>
         public ErrorOrigin(string ipAddress, double longitude, double latitude)
         {
-            IpAddress = ipAddress ?? throw new ArgumentNullException(nameof(ipAddress));
+            if (string.IsNullOrEmpty(ipAddress) && longitude <= 0 && latitude <= 0)
+                throw new ArgumentException("Either IPAddress or long/lat must be specified.");
+
+            IpAddress = ipAddress;
             Longitude = longitude;
             Latitude = latitude;
         }
@@ -34,7 +38,7 @@ namespace Coderr.Server.Domain.Modules.ErrorOrigins
 
 
         /// <summary>
-        ///     Name of countrt
+        ///     Name of country.
         /// </summary>
         public string CountryName { get; set; }
 

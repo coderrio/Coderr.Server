@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 using Coderr.Server.Domain.Modules.ErrorOrigins;
 using Coderr.Server.ReportAnalyzer.Abstractions.Incidents;
 using DotNetCqs;
-using Coderr.Server.Abstractions.Boot;
 using log4net;
 using Newtonsoft.Json.Linq;
 using Coderr.Server.Abstractions.Config;
+using Coderr.Server.ReportAnalyzer;
+using Coderr.Server.ReportAnalyzer.Abstractions.ErrorReports;
 
 namespace Coderr.Server.ReportAnalyzer.ErrorOrigins.Handlers
 {
@@ -29,8 +30,7 @@ namespace Coderr.Server.ReportAnalyzer.ErrorOrigins.Handlers
         /// <exception cref="ArgumentNullException">repository</exception>
         public StorePositionFromNewReport(IErrorOriginRepository repository, IConfiguration<OriginsConfiguration> originConfiguration)
         {
-            if (repository == null) throw new ArgumentNullException("repository");
-            _repository = repository;
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
             _originConfiguration = originConfiguration;
         }
 
@@ -43,11 +43,43 @@ namespace Coderr.Server.ReportAnalyzer.ErrorOrigins.Handlers
         /// </returns>
         public async Task HandleAsync(IMessageContext context, ReportAddedToIncident e)
         {
-            if (string.IsNullOrEmpty(e.Report.RemoteAddress))
-                return;
+            var collection = e.Report.GetCoderrCollection();
+            if (collection != null)
+            {
+                var latitude = 0d;
+                var longitude = 0d;
+                var gotLat = collection.Properties.TryGetValue("Longitude", out var longitudeStr)
+                             && double.TryParse(longitudeStr, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out longitude);
 
-            if (string.IsNullOrEmpty(_originConfiguration.Value?.ApiKey))
+                var gotLong = collection.Properties.TryGetValue("Latitude", out var latitudeStr)
+                              && double.TryParse(latitudeStr, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out latitude);
+                if (gotLat && latitude > 0 && gotLong && longitude > 0)
+                {
+                    var errorOrigin2 = new ErrorOrigin(e.Report.RemoteAddress, longitude, latitude);
+                    await _repository.CreateAsync(errorOrigin2, e.Incident.ApplicationId, e.Incident.Id, e.Report.Id);
+                    return;
+                }
+            }
+
+
+            var latitude1 = e.Report.FindCollectionProperty("ReportLatitude");
+            var longitude1 = e.Report.FindCollectionProperty("ReportLongitude");
+            if (longitude1 != null
+                && double.TryParse(latitude1, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var latitude2)
+                && latitude1 != null
+                && double.TryParse(longitude1, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var longitude2))
+            {
+                var errorOrigin2 = new ErrorOrigin(e.Report.RemoteAddress, longitude2, latitude2);
+                await _repository.CreateAsync(errorOrigin2, e.Incident.ApplicationId, e.Incident.Id, e.Report.Id);
                 return;
+            }
+
+
+            if (string.IsNullOrEmpty(e.Report.RemoteAddress) || string.IsNullOrEmpty(_originConfiguration.Value?.ApiKey))
+            {
+                return;
+            }
+
 
             // Random swedish IP for testing purposes
             if (e.Report.RemoteAddress == "::1" || e.Report.RemoteAddress == "127.0.0.1")

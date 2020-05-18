@@ -27,22 +27,39 @@ namespace Coderr.Server.SqlServer.Modules.Geolocation
             if (incidentId <= 0) throw new ArgumentOutOfRangeException(nameof(incidentId));
             if (reportId <= 0) throw new ArgumentOutOfRangeException(nameof(reportId));
 
-            using (var cmd = (DbCommand) _unitOfWork.CreateCommand())
+            if (entity.IpAddress != null)
             {
-                cmd.CommandText = "SELECT Id FROM ErrorOrigins WHERE IpAddress = @ip";
-                cmd.AddParameter("ip", entity.IpAddress);
-                var id = await cmd.ExecuteScalarAsync();
-                if (id is int)
+                using (var cmd = (DbCommand)_unitOfWork.CreateCommand())
                 {
-                    await CreateReportInfoAsync((int) id, applicationId, incidentId, reportId);
-                    return;
+                    cmd.CommandText = "SELECT Id FROM ErrorOrigins WHERE IpAddress = @ip";
+                    cmd.AddParameter("ip", entity.IpAddress);
+                    var id = await cmd.ExecuteScalarAsync();
+                    if (id is int)
+                    {
+                        await CreateReportInfoAsync((int)id, applicationId, incidentId, reportId);
+                        return;
+                    }
+                }
+            }
+            else if (entity.Latitude > 0 && entity.Longitude > 0)
+            {
+                using (var cmd = (DbCommand)_unitOfWork.CreateCommand())
+                {
+                    cmd.CommandText = "SELECT Id FROM ErrorOrigins WHERE Longitude = @long && Latitude = @lat";
+                    cmd.AddParameter("long", entity.Longitude);
+                    cmd.AddParameter("lat", entity.Latitude);
+                    var id = await cmd.ExecuteScalarAsync();
+                    if (id is int)
+                    {
+                        await CreateReportInfoAsync((int)id, applicationId, incidentId, reportId);
+                        return;
+                    }
                 }
             }
 
-            using (var cmd = (DbCommand) _unitOfWork.CreateCommand())
+            using (var cmd = (DbCommand)_unitOfWork.CreateCommand())
             {
-                cmd.CommandText = "INSERT INTO ErrorOrigins (IpAddress, CountryCode, CountryName, RegionCode, RegionName, City, ZipCode, Latitude, Longitude, CreatedAtUtc) "
-                                  +
+                cmd.CommandText = "INSERT INTO ErrorOrigins (IpAddress, CountryCode, CountryName, RegionCode, RegionName, City, ZipCode, Latitude, Longitude, CreatedAtUtc) " +
                                   "VALUES (@IpAddress, @CountryCode, @CountryName, @RegionCode, @RegionName, @City, @ZipCode, @Latitude, @Longitude, @CreatedAtUtc);select cast(SCOPE_IDENTITY() as int);";
                 cmd.AddParameter("IpAddress", entity.IpAddress);
                 cmd.AddParameter("CountryCode", entity.CountryCode);
@@ -55,14 +72,14 @@ namespace Coderr.Server.SqlServer.Modules.Geolocation
                 cmd.AddParameter("Latitude", entity.Latitude);
                 cmd.AddParameter("Longitude", entity.Longitude);
                 cmd.AddParameter("CreatedAtUtc", DateTime.UtcNow);
-                var id = (int) await cmd.ExecuteScalarAsync();
+                var id = (int)await cmd.ExecuteScalarAsync();
                 await CreateReportInfoAsync(id, applicationId, incidentId, reportId);
             }
         }
 
         public async Task<IList<ErrorOrginListItem>> FindForIncidentAsync(int incidentId)
         {
-            using (var cmd = (DbCommand) _unitOfWork.CreateCommand())
+            using (var cmd = (DbCommand)_unitOfWork.CreateCommand())
             {
                 cmd.CommandText = @"SELECT Longitude, Latitude, count(*) 
                                     FROM ErrorOrigins eo
@@ -77,8 +94,8 @@ namespace Coderr.Server.SqlServer.Modules.Geolocation
                     {
                         var item = new ErrorOrginListItem
                         {
-                            Longitude = (double) reader.GetDecimal(0),
-                            Latitude = (double) reader.GetDecimal(1),
+                            Longitude = (double)reader.GetDecimal(0),
+                            Latitude = (double)reader.GetDecimal(1),
                             NumberOfErrorReports = reader.GetInt32(2)
                         };
                         items.Add(item);
@@ -90,7 +107,7 @@ namespace Coderr.Server.SqlServer.Modules.Geolocation
 
         private async Task CreateReportInfoAsync(int originId, int applicationId, int incidentId, int reportId)
         {
-            using (var cmd = (DbCommand) _unitOfWork.CreateCommand())
+            using (var cmd = (DbCommand)_unitOfWork.CreateCommand())
             {
                 cmd.CommandText =
                     "INSERT INTO ErrorReportOrigins (ErrorOriginId, ApplicationId, IncidentId, ReportId, CreatedAtUtc) VALUES(@oid, @aid, @iid, @rid, GetUtcDate())";
