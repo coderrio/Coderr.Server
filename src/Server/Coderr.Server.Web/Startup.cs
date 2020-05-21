@@ -134,7 +134,7 @@ namespace Coderr.Server.Web
         private void UpgradeDatabaseSchema()
         {
             // Dont run for new installations
-            if (!IsConfigured) 
+            if (!IsConfigured)
                 return;
 
             try
@@ -145,7 +145,7 @@ namespace Coderr.Server.Web
             catch (Exception ex)
             {
                 _logger.Fatal("DB Migration failed.", ex);
-                Err.Report(ex, new {Migration = true});
+                Err.Report(ex, new { Migration = true });
             }
         }
 
@@ -257,6 +257,8 @@ namespace Coderr.Server.Web
 
             // partitions allow us to see the number of affected installations
             Err.Configuration.AddPartition(x => x.AddPartition("InstallationId", config.InstallationId));
+
+            Err.Configuration.FilterCollection.Add(new BundleSlowReportPosts());
 
             if (string.IsNullOrWhiteSpace(config.ContactEmail))
                 return;
