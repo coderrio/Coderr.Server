@@ -1,0 +1,14 @@
+version: "3.7"
+
+services:
+
+  coderr-server-web:
+    image: "coderrio/win_coderrserverweb:latest"
+    container_name: coderr-server-web
+    hostname: coderr-server-web
+    ports:
+      - "2500:80"
+
+volumes:
+  esdata:
+    driver: local

@@ -1,0 +1,1 @@
+docker-compose run -p 2500:80 -e "ConnectionStrings:Db"="Data Source=host.docker.internal,1433;Initial Catalog=Coderr99;User Id=sa; Password=Pass@word; Connect Timeout=15;" coderr-server-web

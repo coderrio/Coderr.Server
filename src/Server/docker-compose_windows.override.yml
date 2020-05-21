@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+  coderr.server.web:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_HTTPS_PORT=50473
+    networks:
+      - coderr_network_win
+    ports:
+      - "2500:80"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:C:\Users\ContainerUser\AppData\Roaming\Microsoft\UserSecrets:ro
