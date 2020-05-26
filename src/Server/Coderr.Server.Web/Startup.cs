@@ -47,8 +47,12 @@ namespace Coderr.Server.Web
 
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
-            _moduleStarter = new ModuleStarter(configuration);
+            Configuration = new ConfigurationBuilder()
+                .AddEnvironmentVariables()
+                .AddConfiguration(configuration)
+                .Build();
+
+            _moduleStarter = new ModuleStarter(Configuration);
         }
 
         public static IConfiguration Configuration { get; private set; }

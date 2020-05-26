@@ -1,0 +1,40 @@
+#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
+
+#Depending on the operating system of the host machines(s) that will build or run the containers, the image specified in the FROM statement may need to be changed.
+#For more information, please see https://aka.ms/containercompat
+
+FROM mcr.microsoft.com/dotnet/core/aspnet:2.2-nanoserver-1809 AS base
+WORKDIR /app
+EXPOSE 80
+
+FROM mcr.microsoft.com/dotnet/core/sdk:2.2-nanoserver-1809 AS build
+WORKDIR /src
+COPY ["Coderr.Server.Web/Coderr.Server.Web.csproj", "Coderr.Server.Web/"]
+COPY ["Coderr.Server.Abstractions/Coderr.Server.Abstractions.csproj", "Coderr.Server.Abstractions/"]
+COPY ["Coderr.Server.Api/Coderr.Server.Api.csproj", "Coderr.Server.Api/"]
+COPY ["Coderr.Server.Infrastructure/Coderr.Server.Infrastructure.csproj", "Coderr.Server.Infrastructure/"]
+COPY ["Coderr.Server.App/Coderr.Server.App.csproj", "Coderr.Server.App/"]
+COPY ["Coderr.Server.ReportAnalyzer.Abstractions/Coderr.Server.ReportAnalyzer.Abstractions.csproj", "Coderr.Server.ReportAnalyzer.Abstractions/"]
+COPY ["Coderr.Server.Domain/Coderr.Server.Domain.csproj", "Coderr.Server.Domain/"]
+COPY ["Coderr.Server.ReportAnalyzer/Coderr.Server.ReportAnalyzer.csproj", "Coderr.Server.ReportAnalyzer/"]
+COPY ["Coderr.Server.SqlServer/Coderr.Server.SqlServer.csproj", "Coderr.Server.SqlServer/"]
+
+RUN dotnet restore "Coderr.Server.Web/Coderr.Server.Web.csproj"
+
+COPY . .
+WORKDIR "/src/Coderr.Server.Web"
+RUN dotnet build "Coderr.Server.Web.csproj" -c Release -o /app/build
+
+WORKDIR /src
+
+COPY Coderr.Server.Web/wwwroot Coderr.Server.Web/wwwroot
+
+WORKDIR "/src/Coderr.Server.Web"
+
+FROM build AS publish
+RUN dotnet publish "Coderr.Server.Web.csproj" -c Release -o /app/publish
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "Coderr.Server.Web.dll"]

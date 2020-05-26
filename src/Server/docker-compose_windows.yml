@@ -1,0 +1,18 @@
+version: '3.7'
+
+services:
+  coderr.server.web:
+    image: coderrio/win_coderrserverweb
+    build:
+      context: .
+      dockerfile: Coderr.Server.Web/Dockerfile
+    networks:
+      - coderr_network_win
+
+volumes:
+  esdata:
+    driver: local
+
+networks:
+  coderr_network_win:
+    name: coderr_network_win
