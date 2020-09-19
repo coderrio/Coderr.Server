@@ -54,11 +54,6 @@
                         </div>
 
                         <pre><code>{{incident.StackTrace}}</code></pre>
-                        <div class="tags">
-                            <span v-for="tag in incident.Tags" class="badge badge-dark">{{tag}}</span>
-                            <span class="badge badge-dark" v-if="isIgnored">incident-ignored</span>
-                            <span class="badge badge-dark" v-if="isClosed">incident-closed</span>
-                        </div>
                     </div>
 
                 </div>
@@ -75,6 +70,16 @@
                             <tr v-for="fact in incident.Facts">
                                 <th>{{fact.Title}}</th>
                                 <td><span v-html="fact.Value"></span></td>
+                            </tr>
+                            <tr v-if="incident.Tags.length > 0">
+                                <th>Tags</th>
+                                <td>
+                                    <div class="tags">
+                                        <span v-for="tag in incident.Tags" class="badge badge-blue">{{tag}}</span>
+                                        <span class="badge badge-blue" v-if="isIgnored">incident-ignored</span>
+                                        <span class="badge badge-blue" v-if="isClosed">incident-closed</span>
+                                    </div>
+                                </td>
                             </tr>
                         </table>
                     </div>

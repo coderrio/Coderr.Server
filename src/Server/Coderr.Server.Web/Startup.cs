@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Coderr.Client;
 using Coderr.Client.ContextCollections;
 using Coderr.Client.Contracts;
+using Coderr.Server.Abstractions;
 using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Abstractions.Config;
 using Coderr.Server.Abstractions.Security;
@@ -41,7 +42,7 @@ namespace Coderr.Server.Web
 {
     public class Startup
     {
-        private readonly ModuleStarter _moduleStarter;
+        private readonly AppModuleStarter _appModuleStarter;
         private IServiceProvider _serviceProvider;
         private ILog _logger = LogManager.GetLogger(typeof(Startup));
 
@@ -52,19 +53,34 @@ namespace Coderr.Server.Web
                 .AddConfiguration(configuration)
                 .Build();
 
-            _moduleStarter = new ModuleStarter(Configuration);
+            _appModuleStarter = new AppModuleStarter(Configuration);
+
+
+            LoadHostConfiguration();
+        }
+
+        private static void LoadHostConfiguration()
+        {
+            HostConfig.Instance.IsRunningInDocker =
+                !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER"));
+            if (HostConfig.Instance.IsRunningInDocker)
+            {
+                HostConfig.Instance.ConfigurationPassword =
+                    Environment.GetEnvironmentVariable("CODERR_CONFIG_PASSWORD");
+                HostConfig.Instance.IsConfigured = string.IsNullOrEmpty(HostConfig.Instance.ConfigurationPassword);
+
+                HostConfig.Instance.ConnectionString = Environment.GetEnvironmentVariable("CODERR_CONNECTIONSTRING");
+            }
+            else
+            {
+                var configSection = Configuration.GetSection("Installation");
+                HostConfig.Instance.ConfigurationPassword = configSection.GetValue<string>("Password");
+                HostConfig.Instance.IsConfigured = configSection.GetValue<bool>("IsConfigured");
+                HostConfig.Instance.ConnectionString = Configuration["ConnectionStrings:Db"];
+            }
         }
 
         public static IConfiguration Configuration { get; private set; }
-
-        private bool IsConfigured
-        {
-            get
-            {
-                var sesion = Configuration.GetSection("Installation");
-                return sesion.GetValue<bool>("IsConfigured");
-            }
-        }
 
         /// <summary>
         ///     Invoked after ConfigureServices.
@@ -103,7 +119,7 @@ namespace Coderr.Server.Web
 
             app.UseMvc(routes =>
             {
-                if (!IsConfigured)
+                if (!HostConfig.Instance.IsConfigured)
                     routes.MapRoute(
                         "areas",
                         "{area:exists}/{controller=Setup}/{action=Index}/{id?}",
@@ -120,7 +136,7 @@ namespace Coderr.Server.Web
                     });
             });
 
-            if (!IsConfigured)
+            if (!HostConfig.Instance.IsConfigured)
                 return;
 
             _serviceProvider = app.ApplicationServices;
@@ -128,13 +144,13 @@ namespace Coderr.Server.Web
             {
                 ServiceProvider = app.ApplicationServices
             };
-            _moduleStarter.Start(context);
+            _appModuleStarter.Start(context);
         }
 
         private void UpgradeDatabaseSchema()
         {
             // Dont run for new installations
-            if (!IsConfigured)
+            if (!HostConfig.Instance.IsConfigured)
                 return;
 
             try
@@ -199,13 +215,13 @@ namespace Coderr.Server.Web
                     options.AuthenticationScheme = ApiKeyAuthOptions.DefaultSchemeName;
                 });
 
-            if (!IsConfigured)
+            if (!HostConfig.Instance.IsConfigured)
             {
                 RegisterInstallationConfiguration(services);
                 return;
             }
 
-            _moduleStarter.ScanAssemblies(AppDomain.CurrentDomain.BaseDirectory);
+            _appModuleStarter.ScanAssemblies(AppDomain.CurrentDomain.BaseDirectory);
 
             services.AddScoped<IPrincipalAccessor, PrincipalWrapper>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -218,7 +234,7 @@ namespace Coderr.Server.Web
                 Services = services,
                 ServiceProvider = () => _serviceProvider
             };
-            _moduleStarter.Configure(configContext);
+            _appModuleStarter.Configure(configContext);
         }
 
         private void AddCoderrToMvc(MvcOptions options)
@@ -236,7 +252,7 @@ namespace Coderr.Server.Web
             app.CatchMiddlewareExceptions();
 
 
-            if (!IsConfigured)
+            if (!HostConfig.Instance.IsConfigured)
                 return;
 
             CoderrConfigSection config;
@@ -289,13 +305,12 @@ namespace Coderr.Server.Web
 
         private void OnShutdown()
         {
-            _moduleStarter.Stop();
+            _appModuleStarter.Stop();
         }
 
         private IDbConnection OpenConnection(ClaimsPrincipal arg)
         {
-            var db = Configuration.GetConnectionString("Db");
-            var con = new SqlConnection(db);
+            var con = new SqlConnection(HostConfig.Instance.ConnectionString);
             con.Open();
             return con;
         }
@@ -312,7 +327,6 @@ namespace Coderr.Server.Web
             SetupTools.DbTools = new SqlServerTools(() => OpenConnection(CoderrClaims.SystemPrincipal));
             var store = new DatabaseStore(() => OpenConnection(CoderrClaims.SystemPrincipal));
             services.AddSingleton<ConfigurationStore>(store);
-            services.Configure<InstallationOptions>(Configuration.GetSection("Installation"));
         }
     }
 }

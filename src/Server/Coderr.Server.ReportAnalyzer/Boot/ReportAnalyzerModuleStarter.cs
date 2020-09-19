@@ -10,7 +10,7 @@ using StartContext = Coderr.Server.ReportAnalyzer.Abstractions.Boot.StartContext
 
 namespace Coderr.Server.ReportAnalyzer.Boot
 {
-    public class ModuleStarter
+    public class ReportAnalyzerModuleStarter
     {
         private readonly List<string> _ignoredModules = new List<string>();
         private readonly List<IReportAnalyzerModule> _modules = new List<IReportAnalyzerModule>();

@@ -32,7 +32,20 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer.Handlers
         {
             _unitOfWork = unitOfWork;
             var db = (AnalysisUnitOfWork) unitOfWork;
-            _importer = new Importer((SqlTransaction)db.Transaction);
+
+            // Use CoderrDbTransaction
+            SqlTransaction transaction;
+            var innerTransaction = db.Transaction.GetType().GetProperty("Inner")?.GetValue(db.Transaction);
+            if (innerTransaction != null)
+            {
+                transaction = (SqlTransaction)innerTransaction;
+            }
+            else
+            {
+                transaction = (SqlTransaction)db.Transaction;
+            }
+
+            _importer = new Importer(transaction);
         }
 
 

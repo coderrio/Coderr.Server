@@ -163,7 +163,7 @@ namespace Coderr.Server.App.Tests.Core.Applications.Commands
             var claims = new List<Claim>
             {
             };
-            var identity = new ClaimsIdentity(claims);
+            var identity = new ClaimsIdentity(claims, AuthenticationTypes.Default);
             return new ClaimsPrincipal(identity);
         }
     }

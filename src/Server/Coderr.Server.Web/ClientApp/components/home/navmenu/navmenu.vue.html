@@ -2,7 +2,7 @@
     <div class="navmenu">
         <div class="navbar navbar-expand-md navbar-dark bg-dark">
             <!--<a class="navbar-brand" href="#">Coderr</a>-->
-            <img src="images/navico.png" height="25px"/>
+            <img src="images/navico.png" height="25px" />
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -18,15 +18,8 @@
             </div>
             <div class="navbar-collapse collapse" v-if="!onboarding">
                 <ul class="navbar-nav mr-auto" id="mainMenu">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="mnuCurrentApplication" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{currentApplicationName}}</a>
-                        <div class="dropdown-menu">
-                            <a v-on:click.prevent="changeApplication(null)" class="dropdown-item"><i class="fa fa-home"></i> All applications</a>
-                            <div class="dropdown-divider"></div>
-                            <div v-for="item in myApplications">
-                                <a href="#" v-on:click.prevent="changeApplication(item.id)" class="dropdown-item"><i class="fa-desktop fa"></i> {{item.name}}</a>
-                            </div>
-                        </div>
+                    <li class="nav-item">
+                        <a class="nav-link" id="mnuCurrentApplication" @click.prevent="toggleMenu = !toggleMenu">{{currentApplicationName}} <i class="fa fa-chevron-down"></i></a>
                     </li>
                     <li class="nav-item">
                         <router-link class="nav-link" :to="discoverLink" id="DiscoverMenu">
@@ -39,10 +32,10 @@
                         </router-link>
                     </li>
                     <!--<li class="nav-item">
-                        <router-link class="nav-link" :to="{ name:'deploymentHome', params: { 'applicationId': currentApplicationId} }">
-                            <span class="fa fa-truck"></span> Deployment insights
-                        </router-link>
-                    </li>-->
+                    <router-link class="nav-link" :to="{ name:'deploymentHome', params: { 'applicationId': currentApplicationId} }">
+                        <span class="fa fa-truck"></span> Deployment insights
+                    </router-link>
+                </li>-->
 
                     <li class="nav-item">
                         <a class="nav-link" href="https://coderr.io/features/community/limit">
@@ -76,16 +69,31 @@
                 </div>
 
             </div>
+
+
+        </div>
+        <div v-show="toggleMenu" class="collapse" id="collapseExample">
+            <table class="w-100">
+                <tr>
+                    <td><a v-on:click.prevent="changeApplication(null)" class="dropdown-item"><i class="fa fa-home"></i> All applications</a></td>
+                </tr>
+                <tr v-for="item in myApplications">
+                    <td>
+                        <a href="#" v-on:click.prevent="changeApplication(item.id)" class="dropdown-item"><i class="fa-desktop fa"></i> {{item.name}}</a>
+                    </td>
+                </tr>
+            </table>
+
         </div>
         <!--<div class="navbar-light navbar bg-light">
-            <ul class="nav">
-                <li class="nav-item" v-for="item in childMenu">
-                    <router-link class="nav-link" v-bind:to="item.url">
-                        <span class="fa" v-bind:class="item.icon"></span> {{item.title}}
-                    </router-link>
-                </li>
-            </ul>
-        </div>-->
+        <ul class="nav">
+            <li class="nav-item" v-for="item in childMenu">
+                <router-link class="nav-link" v-bind:to="item.url">
+                    <span class="fa" v-bind:class="item.icon"></span> {{item.title}}
+                </router-link>
+            </li>
+        </ul>
+    </div>-->
     </div>
 </template>
 

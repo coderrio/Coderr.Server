@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Threading;
+using Coderr.Server.Abstractions;
 using Coderr.Server.SqlServer.Migrations;
 using Coderr.Server.SqlServer.Schema;
 using Griffin.Data;
@@ -27,16 +28,16 @@ namespace Coderr.Server.SqlServer.Tests.Helpers
             {
                 connectionStringTemplateProvider = () =>
                 {
-                    var conString = ConfigurationManager.ConnectionStrings["Db"];
+                    var conString = HostConfig.Instance.ConnectionString;
                     if (conString == null)
                         throw new ConfigurationErrorsException("Failed to find connectionstring 'Db'.");
-                    return conString.ConnectionString;
+                    return HostConfig.Instance.ConnectionString;
                 };
             }
 
             var instanceId = Interlocked.Increment(ref InstanceCounter);
             _databaseName = databaseName ?? $"coderrTest{DateTime.Now:MMddHHmmss}_{instanceId}";
-            Console.WriteLine("DBNAME: " + _databaseName);
+
             ConnectionString = connectionStringTemplateProvider()
                 .Replace("{databaseName}", _databaseName);
             _masterConString = connectionStringTemplateProvider()

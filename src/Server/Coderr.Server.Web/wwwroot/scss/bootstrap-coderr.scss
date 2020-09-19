@@ -85,7 +85,7 @@ $theme-colors: map-remove($theme-colors, "success", "info", "danger", "warning",
 //@import "transitions";
 @import "~bootstrap/scss/dropdown";
 //@import "button-group";
-//@import "input-group";
+@import "~bootstrap/scss/input-group";
 //@import "custom-forms";
 @import "~bootstrap/scss/nav";
 @import "~bootstrap/scss/navbar";
@@ -105,4 +105,3 @@ $theme-colors: map-remove($theme-colors, "success", "info", "danger", "warning",
 //@import "carousel";
 @import "~bootstrap/scss/utilities";
 //@import "print";
-

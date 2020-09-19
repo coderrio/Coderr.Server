@@ -7,7 +7,7 @@ import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import Chartist from "chartist";
 import * as moment from 'moment';
-
+import * as Reports from "../../../dto/Core/Reports";
 
 @Component
 export default class IncidentComponent extends Vue {
@@ -37,7 +37,9 @@ export default class IncidentComponent extends Vue {
                     fact.Value = result.AssignedTo;
                     result.Facts.push(fact);
                 }
-                
+
+                this.setHighlights(result);
+
                 this.displayChart(result.DayStatistics);
                 AppRoot.Instance.applicationService.getTeam(result.ApplicationId)
                     .then(x => {
@@ -106,11 +108,61 @@ export default class IncidentComponent extends Vue {
                 }
             });
     }
-
+    
     deleteIncident() {
         AppRoot.Instance.incidentService.delete(this.incidentId, "yes");
-        AppRoot.notify("Incident have been removed", 'fa-info', 'success');
+        AppRoot.notify("Incident have been scheduled for deletion.", 'fa-info', 'info');
         this.$router.push({ name: 'suggest'});
+    }
+
+    private setHighlights(incident: GetIncidentResult) {
+        this.highlights.length = 0;
+        incident.HighlightedContextData.forEach(x => {
+            this.highlights.push({ name: x.Name, value: x.Value[0] });
+        });
+
+        var q = new Reports.GetReportList();
+        q.IncidentId = incident.Id;
+        q.PageNumber = 1;
+        q.PageSize = 1;
+        AppRoot.Instance.apiClient.query<Reports.GetReportListResult>(q)
+            .then(list => {
+                if (list.Items.length === 0) {
+                    return;
+                }
+
+                var q = new Reports.GetReport();
+                q.ReportId = list.Items[0].Id;
+                AppRoot.Instance.apiClient.query<Reports.GetReportResult>(q)
+                    .then(report => {
+                        let collectionsToGet: string[] = [];
+                        report.ContextCollections.forEach(x => {
+                            if (x.Name !== "CoderrData") {
+                                return;
+                            }
+
+                            x.Properties.forEach(y => {
+                                if (y.Key === "HighlightCollections") {
+                                    collectionsToGet = y.Value.split(",");
+                                }
+                                //if (y.Key === "HighlightProperties") {
+                                //    collectionsToGet = y.Value.split(",");
+                                //}
+
+                            });
+                        });
+                        report.ContextCollections.forEach(x => {
+                            var match = collectionsToGet.find(y => y === x.Name);
+                            if (match) {
+                                x.Properties.forEach(z => {
+                                    this.highlights.push({ name: `${x.Name}.${z.Key}`, value: z.Value });
+                                });
+                            }
+                        });
+
+                    });
+
+            });
     }
 
     private displayChart(days: ReportDay[]) {

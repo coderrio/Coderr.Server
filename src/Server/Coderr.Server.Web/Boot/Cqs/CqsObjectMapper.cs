@@ -24,7 +24,7 @@ namespace Coderr.Server.Web.Boot.Cqs
         private readonly Dictionary<string, Type> _cqsTypes =
             new Dictionary<string, Type>(StringComparer.OrdinalIgnoreCase);
 
-        private JsonSerializerSettings _jsonSerializerSettings = new JsonSerializerSettings
+        private readonly JsonSerializerSettings _jsonSerializerSettings = new JsonSerializerSettings
         {
             ContractResolver = new IncludeNonPublicMembersContractResolver(),
             NullValueHandling = NullValueHandling.Ignore,
@@ -35,6 +35,7 @@ namespace Coderr.Server.Web.Boot.Cqs
 
             //Converters = new List<JsonConverter> { new StringEnumConverter() }
         };
+
         public bool IsEmpty => _cqsTypes.Count == 0;
 
         /// <summary>

@@ -8,21 +8,22 @@ using Griffin.Data;
 
 namespace Coderr.Server.Web.Boot.Modules
 {
-    public class BackgroundJobs : IAppModule
+    public class BackgroundJobsForApps : IAppModule
     {
         private BackgroundJobManager _backgroundJobManager;
-        private IConfiguration _configuration;
 
 
         public void Start(StartContext context)
         {
             var adapter = new DependencyInjectionAdapter(context.ServiceProvider);
 
-            _backgroundJobManager = new BackgroundJobManager(adapter);
-            _backgroundJobManager.ExecuteSequentially = true;
+            _backgroundJobManager = new BackgroundJobManager(adapter)
+            {
+                ExecuteSequentially = true,
+                StartInterval = TimeSpan.FromSeconds(Debugger.IsAttached ? 0 : 10),
+                ExecuteInterval = TimeSpan.FromSeconds(Debugger.IsAttached ? 0 : 30)
+            };
             _backgroundJobManager.JobFailed += OnBackgroundJobFailed;
-            _backgroundJobManager.StartInterval = TimeSpan.FromSeconds(Debugger.IsAttached ? 0 : 10);
-            _backgroundJobManager.ExecuteInterval = TimeSpan.FromSeconds(Debugger.IsAttached ? 0 : 30);
             _backgroundJobManager.ScopeClosing += OnBackgroundJobScopeClosing;
             _backgroundJobManager.Start();
         }
@@ -34,7 +35,6 @@ namespace Coderr.Server.Web.Boot.Modules
 
         public void Configure(ConfigurationContext context)
         {
-            _configuration = context.Configuration;
         }
 
         private void OnBackgroundJobFailed(object sender, BackgroundJobFailedEventArgs e)

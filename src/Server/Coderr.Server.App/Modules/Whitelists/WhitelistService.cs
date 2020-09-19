@@ -35,11 +35,14 @@ namespace Coderr.Server.App.Modules.Whitelists
         /// </summary>
         /// <param name="applicationId">Application that the error is reported for.</param>
         /// <param name="remoteAddress">IP address of the client reporting the error.</param>
-        /// <returns></returns>
+        /// <returns></returns>h
         public async Task<bool> Validate(int applicationId, IPAddress remoteAddress)
         {
             var ipEntry = await _repository.FindIp(applicationId, remoteAddress);
-            if (ipEntry != null) return ipEntry.IpType != IpType.Denied;
+            if (ipEntry != null)
+            {
+                return ipEntry.IpType != IpType.Denied;
+            }
 
             var domains = await _repository.FindWhitelists(applicationId);
 

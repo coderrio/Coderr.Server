@@ -22,11 +22,18 @@ namespace Coderr.Server.App.Modules.History.Events
         {
             int? accountId;
 
-            if (context.Principal.IsInRole(CoderrRoles.System))
-                accountId = null;
-            else
-                accountId = context.Principal.GetAccountId();
-                
+            try
+            {
+                if (context.Principal.IsInRole(CoderrRoles.System))
+                    accountId = null;
+                else
+                    accountId = context.Principal.GetAccountId();
+            }
+            catch (Exception ex)
+            {
+                ex.Data["Principal"] = context.Principal.ToFriendlyString();
+                throw;
+            }
 
             var e = new HistoryEntry(message.IncidentId, accountId, IncidentState.ReOpened)
             {

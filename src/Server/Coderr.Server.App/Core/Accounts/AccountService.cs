@@ -79,7 +79,7 @@ namespace Coderr.Server.App.Core.Accounts
         /// <returns>
         ///     Task which will contain the reply once completed.
         /// </returns>
-        public async Task<ClaimsIdentity> ActivateAccount(ClaimsPrincipal user, string activationKey)
+        public async Task<ClaimsIdentity> ActivateAccount(ClaimsPrincipal messagingPrincipal, string activationKey)
         {
             var account = await _repository.FindByActivationKeyAsync(activationKey);
             if (account == null)
@@ -91,13 +91,13 @@ namespace Coderr.Server.App.Core.Accounts
             await _repository.UpdateAsync(account);
             
             
-            if (!user.IsCurrentAccount(account.Id))
+            if (!messagingPrincipal.IsCurrentAccount(account.Id))
             {
                 var evt = new AccountActivated(account.Id, account.UserName)
                 {
                     EmailAddress = account.Email
                 };
-                await _messageBus.SendAsync(user, evt);
+                await _messageBus.SendAsync(messagingPrincipal, evt);
             }
 
 

@@ -30,7 +30,7 @@ namespace Coderr.Server.SqlServer.Modules.Whitelists
                                     left join WhitelistedDomainApps app ON (d.Id = app.DomainId)
                                     WHERE ip.IpAddress = @ip
                                     AND (app.ApplicationId = @appId OR app.ApplicationId is NULL)
-                                    order by app.ApplicationId desc";
+                                    order by app.ApplicationId desc, ip.IpType asc";
                 cmd.AddParameter("ip", address.ToString());
                 cmd.AddParameter("appId", applicationId);
 
@@ -51,7 +51,7 @@ namespace Coderr.Server.SqlServer.Modules.Whitelists
                                     order by app.ApplicationId desc";
                 cmd.AddParameter("appId", applicationId);
 
-                var entries= await cmd.ToListAsync<Whitelist>();
+                var entries = await cmd.ToListAsync<Whitelist>();
                 foreach (var entry in entries)
                 {
                     if (domains.Any(x => x.Id == entry.Id))

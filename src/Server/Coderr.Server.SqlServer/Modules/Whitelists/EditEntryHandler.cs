@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Coderr.Server.Api.Modules.Whitelists.Commands;
-using Coderr.Server.Api.Modules.Whitelists.Queries;
 using Coderr.Server.App.Modules.Whitelists;
 using DnsClient;
 using DnsClient.Protocol;

@@ -27,16 +27,16 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
                         AS
                         (
                             select distinct TOP(10) ErrorReports.Id
-                            FROM ErrorReports
-                            JOIN ErrorReportCollectionProperties ep ON (ep.ReportId = ErrorReports.Id)
+                            FROM ErrorReports WITH (NoLock)
+                            JOIN ErrorReportCollectionProperties ep WITH (NoLock) ON (ep.ReportId = ErrorReports.Id)
                             WHERE ep.Name = @collectionName
                             AND ErrorReports.IncidentId=@incidentId
                         )
 
                         select erp.PropertyName, erp.Value, ErrorReports.CreatedAtUtc, ErrorReports.Id ReportId
-                        from ErrorReportCollectionProperties erp
-                        join ReportsWithCollection rc on (erp.ReportId = rc.ErrorReportId)
-                        join ErrorReports on (ErrorReports.ID = rc.ErrorReportId)
+                        from ErrorReportCollectionProperties erp  WITH (NoLock)
+                        join ReportsWithCollection rc WITH (NoLock) on (erp.ReportId = rc.ErrorReportId)
+                        join ErrorReports WITH (NoLock) on (ErrorReports.ID = rc.ErrorReportId)
                         WHERE erp.Name = @collectionName";
 
             var items = new List<GetCollectionResultItem>();

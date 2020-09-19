@@ -44,6 +44,7 @@ namespace Coderr.Server.SqlServer.Modules.Whitelists
                         IpAddress = IPAddress.Parse(ip),
                         StoredAtUtc = DateTime.UtcNow
                     };
+
                     await _uow.InsertAsync(entity);
                 }
             }

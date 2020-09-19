@@ -4,7 +4,7 @@ import { AppRoot } from "@/services/AppRoot";
 import * as Mine from "@/dto/Common/Mine"
 import { GetOverview, GetOverviewResult } from "@/dto/Web/Overview"
 import { GetApplicationOverview, GetApplicationOverviewResult, GetApplicationList, ApplicationListItem } from "@/dto/Core/Applications"
-import { Component, Watch, Mixins } from "vue-property-decorator";
+import { Component, Mixins } from "vue-property-decorator";
 import { AppAware } from "@/AppMixins";
 import Chartist from "chartist";
 import * as moment from "moment";

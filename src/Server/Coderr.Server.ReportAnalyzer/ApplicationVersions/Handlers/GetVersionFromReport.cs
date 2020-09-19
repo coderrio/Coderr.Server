@@ -4,7 +4,6 @@ using Coderr.Client;
 using Coderr.Server.Domain.Modules.ApplicationVersions;
 using Coderr.Server.ReportAnalyzer.Abstractions.Incidents;
 using DotNetCqs;
-using Coderr.Server.Abstractions.Boot;
 
 namespace Coderr.Server.ReportAnalyzer.ApplicationVersions.Handlers
 {
@@ -60,7 +59,7 @@ namespace Coderr.Server.ReportAnalyzer.ApplicationVersions.Handlers
 
         private static string CleanVersionFromUnwantedCharacters(string version)
         {
-            string tmp = "";
+            var tmp = "";
             foreach (var ch in version)
             {
                 if (char.IsDigit(ch) || ch == '.')

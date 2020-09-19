@@ -11,15 +11,13 @@ using StartContext = Coderr.Server.Abstractions.Boot.StartContext;
 
 namespace Coderr.Server.Web.Boot
 {
-    public class ModuleStarter
+    public class AppModuleStarter
     {
         private readonly List<IAppModule> _modules = new List<IAppModule>();
-        private ConfigurationWrapper _configurationWrapper;
-        private List<string> _ignoredAppModules = new List<string>();
+        private readonly List<string> _ignoredAppModules = new List<string>();
 
-        public ModuleStarter(IConfiguration configuration)
+        public AppModuleStarter(IConfiguration configuration)
         {
-            _configurationWrapper = new ConfigurationWrapper(configuration);
             foreach (var child in configuration.GetSection("DisabledModules:App").GetChildren())
             {
                 _ignoredAppModules.Add(child.Value);

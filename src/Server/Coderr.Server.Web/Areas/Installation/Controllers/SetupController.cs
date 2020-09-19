@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Coderr.Server.Abstractions;
 using Coderr.Server.Abstractions.Config;
 using Coderr.Server.Infrastructure;
 using Coderr.Server.Infrastructure.Configuration;
@@ -21,13 +22,11 @@ namespace Coderr.Server.Web.Areas.Installation.Controllers
 
     public class SetupController : Controller
     {
-        private readonly IOptions<InstallationOptions> _config;
         private ConfigurationStore _configStore;
         private readonly IConfiguration _configuration;
 
-        public SetupController(IOptions<InstallationOptions> config, ConfigurationStore configStore, IConfiguration configuration)
+        public SetupController(ConfigurationStore configStore, IConfiguration configuration)
         {
-            _config = config;
             _configStore = configStore;
             this._configuration = configuration;
         }
@@ -37,7 +36,7 @@ namespace Coderr.Server.Web.Areas.Installation.Controllers
         [AllowAnonymous]
         public ActionResult Activate()
         {
-            if (!_config.Value.IsConfigured)
+            if (!HostConfig.Instance.IsConfigured)
                 return RedirectToAction("Completed", new
                 {
                     displayError = 1
@@ -150,8 +149,7 @@ namespace Coderr.Server.Web.Areas.Installation.Controllers
         {
             try
             {
-                var conStr = _configuration.GetConnectionString("Db");
-                conStr = SqlController.ChangeConnectionTimeout(conStr);
+                var conStr = SqlController.ChangeConnectionTimeout(HostConfig.Instance.ConnectionString);
                 SetupTools.DbTools.TestConnection(conStr);
             }
             catch
@@ -161,22 +159,26 @@ namespace Coderr.Server.Web.Areas.Installation.Controllers
             return View();
         }
 
-  
+
 
         [HttpPost]
         public ActionResult Index(string key)
         {
             if (key == "changeThis")
             {
-                ModelState.AddModelError("",
-                    "Change the 'Installation/Password' setting in appsettings.json and then try again.");
+                var errMsg = HostConfig.Instance.IsRunningInDocker
+                    ? "Change the 'CODERR_CONFIG_PASSWORD' setting in your DockerCompose file and then try again."
+                    : "Change the 'Installation/Password' setting in appsettings.json and then try again.";
+                ModelState.AddModelError("", errMsg);
                 return View();
             }
 
-            if (key != _config.Value.Password)
+            if (key != HostConfig.Instance.ConfigurationPassword)
             {
-                ModelState.AddModelError("",
-                    "Enter the 'Installation/Password' value from appsettings.json and then try again.");
+                var errMsg = HostConfig.Instance.IsRunningInDocker
+                    ? "Specify a value for 'CODERR_CONFIG_PASSWORD' setting in your DockerCompose file and then try again."
+                    : "Enter the 'Installation/Password' value from appsettings.json and then try again.";
+                ModelState.AddModelError("", errMsg);
                 return View();
             }
 

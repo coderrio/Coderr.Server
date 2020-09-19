@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Security;
 using System.Security.Claims;
 using Coderr.Server.Abstractions.Security;
 using Microsoft.AspNetCore.Http;
 
 namespace Coderr.Server.Web.Boot.Adapters
 {
-    internal class PrincipalWrapper : IPrincipalAccessor
+    public class PrincipalWrapper : IPrincipalAccessor
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private ClaimsPrincipal _principal;

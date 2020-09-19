@@ -6,7 +6,6 @@ using Coderr.Server.Domain.Core.Applications;
 using Coderr.Server.Domain.Core.User;
 using DotNetCqs;
 
-
 namespace Coderr.Server.App.Core.Applications.CommandHandlers
 {
     internal class CreateApplicationHandler : IMessageHandler<CreateApplication>

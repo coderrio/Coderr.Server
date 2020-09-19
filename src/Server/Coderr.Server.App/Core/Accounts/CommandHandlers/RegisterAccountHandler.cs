@@ -49,8 +49,8 @@ namespace Coderr.Server.App.Core.Accounts.CommandHandlers
 
             if (!string.IsNullOrEmpty(command.UserName) && await _repository.IsUserNameTakenAsync(command.UserName))
             {
-                await SendAccountInfo(context, command.UserName);
                 _logger.Warn("UserName is taken: " + command.UserName);
+                await SendAccountInfo(context, command.UserName);
                 return;
             }
 
@@ -60,7 +60,10 @@ namespace Coderr.Server.App.Core.Accounts.CommandHandlers
             account.SetVerifiedEmail(command.Email);
 
             if (command.ActivateDirectly)
+            {
+                _logger.Debug("Activating directly");
                 account.Activate();
+            }
 
             var accountCount = await _repository.CountAsync();
             if (accountCount == 0)
@@ -122,7 +125,7 @@ Your activation code is: {0}
 You can activate your account by clicking on: {1}/account/activate/{0}
 
 Good luck,
-  Coderr Team", account.ActivationKey, config.BaseUrl),
+  Coderr Team", account.ActivationKey, config.BaseUrl.ToString().TrimEnd('/')),
                 Subject = "Coderr activation"
             };
             msg.Recipients = new[] { new EmailAddress(account.Email) };

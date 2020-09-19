@@ -81,6 +81,11 @@ namespace Coderr.Server.Domain.Core.Incidents
         public string IgnoringRequestedBy { get; private set; }
 
         /// <summary>
+        /// Version that the error is corrected in. All inbound error reports will be ignored if they are from older application versions.
+        /// </summary>
+        public string IgnoredUntilVersion { get; set; }
+
+        /// <summary>
         ///     Incident was marked as completed, but we've received another report for this incident
         /// </summary>
         /// <remarks>
@@ -183,11 +188,6 @@ namespace Coderr.Server.Domain.Core.Incidents
             SolvedAtUtc = when ?? DateTime.UtcNow;
             State = IncidentState.Closed;
         }
-
-        /// <summary>
-        /// Version that the error is corrected in. All inbound error reports will be ignored if they are from older application versions.
-        /// </summary>
-        public string IgnoredUntilVersion { get; set; }
 
         /// <summary>
         ///     Do not want to store reports or receive notifications for this incident.

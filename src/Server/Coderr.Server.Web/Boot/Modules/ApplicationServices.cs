@@ -9,7 +9,6 @@ namespace Coderr.Server.Web.Boot.Modules
         private ApplicationServiceManager _appManager;
         private IConfigurationSection _configuration;
 
-
         public void Start(StartContext context)
         {
             var adapter = new DependencyInjectionAdapter(context.ServiceProvider);

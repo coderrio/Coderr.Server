@@ -16,7 +16,7 @@
                                 you don't want to include the shared secret as anyone could see and use it. Instead, we allow reporting without a shared secret as long as you whitelist domains.
                             </em>
                         </p>
-                        <table class="table mb-3 transparent entries-table" v-if="entries.length > 0">
+                        <table class="text-left table mb-3 transparent" v-if="entries.length > 0">
                             <thead>
                                 <tr>
                                     <th>Domain</th>
@@ -27,20 +27,18 @@
                             </thead>
                             <tbody>
                                 <tr v-for="entry in entries">
-                                    <td>
+                                    <td class="text-left">
                                         {{entry.domainName}}
                                     </td>
-                                    <td>
-                                        <table>
-                                            <tr v-for="app in entry.apps">
-                                                <td>{{app.name}}</td>
-                                            </tr>
-                                        </table>
+                                    <td class="text-left">
+                                        <span v-for="app in entry.apps">
+                                            {{app.name}}<br />
+                                        </span>
                                     </td>
-                                    <td>
-                                        <div v-for="ip in entry.ips">
-                                            {{ip.value}} <i :class="'text-blue small fa ' + ip.icon" :title="ip.tooltip"></i>
-                                        </div>
+                                    <td class="text-left">
+                                        <span v-for="ip in entry.ips">
+                                            {{ip.value}} <i :class="'text-blue small fa ' + ip.icon" :title="ip.tooltip"></i><br />
+                                        </span>
                                     </td>
                                     <td>
                                         <router-link :to="{name: 'editWhitelistedDomain', params: { id: entry.id.toString() }}"><i class="fa fa-edit text-red"></i></router-link>

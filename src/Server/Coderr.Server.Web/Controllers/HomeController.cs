@@ -8,11 +8,8 @@ namespace Coderr.Server.Web.Controllers
     [Authorize()]
     public class HomeController : Controller
     {
-        private readonly InstallationOptions _installationOptions;
-
-        public HomeController(IOptions<InstallationOptions> installationOptions)
+        public HomeController()
         {
-            _installationOptions = installationOptions.Value;
         }
 
         /// <summary>

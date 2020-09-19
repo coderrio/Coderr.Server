@@ -1,4 +1,5 @@
-﻿@{
+﻿@using Coderr.Server.Abstractions
+@{
     ViewBag.Title = "Installation - Completed";
 }
 <div class="container">
@@ -6,21 +7,42 @@
 
         <h2>Congratulations!</h2>
 
-        <p>The setup is now completed. You need to deactive this configuration guide for security reasons.</p>
-        <p>
-            Change the <code>Installation/IsConfigured</code> setting to <code>true</code> in appsettings.json. 
-        </p>
-        <p>
-            Once done, restart the application pool to allow all background services to start.
-        </p>
-        @if (ViewBag.DisplayError)
+        <p>The setup is now completed. You need to deactivate this configuration guide for security reasons.</p>
+        @if (HostConfig.Instance.IsRunningInDocker)
         {
-            <h3>Error!</h3>
-            <div style="color: #990000; font-weight: bolder">
-                Change appsettings.json.
-            </div>
+            <p>
+                Remove the <code>CODERR_CONFIG_PASSWORD</code> ENV variable from your DockerCompose file.
+            </p>
+            <p>
+                Once done, restart the docker image.
+            </p>
+            @if (ViewBag.DisplayError)
+            {
+                <h3>Error!</h3>
+                <div style="color: #990000; font-weight: bolder">
+                    Change DockerCompose.
+                </div>
+            }
+            @Html.Raw(ViewBag.PrevStep)
+            <a href="~/" class="btn btn-primary">I've restarted the docker image, let's begin!</a>
         }
-        @Html.Raw(ViewBag.PrevStep)
-        <a href="~/" class="btn btn-primary">I've restarted the pool, let's begin!</a>
+        else
+        {
+            <p>
+                Change the <code>Installation/IsConfigured</code> setting to <code>true</code> in appsettings.json.
+            </p>
+            <p>
+                Once done, restart the application pool to allow all background services to start.
+            </p>
+            @if (ViewBag.DisplayError)
+            {
+                <h3>Error!</h3>
+                <div style="color: #990000; font-weight: bolder">
+                    Change appsettings.json.
+                </div>
+            }
+            @Html.Raw(ViewBag.PrevStep)
+            <a href="~/" class="btn btn-primary">I've restarted the pool, let's begin!</a>
+        }
     </div>
 </div>

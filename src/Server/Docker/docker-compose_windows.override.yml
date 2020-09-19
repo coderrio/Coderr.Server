@@ -1,11 +1,13 @@
 version: '3.7'
 
 services:
-  coderr.server.web:
+  coderr.communityserver:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=https://+:443;http://+:80
       - ASPNETCORE_HTTPS_PORT=50473
+      - CODERR_CONNECTIONSTRING=Data Source=.;Initial Catalog=Coderr99;Integrated Security=True;Connect Timeout=15;user=coderr;password=c0d3rr
+      - CODERR_CONFIG_PASSWORD=changeThis
     networks:
       - coderr_network_win
     ports:

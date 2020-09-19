@@ -10,7 +10,6 @@ using Coderr.Server.Api.Core.Messaging.Commands;
 using Coderr.Server.Domain.Core.Applications;
 using Coderr.Server.Domain.Core.User;
 using Coderr.Server.Infrastructure.Configuration;
-using Coderr.Server.Infrastructure.Security;
 using DotNetCqs;
 
 using log4net;
@@ -31,14 +30,15 @@ namespace Coderr.Server.App.Core.Invitations.CommandHandlers
         private readonly IInvitationRepository _invitationRepository;
         private readonly IUserRepository _userRepository;
         private readonly ILog _logger = LogManager.GetLogger(typeof(InviteUserHandler));
-        private BaseConfiguration _baseConfiguration;
+        private readonly BaseConfiguration _baseConfiguration;
 
         /// <summary>
         ///     Creates a new instance of <see cref="InviteUserHandler" />.
         /// </summary>
-        /// <param name="invitationRepository">Store invitations</param>
-        /// <param name="userRepository">To load inviter and invitee</param>
-        /// <param name="applicationRepository">Add pending member</param>
+        /// <param name="invitationRepository">Store invitations.</param>
+        /// <param name="userRepository">To load invited and invitee.</param>
+        /// <param name="applicationRepository">Add pending member.</param>
+        /// <param name="baseConfig">To get the base url.</param>
         public InviteUserHandler(IInvitationRepository invitationRepository,
             IUserRepository userRepository, IApplicationRepository applicationRepository, IConfiguration<BaseConfiguration> baseConfig)
         {
@@ -127,6 +127,7 @@ namespace Coderr.Server.App.Core.Invitations.CommandHandlers
         protected virtual async Task SendInvitationEmailAsync(IMessageContext context, Invitation invitation, string reason)
         {
             var url = _baseConfiguration.BaseUrl.ToString().TrimEnd('/');
+
             if (string.IsNullOrEmpty(reason))
                 reason = "";
             else
