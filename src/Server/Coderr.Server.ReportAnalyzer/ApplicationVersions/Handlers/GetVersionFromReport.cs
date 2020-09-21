@@ -27,7 +27,9 @@ namespace Coderr.Server.ReportAnalyzer.ApplicationVersions.Handlers
             }
 
             if (version == null)
+            {
                 return;
+            }
 
             version = CleanVersionFromUnwantedCharacters(version);
 
@@ -47,9 +49,13 @@ namespace Coderr.Server.ReportAnalyzer.ApplicationVersions.Handlers
             versionEntity.UpdateReportDate();
 
             if (versionEntity.Id == 0)
+            {
                 await _repository.CreateAsync(versionEntity);
+            }
             else
+            {
                 await _repository.UpdateAsync(versionEntity);
+            }
 
 
             _repository.SaveIncidentVersion(e.Incident.Id, versionEntity.Id);

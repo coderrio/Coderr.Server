@@ -30,6 +30,7 @@
   <ItemGroup>
     <None Remove="Schema\Coderr.v24.sql" />
     <None Remove="Schema\Coderr.v25.sql" />
+    <None Remove="Schema\Coderr.v26.sql" />
   </ItemGroup>
 
 </Project>

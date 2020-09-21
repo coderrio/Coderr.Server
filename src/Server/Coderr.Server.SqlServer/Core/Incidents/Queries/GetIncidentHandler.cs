@@ -135,8 +135,8 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
             using (var cmd = _unitOfWork.CreateDbCommand())
             {
                 cmd.CommandText = @"select distinct Name
-from [IncidentContextCollections] WITH(READUNCOMMITTED)
-where IncidentId=@incidentId";
+                                    from [IncidentContextCollections] WITH(READUNCOMMITTED)
+                                    where IncidentId=@incidentId";
                 cmd.AddParameter("incidentId", result.Id);
                 using (var reader = await cmd.ExecuteReaderAsync())
                 {

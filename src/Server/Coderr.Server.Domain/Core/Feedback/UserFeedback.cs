@@ -71,12 +71,11 @@ namespace Coderr.Server.Domain.Core.Feedback
         /// <summary>
         ///     We've identified which report this feedback belongs to
         /// </summary>
-        /// <param name="reportId">Report PK</param>
+        /// <param name="reportId">Report PK, can be null if we do not store the report that the feedback came with</param>
         /// <param name="incidentId">Incident that the report belongs to</param>
         /// <param name="applicationId">Application that the incident belongs to</param>
         public void AssignToReport(int reportId, int incidentId, int applicationId)
         {
-            if (reportId <= 0) throw new ArgumentOutOfRangeException("reportId");
             if (incidentId <= 0) throw new ArgumentOutOfRangeException("incidentId");
             if (applicationId <= 0) throw new ArgumentOutOfRangeException("applicationId");
 

@@ -17,11 +17,12 @@ export default class IncidentComponent extends Vue {
     incident: GetIncidentResult = new GetIncidentResult;
     isIgnored: boolean = false;
     isClosed = false;
-
+    tags: string[] = [];
     highlights: IHighlight[] = [];
 
     team: ApplicationMember[] = [];
     created() {
+        this.incident.Tags = [];
         this.incidentId = parseInt(this.$route.params.incidentId, 10);
         AppRoot.Instance.incidentService.get(this.incidentId)
             .then(result => {
@@ -40,7 +41,10 @@ export default class IncidentComponent extends Vue {
 
                 this.setHighlights(result);
 
-                this.displayChart(result.DayStatistics);
+                this.$nextTick(() => {
+                    this.displayChart(result.DayStatistics);
+                });
+
                 AppRoot.Instance.applicationService.getTeam(result.ApplicationId)
                     .then(x => {
                         this.team = x;

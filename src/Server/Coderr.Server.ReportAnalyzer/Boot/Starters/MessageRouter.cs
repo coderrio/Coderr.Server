@@ -78,8 +78,11 @@ namespace Coderr.Server.ReportAnalyzer.Boot.Starters
             }
         }
 
-        private async Task SendAppMessages(ClaimsPrincipal principal, List<Message> msgs)
+        private async Task SendAppMessages(ClaimsPrincipal principal, IReadOnlyCollection<Message> msgs)
         {
+            if (msgs.Count == 0)
+                return;
+
             using (var session = AppQueue.BeginSession())
             {
                 foreach (var message in msgs)
@@ -104,8 +107,11 @@ namespace Coderr.Server.ReportAnalyzer.Boot.Starters
             }
         }
 
-        private async Task SendReportAnalyzerMessages(ClaimsPrincipal principal, List<Message> msgs)
+        private async Task SendReportAnalyzerMessages(ClaimsPrincipal principal, IReadOnlyCollection<Message> msgs)
         {
+            if (msgs.Count == 0)
+                return;
+
             using (var session = ReportAnalyzerQueue.BeginSession())
             {
                 foreach (var message in msgs)
