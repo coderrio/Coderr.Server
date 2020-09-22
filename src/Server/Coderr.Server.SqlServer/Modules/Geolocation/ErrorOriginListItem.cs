@@ -3,7 +3,7 @@
     /// <summary>
     ///     List result item for repository queries
     /// </summary>
-    public class ErrorOrginListItem
+    public class ErrorOriginListItem
     {
         /// <summary>
         ///     Latitude

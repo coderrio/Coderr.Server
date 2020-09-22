@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Coderr.Server.Domain.Modules.ErrorOrigins;
 
@@ -22,6 +23,9 @@ namespace Coderr.Server.ReportAnalyzer.ErrorOrigins
         /// <returns>task</returns>
         /// <exception cref="ArgumentNullException">origin</exception>
         Task CreateAsync(ErrorOrigin entity, int applicationId, int incidentId, int reportId);
-        
+
+        Task<IList<ErrorOrigin>> GetPendingOrigins();
+
+        Task Update(ErrorOrigin entity);
     }
 }

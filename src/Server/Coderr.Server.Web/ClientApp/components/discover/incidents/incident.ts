@@ -17,7 +17,6 @@ export default class IncidentComponent extends Vue {
     incident: GetIncidentResult = new GetIncidentResult;
     isIgnored: boolean = false;
     isClosed = false;
-    tags: string[] = [];
     highlights: IHighlight[] = [];
 
     team: ApplicationMember[] = [];

@@ -39,7 +39,7 @@ namespace Coderr.Server.SqlServer.Modules.Geolocation
                 cmd.CommandText = @"SELECT Longitude, Latitude, count(*) 
                                     FROM ErrorOrigins eo
                                     JOIN ErrorReportOrigins ON (eo.Id = ErrorReportOrigins.ErrorOriginId)
-                                    WHERE IncidentId = @id
+                                    WHERE IncidentId = @id AND eo.IsLookedUp = 1
                                     GROUP BY IncidentId, Longitude, Latitude";
                 cmd.AddParameter("id", query.IncidentId);
                 using (var reader = await cmd.ExecuteReaderAsync())

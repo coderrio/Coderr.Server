@@ -119,9 +119,6 @@ namespace Coderr.Server.ReportAnalyzer.Boot.Starters
             listener.ScopeCreated += (sender, args) =>
             {
                 args.Scope.ResolveDependency<IPrincipalAccessor>().First().Principal = args.Principal;
-
-                _logger.Debug(
-                    $"[{inboundQueueName}] Running {args.Message.Body}, Credentials: {args.Principal.ToFriendlyString()}");
             };
             listener.ScopeClosing += (sender, args) =>
             {
@@ -160,6 +157,7 @@ namespace Coderr.Server.ReportAnalyzer.Boot.Starters
 
         private void HaveRun(Task obj)
         {
+            _logger.Info("Stop completed for a listener in the ReportQueueModule. " + obj);
         }
 
         private IMessageInvoker MessageInvokerFactory(IHandlerScope arg)

@@ -12,12 +12,12 @@ namespace Coderr.Server.ReportAnalyzer.Boot
 {
     public class Bootstrapper : IAppModule
     {
-        private readonly ReportAnalyzerModuleStarter _reportAnalyzerReportAnalyzerModuleStarter;
+        private readonly ReportAnalyzerModuleStarter _reportAnalyzerModuleStarter;
         private ServiceProvider _serviceProvider;
 
         public Bootstrapper()
         {
-            _reportAnalyzerReportAnalyzerModuleStarter = new ReportAnalyzerModuleStarter();
+            _reportAnalyzerModuleStarter = new ReportAnalyzerModuleStarter();
         }
 
         public void Configure(ConfigurationContext context)
@@ -32,7 +32,7 @@ namespace Coderr.Server.ReportAnalyzer.Boot
                 Services = serviceCollection
             };
             var ignoredModules = context.Configuration.GetSection("DisabledModules:ReportAnalyzer");
-            _reportAnalyzerReportAnalyzerModuleStarter.Configure(ourContext, new ServerConfigSectionWrapper(ignoredModules));
+            _reportAnalyzerModuleStarter.Configure(ourContext, new ServerConfigSectionWrapper(ignoredModules));
 
             RegisterConfigurationStores(ourContext);
             ourContext.Services.AddScoped<IPrincipalAccessor, MessagingPrincipalWrapper>();
@@ -56,13 +56,13 @@ namespace Coderr.Server.ReportAnalyzer.Boot
             {
                 ServiceProvider = _serviceProvider
             };
-            _reportAnalyzerReportAnalyzerModuleStarter.Start(ourStartContext);
+            _reportAnalyzerModuleStarter.Start(ourStartContext);
         }
 
 
         public void Stop()
         {
-            _reportAnalyzerReportAnalyzerModuleStarter.Stop();
+            _reportAnalyzerModuleStarter.Stop();
         }
 
         private IServiceProvider GetServiceProvider()
