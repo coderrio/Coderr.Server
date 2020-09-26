@@ -6,7 +6,7 @@ import {
 import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
 import Chartist from "chartist";
-import moment from "moment";
+import { DateTime } from 'luxon';
 
 
 interface ISeries {
@@ -157,7 +157,7 @@ export default class DeploymentHomeComponent extends Vue {
                     //if (index % 3 !== 0) {
                     //    return '';
                     //}
-                    return moment(value).format('MMM D');
+                    return DateTime.fromISO(value).toFormat('MMM D');
                 }
             }
         };

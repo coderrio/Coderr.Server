@@ -1,9 +1,10 @@
 import "bootstrap";
 import Vue from "vue";
 import VueRouter from "vue-router";
-import moment from "moment";
 import { AppRoot } from "./services/AppRoot"
 import { IUser } from "./vue-shim";
+import { DateTime } from 'luxon';
+import * as helpers from "./helpers";
 
 //Vue.use(VeeValidate);
 Vue.use(VueRouter);
@@ -18,38 +19,27 @@ declare module 'vue/types/vue' {
 
 Vue.filter("ago",
     (value: string) => {
-        if (!value) return "n/a";
-        return moment.utc(value).fromNow();
+        return helpers.ago(value);
+    });
+
+Vue.filter("monthDay",
+    (value: string | Date) => {
+        return helpers.monthDay(value);
     });
 
 Vue.filter("niceTime",
     (value: string) => {
-        if (!value) return "n/a";
-        return moment.utc(value).local().format("LLLL");
+        return helpers.niceTime(value);
     });
 
 Vue.filter("agoOrDate",
     (value: string) => {
-        var today = moment(new Date());
-        var reportDate = moment(value);
-        var diff = reportDate.diff(today, "days");
-
-        if (!value) return "n/a";
-        return moment.utc(value).fromNow();
+        return helpers.agoOrDate(value);
     });
 
 Vue.filter("incidentState",
     (value: string) => {
-        switch (value) {
-            case "0":
-                return "New";
-            case "1":
-                return "Assigned";
-            case "2":
-                return "Ignored";
-            case "3":
-                return "Closed";
-        }
+        return helpers.incidentState(value);
     });
 
 Vue.component('context-navigator', require('./components/shared/incidents/ContextNavigator.vue.html').default);

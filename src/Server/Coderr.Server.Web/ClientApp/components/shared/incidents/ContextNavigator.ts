@@ -52,7 +52,8 @@ export default class ContextNavigatorComponent extends Vue {
         AppRoot.Instance.apiClient.query<GetReportResult>(q)
             .then(report => {
                 this.currentReport = report;
-                this.currentReportName = new Date(report.CreatedAtUtc).toLocaleString();
+                //Date.parse()
+                this.currentReportName = this.$options.filters.niceTime(report.CreatedAtUtc);
                 //(<HTMLButtonElement>document.getElementById('reportChooser')).removeAttribute('disabled');
                 if (report.ContextCollections.length > 0) {
                     this.loadCollection(this.currentCollectionName);

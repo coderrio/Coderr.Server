@@ -19,7 +19,7 @@ export default class AnalyzeReportComponent extends Vue {
     indexInTotalSet = 0;
     totalCount = 0;
 
-    reportedAt = new Date();
+    reportedAt: string = '';
     stackTrace = '';
     reportId: number;
     incidentId: number;
@@ -105,7 +105,7 @@ export default class AnalyzeReportComponent extends Vue {
         AppRoot.Instance.apiClient.query<GetReportResult>(q)
             .then(report => {
                 this.stackTrace = report.StackTrace;
-                this.reportedAt = report.CreatedAtUtc;
+                this.reportedAt = this.$options.filters.niceTime(report.CreatedAtUtc);
                 this.contextCollections = report.ContextCollections;
                 this.userFeedback = report.UserFeedback;
                 if (report.EmailAddress != null) {

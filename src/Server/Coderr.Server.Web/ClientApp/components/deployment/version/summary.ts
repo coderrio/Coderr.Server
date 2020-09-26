@@ -1,20 +1,10 @@
 import { AppRoot } from '../../../services/AppRoot';
 import {
-    GetVersionHistory, GetVersionHistoryResult, GetVersionHistorySeries,
-    GetApplicationVersions, GetApplicationVersionsResult, GetApplicationVersionsResultItem
-} from "../../../dto/Modules/Versions";
-import {
     GetIncidentStateSummary, GetIncidentStateSummaryResult,
     GetIncidentsForStates, GetIncidentsForStatesResult, GetIncidentsForStatesResultItem
 } from "../../../dto/Modules/History";
-import {
-    FindIncidents, FindIncidentsResult, FindIncidentsResultItem
-} from "../../../dto/Core/Incidents";
 import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
-import moment from "moment";
-
-
 
 @Component
 export default class DeploymentSummaryComponent extends Vue {

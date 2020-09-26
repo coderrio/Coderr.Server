@@ -45,7 +45,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\Installation\Data\" />
-    <Folder Include="wwwroot\dist\" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">

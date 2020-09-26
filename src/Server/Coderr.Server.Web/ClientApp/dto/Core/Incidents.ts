@@ -147,7 +147,7 @@ export class ReportDay
 {
     public static TYPE_NAME: string = 'ReportDay';
     public Count: number;
-    public Date: Date;
+    public Date: string;
 }
 export class SuggestedIncidentSolution
 {

@@ -26,6 +26,11 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
                 cmd.AddParameter("incidentId", query.IncidentId);
                 if (query.PageNumber > 0)
                 {
+                    if (query.PageSize == 0)
+                    {
+                        query.PageSize = 10;
+                    }
+
                     cmd.CommandText = "SELECT cast(count(Id) as int) FROM ErrorReports WHERE IncidentId = @incidentId";
                     totalCount = (int) cmd.ExecuteScalar();
 

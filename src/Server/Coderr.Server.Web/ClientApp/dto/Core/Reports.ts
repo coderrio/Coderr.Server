@@ -67,7 +67,7 @@ export class GetReportListResult
 export class GetReportListResultItem
 {
     public static TYPE_NAME: string = 'GetReportListResultItem';
-    public CreatedAtUtc: Date;
+    public CreatedAtUtc: string;
     public Id: number;
     public Message: string;
     public RemoteAddress: string;
@@ -76,7 +76,7 @@ export class GetReportResult
 {
     public static TYPE_NAME: string = 'GetReportResult';
     public ContextCollections: GetReportResultContextCollection[];
-    public CreatedAtUtc: Date;
+    public CreatedAtUtc: string;
     public EmailAddress: string;
     public ErrorId: string;
     public Exception: GetReportException;

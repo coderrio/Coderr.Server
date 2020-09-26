@@ -1,13 +1,10 @@
-import { PubSubService } from "../../../services/PubSub";
-import { IHighlight, IncidentService } from "@/services/incidents/IncidentService";
-import { AppRoot } from '../../../services/AppRoot';
-import { ApplicationMember } from "../../../services/applications/ApplicationService";
-import { GetIncident, GetIncidentResult, GetIncidentStatistics, GetIncidentStatisticsResult, ReportDay, QuickFact } from "../../../dto/Core/Incidents";
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { IHighlight } from "@/services/incidents/IncidentService";
+import { AppRoot } from '@/services/AppRoot';
+import { ApplicationMember } from "@/services/applications/ApplicationService";
+import { GetIncidentResult, ReportDay, QuickFact } from "@/dto/Core/Incidents";
+import { Component, Vue } from "vue-property-decorator";
 import Chartist from "chartist";
-import * as moment from 'moment';
-
+import { DateTime } from 'luxon';
 
 @Component
 export default class IncidentComponent extends Vue {
@@ -29,15 +26,16 @@ export default class IncidentComponent extends Vue {
                 this.isIgnored = result.IsIgnored;
                 this.isClosed = result.IsSolved;
                 result.Facts = result.Facts.filter(v => v.Value !== '0');
-                
+
                 if (result.AssignedToId > 0) {
                     var fact = new QuickFact();
-                    fact.Description = 'Assigned at ' + moment(result.AssignedAtUtc);
+                    console.log(result.AssignedAtUtc, typeof result.AssignedAtUtc);
+                    fact.Description = 'Assigned at ' + this.$options.filters.niceTime(result.AssignedAtUtc);
                     fact.Title = "Assigned to";
                     fact.Value = result.AssignedTo;
                     result.Facts.push(fact);
                 }
-                
+
                 this.displayChart(result.DayStatistics);
                 AppRoot.Instance.applicationService.getTeam(result.ApplicationId)
                     .then(x => {
@@ -110,13 +108,14 @@ export default class IncidentComponent extends Vue {
     deleteIncident() {
         AppRoot.Instance.incidentService.delete(this.incidentId, "yes");
         AppRoot.notify("Incident have been removed", 'fa-info', 'success');
-        this.$router.push({ name: 'suggest'});
+        this.$router.push({ name: 'suggest' });
     }
 
     private displayChart(days: ReportDay[]) {
         var labels: Date[] = [];
         var series: number[] = [];
         for (var i = 0; i < days.length; i++) {
+
             var value = new Date(days[i].Date);
             labels.push(value);
             series.push(days[i].Count);
@@ -128,11 +127,11 @@ export default class IncidentComponent extends Vue {
                 offset: 0
             },
             axisX: {
-                labelInterpolationFnc(value: any, index: number, labels: any) {
+                labelInterpolationFnc(value: Date, index: number, labels: any) {
                     if (index % 3 !== 0) {
                         return '';
                     }
-                    return moment(value).format('MMM D');
+                    return DateTime.fromJSDate(value).toFormat('LLL dd');
                 }
             }
         };

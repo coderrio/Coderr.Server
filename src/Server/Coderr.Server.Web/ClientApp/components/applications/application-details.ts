@@ -4,9 +4,9 @@ import { GetApplicationInfo, GetApplicationInfoResult, GetApplicationOverview, G
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import Chartist from "chartist";
-import * as moment from 'moment';
 import * as Incidents from "../../dto/Core/Incidents";
 import FindIncidentsResultItem = Incidents.FindIncidentsResultItem;
+import { DateTime } from 'luxon';
 
 
 interface ISeries {
@@ -103,7 +103,7 @@ export default class ApplicationDetailsComponent extends Vue {
                     if (index % 3 !== 0) {
                         return '';
                     }
-                    return moment(value).format('MMM D');
+                    return DateTime.utc(value).toFormat('MMM D');
                 }
             }
         };
