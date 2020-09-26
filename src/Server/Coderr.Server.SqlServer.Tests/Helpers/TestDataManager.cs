@@ -25,6 +25,7 @@ namespace Coderr.Server.SqlServer.Tests.Helpers
         {
             _connectionFactory = connectionFactory;
             ConfigStore = new TestConfigStore();
+            TestUser = new TestUser { Email = "demo@fortest.com", Password = "ada123", Username = "DemoTest" };
         }
 
         /// <summary>
@@ -75,8 +76,43 @@ namespace Coderr.Server.SqlServer.Tests.Helpers
             ErrorReportEntity report;
             using (var uow = CreateUnitOfWork())
             {
-                CreateUserAndApplication(uow, out var accountId, out var applicationId);
+                report = new ErrorReportEntity(ApplicationId, Guid.NewGuid().ToString("N"), DateTime.UtcNow,
+                        new ErrorReportException(new Exception("mofo")),
+                        new List<ErrorReportContextCollection>
+                        {
+                            new ErrorReportContextCollection("Maps", new Dictionary<string, string>())
+                        })
+                { Title = "Missing here" };
+                report.Init(report.GenerateHashCodeIdentifier());
 
+                uow.SaveChanges();
+            }
+
+            using (var dbContext = CreateUnitOfWork())
+            {
+                var incident = new IncidentBeingAnalyzed(report);
+                var incRepos = new AnalyticsRepository(dbContext);
+                incRepos.CreateIncident(incident);
+                incidentId = incident.Id;
+
+                report.IncidentId = incident.Id;
+                incRepos.CreateReport(report);
+                reportId = report.Id;
+
+                dbContext.SaveChanges();
+            }
+
+
+        }
+
+        /// <summary>
+        ///     Creates an incident and a report.
+        /// </summary>
+        public void CreateReportAndIncident(int applicationId, out int reportId, out int incidentId)
+        {
+            ErrorReportEntity report;
+            using (var uow = CreateUnitOfWork())
+            {
                 report = new ErrorReportEntity(applicationId, Guid.NewGuid().ToString("N"), DateTime.UtcNow,
                         new ErrorReportException(new Exception("mofo")),
                         new List<ErrorReportContextCollection>
@@ -233,6 +269,22 @@ namespace Coderr.Server.SqlServer.Tests.Helpers
         private IAdoNetUnitOfWork CreateUnitOfWork()
         {
             return new AdoNetUnitOfWork(_connectionFactory(), true);
+        }
+
+        public int CreateApplication(string name, int accountId)
+        {
+            using (var uow = CreateUnitOfWork())
+            {
+                var appRepos = new ApplicationRepository(uow);
+                var app = new Application(accountId, "MyTestApp") { ApplicationType = TypeOfApplication.DesktopApplication };
+                appRepos.CreateAsync(app).GetAwaiter().GetResult();
+                var member = new ApplicationTeamMember(app.Id, accountId, "Admin");
+                appRepos.CreateAsync(member).GetAwaiter().GetResult();
+
+                uow.SaveChanges();
+                return app.Id;
+            }
+
         }
     }
 }

@@ -141,7 +141,7 @@ export class AppRoot {
             });
     }
 
-    async loadState(name: string, component: any): Promise<boolean> {
+    async loadState(name: string, component: any, ignoredProperties: string[] = []): Promise<boolean> {
         var result = <any>await localForage.getItem(name);
         if (!result)
             return false;
@@ -149,6 +149,10 @@ export class AppRoot {
         var data = result;
         for (var key in data) {
             if (data.hasOwnProperty(key)) {
+                if (ignoredProperties != null && ignoredProperties.find(x => x === key) != null) {
+                    continue;
+                }
+
                 let value = data[key];
                 if (value instanceof Array) {
                     component[key].length = 0;

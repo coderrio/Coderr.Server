@@ -1,11 +1,11 @@
 version: '3.7'
 
 services:
-  coderr.server.web:
-    image: coderrio/win_coderrserverweb
+  coderr.communityserver:
+    image: coderrio/communityserver-win
     build:
       context: .
-      dockerfile: Coderr.Server.Web/Dockerfile
+      dockerfile: Dockerfile
     networks:
       - coderr_network_win
 

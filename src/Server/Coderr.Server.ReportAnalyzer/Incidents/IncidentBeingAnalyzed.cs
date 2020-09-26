@@ -1,6 +1,7 @@
 ﻿using System;
 using Coderr.Server.Domain.Core.ErrorReports;
 using Coderr.Server.Infrastructure;
+using Coderr.Server.ReportAnalyzer.ErrorReports;
 
 namespace Coderr.Server.ReportAnalyzer.Incidents
 {
@@ -57,7 +58,7 @@ namespace Coderr.Server.ReportAnalyzer.Incidents
 
             Description = exception.Message;
             FullName = exception.FullName;
-            StackTrace = exception.StackTrace;
+            StackTrace = HashCodeGenerator.CleanStackTrace(exception.StackTrace);
 
             AddReport(entity);
             ReportHashCode = entity.ReportHashCode;

@@ -1,0 +1,7 @@
+﻿ALTER TABLE IncidentContextCollections DROP CONSTRAINT FK_ICC_incidentId;
+ALTER TABLE IncidentCorrelations DROP CONSTRAINT FK_IncidentCorrelations_Incidents;
+ALTER TABLE IncidentEnvironments DROP CONSTRAINT FK_IncidentEnvironment_Incident;
+ALTER TABLE IncidentFeedback DROP CONSTRAINT FK_IncidentFeedback_incidents;
+ALTER TABLE IncidentHistory DROP CONSTRAINT FK_IncidentHistory_Incidents;
+ALTER TABLE IncidentTags DROP CONSTRAINT FK_IncidentTags_incidentId;
+ALTER TABLE IncidentVersions DROP CONSTRAINT FK_IncVersions_Incidents;

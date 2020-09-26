@@ -1,25 +1,23 @@
+@echo off
 COPY docker-compose_linux.yml docker-compose.yml
 COPY docker-compose_linux.override.yml docker-compose.override.yml
-CD Coderr.Server.Web
-COPY Dockerfile_Linux Dockerfile
+COPY Dockerfile_Linux ..\Dockerfile
 
 CD ..
 
-CALL BuildFrontend.bat
+rem CALL Docker\BuildFrontend.bat Coderr.Server.Web\
 
 docker-compose build
 
 ECHO built successfully
 
-docker push coderrio/coderrserverweb
+docker push coderrio/coderr-communityserver
 
 ECHO successfully pushed to dockerhub
 
-CD Coderr.Server.Web
 DEL Dockerfile
-CD ..
+CD Docker
 DEL docker-compose.yml
 DEL docker-compose.override.yml
 
 ECHO Completed!
-PAUSE

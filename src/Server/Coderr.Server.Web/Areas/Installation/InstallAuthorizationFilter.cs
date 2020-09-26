@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Coderr.Server.Abstractions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Configuration;
 
@@ -33,8 +34,7 @@ namespace Coderr.Server.Web.Areas.Installation
             if (section == null)
                 return;
 
-            var isConfigured = section.GetValue<bool>("IsConfigured");
-            if (!isConfigured) return;
+            if (!HostConfig.Instance.IsConfigured) return;
 
             context.Result = new ContentResult
             {

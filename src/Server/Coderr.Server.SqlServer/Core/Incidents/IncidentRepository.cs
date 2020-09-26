@@ -59,6 +59,21 @@ namespace Coderr.Server.SqlServer.Core.Incidents
             }
         }
 
+        public Task<IList<Incident>> GetAll(IEnumerable<int> incidentIds)
+        {
+            if (incidentIds == null) throw new ArgumentNullException(nameof(incidentIds));
+            var ids = string.Join(",", incidentIds);
+            if (ids == "")
+                throw new ArgumentException("No incident IDs were specified.", nameof(incidentIds));
+
+            using (var cmd = (DbCommand) _uow.CreateCommand())
+            {
+                cmd.CommandText =
+                    $"SELECT * FROM Incidents WHERE Id IN ({ids})";
+                return cmd.ToListAsync(new IncidentMapper());
+            }
+        }
+        
         public async Task MapCorrelationId(int incidentId, string correlationId)
         {
             var sql = @"declare @id int;
@@ -131,30 +146,6 @@ namespace Coderr.Server.SqlServer.Core.Incidents
 
                 cmd.AddParameter("id", id);
                 return cmd.FirstAsync(new IncidentMapper());
-            }
-        }
-
-        public Incident Find(int id)
-        {
-            using (var cmd = _uow.CreateCommand())
-            {
-                cmd.CommandText =
-                    "SELECT TOP 1 * FROM Incidents WHERE Id = @id";
-
-                cmd.AddParameter("id", id);
-                return cmd.FirstOrDefault(new IncidentMapper());
-            }
-        }
-
-        public Incident Get(int id)
-        {
-            using (var cmd = _uow.CreateCommand())
-            {
-                cmd.CommandText =
-                    "SELECT TOP 3 * FROM Incidents WHERE Id = @id";
-
-                cmd.AddParameter("id", id);
-                return cmd.First(new IncidentMapper());
             }
         }
     }

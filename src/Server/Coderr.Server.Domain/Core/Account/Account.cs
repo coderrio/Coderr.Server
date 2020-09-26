@@ -182,6 +182,16 @@ namespace Coderr.Server.Domain.Core.Account
         }
 
         /// <summary>
+        /// Mark user as logged in.
+        /// </summary>
+        public void SingleSignOn()
+        {
+            LastLoginAtUtc = DateTime.UtcNow;
+            LoginAttempts = 0;
+            AccountState = AccountState.Active;
+        }
+
+        /// <summary>
         ///     Want to reset password.
         /// </summary>
         /// <remarks>

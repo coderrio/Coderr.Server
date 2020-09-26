@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Abstractions.Config;
 using Coderr.Server.Abstractions.Reports;
+using Coderr.Server.Abstractions.Security;
 using Coderr.Server.Domain.Core.ErrorReports;
 using Coderr.Server.Domain.Core.Incidents.Events;
 using Coderr.Server.ReportAnalyzer.Abstractions;
@@ -30,21 +31,23 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
         private readonly ILog _logger = LogManager.GetLogger(typeof(ReportAnalyzer));
         private readonly IAnalyticsRepository _repository;
         private readonly IDomainQueue _domainQueue;
+        private readonly IConfiguration<ReportConfig> _reportConfig;
 
         /// <summary>
         ///     Creates a new instance of <see cref="ReportAnalyzer" />.
         /// </summary>
         /// <param name="hashCodeGenerator">Used to identify is this is a new unique exception</param>
-        /// <param name="messageBus">
+        /// <param name="domainQueue">
         ///     to publish the
         ///     <see cref="Coderr.Server.ReportAnalyzer.Abstractions.Incidents.ReportAddedToIncident" /> event
         /// </param>
         /// <param name="repository">repos</param>
-        public ReportAnalyzer(IHashCodeGenerator hashCodeGenerator, IAnalyticsRepository repository, IDomainQueue domainQueue)
+        public ReportAnalyzer(IHashCodeGenerator hashCodeGenerator, IAnalyticsRepository repository, IDomainQueue domainQueue, IConfiguration<ReportConfig> reportConfig)
         {
             _hashCodeGenerator = hashCodeGenerator;
             _repository = repository;
             _domainQueue = domainQueue;
+            _reportConfig = reportConfig;
         }
 
         /// <summary>
@@ -54,7 +57,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
         /// <exception cref="ArgumentNullException">report</exception>
         public async Task Analyze(IMessageContext context, ErrorReportEntity report)
         {
-            if (report == null) throw new ArgumentNullException("report");
+            if (report == null) throw new ArgumentNullException(nameof(report));
 
             var countThisMonth = _repository.GetMonthReportCount();
             if (countThisMonth >= 500)
@@ -63,10 +66,11 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
                 return;
             }
 
+            _logger.Debug("Running as " + context.Principal.ToFriendlyString());
             var exists = _repository.ExistsByClientId(report.ClientReportId);
             if (exists)
             {
-                _logger.Warn("Report have already been uploaded: " + report.ClientReportId);
+                _logger.Warn($"Report have already been uploaded: {report.ClientReportId} for {report.RemoteAddress}.");
                 return;
             }
 
@@ -88,10 +92,27 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
             var storeReport = true;
             var applicationVersion = GetVersionFromReport(report);
             var isReOpened = false;
-            var incident = _repository.FindIncidentForReport(report.ApplicationId, report.ReportHashCode, hashcodeResult.CollisionIdentifier);
+
+            IncidentBeingAnalyzed incident = null;
+            if (hashcodeResult.CompabilityHashSource != null)
+            {
+                incident = _repository.FindIncidentForReport(report.ApplicationId, hashcodeResult.CompabilityHashSource, hashcodeResult.CollisionIdentifier);
+                if (incident != null)
+                {
+                    report.Init(hashcodeResult.CompabilityHashSource);
+                }
+            }
+            if (incident == null)
+            {
+                incident = _repository.FindIncidentForReport(report.ApplicationId, report.ReportHashCode, hashcodeResult.CollisionIdentifier);
+            }
+
             var isNewIncident = false;
             if (incident == null)
             {
+                if (report.Exception == null)
+                    _logger.Debug("Got no exception");
+
                 isNewIncident = true;
                 incident = BuildIncident(report);
                 _repository.CreateIncident(incident);
@@ -108,6 +129,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
                     CreatedAtUtc = incident.CreatedAtUtc,
                     ApplicationVersion = applicationVersion,
                 };
+                _logger.Info($"Storing IncidentCreated with {context.Principal.ToFriendlyString()}: {JsonConvert.SerializeObject(evt)}");
                 await _domainQueue.PublishAsync(context.Principal, evt);
                 await context.SendAsync(evt);
             }
@@ -123,12 +145,14 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
 
                 // Do this before checking closed
                 // as we want to see if it still gets reports.
-                await _repository.StoreReportStats(new ReportMapping()
+                var stat = new ReportMapping()
                 {
                     IncidentId = incident.Id,
                     ErrorId = report.ClientReportId,
                     ReceivedAtUtc = report.CreatedAtUtc
-                });
+                };
+                await _repository.StoreReportStats(stat);
+                _logger.Debug("Storing stats " + JsonConvert.SerializeObject(stat));
 
                 if (incident.IsClosed)
                 {
@@ -156,19 +180,14 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
                 // Let's continue to receive reports once a day when
                 // limit is reached (to get more fresh data, and still not load the system unnecessary).
                 var timesSinceLastReport = DateTime.UtcNow.Subtract(incident.LastStoredReportUtc);
-                if (incident.ReportCount > 25
-                    && timesSinceLastReport < TimeSpan.FromDays(1))
+                if (incident.ReportCount > _reportConfig.Value.MaxReportsPerIncident
+                    && timesSinceLastReport < TimeSpan.FromMinutes(10))
                 {
                     _repository.UpdateIncident(incident);
-                    _logger.Debug($"Report count is more than 25. Ignoring report for incident {incident.Id}.");
+                    _logger.Debug($"Report count is more than {_reportConfig.Value.MaxReportsPerIncident}. Ignoring reports for incident {incident.Id}. Minutes since last report: " + timesSinceLastReport.TotalMinutes);
                     storeReport = false;
+                    //don't exit here, since we want to be able to process reports
                 }
-                else
-                {
-                    incident.LastStoredReportUtc = DateTime.UtcNow;
-                    _repository.UpdateIncident(incident);
-                }
-
             }
 
             if (!string.IsNullOrWhiteSpace(report.EnvironmentName))
@@ -178,6 +197,8 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
 
             if (storeReport)
             {
+                incident.LastStoredReportUtc = DateTime.UtcNow;
+                _repository.UpdateIncident(incident);
                 _repository.CreateReport(report);
                 _logger.Debug($"saving report {report.Id} for incident {incident.Id}");
             }
@@ -206,7 +227,6 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
             if (storeReport)
             {
                 await context.SendAsync(new ProcessInboundContextCollections());
-
             }
 
             if (sw.ElapsedMilliseconds > 200)
@@ -231,6 +251,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
                 return new IncidentBeingAnalyzed(entity);
 
             if (entity.Exception.Name == "AggregateException")
+            {
                 try
                 {
                     var exception = entity.Exception;
@@ -244,11 +265,13 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
                     var incident = new IncidentBeingAnalyzed(entity, exception);
                     return incident;
                 }
-                catch (Exception)
+                catch
                 {
                 }
+            }
 
             if (entity.Exception.Name == "ReflectionTypeLoadException")
+            {
                 try
                 {
                     var item = JObject.Parse(entity.Exception.Everything);
@@ -263,9 +286,10 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
 
                     //TODO: load LoaderExceptions which is an Exception[] array
                 }
-                catch (Exception)
+                catch
                 {
                 }
+            }
 
             return new IncidentBeingAnalyzed(entity);
         }

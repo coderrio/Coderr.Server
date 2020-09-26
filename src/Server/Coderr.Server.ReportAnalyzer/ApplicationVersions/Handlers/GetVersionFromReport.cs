@@ -4,7 +4,6 @@ using Coderr.Client;
 using Coderr.Server.Domain.Modules.ApplicationVersions;
 using Coderr.Server.ReportAnalyzer.Abstractions.Incidents;
 using DotNetCqs;
-using Coderr.Server.Abstractions.Boot;
 
 namespace Coderr.Server.ReportAnalyzer.ApplicationVersions.Handlers
 {
@@ -28,7 +27,9 @@ namespace Coderr.Server.ReportAnalyzer.ApplicationVersions.Handlers
             }
 
             if (version == null)
+            {
                 return;
+            }
 
             version = CleanVersionFromUnwantedCharacters(version);
 
@@ -48,9 +49,13 @@ namespace Coderr.Server.ReportAnalyzer.ApplicationVersions.Handlers
             versionEntity.UpdateReportDate();
 
             if (versionEntity.Id == 0)
+            {
                 await _repository.CreateAsync(versionEntity);
+            }
             else
+            {
                 await _repository.UpdateAsync(versionEntity);
+            }
 
 
             _repository.SaveIncidentVersion(e.Incident.Id, versionEntity.Id);
@@ -60,7 +65,7 @@ namespace Coderr.Server.ReportAnalyzer.ApplicationVersions.Handlers
 
         private static string CleanVersionFromUnwantedCharacters(string version)
         {
-            string tmp = "";
+            var tmp = "";
             foreach (var ch in version)
             {
                 if (char.IsDigit(ch) || ch == '.')

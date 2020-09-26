@@ -129,7 +129,9 @@ namespace Coderr.Server.SqlServer.Modules.Whitelists
 
             var appIdValue = record["ApplicationId"];
             if (appIdValue is DBNull)
+            {
                 return;
+            }
 
             var app = new GetWhitelistEntriesResultItemApp
             {

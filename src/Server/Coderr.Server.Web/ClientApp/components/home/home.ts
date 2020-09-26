@@ -40,6 +40,7 @@ export default class HomeHomeComponent extends Vue {
                                 return;
                             }
 
+                            this.showOnboarding = apps.length > 0;
                             this.noApps = apps.length === 0;
                             if (apps.length > 0) {
                                 this.appId = apps[0].id.toString();
@@ -71,6 +72,7 @@ export default class HomeHomeComponent extends Vue {
             .then(apps => {
                 if (apps.length === 0) {
                     this.noApps = true;
+                    this.showOnboarding = false;
                     return;
                 }
                 this.$router.push({ name: "discover", params: { applicationId: apps[0].id.toString() } });

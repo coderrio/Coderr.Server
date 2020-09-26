@@ -26,17 +26,17 @@ namespace Coderr.Server.Web.Controllers
     public class ReportReceiverController : Controller
     {
         private const int CompressedReportSizeLimit = 1000000;
-        private readonly ConfigurationStore _configStore;
         private readonly ILog _logger = LogManager.GetLogger(typeof(ReportReceiverController));
         private readonly IMessageQueue _messageQueue;
         private readonly IAdoNetUnitOfWork _unitOfWork;
         private IWhitelistService _whitelistService;
+        private ReportConfig _reportConfig;
 
         public ReportReceiverController(IMessageQueueProvider queueProvider, IAdoNetUnitOfWork unitOfWork,
-            ConfigurationStore configStore, IWhitelistService whitelistService)
+            IConfiguration<ReportConfig> reportConfig, IWhitelistService whitelistService)
         {
             _unitOfWork = unitOfWork;
-            _configStore = configStore;
+            _reportConfig = reportConfig.Value;
             _whitelistService = whitelistService;
             _messageQueue = queueProvider.Open("ErrorReports");
         }
@@ -76,8 +76,7 @@ namespace Coderr.Server.Web.Controllers
                     bytesRead += await Request.Body.ReadAsync(buffer, bytesRead, buffer.Length - bytesRead);
                 }
 
-                var reportConfig = _configStore.Load<ReportConfig>();
-                var config = new ReportConfigWrapper(reportConfig);
+                var config = new ReportConfigWrapper(_reportConfig);
                 var handler = new SaveReportHandler(_messageQueue, _unitOfWork, config);
                 var principal = CreateReporterPrincipal();
 

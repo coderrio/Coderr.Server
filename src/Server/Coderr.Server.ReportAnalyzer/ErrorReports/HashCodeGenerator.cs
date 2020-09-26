@@ -77,8 +77,6 @@ namespace Coderr.Server.ReportAnalyzer.ErrorReports
                     foundHashSource = true;
                     hashSource += reportHashSource;
                 }
-                else
-                    hashSource += StripLineNumbers(report.Exception.StackTrace ?? "");
             }
             if (!foundHashSource)
             {
@@ -89,24 +87,40 @@ namespace Coderr.Server.ReportAnalyzer.ErrorReports
                         continue;
 
                     hashSource = ourHashSource;
+                    foundHashSource = true;
                     break;
                 }
             }
-            
 
+            var hashSourceForCompability = "";
+            if (!foundHashSource)
+            {
+                hashSourceForCompability = hashSource + CleanStackTrace(report.Exception.StackTrace ?? "");
+                hashSource += CleanStackTrace(report.Exception.StackTrace ?? "");
+
+            }
+
+            var hash = HashTheSource(hashSource);
+            return new ErrorHashCode
+            {
+                CollisionIdentifier = report.GenerateHashCodeIdentifier(),
+                HashCode = hash.ToString("X"),
+                CompabilityHashSource = hashSourceForCompability == "" ? null : HashTheSource(hashSourceForCompability).ToString("X")
+            };
+        }
+
+        private static int HashTheSource(string hashSource)
+        {
             var hash = 23;
             foreach (var c in hashSource)
             {
                 hash = hash * 31 + c;
             }
-            return new ErrorHashCode
-            {
-                CollisionIdentifier = report.GenerateHashCodeIdentifier(),
-                HashCode = hash.ToString("X")
-            };
+
+            return hash;
         }
 
-        internal static string StripLineNumbers(string stacktrace)
+        internal static string CleanStackTrace(string stacktrace)
         {
             var re = new Regex(RemoveLineNumbersRegEx, RegexOptions.Multiline);
             return re.Replace(stacktrace, "$1", 1000);

@@ -42,9 +42,9 @@ export default class ManageWhitelistComponent extends Vue {
     loadData() {
         var q = new whitelist.GetWhitelistEntries();
         AppRoot.Instance.apiClient.query<whitelist.GetWhitelistEntriesResult>(q)
-            .then(result => {
+            .then(x => {
                 this.entries = [];
-                result.Entries.forEach(result => {
+                x.Entries.forEach(result => {
                     if (result.Applications == null)
                         result.Applications = [];
                     if (result.IpAddresses == null)

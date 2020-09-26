@@ -55,7 +55,10 @@ namespace Coderr.Server.Web.Areas.Installation.Controllers
                     account.SetVerifiedEmail(model.EmailAddress);
                     await repos.CreateAsync(account);
 
-                    var user = new User(account.Id, account.UserName) { EmailAddress = account.Email };
+                    var user = new User(account.Id, account.UserName)
+                    {
+                        EmailAddress = account.Email
+                    };
                     var userRepos = new UserRepository(uow);
                     await userRepos.CreateAsync(user);
 

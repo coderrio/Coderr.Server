@@ -29,7 +29,7 @@ namespace Coderr.Server.SqlServer.Core.Reports
             using (var cmd = (DbCommand)_uow.CreateCommand())
             {
                 cmd.CommandText =
-                    "SELECT * FROM ErrorReports WHERE Id = @id";
+                    "SELECT * FROM ErrorReports With (ReadUncommitted) WHERE Id = @id";
 
                 cmd.AddParameter("id", id);
                 report = await cmd.FirstAsync<ErrorReportEntity>();
@@ -39,7 +39,10 @@ namespace Coderr.Server.SqlServer.Core.Reports
             using (var cmd = (DbCommand)_uow.CreateCommand())
             {
                 cmd.CommandText =
-                    "SELECT Name, PropertyName, Value FROM ErrorReportCollectionProperties WHERE ReportId = @id ORDER BY Name";
+                    @"SELECT Name, PropertyName, Value 
+                        FROM ErrorReportCollectionProperties WITH(ReadUncommitted)
+                        WHERE ReportId = @id 
+                        ORDER BY Name";
 
                 cmd.AddParameter("id", id);
                 using (var reader = await cmd.ExecuteReaderAsync())
@@ -51,7 +54,7 @@ namespace Coderr.Server.SqlServer.Core.Reports
                     {
                         currentCollectionName = reader.GetString(0);
 
-                        // We always want to add the context when the last propery have been found
+                        // We always want to add the context when the last property have been found
                         // so that all props are included.
                         if (previousCollectionName == null)
                             previousCollectionName = currentCollectionName;

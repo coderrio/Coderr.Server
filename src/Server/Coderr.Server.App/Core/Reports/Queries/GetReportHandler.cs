@@ -35,8 +35,8 @@ namespace Coderr.Server.App.Core.Reports.Queries
             var collections = (
                 from x in report.ContextCollections
                 where x.Properties.Count > 0
-                let properties = Enumerable.Select(x.Properties, y => new KeyValuePair(y.Key, y.Value))
-                select new GetReportResultContextCollection(x.Name, Enumerable.ToArray(properties))
+                let properties = x.Properties.Select(y => new KeyValuePair(y.Key, y.Value))
+                select new GetReportResultContextCollection(x.Name, properties.ToArray())
             ).ToList();
 
             //TODO: Fix feedback

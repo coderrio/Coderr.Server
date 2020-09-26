@@ -5,7 +5,6 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using Coderr.Server.Abstractions.Security;
-using Coderr.Server.Infrastructure.Security;
 
 namespace Coderr.Server.App.Core.ApiKeys
 {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
 using Griffin.Data;
 using log4net;
@@ -11,16 +12,15 @@ namespace Coderr.Server.SqlServer
     /// </summary>
     public class UnitOfWorkWithTransaction : IAdoNetUnitOfWork
     {
-        private ILog _logger = LogManager.GetLogger(typeof(UnitOfWorkWithTransaction));
-        private SqlCommand _lastCommand;
+        private readonly ILog _logger = LogManager.GetLogger(typeof(UnitOfWorkWithTransaction));
+        private DbCommand _lastCommand;
 
-
-        public UnitOfWorkWithTransaction(SqlTransaction transaction)
+        public UnitOfWorkWithTransaction(DbTransaction transaction)
         {
-            Transaction = transaction;
+            Transaction = transaction ?? throw new ArgumentNullException(nameof(transaction));
         }
 
-        public SqlTransaction Transaction { get; private set; }
+        public DbTransaction Transaction { get; private set; }
 
         public void Dispose()
         {
@@ -38,7 +38,6 @@ namespace Coderr.Server.SqlServer
             Transaction = null;
 
             connection?.Dispose();
-            _logger.Info("Rolled back " + GetHashCode());
         }
 
         public void SaveChanges()

@@ -93,6 +93,7 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer
                 cmd.AddParameter("FullName", incident.FullName);
                 cmd.AddParameter("LastStoredReportUtc", incident.LastStoredReportUtc);
                 cmd.AddParameter("LastReportAtUtc", incident.LastReportAtUtc);
+
                 var id = (int) (decimal) cmd.ExecuteScalar();
                 incident.GetType()
                     .GetProperty("Id", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
@@ -171,12 +172,14 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer
 
         public void CreateReport(ErrorReportEntity report)
         {
-            if (report == null) throw new ArgumentNullException("report");
+            if (report == null) throw new ArgumentNullException(nameof(report));
 
             if (string.IsNullOrEmpty(report.Title) && report.Exception != null)
             {
                 report.Title = report.Exception.Message;
-                if (report.Title.Length > 100)
+                if (report.Title == null)
+                    report.Title = "[Exception message was not specified]";
+                else if (report.Title.Length > 100)
                     report.Title = report.Title.Substring(0, 100);
             }
 

@@ -12,6 +12,9 @@ namespace Coderr.Server.App.Core.Accounts
         ///     Accepts and deletes the invitation. Sends an event which is picked up by the application domain (which transforms
         ///     the pending invite to a membership)
         /// </summary>
+        /// <param name="messagingPrincipal">Logged in user.</param>
+        /// <param name="request">Information about the accept invitation request</param>
+        /// <returns>Updated identity with permission to the applications that the user was invited to.</returns>
         /// <remarks>
         ///     <para>
         ///         Do note that an invitation can be accepted by using another email address than the one that the invitation was
@@ -20,8 +23,14 @@ namespace Coderr.Server.App.Core.Accounts
         ///         invitation.
         ///     </para>
         /// </remarks>
-        Task<ClaimsIdentity> AcceptInvitation(ClaimsPrincipal user, AcceptInvitation request);
+        Task<ClaimsIdentity> AcceptInvitation(ClaimsPrincipal messagingPrincipal, AcceptInvitation request);
 
+        /// <summary>
+        /// Validate login information (check if the specified information is available).
+        /// </summary>
+        /// <param name="emailAddress">Email address as specified by the user.</param>
+        /// <param name="userName">Wanted userName</param>
+        /// <returns></returns>
         Task<ValidateNewLoginReply> ValidateLogin(string emailAddress, string userName);
 
         /// <summary>

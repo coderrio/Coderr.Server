@@ -3,7 +3,6 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 using Coderr.Server.Domain.Core.ErrorReports;
-using Griffin.Data;
 using log4net;
 
 namespace Coderr.Server.SqlServer.ReportAnalyzer.Jobs
@@ -12,7 +11,7 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer.Jobs
     {
         private readonly SqlTransaction _transaction;
         private readonly DataTable _dataTable = new DataTable();
-        private ILog _logger = LogManager.GetLogger(typeof(Importer));
+        private readonly ILog _logger = LogManager.GetLogger(typeof(Importer));
 
 
         public Importer(SqlTransaction transaction)
@@ -46,7 +45,7 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer.Jobs
             }
         }
 
-        public async Task Execute()
+        public async Task<int> Execute()
         {
             //TODO: Remove once all processing is in a seperate library.
             using (var bulkCopy = new SqlBulkCopy(_transaction.Connection, SqlBulkCopyOptions.Default, _transaction))
@@ -58,6 +57,8 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer.Jobs
                 bulkCopy.ColumnMappings.Add("Value", "Value");
                 await bulkCopy.WriteToServerAsync(_dataTable);
             }
+
+            return _dataTable.Rows.Count;
         }
 
         private static DataRow CreateDataTableRow(DataTable dataTable, int reportId,

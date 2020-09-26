@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Security.Authentication;
@@ -204,7 +206,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound
             try
             {
                 //TODO: Make something generic.
-                using (var cmd = (SqlCommand)_unitOfWork.CreateCommand())
+                using (var cmd = (DbCommand)_unitOfWork.CreateCommand())
                 {
                     cmd.CommandText =
                         @"INSERT INTO InvalidReports(appkey, signature, reportbody, errormessage, createdatutc)
@@ -212,7 +214,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound
                     cmd.AddParameter("appKey", appKey);
                     cmd.AddParameter("signature", sig);
                     var p = cmd.CreateParameter();
-                    p.SqlDbType = System.Data.SqlDbType.Binary;
+                    p.DbType = DbType.Binary;
                     p.ParameterName = "reportbody";
                     p.Value = reportBody;
                     cmd.Parameters.Add(p);

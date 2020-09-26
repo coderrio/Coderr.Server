@@ -24,7 +24,6 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
             destination.IsReOpened = source["IsReopened"].Equals(1);
             destination.ReportCount = (int) source["ReportCount"];
             destination.CreatedAtUtc = (DateTime)source["CreatedAtUtc"];
-
             var value = source["UpdatedAtUtc"];
             if (!(value is DBNull))
                 destination.LastUpdateAtUtc = (DateTime) value;

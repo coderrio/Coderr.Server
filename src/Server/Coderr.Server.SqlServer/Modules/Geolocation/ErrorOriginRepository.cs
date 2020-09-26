@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Domain.Modules.ErrorOrigins;
 using Coderr.Server.ReportAnalyzer.ErrorOrigins;
-using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
+using Griffin.Data.Mapper;
 
 namespace Coderr.Server.SqlServer.Modules.Geolocation
 {
@@ -41,11 +41,11 @@ namespace Coderr.Server.SqlServer.Modules.Geolocation
                     }
                 }
             }
-            else if (entity.Latitude > 0 && entity.Longitude > 0)
+            if (entity.Latitude < ErrorOrigin.EmptyLatitude && entity.Longitude < ErrorOrigin.EmptyLongitude)
             {
                 using (var cmd = (DbCommand)_unitOfWork.CreateCommand())
                 {
-                    cmd.CommandText = "SELECT Id FROM ErrorOrigins WHERE Longitude = @long && Latitude = @lat";
+                    cmd.CommandText = "SELECT Id FROM ErrorOrigins WHERE Longitude = @long AND Latitude = @lat";
                     cmd.AddParameter("long", entity.Longitude);
                     cmd.AddParameter("lat", entity.Latitude);
                     var id = await cmd.ExecuteScalarAsync();
@@ -59,8 +59,8 @@ namespace Coderr.Server.SqlServer.Modules.Geolocation
 
             using (var cmd = (DbCommand)_unitOfWork.CreateCommand())
             {
-                cmd.CommandText = "INSERT INTO ErrorOrigins (IpAddress, CountryCode, CountryName, RegionCode, RegionName, City, ZipCode, Latitude, Longitude, CreatedAtUtc) " +
-                                  "VALUES (@IpAddress, @CountryCode, @CountryName, @RegionCode, @RegionName, @City, @ZipCode, @Latitude, @Longitude, @CreatedAtUtc);select cast(SCOPE_IDENTITY() as int);";
+                cmd.CommandText = "INSERT INTO ErrorOrigins (IpAddress, CountryCode, CountryName, RegionCode, RegionName, City, ZipCode, Latitude, Longitude, CreatedAtUtc, IsLookedUp) " +
+                                  "VALUES (@IpAddress, @CountryCode, @CountryName, @RegionCode, @RegionName, @City, @ZipCode, @Latitude, @Longitude, @CreatedAtUtc, 0);select cast(SCOPE_IDENTITY() as int);";
                 cmd.AddParameter("IpAddress", entity.IpAddress);
                 cmd.AddParameter("CountryCode", entity.CountryCode);
                 cmd.AddParameter("CountryName", entity.CountryName);
@@ -73,26 +73,64 @@ namespace Coderr.Server.SqlServer.Modules.Geolocation
                 cmd.AddParameter("Longitude", entity.Longitude);
                 cmd.AddParameter("CreatedAtUtc", DateTime.UtcNow);
                 var id = (int)await cmd.ExecuteScalarAsync();
+                entity.Id = id;
                 await CreateReportInfoAsync(id, applicationId, incidentId, reportId);
             }
         }
 
-        public async Task<IList<ErrorOrginListItem>> FindForIncidentAsync(int incidentId)
+        public Task<IList<ErrorOrigin>> GetPendingOrigins()
+        {
+            using (var cmd = (DbCommand)_unitOfWork.CreateCommand())
+            {
+                cmd.CommandText = @"SELECT TOP(50) * FROM ErrorOrigins WHERE IsLookedUp = 0";
+                return cmd.ToListAsync<ErrorOrigin>();
+            }
+        }
+
+        public async Task Update(ErrorOrigin entity)
+        {
+            using (var cmd = (DbCommand)_unitOfWork.CreateCommand())
+            {
+                cmd.CommandText = "UPDATE ErrorOrigins SET " +
+                                  "CountryCode=@CountryCode, " +
+                                  "CountryName=@CountryName, " +
+                                  "RegionCode=@RegionCode, " +
+                                  "RegionName=@RegionName, " +
+                                  "City=@City, " +
+                                  "ZipCode=@ZipCode, " +
+                                  "Latitude=@Latitude, " +
+                                  "Longitude=@Longitude, " +
+                                  "IsLookedUp = 1 " +
+                                  "WHERE Id = @id";
+                cmd.AddParameter("CountryCode", entity.CountryCode);
+                cmd.AddParameter("CountryName", entity.CountryName);
+                cmd.AddParameter("RegionCode", entity.RegionCode);
+                cmd.AddParameter("RegionName", entity.RegionName);
+                cmd.AddParameter("City", entity.City);
+                cmd.AddParameter("ZipCode", entity.ZipCode);
+                cmd.AddParameter("Latitude", entity.Latitude);
+                cmd.AddParameter("Longitude", entity.Longitude);
+                cmd.AddParameter("Id", entity.Id);
+                await cmd.ExecuteNonQueryAsync();
+            }
+        }
+
+        public async Task<IList<ErrorOriginListItem>> FindForIncidentAsync(int incidentId)
         {
             using (var cmd = (DbCommand)_unitOfWork.CreateCommand())
             {
                 cmd.CommandText = @"SELECT Longitude, Latitude, count(*) 
                                     FROM ErrorOrigins eo
                                     JOIN ErrorReportOrigins ON (eo.Id = ErrorReportOrigins.ErrorOriginId)
-                                    WHERE IncidentId = @id
+                                    WHERE IncidentId = @id AND IsLookedUp = 1
                                     GROUP BY IncidentId, Longitude, Latitude";
                 cmd.AddParameter("id", incidentId);
                 using (var reader = await cmd.ExecuteReaderAsync())
                 {
-                    var items = new List<ErrorOrginListItem>();
+                    var items = new List<ErrorOriginListItem>();
                     while (await reader.ReadAsync())
                     {
-                        var item = new ErrorOrginListItem
+                        var item = new ErrorOriginListItem
                         {
                             Longitude = (double)reader.GetDecimal(0),
                             Latitude = (double)reader.GetDecimal(1),

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Security.Claims;
 using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Abstractions.Config;
 using Coderr.Server.Abstractions.Security;
@@ -14,21 +12,12 @@ namespace Coderr.Server.ReportAnalyzer.Boot
 {
     public class Bootstrapper : IAppModule
     {
-        private readonly ModuleStarter _moduleStarter;
+        private readonly ReportAnalyzerModuleStarter _reportAnalyzerModuleStarter;
         private ServiceProvider _serviceProvider;
-        private readonly ClaimsPrincipal _systemPrincipal;
 
         public Bootstrapper()
         {
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, "Id"),
-                new Claim(ClaimTypes.NameIdentifier, "0"),
-                new Claim(ClaimTypes.Role, CoderrRoles.System)
-            };
-            var identity = new ClaimsIdentity(claims);
-            _systemPrincipal = new ClaimsPrincipal(identity);
-            _moduleStarter = new ModuleStarter();
+            _reportAnalyzerModuleStarter = new ReportAnalyzerModuleStarter();
         }
 
         public void Configure(ConfigurationContext context)
@@ -43,7 +32,7 @@ namespace Coderr.Server.ReportAnalyzer.Boot
                 Services = serviceCollection
             };
             var ignoredModules = context.Configuration.GetSection("DisabledModules:ReportAnalyzer");
-            _moduleStarter.Configure(ourContext, new ServerConfigSectionWrapper(ignoredModules));
+            _reportAnalyzerModuleStarter.Configure(ourContext, new ServerConfigSectionWrapper(ignoredModules));
 
             RegisterConfigurationStores(ourContext);
             ourContext.Services.AddScoped<IPrincipalAccessor, MessagingPrincipalWrapper>();
@@ -51,9 +40,9 @@ namespace Coderr.Server.ReportAnalyzer.Boot
                 new AnalysisUnitOfWork(x.GetService<IDbConnection>(), false));
             ourContext.Services.AddScoped(provider =>
             {
-                var principal = provider.GetService<IPrincipalAccessor>().Principal;
-                if (principal == null)
-                    principal = _systemPrincipal;
+                var principal = provider.GetService<IPrincipalAccessor>().Principal 
+                                ?? CoderrClaims.SystemPrincipal;
+
                 return context.ConnectionFactory(principal);
             });
 
@@ -67,13 +56,13 @@ namespace Coderr.Server.ReportAnalyzer.Boot
             {
                 ServiceProvider = _serviceProvider
             };
-            _moduleStarter.Start(ourStartContext);
+            _reportAnalyzerModuleStarter.Start(ourStartContext);
         }
 
 
         public void Stop()
         {
-            _moduleStarter.Stop();
+            _reportAnalyzerModuleStarter.Stop();
         }
 
         private IServiceProvider GetServiceProvider()
@@ -87,7 +76,7 @@ namespace Coderr.Server.ReportAnalyzer.Boot
         {
             context.Services.AddScoped(typeof(IConfiguration<>), typeof(ConfigWrapper<>));
             context.Services.AddScoped<ConfigurationStore>(x =>
-                new DatabaseStore(() => context.ConnectionFactory(_systemPrincipal)));
+                new DatabaseStore(() => context.ConnectionFactory(CoderrClaims.SystemPrincipal)));
         }
     }
 }

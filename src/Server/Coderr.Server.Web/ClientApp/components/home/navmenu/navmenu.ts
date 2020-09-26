@@ -2,6 +2,7 @@ import { PubSubService } from "../../../services/PubSub";
 import * as MenuApi from "../../../services/menu/MenuApi";
 import { AppRoot, IMyApplication } from "../../../services/AppRoot";
 import { AppEvents, ApplicationChanged } from "@/services/applications/ApplicationService";
+import * as appContracts from "@/dto/Core/Applications"
 import { Component, Vue } from 'vue-property-decorator';
 import * as Router from "vue-router";
 
@@ -18,6 +19,7 @@ export default class NavMenuComponent extends Vue {
     private callbacks: NavigationCallback[] = [];
     private loaded = false;
     private allApps: IMyApplication[] = [];
+    private toggleMenu: boolean = false;
 
     childMenu: MenuApi.MenuItem[] = [];
 
@@ -114,6 +116,7 @@ export default class NavMenuComponent extends Vue {
     }
 
     changeApplication(applicationId: number | null) {
+        this.toggleMenu = false;
         if (applicationId === this.currentApplicationId) {
             return;
         }
@@ -217,6 +220,7 @@ export default class NavMenuComponent extends Vue {
             }
             this.currentApplicationName = title;
             this.discoverLink = `/discover/${applicationId}`;
+
             //var msg = new MenuApi.ApplicationChanged();
             //msg.applicationId = applicationId;
         });

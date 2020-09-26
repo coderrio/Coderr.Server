@@ -101,11 +101,11 @@ namespace Coderr.Server.ReportAnalyzer.Boot.Starters
                 MessageInvokerFactory = scope =>
                 {
                     var invoker = new MessageInvoker(scope);
-                    invoker.Logger += (level, name, message) => _logger.Debug("[" + name + "] " + message);
+                    invoker.Logger += (level, name, message) => _logger.Debug($"[{name}] {message}");
                     invoker.InvokingHandler += (sender, args) =>
                     {
                         _logger.Debug(
-                            $"Invoking {JsonConvert.SerializeObject(args.Message)} ({args.Handler.GetType()}).");
+                            $"[{inboundQueue.Name}] Invoking {JsonConvert.SerializeObject(args.Message)} ({args.Handler.GetType()}).");
                     };
                     return invoker;
                 },
@@ -114,14 +114,11 @@ namespace Coderr.Server.ReportAnalyzer.Boot.Starters
             listener.PoisonMessageDetected += (sender, args) =>
             {
                 Err.Report(args.Exception, new {args.Message.Body});
-                _logger.Error(inboundQueueName + " Poison message: " + args.Message.Body, args.Exception);
+                _logger.Error($"[{inboundQueueName}] Poison message: {args.Message.Body}", args.Exception);
             };
             listener.ScopeCreated += (sender, args) =>
             {
                 args.Scope.ResolveDependency<IPrincipalAccessor>().First().Principal = args.Principal;
-
-                _logger.Debug(inboundQueueName + " Running " + args.Message.Body + ", Credentials: " +
-                              args.Principal.ToFriendlyString());
             };
             listener.ScopeClosing += (sender, args) =>
             {
@@ -155,11 +152,12 @@ namespace Coderr.Server.ReportAnalyzer.Boot.Starters
 
         private void DiagnosticLog(LogLevel level, string queueNameOrMessageName, string message)
         {
-            _logger.Debug("[" + queueNameOrMessageName + "] " + message);
+            _logger.Debug($"[{queueNameOrMessageName}] {message}");
         }
 
         private void HaveRun(Task obj)
         {
+            _logger.Info("Stop completed for a listener in the ReportQueueModule. " + obj);
         }
 
         private IMessageInvoker MessageInvokerFactory(IHandlerScope arg)

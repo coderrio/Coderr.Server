@@ -57,14 +57,27 @@ namespace Coderr.Server.ReportAnalyzer.ErrorReports.HashcodeGenerators
             if (httpCode == 0 || string.IsNullOrWhiteSpace(requestUrl))
                 return null;
 
+            // Since this is for a specific application, remove host to make sure that errors
+            // for different environments/servers are treated as the same error.
+
+
+            // Remove host or correct uris
+            if (requestUrl.Contains("://"))
+            {
+                var pos2 = requestUrl.IndexOf("//");
+                pos2 = requestUrl.IndexOf("/", pos2 + 2);
+                requestUrl = requestUrl.Remove(0, pos2);
+            }
+
+            // and query string
             var pos = requestUrl.IndexOf("?");
             if (pos != -1)
                 requestUrl = requestUrl.Remove(pos);
 
             return new ErrorHashCode
             {
-                HashCode = HashCodeUtility.GetPersistentHashCode($"{httpCode}-{requestUrl}").ToString("X"),
-                CollisionIdentifier = $"{httpCode}-{requestUrl}"
+                HashCode = HashCodeUtility.GetPersistentHashCode($"{httpCode};{requestUrl}").ToString("X"),
+                CollisionIdentifier = $"{httpCode};{requestUrl}"
             };
         }
     }

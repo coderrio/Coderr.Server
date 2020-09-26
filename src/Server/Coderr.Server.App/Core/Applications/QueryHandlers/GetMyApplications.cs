@@ -69,7 +69,11 @@ namespace Coderr.Server.App.Core.Applications.QueryHandlers
             }
             else
                 result = (await _applicationRepository.GetAllAsync())
-                    .Select(x => new ApplicationListItem(x.Id, x.Name) { IsAdmin = isSysAdmin })
+                    .Select(x => new ApplicationListItem(x.Id, x.Name)
+                    {
+                        IsAdmin = isSysAdmin,
+                        NumberOfDevelopers = x.NumberOfFtes,
+                    })
                     .ToArray();
 
             return result;

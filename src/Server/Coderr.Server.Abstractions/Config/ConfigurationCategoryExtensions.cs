@@ -23,6 +23,9 @@ namespace Coderr.Server.Abstractions.Config
             foreach (var kvp in settings)
             {
                 var property = type.GetProperty(kvp.Key);
+                if (property == null)
+                    continue;
+
                 var propertyType = property.PropertyType;
                 if (propertyType == typeof(Uri))
                 {

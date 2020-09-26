@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Security.Claims;
+using Coderr.Server.Infrastructure.Security;
 
 namespace Coderr.Server.App.Tests
 {
@@ -12,7 +13,7 @@ namespace Coderr.Server.App.Tests
                 new Claim(ClaimTypes.Name, userName),
                 new Claim(ClaimTypes.NameIdentifier, userId.ToString(), ClaimValueTypes.Integer32),
             };
-            var identity = new ClaimsIdentity(claims);
+            var identity = new ClaimsIdentity(claims, AuthenticationTypes.Default);
             return new ClaimsPrincipal(identity);
         }
     }

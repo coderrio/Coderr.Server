@@ -1,5 +1,8 @@
 .tags span {
     margin-right: 5px;
+    padding: 5px;
+    color: white;
+    background-color: #59c1d5;
 }
 
 .tags {
