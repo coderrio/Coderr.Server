@@ -125,6 +125,12 @@ export default class NavMenuComponent extends Vue {
         if (applicationId == null) {
             applicationId = 0;
         }
+
+        if (this.$route.params.hasOwnProperty('applicationId') && this.$route.path.indexOf('/analyze') !== 0) {
+            var newParams = Object.assign(this.$route.params, { 'applicationId': applicationId.toString() });
+            this.$router.push({ "name": this.$route.name, "params": newParams });
+        }
+
         AppRoot.Instance.applicationService.changeApplication(applicationId);
         return;
 
