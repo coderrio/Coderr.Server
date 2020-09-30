@@ -21,7 +21,7 @@ docker-compose build
 ECHO Built successfully
 
 docker push %pushMode%
-ECHO successfully pushed to dockerhub
+ECHO successfully pushed to %pushMode%
 
 echo Cleaning up
 DEL Coderr.Server.Web\Dockerfile
@@ -29,4 +29,3 @@ DEL docker-compose.yml
 DEL docker-compose.override.yml
 cd %OLDDIR%
 ECHO Completed!
-

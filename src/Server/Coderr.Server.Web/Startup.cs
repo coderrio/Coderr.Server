@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Runtime.InteropServices.ComTypes;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Coderr.Client;
@@ -24,12 +25,14 @@ using Coderr.Server.Web.Controllers;
 using Coderr.Server.Web.Infrastructure;
 using Coderr.Server.Web.Infrastructure.Authentication.ApiKeys;
 using log4net;
+using log4net.Appender;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Identity.UI.V3.Pages.Internal.Account;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.AspNetCore.StaticFiles;
@@ -59,7 +62,7 @@ namespace Coderr.Server.Web
             LoadHostConfiguration();
         }
 
-        private static void LoadHostConfiguration()
+        private void LoadHostConfiguration()
         {
             HostConfig.Instance.IsRunningInDocker =
                 !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER"));
@@ -70,6 +73,7 @@ namespace Coderr.Server.Web
                 HostConfig.Instance.IsConfigured = string.IsNullOrEmpty(HostConfig.Instance.ConfigurationPassword);
 
                 HostConfig.Instance.ConnectionString = Environment.GetEnvironmentVariable("CODERR_CONNECTIONSTRING");
+                ((log4net.Repository.Hierarchy.Logger)_logger.Logger).AddAppender(new ManagedColoredConsoleAppender());
             }
             else
             {
@@ -78,6 +82,8 @@ namespace Coderr.Server.Web
                 HostConfig.Instance.IsConfigured = configSection.GetValue<bool>("IsConfigured");
                 HostConfig.Instance.ConnectionString = Configuration["ConnectionStrings:Db"];
             }
+
+            Console.WriteLine(HostConfig.Instance);
         }
 
         public static IConfiguration Configuration { get; private set; }

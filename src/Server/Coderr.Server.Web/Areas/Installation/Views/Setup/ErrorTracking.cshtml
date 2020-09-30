@@ -17,35 +17,12 @@
             @Html.ValidationSummary(false)
             <div class="form-group">
                 <label asp-for="ContactEmail"></label>
-                <input asp-for="ContactEmail" type="email" class="form-control" placeholder="Your email address"/>
+                <input asp-for="ContactEmail" type="email" class="form-control" placeholder="Your email address" />
             </div>
-            <br/>
+            <br />
             @Html.Raw(ViewBag.PrevLink)
-            <input type="submit" class="btn btn-primary" value="Save"/>
+            <input type="submit" class="btn btn-primary" value="Save" />
             @Html.Raw(ViewBag.NextLink)
         </form>
     </div>
 </div>
-@section scripts
-{
-    <script>
-        $('#ActivateTracking')
-            .click(function() {
-                if ($('.suboption').is('.disabled')) {
-                    $('.suboption').removeClass('disabled');
-                    $('.suboption input').prop('disabled', false);
-                    $('.suboption label').prop('disabled', false);
-                } else {
-                    $('.suboption').addClass('disabled');
-                    $('.suboption input').prop('disabled', true);
-                    $('.suboption label').prop('disabled', true);
-                }
-
-            });
-        if ($('#ActivateTracking').is(':checked')) {
-            $('.suboption').removeClass('disabled');
-            $('.suboption input').prop('disabled', false);
-            $('.suboption label').prop('disabled', false);
-        }
-    </script>
-}

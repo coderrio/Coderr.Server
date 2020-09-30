@@ -8,8 +8,6 @@ Rename-Item "C:\node-v10.16.3-win-x64" c:\nodejs
 
 FROM microsoft/dotnet:2.2-aspnetcore-runtime AS base
 WORKDIR /app
-EXPOSE 5000
-ENV ASPNETCORE_URLS=http://+:5000
 COPY --from=downloadnodejs C:\nodejs\ C:\Windows\system32\
 
 FROM microsoft/dotnet:2.2-sdk AS build
@@ -27,4 +25,4 @@ RUN dotnet publish "Coderr.Server.Web.csproj" -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "Coderr.Server.Web.dll", "--server.urls", "http://0.0.0.0:5000"]
+ENTRYPOINT ["dotnet", "Coderr.Server.Web.dll"]

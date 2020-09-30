@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
+using Coderr.Server.Abstractions;
 using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.SqlServer;
 using Griffin.Data;
@@ -23,7 +24,7 @@ namespace Coderr.Server.Web.Boot.Modules
 
         public IDbConnection OpenConnection()
         {
-            var db = _config.GetConnectionString("Db");
+            var db = HostConfig.Instance.ConnectionString;
             if (db == null)
             {
                 throw new InvalidOperationException("Missing the connection string 'Db'.");

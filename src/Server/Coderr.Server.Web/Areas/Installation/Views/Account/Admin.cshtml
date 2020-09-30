@@ -34,7 +34,7 @@
                 <div class="form-group">
                     <label>Password verification</label>
                     <input type="password" name="Password2" id="Password2" class="form-control" placeholder="Re-enter the password for verification." autocomplete="off" />
-                    <div class="text-danger" id="PasswordError"></div>
+                    <div class="text-red" id="PasswordError"></div>
                 </div>
                 <br />
                 @Html.Raw(ViewBag.PrevLink)
@@ -50,7 +50,8 @@
     </div>
 </div>
 @section scripts
-    {
+{
+    <partial name="_JQueryReplacement" />
     <script>
         $("#Password2")
             .keyup(function (e) {

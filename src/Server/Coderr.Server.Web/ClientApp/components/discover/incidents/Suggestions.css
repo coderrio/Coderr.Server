@@ -1,7 +1,10 @@
-.tags button {
-    margin-right: 5px;
+.main-view .suggestions .card {
+    min-width: 30vw;
+    margin: 0 10px 10px 0;
 }
 
-.more {
-    display: none;
+@media (max-width: 1000px) {
+    .main-view .suggestions .card {
+        min-width: 50vw;
+    }
 }

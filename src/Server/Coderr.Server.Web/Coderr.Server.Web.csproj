@@ -12,7 +12,7 @@
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <IsPackable>false</IsPackable>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <Version>2.3.3</Version>
+    <Version>2.3.6</Version>
     <UserSecretsId>18bfcacd-1b5d-435b-bc30-febb568a29b2</UserSecretsId>
   </PropertyGroup>
 
@@ -63,6 +63,12 @@
   </Target>
 
   <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+    <!-- Exclude old script and font files from publish output-->
+    <ItemGroup>
+      <PrevScriptFiles Include="wwwroot\dist\**" />
+      <ResolvedFileToPublish Remove="@(PrevScriptFiles->'%(FullPath)')" />
+    </ItemGroup>
+
     <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
     <Exec Command="npm install" />
     <Exec Command="node node_modules/webpack/bin/webpack.js --config webpack.config.prod.js --mode=production" />

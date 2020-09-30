@@ -11,15 +11,13 @@ import * as Reports from "../../../dto/Core/Reports";
 
 @Component
 export default class IncidentComponent extends Vue {
-    private static activeBtnTheme: string = 'btn-dark';
-
     incidentId: number;
     incident: GetIncidentResult = new GetIncidentResult;
     isIgnored: boolean = false;
     isClosed = false;
     highlights: IHighlight[] = [];
-
     team: ApplicationMember[] = [];
+
     created() {
         this.incident.Tags = [];
         this.incidentId = parseInt(this.$route.params.incidentId, 10);

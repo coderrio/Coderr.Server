@@ -63,17 +63,30 @@ namespace Coderr.Server.Web.Controllers
             if (!User.Identity.IsAuthenticated)
                 return Unauthorized();
 
-            var q = new GetApplicationList { AccountId = User.GetAccountId() };
-            var result = await _queryBus.QueryAsync(User, q);
-
-            var dto = new AuthenticatedUser
+            _logger.Info("Authenticating " + User.GetAccountId());
+            try
             {
-                AccountId = User.GetAccountId(),
-                UserName = User.Identity.Name,
-                Applications = result,
-                IsSysAdmin = User.IsInRole(CoderrRoles.SysAdmin),
-            };
-            return Json(dto);
+
+                var q = new GetApplicationList { AccountId = User.GetAccountId() };
+                var result = await _queryBus.QueryAsync(User, q);
+
+
+                var dto = new AuthenticatedUser
+                {
+                    AccountId = User.GetAccountId(),
+                    UserName = User.Identity.Name,
+                    Applications = result,
+                    IsSysAdmin = User.IsInRole(CoderrRoles.SysAdmin),
+                };
+
+                return Json(dto);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Failed to authenticate " + User.Identity.Name, ex);
+                throw;
+            }
+
         }
 
         [HttpGet]

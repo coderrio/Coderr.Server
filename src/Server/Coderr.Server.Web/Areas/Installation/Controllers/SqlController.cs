@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Coderr.Server.Abstractions;
 using Coderr.Server.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -69,7 +70,7 @@ namespace Coderr.Server.Web.Areas.Installation.Controllers
             {
                 ViewBag.GotException = true;
                 ViewBag.GotTables = false;
-                ModelState.AddModelError("", ex.Message);
+                ModelState.AddModelError("", ex.Message +"<br>Connection string: " + HostConfig.Instance.ConnectionString);
                 ViewBag.FullException = ex.ToString();
                 return View();
             }
@@ -81,7 +82,7 @@ namespace Coderr.Server.Web.Areas.Installation.Controllers
             var constr = "Not set";
             try
             {
-                constr = _config.GetConnectionString("Db");
+                constr = HostConfig.Instance.ConnectionString;
                 constr = ChangeConnectionTimeout(constr);
                 SetupTools.DbTools.TestConnection(constr);
                 return Content(@"{ ""result"": ""ok"" }", "application/json");

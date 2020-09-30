@@ -68,6 +68,7 @@ namespace Coderr.Server.SqlServer
 
         public void TestConnection(string connectionString)
         {
+            if (connectionString == null) throw new ArgumentNullException(nameof(connectionString));
             var con = new SqlConnection(connectionString);
             con.Open();
             con.Dispose();

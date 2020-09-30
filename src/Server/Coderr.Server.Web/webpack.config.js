@@ -96,7 +96,6 @@ const baseConfig = {
                 compiler.hooks.shouldEmit.tap('Remove styles.js from output',
                     (compilation) => {
                         delete compilation.assets['styles.js', 'styles.js.map'];
-                        delete compilation.assets['styles.js.map'];
                         return true;
                     });
             }

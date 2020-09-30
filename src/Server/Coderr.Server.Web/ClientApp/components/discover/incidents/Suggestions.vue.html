@@ -1,27 +1,41 @@
 <template>
-    <div class="row m-2">
-        <div class="col" v-for="suggestion in suggestions">
-            <div class="card">
-                <div class="card-header">
-                    {{ suggestion.incidentName }} <span class="text-muted">[{{suggestion.exceptionType}}]</span>
+    <div class="main-view">
+        <div class="row">
+            <div class="col">
+                <div>
+                    <h1>Recommendations</h1>
+                    <p v-show="suggestions.length > 0">We recommend that you start with one of the following incidents.</p>
                 </div>
-                <div class="card-body">
-                    <strong>Criteria: </strong>
-                    {{suggestion.reason}}
-                    <div v-if="!applicationId">
-                        Reported for: <router-link :to="{name: 'discoverApplication', params: {applicationId: suggestion.applicationId}}">{{suggestion.applicationName}}</router-link>
+                <div class="suggestions card-deck">
+                    <div class="card" v-for="suggestion in suggestions">
+                        <div class="card-header text-black-50">
+                            {{ suggestion.incidentName }}
+                        </div>
+                        <div class="card-body">
+                            <p><span class="text-blue">[{{suggestion.exceptionType}}]</span></p>
+                            <strong>Criteria: </strong>
+                            {{suggestion.reason}}
+                            <div v-if="!applicationId">
+                                Reported for: <router-link :to="{name: 'discoverApplication', params: {applicationId: suggestion.applicationId}}">{{suggestion.applicationName}}</router-link>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-blue" v-on:click.prevent="assignToMe(suggestion.incidentId)">Assign to me</button>
+                            <router-link :to="{name: 'suggestIncident', params: {applicationId: suggestion.applicationId, incidentId: suggestion.incidentId}}" class="btn btn-light">View</router-link>
+                        </div>
                     </div>
-                    <hr/>
-                    <button class="btn btn-primary" v-on:click.prevent="assignToMe(suggestion.incidentId)">Assign to me</button>
-                    <router-link :to="{name: 'suggestIncident', params: {applicationId: suggestion.applicationId, incidentId: suggestion.incidentId}}" cslass="btn btn-light">View</router-link>
+                    <div class="col" v-if="showEmpty">
+                        <p>
+                            <em><strong>We have no recommendations</strong></em>
+                        </p><p>
+                            Report a few exceptions to get recommendations here.
+                            Read our <a class="text-red" href="https://coderr.io/documentation/?utm_source=commercial">reporting guide</a> to take full advantage of Coderr.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col" v-if="showEmpty">
-            <h2>We got no suggestions</h2>
-            <p class="lead">Report a few exceptions to get suggestions here. </p>
-            <p>Read our <a href="https://coderr.io/documentation/?utm_source=oss">reporting guide</a> to take full advantage of Coderr.</p>
-        </div>
+
     </div>
 </template>
 

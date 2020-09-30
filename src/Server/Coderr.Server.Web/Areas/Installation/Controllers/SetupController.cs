@@ -23,12 +23,10 @@ namespace Coderr.Server.Web.Areas.Installation.Controllers
     public class SetupController : Controller
     {
         private ConfigurationStore _configStore;
-        private readonly IConfiguration _configuration;
 
-        public SetupController(ConfigurationStore configStore, IConfiguration configuration)
+        public SetupController(ConfigurationStore configStore)
         {
             _configStore = configStore;
-            this._configuration = configuration;
         }
 
 

@@ -1,8 +1,7 @@
 import { AppRoot } from "../../../services/AppRoot";
-import { FindIncidents, FindIncidentsResult, FindIncidentsResultItem, IncidentOrder } from "../../../dto/Core/Incidents";
-import { ListMyIncidents, ListMyIncidentsResult } from "../../../dto/Common/Mine";
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { ListMyIncidents, ListMyIncidentsResult } from "@/dto/Common/Mine";
+import { Component, Mixins } from "vue-property-decorator";
+import { AppAware } from "@/AppMixins";
 
 interface ISuggestion {
     applicationId: number;
@@ -14,27 +13,30 @@ interface ISuggestion {
 }
 
 @Component
-export default class SuggestionsComponent extends Vue {
-    private static activeBtnTheme$: string = 'btn-dark';
-
-    //chartData: [['Jan', 44], ['Feb', 27], ['Mar', 60], ['Apr', 55], ['May', 37], ['Jun', 40], ['Jul', 69], ['Aug', 33], ['Sept', 76], ['Oct', 90], ['Nov', 34], ['Dec', 22]];
-
+export default class SuggestionsComponent extends Mixins(AppAware) {
     applicationId: number | null = null;
     suggestions: ISuggestion[] = [];
     showEmpty = false;
 
     created() {
-        if (this.$route.params.applicationId) {
-            this.applicationId = parseInt(this.$route.params.applicationId, 10);
-        }
+        this.applicationId = AppRoot.Instance.currentApplicationId;
+        this.onApplicationChanged(applicationId => {
+            this.applicationId = applicationId;
+            this.loadSuggestions(applicationId);
+        })
 
+        this.loadSuggestions(this.applicationId);
+    }
+
+    private loadSuggestions(applicationId?: number) {
         var query = new ListMyIncidents();
-        if (this.applicationId) {
-            query.ApplicationId = this.applicationId;
+        if (applicationId) {
+            query.ApplicationId = applicationId;
         }
-
+        this.suggestions.length = 0;
         AppRoot.Instance.apiClient.query<ListMyIncidentsResult>(query)
             .then(result => {
+                this.suggestions.length = 0;
                 result.Suggestions.forEach(suggestion => {
                     this.suggestions.push({
                         applicationId: suggestion.ApplicationId,
@@ -48,12 +50,7 @@ export default class SuggestionsComponent extends Vue {
                 this.showEmpty = this.suggestions.length === 0;
 
             });
-
     }
-
-    mounted() {
-    }
-
     assignToMe(incidentId: number) {
         if (!incidentId) {
             throw new Error("IncidentId was not specified.");

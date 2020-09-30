@@ -17,12 +17,16 @@ Coderr Community Server
 
 ## What’s Coderr?
 
-Coderr is an error handling tool developed specifically for .NET applications. Coderr provides an insight to all errors that are occurring and gives you control and a complete view of your applications’ status. 
+Coderr is an error management service developed specifically for .NET and JavaScript applications. Coderr provides an insight to all errors that are occurring and gives you control and a complete view of your applications’ status. 
 
 ## Why change?
 
-Too often, error detection and management involves relying on reports from users and random logfile scanning. The unknown amount of errors and weaknesses of the code creates uncertainty and lessens your control. With a systematic approach facilitated by a tool built for developers by developers, Coderr provides insight about the status of the applications. 
+Compared to log files and log analysis tools (like Splunk / Kibana), Coderr fouces exclusivly on errors (both exceptions and other types) where everything works out of the box. No need to customize dashboards, views or anything else.
+All errors are grouped out of the box and you can see how often they occurr, in which environment (like "production") and in which application versions.
 
+Once an error is corrected, all future reports for it will automatically be ignored unless the error surfaces in a newer application version.
+
+With Coderr, you can focus on building new features and spend minimal time correcting bugs.
 
 ## Getting started
 

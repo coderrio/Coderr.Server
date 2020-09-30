@@ -1,4 +1,5 @@
-﻿@{
+﻿@using Coderr.Server.Abstractions
+@{
     ViewBag.Title = "Installation - Database configuration";
 }
 <div class="container">
@@ -15,13 +16,19 @@
             </p>
             <form method="post" action="@Url.Action("Connection", "Sql")" style="width: 100%" class="form-inline" id="dbForm">
                 <div>
+                    <p>
+                        Configured connection string:
+                    </p>
+                    <code class="bg-white border-blue">
+                        @HostConfig.Instance.ConnectionString
+                    </code>
                     <br /><br />
                     @Html.Raw(ViewBag.PrevLink)
                     <button id="testConnection" class="btn btn-primary">Test Connection</button>
                     @Html.Raw(ViewBag.NextLink)
                 </div>
             </form>
-            <div style="display: none" class="alert alert-success mt-2">
+            <div style="display: none" class="alert alert-dark mt-2">
                 Connection was successful. Click on the next button to continue.
             </div>
             <div class="alert alert-warning mt-2" id="error" style="display: none">
@@ -49,15 +56,14 @@
 </div>
 @section scripts
 {
+    <partial name="_JQueryReplacement" />
     <script type="text/javascript">
+
         $('[data-name="nextLink"]').addClass("disabled");
-        $('#testConnection')
-            .click(function(e) {
+        document.querySelector('#testConnection').addEventListener('click',
+            function(e) {
                 e.preventDefault();
-                var conStr = encodeURIComponent($('[name="connectionString"]').val());
-                var url =
-                    '@Url.RouteUrl(new {Area = "Installation", Controller = "Sql", Action = "Validate"})/?connectionString=' +
-                    conStr;
+                var url = '@Url.RouteUrl(new {Area = "Installation", Controller = "Sql", Action = "Validate"})';
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function() {
                     if (this.readyState === 4 && this.status === 200) {
@@ -74,15 +80,18 @@
                                 .replace(/\\f/g, "\f");
                             $('#error').html(reason).show();
                         } else {
-                            $('#error').hide();
+                            $('#error').css('display', 'none');
                             $("#testConnection").removeClass("btn-primary").addClass('btn-default');
                             $('[data-name="nextLink"]').removeClass('disabled').addClass('btn-primary');
-                            $('.alert-success').css('display', '');
+                            $('.alert-dark').css('display', '');
                         }
                     }
                 };
                 xhttp.open("POST", url, true);
                 xhttp.send();
             });
+
+
+
     </script>
 }

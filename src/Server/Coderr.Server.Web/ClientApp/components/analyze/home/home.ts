@@ -13,17 +13,15 @@ export default class AnalyzeHomeComponent extends Vue {
         MyIncidents.Instance.ready()
             .then(() => this.onReady());
 
+    }
+
+    mounted() {
         if (this.$route.params.incidentId) {
             var incidentId = parseInt(this.$route.params.incidentId, 10);
             MyIncidents.Instance.switchIncident(incidentId);
         } else {
             MyIncidents.Instance.switchIncident(0);
         }
-
-    }
-
-    mounted() {
-
     }
 
     destroyed() {

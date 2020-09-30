@@ -77,7 +77,7 @@ export default class AnalyzeIncidentComponent extends Vue {
 
     private trimVersion(version: string): string {
         let parts = version.split(".");
-        if (parts.length > 3 && parts[parts.length-1] === "0") {
+        if (parts.length > 3 && parts[parts.length - 1] === "0") {
             parts.splice(parts.length - 1, 1);
         }
         return parts.join('.');

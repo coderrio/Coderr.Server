@@ -19,7 +19,7 @@ export default class AnalyzeMenuComponent extends Mixins(AppAware) {
     incidentId: number | null = null;
     toggleMenu = false;
     applicationId: number | null = null;
-    initialIncidentId: number = 0;
+    loadedIncident: number = 0;
 
     created() {
         this.applicationId = AppRoot.Instance.currentApplicationId;
@@ -27,7 +27,7 @@ export default class AnalyzeMenuComponent extends Mixins(AppAware) {
 
         if (this.$route.params.incidentId) {
             this.incidentId = parseInt(this.$route.params.incidentId, 10);
-            this.initialIncidentId = this.incidentId;
+            this.loadedIncident = this.incidentId;
             MyIncidents.Instance.switchIncident(this.incidentId);
         }
 
@@ -54,7 +54,7 @@ export default class AnalyzeMenuComponent extends Mixins(AppAware) {
 
     toggleIncidentMenu() {
         this.toggleMenu = !this.toggleMenu;
-        
+
     }
 
     private onApplication(applicationId: number) {
@@ -75,12 +75,13 @@ export default class AnalyzeMenuComponent extends Mixins(AppAware) {
     }
 
     private onIncidentSelected(incident: IMyIncident | null) {
+
         if (incident == null) {
             this.title = "(Select an incident)";
             this.incidentId = null;
-            this.$router.push({ name: "analyzeHome" });
         } else {
-            if (this.initialIncidentId !== incident.incidentId) {
+            var routeIncident = parseInt(this.$route.params.incidentId);
+            if (routeIncident !== incident.incidentId) {
                 this.$router.push({ name: "analyzeIncident", params: { incidentId: incident.incidentId.toString() } });
             }
             this.title = incident.shortTitle;

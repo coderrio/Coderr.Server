@@ -31,10 +31,10 @@
                 <input asp-for="AccountPassword" placeholder="Password for the above account" autocomplete="new-password" type="password" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="AccountPassword">Password verification</label>
-                <input asp-for="AccountPassword" placeholder="Password for the above account" autocomplete="new-password2" type="password" class="form-control" />
+                <label for="Password2">Password verification</label>
+                <input name="Password2" id="Password2" placeholder="Password for the above account" autocomplete="new-password2" type="password" class="form-control" />
                 <!--https://stackoverflow.com/questions/15738259/disabling-chrome-autofill-->
-                <div class="text-danger" id="PasswordError"></div>
+                <div class="text-red" id="PasswordError"></div>
             </div>
             <br/>
             @Html.Raw(ViewBag.PrevLink)
@@ -45,10 +45,11 @@
 </div>
 @section scripts
 {
+    <partial name="_JQueryReplacement" />
     <script>
         $("#Password2")
             .keyup(function(e) {
-                if ($('#AccountPassword').val() != $('#Password2').val()) {
+                if ($('#AccountPassword').val() !== $('#Password2').val()) {
                     $('#PasswordError').html("Passwords to not match.");
                 } else {
                     $('#PasswordError').html("");

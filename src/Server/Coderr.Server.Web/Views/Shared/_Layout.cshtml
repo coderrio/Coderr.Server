@@ -6,10 +6,10 @@
     <title>@ViewData["Title"] - Coderr</title>
     <base href="~/" />
     <link rel="stylesheet" href="~/dist/styles.css" />
-    <environment include="Staging,Production">
+    <environment exclude="Development">
         <link rel="stylesheet" href="~/dist/vendor.css" />
+        <link rel="stylesheet" href="~/dist/main.css" />
     </environment>
-    <link rel="stylesheet" href="~/dist/main.css" />
 
     <link href="~/css/fontawesome-all.min.css" rel="stylesheet">
     <link rel="apple-touch-icon" sizes="180x180" href="~/apple-touch-icon.png">
@@ -48,6 +48,9 @@
             </div>
         </form>
     </div>
+    <environment include="Development">
+        <script src="~/dist/main.js" asp-append-version="true"></script>
+    </environment>
     <environment include="Staging,Production">
         <script src="~/dist/vendor.js" asp-append-version="true"></script>
     </environment>

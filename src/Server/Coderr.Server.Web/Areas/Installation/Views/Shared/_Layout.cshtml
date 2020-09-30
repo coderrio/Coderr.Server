@@ -21,12 +21,17 @@
             transform: translate(-50%, -50%);
             width: 120%;
         }
+
+        .btn-outline-primary {
+            color: #000 !important;
+        }
     </style>
-    <link rel="stylesheet" href="~/dist/css/bootstrap-coderr.css" />
-    <link rel="stylesheet" href="~/dist/css/common.css" />
-    <link rel="stylesheet" href="~/dist/css/site.css" />
+    <link rel="stylesheet" href="~/dist/styles.css" />
+    <environment include="Staging,Production">
+        <link rel="stylesheet" href="~/dist/vendor.css" />
+        <link rel="stylesheet" href="~/dist/main.css" />
+    </environment>
     <link href="~/css/fontawesome-all.min.css" rel="stylesheet">
-    <link href="~/css/toastr.min.css" rel="stylesheet">
     @*<environment exclude="Development">
             <link rel="stylesheet" href="~/dist/site.css" asp-append-version="true" />
         </environment>*@
@@ -35,8 +40,9 @@
     <div class="wrapper">
         @RenderBody()
     </div>
-    <script src="~/dist/vendor.js" asp-append-version="true"></script>
-    <script src="~/js/jquery-3.3.1.slim.min.js" asp-append-version="true"></script>
+    <environment include="Staging,Production">
+        <script src="~/dist/vendor.js" asp-append-version="true"></script>
+    </environment>
     @RenderSection("scripts", required: false)
 </body>
 </html>

@@ -22,6 +22,12 @@ Vue.filter("ago",
         return moment.utc(value).fromNow();
     });
 
+Vue.filter("isoDate",
+    (value: string) => {
+        if (!value) return "n/a";
+        return moment.utc(value).local().format("YYYY-MM-DD HH:MM:SS");
+    });
+
 Vue.filter("niceTime",
     (value: string) => {
         if (!value) return "n/a";

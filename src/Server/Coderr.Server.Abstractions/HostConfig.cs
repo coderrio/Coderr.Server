@@ -16,5 +16,12 @@ namespace Coderr.Server.Abstractions
         public bool IsConfigured { get; set; }
         public string ConfigurationPassword { get; set; }
 
+        public override string ToString()
+        {
+            var tmp = IsRunningInDocker ? "[DOCKER] " : "[NATIVE] ";
+            return IsConfigured
+                ? $"{tmp} running with {ConnectionString}"
+                : $"{tmp} Will configure with password {ConfigurationPassword} and using {ConnectionString}";
+        }
     }
 }

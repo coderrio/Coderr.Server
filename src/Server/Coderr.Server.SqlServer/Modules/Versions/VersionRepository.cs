@@ -4,7 +4,6 @@ using System.Data;
 using System.Threading.Tasks;
 using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Domain.Modules.ApplicationVersions;
-using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 using Griffin.Data.Mapper;
 
@@ -84,7 +83,7 @@ namespace Coderr.Server.SqlServer.Modules.Versions
                         WHERE NOT EXISTS (
                             select IncidentId
                               from IncidentVersions 
-                              WHERE VersionId=@versionId
+                              WHERE VersionId=@versionId AND IncidentId = @incidentId
                         )";
             using (var cmd = _uow.CreateDbCommand())
             {
