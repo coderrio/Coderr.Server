@@ -1,4 +1,4 @@
-﻿create Table IgnoredReports
+﻿create Table dbo.IgnoredReports
 (
     Id int not null identity primary key,
     NumberOfReports int not null,

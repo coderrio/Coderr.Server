@@ -1,4 +1,4 @@
-﻿CREATE TABLE MessageQueue 
+﻿CREATE TABLE dbo.MessageQueue 
 ( 
     Id int not null identity primary key,
     QueueName varchar(40) not null,

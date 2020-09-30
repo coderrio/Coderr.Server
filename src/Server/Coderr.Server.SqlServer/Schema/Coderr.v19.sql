@@ -1,4 +1,4 @@
-﻿CREATE TABLE IncidentReports
+﻿CREATE TABLE dbo.IncidentReports
 (
     Id int not null identity primary key,
     IncidentId int not null constraint FK_IncidentReports_Incidents foreign key references Incidents(Id) on delete cascade,

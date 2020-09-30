@@ -1,4 +1,4 @@
-﻿create table ApplicationVersions
+﻿create table dbo.ApplicationVersions
 (
 	Id int not null identity primary key,
 	ApplicationId int not null foreign key references Applications (Id),
@@ -8,7 +8,7 @@
 	Version varchar(10) not null
 );
 
-create table ApplicationVersionMonths
+create table dbo.ApplicationVersionMonths
 (
 	Id int not null identity primary key,
 	VersionId int not null foreign key references ApplicationVersions (Id),
@@ -18,7 +18,7 @@ create table ApplicationVersionMonths
 	LastUpdateAtUtc datetime not null
 );
 
-create table IncidentVersions
+create table dbo.IncidentVersions
 (
 	IncidentId int not null constraint FK_IncidentVersions_Incidents references Incidents(Id),
 	VersionId int not null constraint FK_IncidentVersions_ApplicationVersions references ApplicationVersions(Id)

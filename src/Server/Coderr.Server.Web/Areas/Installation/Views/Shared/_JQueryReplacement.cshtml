@@ -55,6 +55,16 @@
         this.elem.addEventListener('click', callback);
     }
 
+
+    SimpleElem.prototype.show = function () {
+        this.css('display', '');
+    }
+
+
+    SimpleElem.prototype.hide = function () {
+        this.css('display', 'none');
+    }
+
     SimpleElem.prototype.html = function (html) {
         if (typeof html === "undefined") {
             return this.elem.innerHTML;

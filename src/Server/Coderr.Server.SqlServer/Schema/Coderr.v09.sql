@@ -46,7 +46,7 @@ BEGIN
 END;
 ALTER TABLE IncidentVersions WITH CHECK ADD CONSTRAINT FK_IncVersions_Incidents FOREIGN KEY (IncidentId) REFERENCES Incidents (Id) ON DELETE CASCADE;
 
-create table ErrorReportCollectionProperties
+create table dbo.ErrorReportCollectionProperties
 (
 	Id int identity not null primary key,
 	ReportId int not null constraint FK_ErrorReportCollectionProperties_ErrorReports REFERENCES ErrorReports(Id) ON DELETE CASCADE,
@@ -56,7 +56,7 @@ create table ErrorReportCollectionProperties
 );
 
 
-create table ErrorReportCollectionInbound
+create table dbo.ErrorReportCollectionInbound
 (
 	Id int identity not null primary key,
 	ReportId int not null constraint FK_ErrorReportCollectionInbound_ErrorReports REFERENCES ErrorReports(Id) ON DELETE CASCADE,

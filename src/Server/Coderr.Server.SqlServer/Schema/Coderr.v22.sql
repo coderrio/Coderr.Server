@@ -1,5 +1,5 @@
 ﻿
-create table NotificationsBrowser
+create table dbo.NotificationsBrowser
 (
     Id int not null identity primary key,
     AccountId int not null constraint FK_NotificationBrowser_AccountId foreign key references Accounts(Id),

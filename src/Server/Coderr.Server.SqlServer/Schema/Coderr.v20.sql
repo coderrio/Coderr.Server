@@ -1,10 +1,10 @@
-﻿create table CorrelationIds
+﻿create table dbo.CorrelationIds
 (
     Id int identity not null primary key,
     Value varchar(40) not null
 );
 
-create table IncidentCorrelations
+create table dbo.IncidentCorrelations
 (
     Id int identity not null primary key,
     CorrelationId int not null constraint FK_IncidentCorrelations_CorrelationIds foreign key references CorrelationIds(Id),
