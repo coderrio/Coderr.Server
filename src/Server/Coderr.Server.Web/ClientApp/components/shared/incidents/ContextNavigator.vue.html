@@ -12,7 +12,7 @@
                 <div class="dropdown-menu">
                     <h6 class="dropdown-header">Select report</h6>
                     <div v-for="report in reports">
-                        <a class="dropdown-item" href="#" v-on:click.prevent="loadReport(report.Id)"><i class="fa-desktop fa text-muted"></i> {{report.CreatedAtUtc|ago}}</a>
+                        <a class="dropdown-item" href="#" v-on:click.prevent="loadReport(report.Id)"><i class="fa-desktop fa text-muted"></i> {{report.CreatedAtUtc|niceTime}}</a>
                     </div>
                 </div>
             </div>

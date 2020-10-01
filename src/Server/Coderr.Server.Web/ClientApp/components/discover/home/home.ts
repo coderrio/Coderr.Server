@@ -7,8 +7,8 @@ import { GetApplicationOverview, GetApplicationOverviewResult, GetApplicationLis
 import { Component, Mixins } from "vue-property-decorator";
 import { AppAware } from "@/AppMixins";
 import Chartist from "chartist";
-import * as moment from "moment";
 import { FindIncidentsResultItem } from "@/dto/Core/Incidents";
+import * as helpers from "@/helpers";
 
 interface ISeries {
     name?: string;
@@ -54,7 +54,6 @@ export default class DiscoverHomeComponent extends Mixins(AppAware) {
                 return;
             }
             if (applicationId === 0) {
-                console.log('generic');
                 this.applicationId = 0;
                 this.firstApplicationId = 0;
                 this.loadGenericOverview();
@@ -152,6 +151,7 @@ export default class DiscoverHomeComponent extends Mixins(AppAware) {
             labels.push(value);
         }
 
+
         var options = {
             fullWidth: true,
             chartPadding: {
@@ -162,11 +162,12 @@ export default class DiscoverHomeComponent extends Mixins(AppAware) {
                 offset: 0
             },
             axisX: {
-                labelInterpolationFnc(value: any, index: number, labels: any) {
+                labelInterpolationFnc(value: any, index: number, labels: any): string {
                     if (index % 3 !== 0) {
-                        return '';
+                        return "";
                     }
-                    return moment(value).format('MMM D');
+
+                    return helpers.monthDay(value);
                 }
             }
         };
@@ -211,11 +212,11 @@ export default class DiscoverHomeComponent extends Mixins(AppAware) {
                 low: 0
             },
             axisX: {
-                labelInterpolationFnc(value: any, index: number, labels: any) {
+                labelInterpolationFnc(value: Date, index: number, labels: any) {
                     if (index % 3 !== 0) {
                         return '';
                     }
-                    return moment(value).format('MMM D');
+                    return helpers.monthDay(value);
                 }
             }
         };
