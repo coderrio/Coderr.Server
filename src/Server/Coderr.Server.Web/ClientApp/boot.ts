@@ -5,7 +5,7 @@ import { AppRoot } from "./services/AppRoot"
 import { IUser } from "./vue-shim";
 import { DateTime } from 'luxon';
 import * as helpers from "./helpers";
-
+export { default as $ } from 'jquery';
 //Vue.use(VeeValidate);
 Vue.use(VueRouter);
 Vue.config.devtools = true;
@@ -30,7 +30,7 @@ Vue.filter("monthDay",
 Vue.filter("isoDate",
     (value: string) => {
         if (!value) return "n/a";
-        return moment.utc(value).local().format("YYYY-MM-DD HH:MM:SS");
+        return helpers.isoDate(value);
     });
 
 Vue.filter("niceTime",

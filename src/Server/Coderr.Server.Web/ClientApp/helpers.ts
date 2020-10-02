@@ -9,6 +9,10 @@ export function getLuxonDate(valueUtc: string | Date): DateTime {
     }
 }
 
+export function isoDate(valueUtc: string | Date): string {
+    return getLuxonDate(valueUtc).toISO({ suppressMilliseconds: true, includeOffset: false });
+}
+
 export function ago(valueUtc: string | Date): string {
     if (!valueUtc) return "n/a";
 

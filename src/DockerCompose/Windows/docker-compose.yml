@@ -9,12 +9,17 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:5000
+      
+      # To enable https, use these lines and configure a certificate
       #- ASPNETCORE_URLS=https://+:5001;http://+:5000
       #- ASPNETCORE_HTTPS_PORT=5001
       
-      #Change these
+      # Adjust the connection string
       - CODERR_CONNECTIONSTRING=Data Source=host.docker.internal,1433;Initial Catalog=Coderr;Integrated Security=false;Connect Timeout=15;user=coderr;password=c0d3rr
-      - CODERR_CONFIG_PASSWORD=changeThis2
+      
+      # Comment out this line once Coderr have been configured (run through the install wizard)
+      # and then restart the container.
+      # - CODERR_CONFIG_PASSWORD=changeThis2
     ports:
       - "60473:5000/tcp"
       - "60474:5001"

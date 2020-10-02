@@ -17,8 +17,7 @@ namespace Coderr.Server.SqlServer.Core.Applications
 
         public ApplicationRepository(IAdoNetUnitOfWork uow)
         {
-            if (uow == null) throw new ArgumentNullException("uow");
-            _uow = uow;
+            _uow = uow ?? throw new ArgumentNullException(nameof(uow));
         }
 
         public async Task CreateAsync(ApplicationTeamMember member)
@@ -29,9 +28,10 @@ namespace Coderr.Server.SqlServer.Core.Applications
         public async Task<UserApplication[]> GetForUserAsync(int accountId)
         {
             if (accountId <= 0) throw new ArgumentOutOfRangeException(nameof(accountId));
-            using (var cmd = (DbCommand) _uow.CreateCommand())
+            using (var cmd = (DbCommand)_uow.CreateCommand())
             {
-                cmd.CommandText = @"SELECT a.Id ApplicationId, a.Name ApplicationName, ApplicationMembers.Roles, a.NumberOfFtes NumberOfDevelopers
+                cmd.CommandText =
+                    @"SELECT a.Id ApplicationId, a.Name ApplicationName, ApplicationMembers.Roles, a.NumberOfFtes NumberOfDevelopers
                                         FROM Applications a
                                         JOIN ApplicationMembers ON (ApplicationMembers.ApplicationId = a.Id) 
                                         WHERE ApplicationMembers.AccountId = @userId
@@ -60,7 +60,7 @@ namespace Coderr.Server.SqlServer.Core.Applications
 
         public async Task RemoveTeamMemberAsync(int applicationId, string invitedEmailAddress)
         {
-            using (var cmd = (DbCommand) _uow.CreateCommand())
+            using (var cmd = (DbCommand)_uow.CreateCommand())
             {
                 cmd.CommandText = "DELETE FROM ApplicationMembers WHERE ApplicationId=@appId AND EmailAddress = @email";
                 cmd.AddParameter("appId", applicationId);
@@ -132,7 +132,7 @@ namespace Coderr.Server.SqlServer.Core.Applications
         {
             if (application == null) throw new ArgumentNullException("application");
 
-            using (var cmd = (DbCommand) _uow.CreateCommand())
+            using (var cmd = (DbCommand)_uow.CreateCommand())
             {
                 cmd.CommandText =
                     @"INSERT INTO Applications (Name, AppKey, CreatedById, CreatedAtUtc, ApplicationType, SharedSecret, EstimatedNumberOfErrors, NumberOfFtes) 
@@ -145,8 +145,8 @@ namespace Coderr.Server.SqlServer.Core.Applications
                 cmd.AddParameter("SharedSecret", application.SharedSecret);
                 cmd.AddParameter("EstimatedNumberOfErrors", application.EstimatedNumberOfErrors);
                 cmd.AddParameter("NumberOfFtes", application.NumberOfFtes);
-                var item = (decimal) await cmd.ExecuteScalarAsync();
-                application.GetType().GetProperty("Id").SetValue(application, (int) item);
+                var item = (decimal)await cmd.ExecuteScalarAsync();
+                application.GetType().GetProperty("Id").SetValue(application, (int)item);
             }
         }
 
@@ -170,7 +170,7 @@ namespace Coderr.Server.SqlServer.Core.Applications
 
         public async Task<Application[]> GetAllAsync()
         {
-            using (var cmd = (DbCommand) _uow.CreateCommand())
+            using (var cmd = (DbCommand)_uow.CreateCommand())
             {
                 cmd.CommandText = "SELECT * FROM Applications ORDER BY Name";
 
@@ -187,7 +187,7 @@ namespace Coderr.Server.SqlServer.Core.Applications
 
         public async Task RemoveTeamMemberAsync(int applicationId, int userId)
         {
-            using (var cmd = (DbCommand) _uow.CreateCommand())
+            using (var cmd = (DbCommand)_uow.CreateCommand())
             {
                 cmd.CommandText = "DELETE FROM ApplicationMembers WHERE ApplicationId=@appId AND AccountId = @userId";
                 cmd.AddParameter("appId", applicationId);

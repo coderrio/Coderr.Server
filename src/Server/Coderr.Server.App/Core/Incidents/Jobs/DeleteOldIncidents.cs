@@ -23,17 +23,17 @@ namespace Coderr.Server.App.Core.Incidents.Jobs
     ///     </para>
     /// </remarks>
     [ContainerService(RegisterAsSelf = true)]
-    internal class DeleteEmptyIncidents : IBackgroundJobAsync
+    internal class DeleteOldIncidents : IBackgroundJobAsync
     {
-        private readonly ILog _logger = LogManager.GetLogger(typeof(DeleteEmptyIncidents));
+        private readonly ILog _logger = LogManager.GetLogger(typeof(DeleteOldIncidents));
         private readonly IDbConnection _connection;
         private readonly IConfiguration<ReportConfig> _reportConfiguration;
 
         /// <summary>
-        ///     Creates a new instance of <see cref="DeleteEmptyIncidents" />.
+        ///     Creates a new instance of <see cref="DeleteOldIncidents" />.
         /// </summary>
         /// <param name="connection">Used for SQL queries</param>
-        public DeleteEmptyIncidents(IDbConnection connection, IConfiguration<ReportConfig> reportConfiguration)
+        public DeleteOldIncidents(IDbConnection connection, IConfiguration<ReportConfig> reportConfiguration)
         {
             _connection = connection;
             _reportConfiguration = reportConfiguration;

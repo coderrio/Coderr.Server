@@ -11,7 +11,7 @@ var bundleOutputDir = "./wwwroot/dist";
 function resolve(dir) {
     return path.join(__dirname, dir);
 }
-
+//TODO: include jquery
 const baseConfig = {
     entry: {
         'main': "./ClientApp/boot.ts",
