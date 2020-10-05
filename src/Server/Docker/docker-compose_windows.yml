@@ -8,13 +8,6 @@ services:
       dockerfile: Dockerfile
     networks:
       - coderr_network_win
-    #volumes:
-      # https://github.com/microsoft/DockerTools/issues/24
-      #- ${APPDATA}/ASP.NET/Https:C:\Users\ContainerUser\AppData\Roaming\ASP.NET\Https:ro
-      #- ${APPDATA}/Microsoft/UserSecrets:/.microsoft/usersecrets/
-      #- ${APPDATA}/Microsoft/UserSecrets:C:\Users\ContainerAdmin\AppData\Roaming\Microsoft\UserSecrets:ro
-      #- ${APPDATA}/Microsoft/UserSecrets//var/aspnet-keys:/root/.aspnet/DataProtection-Keys
-      #  $(AppData)/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro"
 
 volumes:
   esdata:
@@ -23,3 +16,6 @@ volumes:
 networks:
   coderr_network_win:
     name: coderr_network_win
+
+
+

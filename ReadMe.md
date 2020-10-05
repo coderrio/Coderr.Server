@@ -30,7 +30,10 @@ With Coderr, you can focus on building new features and spend minimal time corre
 
 ## Getting started
 
-Once you have [downloaded and installed the server](https://github.com/coderrio/Coderr.Server/releases) you need to install and configure one of our nuget packages. You can read more about them [here](https://coderr.io/documentation/client/).
+1. [Download Coderr Server](https://github.com/coderrio/Coderr.Server/releases), use our [cloud service](https://app.coderr.io) (free for up to five users) or use our [Docker image]()
+2. Install one of our [nuget libraries](https://www.nuget.org/packages?q=coderr.client) (or [npm library](https://www.npmjs.com/package/coderr.client)).
+3. Follow the instructions in the package ReadMe (max three lines of code to get started).
+4. Try the code below.
 
 **Unhandled exceptions will automatically be reported by the client libraries.**
 

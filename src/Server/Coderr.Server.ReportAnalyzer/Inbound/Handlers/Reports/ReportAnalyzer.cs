@@ -314,13 +314,12 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
 
         private ReportDTO ConvertToCoreReport(ErrorReportEntity report, string version)
         {
-            var dto = new ReportDTO
+            var dto = new ReportDTO(report.Id)
             {
                 ApplicationId = report.ApplicationId,
                 ContextCollections =
                     report.ContextCollections.Select(x => new ContextCollectionDTO(x.Name, x.Properties)).ToArray(),
                 CreatedAtUtc = report.CreatedAtUtc,
-                Id = report.Id,
                 IncidentId = report.IncidentId,
                 RemoteAddress = report.RemoteAddress,
                 ReportId = report.ClientReportId,

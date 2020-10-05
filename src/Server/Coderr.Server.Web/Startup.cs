@@ -29,6 +29,7 @@ using log4net.Appender;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
@@ -203,6 +204,11 @@ namespace Coderr.Server.Web
                     jsonOptions.SerializerSettings.ContractResolver = new IncludeNonPublicMembersContractResolver();
                 });
 
+            if (HostConfig.Instance.IsRunningInDocker)
+            {
+                services.AddDataProtection()
+                    .PersistKeysToFileSystem(new System.IO.DirectoryInfo(@"C:\ProtectedStorage"));
+            }
 
             var authenticationBuilder = services.AddAuthentication("Cookies");
             authenticationBuilder.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>

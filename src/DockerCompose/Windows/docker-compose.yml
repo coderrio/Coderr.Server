@@ -19,10 +19,11 @@ services:
       
       # Comment out this line once Coderr have been configured (run through the install wizard)
       # and then restart the container.
-      # - CODERR_CONFIG_PASSWORD=changeThis2
+      - CODERR_CONFIG_PASSWORD=changeThis
+      
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:C:\ProtectedStorage:rw
+
     ports:
       - "60473:5000/tcp"
       - "60474:5001"
-      
-      
-      

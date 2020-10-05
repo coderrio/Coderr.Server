@@ -16,9 +16,6 @@
     "aspnet-webpack": "^3.0.0",
     "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^1.0.0",
-    "event-source-polyfill": "^0.0.12",
-    "fibers": "^3.1.0",
-    "file-loader": "^1.1.11",
     "mini-css-extract-plugin": "^0.9.0",
     "node-sass": "^4.14.1",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
@@ -43,11 +40,13 @@
   "dependencies": {
     "bootstrap": "^4.4.1",
     "chartist": "^0.11.4",
+    "cssnano": "^4.1.10",
     "jquery": "^3.5.0",
     "localforage": "^1.7.3",
     "luxon": "^1.25.0",
     "popper.js": "^1.14.7",
     "simplemde": "^1.11.2",
+    "terser-webpack-plugin": "^4.2.2",
     "toastr": "^2.1.4",
     "vue": "^2.6.11",
     "vue-router": "^3.1.6"

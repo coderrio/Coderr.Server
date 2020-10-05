@@ -7,6 +7,16 @@ namespace Coderr.Server.ReportAnalyzer.Abstractions.ErrorReports
     /// </summary>
     public class ReportDTO
     {
+        public ReportDTO(int id)
+        {
+            Id = id;
+        }
+
+        protected ReportDTO()
+        {
+
+        }
+
         /// <summary>
         ///     Application that the incident and report belongs in.
         /// </summary>
@@ -30,7 +40,7 @@ namespace Coderr.Server.ReportAnalyzer.Abstractions.ErrorReports
         /// <summary>
         ///     DB primary key
         /// </summary>
-        public int Id { get; set; }
+        public int Id { get; private set; }
 
         /// <summary>
         ///     DB primary key

@@ -22,7 +22,7 @@ namespace Coderr.Server.ReportAnalyzer.Tests.ErrorOrigins.Handlers
             var repos = Substitute.For<IErrorOriginRepository>();
             var incident = new IncidentSummaryDTO(1, "Hello");
             var data = new Dictionary<string, string> {{"Longitude", "60.6065"}, {"Latitude", "15.6355"}};
-            var report = new ReportDTO {ContextCollections = new[] {new ContextCollectionDTO("CoderrData", data)}};
+            var report = new ReportDTO(1) {ContextCollections = new[] {new ContextCollectionDTO("CoderrData", data)}};
             var e = new ReportAddedToIncident(incident, report, false);
             var context = Substitute.For<IMessageContext>();
             var configWrapper = Substitute.For<IConfiguration<OriginsConfiguration>>();
@@ -42,7 +42,7 @@ namespace Coderr.Server.ReportAnalyzer.Tests.ErrorOrigins.Handlers
             var repos = Substitute.For<IErrorOriginRepository>();
             var incident = new IncidentSummaryDTO(1, "Hello");
             var data = new Dictionary<string, string> {{"ReportLongitude", "60.6065"}, {"ReportLatitude", "15.6355"}};
-            var report = new ReportDTO {ContextCollections = new[] {new ContextCollectionDTO("SomeCollection", data)}};
+            var report = new ReportDTO(1) {ContextCollections = new[] {new ContextCollectionDTO("SomeCollection", data)}};
             var e = new ReportAddedToIncident(incident, report, false);
             var context = Substitute.For<IMessageContext>();
             var configWrapper = Substitute.For<IConfiguration<OriginsConfiguration>>();
