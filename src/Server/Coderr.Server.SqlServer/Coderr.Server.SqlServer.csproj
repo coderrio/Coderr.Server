@@ -8,7 +8,7 @@
     <PackageReference Include="DnsClient" Version="1.2.0" />
     <PackageReference Include="DotNetCqs" Version="2.0.15" />
     <PackageReference Include="Griffin.Framework" Version="2.1.1" />
-    <PackageReference Include="log4net" Version="2.0.8" />
+    <PackageReference Include="log4net" Version="2.0.10" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="System.Data.SqlClient" Version="4.7.0" />
   </ItemGroup>

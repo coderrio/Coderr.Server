@@ -11,7 +11,7 @@
     <PackageReference Include="DotNetCqs.DependencyInjection.Microsoft" Version="1.0.1" />
     <PackageReference Include="DotNetCqs.Queues.AdoNet" Version="1.0.7" />
     <PackageReference Include="Griffin.Framework" Version="2.1.1" />
-    <PackageReference Include="log4net" Version="2.0.8" />
+    <PackageReference Include="log4net" Version="2.0.10" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
