@@ -3,35 +3,26 @@ Coderr Community Server
 
 [![Build status](https://1tcompany.visualstudio.com/_apis/public/build/definitions/75570083-b1ef-4e78-88e2-5db4982f756c/6/badge)]() [![Github All Releases](https://img.shields.io/github/downloads/coderrio/coderr.server/total.svg?style=flat-square)]()
 
-# Discover more errors and solve them faster!
+# Solve errors more quickly
 
-![Welcome screen](docs/dashboard.png)
+It works on my machine!
 
-[Watch our intro video](https://www.youtube.com/watch?v=E6q3EkEIwVk)
+We all have heard, and said, that expression. Solving errors can be quite frustrating. Even trivial errors which just takes a few minutes to solve can cause frustration if there are many of them.
+
+Coderr automates the error management process. Let Coderr detect, report and analyze the errors, so that you can focus on just solving them.
+
+![Welcome screen](docs/discover-incident.png)
 
 ## Search function
 
 ![Search using your own data](docs/search.png)
 
-.. don't want to host/maintain your own server? Try [Coderr Live](https://coderr.io/live/)
-
-## What’s Coderr?
-
-Coderr is an error management service developed specifically for .NET and JavaScript applications. Coderr provides an insight to all errors that are occurring and gives you control and a complete view of your applications’ status. 
-
-## Why change?
-
-Compared to log files and log analysis tools (like Splunk / Kibana), Coderr fouces exclusivly on errors (both exceptions and other types) where everything works out of the box. No need to customize dashboards, views or anything else.
-All errors are grouped out of the box and you can see how often they occurr, in which environment (like "production") and in which application versions.
-
-Once an error is corrected, all future reports for it will automatically be ignored unless the error surfaces in a newer application version.
-
-With Coderr, you can focus on building new features and spend minimal time correcting bugs.
+.. don't want to host/maintain your own server? Try [Coderr Cloud](https://lobby.coderr.io/?utm_source=github) - Free up to five users.
 
 ## Getting started
 
-1. [Download Coderr Server](https://github.com/coderrio/Coderr.Server/releases), use our [cloud service](https://app.coderr.io) (free for up to five users) or use our [Docker image]()
-2. Install one of our [nuget libraries](https://www.nuget.org/packages?q=coderr.client) (or [npm library](https://www.npmjs.com/package/coderr.client)).
+1. [Download Coderr Server](https://github.com/coderrio/Coderr.Server/releases), use our [cloud service](https://lobby.coderr.io) (free for up to five users) or use our [Docker image]()
+2. Install one of our [nuget libraries](https://www.nuget.org/packages?q=coderr.client) (or one of the [js libraries](https://www.npmjs.com/package/coderr.client)).
 3. Follow the instructions in the package ReadMe (max three lines of code to get started).
 4. Try the code below.
 
@@ -53,15 +44,15 @@ public void UpdatePost(int uid, ForumPost post)
 }
 ```
 
-The context information will in this case be attached as:
+Sample data collected by the ASP.NET Core MVC library:
 
-![](https://coderr.io/images/features/custom-context.png)
+![](docs/collections.gif)
 
-You can learn more about reporting errors [here](https://coderr.io/documentation/).
+You can learn more about reporting errors [here](https://coderr.io/documentation/getting-started).
 
 ## Running Coderr
 
-You can run any Coderr in development, test and in production. Coderr is available in three different ways; as Coderr Community Server (AGPL license, self-hosting), as Coderr Live (commercial license, cloud version) or on request, as Coderr running on premise (commercial license, self-hosting version). Coderr Live and Coderr on premise add powerful algorithms to prioritize errors and provide insight to how your code is improving over time with applied solutions. Coderr was rebranded and developed from OneTrueError in 2017.
+You can run any Coderr in development, test and in production. Coderr is available in three different ways; as Coderr Community Server (AGPL license, self-hosting), as Coderr Cloud (commercial license, cloud version) or on request, as Coderr Premise (commercial license, self-hosting version). Coderr Cloud and Coderr Premise add powerful algorithms to prioritize errors and provide insight to how your code is improving over time with applied solutions.
 
 [Read more](https://coderr.io/features/)
 
@@ -82,5 +73,5 @@ We are passionate about Open Source, Microsoft .NET and code quality. 1TCompany 
 
 * Community Server: [AGPL](License)
 * Client libraries: [Apache 2.0](https://opensource.org/licenses/apache-2.0)
-* [Coderr Live](https://coderr.io/live): Commercial
-* [Coderr OnPremise](https://coderr.io/features): Commercial
+* [Coderr Cloud](https://lobby.coderr.io): Commercial
+* [Coderr Premise](https://coderr.io/features): Commercial
