@@ -14,5 +14,10 @@
         /// Name, like "Production" or "Test"
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Delete all inbound reports in this environment.
+        /// </summary>
+        public bool DeleteIncidents { get; set; }
     }
 }

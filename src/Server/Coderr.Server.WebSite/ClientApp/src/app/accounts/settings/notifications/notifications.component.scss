@@ -1,0 +1,17 @@
+.card-group {
+/*  display: flex;
+  flex-wrap: wrap;
+*/}
+
+.card {
+  background: white;
+  margin: 1px;
+  padding: 5px;
+  min-width: 500px;
+  .card-header{
+      display: block;
+      font-size: 1.3em;
+      font-weight: bold;
+      margin-bottom: 10px;
+  }
+}

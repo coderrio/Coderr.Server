@@ -1,0 +1,47 @@
+﻿@model Coderr.Server.Web.Areas.Admin.Models.Partition.CreateViewModel
+@{
+    ViewBag.Title = "Create partition";
+}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <form method="post" action="@Url.Action("Create")">
+                <h2>Create partition</h2>
+                @Html.ValidationSummary(false)
+                @Html.HiddenFor(x => x.ApplicationId)
+                <div class="form-group">
+                    <label>
+                        Title
+                    </label>
+                    <input type="text" name="Title" class="form-control" value="@Model.Title" placeholder="Title (display name)"/>
+                </div>
+                <div class="form-group">
+                    <label>
+                        Partition key
+                    </label>
+                    <input type="text" name="PartitionKey" class="form-control" value="@Model.PartitionKey" placeholder=""/>
+					<span class="help-block">The property name in the client library when reporting errors. Read this <a href="#">guide</a> for more information. If the partition is "Users" this might be "userId".</span>
+                </div>
+                <div class="form-group">
+                    <label>
+                        Number of items
+                    </label>
+                    <input type="text" name="NumberOfItems" class="form-control" value="@Model.NumberOfItems" placeholder=""/>
+					<span class="help-block">If the partition is "Users", then this is the amount of users that you have in your system. The quality of Coderr's prioritization is much better when this field is specified.</span>
+                </div>
+				<div class="form-group">
+                    <label>
+                        Weight
+                    </label>
+                    <input type="text" name="Weight" class="form-control" value="@Model.Weight" placeholder=""/>
+					<span class="help-block">The weight compared to other partitions. Those with more weight is more important than those with less weight. 1 = default</span>
+                </div>
+                <div>
+                    <input type="submit" class="btn btn-lg" value="Create" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

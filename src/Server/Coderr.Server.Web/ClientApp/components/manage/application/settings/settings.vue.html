@@ -15,11 +15,29 @@
                                 <input type="text" class="form-control" placeholder="Application name" v-model="applicationName" autofocus="autofocus" required="required" />
                             </div>
                             <div class="form-group">
-                                <div class="float-right"><a href="" @click.prevent="deleteApp" title="Delete application"><i class="text-red fa fa-trash"></i></a></div>
+                                <label>
+                                    Retention days
+                                </label>
+                                <input type="text" class="form-control" placeholder="Number of days to keep incidents" v-model="retentionDays" autofocus="autofocus" required="required" />
+                                <em class="text-muted">In our experience, old incidents do not get fixed. It's therefore better to delete them after a number of days to keep the list of errors short.</em>
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    Group
+                                </label>
+                                <select class="form-control" v-model="groupId" required="required">
+                                    <option v-for="option in applicationGroups" v-bind:value="option.id">
+                                        {{ option.name }}
+                                    </option>
+                                </select>
+                                <em class="small">Groups are used to organize applications in the application list</em>
+                            </div>
+                            <div class="form-group">
                                 <input type="submit" value="Save settings" class="btn btn-primary" />
+                                <button class="btn-red btn" @click.prevent="deleteApp" title="Delete application">Delete application</button>
                             </div>
                         </form>
-                        
+
                     </div>
                 </div>
             </div>

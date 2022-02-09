@@ -1,4 +1,6 @@
-﻿namespace Coderr.Server.Api.Core.Applications.Queries
+﻿using System;
+
+namespace Coderr.Server.Api.Core.Applications.Queries
 {
     /// <summary>
     ///     Result for <see cref="GetApplicationInfo" />.
@@ -54,5 +56,20 @@
         /// Got information to be able to compare how the team is performing with other teams.
         /// </summary>
         public bool ShowStatsQuestion { get; set; }
+
+        /// <summary>
+        /// Number of days to keep new incidents before deleting them.
+        /// </summary>
+        /// <remarks>
+        ///<para>
+        /// We've seen that errors that aren't within 60 days aren't fixed at all. It's therefore better to delete them than to keep them in the system (and adding noise to the error list).
+        /// </para>
+        /// </remarks>
+        public int RetentionDays { get; set; }
+
+        /// <summary>
+        /// When we received the last incident.
+        /// </summary>
+        public DateTime? LastIncidentAtUtc { get; set; }
     }
 }

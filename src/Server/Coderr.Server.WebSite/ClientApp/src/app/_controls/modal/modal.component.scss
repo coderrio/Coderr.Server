@@ -1,0 +1,39 @@
+@import "../../../styles/_partials/coderr-variables.scss";
+
+modal {
+  display: none;
+
+  .modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    overflow: auto;
+    min-width: 600px;
+
+    .modal-body {
+      padding: 20px;
+      margin: 40px;
+    }
+
+    .modal-body a.btn {
+      color: white;
+    }
+  }
+
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #000;
+    opacity: 0.75;
+    z-index: 900;
+  }
+}
+
+body.modal-open {
+  overflow: hidden;
+}

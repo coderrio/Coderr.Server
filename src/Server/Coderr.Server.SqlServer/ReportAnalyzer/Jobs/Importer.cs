@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 using Coderr.Server.Domain.Core.ErrorReports;
@@ -38,7 +39,7 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer.Jobs
                 {
                     if (property.Value == null)
                         continue;
-                    
+
                     var row = CreateDataTableRow(_dataTable, reportId, context, property);
                     _dataTable.Rows.Add(row);
                 }
@@ -47,7 +48,7 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer.Jobs
 
         public async Task<int> Execute()
         {
-            //TODO: Remove once all processing is in a seperate library.
+            //TODO: Remove once all processing is in a separate library.
             using (var bulkCopy = new SqlBulkCopy(_transaction.Connection, SqlBulkCopyOptions.Default, _transaction))
             {
                 bulkCopy.DestinationTableName = "ErrorReportCollectionProperties";
@@ -65,12 +66,18 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer.Jobs
             ErrorReportContextCollection context,
             KeyValuePair<string, string> property)
         {
-            var contextName = context.Name.Length > 50
-                ? context.Name.Substring(0, 47) + "..."
-                : context.Name;
-            var propertyName = property.Key.Length > 50
-                ? property.Key.Substring(0, 47) + "..."
-                : property.Key;
+            var propertyName = property.Key;
+            string contextName = context.Name;
+
+            if (contextName.Length > 50)
+            {
+                contextName = contextName.Substring(0, 47) + "...";
+            }
+
+            if (propertyName.Length > 50)
+            {
+                propertyName = propertyName.Substring(0, 47) + "...";
+            }
 
             var row = dataTable.NewRow();
             row["ReportId"] = reportId;

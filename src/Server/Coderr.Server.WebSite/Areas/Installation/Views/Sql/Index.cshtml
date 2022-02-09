@@ -1,0 +1,97 @@
+﻿@using Coderr.Server.Abstractions
+@{
+    ViewBag.Title = "Installation - Database configuration";
+}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6">
+            <h2>Database configuration</h2>
+            <p>
+                It's time to configure the database. To do that you need
+                to start by specifying which database to use. We expect that you have created
+                a database and configured an account for it.
+            </p>
+            <p>
+                Modify the connectionString named <code>'Db'</code> in <code>appsettings.json.</code> Click on 'Test Connection' to make sure that it works.
+            </p>
+            <form method="post" action="@Url.Action("Connection", "Sql")" style="width: 100%" class="form-inline" id="dbForm">
+                <div>
+                    <p>
+                        Configured connection string:
+                    </p>
+                    <code class="bg-white border-blue">
+                        @HostConfig.Instance.ConnectionString
+                    </code>
+                    <br /><br />
+                    @Html.Raw(ViewBag.PrevLink)
+                    <button id="testConnection" class="btn btn-primary">Test Connection</button>
+                    @Html.Raw(ViewBag.NextLink)
+                </div>
+            </form>
+            <div style="display: none" class="alert alert-dark mt-2">
+                Connection was successful. Click on the "Create tables" button to continue.
+            </div>
+            <div class="alert alert-warning mt-2" id="error" style="display: none">
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <h2>Limitation</h2>
+            <p>
+                <em>
+                    Currently only Microsoft SQL Server 2012 and above is supported. Need any other DB? Feel free to Contribute
+                    by taking the SqlServer class library and convert it to a library for your favorite DB engine.
+                </em>
+            </p>
+            <h3>Example</h3>
+            <pre><code>Data Source=.;Initial Catalog=coderr;Integrated Security=True;Connect Timeout=30;</code></pre>
+            <h2>Tip!</h2>
+            <p>
+                Do you want to give permissions to the IIS app pool? Add <em>"IIS APPPOOL\YourAppPool"</em> as the windows account in SQL Server Management Studio.
+            </p>
+            <p>
+                For instance <code>IIS APPPOOL\DefaultAppPool</code>.
+            </p>
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    <partial name="_JQueryReplacement" />
+    <script type="text/javascript">
+
+        $('[data-name="nextLink"]').addClass("disabled");
+        document.querySelector('#testConnection').addEventListener('click',
+            function(e) {
+                e.preventDefault();
+                var url = '@Url.RouteUrl(new {Area = "Installation", Controller = "Sql", Action = "Validate"})';
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState === 4 && this.status === 200) {
+                        var data = JSON.parse(this.responseText);
+                        if (data.result === "fail") {
+                            var reason = data.reason.replace(/\\n/g, "<br>")
+                                .replace(/\\'/g, "'")
+                                .replace(/\\"/g, '"')
+                                .replace(/\\\\/g, '\\')
+                                .replace(/\\&/g, "&")
+                                .replace(/\\r/g, "r")
+                                .replace(/\\t/g, "\t")
+                                .replace(/\\b/g, "\b")
+                                .replace(/\\f/g, "\f");
+                            $('#error').html(reason).show();
+                        } else {
+                            $('#error').css('display', 'none');
+                            $("#testConnection").removeClass("btn-primary").addClass('btn-default');
+                            $('[data-name="nextLink"]').removeClass('disabled').addClass('btn-primary');
+                            $('.alert-dark').css('display', '');
+                        }
+                    }
+                };
+                xhttp.open("POST", url, true);
+                xhttp.send();
+            });
+
+
+
+    </script>
+}

@@ -4,6 +4,7 @@
     <RootNamespace>Coderr.Server.App</RootNamespace>
     <AssemblyName>Coderr.Server.App</AssemblyName>
     <DefaultItemExcludes>$(DefaultItemExcludes);*.DotSettings;*.vsspell;CustomDictionary.xml</DefaultItemExcludes>
+    <Configurations>Debug;Release;Premise</Configurations>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Core\Accounts\CommandHandlers\Templates\ResetPassword\Template.md" />
@@ -21,14 +22,14 @@
     <PackageReference Include="ColorCode" Version="1.0.1">
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
-    <PackageReference Include="DnsClient" Version="1.2.0" />
-    <PackageReference Include="DotNetCqs" Version="2.0.15" />
+    <PackageReference Include="DnsClient" Version="1.6.0" />
+    <PackageReference Include="DotNetCqs" Version="2.1.1" />
     <PackageReference Include="Griffin.Framework" Version="2.1.1" />
-    <PackageReference Include="log4net" Version="2.0.8" />
-    <PackageReference Include="Markdig" Version="0.18.0" />
+    <PackageReference Include="log4net" Version="2.0.14" />
+    <PackageReference Include="Markdig" Version="0.22.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
-    <PackageReference Include="UAParser" Version="3.1.43" />
+    <PackageReference Include="UAParser" Version="3.1.47" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Coderr.Server.Api\Coderr.Server.Api.csproj" />
@@ -36,10 +37,5 @@
     <ProjectReference Include="..\Coderr.Server.Infrastructure\Coderr.Server.Infrastructure.csproj" />
     <ProjectReference Include="..\Coderr.Server.Abstractions\Coderr.Server.Abstractions.csproj" />
     <ProjectReference Include="..\Coderr.Server.ReportAnalyzer.Abstractions\Coderr.Server.ReportAnalyzer.Abstractions.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Core\Environments\" />
-    <Folder Include="Core\Incidents\Events\" />
-    <Folder Include="Core\Reports\Config\" />
   </ItemGroup>
 </Project>

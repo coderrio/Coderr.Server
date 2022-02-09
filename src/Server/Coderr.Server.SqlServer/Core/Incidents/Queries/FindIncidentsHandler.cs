@@ -67,7 +67,7 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
                                     HAVING Count(IncidentTags.Id) = {1}
                                     ))";
                     var ps = "";
-                    for (int i = 0; i < query.Tags.Length; i++)
+                    for (var i = 0; i < query.Tags.Length; i++)
                     {
                         ps += $"@tag{i}, ";
                         cmd.AddParameter($"@tag{i}", query.Tags[i]);
@@ -88,8 +88,8 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
                     || !string.IsNullOrEmpty(query.ContextCollectionPropertyName))
                 {
                     var where = AddContextProperty(cmd, "", "Name", "ContextName", query.ContextCollectionName);
-                    where += AddContextProperty(cmd, where, "PropertyName", "ContextPropertyName", query.ContextCollectionPropertyName);
-                    where += AddContextProperty(cmd, where, "Value", "ContextPropertyValue", query.ContextCollectionPropertyValue);
+                    where = AddContextProperty(cmd, where, "PropertyName", "ContextPropertyName", query.ContextCollectionPropertyName);
+                    where = AddContextProperty(cmd, where, "Value", "ContextPropertyValue", query.ContextCollectionPropertyValue);
                     if (where.EndsWith(" AND "))
                         where = where.Substring(0, where.Length - 5);
                     var ourSql =
@@ -99,8 +99,7 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
                             from ErrorReports
                             join ErrorReportCollectionProperties ON (ErrorReports.Id = ErrorReportCollectionProperties.ReportId)
                             WHERE {where}
-                        )
-";
+                        )";
                     sqlQuery = ourSql + sqlQuery;
                     AppendJoin("join ContextSearch ON (Incidents.Id = ContextSearch.IncidentId)");
                 }

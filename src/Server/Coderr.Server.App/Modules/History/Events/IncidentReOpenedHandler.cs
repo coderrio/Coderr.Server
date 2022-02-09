@@ -4,7 +4,6 @@ using Coderr.Server.Abstractions.Security;
 using Coderr.Server.Domain.Core.Incidents;
 using Coderr.Server.Domain.Core.Incidents.Events;
 using Coderr.Server.Domain.Modules.History;
-using Coderr.Server.Infrastructure.Security;
 using DotNetCqs;
 
 namespace Coderr.Server.App.Modules.History.Events

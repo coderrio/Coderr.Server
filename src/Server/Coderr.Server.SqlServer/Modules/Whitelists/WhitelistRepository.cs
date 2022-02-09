@@ -24,7 +24,7 @@ namespace Coderr.Server.SqlServer.Modules.Whitelists
             using (var cmd = _unitOfWork.CreateDbCommand())
             {
                 // ORDER BY appId desc = get specific one first, then the generic one.
-                cmd.CommandText = @"select ip.* 
+                cmd.CommandText = @"select ip.*
                                     from WhitelistedDomains d
                                     left join WhitelistedDomainIps ip ON (d.Id = ip.DomainId)
                                     left join WhitelistedDomainApps app ON (d.Id = app.DomainId)

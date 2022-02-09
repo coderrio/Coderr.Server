@@ -5,10 +5,13 @@ namespace Coderr.Server.ReportAnalyzer.ReportSpikes
     /// </summary>
     public class NewSpike
     {
+        public int ApplicationId { get; set; }
         /// <summary>
         ///     Typical report count average per day
         /// </summary>
         public int DayAverage { get; set; }
+
+        public string ApplicationName { get; set; }
 
         /// <summary>
         ///     Current report count

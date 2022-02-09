@@ -24,8 +24,17 @@ namespace Coderr.Server.App.Core.Applications.CommandHandlers
             var app = new Application(command.UserId, command.Name)
             {
                 ApplicationType =
-                    (TypeOfApplication)Enum.Parse(typeof(TypeOfApplication), command.TypeOfApplication.ToString())
+                    (TypeOfApplication)Enum.Parse(typeof(TypeOfApplication), command.TypeOfApplication.ToString()),
             };
+            if (command.GroupId == null)
+            {
+                app.GroupId = await _repository.GetFirstGroupIdAsync();
+            }
+            else
+            {
+                app.GroupId = command.GroupId.Value;
+            }
+
             if (command.ApplicationKey != null)
                 app.AppKey = command.ApplicationKey;
 
@@ -34,6 +43,8 @@ namespace Coderr.Server.App.Core.Applications.CommandHandlers
             {
                 app.AddStatsBase(command.NumberOfDevelopers, command.NumberOfErrors);
             }
+
+            app.RetentionDays = command.RetentionDays ?? 60;
 
             var creator = await _userRepository.GetUserAsync(command.UserId);
             await _repository.CreateAsync(app);

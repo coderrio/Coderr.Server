@@ -1,0 +1,20 @@
+<table class="table w-100">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Telemetry key</th>
+      <th>Weight</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let partition of partitions">
+      <td><a [routerLink]="['/application/', applicationId,'admin','partitions', partition.id, 'edit']">{{partition.name}}</a></td>
+      <td>{{partition.partitionKey}}</td>
+      <td>{{partition.weight}}</td>
+    </tr>
+    <tr *ngIf="partitions.length == 0">
+      <td colspan="3"><em>No partitions have been created.</em></td>
+    </tr>
+
+  </tbody>
+</table>

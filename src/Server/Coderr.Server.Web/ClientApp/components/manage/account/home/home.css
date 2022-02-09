@@ -1,3 +1,8 @@
 #ManageView div label.btn.btn-primary.active {
     background: #59c1d5;
 }
+
+#ManageView .card-group .card {
+    min-width: 30%;
+    margin-bottom: 2px;
+}

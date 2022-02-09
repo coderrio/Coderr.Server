@@ -9,3 +9,4 @@ create table dbo.NotificationsBrowser
     CreatedAtUtc datetime not null,
     ExpiresAtUtc datetime null
 );
+

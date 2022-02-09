@@ -1,0 +1,30 @@
+<div class="panel onboarding-view">
+  <h3>Generate demo errors</h3>
+  <div class="fill">
+    <p>Are you using Node.js or .NET?</p>
+    <button class="btn btn-red shadow-lg text-light" (click)="selectFramework('nodejs')">Node.js</button>
+    <button class="btn btn-red shadow-lg text-light" (click)="selectFramework('dotnet')">.NET</button>
+
+    <div *ngIf="framework">
+      <div *ngFor="let category of demoIncidents">
+        <h3>{{category.name}}</h3>
+        <div class="row">
+          <div class="bg dark alert col m-2" [class]="{ selected: item.selected }" style="max-width: 30vw" *ngFor="let item of category.items" (click)="toggleMe(item)">
+            <strong class="text-blue">{{item.title}}</strong>
+            <p class="pt-2 text-light">
+              {{item.description}}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="footer">
+        <hr />
+        <div *ngIf="generated" class="text-red">
+          Success! Errors have been scheduled to be generated asap.
+        </div>
+        <button class="btn blue text-light" (click)="generateErrors()">Generate demo errors</button>
+        <button class="btn dark text-dark" (click)="showComplete()">Skip</button>
+      </div>
+    </div>
+  </div>
+</div>

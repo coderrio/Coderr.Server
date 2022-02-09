@@ -42,7 +42,7 @@ namespace Coderr.Server.App.Core.Incidents.Commands
             incident.IgnoreFutureReports(user.UserName);
             await _incidentRepository.UpdateAsync(incident);
 
-            await context.SendAsync(new IncidentIgnored(command.IncidentId, user.AccountId, user.UserName));
+            await context.SendAsync(new IncidentIgnored(incident.ApplicationId, command.IncidentId, user.AccountId, user.UserName));
         }
     }
 }

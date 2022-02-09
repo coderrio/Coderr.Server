@@ -1,0 +1,72 @@
+<form class="form" (ngSubmit)="save()" [attr.disabled]="disabled">
+  <div class="panel">
+    <h2>Edit whitelist for '{{domainName}}'</h2>
+    <div class="fill">
+      <div class="form-control">
+        <label class="label">Host name</label>
+        <input required type="text" name="domainName" [(ngModel)]="domainName" placeholder="myapp.yourdomain.com" />
+        <em class="small">Domain name, including the subdomain/host.</em>
+      </div>
+      <div class="form-control">
+        <label>Applications</label>
+        <p>
+          <em class="small">Application(s) that the domain may report errors for. None marked = all are allowed.</em>
+        </p>
+        <div *ngFor="let item of applications">
+          <input type="checkbox" [name]="'app' + item.id" [value]="item.id" [(ngModel)]="item.selected" style="display: inline" />
+          <label [for]="'app' + item.id" style="display: inline">
+            {{item.name}}
+          </label>
+        </div>
+      </div>
+      <div class="form-control">
+        <label class="label">IP Addresses</label>
+        <p>
+          <em class="small">
+            Per default, Coderr will lookup all IP addresses (through DNS) that are associated with a domain name.
+            Here you can manually specify which IP addresses that are allowed for the domain, and by doing so disable the DNS lookup.
+          </em>
+        </p>
+        <table>
+          <tr *ngFor="let ip of ipAddresses;let index=index">
+            <td>
+              <div style="    display: flex;align-items: center;">
+                <input type="text"
+                       [name]="'ip' + index"
+                       [value]="ip.address"
+                       [(ngModel)]="ip.address"
+                       pattern="((^\s*((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))\s*$)|(^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$))" />
+                <a href="#" (click)="removeIp(ip);false"><i class="fa fa-trash"></i></a>
+              </div>
+            </td>
+          </tr>
+        </table>
+        <button type="button" class="" (click)="showAddIp();">Add new IP</button>
+      </div>
+      <div class="form-control">
+        <span class="error" style="white-space: pre-line">{{errorMessage}}</span>
+      </div>
+    </div>
+    <div>
+      <button type="submit" class="btn">Save</button>
+      <button type="reset" (click)="cancel()">Cancel</button>
+    </div>
+  </div>
+
+</form>
+
+<modal id="newIpModal">
+  <div class="panel">
+    <h3>New IP address</h3>
+    <div class="fill">
+      <form (ngSubmit)="addNewIp();" class="form" ngNativeValidate>
+        <input name="newIpAddress" class="" required=""
+               pattern="((^\s*((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))\s*$)|(^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$))"
+               type="text" [(ngModel)]="newIpAddress"
+               placeholder="v.x.y.z"
+               title="Enter a valid IP address." />
+        <button type="submit">Add</button>
+      </form>
+    </div>
+  </div>
+</modal>

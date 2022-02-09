@@ -41,6 +41,14 @@ namespace Coderr.Server.Domain.Core.Incidents
         Task<int> GetTotalCountForAppInfoAsync(int applicationId);
 
         /// <summary>
+        ///     Count date for newest error.
+        /// </summary>
+        /// <param name="applicationId">application</param>
+        /// <returns>Date for newest error</returns>
+        /// <exception cref="ArgumentOutOfRangeException">applicationId</exception>
+        Task<DateTime> GetLatestIncidentDate(int applicationId);
+
+        /// <summary>
         ///     Update incident
         /// </summary>
         /// <param name="incident">incident</param>

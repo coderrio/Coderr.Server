@@ -49,6 +49,11 @@ namespace Coderr.Server.Abstractions.Reports
         /// </remarks>
         public int RetentionDays { get; set; }
 
+        /// <summary>
+        /// Number of days to store incidents that have not received any new reports.
+        /// </summary>
+        public int RetentionDaysIncidents { get; set; }
+
         string IConfigurationSection.SectionName => "ReportConfig";
 
         IDictionary<string, string> IConfigurationSection.ToDictionary()
@@ -61,6 +66,8 @@ namespace Coderr.Server.Abstractions.Reports
             this.AssignProperties(settings);
             if (MaxReportJsonSize == 0)
                 MaxReportJsonSize = 1000000;
+            if (RetentionDaysIncidents == 0)
+                RetentionDaysIncidents = 90;
         }
     }
 }

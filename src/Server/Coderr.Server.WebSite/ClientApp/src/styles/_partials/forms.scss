@@ -1,0 +1,74 @@
+@import "coderr-variables.scss";
+
+input:invalid {
+  box-shadow: 0 0 5px 1px $red;
+}
+
+input:focus:invalid {
+  box-shadow: none;
+}
+
+input, select, textarea {
+  padding: 4px;
+  border: 1px solid #404040;
+  border-radius: 3px;
+}
+
+.form {
+  .form-group {
+    margin-top: 15px;
+  }
+
+  label {
+    display: block;
+    font-weight: bold;
+
+    &.inline {
+      display: inline;
+    }
+  }
+
+  input {
+    &.inline {
+      display: inline;
+    }
+  }
+
+  input[type="text"],
+  input[type="number"],
+  input[type="email"],
+  input[type="password"],
+  textarea,
+  select {
+    background-color: $input-bg;
+    border: 1px solid $input-border-color;
+    border-radius: 3px;
+    padding: 8px;
+    border: darken($input-bg, 20%);
+    width: 100%;
+  }
+
+  textarea {
+    min-height: 100px;
+    width: 100%;
+  }
+
+  button {
+    display: inline-flex;
+  }
+
+  button[type="submit"], a.submit {
+    @extend .btn;
+    background-color: $bg-primary;
+    border: darken($bg-primary, 20%);
+    color: $light;
+    width: inherit;
+  }
+
+  button[type="reset"], a.reset {
+    @extend .btn;
+    color: $light;
+    background-color: darken($bg-primary, 10%);
+    border: darken($bg-accent, 20%);
+  }
+}

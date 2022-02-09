@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Coderr installation wizard</title>
+    <base href="~/" />
+    <style>
+        html, body {
+            height: 100%;
+        }
+
+        .validation-summary-errors ul li {
+            color: red;
+        }
+
+        .wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120%;
+        }
+        .container {
+            width: 1072px;
+        }
+        .btn-outline-primary {
+            color: #000 !important;
+        }
+        .alert-dark {
+            background-color: #df8580;
+            color: #fff;
+        }
+
+        .text-muted {
+            color: #666;
+        }
+    </style>
+    <link rel="stylesheet" href="~/styles.css" />
+    @*<environment exclude="Development">
+            <link rel="stylesheet" href="~/dist/site.css" asp-append-version="true" />
+        </environment>*@
+</head>
+<body style="">
+<div class="wrapper">
+    <div class="panel fill">
+        @RenderBody()
+    </div>
+</div>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

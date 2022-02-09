@@ -40,5 +40,10 @@ namespace Coderr.Server.Api.Core.Applications.Commands
         ///     </para>
         /// </remarks>
         public TypeOfApplication? TypeOfApplication { get; set; }
+
+        /// <summary>
+        /// Number of days to keep new incidents.
+        /// </summary>
+        public int? RetentionDays { get; set; }
     }
 }

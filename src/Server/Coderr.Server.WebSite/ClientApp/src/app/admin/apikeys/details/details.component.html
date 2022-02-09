@@ -1,0 +1,22 @@
+<div class="panel">
+  <h2 class="text-shadow-1 text-white">{{key.title}}</h2>
+  <div class="fill">
+    <h4>Key</h4>
+    {{key.apiKey}}
+    <h4>Shared secret</h4>
+    {{key.sharedSecret}}
+    <h4>Allowed applications</h4>
+    <div *ngFor="let item of key.applications">
+      {{item.name}}
+    </div>
+    <div *ngIf="key.applications.length === 0">
+      <em>All applications are allowed when using this key.</em>
+    </div>
+
+
+  </div>
+  <div>
+    <a class="btn red" [routerLink]="['edit']" style="display: inline-flex">Edit</a>
+  </div>
+</div>
+

@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+[assembly:InternalsVisibleTo("Coderr.Server.ReportAnalyzer.Tests")]
 
 namespace Coderr.Server.ReportAnalyzer
 {

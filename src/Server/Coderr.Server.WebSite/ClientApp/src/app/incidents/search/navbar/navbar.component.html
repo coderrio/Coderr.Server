@@ -1,0 +1,31 @@
+<div class="submenu">
+  <div>
+    <span style="color:#999">Search</span>
+  </div>
+  <div class="flex-row">
+    <div class="state">
+      <input type="text" name="freeText" placeholder="Free text" />
+      <select name="environment">
+        <option *ngFor="let environment of environments"></option>
+      </select>
+    </div>
+    <div class="actions">
+      <a routerLinkActive="active" [routerLink]="['home']" [routerLinkActiveOptions]="{exact:true}"><i class="fa fa-home"></i></a>
+      <a routerLinkActive="active" [routerLink]="['origins']"><i class="fa fa-globe"></i></a>
+      <a routerLinkActive="active" [routerLink]="['users']"><i class="fa fa-comments"></i></a>
+      <a routerLinkActive="active" [routerLink]="['logs']"><i class="fa fa-tree"></i></a>
+      <a routerLinkActive="active" [routerLink]="['impact']"><i class="fa fa-thermometer-three-quarters"></i></a>
+    </div>
+  </div>
+</div>
+
+
+<modal id="closeIncidentModal" *ngIf="myIncidentId > 0">
+  <div class="panel">
+    <h3>Close error</h3>
+    <div class="fill">
+      <incident-close (closed)="closeCloseModal($event)" [incidentId]="myIncidentId"></incident-close>
+
+    </div>
+  </div>
+</modal>

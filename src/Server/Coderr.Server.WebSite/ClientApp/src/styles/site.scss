@@ -1,0 +1,256 @@
+@import "_partials/reset.scss";
+@import "_partials/coderr-variables.scss";
+@import "_partials/_mixins.scss";
+//@import '~toastr/toastr.scss';
+@import "_partials/radio.scss";
+@import "_partials/backgrounds.scss";
+@import "_partials/checkbox.scss";
+@import "_partials/forms.scss";
+@import "_partials/layout.scss";
+@import "_partials/buttons.scss";
+@import "_partials/topnav.scss";
+@import "_partials/image.scss";
+@import "_partials/typography.scss";
+@import "_partials/tables.scss";
+
+body {
+  background-color: $blue;
+}
+
+.main-view {
+  /**padding: 10px; Let all views control this **/
+}
+
+.starter {
+  margin: 10px;
+  padding: 0;
+
+  > .panel, > .panels {
+    margin: -10px !important;
+    padding: 0;
+  }
+}
+
+.p-10 {
+  padding: 10px;
+}
+
+.fb-300px {
+  flex-basis: 400px;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-grow-0 {
+  flex-grow: 0;
+}
+
+.panels {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+
+  .panel {
+    margin: 10px;
+    padding: 0;
+    flex: 1 0 auto;
+    flex-basis: 30%;
+    max-width: 50%;
+  }
+}
+
+.panel {
+  color: $panel-text;
+  flex: 1;
+  margin: 10px;
+  padding: 0;
+  border-radius: 3px;
+  flex-direction: column;
+  flex-basis: 50%;
+  min-width: 400px;
+  display: flex;
+
+  > * {
+    display: block;
+    box-sizing: border-box;
+  }
+
+  &.full {
+    flex: 1 1 100%
+  }
+
+  > h1, > h2, > h3 {
+    color: white;
+    @include text-shadow-1;
+  }
+
+  &.fill, .fill {
+    background-color: $panel-bg;
+    @include box-shadow-1;
+    border-radius: 3px;
+    flex: 1;
+    padding: 15px;
+    display: block;
+
+    h3 {
+      color: $dark;
+    }
+  }
+
+  > .table {
+    background-color: $panel-bg;
+    padding: 15px;
+  }
+
+  .panel-header {
+    font-size: $base-font-size * 1.5;
+    padding: 10px;
+    width: 100%;
+  }
+
+  .panel-body {
+    padding: 10px;
+    flex-grow: 1;
+    width: 100%;
+  }
+
+  .panel-footer {
+    padding: 10px;
+    width: 100%;
+  }
+}
+
+
+.col .panel {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.f-grow {
+  flex-grow: 1;
+}
+
+.facts {
+
+  th {
+    font-weight: 500;
+    text-align: right;
+    min-width: 150px;
+  }
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+
+  .content {
+    display: none;
+    position: absolute;
+    z-index: 2;
+    background-color: #fff;
+    padding: 10px;
+    border: 1px solid #333;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+
+    &.show {
+      display: block;
+    }
+  }
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.menu {
+  visibility: hidden;
+  position: fixed;
+  background-color: teal;
+  word-wrap: unset;
+  margin: 0;
+  transition: 0.5s;
+  opacity: 0;
+  padding: 10px;
+  border: red 1px dashed;
+
+  &.shown {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+h2.active {
+  border-bottom: orange 3px solid;
+  color: white;
+}
+
+
+/** Guide CSS */
+
+.dimScreen {
+  display: none;
+  position: fixed;
+  padding: 0;
+  margin: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 10;
+}
+
+#note {
+  display: none;
+  /*background-color: #FDFF47;*/
+  background: $blue-30;
+  color: #000;
+  position: absolute;
+  z-index: 11;
+  padding: 10px;
+  min-width: 250px;
+  box-shadow: rgba(255, 255, 255, 0.4) 0px 8px 24px;
+  border-radius: 5px;
+  border: 10px solid;
+  border-image-slice: 1;
+  border-width: 5px;
+  border-image-source: linear-gradient(to left, $blue, $blue-60);
+
+  > div {
+    margin-bottom: 20px;
+  }
+
+  button {
+    cursor: pointer;
+    font-size: 0.8em;
+    float: right;
+    background: $blue;
+    border-radius: 2px;
+    border: 5px solid;
+    border-image-slice: 1;
+    border-width: 2px;
+    border-image-source: linear-gradient(to left, $blue, $blue-60);
+  }
+
+  h3 {
+    margin-top: 5px;
+  }
+}
+
+.guide-highlight {
+  position: relative;
+  background-color: #fff !important;
+  z-index: 11;
+  box-shadow: rgba(255, 255, 255, 0.4) 0px 8px 24px;
+  border-radius: 2px;
+  padding: 4px;
+  color: $blue !important;
+
+  i {
+    background-color: #fff !important;
+    color: $blue !important;
+  }
+}

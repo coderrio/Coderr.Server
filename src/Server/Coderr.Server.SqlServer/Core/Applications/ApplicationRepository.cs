@@ -17,7 +17,8 @@ namespace Coderr.Server.SqlServer.Core.Applications
 
         public ApplicationRepository(IAdoNetUnitOfWork uow)
         {
-            _uow = uow ?? throw new ArgumentNullException(nameof(uow));
+            if (uow == null) throw new ArgumentNullException("uow");
+            _uow = uow;
         }
 
         public async Task CreateAsync(ApplicationTeamMember member)
@@ -31,11 +32,13 @@ namespace Coderr.Server.SqlServer.Core.Applications
             using (var cmd = (DbCommand)_uow.CreateCommand())
             {
                 cmd.CommandText =
-                    @"SELECT a.Id ApplicationId, a.Name ApplicationName, ApplicationMembers.Roles, a.NumberOfFtes NumberOfDevelopers
+                    @"SELECT a.Id ApplicationId, a.Name ApplicationName, ApplicationMembers.Roles, a.NumberOfFtes NumberOfDevelopers, ag.Id GroupId, ag.Name GroupName
                                         FROM Applications a
                                         JOIN ApplicationMembers ON (ApplicationMembers.ApplicationId = a.Id) 
+                                        JOIN ApplicationGroupMap agm ON (agm.ApplicationId = a.Id)
+                                        JOIN ApplicationGroups ag ON (ag.Id = agm.ApplicationGroupId)
                                         WHERE ApplicationMembers.AccountId = @userId
-                                        ORDER BY Name";
+                                        ORDER BY ag.Name, a.Name";
                 cmd.AddParameter("userId", accountId);
                 using (var reader = await cmd.ExecuteReaderAsync())
                 {
@@ -130,7 +133,7 @@ namespace Coderr.Server.SqlServer.Core.Applications
 
         public async Task CreateAsync(Application application)
         {
-            if (application == null) throw new ArgumentNullException("application");
+            if (application == null) throw new ArgumentNullException(nameof(application));
 
             using (var cmd = (DbCommand)_uow.CreateCommand())
             {
@@ -148,6 +151,8 @@ namespace Coderr.Server.SqlServer.Core.Applications
                 var item = (decimal)await cmd.ExecuteScalarAsync();
                 application.GetType().GetProperty("Id").SetValue(application, (int)item);
             }
+
+            await MapGroup(application);
         }
 
 
@@ -158,6 +163,7 @@ namespace Coderr.Server.SqlServer.Core.Applications
             using (var cmd = _uow.CreateDbCommand())
             {
                 cmd.CommandText =
+                    "DELETE FROM Incidents WHERE ApplicationId=@id;\r\n" +
                     "DELETE FROM Applications WHERE Id = @id";
 
                 //TODO: Delete reports??
@@ -185,6 +191,12 @@ namespace Coderr.Server.SqlServer.Core.Applications
             await _uow.UpdateAsync(entity);
         }
 
+        public Task<int> GetFirstGroupIdAsync()
+        {
+            var id = (int)_uow.ExecuteScalar("SELECT TOP(1) Id FROM ApplicationGroups");
+            return Task.FromResult(id);
+        }
+
         public async Task RemoveTeamMemberAsync(int applicationId, int userId)
         {
             using (var cmd = (DbCommand)_uow.CreateCommand())
@@ -200,6 +212,17 @@ namespace Coderr.Server.SqlServer.Core.Applications
         {
             if (application == null) throw new ArgumentNullException("application");
             await DeleteAsync(application.Id);
+        }
+
+        private async Task MapGroup(Application application)
+        {
+            if (application == null) throw new ArgumentNullException(nameof(application));
+            if (application.GroupId == 0) application.GroupId = await GetFirstGroupIdAsync();
+
+            await _uow.InsertAsync(new ApplicationGroupMap
+            {
+                ApplicationGroupId = application.GroupId, ApplicationId = application.Id
+            });
         }
     }
 }

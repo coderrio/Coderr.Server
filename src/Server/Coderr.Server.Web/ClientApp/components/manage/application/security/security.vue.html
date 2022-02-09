@@ -43,7 +43,7 @@ admin.name
                 <div class="card">
                     <div class="card-header">Pending invites</div>
                     <div class="card-body">
-                        <table class="table table-borderless" v-if="invites.length > 0">
+                        <table class="table" v-show="invites.length > 0">
                             <tr v-for="member in invites">
                                 <td>
                                     {{member.EmailAddress}}

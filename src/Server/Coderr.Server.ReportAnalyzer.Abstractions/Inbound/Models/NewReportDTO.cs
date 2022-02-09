@@ -3,7 +3,7 @@
 namespace Coderr.Server.ReportAnalyzer.Abstractions.Inbound.Models
 {
     /// <summary>
-    ///     Report as uploaded by the client API.
+    ///     Report as uploaded by the client API (should always match the client library contracts, but with with own additions like RemoteIp).
     /// </summary>
     public class NewReportDTO
     {
@@ -22,6 +22,11 @@ namespace Coderr.Server.ReportAnalyzer.Abstractions.Inbound.Models
         ///     Exception which was caught.
         /// </summary>
         public NewReportException Exception { get; set; }
+
+        /// <summary>
+        /// The 100 last log entries before the exception was detected (can be null).
+        /// </summary>
+        public NewReportLogEntry[] LogEntries { get; set; }
 
         /// <summary>
         /// "Dev", "Production" etc.

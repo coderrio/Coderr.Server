@@ -180,7 +180,7 @@ namespace Coderr.Server.Domain.Core.Account
             }
             return false;
         }
-
+        
         /// <summary>
         /// Mark user as logged in.
         /// </summary>

@@ -1,0 +1,38 @@
+<div class="submenu">
+  <div class="flex-row">
+    <div class="state">
+      <dl>
+        <dt>Number of open errors</dt>
+        <dd>
+          {{application.totalIncidentCount}}
+        </dd>
+        
+        <dt>Newest error</dt>
+        <dd>{{application.latestIncidentDate|ago}}</dd>
+
+        <dt *ngIf="application.versions.length > 0">Reported versions</dt>
+        <dd *ngIf="application.versions.length > 0">{{application.versions.slice(0, 3).join(', ')}}</dd>
+      </dl>
+
+
+    </div>
+    <div class="actions">
+      <a routerLinkActive="active" [routerLink]="['home']" [routerLinkActiveOptions]="{exact:true}"><i class="fa fa-home"></i></a>
+      <a routerLinkActive="active" [routerLink]="['errors']"><i class="fa fa-list"></i></a>
+      <a routerLinkActive="active" [routerLink]="['insights']"><i class="fa fa-thermometer-three-quarters"></i></a>
+      <a routerLinkActive="active" [routerLink]="['admin']" id="appSettingsGuide"><i class="fa fa-cog"></i></a>
+    </div>
+  </div>
+</div>
+
+<guide name="appSettingsGuide">
+  <h1>Application configuration</h1>
+  <div>
+    <p>
+      To install the Coderr client in your application, click on this icon and follow the configuration instructions.
+    </p>
+    <p>
+      Under settings, you can also activate the automated error prioritization with the feature "Partitions".
+    </p>
+  </div>
+</guide>

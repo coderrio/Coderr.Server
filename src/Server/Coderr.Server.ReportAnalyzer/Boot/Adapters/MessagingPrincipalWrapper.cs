@@ -1,5 +1,9 @@
-﻿using System.Security.Claims;
+﻿using System;
+using System.Security.Claims;
 using Coderr.Server.Abstractions.Security;
+using DotNetCqs.Logging;
+using log4net;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Coderr.Server.ReportAnalyzer.Boot.Adapters
 {
@@ -8,7 +12,14 @@ namespace Coderr.Server.ReportAnalyzer.Boot.Adapters
     /// </summary>
     internal class MessagingPrincipalWrapper : IPrincipalAccessor
     {
+        private ILog _logger = LogManager.GetLogger(typeof(MessagingPrincipalWrapper));
+
+        public MessagingPrincipalWrapper()
+        {
+        }
+
         public ClaimsPrincipal Principal { get; set; }
+
         public ClaimsPrincipal FindPrincipal()
         {
             return Principal;

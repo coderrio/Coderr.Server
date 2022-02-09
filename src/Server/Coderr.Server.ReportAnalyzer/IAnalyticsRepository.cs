@@ -15,7 +15,7 @@ namespace Coderr.Server.ReportAnalyzer
         /// </summary>
         /// <param name="incidentId">incident that the report is for</param>
         /// <param name="environmentName">Name as specified by the developer</param>
-        void SaveEnvironmentName(int incidentId, string environmentName);
+        void SaveEnvironmentName(int incidentId, int applicationId, string environmentName);
 
         /// <summary>
         ///     Create a new incident

@@ -7,12 +7,11 @@ using Newtonsoft.Json.Converters;
 namespace Coderr.Server.Infrastructure.Messaging
 {
     /// <summary>
-    ///     This serializer is used by the client/side and MAY NOT include type definitions.
+    ///     This serializer is used for queueing and may not expose internal type definitions.
     /// </summary>
     public class MessagingSerializer : IMessageSerializer<string>
     {
         private readonly Type _messageEnvelope;
-        ILog _logger = LogManager.GetLogger(typeof(MessagingSerializer));
 
         private readonly JsonSerializerSettings _settings = new JsonSerializerSettings
         {
@@ -23,19 +22,21 @@ namespace Coderr.Server.Infrastructure.Messaging
             ContractResolver = new IncludeNonPublicMembersContractResolver()
         };
 
+        private readonly ILog _logger = LogManager.GetLogger(typeof(MessagingSerializer));
+
 
         public MessagingSerializer()
         {
             _settings.Converters.Add(new StringEnumConverter());
         }
 
-        public bool ThrowExceptionOnDeserialziationFailure { get; set; } = true;
-
         public MessagingSerializer(Type messageEnvelope)
         {
             _messageEnvelope = messageEnvelope;
             _settings.Converters.Add(new StringEnumConverter());
         }
+
+        public bool ThrowExceptionOnDeserialziationFailure { get; set; } = true;
 
         object IMessageSerializer<string>.Deserialize(string contentType, string serializedDto)
         {
@@ -59,7 +60,7 @@ namespace Coderr.Server.Infrastructure.Messaging
             }
             catch (JsonException ex)
             {
-                if(ThrowExceptionOnDeserialziationFailure)
+                if (ThrowExceptionOnDeserialziationFailure)
                     throw new SerializationException($"Failed to deserialize \'{contentType}\'.", serializedDto, ex);
                 _logger.Error($"Failed to deserialize \'{contentType}\'.");
                 return null;

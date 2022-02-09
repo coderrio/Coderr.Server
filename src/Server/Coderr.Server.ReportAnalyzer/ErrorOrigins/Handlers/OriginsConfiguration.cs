@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Coderr.Server.Abstractions;
 using Coderr.Server.Abstractions.Config;
 
 namespace Coderr.Server.ReportAnalyzer.ErrorOrigins.Handlers
@@ -20,6 +21,12 @@ namespace Coderr.Server.ReportAnalyzer.ErrorOrigins.Handlers
         /// </summary>
         public string MapQuestApiKey { get; set; }
 
+        public bool IsConfigured =>
+            ServerConfig.Instance.ServerType != ServerType.Community
+            || !string.IsNullOrEmpty(ApiKey)
+            || !string.IsNullOrEmpty(LocationIqApiKey)
+            || !string.IsNullOrEmpty(MapQuestApiKey);
+         
         string IConfigurationSection.SectionName { get; } = "Origins";
 
         IDictionary<string, string> IConfigurationSection.ToDictionary()

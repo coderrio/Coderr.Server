@@ -68,7 +68,7 @@ namespace Coderr.Server.App.Modules.MonthlyStats
                         {
                             ApplicationId = reader.GetInt32(0),
                             Count = reader.GetInt32(1),
-                            
+
                         };
                         results.Add(item);
                     }
@@ -251,7 +251,7 @@ namespace Coderr.Server.App.Modules.MonthlyStats
             var json = JsonConvert.SerializeObject(dto);
             var client = new HttpClient();
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            await client.PostAsync("https://coderr.io/stats/usage", content);
+            //await client.PostAsync("https://coderr.io/stats/usage", content);
             return true;
         }
 

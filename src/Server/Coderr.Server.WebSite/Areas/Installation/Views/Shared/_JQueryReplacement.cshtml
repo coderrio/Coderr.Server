@@ -1,0 +1,79 @@
+﻿<script>
+    function $(selectorOrElem) {
+        return new SimpleElem(selectorOrElem);
+    }
+
+    function elemExists(selectorOrElem) {
+        var elem = selectorOrElem;
+        if (typeof selectorOrElem === "string") {
+            elem = document.querySelector(selectorOrElem);
+        }
+        return elem;
+    }
+
+    function SimpleElem(selectorOrElem) {
+        var elem = selectorOrElem;
+        if (typeof selectorOrElem === "string") {
+            elem = document.querySelector(selectorOrElem);
+        }
+        if (!elem)
+            throw new Error("Failed to find '" + selectorOrElem + "'.");
+
+        this.elem = elem;
+    }
+
+    SimpleElem.prototype.addClass = function (className) {
+        var elem = this.elem;
+        var arr = elem.className.split(" ");
+        if (arr.indexOf(className) === -1) {
+            elem.className += " " + className;
+        }
+        return this;
+    }
+
+    SimpleElem.prototype.removeClass = function (className) {
+        var r2 = new RegExp("\\b" + className + "\\b", "g");
+        this.elem.className = this.elem.className.replace(r2, "");
+        return this;
+    }
+
+    SimpleElem.prototype.css = function (attribute, value) {
+        this.elem.style[attribute] = value;
+        return this;
+    }
+
+    SimpleElem.prototype.val = function (value) {
+        if (typeof value === "undefined") {
+            return this.elem.value;
+        }
+
+        this.elem.value = value;
+        return this;
+    }
+
+    SimpleElem.prototype.click = function (callback) {
+        this.elem.addEventListener('click', callback);
+    }
+
+
+    SimpleElem.prototype.show = function () {
+        this.css('display', '');
+    }
+
+
+    SimpleElem.prototype.hide = function () {
+        this.css('display', 'none');
+    }
+
+    SimpleElem.prototype.html = function (html) {
+        if (typeof html === "undefined") {
+            return this.elem.innerHTML;
+        }
+        this.elem.innerHTML = html;
+        return this;
+    }
+
+    SimpleElem.prototype.keyup = function (callback) {
+        this.elem.addEventListener('keyup', callback);
+    }
+</script>

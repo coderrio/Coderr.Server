@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.IO;
 using System.Reflection;
+using Coderr.Server.Abstractions;
 using Coderr.Server.SqlServer.Core.Accounts;
+using Coderr.Server.SqlServer.Migrations;
 using Coderr.Server.SqlServer.Tests.Helpers;
 using Coderr.Server.SqlServer.Tests.Models;
 using Griffin.Data;
@@ -23,14 +26,20 @@ namespace Coderr.Server.SqlServer.Tests
     {
         protected static DatabaseManager _databaseManager;
         private static readonly object SyncLock = new object();
-        private static bool Inited;
+        private static bool _inited;
         public static Action<IDbConnection> SchemaUpdater;
+
+        protected static List<(string name, string scriptNamespace)> MigrationSources =
+            new List<(string name, string scriptNamespace)>();
+
+        public static AssemblyScanningMappingProvider MappingProvider =
+            (AssemblyScanningMappingProvider)EntityMappingProvider.Provider;
+
         private readonly TestDataManager _testDataManager;
 
         static IntegrationTest()
         {
             var path2 = AppDomain.CurrentDomain.BaseDirectory;
-
             var logRepository = LogManager.GetRepository(Assembly.GetExecutingAssembly());
             XmlConfigurator.ConfigureAndWatch(logRepository, new FileInfo(Path.Combine(path2, "log4net.config")));
             var logger = LogManager.GetLogger(typeof(IntegrationTest));
@@ -45,25 +54,22 @@ namespace Coderr.Server.SqlServer.Tests
                 _databaseManager = null;
             };
 
-            var mapper = EntityMappingProvider.Provider as AssemblyScanningMappingProvider;
-            if (mapper == null)
-            {
-                mapper = new AssemblyScanningMappingProvider();
-                EntityMappingProvider.Provider = mapper;
-            }
-
-            mapper.Scan(typeof(AccountRepository).Assembly);
+            EntityMappingProvider.Provider = new AssemblyScanningMappingProvider();
+            MappingProvider.Scan(typeof(AccountRepository).Assembly);
         }
-
 
         public IntegrationTest(ITestOutputHelper output)
         {
             lock (SyncLock)
             {
-                if (!Inited)
+                if (!_inited)
                 {
-                    _databaseManager = new DatabaseManager();
-                    _databaseManager.CreateEmptyDatabase();
+                    foreach (var source in MigrationSources)
+                        SqlServerTools.AddMigrationRunner(new MigrationRunner(OpenConnection, source.name,
+                            source.scriptNamespace));
+
+                    _databaseManager = new DatabaseManager("CoderrTest");
+                    _databaseManager.CreateDatabase();
                     _databaseManager.InitSchema();
                     if (SchemaUpdater != null)
                         using (var connection = _databaseManager.OpenConnection())
@@ -71,20 +77,13 @@ namespace Coderr.Server.SqlServer.Tests
                             SchemaUpdater(connection);
                         }
 
-                    DeleteOldTestDatabases();
-
-                    Inited = true;
+                    _inited = true;
                 }
             }
 
             _testDataManager = new TestDataManager(_databaseManager.OpenConnection)
             {
-                TestUser = new TestUser
-                {
-                    Email = "test@somewhere.com",
-                    Password = "123456",
-                    Username = "admin"
-                }
+                TestUser = new TestUser {Email = "test@somewhere.com", Password = "123456", Username = "admin"}
             };
         }
 
@@ -94,6 +93,7 @@ namespace Coderr.Server.SqlServer.Tests
         public void Dispose()
         {
             Dispose(true);
+            _databaseManager.Dispose();
         }
 
 
@@ -132,45 +132,5 @@ namespace Coderr.Server.SqlServer.Tests
             _testDataManager.ResetDatabase(baseUrl);
         }
 
-        private static void DeleteOldTestDatabases()
-        {
-            var todayDbStr = "coderrTest" + DateTime.Today.ToString("MMdd");
-            using (var con = _databaseManager.OpenConnection())
-            {
-                con.ChangeDatabase("master");
-                List<string> databasesToDelete = new List<string>();
-                using (var cmd = con.CreateCommand())
-                {
-                    cmd.CommandText = "SELECT name FROM sys.databases where name like 'coderr%'";
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            var dbName = reader.GetString(0);
-                            if (!dbName.StartsWith(todayDbStr))
-                                databasesToDelete.Add(dbName);
-                        }
-                    }
-                }
-
-                foreach (var dbName in databasesToDelete)
-                {
-                    try
-                    {
-                        using (var cmd = con.CreateCommand())
-                        {
-                            cmd.CommandText = "DROP DATABASE " + dbName;
-                            cmd.CommandTimeout = 10;
-                            cmd.ExecuteNonQuery();
-                        }
-                    }
-                    catch (DataException exception)
-                    {
-                        Console.WriteLine("Failed to delete " + dbName + "\r\nException: " + exception);
-                    }
-                }
-            }
-            Console.WriteLine("DB cleanup done.");
-        }
     }
 }

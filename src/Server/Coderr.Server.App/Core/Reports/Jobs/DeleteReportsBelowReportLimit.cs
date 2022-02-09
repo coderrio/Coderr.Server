@@ -1,4 +1,5 @@
 using System.Data;
+using Coderr.Server.Abstractions;
 using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Abstractions.Config;
 using Coderr.Server.Abstractions.Reports;
@@ -41,6 +42,9 @@ namespace Coderr.Server.App.Core.Reports.Jobs
         /// <inheritdoc />
         public void Execute()
         {
+            if (HostConfig.Instance.IsDemo)
+                return;
+
             using (var cmd = _connection.CreateCommand())
             {
                 var sql = $@"CREATE TABLE #Incidents (Id int NOT NULL PRIMARY KEY, NumberOfItems int)
@@ -93,7 +97,7 @@ namespace Coderr.Server.App.Core.Reports.Jobs
                             select @counter;";
 
                 cmd.CommandText = sql;
-                cmd.CommandTimeout = 90;
+                cmd.CommandTimeout = 10;
                 cmd.AddParameter("max", MaxReportsPerIncident);
                 var rows = (int)cmd.ExecuteScalar();
                 if (rows > 0)

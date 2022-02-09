@@ -15,7 +15,6 @@ namespace Coderr.Server.ReportAnalyzer.Boot.Starters
         public void Configure(ConfigurationContext context)
         {
             context.Services.RegisterContainerServices(Assembly.GetExecutingAssembly());
-            context.Services.RegisterContainerServices(typeof(ProcessReportHandler).Assembly);
 
             //workaround since SQL server already references us
             var assembly = AppDomain.CurrentDomain.GetAssemblies()

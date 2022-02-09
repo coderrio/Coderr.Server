@@ -1,0 +1,149 @@
+<div class="panel">
+  <h2>Azure DevOps connection</h2>
+  <form class="form" (submit)="save();false" ngNativeValidate>
+    <div class="fill">
+      <div class="row">
+        <div class="col">
+          <h3>Connection information</h3>
+          <div *ngIf="hangOn" class="alert alert-blue">Attempting to connect, hang on...</div>
+          <div *ngIf="showConnectError" class="alert-red alert">Failed to connect to Azure Devops using the specified settings.</div>
+          <p>Information required so that Coderr can prioritize errors based on your own criteria.</p>
+          <div class="form-group">
+            <label>Azure DevOps API url</label>
+            <input type="text" [(ngModel)]="url" name="url" autofocus="autofocus" required="" value="https://dev.azure.com/your_organization_name" />
+            <em class="small muted">Typically "https://dev.azure.com/yourOrganizationName/"</em>
+          </div>
+
+          <div class="form-group">
+            <label>Personal access token</label>
+            <input type="text" class="form-control" placeholder="" [(ngModel)]="personalAccessToken" name="personalAccessToken" required="" />
+            <span class="small muted">Required to be able to connect. Work item access is enough when creating it in Azure DevOps.</span>
+          </div>
+
+          <div class="form-group" *ngIf="!isConnected">
+            <button class="btn primary" (click)="tryConnect();false" type="button">Try connect</button>
+            <div class="alert alert-blue">Configure settings above and click "Try connect"</div>
+          </div>
+
+        </div>
+
+        <div class="col">
+          <h3>Project information</h3>
+          <p>Select which project and area that new issues should be added into.</p>
+
+          <div class="form-group">
+            <label>Project</label>
+            <select class="form-control" [(ngModel)]="project" required="required" (change)="onProjectChanged()">
+              <option *ngFor="let option of projects" [value]="option">
+                {{ option.text }}
+              </option>
+            </select>
+            <em class="small muted">Project that bugs should be added to.</em>
+          </div>
+
+
+          <div class="form-group">
+            <label>Area path</label>
+            <select class="form-control" [(ngModel)]="project" required="required">
+              <option *ngFor="let option of areaPath" [value]="option">
+                {{ option.text }}
+              </option>
+            </select>
+            <span class="small muted">Area that new bugs should be placed in</span>
+          </div>
+
+          <div class="form-group">
+            <label>Critical</label>
+            <input type="number" min="0" placeholder="Critical escalation" [(ngModel)]="criticalThreshold" name="criticalThreshold" />
+            <span class="small muted">How many items must be affected for an error to be deemed as critical/severe?</span>
+          </div>
+
+        </div>
+
+        <div class="col">
+          <fieldset v-bind:disabled="!isConnected">
+            <p>These fields are used when synchronizing errors between Coderr and Azure DevOps. Make sure that they are correct, or the two-way synchronization wont work.</p>
+
+            <div class="form-group">
+              <label>
+                Work item type
+              </label>
+              <select class="form-control" [(ngModel)]="workItemTypeName" @change="onWorkItemTypeChanged()">
+                <option *ngFor="let name of workItemTypes" [value]="name">
+                  {{ name }}
+                </option>
+              </select>
+              <em class="small">Which type of work item should be created for incidents?</em>
+            </div>
+            <fieldset v-bind:disabled="!isWorkItemTypeSelected">
+              <div class="form-group">
+                <label>
+                  Assigned an incident
+                </label>
+                <select class="form-control" [(ngModel)]="assignedStateName">
+                  <option *ngFor="let name of stateTypes" [value]="name">
+                    {{ name }}
+                  </option>
+                </select>
+                <em class="small">Value used when assigning a work item.</em>
+              </div>
+              <div class="form-group">
+                <label>
+                  Solving an incident
+                </label>
+                <select class="form-control" [(ngModel)]="closedStateName">
+                  <option *ngFor="let name of stateTypes" [value]="name">
+                    {{ name }}
+                  </option>
+                </select>
+                <em class="small">Value used when solving a work item.</em>
+              </div>
+              <div class="form-group">
+                <label>
+                  Closing an incident
+                </label>
+                <select class="form-control" [(ngModel)]="solvedStateName">
+                  <option *ngFor="let name of stateTypes" [value]="name">
+                    {{ name }}
+                  </option>
+                </select>
+                <em class="small">State when a work item is closed directly (can be same as when solving in some process templates).</em>
+              </div>
+            </fieldset>
+          </fieldset>
+
+
+        </div>
+
+        <div class="col">
+          <fieldset (disabled)="!isConnected">
+            <p>Should work items be created when Coderr escalates errors?</p>
+            <div class="form-group">
+              <input type="checkbox" [(ngModel)]="autoAddImportant" id="autoAddImportant" />
+              <label for="autoAddImportant">
+                Auto-add errors escalated to "important".
+              </label>
+              <br />
+              <em class="small">When an error is escalated, create a bug in the backlog.</em>
+            </div>
+            <div class="form-group">
+              <input type="checkbox" [(ngModel)]="autoAddCritical" id="autoAddCritical" />
+              <label for="autoAddCritical">
+                Auto-add errors escalated to "critical".
+              </label>
+              <br />
+              <em class="small">When an error is escalated, create a bug in the backlog.</em>
+            </div>
+          </fieldset>
+        </div>
+      </div>
+
+    </div>
+    <div class="">
+      <button class="btn light" type="submit">Save</button>
+      <button class="btn dark" (click)="cancel();false">Cancel</button>
+      <button class="btn red" (click)="removeIntegration();false" v-show="isSaved">Remove integration</button>
+
+    </div>
+  </form>
+</div>

@@ -3,14 +3,15 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Coderr.Server.SqlServer</RootNamespace>
     <AssemblyName>Coderr.Server.SqlServer</AssemblyName>
+    <Configurations>Debug;Release;Premise</Configurations>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="DnsClient" Version="1.2.0" />
-    <PackageReference Include="DotNetCqs" Version="2.0.15" />
+    <PackageReference Include="DnsClient" Version="1.6.0" />
+    <PackageReference Include="DotNetCqs" Version="2.1.1" />
     <PackageReference Include="Griffin.Framework" Version="2.1.1" />
-    <PackageReference Include="log4net" Version="2.0.8" />
+    <PackageReference Include="log4net" Version="2.0.14" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.7.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,10 +29,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Schema\Coderr.v24.sql" />
-    <None Remove="Schema\Coderr.v25.sql" />
-    <None Remove="Schema\Coderr.v26.sql" />
-    <None Remove="Schema\Coderr.v27.sql" />
+    <None Remove="Schema\Coderr.v31.sql" />
+    <None Remove="Schema\Coderr.v32.sql" />
+    <None Remove="Schema\Coderr.v33.sql" />
+    <None Remove="Schema\Coderr.v34.sql" />
+    <None Remove="Schema\Coderr.v35.sql" />
   </ItemGroup>
-
 </Project>

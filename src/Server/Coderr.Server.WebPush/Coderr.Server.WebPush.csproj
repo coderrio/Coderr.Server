@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Portable.BouncyCastle" Version="1.8.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Coderr.Server.Abstractions\Coderr.Server.Abstractions.csproj" />
+    <ProjectReference Include="..\Coderr.Server.Infrastructure\Coderr.Server.Infrastructure.csproj" />
+    <ProjectReference Include="..\Coderr.Server.ReportAnalyzer.Abstractions\Coderr.Server.ReportAnalyzer.Abstractions.csproj" />
+    <ProjectReference Include="..\Coderr.Server.ReportAnalyzer\Coderr.Server.ReportAnalyzer.csproj" />
+  </ItemGroup>
+
+</Project>

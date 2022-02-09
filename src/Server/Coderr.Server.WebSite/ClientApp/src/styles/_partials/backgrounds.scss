@@ -1,0 +1,25 @@
+@import "../_partials/coderr-variables.scss";
+
+.bg {
+  &.white {
+    background-color: white;
+  }
+  &.dark{
+      background-color: $dark;
+  }
+}
+
+.alert {
+  padding: 10px;
+
+  &.warning {
+    background-color: $red;
+    border: 1px solid darken($red, 10);
+    color: $light;
+  }
+
+  &.success {
+    background-color: $blue-30;
+    border: 1px solid darken($blue-30, 10);
+  }
+}

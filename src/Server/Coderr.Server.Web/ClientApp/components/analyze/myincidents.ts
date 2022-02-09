@@ -1,4 +1,3 @@
-import * as MenuApi from "@/services/menu/MenuApi";
 import { AppRoot } from "@/services/AppRoot";
 import { AppEvents, ApplicationChanged } from "@/services/applications/ApplicationService";
 import { PubSubService, MessageContext } from "@/services/PubSub";
@@ -196,6 +195,7 @@ export class MyIncidents {
         if (mine.length === 0) {
             return;
         }
+
         mine.forEach(dto => {
             if (!this.allMyIncidents$.find(item => item.incidentId === dto.Id)) {
                 var item = this.createItem2(dto);

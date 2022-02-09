@@ -31,6 +31,7 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer
         public AnalyticsRepository(IAdoNetUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _logger.Debug("ReposUOW " + _unitOfWork.GetHashCode());
         }
 
         public bool ExistsByClientId(string clientReportId)
@@ -103,7 +104,7 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer
             //_unitOfWork.Insert(incident);
         }
 
-        public void SaveEnvironmentName(int incidentId, string environmentName)
+        public void SaveEnvironmentName(int incidentId, int applicationId, string environmentName)
         {
             using (var cmd = _unitOfWork.CreateCommand())
             {
@@ -116,6 +117,7 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer
                                     begin
                                         insert into Environments(Name) VALUES(@name);
                                         set @environmentId = scope_identity();
+                                        insert into ApplicationEnvironments(EnvironmentId, ApplicationId, DeleteIncidents) VALUES(@environmentId, @applicationId, 0);
                                         insert into IncidentEnvironments (IncidentId, EnvironmentId) VALUES(@incidentId, @environmentId);
                                     end
                                     else
@@ -124,11 +126,16 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer
                                         SELECT @incidentId, @environmentId
                                         WHERE NOT EXISTS (SELECT IncidentId, EnvironmentId FROM IncidentEnvironments
                                                          WHERE IncidentId=@incidentId AND EnvironmentId=@environmentId)
-                                    end;";
+
+                                        INSERT INTO ApplicationEnvironments (EnvironmentId, ApplicationId, DeleteIncidents)
+                                        SELECT @environmentId, @applicationId, 0
+                                        WHERE NOT EXISTS (SELECT ApplicationId, EnvironmentId FROM ApplicationEnvironments
+                                                         WHERE ApplicationId=@applicationId AND EnvironmentId=@environmentId)
+                                    end";
                 cmd.AddParameter("incidentId", incidentId);
                 cmd.AddParameter("name", environmentName);
+                cmd.AddParameter("applicationId", applicationId);
                 var rows = cmd.ExecuteNonQuery();
-                _logger.Debug($"saved environment {environmentName} for incident {incidentId}, affected: {rows}");
             }
         }
 
@@ -146,7 +153,7 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer
                 var to = DateTime.UtcNow;
 
                 cmd.CommandText =
-                    "SELECT count(*) FROM IncidentReports WHERE ReceivedAtUtc >= @from ANd ReceivedAtUtc <= @to";
+                    "SELECT count(*) FROM IncidentReports WITH (READUNCOMMITTED) WHERE ReceivedAtUtc >= @from ANd ReceivedAtUtc <= @to";
                 cmd.AddParameter("from", from);
                 cmd.AddParameter("to", to);
                 return (int)cmd.ExecuteScalar();

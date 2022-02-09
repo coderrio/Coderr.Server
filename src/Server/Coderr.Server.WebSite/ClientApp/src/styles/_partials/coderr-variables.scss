@@ -1,0 +1,51 @@
+$gray-100: #f4f4f4;
+$gray-200: #ededed;
+$gray-300: #eee;
+$gray-400: #dddddd;
+$gray-500: #706f6f;
+$gray-600: #3c3c3b;
+$gray-700: #393938;
+$gray-800: #2e2d2c;
+$gray-900: #141414;
+
+
+$blue: #59c1d5;
+$blue-60: #abdbe7;
+$blue-30: #d8eef4;
+
+$red: #f18c65;
+$red-80: #f3a383;
+$red-60: #fac981;
+$red-30: #feede5;
+
+$base-font-size: 16px;
+
+// Theme light
+
+$panel-bg: #f9f9f9;
+$panel-text: $gray-900;
+
+
+$text-primary: #fff;
+$text-accent-1: $blue;
+$text-accent-2: $red;
+
+$body-background: $blue;
+
+$bg-primary: $blue;
+$bg-secondary: #fff;
+$bg-accent: $red;
+
+$input-bg: $blue-60;
+$input-border-color: darken($blue-60, 50%);
+
+$nav-bg: $gray-900;
+$nav-text: $gray-400;
+$nav-sub-bg: $gray-800;
+$nav-sub-tab: darken($blue, 30%);
+
+
+$light: $gray-200;
+$dark: $gray-700;
+
+$font-family-sans-serif: "SofiaProRegular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;

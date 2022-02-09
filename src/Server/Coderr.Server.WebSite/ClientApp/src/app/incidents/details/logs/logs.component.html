@@ -1,0 +1,39 @@
+<div *ngIf="allEntries.length == 0" class="row">
+  <div class="col">
+    <h3>
+      Log entries
+    </h3>
+    <div class="fill">
+      <strong>No entries has been attached.</strong>
+      <p>Coderr will automatically attached the 100 most recent log entries (before the exception occurred) if you are using one of our log library integrations.</p>
+    </div>
+  </div>
+</div>
+<div *ngIf="allEntries.length > 0" class="row fill">
+  <div class="col">
+    <h3>Log entries</h3>
+    <div class="mt-4 mb-4">
+      <input type="text" placeholder="search.." [(ngModel)]="filterText" (keyup)="filterEntries()"/>
+    </div>
+    <div class="fill">
+      <table class="bg white table border-dark w-100">
+        <thead class="">
+        <tr>
+          <th style="width: 170px" class="text-left">When</th>
+          <th class="text-left">Entry</th>
+        </tr>
+        </thead>
+        <tbody *ngFor="let entry of entries">
+        <tr [class]="'log-' + entry.logLevel">
+          <td style="vertical-align: top">{{entry.timeStampUtc|isoDate}}</td>
+          <td>
+            <div [innerHTML]="entry.message"></div>
+            <div *ngIf="entry.exception" [innerHTML]="entry.exception" class="exception">
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

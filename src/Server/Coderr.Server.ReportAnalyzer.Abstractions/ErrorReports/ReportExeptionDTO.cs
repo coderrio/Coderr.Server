@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Coderr.Server.ReportAnalyzer.Abstractions.ErrorReports
 {
@@ -12,7 +13,7 @@ namespace Coderr.Server.ReportAnalyzer.Abstractions.ErrorReports
         /// </summary>
         public ReportExeptionDTO()
         {
-            Properties = new Dictionary<string, string>();
+            Properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         }
 
         /// <summary>

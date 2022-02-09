@@ -3,12 +3,16 @@
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <RootNamespace>Coderr.Server.Infrastructure</RootNamespace>
     <AssemblyName>Coderr.Server.Infrastructure</AssemblyName>
+    <Configurations>Debug;Release;Premise</Configurations>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="DotNetCqs" Version="2.0.15" />
+    <PackageReference Include="Coderr.Client" Version="2.0.5" />
+    <PackageReference Include="DotNetCqs" Version="2.1.1" />
+    <PackageReference Include="DotNetCqs.Queues.AdoNet" Version="1.0.11" />
     <PackageReference Include="Griffin.Framework" Version="2.1.1" />
-    <PackageReference Include="log4net" Version="2.0.8" />
+    <PackageReference Include="log4net" Version="2.0.14" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="System.Memory" Version="4.5.4" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Coderr.Server.Api\Coderr.Server.Api.csproj" />
@@ -20,7 +24,7 @@
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
-      <Version>2.2.0</Version>
+      <Version>3.1.22</Version>
     </PackageReference>
   </ItemGroup>
 </Project>

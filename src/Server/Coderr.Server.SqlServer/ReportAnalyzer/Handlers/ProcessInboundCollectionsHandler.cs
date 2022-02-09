@@ -3,6 +3,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Coderr.Server.Abstractions;
 using Coderr.Server.Domain.Core.ErrorReports;
 using Coderr.Server.ReportAnalyzer;
 using Coderr.Server.ReportAnalyzer.Abstractions.Incidents;
@@ -31,7 +32,7 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer.Handlers
         public ProcessInboundContextCollectionsHandler(IAdoNetUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            var db = (AnalysisUnitOfWork) unitOfWork;
+            var db = (IGotTransaction) unitOfWork;
 
             // Use CoderrDbTransaction
             SqlTransaction transaction;

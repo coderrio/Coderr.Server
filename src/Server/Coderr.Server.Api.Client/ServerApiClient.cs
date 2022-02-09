@@ -22,13 +22,13 @@ namespace Coderr.Server.Api.Client
             Formatting = Formatting.Indented,
             NullValueHandling = NullValueHandling.Ignore,
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-            ContractResolver = new IncludeNonPublicMembersContractResolver()
+            ContractResolver = new IncludeNonPublicAndUseCamelCaseContractResolver()
         };
 
         private string _apiKey;
         private string _sharedSecret;
         private Uri _uri;
-
+        
 
         /// <summary>
         /// Send a query to the server.

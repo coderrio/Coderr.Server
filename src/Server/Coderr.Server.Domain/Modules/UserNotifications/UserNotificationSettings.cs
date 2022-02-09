@@ -55,6 +55,16 @@ namespace Coderr.Server.Domain.Modules.UserNotifications
         public NotificationState NewIncident { get; set; }
 
         /// <summary>
+        ///     How to notify when an incident is updated to critical.
+        /// </summary>
+        public NotificationState CriticalIncident { get; set; }
+
+        /// <summary>
+        ///     How to notify when an incident is updated to important.
+        /// </summary>
+        public NotificationState ImportantIncident { get; set; }
+
+        /// <summary>
         ///     Notify when we received a report for an incident that has been closed
         /// </summary>
         public NotificationState ReopenedIncident { get; set; }

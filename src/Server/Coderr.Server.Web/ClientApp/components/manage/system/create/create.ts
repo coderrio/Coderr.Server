@@ -1,32 +1,40 @@
 import { AppRoot } from '../../../../services/AppRoot';
-import { ApplicationToCreate } from "../../../../services/applications/ApplicationService";
+import { ApplicationGroup } from "@/services/applications/ApplicationService";
 import { GetApplicationIdByKey, GetApplicationIdByKeyResult } from "../../../../dto/Core/Applications"
-import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
-
+import { Component, Vue } from "vue-property-decorator";
+import * as dto from "@/dto/Core/Applications";
 
 @Component
 export default class ManageCreateApplicationComponent extends Vue {
     private timer$: any;
+    groupId = 1;
+    applicationGroups: ApplicationGroup[] = [];
     applicationName = "";
+    groupName = "";
     numberOfDevelopers?: number = null;
     estimatedNumberOfErrors?: number = null;
     disableButton = false;
+    retentionDays: number = 60;
 
     created() {
     }
 
 
     mounted() {
+        AppRoot.Instance.applicationService.getGroups().then(result => {
+            this.applicationGroups = result;
+            this.groupId = result[0].id;
+        });
     }
 
     createApplication() {
-        AppRoot.Instance.applicationService.create(this.applicationName, this.numberOfDevelopers, this.estimatedNumberOfErrors)
+        AppRoot.Instance.applicationService.create(this.groupId, this.applicationName, this.numberOfDevelopers, this.estimatedNumberOfErrors, this.retentionDays)
             .then(appKey => {
                 this.timer$ = setInterval(() => {
                     this.checkIfApplicationIsCreated(appKey);
                 }, 1000);
             });
+
         this.disableButton = true;
 
     }
@@ -50,6 +58,7 @@ export default class ManageCreateApplicationComponent extends Vue {
                 if (result) {
                     clearInterval(this.timer$);
                     this.updateSession(result.Id);
+                    AppRoot.Instance.applicationService.setGroup(result.Id, this.groupId);
                 }
             });
     }

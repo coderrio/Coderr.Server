@@ -6,7 +6,6 @@ using Coderr.Server.App.Core.Notifications;
 using Coderr.Server.Domain.Core.User;
 using Coderr.Server.Domain.Modules.UserNotifications;
 using DotNetCqs;
-
 using NotificationState = Coderr.Server.Api.Core.Users.NotificationState;
 
 namespace Coderr.Server.App.Core.Users.WebApi
@@ -38,7 +37,9 @@ namespace Coderr.Server.App.Core.Users.WebApi
                     NotifyOnReOpenedIncident = settings.ReopenedIncident.ConvertEnum<NotificationState>(),
                     NotifyOnUserFeedback = settings.UserFeedback.ConvertEnum<NotificationState>(),
                     NotifyOnPeaks = settings.ApplicationSpike.ConvertEnum<NotificationState>(),
-                    NotifyOnNewIncidents = settings.NewIncident.ConvertEnum<NotificationState>()
+                    NotifyOnNewIncidents = settings.NewIncident.ConvertEnum<NotificationState>(),
+                    NotifyOnCriticalIncidents = settings.CriticalIncident.ConvertEnum<NotificationState>(),
+                    NotifyOnImportantIncidents = settings.ImportantIncident.ConvertEnum<NotificationState>()
                 }
             };
         }

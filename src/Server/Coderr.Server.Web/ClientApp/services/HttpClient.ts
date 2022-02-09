@@ -145,6 +145,10 @@ export class HttpClient {
         contentType: string = "application/x-www-form-urlencoded",
         queryString: any = null,
         headers: any = null): Promise<IHttpResponse> {
+
+        //var e = new Error();
+        //var shortTrace = e.stack.split('\n').splice(0, 12).join('\n');
+        //console.log(body, shortTrace);
         const request = new HttpRequest("POST", url);
         if (queryString != null)
             request.queryString = queryString;
@@ -158,7 +162,7 @@ export class HttpClient {
         return this.invokeRequest(request);
     }
 
-
+    
     invokeRequest(request: IHttpRequest): Promise<IHttpResponse> {
         return new Promise<IHttpResponse>((resolve, reject) => {
 
@@ -259,7 +263,10 @@ export class HttpClient {
 
     private buildResponse(xhr: XMLHttpRequest): IHttpResponse {
         var body: string | null;
-        if (xhr.responseXML) {
+        if (xhr.status === 204) {
+            body = null;
+        }
+        else if (xhr.responseXML) {
             body = xhr.responseXML.body.innerHTML;
         } else {
             body = xhr.responseText;

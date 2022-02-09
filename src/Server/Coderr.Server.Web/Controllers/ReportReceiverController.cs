@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Security.Authentication;
 using System.Security.Claims;
@@ -9,7 +8,8 @@ using Coderr.Server.Abstractions.Config;
 using Coderr.Server.Abstractions.Reports;
 using Coderr.Server.Abstractions.Security;
 using Coderr.Server.App.Modules.Whitelists;
-using Coderr.Server.Domain.Core.Applications;
+using Coderr.Server.Common.App;
+using Coderr.Server.Premise.App;
 using Coderr.Server.ReportAnalyzer.Inbound;
 using Coderr.Server.Web.Infrastructure;
 using Coderr.Server.Web.Infrastructure.Results;
@@ -29,14 +29,14 @@ namespace Coderr.Server.Web.Controllers
         private readonly ILog _logger = LogManager.GetLogger(typeof(ReportReceiverController));
         private readonly IMessageQueue _messageQueue;
         private readonly IAdoNetUnitOfWork _unitOfWork;
+        private readonly IConfiguration<ReportConfig> _reportConfig;
         private IWhitelistService _whitelistService;
-        private ReportConfig _reportConfig;
 
         public ReportReceiverController(IMessageQueueProvider queueProvider, IAdoNetUnitOfWork unitOfWork,
             IConfiguration<ReportConfig> reportConfig, IWhitelistService whitelistService)
         {
             _unitOfWork = unitOfWork;
-            _reportConfig = reportConfig.Value;
+            _reportConfig = reportConfig;
             _whitelistService = whitelistService;
             _messageQueue = queueProvider.Open("ErrorReports");
         }
@@ -59,12 +59,16 @@ namespace Coderr.Server.Web.Controllers
                 return BadRequest("Content required.");
             var remoteIp = Request.HttpContext.Connection.RemoteIpAddress;
 
+            _logger.Debug($"Report from  {remoteIp} for {appKey}");
+            if (!PremiseLicenseCheck())
+                return Ok();
+
             // Sig may be null for web applications
             // as I don't know how to protect the secretKey in web applications
             if (sig == null)
             {
                 if (!await _whitelistService.Validate(appKey, remoteIp))
-                    return BadRequest("Must sign error report with the sharedSecret");
+                    return BadRequest($"Must sign error report with the sharedSecret or add ip/domain to the whitelist.");
             }
 
             try
@@ -76,7 +80,7 @@ namespace Coderr.Server.Web.Controllers
                     bytesRead += await Request.Body.ReadAsync(buffer, bytesRead, buffer.Length - bytesRead);
                 }
 
-                var config = new ReportConfigWrapper(_reportConfig);
+                var config = new ReportConfigWrapper(_reportConfig.Value);
                 var handler = new SaveReportHandler(_messageQueue, _unitOfWork, config);
                 var principal = CreateReporterPrincipal();
 
@@ -109,6 +113,16 @@ namespace Coderr.Server.Web.Controllers
                     ContentType = "text/plain"
                 };
             }
+        }
+
+
+        private bool PremiseLicenseCheck()
+        {
+            if (ServerConfig.Instance.IsLive)
+                return true;
+
+            LicenseWrapper.Instance.IncreaseReportCount();
+            return LicenseWrapper.Instance.CanReceiveReports;
         }
 
         internal static ClaimsPrincipal CreateReporterPrincipal()

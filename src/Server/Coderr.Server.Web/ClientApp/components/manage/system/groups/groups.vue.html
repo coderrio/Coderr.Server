@@ -1,0 +1,71 @@
+<template>
+    <div class="">
+        <div class="row minimal-gutters">
+            <div class="col-lg-8 environments">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="float-right"><button class="btn btn-blue" @click.prevent="createGroup()">add</button></span>
+                        Application groups
+                    </div>
+                    <div class="card-body">
+                        <div class="ml-3">
+                            <ul>
+                                <li v-for="group in groups">
+                                    {{group.name}}
+                                </li>
+                            </ul>
+                        </div>
+                        <div v-if="groups.length == 0">
+                            <p><em>No groups have been specified.</em></p>
+                        </div>
+                        <hr/>
+                        <em>Groups are used to organize applications into smaller groups.</em>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card" v-if="groups.length > 1">
+                    <div class="card-header">
+                        Delete group
+                    </div>
+                    <div class="card-body">
+                        <p><em>Will move all applications to the other group and then delete the selected one.</em></p>
+                        <form v-on:submit.prevent="deleteGroup()">
+                            <div class="form-group">
+                                <label>Group to delete</label>
+                                <select name="groupId" v-model="groupToDelete">
+                                    <option v-for="group in groups" :value="group.id">
+                                        {{group.name}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Move apps to</label>
+                                <select name="groupId" v-model="groupToMoveAppsTo">
+                                    <option v-for="group in groups" :value="group.id">
+                                        {{group.name}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-red">Delete</button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="newGroupModal" style="display:none">
+            <div class="modal-body">
+                <label>Create  new group:</label>
+                <input type="text" name="newGroupName" class="form-control" placeholder="Group name" />
+            </div>
+        </div>
+    </div>
+</template>
+
+
+<style src="./groups.css"></style>
+<script src="./groups.ts"></script>

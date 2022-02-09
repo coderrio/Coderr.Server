@@ -11,17 +11,20 @@ namespace Coderr.Server.Api.Core.Incidents.Events
         /// <summary>
         ///     Creates a new instance of <see cref="IncidentIgnored" />.
         /// </summary>
+        /// <param name="applicationId">Application that the incident belongs to.</param>
         /// <param name="incidentId">incident being ignored</param>
         /// <param name="accountId">account ignoring the incident</param>
         /// <param name="userName">userName for the given account</param>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public IncidentIgnored(int incidentId, int accountId, string userName)
+        public IncidentIgnored(int applicationId, int incidentId, int accountId, string userName)
         {
             if (userName == null) throw new ArgumentNullException("userName");
             if (incidentId <= 0) throw new ArgumentOutOfRangeException("incidentId");
             if (accountId <= 0) throw new ArgumentOutOfRangeException("accountId");
+            if (applicationId <= 0) throw new ArgumentOutOfRangeException(nameof(applicationId));
 
+            ApplicationId = applicationId;
             IncidentId = incidentId;
             AccountId = accountId;
             UserName = userName;
@@ -38,6 +41,8 @@ namespace Coderr.Server.Api.Core.Incidents.Events
         ///     User that configured ignore.
         /// </summary>
         public int AccountId { get; set; }
+
+        public int ApplicationId { get; }
 
         /// <summary>
         ///     Incident id

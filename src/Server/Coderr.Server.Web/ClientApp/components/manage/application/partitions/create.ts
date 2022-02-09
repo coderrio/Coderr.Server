@@ -10,7 +10,9 @@ export default class CreatePartitionComponent extends Vue {
     //new partition
     title = '';
     partitionKey = '';
-    numberOfItems: number|null = null;
+    numberOfItems: number | null = null;
+    importantThreshold: number | null = null;
+    criticalThreshold: number | null = null;
     weight = 1;
 
     applicationId: number = 0;
@@ -35,6 +37,13 @@ export default class CreatePartitionComponent extends Vue {
         if (this.numberOfItems !== 0 && this.numberOfItems != null) {
             cmd.NumberOfItems = this.numberOfItems;
         }
+        if (this.importantThreshold !== 0 && this.importantThreshold != null) {
+            cmd.ImportantThreshold = this.importantThreshold;
+        }
+        if (this.criticalThreshold !== 0 && this.criticalThreshold != null) {
+            cmd.CriticalThreshold = this.criticalThreshold;
+        }
+
         AppRoot.Instance.apiClient.command(cmd)
             .then(x => {
                 this.$router.push(

@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Coderr.Server.Abstractions.Boot;
-using Coderr.Server.Web.Boot.Adapters;
 using ConfigurationContext = Coderr.Server.Abstractions.Boot.ConfigurationContext;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 using StartContext = Coderr.Server.Abstractions.Boot.StartContext;

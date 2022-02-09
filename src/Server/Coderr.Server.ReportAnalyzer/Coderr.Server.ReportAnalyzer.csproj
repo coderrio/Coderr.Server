@@ -4,19 +4,25 @@
     <RootNamespace>Coderr.Server.ReportAnalyzer</RootNamespace>
     <AssemblyName>Coderr.Server.ReportAnalyzer</AssemblyName>
     <DefaultItemExcludes>$(DefaultItemExcludes);**\*.DotSettings;</DefaultItemExcludes>
+    <Configurations>Debug;Release;Premise</Configurations>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Coderr.Client.NetStd" Version="1.2.10" />
-    <PackageReference Include="DotNetCqs" Version="2.0.15" />
-    <PackageReference Include="DotNetCqs.DependencyInjection.Microsoft" Version="1.0.1" />
-    <PackageReference Include="DotNetCqs.Queues.AdoNet" Version="1.0.7" />
+    <Compile Remove="Environments\**" />
+    <EmbeddedResource Remove="Environments\**" />
+    <None Remove="Environments\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Coderr.Client" Version="2.0.5" />
+    <PackageReference Include="DotNetCqs" Version="2.1.1" />
+    <PackageReference Include="DotNetCqs.DependencyInjection.Microsoft" Version="2.2.1" />
+    <PackageReference Include="DotNetCqs.Queues.AdoNet" Version="1.0.11" />
     <PackageReference Include="Griffin.Framework" Version="2.1.1" />
-    <PackageReference Include="log4net" Version="2.0.8" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.2.0" />
+    <PackageReference Include="log4net" Version="2.0.14" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.22" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.22" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.7.0" />
-    <PackageReference Include="UAParser" Version="3.1.43" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
+    <PackageReference Include="UAParser" Version="3.1.47" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Coderr.Server.Domain\Coderr.Server.Domain.csproj" />

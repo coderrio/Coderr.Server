@@ -1,0 +1,21 @@
+<table class="table w-100 striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Store error reports</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let env of environments">
+      <td><a [routerLink]="['environments', env.id, 'edit']">{{env.name}}</a></td>
+      <td>{{env.ignoreErrorReports?'no':'yes'}}</td>
+      <td><button class="btn small" (click)="deleteErrors(env);false">Reset environment</button></td>
+    </tr>
+    <tr *ngIf="environments.length == 0">
+      <td colspan="3"><em>No environments have been created.</em></td>
+    </tr>
+
+  </tbody>
+</table>
+

@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+
 namespace Coderr.Server.Api.Core.Applications.Queries
 {
     /// <summary>
@@ -24,5 +27,15 @@ namespace Coderr.Server.Api.Core.Applications.Queries
         ///     Number user feedback items
         /// </summary>
         public int UserFeedback { get; set; }
+
+
+        /// <summary>
+        /// Summary per partition
+        /// </summary>
+        public PartitionOverview[] Partitions { get; set; }
+
+        public DateTime? NewestIncidentReceivedAtUtc { get; set; }
+
+        public DateTime? NewestReportReceivedAtUtc { get; set; }
     }
 }

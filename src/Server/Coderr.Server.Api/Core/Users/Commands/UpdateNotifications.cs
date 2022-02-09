@@ -17,6 +17,16 @@
         public NotificationState NotifyOnNewIncidents { get; set; }
 
         /// <summary>
+        ///     How to notify when an incident is updated to critical.
+        /// </summary>
+        public NotificationState NotifyOnCriticalIncidents { get; set; }
+
+        /// <summary>
+        ///     How to notify when an incident is updated to important.
+        /// </summary>
+        public NotificationState NotifyOnImportantIncidents { get; set; }
+
+        /// <summary>
         ///     How to notify user when a peak is detected
         /// </summary>
         public NotificationState NotifyOnPeaks { get; set; }

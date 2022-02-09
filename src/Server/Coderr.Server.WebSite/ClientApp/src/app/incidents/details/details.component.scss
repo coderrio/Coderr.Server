@@ -1,0 +1,80 @@
+@import "../../../styles/_partials/coderr-variables.scss";
+@import "../../../styles/_partials/_mixins.scss";
+
+.incident-view {
+  max-width: 100%;
+  display: block;
+  margin: 0;
+
+  h3 {
+    color: white;
+    @include text-shadow-1;
+  }
+
+  .fill {
+    background: white;
+    padding: 10px;
+    border-radius: 2px;
+    @include box-shadow-1;
+
+    th {
+      text-align: right;
+    }
+  }
+
+  pre, .hide-overflow {
+    background-color: transparent;
+    overflow: hidden;
+    word-wrap: normal;
+    white-space: pre;
+    position: relative;
+
+    > code {
+      background-color: transparent;
+    }
+  }
+
+  .hide-overflow {
+    overflow: hidden;
+    word-wrap: normal;
+    white-space: pre;
+    position: relative;
+  }
+
+  pre:hover, .hide-overflow:hover {
+    overflow: auto;
+  }
+
+  select {
+    padding: 4px;
+    background-color: $light;
+    border: 1px solid darken($light, 10px);
+    border-radius: 5px;
+  }
+
+
+
+  table {
+    table-layout: fixed; /* This enforces the "col" widths. */
+    width: 100%;
+
+    th {
+      vertical-align: top;
+      width: 200px;
+      overflow: hidden;
+    }
+
+    th hover {
+      overflow: auto;
+    }
+
+    td {
+      overflow: hidden;
+      white-space: pre;
+
+      &:hover {
+        overflow: auto;
+      }
+    }
+  }
+}

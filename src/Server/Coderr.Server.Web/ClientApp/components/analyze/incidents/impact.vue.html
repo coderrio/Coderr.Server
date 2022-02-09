@@ -1,0 +1,39 @@
+<template>
+    <div class="CloseView">
+        <div class="row">
+            <div class="col">
+                <h2>Business impact</h2>
+                <div class="bg-white p-4">
+                    <form>
+                        <div class="form-group">
+                            <label>Select indicator</label>
+                            <br/>
+                            <select v-model.number="partitionId" @change="onPartitionChanged" class="form-control w-50">
+                                <option v-for="item in partitions" :value="item.Id">{{item.Name}}</option>
+                            </select>
+                        </div>
+                    </form>
+                    <div v-show="values.length > 0">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Value</th>
+                                <th>Last received</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="item in values">
+                                <td>{{item.Value}}</td>
+                                <td>{{item.ReceivedAtUtc|ago}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+
+<script src="./impact.ts"></script>

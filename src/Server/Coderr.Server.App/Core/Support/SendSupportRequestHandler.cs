@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Coderr.Server.Abstractions;
 using Coderr.Server.Abstractions.Config;
 using Coderr.Server.Abstractions.Security;
 using Coderr.Server.Api.Core.Accounts.Queries;
@@ -10,7 +11,6 @@ using Coderr.Server.Api.Core.Messaging;
 using Coderr.Server.Api.Core.Messaging.Commands;
 using Coderr.Server.Api.Core.Support;
 using Coderr.Server.Infrastructure.Configuration;
-using Coderr.Server.Infrastructure.Security;
 using DotNetCqs;
 
 
@@ -49,7 +49,7 @@ namespace Coderr.Server.App.Core.Support
                 email = user.Email;
             }
 
-            string installationId = null;
+            string installationId = "Coderr";
             if (string.IsNullOrEmpty(email))
                 email = baseConfig.SupportEmail;
 
@@ -63,7 +63,7 @@ namespace Coderr.Server.App.Core.Support
 
             // A support contact have been specified.
             // Thus this is a OnPremise/community server installation
-            if (!string.IsNullOrEmpty(baseConfig.SupportEmail))
+            if (!ServerConfig.Instance.IsLive)
             {
                 var msg = new EmailMessage(email)
                 {

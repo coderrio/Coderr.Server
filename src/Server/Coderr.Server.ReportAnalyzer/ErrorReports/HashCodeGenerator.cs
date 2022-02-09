@@ -19,7 +19,11 @@ namespace Coderr.Server.ReportAnalyzer.ErrorReports
     public class HashCodeGenerator : IHashCodeGenerator
     {
         private readonly IHashCodeSubGenerator[] _generators;
+        private static Regex _lineNumberRegEx = new Regex(RemoveLineNumbersRegEx, RegexOptions.Multiline);
+        private static readonly Regex FirstWordRegEx = new Regex(@"^[ \t]*([^\s]+) ", RegexOptions.Multiline);
         private const string RemoveLineNumbersRegEx = @"^(.*)(:[\w]+ [\d]+)";
+        static List<Regex> _cleanRegExes = new List<Regex>();
+        private static List<Regex> _replaceRegExes;
 
         /// <summary>
         ///     Creates a new instance of <see cref="HashCodeGenerator" />.
@@ -63,7 +67,7 @@ namespace Coderr.Server.ReportAnalyzer.ErrorReports
         {
             if (report == null) throw new ArgumentNullException("report");
 
-            
+
             var hashSource = $"{report.Exception.FullName ?? report.Exception.Name}\r\n";
             var foundHashSource = false;
 
@@ -74,8 +78,14 @@ namespace Coderr.Server.ReportAnalyzer.ErrorReports
             {
                 if (collection.Properties.TryGetValue("HashSource", out var reportHashSource))
                 {
-                    foundHashSource = true;
-                    hashSource += reportHashSource;
+                    var url = GetUrl(report.ContextCollections);
+
+                    //this is an workaround since our own Coderr Report vary url
+                    if (url?.StartsWith("/receiver/report/") != true)
+                    {
+                        foundHashSource = true;
+                        hashSource += reportHashSource;
+                    }
                 }
             }
             if (!foundHashSource)
@@ -83,7 +93,7 @@ namespace Coderr.Server.ReportAnalyzer.ErrorReports
                 // This identifier is determined by the developer when  the error is generated.
                 foreach (var contextCollection in report.ContextCollections)
                 {
-                    if (!contextCollection.Properties.TryGetValue("ErrorHashSource", out var ourHashSource)) 
+                    if (!contextCollection.Properties.TryGetValue("ErrorHashSource", out var ourHashSource))
                         continue;
 
                     hashSource = ourHashSource;
@@ -95,7 +105,7 @@ namespace Coderr.Server.ReportAnalyzer.ErrorReports
             var hashSourceForCompability = "";
             if (!foundHashSource)
             {
-                hashSourceForCompability = hashSource + CleanStackTrace(report.Exception.StackTrace ?? "");
+                hashSourceForCompability = hashSource + CleanStackTrace(report.Exception.StackTrace ?? "", false);
                 hashSource += CleanStackTrace(report.Exception.StackTrace ?? "");
 
             }
@@ -109,6 +119,19 @@ namespace Coderr.Server.ReportAnalyzer.ErrorReports
             };
         }
 
+        private string GetUrl(IReadOnlyList<ErrorReportContextCollection> contextCollections)
+        {
+            foreach (var collection in contextCollections)
+            {
+                if (collection.Properties.TryGetValue("Url", out var url))
+                {
+                    return url;
+                }
+            }
+
+            return null;
+        }
+
         private static int HashTheSource(string hashSource)
         {
             var hash = 23;
@@ -120,10 +143,80 @@ namespace Coderr.Server.ReportAnalyzer.ErrorReports
             return hash;
         }
 
-        internal static string CleanStackTrace(string stacktrace)
+        private static void EnsureRegExes()
         {
-            var re = new Regex(RemoveLineNumbersRegEx, RegexOptions.Multiline);
-            return re.Replace(stacktrace, "$1", 1000);
+            if (_cleanRegExes.Count > 0)
+                return;
+
+            var linesToRemove = new[]
+            {
+                "---.*---\r?\n",
+                @"[ ]*at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw\(\)\r?\n",
+                @"[ ]*at System.Runtime.CompilerServices.TaskAwaiter.*\r?\n",
+                @"[ ]*at System.Threading.ExecutionContext.*\r?\n",
+                @"[ ]*at NServiceBus.*\r?\n",
+                @"[ ]*at RabbitMQ.*\r?\n",
+                @"[ ]*at Coderr.Client.*\r?\n",
+                @"[ ]*at .*d__+d+.MoveNext.*\r?\n",
+                @"[ ]*at System.Threading.Tasks.*\r?\n",
+                @"[ ]*at Microsoft.AspNetCore.Mvc.Internal.*\r?\n",
+                @"[ ]*at sun.reflect.*\r?\n",
+                @"[ ]*at java.lang.reflect.*\r?\n",
+                @"\$\$Lambda\$[\d]+\/[\d]+", //Java Lambda,
+                @" \[0x[a-f\d]+\] in \<[0-9a-z ]+\>:?\d*" // strange debug address for Java ;)
+            };
+            _cleanRegExes.Clear();
+            foreach (var rex in linesToRemove)
+            {
+                if (rex.EndsWith("$") || rex.StartsWith("^"))
+                    _cleanRegExes.Add(new Regex(rex, RegexOptions.Multiline));
+                else
+                    _cleanRegExes.Add(new Regex(rex));
+            }
+
+            var linesToReplace = new[]
+            {
+                @"(\w+):\d+\)\r?$",//@"\.\w+(:\d+)\)$", // java line numbers
+                @"\<([a-zA-Z0-9_]+)\>d__[\d]+`?\d?.MoveNext",
+                @"(sun.reflect.GeneratedMethodAccessor)\d+"
+            };
+            _replaceRegExes = new List<Regex>();
+            foreach (var rex in linesToReplace)
+            {
+                if (rex.EndsWith("$") || rex.StartsWith("^"))
+                    _replaceRegExes.Add(new Regex(rex, RegexOptions.Multiline));
+                else
+                    _replaceRegExes.Add(new Regex(rex));
+            }
+        }
+
+        internal static string CleanStackTrace(string stacktrace, bool withLanguageCleaner = true)
+        {
+            EnsureRegExes();
+            stacktrace = _lineNumberRegEx.Replace(stacktrace, "$1", 1000);
+            var eol = stacktrace.IndexOf("\r\n") == -1 ? "\n" : "\r\n";
+
+            foreach (var regEx in _cleanRegExes)
+            {
+                stacktrace = regEx.Replace(stacktrace, "", 100);
+            }
+            foreach (var regEx in _replaceRegExes)
+            {
+                stacktrace = regEx.Replace(stacktrace, "$1", 100);
+                stacktrace = regEx.Replace(stacktrace, OnEvaluate);
+            }
+
+            if (withLanguageCleaner)
+            {
+                stacktrace = FirstWordRegEx.Replace(stacktrace, "", 100);
+            }
+
+            return stacktrace;
+        }
+
+        private static string OnEvaluate(Match match)
+        {
+            return match.Captures[0].Value;
         }
     }
 }

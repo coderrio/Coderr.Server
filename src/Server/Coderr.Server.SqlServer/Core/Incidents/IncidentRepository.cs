@@ -22,6 +22,21 @@ namespace Coderr.Server.SqlServer.Core.Incidents
             _uow = uow;
         }
 
+        public async Task<DateTime> GetLatestIncidentDate(int applicationId)
+        {
+            using (var cmd = (DbCommand)_uow.CreateCommand())
+            {
+                cmd.CommandText =
+                    @"SELECT Max(CreatedAtUtc) FROM Incidents WHERE ApplicationId = @ApplicationId AND State < 2";
+                cmd.AddParameter("ApplicationId", applicationId);
+                var value = await cmd.ExecuteScalarAsync();
+                if (value is DBNull)
+                    return DateTime.MinValue;
+
+                return (DateTime)value;
+            }
+        }
+
         public async Task UpdateAsync(Incident incident)
         {
             using (var cmd = (DbCommand)_uow.CreateCommand())
@@ -66,14 +81,14 @@ namespace Coderr.Server.SqlServer.Core.Incidents
             if (ids == "")
                 throw new ArgumentException("No incident IDs were specified.", nameof(incidentIds));
 
-            using (var cmd = (DbCommand) _uow.CreateCommand())
+            using (var cmd = (DbCommand)_uow.CreateCommand())
             {
                 cmd.CommandText =
                     $"SELECT * FROM Incidents WHERE Id IN ({ids})";
                 return cmd.ToListAsync(new IncidentMapper());
             }
         }
-        
+
         public async Task MapCorrelationId(int incidentId, string correlationId)
         {
             var sql = @"declare @id int;
@@ -104,7 +119,7 @@ namespace Coderr.Server.SqlServer.Core.Incidents
             using (var cmd = (DbCommand)_uow.CreateCommand())
             {
                 cmd.CommandText =
-                    @"SELECT CAST(count(*) as int) FROM Incidents WHERE ApplicationId = @ApplicationId";
+                    @"SELECT CAST(count(*) as int) FROM Incidents WHERE ApplicationId = @ApplicationId AND State IN (0,1)";
                 cmd.AddParameter("ApplicationId", applicationId);
                 var result = (int)await cmd.ExecuteScalarAsync();
                 return result;

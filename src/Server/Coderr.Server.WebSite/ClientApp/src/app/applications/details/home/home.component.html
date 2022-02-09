@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="col col-2">
+    <div class="panel">
+      <h3>My incidents</h3>
+      <div>
+        <incident-stubs itemType="Mine" [applicationId]="applicationId"></incident-stubs>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>Recommended</h3>
+      <div>
+        <incident-stubs itemType="Recommended" [applicationId]="applicationId"></incident-stubs>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>Latest</h3>
+      <div>
+        <incident-stubs itemType="Newest" [applicationId]="applicationId"></incident-stubs>
+      </div>
+    </div>
+
+  </div>
+  <div class="col">
+    <div class="panel">
+      <h3>Summary</h3>
+      <div class="fill">
+        <app-summarychart [applicationId]="applicationId"></app-summarychart>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>Business impact</h3>
+      <div class="fill">
+        <app-insightchart [applicationId]="applicationId"></app-insightchart>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,7 +1,7 @@
 import { AppRoot } from '../../../../services/AppRoot';
-import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
-
+import { ApplicationGroup } from "@/services/applications/ApplicationService";
+import { Component, Watch, Vue } from "vue-property-decorator";
+import * as dto from "@/dto/Core/Applications";
 
 @Component
 export default class ManageAppSettingsComponent extends Vue {
@@ -9,16 +9,22 @@ export default class ManageAppSettingsComponent extends Vue {
     applicationName: string = "";
     appKey: string = "";
     sharedSecret: string = "";
-
+    groupId: number = 0;
+    applicationGroups: ApplicationGroup[] = [];
+    newGroupName: string = "";
+    retentionDays: number = 90;
 
     created() {
         this.load();
     }
 
-    
+
     mounted() {
+        AppRoot.Instance.applicationService.getGroups().then(result => {
+            this.applicationGroups = result;
+        });
     }
-    
+
 
     @Watch('$route.params.applicationId')
     onApplicationChanged(value: string, oldValue: string) {
@@ -32,6 +38,8 @@ export default class ManageAppSettingsComponent extends Vue {
                 this.applicationName = appInfo.name;
                 this.sharedSecret = appInfo.sharedSecret;
                 this.appKey = appInfo.appKey;
+                this.groupId = appInfo.groupId;
+                this.retentionDays = appInfo.retentionDays;
             });
     }
 
@@ -40,12 +48,12 @@ export default class ManageAppSettingsComponent extends Vue {
         if (result) {
             AppRoot.Instance.applicationService.delete(this.applicationId);
             AppRoot.notify("Application have been queued for deletion. Might take time depending on the number of incidents.", "fa-info", "success");
-            this.$router.push('manageHome');
+            this.$router.push({ name: 'manageHome' });
         }
     }
     updateApp() {
-        AppRoot.Instance.applicationService.update(this.applicationId, this.applicationName);
+        AppRoot.Instance.applicationService.update(this.applicationId, this.applicationName, this.retentionDays);
+        AppRoot.Instance.applicationService.setGroup(this.applicationId, this.groupId);
         AppRoot.notify('Application settings have been saved.');
     }
-
 }

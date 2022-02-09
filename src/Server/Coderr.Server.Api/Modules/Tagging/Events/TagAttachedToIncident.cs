@@ -15,12 +15,19 @@ namespace Coderr.Server.Api.Modules.Tagging.Events
         /// <param name="tags">tags</param>
         /// <exception cref="ArgumentNullException">tags</exception>
         /// <exception cref="ArgumentOutOfRangeException">incidentId</exception>
-        public TagAttachedToIncident(int incidentId, TagDTO[] tags)
+        public TagAttachedToIncident(int applicationId, int incidentId, string[] tags)
         {
             if (tags == null) throw new ArgumentNullException("tags");
             if (incidentId <= 0) throw new ArgumentOutOfRangeException("incidentId");
+            if (applicationId <= 0) throw new ArgumentOutOfRangeException(nameof(applicationId));
+            ApplicationId = applicationId;
             Tags = tags;
             IncidentId = incidentId;
+        }
+
+        protected TagAttachedToIncident()
+        {
+
         }
 
         /// <summary>
@@ -28,9 +35,11 @@ namespace Coderr.Server.Api.Modules.Tagging.Events
         /// </summary>
         public int IncidentId { get; private set; }
 
+        public int ApplicationId { get; private set; }
+
         /// <summary>
         ///     Identified tags
         /// </summary>
-        public TagDTO[] Tags { get; private set; }
+        public string[] Tags { get; private set; }
     }
 }

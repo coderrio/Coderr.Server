@@ -1,0 +1,164 @@
+<form>
+  <div class="row">
+    <div class="col">
+      <h2 class="text-white text-shadow-1">Notifications</h2>
+      <div>
+        <p>
+          Enable notifications to get notified directly when something important happens.
+        </p>
+        <div *ngIf="deniedPushNotification" class="alert warning">
+          You have denied push notifications from Coderr. Edit the notification settings in your browser, and click save again.
+        </div>
+        <div *ngIf="pushNotificationRequest" class="alert success">
+          Look for the notification request in your browser (prompt or icon in the address bar). It can be an icon in the address bar or similar. You must accept notifications for this to work.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="card-group">
+        <h4 class="white">Escalation notifications</h4>
+        <div class="card ">
+          <div class="card-header">New error</div>
+          <div class="card-body">
+            <p>A new error have been received (only active for errors in your production environments).</p>
+          </div>
+          <div class="card-footer">
+            <label *ngIf="applicationId">
+              <input type="radio" [value]="1" name="notifyOnNewIncidents" [(ngModel)]="settings.notifyOnNewIncidents" checked> Default
+            </label>
+            <label>
+              <input type="radio" [value]="2" name="notifyOnNewIncidents" [(ngModel)]="settings.notifyOnNewIncidents"> Disabled
+            </label>
+            <label>
+              <input type="radio" [value]="4" name="notifyOnNewIncidents" [(ngModel)]="settings.notifyOnNewIncidents"> Email
+            </label>
+            <label>
+              <input type="radio" [value]="5" name="notifyOnNewIncidents" [(ngModel)]="settings.notifyOnNewIncidents"> Browser notification
+            </label>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            Important error
+          </div>
+          <div class="card-body">
+            <p>An existing error is escalated to important. <a href="https://coderr.io/documentation/features/recommendations">Learn more.</a></p>
+          </div>
+          <div class="card-footer">
+            <label *ngIf="applicationId">
+              <input type="radio" [value]="1" name="notifyOnImportantIncidents" [(ngModel)]="settings.notifyOnImportantIncidents" checked> Default
+            </label>
+            <label>
+              <input type="radio" [value]="2" name="notifyOnImportantIncidents" [(ngModel)]="settings.notifyOnImportantIncidents"> Disabled
+            </label>
+            <label>
+              <input type="radio" [value]="4" name="notifyOnImportantIncidents" [(ngModel)]="settings.notifyOnImportantIncidents"> Email
+            </label>
+            <label>
+              <input type="radio" [value]="5" name="notifyOnImportantIncidents" [(ngModel)]="settings.notifyOnImportantIncidents"> Browser notification
+            </label>
+          </div>
+        </div>
+        <div class="card">
+
+          <div class="card-header">Critical error</div>
+          <div class="card-body">
+            <p>An existing error is escalated from important to critical. <a href="https://coderr.io/documentation/features/recommendations">Learn more.</a></p>
+          </div>
+          <div class="card-footer">
+            <label *ngIf="applicationId">
+              <input type="radio" [value]="1" name="notifyOnCriticalIncidents" [(ngModel)]="settings.notifyOnCriticalIncidents" checked> Default
+            </label>
+            <label>
+              <input type="radio" [value]="2" name="notifyOnCriticalIncidents" [(ngModel)]="settings.notifyOnCriticalIncidents"> Disabled
+            </label>
+            <label>
+              <input type="radio" [value]="4" name="notifyOnCriticalIncidents" [(ngModel)]="settings.notifyOnCriticalIncidents"> Email
+            </label>
+            <label>
+              <input type="radio" [value]="5" name="notifyOnCriticalIncidents" [(ngModel)]="settings.notifyOnCriticalIncidents"> Browser notification
+            </label>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="col">
+      <div class="card-group">
+        <h4>Standard notifications</h4>
+        <div class="card">
+          <div class="card-header">Report spike</div>
+          <div class="card-body">
+            <p>An application gets an unusual high volume of error reports (over the 85th percentile).</p>
+          </div>
+          <div class="card-footer">
+            <label *ngIf="applicationId">
+              <input type="radio" [value]="1" name="notifyOnPeaks" [(ngModel)]="settings.notifyOnPeaks" checked> Default
+            </label>
+            <label>
+              <input type="radio" [value]="2" name="notifyOnPeaks" [(ngModel)]="settings.notifyOnPeaks"> Disabled
+            </label>
+            <label>
+              <input type="radio" [value]="4" name="notifyOnPeaks" [(ngModel)]="settings.notifyOnPeaks"> Email
+            </label>
+            <label>
+              <input type="radio" [value]="5" name="notifyOnPeaks" [(ngModel)]="settings.notifyOnPeaks"> Browser notification
+            </label>
+          </div>
+
+        </div>
+
+
+        <div class="card">
+          <div class="card-header">Re-opened error</div>
+          <div class="card-body">
+            <p>A closed error is reopened (an report is received in a newer application version than the one that you closed the error for).</p>
+          </div>
+          <div class="card-footer">
+            <label *ngIf="applicationId">
+              <input type="radio" [value]="1" name="notifyOnReOpenedIncident" [(ngModel)]="settings.notifyOnReOpenedIncident"> Default
+            </label>
+            <label>
+              <input type="radio" [value]="2" name="notifyOnReOpenedIncident" [(ngModel)]="settings.notifyOnReOpenedIncident"> Disabled
+            </label>
+            <label>
+              <input type="radio" [value]="4" name="notifyOnReOpenedIncident" [(ngModel)]="settings.notifyOnReOpenedIncident"> Email
+            </label>
+            <label>
+              <input type="radio" [value]="5" name="notifyOnReOpenedIncident" [(ngModel)]="settings.notifyOnReOpenedIncident"> Browser notification
+            </label>
+          </div>
+
+        </div>
+
+        <div class="card">
+          <div class="card-header">New user feedback</div>
+          <div class="card-body">
+            <p>An user have written an error report for an error.</p>
+          </div>
+          <div class="card-footer">
+            <label *ngIf="applicationId">
+              <input type="radio" [value]="1" name="notifyOnUserFeedback" [(ngModel)]="settings.notifyOnUserFeedback"> Default
+            </label>
+            <label>
+              <input type="radio" [value]="2" name="notifyOnUserFeedback" [(ngModel)]="settings.notifyOnUserFeedback"> Disabled
+            </label>
+            <label>
+              <input type="radio" [value]="4" name="notifyOnUserFeedback" [(ngModel)]="settings.notifyOnUserFeedback"> Email
+            </label>
+            <label>
+              <input type="radio" [value]="5" name="notifyOnUserFeedback" [(ngModel)]="settings.notifyOnUserFeedback"> Browser notification
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <button class="btn btn-blue" (click)="save();false">Save notification settings</button>
+      </div>
+    </div>
+  </div>
+</form>

@@ -8,6 +8,16 @@ namespace Coderr.Server.Api.Core.Users
     public class NotificationSettings
     {
         /// <summary>
+        ///     How to notify when an incident is updated to critical.
+        /// </summary>
+        public NotificationState NotifyOnCriticalIncidents { get; set; }
+
+        /// <summary>
+        ///     How to notify when an incident is updated to important.
+        /// </summary>
+        public NotificationState NotifyOnImportantIncidents { get; set; }
+
+        /// <summary>
         ///     How to notify when a new incident is created (received an unique exception)
         /// </summary>
         public NotificationState NotifyOnNewIncidents { get; set; }

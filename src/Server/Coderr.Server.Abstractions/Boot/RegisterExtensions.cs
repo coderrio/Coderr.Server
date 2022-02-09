@@ -1,40 +1,54 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Coderr.Server.Abstractions.Boot
 {
     public static class RegisterExtensions
     {
+
         public static void RegisterContainerServices(this IServiceCollection serviceCollection, Assembly assembly)
         {
-            var containerServices = assembly.GetTypes();
+            var gotWrongAttribute = (
+                from type in assembly.GetTypes()
+                let attributes = type.GetCustomAttributes()
+                where attributes.Count(x => x.GetType().FullName == "Griffin.Container.ContainerService") > 0
+                select type).ToList();
+            if (gotWrongAttribute.Count > 0)
+            {
+                throw new InvalidOperationException(
+                    $"Types \'{string.Join(",", gotWrongAttribute)}\' was decorated with the wrong attribute");
+            }
+
+            var containerServices = assembly.GetTypes()
+                .Where(x => x.GetCustomAttribute<ContainerServiceAttribute>() != null);
+
             foreach (var containerService in containerServices)
             {
-                var gotWrongAttribute = containerService
-                    .GetCustomAttributes()
-                    .Count(x => x.GetType().FullName == "Griffin.Container.ContainerService") == 1;
-                if (gotWrongAttribute)
-                {
-                    throw new InvalidOperationException(
-                        $"Type \'{containerService}\' was decorated with the wrong attribute");
-                    ;
-                }
+                Debug.WriteLine(Assembly.GetCallingAssembly().GetName().Name + " registers " + containerService.FullName);
 
                 var attr = containerService.GetCustomAttribute<ContainerServiceAttribute>();
-                if (attr == null)
-                    continue;
-
                 var interfaces = containerService.GetInterfaces();
+                var lifetime = ConvertLifetime(attr);
 
                 // Hack so that the same instance is resolved for each interface
+                bool isRegisteredAsSelf = false;
                 if (interfaces.Length > 1 || attr.RegisterAsSelf)
-                    serviceCollection.RegisterService(attr, containerService, containerService);
+                {
+                    serviceCollection.Add(new ServiceDescriptor(containerService, containerService, lifetime));
+                    isRegisteredAsSelf=true;
+                }
+                    
 
                 foreach (var @interface in interfaces)
                 {
-                    serviceCollection.RegisterService(attr, @interface, containerService);
+                    var sd = isRegisteredAsSelf
+                        ? new ServiceDescriptor(@interface, x => x.GetService(containerService), lifetime) // else we don't get the same instance in the scope.
+                        : new ServiceDescriptor(@interface, containerService, lifetime);
+                    serviceCollection.Add(sd);
                 }
             }
         }
@@ -47,6 +61,8 @@ namespace Coderr.Server.Abstractions.Boot
                 .ToList();
             foreach (var type in types)
             {
+                Debug.WriteLine(Assembly.GetCallingAssembly().GetName().Name + " registers " + type.FullName);
+
                 serviceCollection.AddScoped(type, type);
 
                 var ifs = type.GetInterfaces()
@@ -54,20 +70,24 @@ namespace Coderr.Server.Abstractions.Boot
                     .ToList();
                 foreach (var @if in ifs)
                 {
-                    serviceCollection.AddScoped(@if, type);
+                    serviceCollection.AddScoped(@if, x => x.GetService(type));
                 }
             }
         }
 
-        private static void RegisterService(this IServiceCollection serviceCollection, ContainerServiceAttribute attr,
-            Type service, Type implementation)
+        private static ServiceLifetime ConvertLifetime(ContainerServiceAttribute attr)
         {
             if (attr.IsSingleInstance)
-                serviceCollection.AddSingleton(service, implementation);
-            else if (attr.IsTransient)
-                serviceCollection.AddTransient(service, implementation);
-            else
-                serviceCollection.AddScoped(service, implementation);
+            {
+                return ServiceLifetime.Singleton;
+            }
+
+            if (attr.IsTransient)
+            {
+                return ServiceLifetime.Transient;
+            }
+
+            return ServiceLifetime.Scoped;
         }
     }
 }

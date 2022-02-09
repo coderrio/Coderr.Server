@@ -10,6 +10,7 @@ namespace Coderr.Server.SqlServer.Core.Applications
         {
             Property(x => x.ApplicationType)
                 .ToPropertyValue(o => (TypeOfApplication) Enum.Parse(typeof(TypeOfApplication), (string) o));
+            Property(x => x.GroupId).Ignore();
         }
     }
 }

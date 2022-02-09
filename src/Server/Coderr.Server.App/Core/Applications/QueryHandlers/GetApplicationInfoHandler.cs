@@ -19,7 +19,7 @@ namespace Coderr.Server.App.Core.Applications.QueryHandlers
     {
         private readonly IIncidentRepository _incidentRepository;
         private readonly IApplicationRepository _repository;
-        private IApplicationVersionRepository _versionRepository;
+        private readonly IApplicationVersionRepository _versionRepository;
 
         /// <summary>
         ///     Creates a new instance of <see cref="GetApplicationInfoHandler" />.
@@ -53,8 +53,14 @@ namespace Coderr.Server.App.Core.Applications.QueryHandlers
                 app = await _repository.GetByIdAsync(query.ApplicationId);
             }
 
+            var newestErrorDate = await _incidentRepository.GetLatestIncidentDate(query.ApplicationId);
             var totalCount = await _incidentRepository.GetTotalCountForAppInfoAsync(app.Id);
             var versions = await _versionRepository.FindVersionsAsync(app.Id);
+            if (totalCount == 0)
+            {
+                versions = new string[0];
+            }
+
             return new GetApplicationInfoResult
             {
                 AppKey = app.AppKey,
@@ -62,6 +68,8 @@ namespace Coderr.Server.App.Core.Applications.QueryHandlers
                 Id = app.Id,
                 Name = app.Name,
                 SharedSecret = app.SharedSecret,
+                RetentionDays = app.RetentionDays,
+                LastIncidentAtUtc = newestErrorDate == DateTime.MinValue ? (DateTime?)null : newestErrorDate,
                 TotalIncidentCount = totalCount,
                 Versions = versions.ToArray(),
                 ShowStatsQuestion = !app.MuteStatisticsQuestion,

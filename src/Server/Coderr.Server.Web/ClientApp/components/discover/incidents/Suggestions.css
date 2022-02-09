@@ -8,3 +8,18 @@
         min-width: 50vw;
     }
 }
+
+/*.main-view .suggestions .card {
+    max-width: 500px;
+    min-width: 400px;
+    display: inline-block;
+    margin: 0 10px 10px 0;
+}
+
+    .main-view .suggestions .card:last-child {
+        margin-right: 0;
+    }
+
+    .main-view .suggestions .card .card-body {
+        min-width: 400px;
+    }*/

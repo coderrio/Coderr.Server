@@ -24,7 +24,7 @@ namespace Coderr.Server.Domain.Core.Incidents
         /// <exception cref="ArgumentOutOfRangeException">applicationId</exception>
         public Incident(int applicationId)
         {
-            if (applicationId <= 0) throw new ArgumentOutOfRangeException("applicationId");
+            if (applicationId <= 0) throw new ArgumentOutOfRangeException(nameof(applicationId));
 
             ApplicationId = applicationId;
             CreatedAtUtc = DateTime.UtcNow;
@@ -41,6 +41,11 @@ namespace Coderr.Server.Domain.Core.Incidents
         public DateTime? AssignedAtUtc { get; private set; }
 
         /// <summary>
+        ///     The user currently working with this incident.
+        /// </summary>
+        public int? AssignedToId { get; private set; }
+
+        /// <summary>
         ///     When the incident was created in the client library.
         /// </summary>
         public DateTime CreatedAtUtc { get; private set; }
@@ -50,18 +55,17 @@ namespace Coderr.Server.Domain.Core.Incidents
         /// </summary>
         public string Description
         {
-            get
-            {
-                if (string.IsNullOrEmpty(_description))
-                    return "Ooops Error!";
-
-                return _description;
-            }
+            get => string.IsNullOrEmpty(_description) ? "Ooops Error!" : _description;
             set => _description = value;
         }
 
         /// <summary>
-        /// Exception type including namespace.
+        ///     If the incident is escalated.
+        /// </summary>
+        public EscalationState Escalation { get; set; }
+
+        /// <summary>
+        ///     Exception type including namespace.
         /// </summary>
         public string FullName { get; set; }
 
@@ -69,6 +73,12 @@ namespace Coderr.Server.Domain.Core.Incidents
         ///     PK
         /// </summary>
         public int Id { get; private set; }
+
+        /// <summary>
+        ///     Version that the error is corrected in. All inbound error reports will be ignored if they are from older
+        ///     application versions.
+        /// </summary>
+        public string IgnoredUntilVersion { get; set; }
 
         /// <summary>
         ///     When we started to ignore reports for this incident.
@@ -79,11 +89,6 @@ namespace Coderr.Server.Domain.Core.Incidents
         ///     Person that wanted us to ignore reports.
         /// </summary>
         public string IgnoringRequestedBy { get; private set; }
-
-        /// <summary>
-        /// Version that the error is corrected in. All inbound error reports will be ignored if they are from older application versions.
-        /// </summary>
-        public string IgnoredUntilVersion { get; set; }
 
         /// <summary>
         ///     Incident was marked as completed, but we've received another report for this incident
@@ -151,12 +156,7 @@ namespace Coderr.Server.Domain.Core.Incidents
         public DateTime UpdatedAtUtc { get; private set; }
 
         /// <summary>
-        ///     The user currently working with this incident.
-        /// </summary>
-        public int? AssignedToId { get; private set; }
-
-        /// <summary>
-        /// Assign this incident to someone.
+        ///     Assign this incident to someone.
         /// </summary>
         /// <param name="userId">User to assign to</param>
         public void Assign(int userId, DateTime? when = null)
@@ -173,14 +173,18 @@ namespace Coderr.Server.Domain.Core.Incidents
         /// </summary>
         /// <param name="solvedBy">AccountId for whoever wrote the solution</param>
         /// <param name="solution">Actual solution</param>
-        /// <param name="correctedInVersion">All future reports are ignored if they are reported for app versions less that the specified one.</param>
+        /// <param name="correctedInVersion">
+        ///     All future reports are ignored if they are reported for app versions less that the
+        ///     specified one.
+        /// </param>
         /// <param name="when">When was the incident closed by the user?</param>
         /// <exception cref="ArgumentNullException">solution</exception>
         /// <exception cref="ArgumentOutOfRangeException">solvedBy</exception>
         public void Close(int solvedBy, string solution, string correctedInVersion, DateTime? when = null)
         {
-            if (solution == null) throw new ArgumentNullException("solution");
-            if (solvedBy <= 0) throw new ArgumentOutOfRangeException("solvedBy", solvedBy, "Must specify a solver.");
+            if (solution == null) throw new ArgumentNullException(nameof(solution));
+            if (solvedBy <= 0)
+                throw new ArgumentOutOfRangeException(nameof(solvedBy), solvedBy, "Must specify a solver.");
 
             IgnoredUntilVersion = correctedInVersion;
             Solution = new IncidentSolution(solvedBy, solution);
@@ -196,11 +200,10 @@ namespace Coderr.Server.Domain.Core.Incidents
         /// <exception cref="System.ArgumentNullException">accountName</exception>
         public void IgnoreFutureReports(string accountName)
         {
-            if (accountName == null) throw new ArgumentNullException("accountName");
             State = IncidentState.Ignored;
             IgnoringReportsSinceUtc = DateTime.UtcNow;
             UpdatedAtUtc = DateTime.UtcNow;
-            IgnoringRequestedBy = accountName;
+            IgnoringRequestedBy = accountName ?? throw new ArgumentNullException(nameof(accountName));
         }
 
         /// <summary>

@@ -26,6 +26,10 @@
     padding: 10px 20px;
 }
 
+.mw-300px {
+    min-width: 300px;
+}
+
 .submenu {
     > div {
         background-color: white !important;
@@ -37,7 +41,7 @@
     }
     // The view main element
     + div {
-        input[type=text]{
+        input[type=text] {
             background-color: $gray-100 !important;
         }
 
@@ -49,10 +53,11 @@
             padding: 0;
             margin: 20px;
 
-            .card-header{
+            .card-header {
                 margin-bottom: 0;
                 padding-bottom: 0;
             }
+
             .card-body {
                 margin-top: 0;
                 padding-top: 10px;
@@ -107,6 +112,12 @@ code {
 
 pre {
     background-color: transparent;
+    overflow: auto;
+    word-wrap: normal;
+    white-space: pre;
+    position: relative;
+    word-wrap: normal;
+    overflow: auto;
 
     > code {
         background-color: transparent;

@@ -252,6 +252,7 @@ export class IncidentService {
 
         var pending = this.pendingIncidents.find(x => x.incidentId === id);
         if (pending) {
+            console.log('awaiting ' + pending.incidentId + " for " + id)
             return await pending.promise;
         }
 

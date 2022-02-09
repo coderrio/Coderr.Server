@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Data;
+using System.Data.Common;
+using Coderr.Server.Abstractions;
 using Griffin;
 using Griffin.Data;
 
 namespace Coderr.Server.ReportAnalyzer
 {
-    public class AnalysisUnitOfWork : IAdoNetUnitOfWork
+    public class AnalysisUnitOfWork : IAdoNetUnitOfWork, IGotTransaction
     {
         private readonly bool _ownsConnection;
         private IDbConnection _connection;
@@ -14,10 +16,10 @@ namespace Coderr.Server.ReportAnalyzer
         {
             _connection = connection ?? throw new ArgumentNullException(nameof(connection));
             _ownsConnection = ownsConnection;
-            Transaction = connection.BeginTransaction();
+            Transaction = (DbTransaction)connection.BeginTransaction();
         }
 
-        public IDbTransaction Transaction { get; private set; }
+        public DbTransaction Transaction { get; private set; }
 
         public void Dispose()
         {

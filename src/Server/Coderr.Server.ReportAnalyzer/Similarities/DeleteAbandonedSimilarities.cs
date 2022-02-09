@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Coderr.Server.Abstractions.Boot;
 using Griffin.ApplicationServices;
 using Griffin.Data;
@@ -9,6 +10,7 @@ namespace Coderr.Server.ReportAnalyzer.Similarities
     internal class DeleteAbandonedSimilarities : IBackgroundJobAsync
     {
         private readonly IAdoNetUnitOfWork _unitOfWork;
+        private static DateTime _executionDate = DateTime.Today;
 
         public DeleteAbandonedSimilarities(IAdoNetUnitOfWork unitOfWork)
         {
@@ -17,6 +19,12 @@ namespace Coderr.Server.ReportAnalyzer.Similarities
 
         public async Task ExecuteAsync()
         {
+            if (_executionDate == DateTime.Today)
+                return;
+
+            _executionDate = DateTime.Today;
+
+
             using (var cmd = _unitOfWork.CreateDbCommand())
             {
                 cmd.CommandText = @"DELETE FROM IncidentCorrelations

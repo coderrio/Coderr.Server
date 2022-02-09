@@ -1,0 +1,258 @@
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
+
+[assembly:InternalsVisibleTo("codeRR.Server.App.Tests")]
+[assembly: SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope = "member", Target = "*")]
+[assembly:
+    SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope = "member",
+        Target =
+<<<<<<< HEAD
+            "codeRR.Server.App.Modules.Tagging.Handlers.GetTagsForIncidentHandler.#.ctor(codeRR.Server.App.Modules.Tagging.ITagsRepository)"
+=======
+            "codeRR.App.Modules.Tagging.Handlers.GetTagsForApplicationHandler.#.ctor(codeRR.App.Modules.Tagging.ITagsRepository)"
+>>>>>>> upstream/master
+        )]
+[assembly:
+    SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope = "member",
+        Target =
+            "codeRR.Server.App.Core.Applications.QueryHandlers.GetApplicationTeamHandler.#.ctor(codeRR.Server.App.Core.Applications.IApplicationRepository)"
+        )]
+[assembly:
+    SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope = "member",
+        Target = "codeRR.Server.App.Core.Accounts.Account.#Id")]
+[assembly:
+    SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope = "member",
+        Target =
+            "codeRR.Server.App.Core.Feedback.EventSubscribers.AttachFeedbackToIncident.#.ctor(codeRR.Server.App.Core.Feedback.IFeedbackRepository)"
+        )]
+[assembly:
+    SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope = "member",
+        Target =
+            "codeRR.Server.App.Core.Applications.CommandHandlers.CreateApplicationHandler.#.ctor(codeRR.Server.App.Core.Applications.IApplicationRepository,codeRR.Server.App.Core.Users.IUserRepository,DotNetCqs.IEventBus)"
+        )]
+[assembly:
+    SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope = "member",
+        Target =
+            "codeRR.Server.App.Core.Applications.EventHandlers.CreateDefaultAppOnAccountActivated.#.ctor(DotNetCqs.ICommandBus)"
+        )]
+[assembly:
+    SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope = "member",
+        Target =
+            "codeRR.Server.App.Core.Users.EventHandlers.CreateOnNewAccount.#.ctor(codeRR.Server.App.Core.Users.IUserRepository)"
+        )]
+[assembly:
+    SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope = "member",
+        Target = "codeRR.Server.App.Modules.Messaging.Templating.DateFormatter.#FormatAgo(System.DateTime)")]
+[assembly:
+    SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope = "member",
+        Target =
+            "codeRR.Server.App.Core.Users.WebApi.GetUserSettingsHandler.#.ctor(codeRR.Server.App.Core.Notifications.INotificationsRepository,codeRR.Server.App.Core.Users.IUserRepository)"
+        )]
+[assembly:
+    SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope = "member",
+        Target = "codeRR.Server.App.Core.Incidents.Incident.#ApplicationId")]
+[assembly:
+    SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope = "member",
+        Target = "codeRR.Server.App.Core.Incidents.Incident.#CreatedAtUtc")]
+[assembly:
+    SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope = "member",
+        Target = "codeRR.Server.App.Core.Feedback.InvalidErrorReport.#Id")]
+[assembly:
+    SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope = "member",
+        Target = "codeRR.Server.App.Core.Reports.Invalid.InvalidErrorReport.#Id")]
+[assembly:
+    SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope = "member",
+        Target =
+            "codeRR.Server.App.Core.Invitations.CommandHandlers.InviteUserHandler.#.ctor(codeRR.Server.App.Core.Invitations.Data.IInvitationRepository,DotNetCqs.IEventBus,codeRR.Server.App.Core.Users.IUserRepository,codeRR.Server.App.Core.Applications.IApplicationRepository,DotNetCqs.ICommandBus)"
+        )]
+[assembly:
+    SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope = "member",
+        Target = "codeRR.Server.App.Modules.Triggers.Domain.Actions.SendEmailTask.#.ctor(DotNetCqs.ICommandBus)")]
+[assembly:
+    SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope = "member",
+        Target =
+            "codeRR.Server.App.Core.Applications.EventHandlers.UpdateTeamOnInvitationAccepted.#.ctor(codeRR.Server.App.Core.Applications.IApplicationRepository)"
+        )]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Configuration.ErrorTracking")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Configuration.Messaging")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Core.Accounts")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Core.Accounts.CommandHandlers")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Core.Accounts.Queries")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Core.Applications")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Core.Applications.QueryHandlers")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Core.Feedback")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Core.Feedback.EventSubscribers")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Core.Incidents")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Core.Incidents.Commands")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Core.Invitations")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Core.Invitations.Data")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Core.Invitations.EventHandlers")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Core.Notifications")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Core.Notifications.EventHandlers")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Core.Notifications.Tasks")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Core.Reports")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Core.Reports.Invalid")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Core.Reports.Queries")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Core.Users")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Core.Users.WebApi")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Modules.Geolocation")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Modules.Geolocation.EventHandlers")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Modules.Messaging")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Modules.Messaging.Commands")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Modules.ReportSpikes")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Modules.Similarities.Domain.Adapters.Normalizers")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Modules.Similarities.Domain.Adapters.OperatingSystems")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Modules.Similarities.Domain.Adapters.Runner")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Modules.Similarities.EventHandlers")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Modules.Tagging.Domain")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Modules.Tagging.Handlers")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Modules.Triggers")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Modules.Triggers.Commands")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Modules.Triggers.Domain.Actions.Tools")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Modules.Triggers.Domain.Rules")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Modules.Triggers.EventHandlers")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Modules.Triggers.Queries")]
+[assembly:
+    SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Re", Scope = "member",
+        Target = "codeRR.Server.App.Modules.Triggers.Domain.Trigger.#RunForReOpenedIncidents")]
+[assembly:
+    SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Re", Scope = "member",
+        Target = "codeRR.Server.App.Core.Notifications.UserNotificationSettings.#ReOpenedIncident")]
+[assembly:
+    SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "ROLE", Scope = "member",
+        Target = "codeRR.Server.App.Core.Applications.Application.#ROLE_ADMIN")]
+[assembly:
+    SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "ROLE", Scope = "member",
+        Target = "codeRR.Server.App.Core.Applications.Application.#ROLE_MEMBER")]
+[assembly:
+    SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "SEQUENCE",
+        Scope = "member", Target = "codeRR.Server.App.Core.Accounts.Account.#SEQUENCE")]
+[assembly:
+    SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Api",
+        Scope = "namespace", Target = "codeRR.Server.App.Core.Users.WebApi")]
+[assembly:
+    SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "Username",
+        Scope = "member",
+        Target = "codeRR.Server.App.Core.Accounts.IAccountRepository.#FindByUsernameAsync(System.String)")]
+[assembly:
+    SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "FilterCondition",
+        Scope = "type", Target = "codeRR.Server.App.Modules.Triggers.Domain.FilterCondition")]
+[assembly:
+    SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "FilterCondition",
+        Scope = "member",
+        Target =
+            "codeRR.Server.App.Modules.Triggers.Queries.DomainToDtoConverters.#ConvertFilterCondition(codeRR.Server.App.Modules.Triggers.Domain.FilterCondition)"
+        )]
+[assembly:
+    SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope = "member",
+        Target =
+            "codeRR.Server.App.Core.Invitations.CommandHandlers.AcceptInvitationHandler.#.ctor(codeRR.Server.App.Core.Invitations.Data.IInvitationRepository,codeRR.Server.App.Core.Accounts.IAccountRepository,DotNetCqs.IEventBus)"
+        )]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "1", Scope = "member",
+        Target =
+            "codeRR.Server.App.Modules.Similarities.Domain.Adapters.OperatingSystemAdapter.#Adapt(codeRR.Server.App.Modules.Similarities.Domain.Adapters.Runner.ValueAdapterContext,System.Object)"
+        )]
+[assembly: SuppressMessage("Microsoft.Design", "CA1014:MarkAssembliesWithClsCompliant")]
+[assembly:
+    SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace",
+        Target = "codeRR.Server.App.Modules.Tagging")]
+[assembly:
+    SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope = "member",
+        Target = "codeRR.Server.App.Core.Feedback.FeedbackEntity.#CreatedAtUtc")]
+[assembly:
+    SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope = "member",
+        Target = "codeRR.Server.App.Core.Feedback.FeedbackEntity.#Description")]
+[assembly:
+    SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope = "member",
+        Target = "codeRR.Server.App.Core.Feedback.FeedbackEntity.#EmailAddress")]
+[assembly:
+    SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope = "member",
+        Target = "codeRR.Server.App.Core.Feedback.FeedbackEntity.#ErrorId")]
+[assembly:
+    SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope = "member",
+        Target = "codeRR.Server.App.Core.Incidents.Incident.#Id")]
+[assembly:
+    SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope = "member",
+        Target = "codeRR.Server.App.Core.Invitations.Invitation.#Id")]

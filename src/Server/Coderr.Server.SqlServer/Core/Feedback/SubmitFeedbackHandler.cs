@@ -8,6 +8,7 @@ using Coderr.Server.ReportAnalyzer.Abstractions.Feedback;
 using DotNetCqs;
 using Griffin.Data;
 using log4net;
+using Newtonsoft.Json;
 
 namespace Coderr.Server.SqlServer.Core.Feedback
 {
@@ -36,6 +37,23 @@ namespace Coderr.Server.SqlServer.Core.Feedback
                     return;
             }
 
+            // A bug where they had switched places.
+            var feedbackGotAt = command.Feedback?.Contains("@") == true;
+            var emailGotAt = command.Email?.Contains("@") == true;
+            if (!emailGotAt && feedbackGotAt)
+            {
+                var tmp = command.Email;
+                command.Email = command.Feedback;
+                command.Feedback = tmp;
+            }
+
+            if (!emailGotAt && !string.IsNullOrEmpty(command.Email) && string.IsNullOrEmpty(command.Feedback))
+            {
+                command.Feedback = command.Email;
+                command.Email = null;
+            }
+
+            _logger.Debug("data " + JsonConvert.SerializeObject(command));
             ReportMapping report2;
             int? reportId = null;
             if (command.ReportId > 0)
@@ -72,7 +90,7 @@ namespace Coderr.Server.SqlServer.Core.Feedback
                             "VALUES (@ErrorReportId, @RemoteAddress, @Description, @EmailAddress, @CreatedAtUtc, '', 0)";
                         cmd.AddParameter("ErrorReportId", command.ErrorId);
                         cmd.AddParameter("RemoteAddress", command.RemoteAddress);
-                        cmd.AddParameter("Description", command.Feedback);
+                        cmd.AddParameter("Description", command.Feedback ?? "");
                         cmd.AddParameter("EmailAddress", command.Email);
                         cmd.AddParameter("CreatedAtUtc", DateTime.UtcNow);
                         cmd.ExecuteNonQuery();
@@ -101,7 +119,7 @@ namespace Coderr.Server.SqlServer.Core.Feedback
                 cmd.AddParameter("ReportId", reportId);
                 cmd.AddParameter("IncidentId", report2.IncidentId);
                 cmd.AddParameter("RemoteAddress", command.RemoteAddress);
-                cmd.AddParameter("Description", command.Feedback);
+                cmd.AddParameter("Description", command.Feedback ?? "");
                 cmd.AddParameter("EmailAddress", command.Email);
                 cmd.AddParameter("Conversation", "");
                 cmd.AddParameter("CreatedAtUtc", DateTime.UtcNow);

@@ -1,0 +1,53 @@
+<div class="row">
+  <div class="col">
+    <div class="row">
+      <h2 class="text-shadow-1 text-white">Bug reports (sent from users)</h2>
+    </div>
+    <div class="row">
+      <div class="col panel" *ngIf="feedback.length === 0">
+        <div class="fill p-5">
+          <p>
+            There is no bug reports from users. Use <code>Err.LeaveFeedback()</code> to attach bug reports to errors, or activate the built in error forms.
+          </p>
+        </div>
+      </div>
+      <div class="col panel" *ngFor="let report of feedback">
+        <div class="fill p-5">
+          <p>
+            {{report.message}}
+          </p>
+          <hr />
+          <span>
+            written <strong>{{report.writtenAtUtc|ago}}</strong>
+            <span *ngIf="report.email">
+              by <strong>{{report.email}}</strong>
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="panel">
+      <h2 class="text-white text-shadow-1">Send status updates</h2>
+      <div class="fill p-5">
+        <p>There are currently {{emails.length}} user(s) waiting to here about this bug. Write them a small status update.</p>
+        <form class="form" [formGroup]="form" >
+          <div class="form-group">
+            <label>Subject</label>
+            <input formControlName="subject" type="text" class="form-control" placeholder="Subject in the outbound email" />
+          </div>
+          <div class="form-group">
+            <label>Text</label>
+            <textarea formControlName="body" placeholder="Is the error analyzed? Are there a workaround? Is the error correct? Which version will the bug fix be released in?"></textarea>
+          </div>
+          <div class="form-group">
+            <input type="button" class="btn red" value="Send" (click)="sendReport();false" />
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

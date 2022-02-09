@@ -1,0 +1,263 @@
+<div class="p-10 starter">
+  <div *ngIf="activePane === 'onboarding'">
+    <div class="row">
+      <div class="col">
+        <div class="mt-3">
+          <h1 class="text-shadow-1 text-white">Welcome to Coderr!</h1>
+        </div>
+        <div class="pb-0 mb-0">
+          &nbsp;&nbsp;
+          <label>
+            <input type="checkbox" (change)="hideOnboarding()" /> Hide introduction
+          </label>
+
+        </div>
+      </div>
+    </div>
+    <div class="panels">
+      <div class="panel" *ngIf="firstApplicationId">
+        <h3>Report errors</h3>
+        <div class="fill">
+          <div class="f-grow">
+            <p>
+              The best way to get started is to read our <a href="https://coderr.io/try#configuring-your-application">getting started guide</a>.
+            </p>
+            <p>
+              Our nuget packages are used detect and report errors in your application. To get started you need to install and configure our of our packages.
+            </p>
+            <p>
+              You can also read our <a href="https://coderr.io/documentation/pages/">wiki</a> or visit our <a href="https://coderr.io/guides-and-support">Guides and support</a> section at our homepage.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Before going to production</h3>
+        <div class="fill">
+          <p>
+            Coderr will by default throw exceptions and try to report errors directly to be able to tell if something is configured incorrectly. That's great
+            when you get started, but can have implications in production. To disable those features, do the following:
+          </p>
+
+          <p>Turn off Coderr's internal exceptions before going to production.</p>
+          <pre><code class="language-csharp">Err.Configuration.ThrowExceptions = false;</code></pre>
+
+          <p>Let Coderr report errors in the background (to not slow down your application while it tries to report errors).</p>
+          <pre><code>Err.Configuration.QueueReports = true;</code></pre>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Disable Coderr in Development environments</h3>
+        <div class="fill">
+          <div class="f-grow">
+            <p>You typically have full control over errors happening in development environments.</p>
+            <p>Learn how to conditionally enable Coderr in different environments to reduce noise.</p>
+          </div>
+          <a class="" href="https://coderr.io/documentation/features/incidents/environments/">Learn more</a>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Demo errors</h3>
+        <div class="fill">
+          <div class="f-grow">
+            <p>
+              Coderr can generate some demo errors so that you can quickly can see what Coderr provides for information.
+            </p>
+          </div>
+          <a [routerLink]="['/demo-errors']">Generate demo errors</a>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Application configuration (admin only)</h3>
+        <div class="fill">
+          <p>
+            You can monitor multiple applications in Coderr. To make it easier for you, we created an application named "DemoApp".
+          </p>
+          <p>
+            You can change its name and create more applications by clicking on the Cog wheel (<i class="fa fa-cog text-primary"></i>) at top right.
+          </p>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Invite co-workers (admin only)</h3>
+        <div class="fill">
+          <p>To invite co-workers, use the Cog wheel (<i class="fa fa-cog text-primary"></i>) found in top right menu, select one of your applications and then use the "Security" tab.</p>
+        </div>
+      </div>
+      <script>
+        document.querySelectorAll('pre code').forEach((block) => {
+          hljs.highlightBlock(block);
+        });
+      </script>
+
+    </div>
+  </div>
+
+  <div *ngIf="noApps">
+    <div class="col mb-2 mt-5">
+      <h2 class="text-white text-shadow-1">Getting started</h2>
+      <p class="lead">
+        You are not a member of any applications in Coderr yet. Ask your administrator to get invited.
+      </p>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="activePane !== 'onboarding'">
+    <div class="col fill f-grow">
+      <h2 class="text-shadow-1 text-muted pointer" style="display: inline;" (click)="setPane('applications')" [ngClass]="{'active': activePane === 'applications'}">Applications</h2>
+      &nbsp;
+      <h2 id="myErrors" class="text-shadow-1 text-muted pointer" style="display: inline;" (click)="setPane('my-errors')" [ngClass]="{'active': activePane === 'my-errors'}">My errors</h2>
+    </div>
+    <div class="col form" style="text-align: right" *ngIf="activePane === 'applications'">
+      <a class="btn white" (click)="createApplication()"><i class="fa fa-plus"></i> New application</a> <br />
+      <div class="mt-3">
+        <input type="text" class="form-control" id="appFilter" placeholder="Filter applications.." (keyup)="filter($event)" style="margin-top: 10px; width: 200px;" />
+        <a href="#" id="appGroups" class="btn white small m-1" title="Show application groups" (click)="showGroups();false"><i class="fa fa-object-group"></i></a>
+        <br /><em class="text-light" *ngIf="selectedGroup">(filtered on {{selectedGroup.name}})</em>
+      </div>
+    </div>
+  </div>
+
+  <div class="applications" *ngIf="activePane === 'applications'">
+    <div class="row">
+      <div class="col" *ngIf="applications.length === 0 && !noApps">No applications match your filter.</div>
+      <div class="col fb-300px" *ngFor="let app of applications">
+        <div class="panel">
+          <h3><a [routerLink]="['/application', app.id]" style="color: #fff">{{app.name}}</a></h3>
+          <div class="fill">
+            <div class="f-grow">
+              <table class="facts">
+                <tr>
+                  <th>Errors</th>
+                  <td>
+                    {{app.errors}}
+                    <span *ngIf="app.errors > 0" class="text-muted">(latest {{app.latestError|ago}})</span>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Reports</th>
+                  <td>
+                    {{app.reports}}
+                    <span *ngIf="app.reports > 0" class="text-muted">(latest {{app.latestReport|ago}})</span>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Affected users</th>
+                  <td>{{app.ReportCount}}0</td>
+                </tr>
+                <tr>
+                  <th>Users waiting</th>
+                  <td>{{app.followers}}</td>
+                </tr>
+                <tr>
+                  <th>Bug reports</th>
+                  <td>{{app.bugReports}}</td>
+                </tr>
+              </table>
+            </div>
+            <div style="display: flex; padding: 5px; margin-left: auto">
+              <a [routerLink]="['application', app.id]" href="" class="btn red small" title="Home"><i class="fa fa-home"></i></a>
+              <a [routerLink]="['application', app.id, 'errors']" href="" class="btn red small" title="New errors"><i class="fa fa-bug"></i></a>
+              <a [routerLink]="['application', app.id, 'mine']" href="" class="btn red small" title="My errors"><i class="fa fa-flask"></i></a>
+              <a [routerLink]="['application', app.id, 'insights']" href="" class="btn red small" title="Insights"><i class="text-white fa fa-chart-line"></i></a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="activePane === 'my-errors'">
+    <incident-stubs itemType="Mine"></incident-stubs>
+  </div>
+</div>
+
+<guide name="appFilter" *ngIf="activePane === 'applications'">
+  <h1>Filter</h1>
+  <div>
+    <p>Once you've added a couple of applications, filter them to quickly find the application that you want to work with.</p>
+  </div>
+</guide>
+<guide name="appGroups" *ngIf="activePane === 'applications'">
+  <h1>Application groups</h1>
+  <div>
+    <p>Groups are used to categorize applications and manage permissions on a higher level.</p>
+  </div>
+</guide>
+<guide name="myErrors" *ngIf="activePane === 'applications'">
+  <h1>My errors</h1>
+  <div>
+    <p>Once you've started to work with some errors, you can find them here.</p>
+  </div>
+</guide>
+
+
+<modal id="newAppModal">
+  <div class="panel">
+    <h3>Create component</h3>
+    <div class="fill">
+      <app-create (closed)="closeCreateAppModal()"></app-create>
+    </div>
+  </div>
+</modal>
+<modal id="groupFilter">
+  <div class="panel">
+    <h3>Select group to filter on</h3>
+    <div class="fill">
+      <div class="row">
+        <div class="col">
+          <p>Application groups are used to logically group applications into smaller lists.</p>
+        </div>
+        <div class="col" style="flex: 0 0 20px">
+          <a href="" (click)="createGroup();false" class="text-red"><i class="text-red fa fa-plus-square"></i></a><br />
+        </div>
+      </div>
+      <app-group-selector (selected)="selectGroup($event)"></app-group-selector>
+    </div>
+  </div>
+</modal>
+<modal id="createGroupModal">
+  <div class="panel">
+    <h3>Create group</h3>
+    <div class="fill">
+      <p>Application groups are used to logically group applications into smaller lists.</p>
+      <app-group-add (closed)="onGroupCreated()"></app-group-add>
+    </div>
+  </div>
+</modal>
+
+
+<guide name="showGuideTooltip">
+  <h1>Short guides</h1>
+  <div>
+    <p>When this icon is yellow, click on it to see a short summary of a feature in Coderr.</p>
+    <p>It's the best way to get started quickly and to learn about new features after a release.</p>
+  </div>
+</guide>
+
+<guide name="sysAdminOption">
+  <h1>System administration</h1>
+  <div>
+    <p>Here you can find security settings, api keys, group management and white lists (for front-ends).</p>
+  </div>
+</guide>
+
+<guide name="sysAdminSupport">
+  <h1>Support</h1>
+  <div>
+    <p>We, the developers of this service, would love to help. You can also just message us to discuss about code quality.</p>
+  </div>
+</guide>
+
+<guide name="accountSettings">
+  <h1>Account settings</h1>
+  <div>
+    <p>Get notified ASAP when new errors are detected, or when they are escalated by Coderr.</p>
+  </div>
+</guide>
+
+

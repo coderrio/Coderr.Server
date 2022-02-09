@@ -1,0 +1,41 @@
+@import "../../styles/_partials/coderr-variables.scss";
+
+#showGuideTooltip .gotGuide {
+  animation: pulsingGuide 2s infinite;
+  background-color: #f3ec78;
+  background-image: linear-gradient(0deg, $red, $red 50%, $red-60);
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+}
+
+@keyframes test_hover {
+  from {
+    background-position: 0% 100%;
+  }
+
+  to {
+    background-position: 100% 0%;
+  }
+}
+
+@keyframes pulsingGuide {
+  0% {
+    background-image: linear-gradient(0deg, $red, $red 70%, $red-60);
+  }
+
+  50% {
+    background-image: linear-gradient(90deg, $red, $red 70%, $red-60);
+  }
+
+  75% {
+    background-image: linear-gradient(180deg, $red, $red 70%, $red-60);
+  }
+
+
+  100% {
+    background-image: linear-gradient(270deg, $red, $red 70%, $red-60);
+  }
+}

@@ -7,19 +7,34 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <div class="navbar-collapse collapse" v-if="onboarding">
+            <div class="navbar-collapse collapse" v-if="!showMenu">
                 <ul class="navbar-nav mr-auto" id="onboardingMenu">
                     <li class="nav-item">
                         <router-link class="nav-link" to="/discover/" :exact="true" v-bind:class="{active: isDiscoverActive}">
-                            <span class="fa fa-magic"></span> Configure your application
+                            Onboarding
                         </router-link>
                     </li>
                 </ul>
             </div>
-            <div class="navbar-collapse collapse" v-if="!onboarding">
+            <div class="navbar-collapse collapse" v-if="showMenu">
                 <ul class="navbar-nav mr-auto" id="mainMenu">
-                    <li class="nav-item">
-                        <a class="nav-link" id="mnuCurrentApplication" @click.prevent="toggleMenu = !toggleMenu">{{currentApplicationName}} <i class="fa fa-chevron-down"></i></a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="mnuCurrentApplication" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{currentApplicationName}}</a>
+                        <div class="dropdown-menu">
+                            <form class="bg-light mb-4">
+                                <nav>
+                                    <div class="nav nav-pills groups" id="nav-tab" role="tablist">
+                                        <a v-for="group in appGroups" class="nav-item nav-link text-dark" data-toggle="tab" href="#" @click="showApps(group.id)" role="tab" aria-controls="nav-home" aria-selected="true">{{group.name}}</a>
+                                    </div>
+                                </nav>
+                            </form>
+
+                            <a v-on:click.prevent="changeApplication(null)" class="dropdown-item"><i class="fa fa-home"></i> All applications</a>
+                            <div class="dropdown-divider"></div>
+                            <div v-for="item in myApplications">
+                                <a href="#" v-on:click.prevent="changeApplication(item.id)" class="dropdown-item"><i class="fa-desktop fa"></i> {{item.name}}</a>
+                            </div>
+                        </div>
                     </li>
                     <li class="nav-item">
                         <router-link class="nav-link" :to="discoverLink" id="DiscoverMenu">
@@ -31,16 +46,23 @@
                             <span class="fa fa-flask"></span> Analyze
                         </router-link>
                     </li>
-                    <!--<li class="nav-item">
-                    <router-link class="nav-link" :to="{ name:'deploymentHome', params: { 'applicationId': currentApplicationId} }">
-                        <span class="fa fa-truck"></span> Deployment insights
-                    </router-link>
-                </li>-->
-
                     <li class="nav-item">
-                        <a class="nav-link" href="https://coderr.io/features/community/limit">
-                            <em>{{missedReportsMessage}}</em>
-                        </a>
+                        <router-link class="nav-link" :to="{ name:'deploymentHome', params: { 'applicationId': currentApplicationId} }">
+                            <span class="fa fa-chart-line"></span> Insights
+                        </router-link>
+                    </li>
+                    <li class="nav-item" v-show="showOnboarding">
+                        <router-link class="nav-link text-red" :to="{ name:'onboardNextStep', params: { 'applicationId': currentApplicationId} }">
+                            <span class="fa fa-hand-point-right text-red"></span> Onboarding
+                        </router-link>
+                    </li>
+                    <!--<li class="nav-item">
+        <a class="nav-link" href="https://coderr.io/features/community/limit">
+            <em>{{missedReportsMessage}}</em>
+        </a>
+    </li>-->
+                    <li class="nav-item">
+                        <em class="licenseInfo" v-html="licenseText" style="display: block;padding: 0.65rem 1rem; color: #999999;"></em>
                     </li>
                 </ul>
                 <div class="right-menu">

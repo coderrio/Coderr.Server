@@ -7,6 +7,13 @@ import { GetIncidentResult } from "@/dto/Core/Incidents";
 import { GetApplicationVersions, GetApplicationVersionsResult } from "@/dto/Core/Applications";
 import { GetReportList, GetReportListResult, GetReportListResultItem, GetReport, GetReportResult, GetReportResultContextCollection } from "@/dto/Core/Reports";
 import { Component, Vue } from "vue-property-decorator";
+import * as workItems from "@/common/services/WorkItemService";
+
+declare global {
+    interface Window {
+        gtag(type: string, type2: string, data: any): void;
+    }
+}
 
 @Component
 export default class AnalyzeIncidentComponent extends Vue {
@@ -29,6 +36,12 @@ export default class AnalyzeIncidentComponent extends Vue {
     closeVersion = '';
 
     highlights: IHighlight[] = [];
+
+    workItem: workItems.IWorkItem = null;
+    workItemIntegration: workItems.IIntegration = { title:'', name:'' };
+    haveWorkItem: boolean | null = null;
+    haveWorkItemIntegration: boolean | null = null;
+    showCreateWorkItemButton: boolean = false;
 
     created() {
         // required for contextnavigator
@@ -94,6 +107,13 @@ export default class AnalyzeIncidentComponent extends Vue {
         AppRoot.Instance.incidentService.get(this.incidentId)
             .then(incident => {
                 this.incident = incident;
+                if (this.incident.Tags.indexOf("demo") === -1 && window.gtag) {
+                    setTimeout(() => {
+                            window.gtag('event', 'conversion', { 'send_to': 'AW-1029996736/49DdCJf0_vABEMCBkusD' });
+                        },
+                        1000);
+                }
+
                 AppRoot.Instance.applicationService.getTeam(incident.ApplicationId)
                     .then(x => {
                         this.team = x;
@@ -121,6 +141,8 @@ export default class AnalyzeIncidentComponent extends Vue {
                     document.querySelector("[name='version']").setAttribute('value', this.closeVersion);
                 });
 
+                this.findIntegration(incident.ApplicationId);
+                this.loadWorkItem();
             });
 
         var q = new GetReportList();
@@ -195,6 +217,32 @@ export default class AnalyzeIncidentComponent extends Vue {
 
         }
 
+    }
+
+    createWorkItem() {
+        const service = new workItems.WorkItemService();
+        service.createWorkItem(this.incident.ApplicationId, this.incidentId);
+        this.showCreateWorkItemButton = false;
+        AppRoot.notify("Work item have been created.");
+    }
+
+    private async loadWorkItem() {
+        const service = new workItems.WorkItemService();
+        this.workItem = await service.getWorkItem(this.incidentId);
+        this.haveWorkItem = this.workItem != null;
+        this.toggleWorkItemUi();
+    }
+
+
+    private async findIntegration(applicationId: number) {
+        const service = new workItems.WorkItemService();
+        this.workItemIntegration = await service.findIntegration(applicationId);
+        this.haveWorkItemIntegration = this.workItemIntegration != null;
+        this.toggleWorkItemUi();
+    }
+
+    private toggleWorkItemUi() {
+        this.showCreateWorkItemButton = this.haveWorkItemIntegration && this.haveWorkItem === false;
     }
 
 

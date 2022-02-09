@@ -7,13 +7,14 @@ namespace Coderr.Server.Domain.Modules.ReportSpikes
     /// <summary>
     ///     A spike is when we receive an unusual amount of reports during a short period of time for an application.
     /// </summary>
+    [Obsolete("Use SpikeAggregation instead.")]
     public class ErrorReportSpike
     {
         /// <summary>
         ///     Creates a new instance of <see cref="ErrorReportSpike" />
         /// </summary>
         /// <param name="applicationId">Application that the spike was detected for</param>
-        /// <param name="count">Initial count when the spike was detetced</param>
+        /// <param name="count">Initial count when the spike was detected</param>
         public ErrorReportSpike(int applicationId, int count)
         {
             if (applicationId <= 0) throw new ArgumentOutOfRangeException("applicationId");

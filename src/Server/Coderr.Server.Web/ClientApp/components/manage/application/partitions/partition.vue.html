@@ -4,53 +4,73 @@
             <div class="col-lg-8 col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        Partitions
+                        Partitions (for incident recommendations/prioritization)
                         <div class="float-right">
-                            <router-link class="btn-sm btn btn-outline-primary" :to="{ name: 'createPartition', params: {applicationId: applicationId }}">Create new</router-link>
+                            <router-link class="btn-sm btn btn-primary text-white" :to="{ name: 'createPartition', params: {applicationId: applicationId }}">Create new</router-link>
                         </div>
 
                     </div>
                     <div class="card-body">
-                        <table class="table table-striped table-bordered">
+                        <table class="table table-striped partition-table">
                             <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Key</th>
-                                    <th>Weight</th>
-                                    <th>&nbsp;</th>
-                                </tr>
+                            <tr>
+                                <th>Name</th>
+                                <th>Key</th>
+                                <th>Weight</th>
+                                <th>&nbsp;</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="partition in partitions">
-                                    <td>{{partition.Name}}</td>
-                                    <td>{{partition.PartitionKey}}</td>
-                                    <td>{{partition.Weight}}</td>
-                                    <td>
-                                        <router-link :to="{name: 'editPartition', params: {partitionId: partition.Id, applicationId: applicationId }}">
-                                            <i class="fa fa-edit text-primary"></i>
-                                        </router-link>
-                                        <a href="#" @click.prevent="deletePartition(partition.Id)">
-                                            <i class="fa fa-trash text-danger"></i>
-                                        </a>
+                            <tr v-for="partition in partitions">
+                                <td>{{partition.Name}}</td>
+                                <td>{{partition.PartitionKey}}</td>
+                                <td>{{partition.Weight}}</td>
+                                <td>
+                                    <router-link :to="{name: 'editPartition', params: {partitionId: partition.Id, applicationId: applicationId }}">
+                                        <i class="fa fa-edit text-primary"></i>
+                                    </router-link>
+                                    <a href="#" @click.prevent="deletePartition(partition.Id)">
+                                        <i class="fa fa-trash text-danger"></i>
+                                    </a>
 
-                                    </td>
-                                </tr>
+                                </td>
+                            </tr>
                             </tbody>
                             <tfoot v-if="partitions.length == 0" class="">
-                                <tr>
-                                    <td colspan="4">
-                                        No partitions have been created
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td colspan="4">
+                                    No custom insights have been created.
+                                </td>
+                            </tr>
                             </tfoot>
                         </table>
-                        <em>
-                            Partitions are used to prioritize incidents based in operational aspects that are important to you.
-                            <a href="https://coderr.io/documentation/client/partitions/" target="_self">Read more</a>
-                        </em>
-
                     </div>
                 </div>
+            </div>
+            <div class="col">
+                <div class="alert alert-blue">
+                    <h3>Partitions</h3>
+                    <p>
+                        <em>
+                            Partitions are used to learn how your systems and users are affected by each error. We also
+                            prioritize errors based on them to make sure that you correct the right error at the right time.
+                        </em>
+
+                    </p>
+                    <p>
+                        <a href="https://coderr.io/documentation/features/recommendations/" class="text-blue" target="_blank">Read more</a>
+                    </p>
+                    <h3>Notifications</h3>
+                    <p>
+                        <em>
+                            You can get notified when incidents are escalated to important or critical.
+                        </em>
+                    </p>
+                    <p>
+                        <a href="https://coderr.io/documentation/features/incidents/notifications/" class="text-blue" target="_blank">Read more</a>
+                    </p>
+                </div>
+
             </div>
         </div>
     </div>

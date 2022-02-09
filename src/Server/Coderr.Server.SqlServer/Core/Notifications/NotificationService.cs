@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Coderr.Client;
 using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Domain.Modules.UserNotifications;
+using Coderr.Server.ReportAnalyzer.UserNotifications;
 using Coderr.Server.ReportAnalyzer.UserNotifications.Dtos;
 using log4net;
+using Newtonsoft.Json;
 
-namespace Coderr.Server.ReportAnalyzer.UserNotifications
+namespace Coderr.Server.SqlServer.Core.Notifications
 {
     // Must be here so that it can be used from both queues.
     /// <summary>
@@ -34,15 +37,18 @@ namespace Coderr.Server.ReportAnalyzer.UserNotifications
             {
                 try
                 {
+                    _logger.Info("sending " + JsonConvert.SerializeObject(notification) + " to " + subscription.AccountId);
                     await _client.SendNotification(subscription, notification);
                 }
                 catch (InvalidSubscriptionException e)
                 {
+                    Err.Report(e, new {accountId, notification, subscription });
                     _logger.Error("Failed to send notification to " + subscription.AccountId, e);
                     await _repository.Delete(subscription);
                 }
                 catch (Exception e)
                 {
+                    Err.Report(e, new { accountId, notification, subscription });
                     _logger.Error("Failed to send notification to " + subscription.AccountId, e);
                 }
             }

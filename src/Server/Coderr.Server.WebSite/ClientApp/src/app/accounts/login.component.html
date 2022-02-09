@@ -1,0 +1,32 @@
+<div style="width:100%;height:100%;display:flex;justify-content:center;align-items:center;">
+  <div class="panel" style="max-width: 600px;">
+    <div>
+      <h1 class="text-shadow-1 text-white">Login</h1>
+    </div>
+    <div class="fill p-3">
+      <form method="post" [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form">
+
+        <div>
+          <label for="userName">
+            Username
+          </label>
+          <input id="userName" type="text" formControlName="userName">
+        </div>
+
+        <div>
+          <label for="password">
+            Password
+          </label>
+          <input id="password" type="password" formControlName="password">
+        </div>
+
+        <span class="error" style="white-space: pre-line">{{errorMessage}}</span>
+        <button class="button" type="submit">Login</button>
+
+      </form>
+
+    </div>
+    <div class="panel-footer"></div>
+  </div>
+
+</div>

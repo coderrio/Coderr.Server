@@ -1,0 +1,32 @@
+.disable * {
+
+}
+.members td:first-child {
+    width: 150px;
+}
+
+.new-item {
+    animation-name: blinker;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-iteration-count: 1;
+}
+
+@keyframes blinker {
+    0% {
+        opacity: 1.0;
+        color: red;
+    }
+
+    50% {
+        opacity: 0.0;
+    }
+
+    75% {
+        opacity: 1.0;
+        color: black;
+    }
+    100% {
+        opacity: 0;
+    }
+}

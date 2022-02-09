@@ -1,0 +1,9 @@
+.svg {
+    &.blue {
+        filter: invert(77%) sepia(17%) saturate(1201%) hue-rotate(144deg) brightness(89%) contrast(87%);
+    }
+
+    &.red {
+        filter: invert(57%) sepia(89%) saturate(365%) hue-rotate(326deg) brightness(98%) contrast(92%);
+    }
+}

@@ -70,8 +70,9 @@ export default class EditWhitelistComponent extends Vue {
                     this.apps[0].selected = !anySelected;
                     this.disableCheckToggle = false;
                     this.domainName = entry.DomainName;
+
                     this.ipAddresses = entry.IpAddresses
-                        .filter(x => x.Type.toString() === whitelist.IpType[whitelist.IpType.Manual])
+                        .filter(x => x.Type === whitelist.IpType.Manual)
                         .map<IIpAddress>(x => <IIpAddress>{
                             id: x.Id,
                             address: x.Address,

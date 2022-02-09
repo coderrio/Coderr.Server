@@ -6,7 +6,7 @@ namespace Coderr.Server.App.Modules.Messaging.Templating.Formatting
 {
     public class JObjectReflector
     {
-        private readonly Dictionary<string, object> _items = new Dictionary<string, object>();
+        private readonly Dictionary<string, object> _items = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
         ///     Checks if the specified type could be traversed or just added as a value.

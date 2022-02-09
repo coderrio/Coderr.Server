@@ -1,0 +1,31 @@
+<form class="form" (ngSubmit)="save()" [attr.disabled]="disabled">
+  <div class="panel">
+    <h2>Edit group '{{name}}'</h2>
+    <div class="fill">
+      <div class="form-control">
+        <label class="label">Name</label>
+        <input required type="text" name="name" [(ngModel)]="name" placeholder="Name describing this group" />
+      </div>
+      <div class="form-control">
+        <label>Applications</label>
+        <p>
+          <em class="small">Application(s) that are displayed under this group.</em>
+        </p>
+        <div *ngFor="let item of applications">
+          <input type="checkbox" [name]="'app' + item.id" [id]="'app' + item.id" [value]="item.id" [(ngModel)]="item.selected" style="display: inline" />
+          <label [for]="'app' + item.id" style="display: inline">
+            {{item.name}}
+          </label>
+        </div>
+        <p>
+          <em class="small">Only unassigned applications are shown here, to move an application, edit its settings.</em>
+        </p>
+      </div>
+    </div>
+    <div>
+      <button type="submit" class="btn">Save</button>
+      <button type="reset" class="btn" (click)="cancel()">Cancel</button>
+    </div>
+  </div>
+
+</form>

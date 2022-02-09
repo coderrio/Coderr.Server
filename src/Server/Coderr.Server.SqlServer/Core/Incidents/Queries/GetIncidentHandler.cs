@@ -37,7 +37,7 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
             var sql =
                 "SELECT Incidents.*, Users.Username as AssignedTo " +
                 " FROM Incidents WITH(READUNCOMMITTED)" +
-                " LEFT JOIN Users WITH(READUNCOMMITTED) ON (AssignedToId = Users.AccountId) " +
+                " LEFT JOIN Users ON (AssignedToId = Users.AccountId) " +
                 " WHERE Incidents.Id = @id";
 
             var result = await _unitOfWork.FirstAsync<GetIncidentResult>(sql, new { Id = query.IncidentId });
@@ -46,27 +46,7 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
             result.Tags = GetTags(query.IncidentId);
             _logger.Info("GetIncident step 3");
 
-            var facts = new List<QuickFact>
-            {
-                new QuickFact
-                {
-                    Title = "Created",
-                    Description = "When we received the first error report",
-                    Value = result.CreatedAtUtc.ToShortDateString()
-                },
-                new QuickFact
-                {
-                    Title = "Last report",
-                    Description = "When we received the most recent error report",
-                    Value = result.LastReportReceivedAtUtc.ToShortDateString()
-                },
-                new QuickFact
-                {
-                    Title = "Report Count",
-                    Description = "Number of reports since this incident was discovered",
-                    Value = result.ReportCount.ToString("### ### ###")
-                }
-            };
+            var facts = new List<QuickFact>();
 
             var environments = GetEnvironments(query.IncidentId);
             if (environments.Any())
@@ -123,7 +103,7 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
             _logger.Info("GetIncident step 8");
 
             result.RelatedIncidents = await GetRelatedIncidents(query.IncidentId);
-            result.Facts = facts.ToArray();
+            result.Facts = facts.Where(x => x.Value != "0" && x.Value != "").ToArray();
             result.SuggestedSolutions = solutions.ToArray();
             result.HighlightedContextData = contextData.ToArray();
             return result;

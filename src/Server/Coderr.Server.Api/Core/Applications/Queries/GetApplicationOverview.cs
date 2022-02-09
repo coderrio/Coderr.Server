@@ -44,5 +44,15 @@ namespace Coderr.Server.Api.Core.Applications.Queries
         /// Filter on a specific version ("1.1.0")
         /// </summary>
         public string Version { get; set; }
+
+        /// <summary>
+        /// Load chart data.
+        /// </summary>
+        public bool IncludeChartData { get; set; } = true;
+
+        /// <summary>
+        /// Include summary count per partition.
+        /// </summary>
+        public bool IncludePartitions { get; set; } = false;
     }
 }

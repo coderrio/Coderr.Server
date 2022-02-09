@@ -1,0 +1,99 @@
+<template>
+    <div class="m-2 onboarding-view">
+        <div class="guide">
+            <div class="page container" v-show="page == 1">
+                <h2>Welcome to Coderr!</h2>
+                <p>
+                    This guide takes at most a couple of minutes to complete, follow it and you'll have a much more efficient evaluation of Coderr.
+                </p>
+                <p>
+                    We know that you have full control over the errors in your dev environment. When evaluating,
+                    keep in mind that Coderr is designed to detect and analyze bugs in your production environment.
+                </p>
+                <p>Are you using Node.js or .NET?</p>
+                <button class="btn btn-red shadow-lg text-light" @click="selectFramework('nodejs')">Node.js</button>
+                <button class="btn btn-red shadow-lg text-light" @click="selectFramework('dotnet')">.NET</button>
+            </div>
+            <div class="page container" v-show="page == 2">
+                <h2>Demo incidents</h2>
+                <p>
+                    We can generate example errors to demonstrate what kind of information Coderr provides.
+                </p>
+                <p><strong><em>Click on the examples relevant to your use case.</em></strong></p>
+                <div v-for="category in demoIncidents">
+                    <h3>{{category.name}}</h3>
+                    <div class="row">
+                        <div class="bg-dark alert col m-2" :class="{ selected: item.selected }" style="max-width: 30vw" v-for="item in category.items" @click="toggleMe(item)">
+                            <strong class="text-blue">{{item.title}}</strong>
+                            <p class="pt-2 text-light">
+                                {{item.description}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer">
+                    <hr />
+                    <button class="btn btn-red shadow-lg text-light" @click="generateErrors()">Generate demo errors</button>
+                    <button class="btn btn-white shadow-lg text-dark" @click="showComplete()">Skip</button>
+                </div>
+            </div>
+
+            <div class="page" v-show="page == 3">
+                <div class="row">
+                    <div class="col">
+                        <h2>First steps complete!</h2>
+                        <p>
+                            The main menu will now get activated.
+                        </p>
+                        <div>
+                            <img src="/onboarding/main-menu.png" />
+                        </div>
+                        <ul class="mt-2">
+                            <li><strong>(All applications)</strong> - Work with a specific application.</li>
+                            <li><strong>Discover</strong> - Find errors to solve.</li>
+                            <li><strong>Analyze</strong> - Correct your errors (assigned to you).</li>
+                            <li><strong>Insights</strong> - Follow up on the team performance.</li>
+                        </ul>
+                        <h2>What's next?</h2>
+                        <p>
+                            The example errors are being generated. Click on the "Onboarding" link in the top menu once you
+                            have looked at them to continue with the evaluation.
+                        </p>
+                    </div>
+                    <div class="col">
+                        <h2>Coderr benefits</h2>
+                        <p>
+                            What Coderr does is to automate most steps in the bug management process and collect information to make it easier to solve errors.
+                        </p>
+                        <img src="/onboarding/lifecycle.svg" class="img-fluid" />
+                        <h3>Key takeaways</h3>
+                        <ul>
+                            <li>Coderr reports the error directly when it happens the first time for the first user.</li>
+                            <li>Coder identifies duplicate error reports.</li>
+                            <li>Coderr prioritizes and escalates errors based on your criteria.</li>
+                            <li>Reproducing bugs is more comfortable thanks to the information that Coderr supplies.</li>
+                            <li>Coderr ignores error reports for already corrected errors.</li>
+                        </ul>
+
+                    </div>
+                </div>
+
+              
+                <div class="footer">
+                    <hr />
+                    <p v-if="showChat">
+                        <strong><em class="">The chat down/right is manned by our developers. No one is going to try to sell you something. We love to chat about code quality!</em></strong>
+                    </p>
+                    
+                    <button class="btn btn-red text-light shadow-lg" @click="exitGuide()">Let's start!</button>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</template>
+
+
+<style src="./start.css"></style>
+<script src="./start.ts"></script>

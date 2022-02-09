@@ -1,0 +1,34 @@
+<div class="panel">
+  <h2>{{group.name}}</h2>
+  <div class="fill">
+    <h4>Applications</h4>
+    <ul>
+      <li *ngFor="let app of apps">
+        {{app.name}}
+      </li>
+    </ul>
+    <div *ngIf="group.applications.length == 0">
+      <p><em>No applications have been added to the group.</em></p>
+    </div>
+
+  </div>
+  <div>
+    <a [routerLink]="['edit']" class="btn">Edit</a>
+    <a href="#" (click)="verifyRemove(); false" class="btn red" *ngIf="group.id != 1">Remove</a>
+  </div>
+</div>
+
+<modal id="verifyRemoveModal">
+  <div class="panel">
+    <h3>Confirm removal</h3>
+    <div class="fill">
+      <form (ngSubmit)="removeEntry();" class="form">
+        <div>
+          Are you sure that you want to remove this group? All applications will be moved to the generic group.
+        </div>
+        <button type="submit">Yes</button>
+        <button type="reset" (click)="cancelRemove();false">No</button>
+      </form>
+    </div>
+  </div>
+</modal>

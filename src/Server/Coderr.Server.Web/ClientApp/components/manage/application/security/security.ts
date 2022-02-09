@@ -101,9 +101,11 @@ export default class ManageHomeComponent extends Vue {
         AppRoot.notify('Invitation have been sent.');
         var dto = new GetApplicationTeamResultInvitation();
         dto.EmailAddress = cmd.EmailAddress;
+        dto.InvitedByUserName = AppRoot.Instance.currentUser.name;
         this.invites.push(dto);
         this.inviteEmail = '';
         var form = <HTMLFormElement>evt.target;
+
         form.reset();
     }
 

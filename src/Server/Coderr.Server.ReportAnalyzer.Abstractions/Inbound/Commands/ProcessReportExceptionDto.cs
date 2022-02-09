@@ -14,7 +14,7 @@ namespace Coderr.Server.ReportAnalyzer.Abstractions.Inbound.Commands
         /// </summary>
         public ProcessReportExceptionDto()
         {
-            Properties = new Dictionary<string, string>();
+            Properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         }
 
         /// <summary>

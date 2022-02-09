@@ -1,0 +1,100 @@
+@import "../../../../styles/_partials/coderr-variables.scss";
+@import "../../../../styles/_partials/_mixins.scss";
+
+.submenu {
+  color: #ddd;
+  background: $nav-sub-bg;
+  padding-top: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+
+  .groups {
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    a {
+      background-color: $nav-sub-tab;
+      padding: 5px;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+    }
+  }
+
+  a {
+    color: $nav-text;
+    text-decoration: none;
+  }
+
+  .application-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .application-list div {
+    padding: 5px;
+  }
+
+  .state {
+    margin-top: 10px;
+    padding-bottom: 10px;
+
+    dl {
+      display: inline;
+
+      dt {
+        display: inline;
+        color: #999;
+        margin-right: 5px;
+      }
+
+      dd {
+        display: inline;
+        margin-left: 0;
+        margin-right: 10px;
+
+        select {
+          border-radius: 3px;
+          padding: 2px;
+          background-color: rgba(0, 0, 0, 0.3);
+          border-color: rgba(255, 255, 255, 0.1);
+          color: #ddd;
+        }
+      }
+    }
+
+    .tags {
+      display: inline;
+
+      span {
+        border-radius: 2px;
+        padding: 2px;
+        font-size: 0.8em;
+        background-color: darken($blue, 40%);
+        margin-right: 5px;
+      }
+    }
+  }
+
+  .actions {
+    margin-left: auto;
+    margin-bottom: 3px;
+    margin-top: auto;
+
+    a {
+      color: darken($blue, 50%);
+      padding: 3px 5px;
+      border-top: 1px solid darken($blue, 10%);
+      border-left: 1px solid darken($blue, 10%);
+      border-right: 1px solid darken($blue, 10%);
+      background-color: $blue;
+
+      &.active {
+        color: lighten($blue, 50%);
+      }
+
+      &:hover {
+        color: $red;
+      }
+    }
+  }
+}

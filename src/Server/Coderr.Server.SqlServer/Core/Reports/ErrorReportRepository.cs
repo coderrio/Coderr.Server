@@ -10,6 +10,7 @@ using Coderr.Server.Domain.Core.ErrorReports;
 using Coderr.Server.ReportAnalyzer.Abstractions;
 using Griffin.Data;
 using Griffin.Data.Mapper;
+using log4net;
 
 namespace Coderr.Server.SqlServer.Core.Reports
 {
@@ -17,6 +18,7 @@ namespace Coderr.Server.SqlServer.Core.Reports
     internal class ErrorReportRepository : IReportsRepository
     {
         private readonly IAdoNetUnitOfWork _uow;
+        private ILog _logger = LogManager.GetLogger(typeof(ErrorReportRepository));
 
         public ErrorReportRepository(IAdoNetUnitOfWork uow)
         {
@@ -26,6 +28,7 @@ namespace Coderr.Server.SqlServer.Core.Reports
         public async Task<ErrorReportEntity> GetAsync(int id)
         {
             ErrorReportEntity report;
+
             using (var cmd = (DbCommand)_uow.CreateCommand())
             {
                 cmd.CommandText =
@@ -45,10 +48,11 @@ namespace Coderr.Server.SqlServer.Core.Reports
                         ORDER BY Name";
 
                 cmd.AddParameter("id", id);
+
                 using (var reader = await cmd.ExecuteReaderAsync())
                 {
                     string previousCollectionName = null;
-                    var properties = new Dictionary<string, string>();
+                    var properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
                     string currentCollectionName = null;
                     while (await reader.ReadAsync())
                     {
@@ -63,7 +67,7 @@ namespace Coderr.Server.SqlServer.Core.Reports
                         {
                             var collection = new ErrorReportContextCollection(previousCollectionName ?? currentCollectionName, properties);
                             collections.Add(collection);
-                            properties = new Dictionary<string, string>();
+                            properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
                             previousCollectionName = currentCollectionName;
                             report.Add(collection);
                         }
@@ -82,6 +86,7 @@ namespace Coderr.Server.SqlServer.Core.Reports
                 }
             }
 
+            _logger.Debug("Getting4..");
             return report;
         }
 
@@ -91,8 +96,8 @@ namespace Coderr.Server.SqlServer.Core.Reports
             {
                 cmd.CommandText =
                     @"SELECT ir.Id, ir.IncidentId, i.ApplicationId, ir.ReceivedAtUtc, ir.ErrorId
-                        FROM IncidentReports ir
-                        JOIN Incidents i ON (i.Id = ir.IncidentId)
+                        FROM IncidentReports ir WITH (READUNCOMMITTED)
+                        JOIN Incidents i  WITH (READUNCOMMITTED) ON (i.Id = ir.IncidentId)
                         WHERE ErrorId = @id";
 
                 cmd.AddParameter("id", errorId);

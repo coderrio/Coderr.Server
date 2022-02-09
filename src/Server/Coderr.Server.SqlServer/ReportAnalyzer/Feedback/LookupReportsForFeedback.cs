@@ -89,7 +89,7 @@ namespace Coderr.Server.SqlServer.ReportAnalyzer.Feedback
                     if (item.ErrorId != null)
                     {
                         cmd.CommandText = @"SELECT IncidentReports.Id, ApplicationId, IncidentId 
-                                                FROM IncidentReports 
+                                                FROM IncidentReports WITH (READUNCOMMITTED)
                                                 JOIN Incidents WITH(READUNCOMMITTED)  ON (Incidents.Id = IncidentId)
                                                 WHERE ErrorId = @id";
                         cmd.AddParameter("id", item.ErrorId);

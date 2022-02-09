@@ -9,6 +9,7 @@ using Coderr.Server.Domain.Core.Account;
 using Coderr.Server.Infrastructure.Configuration;
 using DotNetCqs;
 using log4net;
+using log4net.Appender;
 
 namespace Coderr.Server.App.Core.Accounts.CommandHandlers
 {
@@ -74,7 +75,7 @@ namespace Coderr.Server.App.Core.Accounts.CommandHandlers
             // accounts can be activated directly.
             // should not send activation email then.
             if (account.AccountState == AccountState.VerificationRequired)
-                await SendVerificationEmail(context, account);
+                await SendVerificationEmail(context, account, command.ReturnUrl);
 
             var evt = new AccountRegistered(account.Id, account.UserName) { IsSysAdmin = account.IsSysAdmin };
             await context.SendAsync(evt);
@@ -111,9 +112,16 @@ Regards,
             await context.SendAsync(new SendEmail(msg));
         }
 
-        private Task SendVerificationEmail(IMessageContext context, Account account)
+        private Task SendVerificationEmail(IMessageContext context, Account account, string returnUrl)
         {
             var config = _configStore.Load<BaseConfiguration>();
+
+            var url = $"{config.BaseUrl.ToString().TrimEnd('/')}/account/activate/{account.ActivationKey}";
+            if (returnUrl != null)
+            {
+                url += "?returnUrl=" + returnUrl;
+            }
+
             //TODO: HTML email
             var msg = new EmailMessage
             {
@@ -122,10 +130,10 @@ Regards,
 
 Your activation code is: {0}
 
-You can activate your account by clicking on: {1}/account/activate/{0}
+You can activate your account by clicking on: {1}
 
 Good luck,
-  Coderr Team", account.ActivationKey, config.BaseUrl.ToString().TrimEnd('/')),
+  Coderr Team", account.ActivationKey, url),
                 Subject = "Coderr activation"
             };
             msg.Recipients = new[] { new EmailAddress(account.Email) };

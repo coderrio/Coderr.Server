@@ -1,0 +1,25 @@
+<div class="panel">
+  <h2>Application groups</h2>
+  <p class="lead">Groups let's you divide your applications into smaller groups.</p>
+
+  <table class="table bg white w-100">
+    <thead>
+      <tr>
+        <th>Group name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let group of groups">
+        <td>
+          <a [routerLink]="[group.id]">{{group.name}}</a>
+        </td>
+      </tr>
+      <tr *ngIf="groups.length == 0">
+        <p><em>No groups have been specified.</em></p>
+      </tr>
+    </tbody>
+  </table>
+  <div>
+    <a [routerLink]="['new']" class="btn">Create</a>
+  </div>
+</div>

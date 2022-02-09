@@ -1,0 +1,36 @@
+@import "../../../styles/_partials/coderr-variables.scss";
+
+.stub {
+  background: white;
+  width: 100%;
+
+  tr {
+    td {
+      padding: 10px;
+    }
+  }
+
+  tr:nth-child(even) {
+    background: rgba(100,100,100,0.05);
+  }
+
+  .motivation{
+      color: $blue;
+      padding: 15px 0;
+  }
+      .data {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 10px;
+
+
+    div {
+      padding-right: 15px;
+    }
+
+
+    span {
+      color: #999;
+    }
+  }
+}

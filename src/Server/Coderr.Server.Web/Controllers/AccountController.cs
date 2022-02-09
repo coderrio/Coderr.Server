@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Authentication;
 using System.Security.Claims;
@@ -10,10 +12,13 @@ using Coderr.Server.Api.Core.Accounts.Requests;
 using Coderr.Server.Api.Core.Applications.Queries;
 using Coderr.Server.Api.Core.Invitations.Queries;
 using Coderr.Server.App.Core.Accounts;
+using Coderr.Server.Common.App;
 using Coderr.Server.Infrastructure.Configuration;
+using Coderr.Server.Live.Abstractions;
 using Coderr.Server.Web.Infrastructure;
 using Coderr.Server.Web.Models.Accounts;
 using DotNetCqs;
+using FluentAssertions.Equivalency;
 using Griffin.Data;
 using log4net;
 using Microsoft.AspNetCore.Authentication;
@@ -21,6 +26,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Coderr.Server.Web.Controllers
 {
@@ -112,12 +118,12 @@ namespace Coderr.Server.Web.Controllers
 
 
             await SignInAsync(identity);
-            var url = Url.Content("~/");
-            return RedirectToAction("UpdateSession", new {returnUrl = url});
+            var url = Url.Content("~/?from=invited");
+            return RedirectToAction("UpdateSession", new { returnUrl = url });
         }
 
         [HttpGet("account/activate/{id}")]
-        public async Task<ActionResult> Activate(string id)
+        public async Task<ActionResult> Activate(string id, string returnUrl = null)
         {
             try
             {
@@ -127,7 +133,10 @@ namespace Coderr.Server.Web.Controllers
                 await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
                 await SignInAsync(identity);
                 _logger.Debug("Redirect " + id);
-                return Redirect("~/");
+                if (returnUrl != null)
+                    return Redirect(returnUrl);
+                else
+                    return Redirect("~/");
             }
             catch (ArgumentOutOfRangeException ex)
             {
@@ -151,6 +160,22 @@ namespace Coderr.Server.Web.Controllers
         [HttpGet("account/login")]
         public ActionResult Login()
         {
+            var returnUrl = Request.Query["ReturnUrl"].FirstOrDefault();
+            if (ServerConfig.Instance.IsLive)
+            {
+                if (Debugger.IsAttached)
+                {
+                    return Redirect("http://localhost:63313/account/login/?appReturnUrl=" + returnUrl);
+                }
+
+                return Redirect("https://lobby.coderr.io/account/login/?appReturnUrl=" + returnUrl);
+            }
+
+            if (returnUrl != null && returnUrl.IndexOf("accept", StringComparison.OrdinalIgnoreCase) != -1)
+            {
+                ViewBag.Message = "To accept the invitation, login or register.";
+            }
+
             var config = _configStore.Load<BaseConfiguration>();
             var model = new LoginViewModel
             {
@@ -184,8 +209,6 @@ namespace Coderr.Server.Web.Controllers
                     model.Password = "";
                     return View(model);
                 }
-
-
                 await SignInAsync(principal);
 
                 if (model.ReturnUrl != null && model.ReturnUrl.StartsWith("/"))
@@ -210,13 +233,17 @@ namespace Coderr.Server.Web.Controllers
         public ActionResult Logout()
         {
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            if (ServerConfig.Instance.IsLive)
+                return Redirect("https://lobby.coderr.io/");
+
             return Redirect("~/");
         }
 
         [HttpGet("account/register")]
         public ActionResult Register()
         {
-            return View();
+            var model = new RegisterViewModel { ReturnUrl = Request.Query["ReturnUrl"].FirstOrDefault() };
+            return View(model);
         }
 
 
@@ -252,12 +279,15 @@ namespace Coderr.Server.Web.Controllers
                 _uow.SaveChanges();
 
                 await
-                    _messageBus.SendAsync(this.ClaimsUser(), new RegisterAccount(model.UserName, model.Password, model.Email));
+                    _messageBus.SendAsync(this.ClaimsUser(), new RegisterAccount(model.UserName, model.Password, model.Email)
+                    {
+                        ReturnUrl = model.ReturnUrl
+                    });
             }
             catch (Exception exception)
             {
                 ModelState.AddModelError("UserName", exception.Message);
-                return View("Register");
+                return View("Register", model);
             }
 
 

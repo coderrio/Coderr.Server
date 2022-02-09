@@ -12,8 +12,12 @@ using System.Threading.Tasks;
 using Coderr.Server.Abstractions.Security;
 using Coderr.Server.Api.Core.Applications.Commands;
 using Coderr.Server.Api.Core.Applications.Queries;
+using Coderr.Server.Common.Api.Mine.Queries;
+using Coderr.Server.Common.App;
+using Coderr.Server.Common.AzureDevOps.Api.Connection.Queries;
 using Coderr.Server.Domain;
 using Coderr.Server.Infrastructure.Messaging;
+using Coderr.Server.Premise.App;
 using Coderr.Server.Web.Boot.Cqs;
 using Coderr.Server.Web.Infrastructure.Results;
 using Coderr.Server.Web.Models.Users;
@@ -23,6 +27,7 @@ using Griffin.Net.Protocols.Http;
 using log4net;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Coderr.Server.Web.Controllers
 {
@@ -40,7 +45,10 @@ namespace Coderr.Server.Web.Controllers
         static CqsController()
         {
             if (_cqsObjectMapper.IsEmpty)
+            {
                 _cqsObjectMapper.ScanAssembly(typeof(CreateApplication).Assembly);
+            }
+                
 
             _queryMethod = typeof(IQueryBus)
                 .GetMethods(BindingFlags.Public | BindingFlags.Instance)
@@ -49,7 +57,7 @@ namespace Coderr.Server.Web.Controllers
             _sendMethod = typeof(IMessageBus).GetMethod("SendAsync", new[] { typeof(ClaimsPrincipal), typeof(object) });
         }
 
-        public CqsController(IMessageBus messageBus, IQueryBus queryBus, IPrincipalAccessor principalSetter)
+        public CqsController(ExecuteDirectlyMessageBus messageBus, IQueryBus queryBus, IPrincipalAccessor principalSetter)
         {
             _messageBus = messageBus;
             _queryBus = queryBus;
@@ -77,8 +85,10 @@ namespace Coderr.Server.Web.Controllers
                     UserName = User.Identity.Name,
                     Applications = result,
                     IsSysAdmin = User.IsInRole(CoderrRoles.SysAdmin),
+                    LicenseText = LicenseWrapper.Instance?.LicenseInformation ?? ""
                 };
 
+                _logger.Debug("Result: " + JsonConvert.SerializeObject(dto));
                 return Json(dto);
             }
             catch (Exception ex)
@@ -88,7 +98,6 @@ namespace Coderr.Server.Web.Controllers
             }
 
         }
-
         [HttpGet]
         [HttpPost]
         [Route("api/cqs")]
@@ -126,13 +135,13 @@ namespace Coderr.Server.Web.Controllers
                 cqsObject = _cqsObjectMapper.Deserialize(cqsName, json);
                 if (cqsObject == null)
                 {
-                    _logger.Error($"Could not deserialize[{cqsName}]: {json}");
+                    _logger.Error($"Could not deserialize [{cqsName}]: {json}");
                     return BadRequest(new ErrorMessage($"Unknown type: {cqsName}"));
                 }
             }
             else
             {
-                _logger.Error($"Could not deserialize[{cqsName}]: {json}");
+                _logger.Error($"Did not find header for [{cqsName}]: {json}");
                 return BadRequest(new ErrorMessage(
                     "Expected a class name in the header 'X-Cqs-Name' or a .NET type name in the header 'X-Cqs-Object-Type'."));
             }
@@ -149,6 +158,7 @@ namespace Coderr.Server.Web.Controllers
                 if (prop != null && prop.CanWrite)
                     prop.SetValue(cqsObject, User.GetAccountId());
             }
+            
 
             RestrictOnApplicationId(cqsObject);
             _principalSetter.Principal = User as ClaimsPrincipal;
@@ -156,17 +166,15 @@ namespace Coderr.Server.Web.Controllers
             Exception ex = null;
             try
             {
-                _logger.Debug("Invoking " + cqsObject.GetType().Name + " " + json);
+                _logger.Debug("Invoking " + cqsObject.GetType().Name + ", json: " + json.Replace("\r\n", " "));
                 if (IsQuery(cqsObject))
                     cqsReplyObject = await InvokeQuery(cqsObject);
                 else
                     await InvokeMessage(cqsObject);
-                _logger.Debug(".. pass1 " + cqsObject.GetType().Name);
                 if (cqsReplyObject != null)
                     RestrictOnApplicationId(cqsReplyObject);
 
                 //await HandleSecurityPrincipalUpdates();
-                _logger.Debug(".. completed " + cqsObject.GetType().Name);
             }
             catch (AggregateException e1)
             {

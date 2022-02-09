@@ -1,0 +1,37 @@
+<div class="p-2">
+  <form (ngSubmit)="saveKey()" class="form">
+    <h2 class="text-white text-shadow-1">Edit API key</h2>
+    <div class="panels">
+      <div class="panel ml-0">
+        <div class="fill">
+          <div class="form-control">
+            <label>
+              Name
+            </label>
+            <input type="text" name="title" placeholder="Key name" [(ngModel)]="title" />
+            <em>Name describing the usage of this API key.</em>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="fill">
+          <h4 class="text-dark">Accessible applications</h4>
+          <p>Applications that they API key are allowed to control. Leave all check boxes unchecked to allow all applications.</p>
+          <div *ngFor="let item of applications">
+            <input type="checkbox" [id]="'app' + item.id" (change)="item.selected = !item.selected" [checked]="item.selected" style="display: inline" />
+            <label [for]="'app' + item.id" style="display: inline">
+              {{item.name}}
+            </label>
+          </div>
+          <hr />
+          <em>You can use the <code>Coderr.Server.Api.Client</code> nuget package to communicate using this key, or web sockets.</em>
+        </div>
+      </div>
+
+    </div>
+
+    <button class="btn red">Save</button>
+    <button class="btn" type="button" (click)="back();false">Cancel</button>
+  </form>
+</div>

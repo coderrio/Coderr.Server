@@ -58,7 +58,7 @@ namespace Coderr.Server.SqlServer.Core.Incidents.Queries
                             {
                                 ReportId = (int)reader["ReportId"],
                                 ReportDate = (DateTime)reader["CreatedAtUtc"],
-                                Properties = new Dictionary<string, string>()
+                                Properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
                             };
                             items.Add(item);
                         }

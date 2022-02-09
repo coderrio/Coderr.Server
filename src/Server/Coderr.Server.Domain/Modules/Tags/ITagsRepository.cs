@@ -17,6 +17,10 @@ namespace Coderr.Server.Domain.Modules.Tags
         /// <returns>task</returns>
         Task AddAsync(int incidentId, Tag[] tags);
 
+        Task UpdateTags(int incidentId, string[] tagsToAdd, string[] tagsToRemove);
+
+        Task AddTag(int incidentId, string tag);
+
         /// <summary>
         ///     Get a list of tags for an application
         /// </summary>
@@ -41,5 +45,7 @@ namespace Coderr.Server.Domain.Modules.Tags
         /// <returns>List of tags (or an empty list)</returns>
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         Task<IReadOnlyList<Tag>> GetTagsAsync(int? applicationId, int? incidentId);
+
+        Task<IReadOnlyList<int>> GetNewIncidentsForTag(int? applicationId, string tag);
     }
 }

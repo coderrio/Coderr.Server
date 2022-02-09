@@ -59,6 +59,11 @@ namespace Coderr.Server.Api.Core.Accounts.Commands
         public string UserName { get; private set; }
 
         /// <summary>
+        /// The the registration was due to an invitation, we need to redirect back to that invite.
+        /// </summary>
+        public string ReturnUrl { get; set; }
+
+        /// <summary>
         ///     Activate this account directly
         /// </summary>
         /// <param name="accountId">Id of the account</param>

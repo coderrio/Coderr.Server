@@ -3,6 +3,7 @@ export class ApplicationListItem {
     public Id: number;
     public Name: string;
     public IsAdmin: boolean;
+    public RetentionDays: number;
 }
 export enum TypeOfApplication {
     Mobile = 0,
@@ -32,6 +33,7 @@ export class GetApplicationInfoResult {
     public TotalIncidentCount: number;
     public Versions: string[];
     public ShowStatsQuestion: boolean;
+    public RetentionDays: number;
 }
 export class GetApplicationList {
     public static TYPE_NAME: string = 'GetApplicationList';
@@ -110,11 +112,13 @@ export class UserInvitedToApplication {
 }
 export class CreateApplication {
     public static TYPE_NAME: string = 'CreateApplication';
+    public GroupId?: number;
     public ApplicationKey: string;
     public Name: string;
     public TypeOfApplication: TypeOfApplication;
     public NumberOfDevelopers?: number;
     public NumberOfErrors?: number;
+    public RetentionDays?: number;
 }
 export class DeleteApplication {
     public static TYPE_NAME: string = 'DeleteApplication';
@@ -130,6 +134,7 @@ export class UpdateApplication {
     public ApplicationId: number;
     public Name: string;
     public TypeOfApplication: TypeOfApplication | null;
+    public RetentionDays?: number;
 }
 export class AddTeamMember {
     public static TYPE_NAME: string = 'AddTeamMember';
@@ -160,4 +165,53 @@ export class GetApplicationVersionsResultItem {
     public LastReportReceivedAtUtc: Date;
     public ReportCount: number;
     public Version: string;
+}
+
+export class GetApplicationGroups {
+    public static TYPE_NAME: string = 'GetApplicationGroups';
+}
+
+export class GetApplicationGroupsResult {
+    public Items: GetApplicationGroupsResultItem[];
+}
+
+export class GetApplicationGroupsResultItem {
+    public Id: number;
+    public Name: string;
+}
+
+
+export class GetApplicationGroupMap {
+    public static TYPE_NAME: string = 'GetApplicationGroupMap';
+    public ApplicationId?: number;
+}
+
+export class GetApplicationGroupMapResult {
+    public Items: GetApplicationGroupMapResultItem[];
+}
+
+
+export class GetApplicationGroupMapResultItem {
+    public ApplicationId: number;
+    public GroupId: number;
+}
+
+export class CreateApplicationGroup {
+    public static TYPE_NAME: string = 'CreateApplicationGroup';
+    public Name: string;
+}
+
+export class SetApplicationGroup {
+    public static TYPE_NAME: string = 'SetApplicationGroup';
+    public ApplicationId: number;
+    public ApplicationGroupId: number;
+    public AppKey: string;
+    public GroupName: string;
+}
+
+
+export class DeleteApplicationGroup {
+    public static TYPE_NAME: string = 'DeleteApplicationGroup';
+    public GroupId: number;
+    public MoveAppsToGroupId: number;
 }

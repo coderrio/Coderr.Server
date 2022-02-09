@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Coderr.Server.Api.Modules.Tagging.Events;
 using Coderr.Server.Domain.Modules.Tags;
 using Coderr.Server.ReportAnalyzer.Abstractions.Incidents;
 using DotNetCqs;
@@ -55,13 +56,17 @@ namespace Coderr.Server.ReportAnalyzer.Tagging.Handlers
                 return;
 
             await _repository.AddAsync(e.Incident.Id, ctx.NewTags.ToArray());
+
+            var newTagsAsStrings = ctx.NewTags.Select(x => x.Name).ToArray();
+            await context.SendAsync(
+                new TagAttachedToIncident(e.Incident.ApplicationId, e.Incident.Id, newTagsAsStrings));
         }
 
         private void ExtractTagsFromCollections(ReportAddedToIncident e, TagIdentifierContext ctx)
         {
             foreach (var collection in e.Report.ContextCollections)
             {
-                // Comma seperated tags
+                // Comma separated tags
                 if (collection.Properties.TryGetValue("OneTrueTags", out var tagsStr)
                     || collection.Properties.TryGetValue("ErrTags", out tagsStr))
                 {

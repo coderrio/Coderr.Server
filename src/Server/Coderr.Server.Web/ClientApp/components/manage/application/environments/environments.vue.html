@@ -7,26 +7,67 @@
                         Application environments for {{applicationName}}
                     </div>
                     <div class="card-body">
-                        <h3>Received environments</h3>
-                        <em>Environments that were specified using <code>Err.Configuration.EnvironmentName</code>.</em>
-                        <div class="ml-3">
-                            <ul>
-                                <li v-for="environment in environments">
-                                    {{environment.name}}
-                                </li>
-                            </ul>
+                        <div class="mt-3">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Delete reports</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="environment in environments">
+                                        <td>{{environment.name}}</td>
+                                        <td>{{environment.deleteIncidents?'Yes':'No'}}</td>
+                                        <th><button class="btn btn-sm btn-light" @click.prevent="toggleEnvironment(environment)">{{environment.toggleText}}</button></th>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                         <div v-if="environments.length == 0">
                             <p><em>No environments have been specified in reports.</em></p>
                             <p>
-                                <em><a href="#" style="text-decoration: underline">Learn how to specify the environment (like "Production", "Test", "Staging" etc)</a></em>
+                                <em>Specify environments using <code>Err.Configuration.EnvironmentName</code> in the client library.</em>
+                            </p>
+                            <p>
+                                <em><a href="https://coderr.io/documentation/features/incidents/environments/" style="text-decoration: underline">Learn how to specify the environment (like "Production", "Test", "Staging" etc)</a></em>
                             </p>
                         </div>
-
                     </div>
                 </div>
             </div>
             <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">Add environment</div>
+                    <div class="card-body">
+                        <p><em>Add a new environment</em></p>
+                        <form @submit.prevent="createEnvironment()">
+                            <div class="form-group">
+                                <label>
+                                    Environment name
+                                </label>
+                                <input type="text" class="form-control" v-model="newName" placeholder="Environment name" />
+                                <em class="text-muted">As specified in the client library.</em>
+
+
+                            </div>
+                            <div class="form-group">
+                                <input type="checkbox" class="form-check-inline" v-model="newDeleteIncidents" value="true" />
+                                <label>
+                                    Delete incidents
+                                </label>
+                                <br/>
+                                <em class="text-muted">Do not track errors in for instance development environment.</em>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-blue">Save</button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
                 <div class="card">
                     <div class="card-header">Reset environment</div>
                     <div class="card-body">
@@ -40,7 +81,7 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <button class="btn btn-red" >Reset</button>
+                                <button class="btn btn-red">Reset</button>
                             </div>
 
                         </form>

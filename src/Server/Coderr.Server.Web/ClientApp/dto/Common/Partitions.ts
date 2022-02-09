@@ -5,6 +5,8 @@ export class CreatePartition {
     PartitionKey: string;
     NumberOfItems: number;
     Weight: number;
+    ImportantThreshold?: number;
+    CriticalThreshold?: number;
 }
 export class UpdatePartition {
     public static TYPE_NAME: string = 'UpdatePartition';
@@ -12,6 +14,8 @@ export class UpdatePartition {
     Name: string;
     NumberOfItems: number;
     Weight: number;
+    ImportantThreshold?: number;
+    CriticalThreshold?: number;
 }
 export class DeletePartition {
     public static TYPE_NAME: string = 'DeletePartition';
@@ -32,7 +36,6 @@ export class GetPartitionsResultItem {
     ApplicationId: number;
     Name: string;
     PartitionKey: string;
-    NumberOfItems: number;
     Weight: number;
 }
 
@@ -48,4 +51,24 @@ export class GetPartitionResult {
     PartitionKey: string;
     NumberOfItems: number;
     Weight: number;
+    ImportantThreshold?: number;
+    CriticalThreshold?: number;
+}
+
+export class GetPartitionValues {
+    public static TYPE_NAME: string = 'GetPartitionValues';
+    PartitionId: number;
+    IncidentId?: number;
+    PageNumber?: number;
+    PageSize: number = 20;
+}
+
+export class GetPartitionValuesResult {
+    Items: GetPartitionValuesResultItem[];
+}
+
+export class GetPartitionValuesResultItem {
+    Id: number;
+    Value: number;
+    ReceivedAtUtc: Date;
 }

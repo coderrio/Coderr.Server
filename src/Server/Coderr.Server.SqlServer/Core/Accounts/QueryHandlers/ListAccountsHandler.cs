@@ -18,7 +18,7 @@ namespace Coderr.Server.SqlServer.Core.Accounts.QueryHandlers
 
         public async Task<ListAccountsResult> HandleAsync(IMessageContext context, ListAccounts query)
         {
-            var sql = "SELECT Id AccountId, UserName, CreatedAtUtc, Email FROM Accounts";
+            var sql = "SELECT Id AccountId, UserName, CreatedAtUtc, Email FROM Accounts ORDER BY UserName";
             var users = await _unitOfWork.ToListAsync(_mapper, sql);
             return new ListAccountsResult() { Accounts = users.ToArray() };
         }

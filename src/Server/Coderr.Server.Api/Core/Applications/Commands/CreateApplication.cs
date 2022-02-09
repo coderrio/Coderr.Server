@@ -55,5 +55,15 @@ namespace Coderr.Server.Api.Core.Applications.Commands
         /// Number of developers that work full time with this application.
         /// </summary>
         public decimal? NumberOfDevelopers { get; set; }
+
+        /// <summary>
+        /// Number of days to keep new incidents.
+        /// </summary>
+        public int? RetentionDays { get; set; }
+
+        /// <summary>
+        /// Application group that this application should be part of.
+        /// </summary>
+        public int? GroupId { get; set; }
     }
 }

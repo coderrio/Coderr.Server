@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Security;
 using System.Threading.Tasks;
+using Coderr.Server.Abstractions;
 using Coderr.Server.Abstractions.Config;
 using Coderr.Server.Abstractions.Security;
 using Coderr.Server.Api.Core.Applications.Events;
@@ -58,6 +59,7 @@ namespace Coderr.Server.App.Core.Invitations.CommandHandlers
                 _logger.Warn($"User {command.UserId} attempted to do an invite for an application: {command.ApplicationId}.");
                 throw new SecurityException("You are not an admin of that application.");
             }
+
 
             var invitedUser = await _userRepository.FindByEmailAsync(command.EmailAddress);
             if (invitedUser != null)
@@ -128,11 +130,20 @@ namespace Coderr.Server.App.Core.Invitations.CommandHandlers
         {
             var url = _baseConfiguration.BaseUrl.ToString().TrimEnd('/');
 
+
+            if (ServerConfig.Instance.IsLive)
+                url = url.Replace("/app.", "/lobby.");
+
             if (string.IsNullOrEmpty(reason))
                 reason = "";
             else
                 reason += "\r\n";
 
+            var inviteUrl = $"https://lobby.coderr.io/invitation/accept/{invitation.InvitationKey}";
+            if (!ServerConfig.Instance.IsLive)
+            {
+                inviteUrl = $"{_baseConfiguration.BaseUrl}account/accept/{invitation.InvitationKey}";
+            }
             var msg = new EmailMessage
             {
                 Subject = "You have been invited by " + invitation.InvitedBy + " to Coderr.",
@@ -141,7 +152,7 @@ namespace Coderr.Server.App.Core.Invitations.CommandHandlers
 {invitation.InvitedBy} has invited to you join their team at Coderr, a service used to keep track of exceptions in .NET applications.
 
 Click on the following link to accept the invitation:
-{url}/invitation/accept/{invitation.InvitationKey}
+{inviteUrl}
 
 {reason}
 

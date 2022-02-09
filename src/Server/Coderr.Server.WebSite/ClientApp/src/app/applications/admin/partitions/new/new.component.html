@@ -1,0 +1,59 @@
+<form class="form" (submit)="save();false" ngNativeValidate>
+  <h2>New partition</h2>
+  <p>Create a new partition to allow Coderr to prioritize errors for you. Once you've added it here, just make sure that the field is transported along error reprots.</p>
+  <div class="panels m-0">
+    <div class="panel m-0">
+      <h3>Basic information</h3>
+      <div class="fill w-100">
+        <p>Information required so that Coderr can prioritize errors based on your own criteria.</p>
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" placeholder="Name of partition" [(ngModel)]="name" name="name" required="" />
+          <span class="small muted">Name to show in the error information page. For instance "Users".</span>
+        </div>
+
+        <div class="form-group">
+          <label>Key</label>
+          <input type="text" class="form-control" placeholder="Telemetry property name" [(ngModel)]="partitionKey" name="partitionKey" required="" />
+          <span class="small muted">Attribute value in the telemetry that is attached to the error reports. For instance 'UserId'.</span>
+        </div>
+
+        <div class="form-group">
+          <label>Total quantity</label>
+          <input type="number" class="form-control" placeholder="Quantity" [(ngModel)]="numberOfItems" name="numberOfItems" />
+          <span class="small muted">How many items are there? Used to be able to show percentage, i.e. "20% of the users are affected".</span>
+        </div>
+
+      </div>
+    </div>
+    <div class="panel">
+      <h3>Prioritization</h3>
+      <div class="fill">
+        <p>Information required so that Coderr can prioritize, escalate and notify you when severe errors are detected.</p>
+
+        <div class="form-group">
+          <label>Weight</label>
+          <input type="number" placeholder="Weight (1-100)" min="1" max="1000" [(ngModel)]="weight" name="weight" required="" />
+          <span class="small muted">How important is this partition relative to all other partitions? For instance, if one VIP customer is as important as 100 normal customers, add 100 here.</span>
+        </div>
+
+
+        <div class="form-group">
+          <label>Important</label>
+          <input type="number" min="0" placeholder="Important escalation" [(ngModel)]="importantThreshold" name="importantThreshold" />
+          <span class="small muted">How many items must be affected for an error to be deemed as important?</span>
+        </div>
+
+        <div class="form-group">
+          <label>Critical</label>
+          <input type="number" min="0" placeholder="Critical escalation" [(ngModel)]="criticalThreshold" name="criticalThreshold" />
+          <span class="small muted">How many items must be affected for an error to be deemed as critical/severe?</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="">
+    <button class="btn light" type="submit">Save</button>
+    <button class="btn dark" (click)="cancel();false">Cancel</button>
+  </div>
+</form>

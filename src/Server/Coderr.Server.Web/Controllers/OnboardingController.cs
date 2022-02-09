@@ -35,10 +35,16 @@ namespace Coderr.Server.Web.Controllers
                 $"https://coderr.io/client/{id}/configure/{hash}";
             var client = new HttpClient { Timeout = TimeSpan.FromSeconds(10) };
             var html = await client.GetStringAsync(uri);
+
+            var url = _baseConfiguration.Value.BaseUrl.ToString()
+                .Replace("https://app.", "https://report.")
+                .Replace("https://lobby.", "https://report.")
+                .Replace("http://live-test-lobby", "http://live-test-receiver");
+
             return Content(html
                 //.Replace("yourAppKey", appInfo.AppKey)
                 //.Replace("yourSharedSecret", appInfo.SharedSecret)
-                .Replace("http://yourServer/coderr/", _baseConfiguration.Value.BaseUrl.ToString())
+                .Replace("http://yourServer/coderr/", url)
                 .Replace("\"/documentation/", "\"https://coderr.io/documentation/"), "text/plain");
         }
 

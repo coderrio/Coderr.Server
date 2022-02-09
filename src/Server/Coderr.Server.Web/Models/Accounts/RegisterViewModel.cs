@@ -25,5 +25,7 @@ namespace Coderr.Server.Web.Models.Accounts
 
         [Required]
         public string UserName { get; set; }
+
+        public string ReturnUrl { get; set; }
     }
 }

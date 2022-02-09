@@ -1,0 +1,109 @@
+
+.row {
+  display: flex;
+  width: 100%;
+  flex-flow: row wrap;
+  max-width: 100%;
+}
+
+.container {
+  display: block;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 30px;
+
+  h1 {
+    font-size: $base-font-size*3;
+  }
+
+  padding: -10px;
+}
+
+.col {
+  justify-content: center;
+  align-items: start;
+  flex-basis: 0;
+  /*flex-direction: column;
+    flex-basis: auto;*/
+  flex: 1 1 200px;
+  margin: 10px;
+
+  /* pre > code wont wrap otherwise */
+  min-width: 0;
+}
+
+.col-2 {
+  flex: 2;
+}
+
+.col-3 {
+  flex: 3;
+}
+
+.hidden {
+  display: none;
+  opacity: 0;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+@media only screen and (max-width: 600px) {
+  .col {
+    display: block;
+    width: 100%;
+  }
+}
+
+.y-center {
+  align-items: center;
+}
+
+.x-center {
+  justify-content: center;
+}
+
+.mx-auto {
+  margin: 0 auto;
+}
+
+@for $i from 0 through 5 {
+  .mt-#{$i} {
+    margin-top: $i*5px;
+  }
+
+  .mb-#{$i} {
+    margin-bottom: $i*5px;
+  }
+
+  .ml-#{$i} {
+    margin-left: $i*5px !important;
+  }
+
+  .m-#{$i} {
+    margin: $i*5px;
+  }
+
+  .pt-#{$i} {
+    padding-top: $i*5px;
+  }
+
+  .pl-#{$i} {
+    padding-left: $i*5px;
+  }
+
+
+  .pr-#{$i} {
+    padding-right: $i*5px;
+  }
+
+
+  .pb-#{$i} {
+    padding-bottom: $i*5px;
+  }
+
+  .p-#{$i} {
+    padding: $i*5px;
+  }
+}

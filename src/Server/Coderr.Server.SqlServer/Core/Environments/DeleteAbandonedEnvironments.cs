@@ -6,11 +6,11 @@ using Griffin.Data;
 namespace Coderr.Server.SqlServer.Core.Environments
 {
     [ContainerService(RegisterAsSelf = true)]
-    internal class DeleteAbandonedFeedback : IBackgroundJobAsync
+    internal class DeleteAbandonedEnvironments : IBackgroundJobAsync
     {
         private readonly IAdoNetUnitOfWork _unitOfWork;
 
-        public DeleteAbandonedFeedback(IAdoNetUnitOfWork unitOfWork)
+        public DeleteAbandonedEnvironments(IAdoNetUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }

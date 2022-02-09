@@ -57,6 +57,7 @@ export default class DiscoverHomeComponent extends Mixins(AppAware) {
                 this.applicationId = 0;
                 this.firstApplicationId = 0;
                 this.loadGenericOverview();
+                this.getBestNewSuggestion();
                 return;
             }
             this.applicationId = applicationId;
@@ -66,6 +67,7 @@ export default class DiscoverHomeComponent extends Mixins(AppAware) {
             }
 
             this.loadApplication(this.applicationId);
+            this.getBestNewSuggestion();
         });
 
         AppRoot.Instance.apiClient.query<ApplicationListItem[]>(new GetApplicationList())
@@ -79,6 +81,8 @@ export default class DiscoverHomeComponent extends Mixins(AppAware) {
                     this.firstApplicationId = result[0].Id;
                 }
             });
+
+        this.getBestNewSuggestion();
     }
 
     mounted() {
@@ -86,6 +90,12 @@ export default class DiscoverHomeComponent extends Mixins(AppAware) {
 
     beforeDestroy() {
         this.destroyed$ = true;
+    }
+    assignBestToMe() {
+        AppRoot.Instance.incidentService.assignToMe(this.myBestSuggestion.Id)
+            .then(x => {
+                this.$router.push({ name: 'analyzeIncident', params: { 'incidentId': this.myBestSuggestion.Id.toString() } });
+            });
     }
 
     private loadApplication(applicationId: number) {
@@ -108,6 +118,25 @@ export default class DiscoverHomeComponent extends Mixins(AppAware) {
                 this.feedbackCount = result.StatSummary.UserFeedback;
                 this.followers = result.StatSummary.Followers;
                 this.displayChartForApplication(result);
+            });
+
+        this.getBestNewSuggestion();
+    }
+
+    private getBestNewSuggestion() {
+        var query = new Mine.ListMyIncidents();
+        if (this.applicationId > 0) {
+            query.ApplicationId = this.applicationId;
+        }
+        AppRoot.Instance.apiClient.query<Mine.ListMyIncidentsResult>(query)
+            .then(result => {
+                if (result.Suggestions.length > 0) {
+                    this.myBestSuggestion = result.Suggestions[0];
+                    this.myBestSuggestion.Motivation = this.myBestSuggestion.Motivation.replace(/\r\n/g, ', ');
+                } else {
+                    this.myBestSuggestion = null;
+                }
+                this.comment = result.Comment;
             });
     }
 

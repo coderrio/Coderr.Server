@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Installation - First step";
+}
+<div class="container">
+    <div class="">
+
+        <h2>Welcome to the Coderr Community Server</h2>
+        <p>
+            This guide will help you configure the server. Most of the settings are stored in the <code>Settings</code> table in the database.
+        </p>
+
+
+        <h3>Verification</h3>
+        <p>
+            To start, you must enter the password from the <code>General:InstallationPassword</code> setting in <code>appsettings.json</code>.
+        </p>
+        <form method="post" asp-action="Index">
+            @Html.ValidationSummary()
+            <div class="form-group">
+                <input type="text" name="key" class="form-control" placeholder="Enter the value installation password" style="width:100%" autofocus />
+            </div>
+            <div class="form-group pt-2 pb-2">
+                <button type="submit" class="btn btn-primary">Continue</button>
+            </div>
+            <em>For a zero configuration experience, try our service <a href="https://coderr.io/?utm_source=community">Coderr Cloud</a> - free up to five users.</em>
+        </form>
+        <br />
+    </div>
+</div>

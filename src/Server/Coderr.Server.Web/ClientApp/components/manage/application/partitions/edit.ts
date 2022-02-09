@@ -12,7 +12,8 @@ export default class EditPartitionComponent extends Vue {
     partitionKey = "";
     numberOfItems: number | null = null;
     weight = 1;
-
+    importantThreshold: number | null = null;
+    criticalThreshold: number | null = null;
     applicationId: number = 0;
 
     created() {
@@ -36,6 +37,8 @@ export default class EditPartitionComponent extends Vue {
                 this.partitionKey = dto.PartitionKey;
                 this.weight = dto.Weight;
                 this.numberOfItems = dto.NumberOfItems;
+                this.importantThreshold = dto.ImportantThreshold;
+                this.criticalThreshold = dto.CriticalThreshold;
             });
     }
 
@@ -48,6 +51,13 @@ export default class EditPartitionComponent extends Vue {
         if (this.numberOfItems !== 0 && this.numberOfItems != null) {
             cmd.NumberOfItems = this.numberOfItems;
         }
+        if (this.importantThreshold !== 0 && this.importantThreshold != null) {
+            cmd.ImportantThreshold = this.importantThreshold;
+        }
+        if (this.criticalThreshold !== 0 && this.criticalThreshold != null) {
+            cmd.CriticalThreshold = this.criticalThreshold;
+        }
+
         AppRoot.Instance.apiClient.command(cmd)
             .then(x => {
                 this.$router.push(

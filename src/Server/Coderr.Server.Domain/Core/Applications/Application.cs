@@ -91,6 +91,16 @@ namespace Coderr.Server.Domain.Core.Applications
         /// </summary>
         public decimal? NumberOfFtes { get; private set; }
 
+        /// <summary>
+        /// UI group that the application should be displayed under.
+        /// </summary>
+        public int GroupId { get; set; }
+
+        /// <summary>
+        /// Number of days to keep incidents.
+        /// </summary>
+        public int RetentionDays { get; set; }
+
         public void AddStatsBase(decimal? fte, int? numberOfErrors)
         {
             EstimatedNumberOfErrors = numberOfErrors;

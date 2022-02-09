@@ -3,6 +3,7 @@ using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using Coderr.Client;
 using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Abstractions.Config;
 using Coderr.Server.Domain.Modules.ErrorOrigins;
@@ -13,7 +14,7 @@ using Newtonsoft.Json.Linq;
 namespace Coderr.Server.ReportAnalyzer.ErrorOrigins
 {
     [ContainerService(RegisterAsSelf = true)]
-    class LookupInboundOrigins : IBackgroundJobAsync
+    public class LookupInboundOrigins : IBackgroundJobAsync
     {
         private readonly IErrorOriginRepository _errorOriginRepository;
         private readonly IConfiguration<OriginsConfiguration> _originConfiguration;
@@ -31,7 +32,8 @@ namespace Coderr.Server.ReportAnalyzer.ErrorOrigins
             {
                 if (origin.Longitude > 180)
                 {
-                    await LookupIpAddress(origin);
+                    //await LookupIpAddress(origin);
+                    await CommercialLookup(origin);
                     await _errorOriginRepository.Update(origin);
                     continue;
                 }
@@ -292,7 +294,10 @@ namespace Coderr.Server.ReportAnalyzer.ErrorOrigins
 
                 var address = jsonObj["address"];
                 if (address == null)
+                {
+                    Err.ReportLogicError("Failed to lookup long/lat.", origin, "OriginLookup2");
                     return;
+                }
 
                 /*  "address": {
                         "cafe": "Imbiss 25",
@@ -319,6 +324,54 @@ namespace Coderr.Server.ReportAnalyzer.ErrorOrigins
             }
 
 
+        }
+
+        private async Task CommercialLookup(ErrorOrigin origin)
+        {
+            //fe80::1855:17f1:43ab:cc48%5 TODO: What do the %5 mean?
+            var pos = origin.IpAddress.IndexOf('%');
+            var ip = pos == -1 ? origin.IpAddress : origin.IpAddress.Substring(0, pos);
+
+            var request = WebRequest.CreateHttp("https://timezoneapi.io/api/ip/?token=aAakJWmQjzgKudYTMmiV&ip=" + ip);
+            var json = "";
+            try
+            {
+                var response = await request.GetResponseAsync();
+                var stream = response.GetResponseStream();
+                var reader = new StreamReader(stream);
+                json = await reader.ReadToEndAsync();
+                var jsonObj = JObject.Parse(json);
+
+                /** Not found:
+                 * {"meta":{"code":"200","execution_time":"0.003025 seconds"},"data":{"ip":"151.248.19.34","city":"","postal":"","state":"","state_code":"","country":"","country_code":"","location":"","timezone":null,"datetime":null}}
+                 */
+
+                //data { "location": "51.5062,-0.0196 }
+                var location = (string)jsonObj["data"]["location"];
+                if (string.IsNullOrEmpty(location))
+                {
+                    Err.ReportLogicError("Failed to lookup long/lat.", origin, "OriginLookup");
+                    return;
+                }
+                    
+
+                var parts = location.Split(',');
+                var lat = double.Parse(parts[0], CultureInfo.InvariantCulture);
+                var lon = double.Parse(parts[1], CultureInfo.InvariantCulture);
+                var data = jsonObj["data"];
+                origin.City = data["city"].ToString();
+                origin.CountryCode = data["country_code"].ToString();
+                origin.Latitude = lat;
+                origin.Longitude = lon;
+                origin.CountryName = data["country"].ToString();
+                origin.RegionCode = data["state_code"].ToString();
+                origin.RegionName = data["state"].ToString();
+                origin.ZipCode = data["postal"].ToString();
+            }
+            catch (Exception exception)
+            {
+                throw new InvalidOperationException($"Failed to call lookupService or parse the JSON: {json}.", exception);
+            }
         }
     }
 }

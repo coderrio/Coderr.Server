@@ -16,6 +16,6 @@ namespace Coderr.Server.Api.Modules.Tagging.Queries
         /// <summary>
         ///     Incident to get tags for
         /// </summary>
-        public int? IncidentId { get; private set; }
+        public int? IncidentId { get; set; }
     }
 }

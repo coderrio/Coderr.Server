@@ -1,0 +1,41 @@
+@import "../../../../styles/_partials/coderr-variables.scss";
+
+.library {
+  flex: 1;
+  padding: 10px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  background-color: $blue;
+  color: #fff;
+  display: inline-block;
+  min-width: 300px;
+  cursor: pointer;
+  flex-direction: column;
+
+  strong {
+    font-size: 1.2em;
+  }
+
+  .category {
+    text-align: right;
+    color: $light;
+    font-size: 0.9em;
+    font-style: italic;
+    padding-bottom: 5px;
+    display: block;
+  }
+
+  .description {
+    display: block;
+    color: #fafafa;
+    font-size: 0.95em;
+    font-style: italic;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    align-self: flex-end;
+  }
+}
+
+pre {
+  background-color: $light;
+}

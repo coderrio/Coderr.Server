@@ -1,4 +1,7 @@
-﻿namespace Coderr.Server.Api.Web.Overview.Queries
+﻿using System;
+using System.Collections.Generic;
+
+namespace Coderr.Server.Api.Web.Overview.Queries
 {
     /// <summary>
     ///     Stats for the last X days, part of <see cref="GetOverviewResult" />.
@@ -24,5 +27,14 @@
         ///     Number user feedback items
         /// </summary>
         public int UserFeedback { get; set; }
+
+        public DateTime? NewestIncidentReceivedAtUtc { get; set; }
+
+        public DateTime? NewestReportReceivedAtUtc { get; set; }
+
+        /// <summary>
+        /// Summary per partition
+        /// </summary>
+        public PartitionOverview[] Partitions { get; set; }
     }
 }

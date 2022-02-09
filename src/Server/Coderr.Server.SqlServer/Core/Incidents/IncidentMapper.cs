@@ -29,7 +29,7 @@ namespace Coderr.Server.SqlServer.Core.Incidents
                 .ToPropertyValue(EntitySerializer.Deserialize<IncidentSolution>);
 
             Property(x => x.State);
-                
+            Property(x => x.Escalation).ColumnName("EscalationState");
 
             Property(x => x.IsSolutionShared)
                 .ToPropertyValue(DbConverters.BoolFromByteArray);

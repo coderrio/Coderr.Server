@@ -1,0 +1,53 @@
+﻿@model Coderr.Server.Web.Areas.Admin.Models.Team.ManageViewModel
+    @{
+    ViewBag.Title = "Admin - Teams";
+    }
+    <div class="container">
+        <div class="col-lg-12">
+            <h2>Teams</h2>
+            <p>
+                Here you can add/remove users from your application
+            </p>
+            <form method="post" asp-action="remove"></form>
+            <table id="members" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Application name</th>
+                        <th>Members</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Applications)
+                    {
+                    <tr>
+                        <td>@item.ApplicationName</td> @item.ApplicationId
+                        <td>@string.Join(", ", item.Members)
+                        </td>
+                        <td>
+                            <a class="btn btn-outline-primary" href="@Url.Action("Edit", new {id=item.ApplicationId})">Rename</a>
+                            <a class="btn btn-outline-primary" href="@Url.Action("Versions", new {id=item.ApplicationId})" title="Select the assembly which contains the application version">Version assembly</a>
+                            <a class="btn btn-outline-danger" href="#@item.ApplicationId">Delete</a>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <form method="post" action="@Url.Action("Delete")" id="delete-form">
+        <input type="hidden" name="id" value="" />
+    </form>
+    @section scripts{
+    <script>
+        $('#applications a.btn-outline-danger').click(function (e) {
+            e.preventDefault();
+            var name = $(this).attr('data-name');
+            var id = $(this).attr('href').substr(1);
+            if (confirm('Do you really want to delete "' + name + '"?')) {
+                $('#delete-form input').val(id);
+                $('#delete-form').submit();
+            }
+        })
+    </script>
+    }

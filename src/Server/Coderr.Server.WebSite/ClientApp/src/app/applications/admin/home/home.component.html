@@ -1,0 +1,40 @@
+<div class="starter">
+  <h2>Application administration</h2>
+  <div class="panels">
+    <div class="panel">
+      <h3>Application configuration</h3>
+      <div class="fill">
+        <div class="mb-5">
+          <strong>AppKey</strong> {{appKey}}<br />
+          <strong>Shared secret</strong> {{sharedSecret}}<br />
+        </div>
+        <p>To configure the client libs in your application, click on the button below.</p>
+        <a [routerLink]="['/application', applicationId, 'configure']" class="btn default">Configure</a>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>Team</h3>
+      <app-members class="fill"></app-members>
+    </div>
+    <div class="panel">
+      <h3>Partitions</h3>
+      <div class="fill">
+        <p><em>Partitions are used to let Coderr prioritize errors based on your own business metrics.</em></p>
+        <partition-list></partition-list>
+        <div>
+          <a [routerLink]="['partitions/new']" class="btn default">Create new</a>
+        </div>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>Environments</h3>
+      <div class="fill">
+        <p><em>Track errors in different environments.</em></p>
+        <env-list></env-list>
+        <div>
+          <a [routerLink]="['environments/new']" class="btn default">Create new</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

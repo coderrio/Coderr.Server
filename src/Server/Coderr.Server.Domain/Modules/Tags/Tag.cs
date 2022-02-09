@@ -41,5 +41,10 @@ namespace Coderr.Server.Domain.Modules.Tags
         ///     Order
         /// </summary>
         public int OrderNumber { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

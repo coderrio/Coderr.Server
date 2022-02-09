@@ -1,0 +1,127 @@
+@import "coderr-variables.scss";
+$btn-color: white !default;
+
+.panel {
+  .btn {
+    background-color: $light;
+    color: $dark;
+    display: inline-flex;
+  }
+
+  &.fill .btn, .fill .btn {
+    background-color: $blue;
+    border-color: $blue;
+    color: $light;
+    display: inline-flex;
+  }
+
+  button[type="submit"], a.submit {
+    @extend .btn;
+    background-color: $light;
+    border-color: $light;
+    border: darken($light, 10%);
+    color: $dark;
+    width: inherit;
+  }
+
+  button[type="reset"], a.reset {
+    @extend .btn;
+    color: $light;
+    background-color: $bg-accent;
+    border-color: $bg-accent;
+    border: darken($bg-accent, 10%);
+  }
+}
+
+
+a.btn,
+button.btn,
+input.button {
+  padding: 10px 12px;
+  margin-top: 15px;
+  margin-right: 5px;
+  border-radius: 3px;
+  text-decoration: none;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  cursor: pointer;
+  display: inline-block;
+
+  &.small {
+    margin-top: 5px;
+    margin-right: 2px;
+    padding: 4px 6px;
+    font-size: 0.9em;
+  }
+
+  &.default {
+    background: $btn-color;
+    color: $dark;
+  }
+
+  &.block {
+    display: block;
+    width: 100%;
+  }
+
+  &.light {
+    background-color: $light;
+    color: $dark;
+  }
+
+  &.dark {
+    background-color: $dark;
+    color: $light;
+  }
+
+  &.red {
+    background-color: $red !important;
+    color: white;
+    border: 1px solid darken($red, 1%);
+    transition: 0.5s;
+  }
+
+  &.red:hover {
+    background-color: darken($red, 15) !important;
+  }
+
+  &.blue, &.default {
+    background-color: $blue !important;
+    color: white;
+    border: 1px solid darken($blue, 1%);
+  }
+
+  &.red50 {
+    background-color: rgba($red, 0.75) !important;
+    color: white;
+    border: 1px solid rgba($red, 0.95);
+  }
+
+  &.red-2 {
+    background-color: lighten($red, 5) !important;
+    color: white;
+    border: 1px solid rgba($red, 0.5);
+  }
+
+  &.white {
+    background-color: white !important;
+    color: $gray-800;
+    border: 1px solid darken(white, 1%);
+  }
+
+  &.gray {
+    background-color: $gray-300 !important;
+    color: $gray-900;
+    border: 1px solid darken(white, 1%);
+
+    .btn {
+      background: $blue;
+    }
+  }
+
+  &.dark {
+    background-color: $gray-800 !important;
+    color: $light;
+  }
+}

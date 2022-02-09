@@ -3,7 +3,7 @@
 namespace Coderr.Server.ReportAnalyzer.Abstractions.Inbound.Models
 {
     /// <summary>
-    ///     These classes is an exact match of the client library DTOs.
+    ///     Used by the ReportReceiver to receive error reports and store them in the internal queue. Picked up by the report analyzer for analysis.
     /// </summary>
     /// <remarks>
     ///     <para>

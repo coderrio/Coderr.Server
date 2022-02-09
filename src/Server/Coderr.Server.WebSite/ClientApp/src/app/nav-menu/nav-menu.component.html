@@ -1,0 +1,83 @@
+<header style="box-shadow: 0 5px 15px rgba(33,33,33,0.4)">
+  <div *ngIf="showAsOnboarding" style="position: relative; top: 50%; transform: translateY(-50%);">
+    <img src="images/navico.png" style="height: 32px; position: relative; top: 50%; transform: translateY(-50%); padding-left: 20px;" />
+    <ul id="onboardingMenu">
+      <li>
+        <a class="active" href="/discover/">
+          Onboarding
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="main" *ngIf="isAuthenticated">
+    <div *ngIf="!showAsOnboarding" style="display: flex">
+      <div class="left-menu">
+        <a href="/dashboard"><img src="images/navico.png" /></a>
+        <a [routerLink]="['/']" id="DiscoverMenu">
+          Home
+        </a>
+        <ng-container *ngFor="let item of navItems">
+          /
+          <span>
+            <a [routerLink]="item.route" [id]="item.id">{{item.title}}</a>
+          </span>
+        </ng-container>
+
+        <em class="licenseInfo" [innerHtml]="licenseText" style="color: #999999; padding: 0.65rem 1rem;"></em>
+      </div>
+      <div class="right-menu">
+        <ul>
+          <li *ngIf="showConfigure">
+            <a [routerLink]="['/application', configureAppId, 'configure']">Do you need help reporting errors?</a>
+          </li>
+          <li>
+            <a href="#" (click)="showWizard();false" id="showGuideTooltip">
+              <i [class]="gotGuides ? 'gotGuide' : ''" class="fas fa-lightbulb"></i>
+            </a>
+          </li>
+          <li>
+            <a href="#" (click)="showSupport();false" title="Contact support" id="sysAdminSupport">
+              <i class="fa fa-comment"></i>
+            </a>
+          </li>
+          <li>
+            <a [routerLink]="['account', 'settings', 'home']" title="Account settings" id="accountSettings">
+              <i class="fa fa-user"></i>
+            </a>
+          </li>
+          <li>
+            <a [routerLink]="['admin']" title="System administration" id="sysAdminOption">
+              <i class="fa fa-cog"></i>
+            </a>
+          </li>
+          <li>
+            <a [routerLink]="['account', 'logout']" title="Log out">
+              <i class="fa fa-power-off"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</header>
+
+<modal id="chatModal">
+  <div class="panel">
+    <h3>Chat with us</h3>
+    <div class="fill">
+      <p>
+        Let us know if you need help or want to discuss code quality.
+      </p>
+      <form (ngSubmit)="sendSupport();" class="form" ngNativeValidate>
+        <div class="mb-2">
+          <input type="text" name="supportSubject" [(ngModel)]="supportSubject" required="" placeholder="What do you want to talk about?"
+                 title="Enter a valid subject." /><br />
+        </div>
+        <div>
+          <textarea name="supportSubject" [(ngModel)]="supportMessage" placeholder="Give us some more details" required=""></textarea>
+        </div>
+        <button type="submit" class="btn">Send</button>
+      </form>
+    </div>
+  </div>
+</modal>

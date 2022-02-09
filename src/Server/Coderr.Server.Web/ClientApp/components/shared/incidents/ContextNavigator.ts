@@ -110,7 +110,7 @@ export default class ContextNavigatorComponent extends Vue {
                         name: prop.Key,
                         value: prop.Value
                     };
-                    if (this.currentCollectionName === "Screenshots") {
+                    if (this.currentCollectionName === "Screenshots" || this.currentCollectionName === "OpenForms") {
                         item.htmlValue = '<img src="data:image/png;base64, ' + item.value + '" />';
                         item.value = null;
                     }

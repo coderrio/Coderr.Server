@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 
 namespace Coderr.Server.Infrastructure
 {
@@ -21,5 +22,7 @@ namespace Coderr.Server.Infrastructure
         IDbConnection OpenConnection();
 
         void TestConnection(string connectionString);
+        bool IsConfigurationComplete(string connectionString);
+        void MarkConfigurationAsComplete();
     }
 }

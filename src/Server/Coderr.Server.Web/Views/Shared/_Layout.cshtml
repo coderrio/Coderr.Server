@@ -1,10 +1,18 @@
-﻿<!DOCTYPE html>
+﻿@using Coderr.Server.Common.App
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Coderr</title>
+    <title>Coderr - @ViewBag.Title</title>
     <base href="~/" />
+    <script>
+        window['IsPremise'] = @(ServerConfig.Instance.IsLive?"false":"true");
+        //facebook login fix.
+        if (window.location.hash === "_=_") {
+            window.location.hash = '';
+        }
+    </script>
     <link rel="stylesheet" href="~/dist/styles.css" />
     <environment exclude="Development">
         <link rel="stylesheet" href="~/dist/vendor.css" />
@@ -20,6 +28,30 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="theme-color" content="#ffffff">
     <script src="~/coderr/js/"></script>
+    @if (ServerConfig.Instance.IsLive)
+    {
+        <!-- Google Tag Manager -->
+        <script>
+            (function (w, d, s, l, i) {
+                w[l] = w[l] || []; w[l].push({
+                    'gtm.start':
+                        new Date().getTime(), event: 'gtm.js'
+                }); var f = d.getElementsByTagName(s)[0],
+                    j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                        'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+            })(window, document, 'script', 'dataLayer', 'GTM-5CJB2GW');</script>
+        <!-- End Google Tag Manager -->
+        <!-- Global site tag (gtag.js) - Google Ads: 1029996736 -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=AW-1029996736"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'AW-1029996736');
+        </script>
+
+    }
 </head>
 <body>
     @RenderBody()
@@ -48,6 +80,9 @@
             </div>
         </form>
     </div>
+    @*<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>*@
     <environment include="Development">
         <script src="~/dist/main.js" asp-append-version="true"></script>
     </environment>
@@ -55,6 +90,21 @@
         <script src="~/dist/vendor.js" asp-append-version="true"></script>
     </environment>
     @RenderSection("scripts", required: false)
-    <script src="~/coderr/js/"></script>
+    @if (ServerConfig.Instance.IsLive)
+    {
+        <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/7740744.js"></script>
+    }
+    <link rel="stylesheet"
+          href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/styles/railscasts.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/highlight.min.js"></script>
+    @if (ServerConfig.Instance.IsLive)
+    {
+        <!-- Google Tag Manager (noscript) -->
+        <noscript>
+            <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5CJB2GW"
+                    height="0" width="0" style="display:none;visibility:hidden"></iframe>
+        </noscript>
+        <!-- End Google Tag Manager (noscript) -->
+    }
 </body>
 </html>

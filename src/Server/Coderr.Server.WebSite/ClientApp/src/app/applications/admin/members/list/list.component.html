@@ -1,0 +1,47 @@
+<div class="panel">
+  <h2>Manage members</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Permission</th>
+        <th>&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let member of members">
+        <td>
+          {{member.userName}}
+        </td>
+        <td>
+          {{member.isAdmin?'Administrator': member.isInvited ? 'Invited' : 'Member'}}
+        </td>
+        <td>
+          <button class="btn light" *ngIf="member.isAdmin" (click)="demote(member)">Demote to user</button>
+          <button class="btn light" *ngIf="!member.isAdmin && !member.isInvited" (click)="promote(member)">Promote to administrator</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div>
+    <button class="btn light" (click)="showAdd()">Add new member</button>
+  </div>
+</div>
+
+<modal id="AddUserModel">
+  <div class="panel">
+    <h2>Add team member</h2>
+    <div class="fill">
+      <label>Select a user to add:</label>
+      <select (ngModel)="selectedAccountId" name="selectedAccountId">
+        <option *ngFor="let user of users" [value]="user.id">{{user.userName}}</option>
+      </select>
+      <label>.. or invite someone:</label>
+      <input type="email" [(ngModel)]="inviteEmail" name="inviteEmail" placeholder="Enter email address" />
+      <div>
+        <button class="btn light" (click)="addUser();false">Save</button>
+        <button class="btn dark" (click)="hideShowAdd();false">Cancel</button>
+      </div>
+    </div>
+  </div>
+</modal>

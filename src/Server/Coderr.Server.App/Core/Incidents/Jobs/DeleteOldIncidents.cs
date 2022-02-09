@@ -2,6 +2,7 @@
 using System.Data;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Coderr.Server.Abstractions;
 using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Abstractions.Config;
 using Coderr.Server.Abstractions.Reports;
@@ -42,6 +43,9 @@ namespace Coderr.Server.App.Core.Incidents.Jobs
         /// <inheritdoc />
         public async Task ExecuteAsync()
         {
+            if (HostConfig.Instance.IsDemo)
+                return;
+
             using (var cmd = _connection.CreateDbCommand())
             {
                 cmd.CommandText =
@@ -52,8 +56,8 @@ namespace Coderr.Server.App.Core.Incidents.Jobs
 
                             INSERT #ItemsToDelete (Id)
                             SELECT TOP(500) Id
-                            FROM Incidents WITH (ReadUncommitted)
-                            WHERE LastReportAtUtc < @retentionDays
+                            FROM Incidents WITH (ReadPast)
+                            WHERE CreatedAtUtc < @retentionDays AND Incidents.State = 0
                             declare @counter int = 0;
 
                             IF @@ROWCOUNT <> 0 
@@ -79,9 +83,14 @@ namespace Coderr.Server.App.Core.Incidents.Jobs
                             DROP TABLE #ItemsToDelete
                             select @counter;";
 
+                // OLD:
                 // Wait until no reports have been received for the specified report save time
                 // and then make sure during another period that no new reports have been received.
-                var incidentRetention = _reportConfiguration.Value.RetentionDays * 2;
+                //
+                // NEW:
+                // We'll delete incidents when they was created long time ago and no one have started to work on them.
+                // In that way, those that still are happening will be brought to top, and all aggregated data will be cleaned.
+                var incidentRetention = _reportConfiguration.Value.RetentionDaysIncidents * 2;
 
                 cmd.AddParameter("retentionDays", DateTime.Today.AddDays(-incidentRetention));
                 var rows = await cmd.ExecuteNonQueryAsync();

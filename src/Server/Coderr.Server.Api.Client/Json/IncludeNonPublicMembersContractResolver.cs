@@ -5,20 +5,17 @@ using Newtonsoft.Json.Serialization;
 namespace Coderr.Server.Api.Client.Json
 {
     /// <summary>
-    ///     Allows us to serialize properties with private setters.
+    ///     Used by JSON.NET to be able to deserialize properties with private setters.
     /// </summary>
-    internal class IncludeNonPublicMembersContractResolver : DefaultContractResolver
+    public class IncludeNonPublicAndUseCamelCaseContractResolver : CamelCasePropertyNamesContractResolver
     {
-        /// <summary>
-        ///     Creates a <see cref="T:Newtonsoft.Json.Serialization.JsonProperty" /> for the given
-        ///     <see cref="T:System.Reflection.MemberInfo" />.
-        /// </summary>
-        /// <param name="memberSerialization">The member's parent <see cref="T:Newtonsoft.Json.MemberSerialization" />.</param>
-        /// <param name="member">The member to create a <see cref="T:Newtonsoft.Json.Serialization.JsonProperty" /> for.</param>
-        /// <returns>
-        ///     A created <see cref="T:Newtonsoft.Json.Serialization.JsonProperty" /> for the given
-        ///     <see cref="T:System.Reflection.MemberInfo" />.
-        /// </returns>
+        //protected override List<MemberInfo> GetSerializableMembers(Type objectType)
+        //{
+        //    var members = base.GetSerializableMembers(objectType);
+        //    return members.Where(m => !m.Name.EndsWith("k__BackingField")).ToList();
+        //}
+
+        /// <inheritdoc />
         protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
         {
             //TODO: Maybe cache

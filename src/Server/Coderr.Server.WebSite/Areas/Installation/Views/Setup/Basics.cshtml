@@ -1,0 +1,29 @@
+﻿@model Coderr.Server.WebSite.Areas.Installation.Models.BasicsViewModel
+@{
+    ViewBag.Title = "Installation - Basics";
+}
+
+<div class="container">
+    <div class="">
+        <h2>Base configuration</h2>
+        <form method="post" action="@Url.Action("Basics")" style="width: 100%" class="form">
+            @Html.ValidationSummary(false)
+            <div class="form-group">
+                <label asp-for="BaseUrl">Base URL</label>
+                <input asp-for="BaseUrl" class="form-control w-100" placeholder="http://yourhostName" type="url" autofocus="autofocus" /><br/>
+                <small class="form-text text-muted">Address used when visiting this site. The address is used in notification emails. <code>http://localhost</code> doesn't just cut it.</small>
+            </div>
+            <div class="form-group">
+                <label asp-for="SupportEmail">Email address</label>
+                <input type="email" asp-for="SupportEmail" class="form-control" /><br/>
+                <small class="form-text text-muted">Used by your users when they need support using coderr, for instance for account troubles. Also used as sender in outbound emails (notifications to your users).</small>
+            </div>
+            
+            <div class="form-group">
+                @Html.Raw(ViewBag.PrevLink)
+                <button type="submit" class="btn btn-primary">Save</button>
+                @Html.Raw(ViewBag.NextLink)
+            </div>
+        </form>
+    </div>
+</div>

@@ -13,7 +13,6 @@ namespace Coderr.Server.Web.Infrastructure
             var isMethodTransactional = true;/*filterContext.HttpContext.Request.Method == "POST" ||
                                         filterContext.ActionDescriptor.FilterDescriptors.Any(x =>
                                             x.Filter.GetType() == typeof(TransactionalAttribute));*/
-
             if (filterContext.Exception == null && filterContext.ModelState.IsValid && isMethodTransactional)
             {
                 var uow = (IAdoNetUnitOfWork) filterContext.HttpContext.RequestServices.GetService(typeof(IAdoNetUnitOfWork));

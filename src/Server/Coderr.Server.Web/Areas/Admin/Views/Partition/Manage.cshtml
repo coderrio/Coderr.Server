@@ -1,0 +1,54 @@
+﻿@model Coderr.Server.Web.Areas.Admin.Models.Partition.ManageViewModel
+@{
+    ViewBag.Title = "Admin - Application partitions";
+}
+<div class="container">
+    <div class="col-lg-12">
+        <h2>Partitions</h2>
+        <p>
+            Use partitions to gain insight from operation aspects. Let codeRR tell you which impact each incident have on your system.
+        </p>
+        <table id="applications" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Key</th>
+                    <th>Weight</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+						<td>@item.Key</td>
+						<td>@item.Weight</td>
+                        <td>
+                            <a class="btn btn-outline-primary" href="@Url.Action("Edit", new {id=item.Id})" data-name="@item.Name"><i class="fa fa-edit"></i></a>
+                            <a class="btn btn-outline-danger" href="#@item.Id" data-name="@item.Name"><i class="fa fa-trash"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+		<a href="@Url.Action("Create", new{ applicationId = @Model.ApplicationId})" class="btn btn-outline-primary">Create new</a>
+
+    </div>
+</div>
+<form method="post" action="@Url.Action("Delete")" id="delete-form">
+    <input type="hidden" name="id" value="" />
+</form>
+@section scripts{
+    <script>
+        $('#applications a.btn-outline-danger').click(function (e) {
+            e.preventDefault();
+            var name = $(this).attr('data-name');
+            var id = $(this).attr('href').substr(1);
+            if (confirm('Do you really want to delete "' + name + '"?')) {
+                $('#delete-form input').val(id);
+                $('#delete-form').submit();
+            }
+        })
+    </script>
+}

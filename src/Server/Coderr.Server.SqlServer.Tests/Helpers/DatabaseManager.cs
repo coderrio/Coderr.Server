@@ -3,12 +3,10 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.IO;
 using System.Threading;
 using Coderr.Server.Abstractions;
-using Coderr.Server.SqlServer.Migrations;
-using Coderr.Server.SqlServer.Schema;
 using Griffin.Data;
-using Griffin.Data.Mapper;
 
 namespace Coderr.Server.SqlServer.Tests.Helpers
 {
@@ -17,35 +15,26 @@ namespace Coderr.Server.SqlServer.Tests.Helpers
     /// </summary>
     public class DatabaseManager : IDisposable
     {
-        private static int InstanceCounter = 1;
-        private readonly string _databaseName;
+        private const string LocalDbMaster =
+            @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=master;Integrated Security=True";
+        private const string LocalDbConStr =
+            @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog={DbName};Integrated Security=True;AttachDBFilename={DbFileName};";
+
         private bool _deleted;
-        private readonly string _masterConString;
+        private bool _invoked;
 
-        public DatabaseManager(string databaseName = null, Func<string> connectionStringTemplateProvider = null)
+        public DatabaseManager(string dbName)
         {
-            if (connectionStringTemplateProvider == null)
-            {
-                connectionStringTemplateProvider = () =>
-                {
-                    var conString = HostConfig.Instance.ConnectionString;
-                    if (conString == null)
-                        throw new ConfigurationErrorsException("Failed to find connectionstring 'Db'.");
-                    return HostConfig.Instance.ConnectionString;
-                };
-            }
-
-            var instanceId = Interlocked.Increment(ref InstanceCounter);
-            _databaseName = databaseName ?? $"coderrTest{DateTime.Now:MMddHHmmss}_{instanceId}";
-
-            ConnectionString = connectionStringTemplateProvider()
-                .Replace("{databaseName}", _databaseName);
-            _masterConString = connectionStringTemplateProvider()
-                .Replace("{databaseName}", "master");
+            DbName = dbName;
+            ConnectionString = LocalDbConStr;
+            ConnectionString = ConnectionString
+                .Replace("{DbName}", dbName)
+                .Replace("{DbFileName}", GetDbFilename());
             UpdateToLatestVersion = true;
         }
 
         public string ConnectionString { get; }
+        public string DbName { get; }
 
         public bool UpdateToLatestVersion { get; set; }
 
@@ -53,19 +42,23 @@ namespace Coderr.Server.SqlServer.Tests.Helpers
         {
             if (_deleted)
                 return;
-            DeleteDatabase();
             _deleted = true;
         }
 
-        public void CreateEmptyDatabase()
+        public void CreateDatabase()
         {
-            Debug.WriteLine("*****DBNAME: " + ConnectionString);
-            //var builder = new SqlConnectionStringBuilder(ConnectionString);
-            Environment.SetEnvironmentVariable("coderr_ConnectionString", ConnectionString);
-
-            using (var con = OpenConnection(_masterConString))
+            var fileName = GetDbFilename();
+            if (File.Exists(fileName))
             {
-                con.ExecuteNonQuery("CREATE Database " + _databaseName);
+                return;
+            }
+
+            using (var connection = new SqlConnection(LocalDbMaster))
+            {
+                connection.Open();
+                var cmd = connection.CreateCommand();
+                cmd.CommandText = $"CREATE DATABASE {DbName} ON (NAME = N'{DbName}', FILENAME = '{fileName}')";
+                cmd.ExecuteNonQuery();
             }
         }
 
@@ -74,18 +67,6 @@ namespace Coderr.Server.SqlServer.Tests.Helpers
             return new AdoNetUnitOfWork(OpenConnection(), true);
         }
 
-        public void DeleteDatabase()
-        {
-            using (var con = OpenConnection(_masterConString))
-            {
-                var sql =
-                    string.Format("alter database {0} set single_user with rollback immediate; DROP Database {0}",
-                        _databaseName);
-                con.ExecuteNonQuery(sql);
-            }
-        }
-
-        private bool _invoked = false;
         public void InitSchema()
         {
             if (_invoked)
@@ -93,12 +74,12 @@ namespace Coderr.Server.SqlServer.Tests.Helpers
             _invoked = true;
             try
             {
-                var schemaManager = new MigrationRunner(OpenConnection, "Coderr", typeof(CoderrMigrationPointer).Namespace);
-                schemaManager.Run();
+                var tools = new SqlServerTools(OpenConnection);
+                tools.CreateTables();
             }
             catch (SqlException ex)
             {
-                throw new DataException(_databaseName + " [" + ConnectionString + "] schema init failed.", ex);
+                throw new DataException($"{DbName} [{ConnectionString}] schema init failed.", ex);
             }
         }
 
@@ -106,19 +87,23 @@ namespace Coderr.Server.SqlServer.Tests.Helpers
         {
             return OpenConnection(ConnectionString);
         }
-
-        public void UpdateSchema(int version)
+        
+        private string GetDbFilename()
         {
-            var mgr = new MigrationRunner(OpenConnection, "Coderr", typeof(CoderrMigrationPointer).Namespace);
-            mgr.Run();
+            var dir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Database");
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+
+            return Path.Combine(dir, DbName + ".mdf");
         }
+        
+
 
         private IDbConnection OpenConnection(string connectionString)
         {
-            var connection = new SqlConnection
-            {
-                ConnectionString = connectionString
-            };
+            var connection = new SqlConnection { ConnectionString = connectionString };
             connection.Open();
             return connection;
         }

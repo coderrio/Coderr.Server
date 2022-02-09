@@ -5,3 +5,7 @@
 .PartitionVue .form-text {
     font-style: italic;
 }
+
+.PartitionVue .card .card-body table.partition-table tr td {
+    text-align: left;
+}

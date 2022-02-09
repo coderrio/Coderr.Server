@@ -43,13 +43,23 @@
                         <router-link :to="{name: 'configureApplication', params: {applicationId: firstApplicationId }}" class="btn btn-dark">Configure your application</router-link>
                     </div>
                 </div>
+                <div class="card" v-if="myBestSuggestion">
+                    <div class="card-header">
+                        <i class="fa fa-hand-spock"></i> Recommended incident
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            <strong><router-link class="text-gray7" :to="{ name: 'discoverIncident', params: { applicationId: myBestSuggestion.ApplicationId, incidentId: myBestSuggestion.Id }}">{{myBestSuggestion.Name}}</router-link><br /></strong>
+                            Application: {{myBestSuggestion.ApplicationName}}
+                        </p>
+                        <em class="text-red">{{myBestSuggestion.Motivation}}</em>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#" class="btn text-white btn-blue shadow btn-sm" @click.prevent="assignBestToMe">Assign to me</a>
+                    </div>
+                </div>
             </div>
             <div class="col-lg-8 col-md-7">
-                <div class="alert-dark" v-if="myBestSuggestion">
-                    We suggest that you work with:
-                    <router-link :to="{ name: 'analyzeIncident', params: { applicationId: myBestSuggestion.applicationId, myBestSuggestion: incident.Id }}">{{myBestSuggestion.Description}}</router-link>
-                    <router-link class="btn btn-primary btn-sm" v-bind:click="assignBestToMe">{{myBestSuggestion.Description}}</router-link>
-                </div>
                 <div class="card">
                     <div class="card-header" id="chart-summary-header">
                         <span v-if="applicationId == 0">Incident trend per application</span>
@@ -63,7 +73,7 @@
                             <div class="legend">
                                 <div v-for="l in legend" :class="l.className">
                                     <svg width="10" height="10">
-                                        <rect width="10" height="10" class="ct-point"/>
+                                        <rect width="10" height="10" class="ct-point" />
                                     </svg>
                                     {{l.name}}
                                 </div>

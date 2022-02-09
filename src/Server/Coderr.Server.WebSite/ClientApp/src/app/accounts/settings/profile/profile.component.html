@@ -1,0 +1,41 @@
+<div class="panel" style="max-width: 600px;">
+  <div>
+    <h2 class="text-white text-shadow-1">Account settings</h2>
+  </div>
+  <div class="fill p-3">
+    <form method="post" [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
+
+      <div class="form-group">
+        <label for="firstName">
+          First Name
+        </label>
+        <input id="firstName" type="text" formControlName="firstName">
+      </div>
+
+
+      <div class="form-group">
+        <label for="lastName">
+          Last Name
+        </label>
+        <input id="lastName" type="text" formControlName="lastName">
+      </div>
+
+
+      <div class="form-group">
+        <label for="workEmail">
+          Email address
+        </label>
+        <input id="workEmail" type="email" formControlName="workEmail">
+        <p class="text-muted">Must be the same email address as in the work planning system (Jira, Azure DevOps) etc for the integration to work properly</p>
+      </div>
+
+      <div class="form-group">
+        <span class="error" style="white-space: pre-line">{{errorMessage}}</span>
+        <button class="button" type="submit">Save</button>
+      </div>
+
+    </form>
+
+  </div>
+  <div class="panel-footer"></div>
+</div>

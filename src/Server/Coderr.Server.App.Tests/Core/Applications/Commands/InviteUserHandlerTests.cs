@@ -57,12 +57,12 @@ namespace Coderr.Server.App.Tests.Core.Applications.Commands
             await _applicationRepository.Received().CreateAsync(Arg.Any<ApplicationTeamMember>());
             actual.EmailAddress.Should().Be(cmd.EmailAddress);
             actual.ApplicationId.Should().Be(cmd.ApplicationId);
-            actual.AddedAtUtc.Should().BeCloseTo(DateTime.UtcNow, 1000);
+            actual.AddedAtUtc.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(1));
             actual.AddedByName.Should().Be("First");
         }
 
         [Fact]
-        public void Regular_user_should_not_be_able_to_invite()
+        public async Task Regular_user_should_not_be_able_to_invite()
         {
             var cmd = new InviteUser(1, "jonas@gauffin.com") { UserId = 1 };
             var members = new[] { new ApplicationTeamMember(1, 3, "karl") };
@@ -71,7 +71,7 @@ namespace Coderr.Server.App.Tests.Core.Applications.Commands
 
             Func<Task> actual = async () => await _sut.HandleAsync(_context, cmd);
 
-            actual.Should().Throw<SecurityException>();
+            await actual.Should().ThrowAsync<SecurityException>();
         }
 
         [Fact]
@@ -154,7 +154,7 @@ namespace Coderr.Server.App.Tests.Core.Applications.Commands
                 new Claim(ClaimTypes.Role, CoderrRoles.SysAdmin),
                 new Claim(CoderrClaims.ApplicationAdmin, "1")
             };
-            var identity = new ClaimsIdentity(claims);
+            var identity = new ClaimsIdentity(claims, AuthenticationTypes.Default);
             return new ClaimsPrincipal(identity);
         }
 

@@ -7,9 +7,18 @@ namespace Coderr.Server.ReportAnalyzer.Abstractions.Boot
 {
     public class ConfigurationContext
     {
+        public ConfigurationContext(IServiceCollection serviceCollection, Func<IServiceProvider> serviceProviderFactory)
+        {
+            Services= serviceCollection;
+            ServiceProvider = serviceProviderFactory;
+        }
+
         public Func<ClaimsPrincipal, IDbConnection> ConnectionFactory { get; set; }
-        public IServiceCollection Services { get; set; }
-        public Func<IServiceProvider> ServiceProvider { get; set; }
+        
+        public IServiceCollection Services { get; private set; }
+
+        public Func<IServiceProvider> ServiceProvider { get; private set; }
+
         public IConfiguration Configuration { get; set; }
     }
 }

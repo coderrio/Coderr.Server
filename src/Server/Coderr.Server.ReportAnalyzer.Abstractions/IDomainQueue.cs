@@ -1,15 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Text;
+﻿using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Coderr.Server.ReportAnalyzer.Abstractions
 {
     /// <summary>
-    /// PublishAsync messages into the domain queue
+    ///     PublishAsync messages into the domain queue
     /// </summary>
-    public interface IDomainQueue
+    /// <remarks>
+    ///     <para>
+    ///         Used by report analyzers to send commands/events into the queue that the application uses.
+    ///     </para>
+    /// </remarks>
+    public interface IDomainQueue : ISaveable
     {
         Task PublishAsync(ClaimsPrincipal principal, object message);
     }

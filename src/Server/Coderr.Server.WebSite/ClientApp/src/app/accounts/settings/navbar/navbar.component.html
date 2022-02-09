@@ -1,0 +1,16 @@
+<div class="submenu">
+  <div class="flex-row">
+    <div class="state">
+    </div>
+    <div class="actions">
+      <a routerLinkActive="active" [routerLink]="['home']" [routerLinkActiveOptions]="{exact:true}">Personal settings</a>
+      <a routerLinkActive="active" [routerLink]="['nots']" id="notificationHighlight">Notifications</a>
+    </div>
+  </div>
+</div>
+
+<guide name="notificationHighlight">
+  <h1>Notifications</h1>
+  <p>The notifications are found here ;)</p>
+</guide>
+

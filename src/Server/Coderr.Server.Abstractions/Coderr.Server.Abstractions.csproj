@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Configurations>Debug;Release;Premise</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
@@ -9,7 +10,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.22" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Tags\" />
   </ItemGroup>
 
 

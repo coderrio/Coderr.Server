@@ -2,6 +2,8 @@
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
+using Coderr.Server.Abstractions;
+using Griffin;
 using Griffin.Data;
 using log4net;
 
@@ -10,7 +12,7 @@ namespace Coderr.Server.SqlServer
     /// <summary>
     ///     Required for background jobs which uses
     /// </summary>
-    public class UnitOfWorkWithTransaction : IAdoNetUnitOfWork
+    public class UnitOfWorkWithTransaction : IAdoNetUnitOfWork, IGotTransaction
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(UnitOfWorkWithTransaction));
         private DbCommand _lastCommand;
@@ -66,7 +68,17 @@ namespace Coderr.Server.SqlServer
 
         public void Execute(string sql, object parameters)
         {
-            throw new NotSupportedException();
+            using (var cmd = CreateCommand())
+            {
+                cmd.CommandText = sql;
+                var ps = parameters.ToDictionary();
+                foreach (var p in ps)
+                {
+                    cmd.AddParameter(p.Key, p.Value);
+                }
+
+                cmd.ExecuteNonQuery();
+            }
         }
     }
 }

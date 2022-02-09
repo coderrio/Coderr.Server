@@ -3,6 +3,7 @@ import { AppRoot } from "@/services/AppRoot";
 import { Component, Watch, Vue, Mixins } from "vue-property-decorator";
 import { MyIncidents, IMyIncident } from "./myincidents";
 import { AppAware } from "@/AppMixins";
+import * as logApi from "@/dto/Common/Logs";
 
 interface IRouteNavigation {
     routeName: string;
@@ -20,6 +21,7 @@ export default class AnalyzeMenuComponent extends Mixins(AppAware) {
     toggleMenu = false;
     applicationId: number | null = null;
     loadedIncident: number = 0;
+    hasLogEntries = false;
 
     created() {
         this.applicationId = AppRoot.Instance.currentApplicationId;
@@ -79,6 +81,7 @@ export default class AnalyzeMenuComponent extends Mixins(AppAware) {
         if (incident == null) {
             this.title = "(Select an incident)";
             this.incidentId = null;
+            this.hasLogEntries = false;
         } else {
             var routeIncident = parseInt(this.$route.params.incidentId);
             if (routeIncident !== incident.incidentId) {
@@ -86,6 +89,12 @@ export default class AnalyzeMenuComponent extends Mixins(AppAware) {
             }
             this.title = incident.shortTitle;
             this.incidentId = incident.incidentId;
+            var query = new logApi.HasLogs();
+            query.IncidentId = incident.incidentId;
+            AppRoot.Instance.apiClient.query<logApi.HasLogsResult>(query)
+                .then(result => {
+                    this.hasLogEntries = result.HasLogs;
+                });
         }
     }
 

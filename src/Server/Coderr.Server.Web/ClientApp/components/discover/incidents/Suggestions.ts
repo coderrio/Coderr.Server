@@ -19,8 +19,10 @@ export default class SuggestionsComponent extends Mixins(AppAware) {
     showEmpty = false;
 
     created() {
+        console.log(AppRoot.Instance.currentApplicationId);
         this.applicationId = AppRoot.Instance.currentApplicationId;
         this.onApplicationChanged(applicationId => {
+            console.log('changed: ', applicationId);
             this.applicationId = applicationId;
             this.loadSuggestions(applicationId);
         })

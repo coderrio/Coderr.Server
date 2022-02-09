@@ -1,0 +1,31 @@
+<form id="incident-close" class="form p-2" [formGroup]="form" (ngSubmit)="onSubmit()" [attr.disabled]="disabled">
+
+  <div class="form-control">
+    <label>
+      Corrected in version
+    </label>
+    <input type="text" formControlName="version" size="10" placeholder="Which version is the error corrected in? (format: 1.2.10)" pattern="[0-9\.]*" title="You can use semantic versioning, including pre-releases, but must specify the release version here." />
+  </div>
+  <div class="form-control">
+    <label>Solution</label>
+    <textarea formControlName="reason" class="w-100" rows="10" placeholder="How did you solve the error?" autofocus="autofocus"></textarea>
+  </div>
+  <div class="form-control">
+    <span class="error" style="white-space: pre-line">{{errorMessage}}</span>
+    <em><a class="text-red" href="https://coderr.io/documentation/features/incidents/close/">Learn more about this feature</a></em><br/>
+    <button type="submit">Close error</button>
+    <button type="reset" (click)="cancel()">Cancel</button>
+  </div>
+</form>
+
+<modal id="askSubscriberModal" >
+  <div class="panel">
+    <h3>Users are tracking this error</h3>
+    <div class="fill bg white p-5">
+      <p>There are {{numberOfUsers}} user(s) waiting to get notified when this error has been fixed.</p>
+      <p>Do you want to notify them?</p>
+      <button class="btn blue" (click)="notifyUsers()">Yes, notify!</button>
+      <button class="btn red" (click)="closeNotifyDialog()">No, keep them in the dark.</button>
+    </div>
+  </div>
+</modal>

@@ -41,6 +41,8 @@ namespace Coderr.Server.App.Core.Incidents.Commands
         {
             if (command == null) throw new ArgumentNullException("command");
 
+            //TODO: Add latest version if not specified.
+
             var incident = await _repository.GetAsync(command.IncidentId);
             incident.Close(command.UserId, command.Solution, command.ApplicationVersion);
             if (command.ShareSolution)
@@ -65,7 +67,7 @@ namespace Coderr.Server.App.Core.Incidents.Commands
             await _repository.UpdateAsync(incident);
 
             var closedEvt =
-                new IncidentClosed(incident.Id, command.UserId, command.Solution, command.ApplicationVersion, command.ClosedAtUtc ?? DateTime.UtcNow);
+                new IncidentClosed(incident.ApplicationId, incident.Id, command.UserId, command.Solution, command.ApplicationVersion, command.ClosedAtUtc ?? DateTime.UtcNow);
             await context.SendAsync(closedEvt);
         }
     }

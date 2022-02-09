@@ -4,7 +4,7 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
     <AspNetCoreModuleName>AspNetCoreModule</AspNetCoreModuleName>
-    <Configurations>Debug;Release</Configurations>
+    <Configurations>Debug;Release;PremiseDebug</Configurations>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -12,21 +12,36 @@
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <IsPackable>false</IsPackable>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <Version>2.3.6</Version>
+    <Version>2.3.15</Version>
     <UserSecretsId>18bfcacd-1b5d-435b-bc30-febb568a29b2</UserSecretsId>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug' OR '$(Configuration)' == 'PremiseDebug'">
     <TypeScriptExperimentalDecorators>true</TypeScriptExperimentalDecorators>
   </PropertyGroup>
 
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU' OR '$(Configuration)'=='PremiseDebug'">
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Premise' OR '$(Configuration)'=='PremiseDebug'">
+    <DefineConstants>$(DefineConstants);PREMISE</DefineConstants>
+  </PropertyGroup>
+  <Target Name="DisplayMessages">
+    <Message Text="$(DefineConstants)" />
+  </Target>
+
   <ItemGroup>
-    <PackageReference Include="Coderr.Client.AspNetCore.Mvc" Version="1.1.9" />
+    <PackageReference Include="Coderr.Client.AspNetCore.Mvc" Version="2.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.5" />
     <PackageReference Include="Griffin.Framework" Version="2.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
-    <PackageReference Include="WebPush" Version="1.0.11" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.json" Version="2.2.0" />
+    <PackageReference Include="Standard.Licensing" Version="1.1.5" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,6 +56,15 @@
     <ProjectReference Include="..\Coderr.Server.Abstractions\Coderr.Server.Abstractions.csproj" />
     <ProjectReference Include="..\Coderr.Server.ReportAnalyzer\Coderr.Server.ReportAnalyzer.csproj" />
     <ProjectReference Include="..\Coderr.Server.SqlServer\Coderr.Server.SqlServer.csproj" />
+    <ProjectReference Include="..\Coderr.Server.WebPush\Coderr.Server.WebPush.csproj" />
+    <ProjectReference Include="..\Premise\Coderr.Server.Premise.Boot\Coderr.Server.Premise.Boot.csproj" />
+  </ItemGroup>
+
+  <!-- Condition="'$(Configuration)'!='Premise' AND '$(Configuration)'!='PremiseDebug'" -->
+  <ItemGroup>
+    <ProjectReference Include="..\Live\Coderr.Server.Live.Abstractions\Coderr.Server.Live.Abstractions.csproj" />
+    <ProjectReference Include="..\Live\Coderr.Server.Live.Boot\Coderr.Server.Live.Boot.csproj" />
+    <ProjectReference Include="..\Live\Coderr.Server.Live.LobbyIntegration\Coderr.Server.Live.LobbyIntegration.csproj" />
   </ItemGroup>
 
   <ItemGroup>

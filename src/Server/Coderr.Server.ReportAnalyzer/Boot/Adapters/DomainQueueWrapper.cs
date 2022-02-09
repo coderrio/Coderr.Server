@@ -9,12 +9,12 @@ namespace Coderr.Server.ReportAnalyzer.Boot.Adapters
     /// <summary>
     ///     Publishes events in the other bounded context (the application context)
     /// </summary>
-    internal class DomainQueueWrapper : IDomainQueue
+    internal class DomainQueueWrapper3 : IDomainQueue
     {
         private readonly ScopedMessageBus _messageBus;
         private bool _gotMessages;
 
-        public DomainQueueWrapper(ScopedMessageBus messageBus)
+        public DomainQueueWrapper3(ScopedMessageBus messageBus)
         {
             _messageBus = messageBus;
         }
@@ -26,9 +26,10 @@ namespace Coderr.Server.ReportAnalyzer.Boot.Adapters
         }
 
 
-        public void SaveChanges()
+        public async Task SaveChanges()
         {
-            if (_gotMessages) _messageBus.CommitAsync().GetAwaiter().GetResult();
+            if (_gotMessages)
+                await _messageBus.CommitAsync();
         }
     }
 }

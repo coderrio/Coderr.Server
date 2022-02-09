@@ -11,7 +11,7 @@ var bundleOutputDir = "./wwwroot/dist";
 function resolve(dir) {
     return path.join(__dirname, dir);
 }
-//TODO: include jquery
+
 const baseConfig = {
     entry: {
         'main': "./ClientApp/boot.ts",
@@ -83,6 +83,10 @@ const baseConfig = {
     },
     plugins: [
         new CleanWebpackPlugin(),
+        new webpack.ProvidePlugin({
+            $: "jquery",
+            jQuery: "jquery"
+        }),
         new VueLoaderPlugin(),
         new MiniCssExtractPlugin(),
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),

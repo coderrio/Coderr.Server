@@ -32,6 +32,8 @@ namespace Coderr.Server.App.Core.Applications.CommandHandlers
             {
                 app.ApplicationType =  command.TypeOfApplication.Value.ConvertEnum<TypeOfApplication>();
             }
+
+            app.RetentionDays = command.RetentionDays ?? 60;
                 
             await _repository.UpdateAsync(app);
         }

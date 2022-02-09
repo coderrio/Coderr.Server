@@ -1,0 +1,142 @@
+<div class="submenu">
+  <div class="flex-row">
+    <div class="state">
+      <input type="text" name="freeText" [(ngModel)]="settings.freeText" placeholder="Free text"/>
+
+      <select name="environment" [(ngModel)]="settings.environmentId">
+        <option selected value="0">All environments</option>
+        <option *ngFor="let env of environments" [value]="env.id">{{env.name}}</option>
+      </select>
+
+      <select name="state" [(ngModel)]="settings.state">
+        <option *ngFor="let state of states" [value]="state.id">{{state.name}}</option>
+      </select>
+
+      <input list="taglist" placeholder="Tags.." multiple="" [(ngModel)]="selectedTags">
+      <datalist id="taglist">
+        <option *ngFor="let tag of tags" [value]="tag.name" [(selected)]="tag.selected">{{tag.name}}</option>
+      </datalist>
+
+      <select name="assignedTo" [(ngModel)]="settings.userId">
+        <option selected value="0">Assigned to</option>
+        <option *ngFor="let user of users" [value]="user.id" [(selected)]="user.id == settings.userId">{{user.name}}</option>
+      </select>
+
+      <div class="contextCollections">
+        <label>Telemetry data</label>
+        <input type="text" placeholder="Collection" [(ngModel)]="settings.contextCollectionName"/>
+        <input type="text" placeholder="Property" [(ngModel)]="settings.contextCollectionProperty"/>
+        <input type="text" placeholder="Value" [(ngModel)]="settings.contextCollectionPropertyValue"/>
+      </div>
+
+      <div style="white-space: nowrap; display: inline-block;">
+        <button class="btn blue" (click)="search()">Search</button>
+        <button class="btn red" (click)="reset()">Clear</button>
+      </div>
+    </div>
+
+    <div class="actions" id="search-actions">
+      <a href="#" *ngIf="!haveSavedSearches">Save</a>
+      <a href="#" *ngIf="!haveSavedSearches">Searches</a>
+      <a href="#" *ngIf="!haveSavedSearches">Here ---&gt;</a>
+      <a href="#" *ngFor="let search of storedSearches" (click)="selectSearch(search);false;" [ngClass]="search.tabName == settings.tabName ? 'active': ''">{{search.tabName}}</a>
+      <div class="buttons">
+        <button title="Save a new search" (click)="showSaveSearch();false;">
+          <i class="fa text-blue fa-save"></i>
+        </button>
+        <button (click)="showDeleteSearch();false;">
+          <i class="fa text-red fa-trash"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="panel p-0">
+  <table class="table w-100">
+    <thead>
+    <tr class="bg dark">
+      <th class="" style="width: 99%"><input type="checkbox" class="form-check-inline"> Name</th>
+      <th class="sortable a" (click)="sort('created')">Created <i [class]="getSortClass('created')"></i></th>
+      <th class="sortable" (click)="sort('lastReport')">Last report <i [class]="getSortClass('lastReport')"></i></th>
+      <th class="sortable" (click)="sort('reportCount')">Report count <i [class]="getSortClass('reportCount')"></i></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let incident of incidents">
+      <td>
+        <input type="checkbox" class="form-check-inline">
+        <a [routerLink]="['../error', incident.id]">{{incident.name}}</a>
+      </td>
+      <td class="a">
+        {{incident.createdAtUtc|ago}}
+      </td>
+      <td>
+        {{incident.lastReportReceivedAtUtc|ago}}
+      </td>
+      <td>
+        {{incident.reportCount}}
+      </td>
+    </tr>
+    </tbody>
+    <tr *ngIf="incidents.length == 0">
+      <td colspan="4">
+        <em>There is nothing here, go away. err.. The search that you requested returned nothing. Have a great day.</em>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<modal id="newSearchModal">
+  <div class="panel">
+    <div class="fill">
+      <h3>Save search</h3>
+      <div>
+        <p>
+          <em>Replace an existing search tab or save the search in a new tab.</em>
+        </p>
+        <table>
+          <tr>
+            <td>Tab name</td>
+            <td>
+              <input type="text" [(ngModel)]="newTabName" class="form-control" placeholder="Search tab name"/><br/>
+            </td>
+          </tr>
+          <tr *ngIf="newTabName != selectedTabName">
+            <td>Replace:</td>
+            <td>
+              <select name="selectedTabName" [(ngModel)]="selectedTabName" class="form-control">
+                <option value="">(Save as new tab)</option>
+                <option *ngFor="let saved of storedSearches" [value]="saved.tabName">{{saved.tabName}}</option>
+              </select>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div>
+        <button class="btn blue" (click)="saveSearch()">Save</button>
+        <button class="btn dark" (click)="cancelSaveSearch()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</modal>
+<modal id="removeSearchModal">
+  <div class="panel">
+    <div class="fill">
+      <h3>Delete search</h3>
+      <div>
+        <select name="selectedTabName" [(ngModel)]="selectedTabName">
+          <option *ngFor="let saved of storedSearches" [value]="saved.tabName">{{saved.tabName}}</option>
+        </select>
+      </div>
+      <div>
+        <button class="btn blue" (click)="deleteSearch()">Remove</button>
+        <button class="btn dark" (click)="cancelRemoveSearch()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</modal>
+<guide name="search-actions">
+  <h3>Search tabs</h3>
+  <p>You can save frequently used searches here, allowing you to quickly navigate between your errors.</p>
+</guide>

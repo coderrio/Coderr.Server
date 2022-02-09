@@ -11,9 +11,24 @@ namespace Coderr.Server.Api.Core.Environments.Queries
     [Message]
     public class GetEnvironments : Query<GetEnvironmentsResult>
     {
+        public GetEnvironments(int applicationId)
+        {
+            if (applicationId <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(applicationId));
+            }
+
+            ApplicationId = applicationId;
+        }
+
+        protected GetEnvironments()
+        {
+
+        }
+
         /// <summary>
         /// Fetch all environments for a specific application.
         /// </summary>
-        public int? ApplicationId { get; set; }
+        public int ApplicationId { get; private set; }
     }
 }

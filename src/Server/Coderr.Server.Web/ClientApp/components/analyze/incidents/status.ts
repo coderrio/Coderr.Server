@@ -1,4 +1,3 @@
-import { PubSubService } from "../../../services/PubSub";
 import { AppRoot } from '../../../services/AppRoot';
 import * as feedback from "../../../dto/Web/Feedback";
 import {NotifySubscribers} from "../../../dto/Core/Incidents";

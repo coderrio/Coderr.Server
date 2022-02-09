@@ -1,0 +1,65 @@
+@import "_mixins.scss";
+@import "coderr-variables.scss";
+
+span.muted {
+    color: $gray-500;
+}
+span.small {
+    font-size: 0.9em;
+}
+
+a
+{
+    color: $red;
+    text-decoration: none;
+}
+
+p {
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+
+.text-shadow-1 {
+  @include text-shadow-1
+}
+
+h2, h3, h4 {
+    font-weight: 600;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-right{
+    text-align: right;
+}
+.text-left {
+  text-align: left;
+}
+
+.text-blue {
+  color: $blue;
+}
+
+.text-dark {
+    color: $dark;
+}
+
+.text-light {
+    color: $light;
+}
+
+.text-red {
+    color: $red;
+}
+
+.text-white {
+    color: #fff;
+}
+
+.text-muted {
+    color: #bbb;
+}

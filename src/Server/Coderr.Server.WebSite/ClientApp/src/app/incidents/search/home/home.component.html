@@ -1,0 +1,75 @@
+<div class="incident-view">
+  <div class="row">
+
+    <div class="col-3 col">
+      <h3>Stack trace</h3>
+      <div class="fill stacktrace">
+        <pre><code>{{incident.stackTrace}}</code></pre>
+      </div>
+
+      <h3>
+        Report browser
+        <span *ngIf="currentReport">(current: {{ currentReport.createdAtUtc|ago:'never':'full' }})</span>
+      </h3>
+      <div class="fill">
+        <div *ngIf="currentReport">
+          <select name="contextCollection" (change)="selectCollection($event.target.value)">
+            <option *ngFor="let col of currentReport.contextCollections" [value]="col.name" [selected]="col.name === currentCollection.name">{{col.name}}</option>
+          </select>
+          <table *ngIf="currentCollection">
+            <tr *ngFor="let prop of currentCollection.properties">
+              <th>{{prop.key}}</th>
+              <td>{{prop.value}}</td>
+            </tr>
+          </table>
+        </div>
+        <div class="row" style="justify-content: space-between; width: 100%">
+          <div class="col">
+            <button (click)="showPreviousReport();false;" *ngIf="canShowPrevious" class="btn sm dark">&lt;&lt;</button>
+          </div>
+          <div class="col">
+            <button (click)="showReportSelector();false;" *ngIf="canShowPrevious || canShowNext" class="btn sm dark">Select report</button>
+          </div>
+          <div class="col text-right">
+            <button (click)="showNextReport();false" *ngIf="canShowNext" class="btn small dark">&gt;&gt;</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="col">
+
+      <h3>Product impact</h3>
+      <div class="fill">
+        <table>
+          <tr *ngFor="let fact of incident.facts">
+            <th>{{fact.title}}</th>
+            <td [innerHTML]="fact.value"></td>
+          </tr>
+        </table>
+      </div>
+      <h3>Reports</h3>
+      <div class="fill">
+        <div style="display: flex" id="dayReports"></div>
+      </div>
+
+      <h3>Affect</h3>
+      <div class="fill">
+        <incident-insight-chart [applicationId]="applicationId" [incidentId]="incidentId"></incident-insight-chart>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<modal id="chooseReportModal">
+  <div class="panel">
+    <h3>Choose error report</h3>
+    <div class="fill" style="display: block; overflow: hidden auto;">
+      <button *ngFor="let r of reports" (click)="selectSpecificReport(r);false" class="btn blue">
+        {{r.createdAtUtc|ago:'never':'full'}}
+      </button>
+    </div>
+  </div>
+</modal>

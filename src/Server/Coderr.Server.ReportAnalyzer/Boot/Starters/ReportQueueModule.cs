@@ -1,26 +1,24 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using Coderr.Client;
+using Coderr.Server.Abstractions;
 using Coderr.Server.Abstractions.Security;
+using Coderr.Server.Domain.Core.Incidents.Events;
 using Coderr.Server.Infrastructure.Messaging;
 using Coderr.Server.ReportAnalyzer.Abstractions;
 using Coderr.Server.ReportAnalyzer.Abstractions.Boot;
-using Coderr.Server.ReportAnalyzer.Abstractions.Feedback;
 using Coderr.Server.ReportAnalyzer.Boot.Adapters;
-using DotNetCqs;
 using DotNetCqs.Bus;
 using DotNetCqs.DependencyInjection;
+using DotNetCqs.Logging;
 using DotNetCqs.MessageProcessor;
 using DotNetCqs.Queues;
-using DotNetCqs.Queues.AdoNet;
 using Griffin.Data;
 using log4net;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
 
 namespace Coderr.Server.ReportAnalyzer.Boot.Starters
 {
@@ -28,39 +26,60 @@ namespace Coderr.Server.ReportAnalyzer.Boot.Starters
     {
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
         private readonly ILog _logger = LogManager.GetLogger(typeof(ReportQueueModule));
-        private readonly ClaimsPrincipal _systemPrincipal;
         private QueueListener _eventProcessor;
-        private IMessageQueueProvider _messageQueueProvider;
         private QueueListener _reportListener;
 
         public ReportQueueModule()
         {
-            _systemPrincipal = new ClaimsPrincipal();
         }
 
         public void Configure(ConfigurationContext context)
         {
-            ConfigureMessageQueueProvider(context);
+            _logger.Debug("configuring on  " + context.GetHashCode());
             ConfigureListeners(context);
             ConfigureMessageHandlers(context);
-            CreateDomainQueue(context);
+
+            if (!ServerConfig.Instance.IsLive)
+                CreateDomainQueue(context, "Messaging");
         }
 
         public void Start(StartContext context)
         {
-            _reportListener.RunAsync(_cancellationTokenSource.Token).ContinueWith(HaveRun);
-            _eventProcessor.RunAsync(_cancellationTokenSource.Token).ContinueWith(HaveRun);
+            //These should not be blocking.But they are working as blocking. quite strange.
+
+
+            if (_reportListener != null)
+                ThreadPool.QueueUserWorkItem(state =>
+                {
+                    _reportListener.RunAsync(_cancellationTokenSource.Token).ContinueWith(HaveRun);
+                });
+
+            if (_eventProcessor != null)
+                ThreadPool.QueueUserWorkItem(state =>
+                {
+                    _eventProcessor.RunAsync(_cancellationTokenSource.Token).ContinueWith(HaveRun);
+                });
         }
 
         public void Stop()
         {
+            _logger.Info("Report queue module is shutting down.");
             _cancellationTokenSource.Cancel();
         }
 
         private void ConfigureListeners(ConfigurationContext context)
         {
-            _reportListener = ConfigureQueueListener(context, "ErrorReports", "ErrorReportEvents");
-            _eventProcessor = ConfigureQueueListener(context, "ErrorReportEvents", "ErrorReportEvents");
+            if (Environment.GetEnvironmentVariable("DisableReportQueue") == "1")
+                return;
+
+            var reportQueueName = ServerConfig.Instance.Queues.ReportQueue;
+            var reportEventQueue = ServerConfig.Instance.Queues.ReportEventQueue;
+            var appQueue = ServerConfig.Instance.Queues.AppQueue;
+
+            var typeName = ServerConfig.Instance.IsLive ? "LIVE" : "PREMISE";
+            _logger.Info($"Running AS  {typeName} with queues {reportQueueName}, {appQueue} and {reportEventQueue}");
+            _reportListener = ConfigureQueueListener(context, reportQueueName, reportEventQueue, appQueue);
+            _eventProcessor = ConfigureQueueListener(context, reportEventQueue, reportEventQueue, appQueue);
         }
 
         private void ConfigureMessageHandlers(ConfigurationContext context)
@@ -74,51 +93,46 @@ namespace Coderr.Server.ReportAnalyzer.Boot.Starters
             context.Services.RegisterMessageHandlers(assembly);
         }
 
-        private void ConfigureMessageQueueProvider(ConfigurationContext context)
-        {
-            var serializer = new MessagingSerializer(typeof(AdoNetMessageDto));
-            _messageQueueProvider =
-                new AdoNetMessageQueueProvider(() => context.ConnectionFactory(_systemPrincipal), serializer);
-        }
-
         private QueueListener ConfigureQueueListener(ConfigurationContext context, string inboundQueueName,
-            string outboundQueueName)
+            string outboundQueueName, string appQueue)
         {
-            var inboundQueue = _messageQueueProvider.Open(inboundQueueName);
+            var inboundQueue = QueueManager.Instance.GetQueue(inboundQueueName);
             var outboundQueue = inboundQueueName == outboundQueueName
                 ? inboundQueue
-                : _messageQueueProvider.Open(outboundQueueName);
+                : QueueManager.Instance.GetQueue(outboundQueueName);
             var scopeFactory = new ScopeWrapper(context.ServiceProvider);
-            var router = new MessageRouter
-            {
-                ReportAnalyzerQueue = outboundQueue, AppQueue = _messageQueueProvider.Open("Messaging")
-            };
 
-            var listener = new QueueListener(inboundQueue, router, scopeFactory)
+            MessageRouter.Instance.RegisterReportQueue(outboundQueue);
+            MessageRouter.Instance.RegisterAppQueue(QueueManager.Instance.GetQueue(appQueue));
+
+            var listener = new QueueListener(inboundQueue, MessageRouter.Instance, scopeFactory)
             {
                 RetryAttempts =
-                    new[] {TimeSpan.FromMilliseconds(500), TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2)},
+                    new[] { TimeSpan.FromMilliseconds(500), TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2) },
                 MessageInvokerFactory = scope =>
                 {
                     var invoker = new MessageInvoker(scope);
-                    invoker.Logger += (level, name, message) => _logger.Debug($"[{name}] {message}");
                     invoker.InvokingHandler += (sender, args) =>
                     {
-                        _logger.Debug(
-                            $"[{inboundQueue.Name}] Invoking {JsonConvert.SerializeObject(args.Message)} ({args.Handler.GetType()}).");
+                        _logger.Debug("Invoking " + args.Handler.GetType().FullName);
+                    };
+                    invoker.HandlerMissing += (sender, args) =>
+                    {
+                        _logger.Error("Missing handler for " + args.Message.Body.GetType().FullName);
                     };
                     return invoker;
                 },
-                Logger = DiagnosticLog
             };
             listener.PoisonMessageDetected += (sender, args) =>
             {
-                Err.Report(args.Exception, new {args.Message.Body});
-                _logger.Error($"[{inboundQueueName}] Poison message: {args.Message.Body}", args.Exception);
+                Err.Report(args.Exception, new { args.Message.Body });
+                _logger.Error($"CoreReport [{inboundQueueName}] Poison message: {args.Message.Body}", args.Exception);
             };
             listener.ScopeCreated += (sender, args) =>
             {
-                args.Scope.ResolveDependency<IPrincipalAccessor>().First().Principal = args.Principal;
+                _logger.Debug($"CoreReport [{inboundQueueName} principal " + args.Principal.ToLogString());
+                var accessor = args.Scope.ResolveDependency<IPrincipalAccessor>().First();
+                accessor.Principal = args.Principal;
             };
             listener.ScopeClosing += (sender, args) =>
             {
@@ -128,8 +142,8 @@ namespace Coderr.Server.ReportAnalyzer.Boot.Starters
                 var all = args.Scope.ResolveDependency<IAdoNetUnitOfWork>().ToList();
                 all[0].SaveChanges();
 
-                var queue = (DomainQueueWrapper) args.Scope.ResolveDependency<IDomainQueue>().First();
-                queue.SaveChanges();
+                var queue = (ISaveable)args.Scope.ResolveDependency<IDomainQueue>().First();
+                queue.SaveChanges().GetAwaiter().GetResult();
             };
             listener.MessageInvokerFactory = MessageInvokerFactory;
             return listener;
@@ -139,20 +153,14 @@ namespace Coderr.Server.ReportAnalyzer.Boot.Starters
         ///     Writes to the message queue that the application is processing (publishing in the other bounded context)
         /// </summary>
         /// <param name="context"></param>
-        private void CreateDomainQueue(ConfigurationContext context)
+        private void CreateDomainQueue(ConfigurationContext context, string queueName)
         {
             context.Services.AddScoped<IDomainQueue>(x =>
             {
-                var queue = _messageQueueProvider.Open("Messaging");
+                var queue = QueueManager.Instance.GetQueue(queueName);
                 var messageBus = new ScopedMessageBus(queue);
-                return new DomainQueueWrapper(messageBus);
+                return new DomainQueueWrapper3(messageBus);
             });
-        }
-
-
-        private void DiagnosticLog(LogLevel level, string queueNameOrMessageName, string message)
-        {
-            _logger.Debug($"[{queueNameOrMessageName}] {message}");
         }
 
         private void HaveRun(Task obj)
@@ -162,22 +170,40 @@ namespace Coderr.Server.ReportAnalyzer.Boot.Starters
 
         private IMessageInvoker MessageInvokerFactory(IHandlerScope arg)
         {
-            var k = arg.ResolveDependency<IMessageHandler<FeedbackAttachedToIncident>>();
             var invoker = new MessageInvoker(arg);
             invoker.HandlerMissing += (sender, args) =>
             {
+                if (args.Message.Body is IncidentCreated)
+                    return;
+
                 _logger.Warn(
                     "Failed to find a handler for " + args.Message.Body.GetType());
             };
+            invoker.InvokingHandler += (sender, args) =>
+            {
+                var asseccor = arg.ResolveDependency<IPrincipalAccessor>().FirstOrDefault();
+                asseccor.Principal = args.Principal;
+            };
+
             invoker.HandlerInvoked += (sender, args) =>
             {
+                if (args.ExecutionTime.TotalMilliseconds > 500)
+                {
+
+                    _logger.Error(
+                        $"Ran {args.Handler}, took {args.ExecutionTime.TotalMilliseconds}ms. Credentials: {args.Principal.ToFriendlyString()}");
+                }
                 if (args.Exception == null)
                     return;
 
-                Err.Report(args.Exception,
-                    new {args.Message, HandlerType = args.Handler.GetType(), args.ExecutionTime});
+                //Err.Report(args.Exception, new
+                //{
+                //    args.Message,
+                //    HandlerType = args.Handler.GetType(),
+                //    args.ExecutionTime
+                //});
                 _logger.Error(
-                    $"Ran {args.Handler}, took {args.ExecutionTime.TotalMilliseconds}ms, but FAILED.",
+                    $"Ran {args.Handler}, took {args.ExecutionTime.TotalMilliseconds}ms, but FAILED. Credentials: {args.Principal.ToFriendlyString()}",
                     args.Exception);
             };
             return invoker;

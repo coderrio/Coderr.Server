@@ -6,9 +6,10 @@
                 <div class="card-body">
                     <textarea class="form-control" v-model="message" placeholder="Describe your problem" rows="10" id="SupportMessage" autofocus=""></textarea>
                     <button class="btn btn-primary" v-on:click.prevent="sendMessage">Send</button>
-                    <em>
+                    <!--<em>
                         This message will be sent to the one responsible of this Coderr installation.
-                    </em>
+                    </em>-->
+                    <em>This message will be sent to one of our developers. Feel free to get technical.</em>
                 </div>
             </div>
             <div class="card" v-if="sent">

@@ -14,11 +14,12 @@
                 <router-link tag="li" class="nav-item" :to="{name: 'manageEnvironments', params: {applicationId: currentApplicationId.toString() }}">
                     <a class="nav-link"><i class="fa fa-industry"></i> Environments</a>
                 </router-link>
-                <!-- Live feature
-    <router-link tag="li" class="nav-item" :to="{name: 'managePartitions', params: {applicationId: currentApplicationId.toString() }}">
-        <a class="nav-link"><i class="fa fa-graduation-cap"></i> Prioritization</a>
-    </router-link>
-    -->
+                <router-link tag="li" class="nav-item" :to="{name: 'managePartitions', params: {applicationId: currentApplicationId.toString() }}">
+                    <a class="nav-link"><i class="fa fa-graduation-cap"></i> Recommendations</a>
+                </router-link>
+                <router-link tag="li" class="nav-item" :to="{name: 'manageAzureConnection', params: {applicationId: currentApplicationId.toString() }}">
+                    <a class="nav-link"><i class="fa fa-cloud"></i> Azure DevOps</a>
+                </router-link>
             </ul>
         </div>
     </div>

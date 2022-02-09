@@ -24,9 +24,11 @@ export interface IModalContext {
     onClosingModal?: (modalId: string, pressedButtonName: "submit" | "cancel") => void;
 }
 
+declare var window: any;
 export interface IMyApplication {
     id: number;
     name: string;
+    groupId: number;
     isAdmin: boolean;
 }
 
@@ -34,6 +36,7 @@ export interface IUser {
     id: number;
     name: string;
     isSysAdmin: boolean;
+    licenseText: string;
     applications: IMyApplication[];
 }
 
@@ -50,6 +53,8 @@ export class AppRoot {
     public apiClient: ApiClient;
     public incidentService: IncidentService;
     public applicationService: ApplicationService;
+
+    // May only be changed from the navbar.
     public currentApplicationId: number | null;
 
     constructor() {
@@ -73,15 +78,23 @@ export class AppRoot {
             apps.push({
                 id: app.Id,
                 name: app.Name,
+                groupId: -1,
                 isAdmin: app.IsAdmin
             });
+        });
+
+        const apps2 = await this.applicationService.list();
+        apps.forEach(app => {
+            var app2 = apps2.find(x => x.id === app.id);
+            app.groupId = app2.groupId;
         });
 
         var currentUser: IUser = {
             id: usr.AccountId,
             name: usr.UserName,
             isSysAdmin: usr.IsSysAdmin,
-            applications: apps
+            applications: apps,
+            licenseText: usr.LicenseText
         };
 
         this.currentUser = currentUser;

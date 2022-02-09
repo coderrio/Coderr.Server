@@ -1,0 +1,34 @@
+<div class="panel">
+  <h2>{{whitelist.domainName}}</h2>
+  <div class="fill">
+    <h4>Allowed applications</h4>
+    <ul>
+      <li *ngFor="let app of whitelist.applications">{{app.name}}</li>
+    </ul>
+    <span *ngIf="whitelist.applications.length == 0"><em>All</em></span>
+    <h4>Allowed IP addresses</h4>
+    <ul>
+      <li *ngFor="let ip of whitelist.ipAddresses">{{ip.address}}</li>
+    </ul>
+  </div>
+  <div>&nbsp;</div>
+  <div>
+    <a [routerLink]="['edit']" class="submit">Edit</a>
+    <a href="#" (click)="verifyRemove(); false" class="reset">Remove</a>
+  </div>
+</div>
+
+<modal id="verifyRemoveModal">
+  <div class="panel">
+    <h3>Confirm removal</h3>
+    <div class="fill">
+      <form (ngSubmit)="removeEntry();" class="form">
+        <div>
+          Are you sure that you want to remove this whitelist?
+        </div>
+        <button type="submit">Yes</button>
+        <button type="reset" (click)="cancelRemove();false">No</button>
+      </form>
+    </div>
+  </div>
+</modal>

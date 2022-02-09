@@ -77,5 +77,28 @@ namespace Coderr.Server.Api.Core.Incidents.Queries
         ///     Total number of received reports (increased even if the number of stored reports are at the limit)
         /// </summary>
         public int ReportCount { get; set; }
+
+        /// <summary>
+        ///     Stores the state temporary to be able to assigned the bool fields
+        /// </summary>
+        [IgnoreField]
+        public int IncidentState { get; set; }
+
+        /// <summary>
+        ///     Ignore future reports for this incident (i.e. no notifications, do not store new reports etc).
+        /// </summary>
+        /// <remarks>
+        ///     <para>
+        ///         Report counter will still be updated.
+        ///     </para>
+        /// </remarks>
+        public bool IsIgnored => IncidentState == 2;
+
+        /// <summary>
+        ///     Incident has been marked as solved (i.e. closed)
+        /// </summary>
+        public bool IsSolved => IncidentState == 3;
+
+
     }
 }

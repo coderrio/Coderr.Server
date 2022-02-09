@@ -45,6 +45,8 @@ namespace Coderr.Server.App.Core.Users.WebApi
 
             settings.ApplicationSpike = command.NotifyOnPeaks.ConvertEnum<NotificationState>();
             settings.NewIncident = command.NotifyOnNewIncidents.ConvertEnum<NotificationState>();
+            settings.CriticalIncident = command.NotifyOnCriticalIncidents.ConvertEnum<NotificationState>();
+            settings.ImportantIncident = command.NotifyOnImportantIncidents.ConvertEnum<NotificationState>();
             settings.ReopenedIncident = command.NotifyOnReOpenedIncident.ConvertEnum<NotificationState>();
             settings.UserFeedback = command.NotifyOnUserFeedback.ConvertEnum<NotificationState>();
             await _notificationsRepository.UpdateAsync(settings);

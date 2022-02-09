@@ -17,8 +17,15 @@ namespace Coderr.Server.ReportAnalyzer.Abstractions.Incidents
         /// <exception cref="ArgumentNullException">incident;report</exception>
         public ReportAddedToIncident(IncidentSummaryDTO incident, ReportDTO report, bool isReOpened)
         {
-            if (incident == null) throw new ArgumentNullException("incident");
-            if (report == null) throw new ArgumentNullException("report");
+            if (incident == null)
+            {
+                throw new ArgumentNullException("incident");
+            }
+
+            if (report == null)
+            {
+                throw new ArgumentNullException("report");
+            }
 
             Incident = incident;
             Report = report;
@@ -34,7 +41,7 @@ namespace Coderr.Server.ReportAnalyzer.Abstractions.Incidents
 
 
         /// <summary>
-        /// Which environment the error was received in.
+        ///     Which environment the error was received in.
         /// </summary>
         public string EnvironmentName { get; set; }
 
@@ -42,11 +49,6 @@ namespace Coderr.Server.ReportAnalyzer.Abstractions.Incidents
         ///     Incident that the report was added to.
         /// </summary>
         public IncidentSummaryDTO Incident { get; private set; }
-
-        /// <summary>
-        ///     Incident was marked as closed, so the received report opened it again.
-        /// </summary>
-        public bool IsReOpened { get; set; }
 
         /// <summary>
         ///     Is the incident new, i.e. this is the first report for an incident.
@@ -57,13 +59,24 @@ namespace Coderr.Server.ReportAnalyzer.Abstractions.Incidents
         public bool? IsNewIncident { get; set; }
 
         /// <summary>
+        ///     Incident was marked as closed, so the received report opened it again.
+        /// </summary>
+        public bool IsReOpened { get; set; }
+
+        /// <summary>
+        ///     Report have been stored (i.e. we do not have too many reports yet).
+        /// </summary>
+        /// <remarks>
+        ///     <para>
+        ///         If false, the report will get discarded which also means that all analyzes that points to it will fail.
+        ///         Therefore, make sure that all analytics run on this report is incident specific and not report specific.
+        ///     </para>
+        /// </remarks>
+        public bool? IsStored { get; set; }
+
+        /// <summary>
         ///     Received report.
         /// </summary>
         public ReportDTO Report { get; private set; }
-
-        /// <summary>
-        /// Report have been stored (i.e. we do not have too many reports yet).
-        /// </summary>
-        public bool? IsStored { get; set; }
     }
 }

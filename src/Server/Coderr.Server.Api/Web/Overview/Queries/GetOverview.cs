@@ -15,5 +15,16 @@ namespace Coderr.Server.Api.Web.Overview.Queries
         ///     1 = switch to hours
         /// </remarks>
         public int NumberOfDays { get; set; }
+
+
+        /// <summary>
+        /// Load chart data.
+        /// </summary>
+        public bool IncludeChartData { get; set; } = true;
+
+        /// <summary>
+        /// Include summary count per partition.
+        /// </summary>
+        public bool IncludePartitions { get; set; } = false;
     }
 }

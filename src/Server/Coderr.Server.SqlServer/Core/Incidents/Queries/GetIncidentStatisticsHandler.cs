@@ -78,7 +78,7 @@ group by cast(ReceivedAtUtc as date)";
             using (var cmd = _unitOfWork.CreateDbCommand())
             {
                 cmd.CommandText = @"SELECT DATEPART(HOUR, IncidentReports.ReceivedAtUtc), cast(count(Id) as int)
-FROM IncidentReports
+FROM IncidentReports WITH (READUNCOMMITTED)
 WHERE IncidentReports.ReceivedAtUtc > @minDate
 AND IncidentId = @incidentId
 GROUP BY DATEPART(HOUR, IncidentReports.ReceivedAtUtc);";

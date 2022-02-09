@@ -24,6 +24,7 @@ export default class ApplicationDetailsComponent extends Vue {
     applicationId: number = 0;
     name: string = '';
     versions: string = '';
+    retentionDays: number = 60;
 
     // summary, changes when time window changes
     reportCount: number = 0;
@@ -44,6 +45,7 @@ export default class ApplicationDetailsComponent extends Vue {
                 this.applicationId = x.Id;
                 this.name = x.Name;
                 this.versions = 'v' + x.Versions.join(', v');
+                this.retentionDays = x.RetentionDays;
             });
 
         var q2 = new GetApplicationOverview();

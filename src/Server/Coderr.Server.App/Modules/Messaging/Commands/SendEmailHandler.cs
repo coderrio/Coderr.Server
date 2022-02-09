@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Net.Mime;
 using System.Threading.Tasks;
+using Coderr.Server.Abstractions;
 using Coderr.Server.Abstractions.Config;
 using Coderr.Server.Api.Core.Accounts.Queries;
 using Coderr.Server.Api.Core.Messaging.Commands;
@@ -14,10 +15,10 @@ using Markdig;
 
 namespace Coderr.Server.App.Modules.Messaging.Commands
 {
-    internal class SendEmailHandler : IMessageHandler<SendEmail>
+    public class SendEmailHandler : IMessageHandler<SendEmail>
     {
         private ConfigurationStore _configStore;
-
+        
         public SendEmailHandler(ConfigurationStore configStore)
         {
             _configStore = configStore;
@@ -25,15 +26,16 @@ namespace Coderr.Server.App.Modules.Messaging.Commands
 
         public async Task HandleAsync(IMessageContext context, SendEmail command)
         {
+            // Emails have been disabled. Typically just in LIVE.
+            if (!ServerConfig.Instance.UseSmtpHandler)
+                return;
+
             var client = CreateSmtpClient();
             if (client == null)
                 return;
 
             var baseConfig = _configStore.Load<BaseConfiguration>();
 
-            // Emails have been disabled. Typically just in LIVE.
-            if (string.IsNullOrEmpty(baseConfig.SupportEmail))
-                return;
 
             var email = new MailMessage
             {

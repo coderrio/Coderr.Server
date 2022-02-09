@@ -16,7 +16,6 @@ class Guid {
 @Component
 export default class CreateApiKeyComponent extends Vue {
     apiKeyId: number = 0;
-
     key: string = '';
     sharedSecret: string = '';
     applications: number[] = [];

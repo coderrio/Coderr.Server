@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Data.SqlClient;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Security.Authentication;
 using System.Security.Claims;
@@ -24,13 +25,13 @@ namespace Coderr.Server.ReportAnalyzer.Inbound
     /// </summary>
     public class SaveReportHandler
     {
-        
+        private static readonly DuplicateChecker DuplicateChecker = new DuplicateChecker();
+        private static readonly Dictionary<int, RateLimit> _lastReportPerApplication = new Dictionary<int, RateLimit>();
         private readonly List<Func<NewReportDTO, bool>> _filters = new List<Func<NewReportDTO, bool>>();
         private readonly ILog _logger = LogManager.GetLogger(typeof(SaveReportHandler));
+        private readonly int _maxSizeForJsonErrorReport;
         private readonly IMessageQueue _queue;
         private readonly IAdoNetUnitOfWork _unitOfWork;
-        private readonly int _maxSizeForJsonErrorReport;
-        private static readonly DuplicateChecker DuplicateChecker = new DuplicateChecker();
 
         /// <summary>
         ///     Creates a new instance of <see cref="SaveReportHandler" />.
@@ -67,8 +68,28 @@ namespace Coderr.Server.ReportAnalyzer.Inbound
                 throw new InvalidCredentialException($"AppKey was not found in the database. Key '{appKey}'.");
             }
 
+            lock (_lastReportPerApplication)
+            {
+                if (_lastReportPerApplication.TryGetValue(application.Id, out var limiter))
+                {
+                    if (limiter.IsRateExceeded())
+                    {
+                        _logger.Info($"Rate limit is exceeded for application {application.Id}.");
+                        return;
+                    }
+                        
+                    limiter.AddReport();
+                }
+                else
+                {
+                    _lastReportPerApplication[application.Id] = new RateLimit();
+                }
+            }
+
+
             // web(js) applications do not sign the body
-            if (signatureProvidedByTheClient != null && !ReportValidator.ValidateBody(application.SharedSecret, signatureProvidedByTheClient, reportBody))
+            if (signatureProvidedByTheClient != null && !ReportValidator.ValidateBody(application.SharedSecret,
+                signatureProvidedByTheClient, reportBody))
             {
                 await StoreInvalidReportAsync(appKey, signatureProvidedByTheClient, remoteAddress, reportBody);
                 throw new AuthenticationException(
@@ -78,6 +99,11 @@ namespace Coderr.Server.ReportAnalyzer.Inbound
             var report = DeserializeBody(reportBody);
             if (report == null)
                 return;
+
+            if (Debugger.IsAttached) _logger.Debug("Received " + JsonConvert.SerializeObject(report));
+
+            // Ignore our weird error where the HashSource is incorrect
+            if (report.Exception?.Message.Contains("Slow POST /receiver/report") == true) return;
 
             if (DuplicateChecker.IsDuplicate(remoteAddress, report))
             {
@@ -101,6 +127,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound
                 DateReceivedUtc = DateTime.UtcNow,
                 EnvironmentName = report.EnvironmentName,
                 Exception = ConvertException(report.Exception),
+                LogEntries = ConvertLogEntries(report.LogEntries),
                 ReportId = report.ReportId,
                 ReportVersion = report.ReportVersion
             };
@@ -132,6 +159,22 @@ namespace Coderr.Server.ReportAnalyzer.Inbound
             return ex;
         }
 
+        private ProcessReportLogEntry[] ConvertLogEntries(NewReportLogEntry[] dtos)
+        {
+            if (dtos == null) return null;
+
+            return dtos
+                .Select(x => new ProcessReportLogEntry
+                {
+                    Message = x.Message,
+                    Exception = x.Exception,
+                    LogLevel = x.LogLevel,
+                    Source = x.Source,
+                    TimestampUtc = x.TimestampUtc
+                })
+                .ToArray();
+        }
+
         private NewReportDTO DeserializeBody(byte[] body)
         {
             string json;
@@ -159,6 +202,10 @@ namespace Coderr.Server.ReportAnalyzer.Inbound
                     ContractResolver =
                         new IncludeNonPublicMembersContractResolver()
                 });
+
+            //if (Debugger.IsAttached && Environment.MachineName.IndexOf("jg", StringComparison.OrdinalIgnoreCase) != -1)
+            //    File.WriteAllText($@"C:\Temp\Report_{dto.Exception.Name}.{DateTime.Now:yyyyMMdd_hhmmss_fff}.json",
+            //        json);
 
             if (string.IsNullOrEmpty(dto.EnvironmentName) && !string.IsNullOrEmpty(dto.Environment))
                 dto.EnvironmentName = dto.Environment;
@@ -192,11 +239,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound
                     if (!await reader.ReadAsync())
                         return null;
 
-                    return new AppInfo
-                    {
-                        Id = reader.GetInt32(0),
-                        SharedSecret = reader.GetString(1)
-                    };
+                    return new AppInfo {Id = reader.GetInt32(0), SharedSecret = reader.GetString(1)};
                 }
             }
         }
@@ -243,7 +286,42 @@ namespace Coderr.Server.ReportAnalyzer.Inbound
             catch (Exception ex)
             {
                 _logger.Error(
-                    "Failed to StoreReport: " + JsonConvert.SerializeObject(new { model = report }), ex);
+                    "Failed to StoreReport: " + JsonConvert.SerializeObject(new {model = report}), ex);
+            }
+        }
+
+        private class RateLimit
+        {
+            private readonly LinkedList<DateTime> _reportDates = new LinkedList<DateTime>();
+
+            public RateLimit()
+            {
+                _reportDates.AddLast(DateTime.UtcNow);
+            }
+
+            public void AddReport()
+            {
+                lock (_reportDates)
+                {
+                    _reportDates.AddLast(DateTime.UtcNow);
+                }
+            }
+
+            public bool IsRateExceeded()
+            {
+                if (Debugger.IsAttached)
+                {
+                    return false;
+                }
+
+                var twentySecondsAgo = DateTime.UtcNow.AddSeconds(-20);
+                lock (_reportDates)
+                {
+                    while (_reportDates.First != null && _reportDates.First.Value < twentySecondsAgo)
+                        _reportDates.RemoveFirst();
+
+                    return _reportDates.Count > 20;
+                }
             }
         }
 

@@ -5,10 +5,14 @@ import { AppRoot } from "./services/AppRoot"
 import { IUser } from "./vue-shim";
 import { DateTime } from 'luxon';
 import * as helpers from "./helpers";
-export { default as $ } from 'jquery';
-//Vue.use(VeeValidate);
+import Prism from "prismjs";
+export default Prism;
+import "prismjs/components/prism-csharp";
+import "prismjs/components/prism-javascript";
+import "prismjs/themes/prism-okaidia.css";
+
 Vue.use(VueRouter);
-Vue.config.devtools = true;
+Vue.config.devtools = false;
 
 
 declare module 'vue/types/vue' {
@@ -16,6 +20,12 @@ declare module 'vue/types/vue' {
         user$: IUser;
     }
 }
+
+Vue.filter("zeroIfEmpty",
+    (value: string) => {
+        if (!value) return "0";
+        return value;
+    });
 
 Vue.filter("ago",
     (value: string) => {
@@ -136,9 +146,19 @@ const routes = [
                 component: require("./components/analyze/incidents/report.vue.html").default
             },
             {
+                name: "analyzeImpact",
+                path: "incident/:incidentId/impact",
+                component: require("./components/analyze/incidents/impact.vue.html").default
+            },
+            {
                 name: "analyzeOrigins",
                 path: "incident/:incidentId/origins/",
                 component: require("./components/analyze/incidents/origins.vue.html").default
+            },
+            {
+                name: "analyzeLogs",
+                path: "incident/:incidentId/logs",
+                component: require("./components/analyze/logs/incident-logs.vue.html").default
             },
             {
                 name: "closeIncident",
@@ -162,9 +182,14 @@ const routes = [
         component: require("./components/onboarding/onboarding.vue.html").default,
         children: [
             {
-                name: "onboardApp",
-                path: "",
-                component: require("./components/onboarding/home/home.vue.html").default
+                name: "onboardStart",
+                path: "start",
+                component: require("./components/onboarding/home/start.vue.html").default
+            },
+            {
+                name: "onboardNextStep",
+                path: "next",
+                component: require("./components/onboarding/home/next.vue.html").default
             }
         ]
     },
@@ -201,6 +226,11 @@ const routes = [
                 name: "editPartition",
                 path: ":applicationId/partition/:partitionId/edit",
                 component: require("./components/manage/application/partitions/edit.vue.html").default
+            },
+            {
+                name: "manageAzureConnection",
+                path: ":applicationId/azure/devops/",
+                component: require("./common/manage/azure/devops/connection.vue.html").default
             }
         ]
     },
@@ -229,6 +259,11 @@ const routes = [
                 path: "create/application/",
                 component: require("./components/manage/system/create/create.vue.html").default,
 
+            },
+            {
+                name: "manageGroups",
+                path: "groups/",
+                component: require("./components/manage/system/groups/groups.vue.html").default
             },
             {
                 name: "manageApiKeys",
@@ -287,6 +322,31 @@ const routes = [
     }
 ];
 
+function replaceRoute(routes: any, newRoute: any) {
+    for (var i = 0; i < routes.length; i++) {
+        if (routes[i].name === newRoute.name) {
+            routes[i] = newRoute;
+            return true;
+        }
+
+        if (routes[i].children) {
+            if (replaceRoute(routes[i].children, newRoute))
+                return true;
+        }
+    }
+
+    return false;
+}
+
+declare var window: any;
+if (window['IsPremise'] === true) {
+    replaceRoute(routes, {
+        name: "manageSecurity",
+        path: ":applicationId/security",
+        component: require("./premise/manage/security/security.vue.html").default,
+    });
+}
+
 var hooks = {
     mounted: function (instance: Vue) { },
     created: function (instance: Vue) { },
@@ -298,6 +358,8 @@ var v = <any>window;
 if (v["Cypress"]) {
     v['MyVueHooks'] = hooks;
 }
+
+Vue.prototype.premisePlus = true;
 
 var ourVue: Vue;
 AppRoot.Instance.loadCurrentUser()

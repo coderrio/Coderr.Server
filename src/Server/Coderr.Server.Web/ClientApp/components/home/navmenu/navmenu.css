@@ -6,14 +6,14 @@
     padding-top: 0;
 }
 
-#mainMenu .dropdown-menu .nav-link.active {
-    color: #59c1d5 !important;
-}
+    #mainMenu .dropdown-menu .nav-link.active {
+        color: #59c1d5 !important;
+    }
 
-#mainMenu .dropdown-menu .groups .nav-item.active {
-    color: #fff !important;
-    border-radius: 0;
-}
+    #mainMenu .dropdown-menu .groups .nav-item.active {
+        color: #fff !important;
+        border-radius: 0;
+    }
 
 *#mainMenu .dropdown-menu .router-link-active {
     color: #000000;
@@ -38,7 +38,15 @@
     color: #f0f0f0;
 }
 
-.navmenu table :hover a {
-    background-color: #333333;
-    color: #f0f0f0;
+    .navmenu table :hover a {
+        background-color: #333333;
+        color: #f0f0f0;
+    }
+
+.licenseInfo {
+    font-size: 0.8em
 }
+
+    .licenseInfo a {
+        color: #fff
+    }

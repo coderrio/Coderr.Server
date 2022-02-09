@@ -1,0 +1,54 @@
+<div class="submenu">
+  <div>
+    #{{incident.id}} <span style="color:#999">[{{incident.fullName}}]</span> {{incident.description}}
+  </div>
+  <div class="flex-row">
+    <div class="state">
+      <dl>
+        <dt>Assigned to</dt>
+        <dd>
+          <select (change)="assignIncident($event.target.value)">
+            <option value="" disabled="disabled" [selected]="!incident.assignedToId">(No one)</option>
+            <option *ngFor="let user of users" [value]="user.id" [selected]="incident.assignedToId === user.id">{{user.userName}}</option>
+          </select>
+        </dd>
+
+        <dt>Created</dt>
+        <dd>{{incident.createdAtUtc|ago}}</dd>
+
+        <dt>State</dt>
+        <dd>
+          <select (change)="changeState($event.target.value)">
+            <option *ngFor="let state of states" [value]="state.id" [selected]="state.id === incident.state" [disabled]="!state.isSettable">
+              {{state.name}}
+            </option>
+          </select>
+        </dd>
+
+        <dt>Last report</dt>
+        <dd>{{incident.lastReportReceivedAtUtc|ago}}</dd>
+      </dl>
+      <div class="tags">
+        <span *ngFor="let tag of incident.tags">{{tag}}</span>
+      </div>
+    </div>
+    <div class="actions">
+      <a routerLinkActive="active" [routerLink]="['home']" [routerLinkActiveOptions]="{exact:true}"><i class="fa fa-home"></i></a>
+      <a routerLinkActive="active" [routerLink]="['origins']"><i class="fa fa-globe"></i></a>
+      <a routerLinkActive="active" [routerLink]="['users']"><i class="fa fa-comments"></i></a>
+      <a routerLinkActive="active" [routerLink]="['logs']"><i class="fa fa-tree"></i></a>
+      <a routerLinkActive="active" [routerLink]="['impact']"><i class="fa fa-thermometer-three-quarters"></i></a>
+    </div>
+  </div>
+</div>
+
+
+<modal id="closeIncidentModal" *ngIf="myIncidentId > 0">
+  <div class="panel">
+    <h3>Close error</h3>
+    <div class="fill">
+      <incident-close (closed)="closeCloseModal($event)" [incidentId]="myIncidentId"></incident-close>
+
+    </div>
+  </div>
+</modal>

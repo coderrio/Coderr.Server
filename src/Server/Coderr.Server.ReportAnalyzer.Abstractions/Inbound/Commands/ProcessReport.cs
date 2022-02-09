@@ -34,6 +34,11 @@ namespace Coderr.Server.ReportAnalyzer.Abstractions.Inbound.Commands
         public ProcessReportExceptionDto Exception { get; set; }
 
         /// <summary>
+        /// 100 latest log entries if attached.
+        /// </summary>
+        public ProcessReportLogEntry[] LogEntries { get; set; }
+
+        /// <summary>
         ///     Remote address that we received the report from
         /// </summary>
         public string RemoteAddress { get; set; }
@@ -47,6 +52,7 @@ namespace Coderr.Server.ReportAnalyzer.Abstractions.Inbound.Commands
         ///     Version of the report (version of the Coderr.Reporting API contract)
         /// </summary>
         public string ReportVersion { get; set; }
+
 
         /// <summary>
         /// "Dev", "Production", "Test" etc

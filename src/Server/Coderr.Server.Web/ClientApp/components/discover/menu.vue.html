@@ -6,6 +6,9 @@
                     <router-link class="nav-link" :to="{name: 'discover', params: {applicationId: currentApplicationId }}" exact><i class="fa fa-tachometer-alt"></i> Overview</router-link>
                 </li>
                 <li class="nav-item">
+                    <router-link class="nav-link" :to="{name: 'suggest', params: {applicationId: currentApplicationId }}"><i class="far fa-lightbulb"></i> Recommendations</router-link>
+                </li>
+                <li class="nav-item">
                     <router-link class="nav-link" :to="{name: 'findIncidents', params: {applicationId: currentApplicationId }}"><i class="fa fa-table"></i> Incidents</router-link>
                 </li>
                 <li class="nav-item">

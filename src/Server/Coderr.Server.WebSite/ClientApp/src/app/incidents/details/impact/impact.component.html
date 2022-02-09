@@ -1,0 +1,36 @@
+<div class="panel">
+  <h3>Business impact</h3>
+  <div class="fill" style="display: flex; flex-direction: row">
+    <div style="flex: 0 0 200px;">
+      <form>
+        <div class="form-group">
+          <h4>Select indicator</h4>
+          <a href="#" *ngFor="let item of partitions" (click)="selectItem(item);false">{{item.name}}</a>
+        </div>
+      </form>
+
+    </div>
+
+    <div style="flex: 1">
+      <h4>Submitted values</h4>
+      <table class="table striped" style="width: 250px" *ngIf="values.length > 0">
+        <thead>
+          <tr>
+            <th>Value</th>
+            <th>Last received</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of values">
+            <td>{{item.value}}</td>
+            <td>{{item.receivedAtUtc|ago}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div *ngIf="values.length === 0">
+        <em>No items where found for the given indicator.</em>
+      </div>
+
+    </div>
+  </div>
+</div>

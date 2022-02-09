@@ -7,7 +7,7 @@ namespace Coderr.Server.Api.Core.Messaging.Commands
     /// </summary>
     /// <remarks>
     ///     <para>
-    ///         Requires a prepaid account at http://coderrapp.com/services/sms. Add your SMS Api key and the shared
+    ///         Requires a prepaid account at http://coderr.io/services/sms. Add your SMS Api key and the shared
     ///         secret in your web.config.
     ///     </para>
     ///     <example>

@@ -4,6 +4,7 @@ using Coderr.Client;
 using Coderr.Server.Domain.Modules.ApplicationVersions;
 using Coderr.Server.ReportAnalyzer.Abstractions.Incidents;
 using DotNetCqs;
+using log4net;
 
 namespace Coderr.Server.ReportAnalyzer.ApplicationVersions.Handlers
 {
@@ -45,7 +46,10 @@ namespace Coderr.Server.ReportAnalyzer.ApplicationVersions.Handlers
                                 ?? new ApplicationVersion(e.Incident.ApplicationId, e.Incident.ApplicationName,
                                     version);
             if (versionEntity.Version != version)
+            {
                 versionEntity = new ApplicationVersion(e.Incident.ApplicationId, e.Incident.ApplicationName, version);
+            }
+
             versionEntity.UpdateReportDate();
 
             if (versionEntity.Id == 0)

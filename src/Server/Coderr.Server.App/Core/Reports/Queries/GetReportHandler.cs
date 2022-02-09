@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Coderr.Server.Api.Core.Reports.Queries;
 using Coderr.Server.Domain.Core.ErrorReports;
 using DotNetCqs;
+using log4net;
 
 
 namespace Coderr.Server.App.Core.Reports.Queries
@@ -14,6 +15,7 @@ namespace Coderr.Server.App.Core.Reports.Queries
     public class GetReportHandler : IQueryHandler<GetReport, GetReportResult>
     {
         private readonly IReportsRepository _repository;
+        private ILog _logger = LogManager.GetLogger(typeof(GetReportHandler));
 
         /// <summary>
         ///     Creates a new instance of <see cref="GetReportHandler" />.
@@ -31,7 +33,9 @@ namespace Coderr.Server.App.Core.Reports.Queries
         /// <returns>Task which will contain the result once completed.</returns>
         public async Task<GetReportResult> HandleAsync(IMessageContext context, GetReport query)
         {
+            _logger.Debug("Getting0..");
             var report = await _repository.GetAsync(query.ReportId);
+            _logger.Debug("Getting5..");
             var collections = (
                 from x in report.ContextCollections
                 where x.Properties.Count > 0
@@ -39,6 +43,7 @@ namespace Coderr.Server.App.Core.Reports.Queries
                 select new GetReportResultContextCollection(x.Name, properties.ToArray())
             ).ToList();
 
+            _logger.Debug("Getting6..");
             //TODO: Fix feedback
             //var feedbackQuery = new GetReportFeedback(query.ReportId, query.);//TODO: Fix customerId
             //var feedback = await _queryBus.QueryAsync(feedbackQuery);

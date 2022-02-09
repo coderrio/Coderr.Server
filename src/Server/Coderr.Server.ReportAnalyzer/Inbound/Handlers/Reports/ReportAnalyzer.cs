@@ -32,6 +32,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
         private readonly IAnalyticsRepository _repository;
         private readonly IDomainQueue _domainQueue;
         private readonly IConfiguration<ReportConfig> _reportConfig;
+        private readonly IFilterService _filterService;
 
         /// <summary>
         ///     Creates a new instance of <see cref="ReportAnalyzer" />.
@@ -42,12 +43,13 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
         ///     <see cref="Coderr.Server.ReportAnalyzer.Abstractions.Incidents.ReportAddedToIncident" /> event
         /// </param>
         /// <param name="repository">repos</param>
-        public ReportAnalyzer(IHashCodeGenerator hashCodeGenerator, IAnalyticsRepository repository, IDomainQueue domainQueue, IConfiguration<ReportConfig> reportConfig)
+        public ReportAnalyzer(IHashCodeGenerator hashCodeGenerator, IAnalyticsRepository repository, IDomainQueue domainQueue, IConfiguration<ReportConfig> reportConfig, IFilterService filterService)
         {
             _hashCodeGenerator = hashCodeGenerator;
             _repository = repository;
             _domainQueue = domainQueue;
             _reportConfig = reportConfig;
+            _filterService = filterService;
         }
 
         /// <summary>
@@ -59,12 +61,14 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
         {
             if (report == null) throw new ArgumentNullException(nameof(report));
 
+            /* Not in LIVE
             var countThisMonth = _repository.GetMonthReportCount();
             if (countThisMonth >= 500)
             {
                 _repository.AddMissedReport(DateTime.Today);
                 return;
             }
+            */
 
             _logger.Debug("Running as " + context.Principal.ToFriendlyString());
             var exists = _repository.ExistsByClientId(report.ClientReportId);
@@ -107,6 +111,17 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
                 incident = _repository.FindIncidentForReport(report.ApplicationId, report.ReportHashCode, hashcodeResult.CollisionIdentifier);
             }
 
+            var result = await _filterService.CanProcess(report, incident);
+            if (result == FilterResult.DiscardReport)
+            {
+                return;
+            }
+
+            if (result == FilterResult.ProcessAndDiscard)
+            {
+                storeReport = false;
+            }
+
             var isNewIncident = false;
             if (incident == null)
             {
@@ -140,6 +155,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
                     _logger.Info("Incident is ignored: " + JsonConvert.SerializeObject(report));
                     incident.WasJustIgnored();
                     _repository.UpdateIncident(incident);
+                    report.IncidentId = incident.Id;
                     return;
                 }
 
@@ -161,6 +177,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
                         _logger.Info("Ignored report since it's for a version less that the solution version: " + JsonConvert.SerializeObject(report));
                         incident.WasJustIgnored();
                         _repository.UpdateIncident(incident);
+                        report.IncidentId = incident.Id;
                         return;
                     }
 
@@ -191,7 +208,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
             }
 
             if (!string.IsNullOrWhiteSpace(report.EnvironmentName))
-                _repository.SaveEnvironmentName(incident.Id, report.EnvironmentName);
+                _repository.SaveEnvironmentName(incident.Id, incident.ApplicationId, report.EnvironmentName);
 
             report.IncidentId = incident.Id;
 
@@ -314,11 +331,12 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers.Reports
 
         private ReportDTO ConvertToCoreReport(ErrorReportEntity report, string version)
         {
-            var dto = new ReportDTO(report.Id)
+            var dto = new ReportDTO
             {
                 ApplicationId = report.ApplicationId,
                 ContextCollections =
                     report.ContextCollections.Select(x => new ContextCollectionDTO(x.Name, x.Properties)).ToArray(),
+                Id = report.Id,
                 CreatedAtUtc = report.CreatedAtUtc,
                 IncidentId = report.IncidentId,
                 RemoteAddress = report.RemoteAddress,

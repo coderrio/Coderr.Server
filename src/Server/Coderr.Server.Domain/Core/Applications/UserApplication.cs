@@ -16,6 +16,16 @@
         public int ApplicationId { get; set; }
 
         /// <summary>
+        /// Logical group (used to organize applications).
+        /// </summary>
+        public int GroupId { get; set; }
+
+        /// <summary>
+        /// Name of the group.
+        /// </summary>
+        public string GroupName { get; set; }
+            
+        /// <summary>
         /// If the user that this app is requested for is the admin
         /// </summary>
         public bool IsAdmin { get; set; }

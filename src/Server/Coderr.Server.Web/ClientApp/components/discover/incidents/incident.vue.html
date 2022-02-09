@@ -3,6 +3,10 @@
         <div class="row" style="padding-left: 20px;padding-right: 20px">
             <div class="col">
                 <div class="float-right">
+                    <a class="btn btn-dark shadow" href="#" v-show="showCreateWorkItemButton" v-on:click.prevent="createWorkItem">
+                        <i class="fa fa-plug"></i>
+                        Add to {{workItemIntegration.title}}
+                    </a>
                     <div class="btn-group" role="group">
                         <a class="btn btn-blue shadow" href="#" v-if="incident.IncidentState == 0" v-on:click.prevent="assignToMe">Assign to me</a>
                         <div class="dropdown" style="display: inline-block">
@@ -81,7 +85,12 @@
                                     </div>
                                 </td>
                             </tr>
+                            <tr v-if="haveWorkItem">
+                                <td>Work item</td>
+                                <td><a :href="workItem.url">{{workItem.name}}</a></td>
+                            </tr>
                         </table>
+
                     </div>
                 </div>
             </div>

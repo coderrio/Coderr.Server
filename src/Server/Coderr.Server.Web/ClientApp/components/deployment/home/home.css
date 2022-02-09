@@ -1,0 +1,145 @@
+/*.graph.col {
+    width: 50%;
+    min-width: 400px;
+}*/
+
+.insight-chart .card-header {
+    /*background-color: #59c1d5; 
+        color: white;*/
+    color: #59c1d5
+}
+
+.insight-chart .card-body {
+    padding-top: 0;
+}
+
+    .insight-chart .card-body .description {
+        padding-bottom: 10px;
+    }
+
+
+.insight-chart .ct-grid.ct-horizontal, .insight-chart .ct-grid.ct-vertical {
+    stroke: #706f6f /*gray500*/
+}
+
+.insight-chart .ct-label {
+    /*color: #ededed /*gray200*/
+    color: #59c1d5
+}
+
+.insight-chart .ct-chart-line {
+    overflow: visible !important;
+}
+
+.insight-chart .legend {
+    text-align: center;
+    font-weight: bold;
+}
+
+    .insight-chart .legend > div {
+        display: inline-block;
+        padding-right: 20px;
+    }
+
+.insight-chart .ct-line {
+    stroke-width: 2px;
+}
+
+.insight-chart .ct-point {
+    stroke-width: 6px;
+}
+
+.insight-chart .legend .ct-point {
+    stroke-width: 10px;
+}
+
+.insight-chart .company-average .ct-line {
+}
+
+.insight-chart .ct-series-a .ct-line {
+    stroke-width: 3px;
+    stroke-linecap: round;
+    stroke-dasharray: 30px 5px;
+}
+
+.insight-chart .ct-series-a .ct-line, .insight-chart .ct-series-a .ct-point {
+    stroke: #141414;
+    /*stroke-dasharray: 10 5;*/
+}
+
+.insight-chart .ct-series-b .ct-line, .insight-chart .ct-series-b .ct-point {
+    stroke: #59c1d5;
+}
+
+.insight-chart .ct-series-c .ct-line, .insight-chart .ct-series-c .ct-point {
+    stroke: #f18c65 !important;
+}
+
+.insight-chart .ct-series-d .ct-line, .insight-chart .ct-series-d .ct-point {
+    stroke: #65f175 !important;
+}
+
+.insight-chart .ct-series-e .ct-line, .insight-chart .ct-series-e .ct-point {
+    stroke: #6c65f1 !important;
+}
+
+.insight-chart .ct-series-f .ct-line, .insight-chart .ct-series-f .ct-point {
+    stroke: #dae35f !important;
+}
+
+.insight-chart .card-footer {
+    background: #ffffff;
+    padding: 0;
+}
+
+    .insight-chart .card-footer .row {
+        margin: 0;
+    }
+
+    .insight-chart .card-footer .col {
+        padding: 0;
+        margin: 1px;
+    }
+
+.insight-chart ol.toplist li {
+    font-size: 1.3em;
+    margin-left: 20px;
+}
+
+.insight-chart ol.toplist em {
+    color: #999999;
+}
+
+.insight {
+    border-left: #59c1d5 8px solid;
+    background-color: #fff;
+    margin: 5px 5px 5px 0px;
+    padding: 10px;
+    box-shadow: 0 .15rem 1.75rem 0 rgba(58,59,69,.15) !important;
+    min-width: 20vw;
+}
+
+    .insight .title {
+        color: #59c1d5;
+        font-weight: bold;
+        font-size: 1.2em;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .insight .value {
+        color: #706f6f;
+        font-size: 1.6em;
+        font-weight: bolder;
+        margin-bottom: 10px;
+        padding: 5px 10px 5px 10px;
+        text-align: center;
+    }
+
+    .insight .period-value {
+        color: #706f6f;
+        width: 100%;
+        padding: 5px;
+        font-style: italic;
+        text-align: center;
+    }

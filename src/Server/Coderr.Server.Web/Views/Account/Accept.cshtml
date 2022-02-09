@@ -11,7 +11,7 @@
             To accept the invitation you have to fill out the following form.
         </p>
         <div>
-            <form class="form form-horizontal" method="POST" action="@Url.Content("~/account/accept")">
+            <form class="bg-white p-2 form form-horizontal" method="POST" action="@Url.Content("~/account/accept")">
                 @Html.AntiForgeryToken()
                 @Html.HiddenFor(x => x.InvitationKey)
                 <div class="form-group">

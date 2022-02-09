@@ -105,5 +105,7 @@ namespace Coderr.Server.Domain.Core.Applications
         /// <param name="entity">app</param>
         /// <returns>task</returns>
         Task UpdateAsync(Application entity);
+
+        Task<int> GetFirstGroupIdAsync();
     }
 }

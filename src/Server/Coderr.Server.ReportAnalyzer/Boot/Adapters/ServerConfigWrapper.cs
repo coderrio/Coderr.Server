@@ -4,7 +4,7 @@ using Coderr.Server.ReportAnalyzer.Abstractions.Boot;
 
 namespace Coderr.Server.ReportAnalyzer.Boot.Adapters
 {
-    internal class ServerConfigWrapper : IConfiguration
+    public class ServerConfigWrapper : IConfiguration
     {
         private readonly Server.Abstractions.Boot.IConfiguration _inner;
 
@@ -12,6 +12,8 @@ namespace Coderr.Server.ReportAnalyzer.Boot.Adapters
         {
             _inner = inner;
         }
+
+        public string this[string name] => _inner[name];
 
         public IEnumerable<IConfigurationSection> GetChildren()
         {

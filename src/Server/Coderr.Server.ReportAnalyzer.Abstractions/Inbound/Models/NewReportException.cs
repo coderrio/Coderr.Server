@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Coderr.Server.ReportAnalyzer.Abstractions.Inbound.Models
@@ -12,7 +13,7 @@ namespace Coderr.Server.ReportAnalyzer.Abstractions.Inbound.Models
         /// </summary>
         public NewReportException()
         {
-            Properties = new Dictionary<string, string>();
+            Properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         }
 
         /// <summary>

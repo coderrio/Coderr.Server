@@ -30,7 +30,7 @@ namespace Coderr.Server.SqlServer.Core.Feedback
         private readonly INotificationService _notificationService;
 
         /// <summary>
-        ///     Creates a new instance of <see cref="CheckForNotificationsToSend" />.
+        ///     Creates a new instance of <see cref="CheckForFeedbackNotificationsToSend" />.
         /// </summary>
         /// <param name="notificationsRepository">To load notification configuration</param>
         public CheckForFeedbackNotificationsToSend(IUserNotificationsRepository notificationsRepository, IConfiguration<BaseConfiguration> baseConfig, IIncidentRepository incidentRepository, INotificationService notificationService)

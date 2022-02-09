@@ -1,0 +1,76 @@
+<div class="panels" *ngIf="getStartedVisible; else simplePanel">
+  <div class="panel" style="max-width: 80%;">
+    <h2>Configure application</h2>
+    <div class="fill">
+      <p>
+        To configure error reporting in your application, click on one of the buttons below.
+      </p>
+      <div>
+        <a *ngFor="let name of frameworkNames" href="#" (click)="selectFramework(name);false" class="btn default">{{name}}</a>
+      </div>
+      <div *ngIf="selectedFramework != ''" class="mt-3">
+        <h3>Select library</h3>
+        <p>Now, select the libraries that you want to use to report errors (with automatically collected telemetry data).</p>
+        <div style="display: flex; flex-wrap: wrap;">
+          <div class="library" *ngFor="let library of libraries" (click)="selectLibrary(library);false">
+            <em class="category">{{tagStr(library)}}</em><br />
+            <strong>{{library.id}}</strong><br />
+            <em class="description">{{library.description}}</em>
+          </div>
+
+        </div>
+      </div>
+
+      <div *ngIf="instruction">
+        <h3>Instruction</h3>
+        <div [innerHTML]="instruction"></div>
+      </div>
+
+
+    </div>
+  </div>
+  <div class="panel" style="align-self: flex-start;max-width: 20%">
+    <h2>Get started faster</h2>
+    <div class="fill">
+      <p>
+        Want help getting everything going? Leave us a message below and we'll answer if we are awake (we're located in Sweden).
+      </p>
+      <form (ngSubmit)="sendSupport();" class="form" ngNativeValidate>
+        <div class="mb-2" style="flex: 0">
+          <input type="text" name="supportSubject" [(ngModel)]="supportSubject" required="" placeholder="What do you want to talk about?"
+                 title="Enter a valid subject." /><br />
+        </div>
+        <div style="flex: 1">
+          <textarea style="height: 100%" name="supportSubject" [(ngModel)]="supportMessage" placeholder="Give us some more details" required=""></textarea>
+        </div>
+        <button type="submit" class="btn">Send</button>
+      </form>
+    </div>
+  </div>
+
+</div>
+<ng-template #simplePanel>
+  <p>
+    To configure error reporting in your application, click on one of the buttons below.
+  </p>
+  <div>
+    <a *ngFor="let name of frameworkNames" href="#" (click)="selectFramework(name);false" class="btn default">{{name}}</a>
+  </div>
+  <div *ngIf="selectedFramework != ''" class="mt-3">
+    <h3>Select library</h3>
+    <p>Now, select the libraries that you want to use to report errors (with automatically collected telemetry data).</p>
+    <div style="display: flex; flex-wrap: wrap;">
+      <div class="library" *ngFor="let library of libraries" (click)="selectLibrary(library);false">
+        <em class="category">{{tagStr(library)}}</em><br />
+        <strong>{{library.id}}</strong><br />
+        <em class="description">{{library.description}}</em>
+      </div>
+
+    </div>
+  </div>
+
+  <div *ngIf="instruction">
+    <h3>Instruction</h3>
+    <div [innerHTML]="instruction"></div>
+  </div>
+</ng-template>

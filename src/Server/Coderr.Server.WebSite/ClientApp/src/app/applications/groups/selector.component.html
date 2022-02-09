@@ -1,0 +1,6 @@
+<div class="pills" id="app-group-list">
+  <a href="#" (click)="select(-1);false" class="pill bg dark">[No group]</a>
+  <a *ngFor="let group of groups" href="#" (click)="select(group.id);false" class="pill">
+    {{group.name}}
+  </a>
+</div>

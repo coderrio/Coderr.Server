@@ -5,8 +5,16 @@ import { GetIncidentResult, ReportDay, QuickFact } from "@/dto/Core/Incidents";
 import { Component, Vue } from "vue-property-decorator";
 import Chartist from "chartist";
 import * as Reports from "../../../dto/Core/Reports";
-
+import * as workItems from "@/common/services/WorkItemService";
 import { DateTime } from 'luxon';
+
+
+declare global {
+    interface Window {
+        gtag(type: string, type2: string, data: any): void;
+    }
+}
+
 @Component
 export default class IncidentComponent extends Vue {
     incidentId: number;
@@ -15,6 +23,12 @@ export default class IncidentComponent extends Vue {
     isClosed = false;
     highlights: IHighlight[] = [];
     team: ApplicationMember[] = [];
+
+    workItem: workItems.IWorkItem = null;
+    workItemIntegration: workItems.IIntegration = { title: '', name: '' };
+    haveWorkItem: boolean | null = null;
+    haveWorkItemIntegration: boolean | null = null;
+    showCreateWorkItemButton: boolean = false;
 
     created() {
         this.incident.Tags = [];
@@ -25,6 +39,12 @@ export default class IncidentComponent extends Vue {
                 this.isIgnored = result.IsIgnored;
                 this.isClosed = result.IsSolved;
                 result.Facts = result.Facts.filter(v => v.Value !== '0');
+                if (this.incident.Tags.indexOf("demo") === -1 && window.gtag) {
+                    setTimeout(() => {
+                            window.gtag('event', 'conversion', { 'send_to': 'AW-1029996736/49DdCJf0_vABEMCBkusD' });
+                        },
+                        1000);
+                }
 
                 if (result.AssignedToId > 0) {
                     var fact = new QuickFact();
@@ -50,6 +70,9 @@ export default class IncidentComponent extends Vue {
                     .then(data => {
                         //this.highlights = data;
                     });
+
+                this.findIntegration(this.incident.ApplicationId);
+                this.loadWorkItem();
             });
     }
 
@@ -196,4 +219,30 @@ export default class IncidentComponent extends Vue {
         new Chartist.Line('.ct-chart', data, options);
     }
 
+    createWorkItem() {
+        const service = new workItems.WorkItemService();
+        service.createWorkItem(this.incident.ApplicationId, this.incidentId);
+        this.showCreateWorkItemButton = false;
+        AppRoot.notify("Work item have been created.");
+    }
+
+    private async loadWorkItem() {
+        const service = new workItems.WorkItemService();
+        this.workItem = await service.getWorkItem(this.incidentId);
+        this.haveWorkItem = this.workItem != null;
+        this.toggleWorkItemUi();
+    }
+
+
+    private async findIntegration(applicationId: number) {
+        const service = new workItems.WorkItemService();
+        this.workItemIntegration = await service.findIntegration(applicationId);
+        this.haveWorkItemIntegration = this.workItemIntegration != null;
+        console.log(this.workItemIntegration);
+        this.toggleWorkItemUi();
+    }
+
+    private toggleWorkItemUi() {
+        this.showCreateWorkItemButton = this.haveWorkItemIntegration && this.haveWorkItem === false;
+    }
 }

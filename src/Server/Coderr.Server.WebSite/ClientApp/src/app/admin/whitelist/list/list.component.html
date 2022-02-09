@@ -1,0 +1,24 @@
+<div class="panel">
+  <h2>Whitelists</h2>
+  <p>A secret key cannot be used when reporting errors from websites. To avoid that anyone can report errors to your account, you can whitelist your domains and servers.</p>
+  <table class="table bg white w-100 striped">
+    <thead>
+      <tr>
+        <th>Domain name</th>
+        <th>Allowed applications</th>
+        <th>White-listed ip addresses</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let entry of entries">
+        <td><a [routerLink]="[entry.id]">{{entry.domainName}}</a></td>
+        <td><div [innerHTML]="friendlyApps(entry.applications)"></div></td>
+        <td><div [innerHTML]="friendlyIps(entry.ipAddresses)"></div></td>
+      </tr>
+    </tbody>
+  </table>
+  <div>&nbsp;</div>
+  <div>
+    <a [routerLink]="['new']" class="btn">Create a new whitelist</a>
+  </div>
+</div>

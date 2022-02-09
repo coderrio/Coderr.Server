@@ -2,6 +2,7 @@ import { AppRoot } from "../../services/AppRoot";
 import { FindIncidents, FindIncidentsResult } from "../../dto/Core/Incidents";
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
+import * as Onboarding from "@/dto/Modules/Onboarding";
 
 @Component
 export default class HomeHomeComponent extends Vue {
@@ -12,45 +13,51 @@ export default class HomeHomeComponent extends Vue {
     showOnboarding = false;
 
     created() {
+
+        if (this.$route.query['from'] === 'invited') {
+            this.mute();
+            return;
+        }
+
         AppRoot.Instance.loadState("MainHome", this)
             .then(gotState => {
-                if (gotState && false) {
-                    
+                
+                if (gotState) {
+
                     if (this.muteOnboarding) {
                         this.$router.push({ name: "discover" });
                     }
-                } else {
-                    var q = new FindIncidents();
-                    q.PageNumber = 1;
-                    q.ItemsPerPage = 1;
-                    AppRoot.Instance.apiClient.query<FindIncidentsResult>(q)
-                        .then(result => {
-                            if (this.destroyed$) {
-                                return;
-                            }
-                            this.showOnboarding = true;
-                            if (result.TotalCount > 0) {
-                                this.mute();
-                            }
-                        });
-
-                    AppRoot.Instance.applicationService.list()
-                        .then(apps => {
-                            if (this.destroyed$) {
-                                return;
-                            }
-
-                            this.showOnboarding = apps.length > 0;
-                            this.noApps = apps.length === 0;
-                            if (apps.length > 0) {
-                                this.appId = apps[0].id.toString();
-                            }
-                        });
+                    return;
                 }
 
+                var query = new Onboarding.GetOnboardingState();
+                AppRoot.Instance.apiClient.query<Onboarding.GetOnboardingStateResult>(query)
+                    .then(result => {
+                        if (this.destroyed$) {
+                            return;
+                        }
+
+                        if (result.IsComplete) {
+                            this.mute();
+                            return;
+                        }
+
+                        var q = new FindIncidents();
+                        q.PageNumber = 1;
+                        q.ItemsPerPage = 1;
+                        AppRoot.Instance.apiClient.query<FindIncidentsResult>(q)
+                            .then(result => {
+                                if (this.destroyed$) {
+                                    return;
+                                }
+                                if (result.TotalCount > 0) {
+                                    this.mute();
+                                } else {
+                                    this.start();
+                                }
+                            });
+                    });
             });
-
-
     }
 
     destroyed() {
@@ -58,7 +65,7 @@ export default class HomeHomeComponent extends Vue {
     }
 
     start() {
-        this.$router.push({ name: 'onboardApp', params: { applicationId: this.appId } });
+        this.$router.push({ name: 'onboardStart', params: { applicationId: this.appId } });
     }
 
     mute() {

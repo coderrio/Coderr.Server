@@ -1,0 +1,37 @@
+<table class="bg white stub">
+  <tbody>
+    <tr *ngFor="let incident of incidents">
+      <td>
+        <div>
+          <h4>
+            <a [routerLink]="['error', incident.id]" title="View error">{{incident.name}}</a>
+          </h4>
+        </div>
+        <div class="data">
+          <div *ngIf="!gotApplicationId">
+            {{incident.applicationName}}
+          </div>
+          <div>
+            <span>created</span>
+            {{incident.createdAtUtc|ago}}
+          </div>
+          <div>
+            <span>report count</span>
+            {{incident.reportCount}}
+            <span *ngIf="incident.reportCount > 0" class="text-muted">(latest {{incident.lastReportReceivedAtUtc|ago}})</span>
+          </div>
+          <div *ngIf="incident.assignedAtUtc">
+            <span>assigned</span>
+            {{incident.assignedAtUtc|ago}}
+          </div>
+        </div>
+        <div class="motivation" *ngIf="incident.motivation">{{incident.motivation}}</div>
+      </td>
+    </tr>
+    <tr *ngIf="incidents.length == 0">
+      <td>
+        <em>There are no errors in this category.</em>
+      </td>
+    </tr>
+  </tbody>
+</table>

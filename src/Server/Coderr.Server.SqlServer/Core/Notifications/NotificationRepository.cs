@@ -49,14 +49,19 @@ namespace Coderr.Server.SqlServer.Core.Notifications
 
         public async Task Save(BrowserSubscription message)
         {
+            // Only store one per user, not matter how many browsers they register for.
+            // Earlier, we identified them using "message.Endpoint" too, but EPs seem to fail
+            // when doing so, so let's just keep one (and overwrite the others).
+
             var existing =
-                await _unitOfWork.FirstOrDefaultAsync<BrowserSubscription>(new {message.Endpoint, message.AccountId});
+                await _unitOfWork.FirstOrDefaultAsync<BrowserSubscription>(new {message.AccountId});
 
             if (existing != null)
             {
                 existing.PublicKey = message.PublicKey;
                 existing.AuthenticationSecret = message.AuthenticationSecret;
                 existing.ExpiresAtUtc = message.ExpiresAtUtc;
+                existing.Endpoint = message.Endpoint;
                 await _unitOfWork.UpdateAsync(existing);
             }
             else

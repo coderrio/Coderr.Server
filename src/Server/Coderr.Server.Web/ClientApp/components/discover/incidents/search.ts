@@ -1,16 +1,15 @@
-import { PubSubService, MessageContext } from "../../../services/PubSub";
-import * as MenuApi from "../../../services/menu/MenuApi";
-import { FindIncidents, FindIncidentsResult, IncidentOrder } from "../../../dto/Core/Incidents";
-import { GetTags, TagDTO } from "../../../dto/Modules/Tagging";
-import { GetEnvironments, GetEnvironmentsResult, GetEnvironmentsResultItem } from "../../../dto/Core/Environments";
-import { ApplicationService, AppEvents, ApplicationCreated, ApplicationChanged } from "../../../services/applications/ApplicationService";
-import { ApiClient } from '../../../services/ApiClient';
-import { AppRoot } from "../../../services/AppRoot";
-import { IncidentService } from "../../../services/incidents/IncidentService";
+import { PubSubService, MessageContext } from "@/services/PubSub";
+import { FindIncidents, FindIncidentsResult, IncidentOrder } from "@/dto/Core/Incidents";
+import { GetTags, TagDTO } from "@/dto/Modules/Tagging";
+import { GetEnvironments, GetEnvironmentsResult } from "@/dto/Core/Environments";
+import { ApplicationService, AppEvents, ApplicationCreated } from "@/services/applications/ApplicationService";
+import { ApiClient } from '@/services/ApiClient';
+import { AppRoot } from "@/services/AppRoot";
+import { IncidentService } from "@/services/incidents/IncidentService";
 import { Component, Mixins } from "vue-property-decorator";
 import { AppAware } from "@/AppMixins";
+import * as workItems from "@/common/services/WorkItemService";
 
-declare var $: any;
 interface Incident {
     Id: number;
     ApplicationId: number,
@@ -69,25 +68,30 @@ export default class IncidentSearchComponent extends Mixins(AppAware) {
     //for the close dialog
     currentIncidentId = 0;
 
+
+    workItemIntegration: workItems.IIntegration = { title: '', name: '' };
+    haveWorkItemIntegration: boolean | null = null;
+    showCreateWorkItemButton: boolean = false;
+
     private activeBtn$ = 'active';
 
     created() {
         this.onApplicationChanged(this.onAppSelected);
 
         //fetch in created since we do not need the DOM
-        var promise = new Promise<any>(resolve => {
+        var promise = new Promise<void>(resolve => {
             var appService = new ApplicationService(PubSubService.Instance, AppRoot.Instance.apiClient);
             appService.list()
                 .then(x => {
                     x.forEach(x => {
                         this.availableApplications.push({ id: x.id, name: x.name });
                     });
-                    resolve();
+                    resolve(null);
                 });
         });
         this.readyPromises$.push(promise);
 
-        var promise2 = new Promise<any>(resolve => {
+        var promise2 = new Promise<void>(resolve => {
             let q = new GetTags();
             AppRoot.Instance.apiClient.query<TagDTO[]>(q)
                 .then(x => {
@@ -95,12 +99,12 @@ export default class IncidentSearchComponent extends Mixins(AppAware) {
                     x.forEach(x => {
                         this.availableTags.push(x.Name);
                     });
-                    resolve();
+                    resolve(null);
                 });
         });
         this.readyPromises$.push(promise2);
 
-        var promise3 = new Promise<any>(resolve => {
+        var promise3 = new Promise<void>(resolve => {
             let q = new GetEnvironments();
             AppRoot.Instance.apiClient.query<GetEnvironmentsResult>(q)
                 .then(x => {
@@ -108,10 +112,10 @@ export default class IncidentSearchComponent extends Mixins(AppAware) {
                     x.Items.forEach(x => {
                         this.availableEnvironments.push({ id: x.Id, name: x.Name });
                     });
-                    resolve();
+                    resolve(null);
                 });
         });
-        this.readyPromises$.push(promise2);
+        this.readyPromises$.push(promise3);
 
         PubSubService.Instance.subscribe(AppEvents.Created, ctx => {
             var msg = <ApplicationCreated>ctx.message.body;
@@ -158,7 +162,12 @@ export default class IncidentSearchComponent extends Mixins(AppAware) {
                 this.drawSearchUi();
                 this.highlightIncidentState(this.incidentState);
                 this.searchInternal(true);
+
+                if (this.activeApplications.length === 1) {
+                    this.checkApplicationIntegration(this.activeApplications[0]);
+                }
             });
+
     }
 
     checkAll(e: Event) {
@@ -320,21 +329,19 @@ export default class IncidentSearchComponent extends Mixins(AppAware) {
     }
 
     assignAllToMe() {
-        const elems = document.querySelectorAll('#searchTable tbody input[type="checkbox"]:checked');
-        for (let i = 0; i < elems.length; i++) {
-            const elem = <HTMLInputElement>elems[i];
-            this.incidentService$.assignToMe(parseInt(elem.value));
-        }
+        var incidents = this.getSelectedIncidents();
+        incidents.forEach(incidentId => {
+            this.incidentService$.assignToMe(incidentId);
+        });
         AppRoot.notify('All selected incidents have been assigned to you. Click on the "Analyze" menu to start working with them.');
         setTimeout(() => { this.searchInternal() }, 1000);
     }
 
     deleteSelectedIncidents() {
-        const elems = document.querySelectorAll('#searchTable tbody input[type="checkbox"]:checked');
-        for (let i = 0; i < elems.length; i++) {
-            const elem = <HTMLInputElement>elems[i];
-            this.incidentService$.delete(parseInt(elem.value), "yes");
-        }
+        var incidents = this.getSelectedIncidents();
+        incidents.forEach(incidentId => {
+            this.incidentService$.delete(incidentId, "yes");
+        });
         AppRoot.notify('All selected incidents have deleted.');
         setTimeout(() => { this.searchInternal() }, 1000);
     }
@@ -354,6 +361,16 @@ export default class IncidentSearchComponent extends Mixins(AppAware) {
 
     }
 
+    private getSelectedIncidents(): number[] {
+        var incidents: number[] = [];
+        const elems = document.querySelectorAll('#searchTable tbody input[type="checkbox"]:checked');
+        for (let i = 0; i < elems.length; i++) {
+            const elem = <HTMLInputElement>elems[i];
+            incidents.push(parseInt(elem.value));
+        }
+        return incidents;
+    }
+
     private onAppSelected(applicationId: number) {
         if (this.$route.name !== 'findIncidents') {
             return;
@@ -367,6 +384,7 @@ export default class IncidentSearchComponent extends Mixins(AppAware) {
         }
 
         this.searchInternal();
+        this.checkApplicationIntegration(applicationId);
     }
     private drawSearchUi() {
         var els = document.querySelectorAll('.search-head th i');
@@ -453,5 +471,28 @@ export default class IncidentSearchComponent extends Mixins(AppAware) {
 
     private loadTags() {
 
+    }
+
+    private async checkApplicationIntegration(applicationId: number) {
+        var service = new workItems.WorkItemService();
+        
+        var workItemIntegration = await service.findIntegration(applicationId);
+        if (workItemIntegration == null) {
+            this.workItemIntegration.title = '';
+            this.haveWorkItemIntegration = false;
+            return;
+        }
+        this.workItemIntegration = workItemIntegration;
+        this.haveWorkItemIntegration = true;
+    }
+
+    createWorkItems() {
+        var service = new workItems.WorkItemService();
+        var incidents = this.getSelectedIncidents();
+        incidents.forEach(incidentId => {
+            service.createWorkItem(this.activeApplications[0], incidentId);
+        });
+
+        AppRoot.notify('Selected incidents have been added.');
     }
 }

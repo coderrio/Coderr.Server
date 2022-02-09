@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using Griffin.Data;
@@ -12,90 +13,25 @@ namespace Coderr.Server.SqlServer.Migrations
     public class MigrationRunner
     {
         private readonly Func<IDbConnection> _connectionFactory;
-        private readonly string _migrationName;
         private readonly string _scriptNamespace;
         private readonly MigrationScripts _scripts;
-        private ILog _logger = LogManager.GetLogger(typeof(MigrationRunner));
-        private Assembly _scriptAssembly;
+        private readonly ILog _logger = LogManager.GetLogger(typeof(MigrationRunner));
+        private readonly Assembly _scriptAssembly;
 
         public MigrationRunner(Func<IDbConnection> connectionFactory, string migrationName, string scriptNamespace)
         {
             _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
-            _migrationName = migrationName ?? throw new ArgumentNullException(nameof(migrationName));
+            MigrationName = migrationName ?? throw new ArgumentNullException(nameof(migrationName));
             _scriptNamespace = scriptNamespace;
             _scriptAssembly = GetScriptAssembly(migrationName);
             _scripts = new MigrationScripts(migrationName, _scriptAssembly);
         }
 
-        private Assembly GetScriptAssembly(string migrationName)
-        {
-            if (migrationName == null) throw new ArgumentNullException(nameof(migrationName));
-
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                if (assembly.IsDynamic)
-                    continue;
-                if (assembly.GetName().Name?.StartsWith("Coderr", StringComparison.OrdinalIgnoreCase) != true)
-                    continue;
-
-                var isFound = assembly
-                    .GetManifestResourceNames()
-                    .Any(x => x.StartsWith(_scriptNamespace) && x.Contains($"{_migrationName}.v"));
-                if (isFound)
-                    return assembly;
-            }
-            throw new InvalidOperationException($"Failed to find scripts for migration '{migrationName}'.");
-        }
-
-        public void Run()
-        {
-            EnsureLoaded();
-            if (!CanSchemaBeUpgraded())
-            {
-                _logger.Debug("Db Schema is up to date.");
-                return;
-            }
-
-            _logger.Info("Updating DB schema.");
-            UpgradeDatabaseSchema();
-        }
-
-        private void EnsureLoaded()
-        {
-            if (_scripts.IsEmpty)
-                LoadScripts();
-        }
-
-        /// <summary>
-        ///     Check if the current DB schema is out of date compared to the embedded schema resources.
-        /// </summary>
-        protected bool CanSchemaBeUpgraded()
-        {
-            var version = GetCurrentSchemaVersion();
-            var embeddedSchema = GetLatestSchemaVersion();
-            return embeddedSchema > version;
-        }
-
-        protected void LoadScripts()
-        {
-            var names =
-                _scriptAssembly
-                    .GetManifestResourceNames()
-                    .Where(x => x.StartsWith(_scriptNamespace) && x.Contains($"{_migrationName}.v"));
-
-            foreach (var name in names)
-            {
-                var pos = name.IndexOf(".v") + 2; //2 extra for ".v"
-                var endPos = name.IndexOf(".", pos);
-                var versionStr = name.Substring(pos, endPos - pos);
-                var version = int.Parse(versionStr);
-                _scripts.AddScriptName(version, name);
-            }
-        }
+        public string MigrationName { get; }
 
         public int GetCurrentSchemaVersion()
         {
-            string[] scripts = new[]
+            string[] scripts =
             {
                 @"IF OBJECT_ID (N'DatabaseSchema', N'U') IS NULL
                         BEGIN
@@ -104,7 +40,6 @@ namespace Coderr.Server.SqlServer.Migrations
                                 [Name] varchar(50) NOT NULL
                             );
                         END",
-
                 @"IF COL_LENGTH('DatabaseSchema', 'Name') IS NULL
                     BEGIN
                         ALTER TABLE DatabaseSchema ADD [Name] varchar(50) NULL;
@@ -128,7 +63,7 @@ namespace Coderr.Server.SqlServer.Migrations
                     try
                     {
                         cmd.CommandText = "SELECT Version FROM DatabaseSchema WHERE Name = @name";
-                        cmd.AddParameter("name", _migrationName);
+                        cmd.AddParameter("name", MigrationName);
                         var result = cmd.ExecuteScalar();
                         if (result is null)
                             return -1;
@@ -152,6 +87,46 @@ namespace Coderr.Server.SqlServer.Migrations
             return _scripts.GetHighestVersion();
         }
 
+        public void Run()
+        {
+            EnsureLoaded();
+            if (!CanSchemaBeUpgraded())
+            {
+                _logger.Debug("Db Schema is up to date.");
+                return;
+            }
+
+            _logger.Info("Updating DB schema.");
+            UpgradeDatabaseSchema();
+        }
+
+        /// <summary>
+        ///     Check if the current DB schema is out of date compared to the embedded schema resources.
+        /// </summary>
+        protected bool CanSchemaBeUpgraded()
+        {
+            var version = GetCurrentSchemaVersion();
+            var embeddedSchema = GetLatestSchemaVersion();
+            return embeddedSchema > version;
+        }
+
+        protected void LoadScripts()
+        {
+            var names =
+                _scriptAssembly
+                    .GetManifestResourceNames()
+                    .Where(x => x.StartsWith(_scriptNamespace) && x.Contains($"{MigrationName}.v"));
+
+            foreach (var name in names)
+            {
+                var pos = name.IndexOf(".v") + 2; //2 extra for ".v"
+                var endPos = name.IndexOf(".", pos);
+                var versionStr = name.Substring(pos, endPos - pos);
+                var version = int.Parse(versionStr);
+                _scripts.AddScriptName(version, name);
+            }
+        }
+
         /// <summary>
         ///     Upgrade schema
         /// </summary>
@@ -167,15 +142,48 @@ namespace Coderr.Server.SqlServer.Migrations
             for (var version = currentSchema + 1; version <= toVersion; version++)
             {
                 _logger.Info("Migrating to v" + version);
-                using (var con = _connectionFactory())
+                try
                 {
-                    _scripts.Execute(con, version);
-                    if (version == 1)
+                    using (var con = _connectionFactory())
                     {
-                        con.ExecuteNonQuery($"INSERT INTO DatabaseSchema (Name, Version) VALUES('{_migrationName}', 1)");
+                        _scripts.Execute(con, version);
+                        if (version == 1)
+                            con.ExecuteNonQuery(
+                                $"INSERT INTO DatabaseSchema (Name, Version) VALUES('{MigrationName}', 1)");
                     }
                 }
+                catch (Exception ex)
+                {
+                    throw new InvalidDataException($"Failed to run script {MigrationName} v" + version, ex);
+                }
             }
+        }
+
+        private void EnsureLoaded()
+        {
+            if (_scripts.IsEmpty)
+                LoadScripts();
+        }
+
+        private Assembly GetScriptAssembly(string migrationName)
+        {
+            if (migrationName == null) throw new ArgumentNullException(nameof(migrationName));
+
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                if (assembly.IsDynamic)
+                    continue;
+                if (assembly.GetName().Name?.StartsWith("Coderr", StringComparison.OrdinalIgnoreCase) != true)
+                    continue;
+
+                var isFound = assembly
+                    .GetManifestResourceNames()
+                    .Any(x => x.StartsWith(_scriptNamespace) && x.Contains($"{MigrationName}.v"));
+                if (isFound)
+                    return assembly;
+            }
+
+            throw new InvalidOperationException($"Failed to find scripts for migration '{migrationName}'.");
         }
     }
 }

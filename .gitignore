@@ -38,3 +38,4 @@ src/Server/Coderr.Server.Web.Tests/applicationhost.config
 /src/Server/Coderr.Server.Web/wwwroot/dist/**
 /src/Server/Coderr.Server.Web/npm-shrinkwrap.json
 /src/Server/node_modules/**
+/src/Server/Coderr.Server.WebSite/ClientApp/.angular/

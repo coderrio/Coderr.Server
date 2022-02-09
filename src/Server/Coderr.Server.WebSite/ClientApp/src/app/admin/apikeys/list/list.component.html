@@ -1,0 +1,21 @@
+<div class="panel">
+  <h3>Api keys</h3>
+  <p>Api keys are used when communicating with Coderr through the HTTP or WebSocket API.</p>
+  <table class="fill table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Key</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let key of keys">
+        <td><a [routerLink]="[key.id]">{{key.title}}</a></td>
+        <td>{{key.apiKey}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div>
+    <a [routerLink]="['new']" class="btn">Create new</a>
+  </div>
+</div>

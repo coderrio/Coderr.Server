@@ -1,0 +1,1443 @@
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[5].rules[0].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[5].rules[0].oneOf[1].use[2]!./node_modules/resolve-url-loader/index.js??ruleSet[1].rules[5].rules[1].use[0]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[5].rules[1].use[1]!./src/styles/site.scss ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+html {
+  box-sizing: border-box;
+  font-size: 15px;
+  font-family: "Sofia Pro", sans-serif;
+  height: 100%;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body, h1, h2, h3, h4, h5, h6, p, ol, ul {
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.card input[type=radio] {
+  cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: 0;
+  background: #eee;
+  height: 16px;
+  width: 16px;
+  border: 1px solid white;
+}
+
+.card input[type=radio]:checked {
+  background: #59c1d5;
+  color: #59c1d5 !important;
+}
+
+.card input[type=radio]:hover {
+  filter: brightness(90%);
+}
+
+.card input[type=radio]:disabled {
+  background: #393938;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.card input[type=radio]:after {
+  content: "";
+  position: relative;
+  left: 40%;
+  top: 20%;
+  width: 15%;
+  height: 40%;
+  display: none;
+}
+
+.card input[type=radio]:checked:after {
+  display: block;
+}
+
+.card input[type=radio]:disabled:after {
+  border-color: #f4f4f4;
+}
+
+.bg.white {
+  background-color: white;
+}
+
+.alert {
+  padding: 10px;
+}
+
+.alert.warning {
+  background-color: #f18c65;
+  border: 1px solid #ed6936;
+  color: #ededed;
+}
+
+.alert.success {
+  background-color: #d8eef4;
+  border: 1px solid #b0dde9;
+}
+
+.card input[type=checkbox] {
+  cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: 0;
+  background: #eee;
+  height: 16px;
+  width: 16px;
+  border: 1px solid white;
+}
+
+.card input[type=checkbox]:checked {
+  background: #59c1d5;
+  color: #59c1d5 !important;
+}
+
+.card input[type=checkbox]:hover {
+  filter: brightness(90%);
+}
+
+.card input[type=checkbox]:disabled {
+  background: #393938;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.card input[type=checkbox]:after {
+  content: "";
+  position: relative;
+  left: 40%;
+  top: 20%;
+  width: 15%;
+  height: 40%;
+  display: none;
+}
+
+.card input[type=checkbox]:checked:after {
+  display: block;
+}
+
+.card input[type=checkbox]:disabled:after {
+  border-color: #f4f4f4;
+}
+
+input:invalid {
+  box-shadow: 0 0 5px 1px #f18c65;
+}
+
+input:focus:invalid {
+  box-shadow: none;
+}
+
+input, select, textarea {
+  padding: 4px;
+  border: 1px solid #404040;
+  border-radius: 3px;
+}
+
+.form .form-group {
+  margin-top: 15px;
+}
+
+.form label {
+  display: block;
+  font-weight: bold;
+}
+
+.form label.inline {
+  display: inline;
+}
+
+.form input.inline {
+  display: inline;
+}
+
+.form input[type=text],
+.form input[type=number],
+.form input[type=email],
+.form input[type=password],
+.form textarea,
+.form select {
+  background-color: #abdbe7;
+  border: 1px solid #216272;
+  border-radius: 3px;
+  padding: 8px;
+  border: #5cb9d0;
+  width: 100%;
+}
+
+.form textarea {
+  min-height: 100px;
+  width: 100%;
+}
+
+.form button {
+  display: inline-flex;
+}
+
+.form button[type=submit], .form a.submit {
+  background-color: #59c1d5;
+  border: #288ca0;
+  color: #ededed;
+  width: inherit;
+}
+
+.form button[type=reset], .form a.reset {
+  color: #ededed;
+  background-color: #33b0c8;
+  border: #dc4c14;
+}
+
+.row {
+  display: flex;
+  width: 100%;
+  flex-flow: row wrap;
+  max-width: 100%;
+}
+
+.container {
+  display: block;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 30px;
+  padding: -10px;
+}
+
+.container h1 {
+  font-size: 48px;
+}
+
+.col {
+  justify-content: center;
+  align-items: start;
+  flex-basis: 0;
+  /*flex-direction: column;
+    flex-basis: auto;*/
+  flex: 1 1 200px;
+  margin: 10px;
+  /* pre > code wont wrap otherwise */
+  min-width: 0;
+}
+
+.col-2 {
+  flex: 2;
+}
+
+.col-3 {
+  flex: 3;
+}
+
+.hidden {
+  display: none;
+  opacity: 0;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+@media only screen and (max-width: 600px) {
+  .col {
+    display: block;
+    width: 100%;
+  }
+}
+
+.y-center {
+  align-items: center;
+}
+
+.x-center {
+  justify-content: center;
+}
+
+.mx-auto {
+  margin: 0 auto;
+}
+
+.mt-0 {
+  margin-top: 0px;
+}
+
+.mb-0 {
+  margin-bottom: 0px;
+}
+
+.ml-0 {
+  margin-left: 0px !important;
+}
+
+.m-0 {
+  margin: 0px;
+}
+
+.pt-0 {
+  padding-top: 0px;
+}
+
+.pl-0 {
+  padding-left: 0px;
+}
+
+.pr-0 {
+  padding-right: 0px;
+}
+
+.pb-0 {
+  padding-bottom: 0px;
+}
+
+.p-0 {
+  padding: 0px;
+}
+
+.mt-1 {
+  margin-top: 5px;
+}
+
+.mb-1 {
+  margin-bottom: 5px;
+}
+
+.ml-1 {
+  margin-left: 5px !important;
+}
+
+.m-1 {
+  margin: 5px;
+}
+
+.pt-1 {
+  padding-top: 5px;
+}
+
+.pl-1 {
+  padding-left: 5px;
+}
+
+.pr-1 {
+  padding-right: 5px;
+}
+
+.pb-1 {
+  padding-bottom: 5px;
+}
+
+.p-1 {
+  padding: 5px;
+}
+
+.mt-2 {
+  margin-top: 10px;
+}
+
+.mb-2 {
+  margin-bottom: 10px;
+}
+
+.ml-2 {
+  margin-left: 10px !important;
+}
+
+.m-2 {
+  margin: 10px;
+}
+
+.pt-2 {
+  padding-top: 10px;
+}
+
+.pl-2 {
+  padding-left: 10px;
+}
+
+.pr-2 {
+  padding-right: 10px;
+}
+
+.pb-2 {
+  padding-bottom: 10px;
+}
+
+.p-2 {
+  padding: 10px;
+}
+
+.mt-3 {
+  margin-top: 15px;
+}
+
+.mb-3 {
+  margin-bottom: 15px;
+}
+
+.ml-3 {
+  margin-left: 15px !important;
+}
+
+.m-3 {
+  margin: 15px;
+}
+
+.pt-3 {
+  padding-top: 15px;
+}
+
+.pl-3 {
+  padding-left: 15px;
+}
+
+.pr-3 {
+  padding-right: 15px;
+}
+
+.pb-3 {
+  padding-bottom: 15px;
+}
+
+.p-3 {
+  padding: 15px;
+}
+
+.mt-4 {
+  margin-top: 20px;
+}
+
+.mb-4 {
+  margin-bottom: 20px;
+}
+
+.ml-4 {
+  margin-left: 20px !important;
+}
+
+.m-4 {
+  margin: 20px;
+}
+
+.pt-4 {
+  padding-top: 20px;
+}
+
+.pl-4 {
+  padding-left: 20px;
+}
+
+.pr-4 {
+  padding-right: 20px;
+}
+
+.pb-4 {
+  padding-bottom: 20px;
+}
+
+.p-4 {
+  padding: 20px;
+}
+
+.mt-5 {
+  margin-top: 25px;
+}
+
+.mb-5 {
+  margin-bottom: 25px;
+}
+
+.ml-5 {
+  margin-left: 25px !important;
+}
+
+.m-5 {
+  margin: 25px;
+}
+
+.pt-5 {
+  padding-top: 25px;
+}
+
+.pl-5 {
+  padding-left: 25px;
+}
+
+.pr-5 {
+  padding-right: 25px;
+}
+
+.pb-5 {
+  padding-bottom: 25px;
+}
+
+.p-5 {
+  padding: 25px;
+}
+
+.panel .btn, .panel button[type=reset], .panel a.reset, .panel button[type=submit], .panel a.submit {
+  background-color: #ededed;
+  color: #393938;
+  display: inline-flex;
+}
+
+.panel.fill .btn, .panel.fill button[type=reset], .panel.fill a.reset, .panel.fill button[type=submit], .panel.fill a.submit, .panel .fill .btn, .panel .fill button[type=reset], .panel .fill a.reset, .panel .fill button[type=submit], .panel .fill a.submit {
+  background-color: #59c1d5;
+  border-color: #59c1d5;
+  color: #ededed;
+  display: inline-flex;
+}
+
+.panel button[type=submit], .panel a.submit {
+  background-color: #ededed;
+  border-color: #ededed;
+  border: #d4d4d4;
+  color: #393938;
+  width: inherit;
+}
+
+.panel button[type=reset], .panel a.reset {
+  color: #ededed;
+  background-color: #f18c65;
+  border-color: #f18c65;
+  border: #ed6936;
+}
+
+a.btn, .form a.submit, .form a.reset, .panel a.submit, .panel a.reset,
+button.btn,
+.form button[type=submit],
+.form button[type=reset],
+.panel button[type=submit],
+.panel button[type=reset],
+input.button {
+  padding: 10px 12px;
+  margin-top: 15px;
+  margin-right: 5px;
+  border-radius: 3px;
+  text-decoration: none;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  cursor: pointer;
+  display: inline-block;
+}
+
+a.btn.small, .form a.small.submit, .form a.small.reset, .panel a.small.submit, .panel a.small.reset,
+button.btn.small,
+.form button.small[type=submit],
+.form button.small[type=reset],
+.panel button.small[type=submit],
+.panel button.small[type=reset],
+input.button.small {
+  margin-top: 5px;
+  margin-right: 2px;
+  padding: 4px 6px;
+  font-size: 0.9em;
+}
+
+a.btn.default, .form a.default.submit, .form a.default.reset, .panel a.default.submit, .panel a.default.reset,
+button.btn.default,
+.form button.default[type=submit],
+.form button.default[type=reset],
+.panel button.default[type=submit],
+.panel button.default[type=reset],
+input.button.default {
+  background: white;
+  color: #393938;
+}
+
+a.btn.block, .form a.block.submit, .form a.block.reset, .panel a.block.submit, .panel a.block.reset,
+button.btn.block,
+.form button.block[type=submit],
+.form button.block[type=reset],
+.panel button.block[type=submit],
+.panel button.block[type=reset],
+input.button.block {
+  display: block;
+  width: 100%;
+}
+
+a.btn.light, .form a.light.submit, .form a.light.reset, .panel a.light.submit, .panel a.light.reset,
+button.btn.light,
+.form button.light[type=submit],
+.form button.light[type=reset],
+.panel button.light[type=submit],
+.panel button.light[type=reset],
+input.button.light {
+  background-color: #ededed;
+  color: #393938;
+}
+
+a.btn.dark, .form a.dark.submit, .form a.dark.reset, .panel a.dark.submit, .panel a.dark.reset,
+button.btn.dark,
+.form button.dark[type=submit],
+.form button.dark[type=reset],
+.panel button.dark[type=submit],
+.panel button.dark[type=reset],
+input.button.dark {
+  background-color: #393938;
+  color: #ededed;
+}
+
+a.btn.red, .form a.red.submit, .form a.red.reset, .panel a.red.submit, .panel a.red.reset,
+button.btn.red,
+.form button.red[type=submit],
+.form button.red[type=reset],
+.panel button.red[type=submit],
+.panel button.red[type=reset],
+input.button.red {
+  background-color: #f18c65 !important;
+  color: white;
+  border: 1px solid #f18960;
+  transition: 0.5s;
+}
+
+a.btn.red:hover, .form a.red.submit:hover, .form a.red.reset:hover, .panel a.red.submit:hover, .panel a.red.reset:hover,
+button.btn.red:hover,
+.form button.red[type=submit]:hover,
+.form button.red[type=reset]:hover,
+.panel button.red[type=submit]:hover,
+.panel button.red[type=reset]:hover,
+input.button.red:hover {
+  background-color: #eb581f !important;
+}
+
+a.btn.blue, .form a.blue.submit, .form a.blue.reset, .panel a.blue.submit, .panel a.blue.reset, a.btn.default, .form a.default.submit, .form a.default.reset, .panel a.default.submit, .panel a.default.reset,
+button.btn.blue,
+.form button.blue[type=submit],
+.form button.blue[type=reset],
+.panel button.blue[type=submit],
+.panel button.blue[type=reset],
+button.btn.default,
+.form button.default[type=submit],
+.form button.default[type=reset],
+.panel button.default[type=submit],
+.panel button.default[type=reset],
+input.button.blue,
+input.button.default {
+  background-color: #59c1d5 !important;
+  color: white;
+  border: 1px solid #55bfd4;
+}
+
+a.btn.red50, .form a.red50.submit, .form a.red50.reset, .panel a.red50.submit, .panel a.red50.reset,
+button.btn.red50,
+.form button.red50[type=submit],
+.form button.red50[type=reset],
+.panel button.red50[type=submit],
+.panel button.red50[type=reset],
+input.button.red50 {
+  background-color: rgba(241, 140, 101, 0.75) !important;
+  color: white;
+  border: 1px solid rgba(241, 140, 101, 0.95);
+}
+
+a.btn.red-2, .form a.red-2.submit, .form a.red-2.reset, .panel a.red-2.submit, .panel a.red-2.reset,
+button.btn.red-2,
+.form button.red-2[type=submit],
+.form button.red-2[type=reset],
+.panel button.red-2[type=submit],
+.panel button.red-2[type=reset],
+input.button.red-2 {
+  background-color: #f39d7c !important;
+  color: white;
+  border: 1px solid rgba(241, 140, 101, 0.5);
+}
+
+a.btn.white, .form a.white.submit, .form a.white.reset, .panel a.white.submit, .panel a.white.reset,
+button.btn.white,
+.form button.white[type=submit],
+.form button.white[type=reset],
+.panel button.white[type=submit],
+.panel button.white[type=reset],
+input.button.white {
+  background-color: white !important;
+  color: #2e2d2c;
+  border: 1px solid #fcfcfc;
+}
+
+a.btn.gray, .form a.gray.submit, .form a.gray.reset, .panel a.gray.submit, .panel a.gray.reset,
+button.btn.gray,
+.form button.gray[type=submit],
+.form button.gray[type=reset],
+.panel button.gray[type=submit],
+.panel button.gray[type=reset],
+input.button.gray {
+  background-color: #eee !important;
+  color: #141414;
+  border: 1px solid #fcfcfc;
+}
+
+a.btn.gray .btn, .form a.gray.submit .btn, .form a.gray.reset .btn, .panel a.gray.submit .btn, .panel a.gray.reset .btn, a.btn.gray .form button[type=submit], .form a.btn.gray button[type=submit], .form a.gray.submit button[type=submit], .form a.gray.reset button[type=submit], .panel a.gray.submit .form button[type=submit], .form .panel a.gray.submit button[type=submit], .panel a.gray.reset .form button[type=submit], .form .panel a.gray.reset button[type=submit], a.btn.gray .form a.submit, .form a.btn.gray a.submit, .form a.gray.submit a.submit, .form a.gray.reset a.submit, .panel a.gray.submit .form a.submit, .form .panel a.gray.submit a.submit, .panel a.gray.reset .form a.submit, .form .panel a.gray.reset a.submit, a.btn.gray .form button[type=reset], .form a.btn.gray button[type=reset], .form a.gray.submit button[type=reset], .form a.gray.reset button[type=reset], .panel a.gray.submit .form button[type=reset], .form .panel a.gray.submit button[type=reset], .panel a.gray.reset .form button[type=reset], .form .panel a.gray.reset button[type=reset], a.btn.gray .form a.reset, .form a.btn.gray a.reset, .form a.gray.submit a.reset, .form a.gray.reset a.reset, .panel a.gray.submit .form a.reset, .form .panel a.gray.submit a.reset, .panel a.gray.reset .form a.reset, .form .panel a.gray.reset a.reset, a.btn.gray .panel button[type=submit], .panel a.btn.gray button[type=submit], .form a.gray.submit .panel button[type=submit], .panel .form a.gray.submit button[type=submit], .form a.gray.reset .panel button[type=submit], .panel .form a.gray.reset button[type=submit], .panel a.gray.submit button[type=submit], .panel a.gray.reset button[type=submit], a.btn.gray .panel a.submit, .panel a.btn.gray a.submit, .form a.gray.submit .panel a.submit, .panel .form a.gray.submit a.submit, .form a.gray.reset .panel a.submit, .panel .form a.gray.reset a.submit, .panel a.gray.submit a.submit, .panel a.gray.reset a.submit, a.btn.gray .panel button[type=reset], .panel a.btn.gray button[type=reset], .form a.gray.submit .panel button[type=reset], .panel .form a.gray.submit button[type=reset], .form a.gray.reset .panel button[type=reset], .panel .form a.gray.reset button[type=reset], .panel a.gray.submit button[type=reset], .panel a.gray.reset button[type=reset], a.btn.gray .panel a.reset, .panel a.btn.gray a.reset, .form a.gray.submit .panel a.reset, .panel .form a.gray.submit a.reset, .form a.gray.reset .panel a.reset, .panel .form a.gray.reset a.reset, .panel a.gray.submit a.reset, .panel a.gray.reset a.reset,
+button.btn.gray .btn,
+.form button.gray[type=submit] .btn,
+.form button.gray[type=reset] .btn,
+.panel button.gray[type=submit] .btn,
+.panel button.gray[type=reset] .btn,
+button.btn.gray .form button[type=submit],
+.form button.btn.gray button[type=submit],
+.form button.gray[type=submit] button[type=submit],
+.form button.gray[type=reset] button[type=submit],
+.panel button.gray[type=submit] .form button[type=submit],
+.form .panel button.gray[type=submit] button[type=submit],
+.panel button.gray[type=reset] .form button[type=submit],
+.form .panel button.gray[type=reset] button[type=submit],
+button.btn.gray .form a.submit,
+.form button.btn.gray a.submit,
+.form button.gray[type=submit] a.submit,
+.form button.gray[type=reset] a.submit,
+.panel button.gray[type=submit] .form a.submit,
+.form .panel button.gray[type=submit] a.submit,
+.panel button.gray[type=reset] .form a.submit,
+.form .panel button.gray[type=reset] a.submit,
+button.btn.gray .form button[type=reset],
+.form button.btn.gray button[type=reset],
+.form button.gray[type=submit] button[type=reset],
+.form button.gray[type=reset] button[type=reset],
+.panel button.gray[type=submit] .form button[type=reset],
+.form .panel button.gray[type=submit] button[type=reset],
+.panel button.gray[type=reset] .form button[type=reset],
+.form .panel button.gray[type=reset] button[type=reset],
+button.btn.gray .form a.reset,
+.form button.btn.gray a.reset,
+.form button.gray[type=submit] a.reset,
+.form button.gray[type=reset] a.reset,
+.panel button.gray[type=submit] .form a.reset,
+.form .panel button.gray[type=submit] a.reset,
+.panel button.gray[type=reset] .form a.reset,
+.form .panel button.gray[type=reset] a.reset,
+button.btn.gray .panel button[type=submit],
+.panel button.btn.gray button[type=submit],
+.form button.gray[type=submit] .panel button[type=submit],
+.panel .form button.gray[type=submit] button[type=submit],
+.form button.gray[type=reset] .panel button[type=submit],
+.panel .form button.gray[type=reset] button[type=submit],
+.panel button.gray[type=submit] button[type=submit],
+.panel button.gray[type=reset] button[type=submit],
+button.btn.gray .panel a.submit,
+.panel button.btn.gray a.submit,
+.form button.gray[type=submit] .panel a.submit,
+.panel .form button.gray[type=submit] a.submit,
+.form button.gray[type=reset] .panel a.submit,
+.panel .form button.gray[type=reset] a.submit,
+.panel button.gray[type=submit] a.submit,
+.panel button.gray[type=reset] a.submit,
+button.btn.gray .panel button[type=reset],
+.panel button.btn.gray button[type=reset],
+.form button.gray[type=submit] .panel button[type=reset],
+.panel .form button.gray[type=submit] button[type=reset],
+.form button.gray[type=reset] .panel button[type=reset],
+.panel .form button.gray[type=reset] button[type=reset],
+.panel button.gray[type=submit] button[type=reset],
+.panel button.gray[type=reset] button[type=reset],
+button.btn.gray .panel a.reset,
+.panel button.btn.gray a.reset,
+.form button.gray[type=submit] .panel a.reset,
+.panel .form button.gray[type=submit] a.reset,
+.form button.gray[type=reset] .panel a.reset,
+.panel .form button.gray[type=reset] a.reset,
+.panel button.gray[type=submit] a.reset,
+.panel button.gray[type=reset] a.reset,
+input.button.gray .btn,
+input.button.gray .form button[type=submit],
+.form input.button.gray button[type=submit],
+input.button.gray .form a.submit,
+.form input.button.gray a.submit,
+input.button.gray .form button[type=reset],
+.form input.button.gray button[type=reset],
+input.button.gray .form a.reset,
+.form input.button.gray a.reset,
+input.button.gray .panel button[type=submit],
+.panel input.button.gray button[type=submit],
+input.button.gray .panel a.submit,
+.panel input.button.gray a.submit,
+input.button.gray .panel button[type=reset],
+.panel input.button.gray button[type=reset],
+input.button.gray .panel a.reset,
+.panel input.button.gray a.reset {
+  background: #59c1d5;
+}
+
+a.btn.dark, .form a.dark.submit, .form a.dark.reset, .panel a.dark.submit, .panel a.dark.reset,
+button.btn.dark,
+.form button.dark[type=submit],
+.form button.dark[type=reset],
+.panel button.dark[type=submit],
+.panel button.dark[type=reset],
+input.button.dark {
+  background-color: #2e2d2c !important;
+  color: #ededed;
+}
+
+header {
+  background: #141414;
+  margin: 0;
+  padding: 5px;
+  /*.main {
+      box-shadow: 0 15px 5px lighten($nav-bg, 20%);
+    }
+  */
+}
+
+header img {
+  vertical-align: middle;
+  height: 25px;
+  margin-top: -5px;
+}
+
+header ul {
+  list-style-type: none;
+  display: inline-block;
+}
+
+header ul li {
+  color: #dddddd;
+  display: inline-block;
+  margin-left: 20px;
+}
+
+header ul li a {
+  text-decoration: none;
+  color: #dddddd;
+}
+
+header ul li a:hover {
+  text-shadow: 0px 0px 2px rgba(255, 255, 255, 0.1), 0px 2px 3px rgba(255, 255, 255, 0.5), 0px 6px 6px rgba(255, 255, 255, 0.2);
+  color: #59c1d5;
+}
+
+header .box-shadow {
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
+}
+
+header .left-menu {
+  flex-grow: 1;
+  align-self: center;
+  padding: 5px;
+  color: #999;
+}
+
+header .left-menu a {
+  padding-left: 5px;
+  padding-right: 5px;
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+header .right-menu {
+  align-self: center;
+}
+
+header .submenu {
+  background: #2e2d2c;
+  padding-top: 10px;
+  padding-left: 60px;
+}
+
+header .submenu .groups {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+header .submenu .groups a {
+  background-color: #1e6977;
+  padding: 5px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+header .submenu a {
+  color: #dddddd;
+  text-decoration: none;
+}
+
+header .submenu .application-list {
+  display: flex;
+  flex-direction: column;
+}
+
+header .submenu .application-list div {
+  padding: 5px;
+}
+
+.svg.blue {
+  filter: invert(77%) sepia(17%) saturate(1201%) hue-rotate(144deg) brightness(89%) contrast(87%);
+}
+
+.svg.red {
+  filter: invert(57%) sepia(89%) saturate(365%) hue-rotate(326deg) brightness(98%) contrast(92%);
+}
+
+span.muted {
+  color: #706f6f;
+}
+
+span.small {
+  font-size: 0.9em;
+}
+
+a {
+  color: #f18c65;
+  text-decoration: none;
+}
+
+p {
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
+
+.text-shadow-1 {
+  text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+}
+
+h2, h3, h4 {
+  font-weight: 600;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-blue {
+  color: #59c1d5;
+}
+
+.text-dark {
+  color: #393938;
+}
+
+.text-light {
+  color: #ededed;
+}
+
+.text-red {
+  color: #f18c65;
+}
+
+.text-white {
+  color: #fff;
+}
+
+.text-muted {
+  color: #bbb;
+}
+
+.table {
+  table-layout: fixed;
+  display: table;
+}
+
+.table thead tr {
+  background-color: #fff;
+}
+
+.table thead tr th {
+  text-align: left;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.table.striped tbody tr:nth-child(even) {
+  background-color: #bfe7ef;
+}
+
+.table tbody tr td {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+body {
+  background-color: #59c1d5;
+}
+
+.main-view {
+  /**padding: 10px; Let all views control this **/
+}
+
+.starter {
+  margin: 10px;
+  padding: 0;
+}
+
+.starter > .panel, .starter > .panels {
+  margin: -10px !important;
+  padding: 0;
+}
+
+.p-10 {
+  padding: 10px;
+}
+
+.fb-300px {
+  flex-basis: 400px;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-grow-0 {
+  flex-grow: 0;
+}
+
+.panels {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+.panels .panel {
+  margin: 10px;
+  padding: 0;
+  flex: 1 0 auto;
+  flex-basis: 30%;
+  max-width: 50%;
+}
+
+.panel {
+  color: #141414;
+  flex: 1;
+  margin: 10px;
+  padding: 0;
+  border-radius: 3px;
+  flex-direction: column;
+  flex-basis: 50%;
+  min-width: 400px;
+  display: flex;
+}
+
+.panel > * {
+  display: block;
+  box-sizing: border-box;
+}
+
+.panel.full {
+  flex: 1 1 100%;
+}
+
+.panel > h1, .panel > h2, .panel > h3 {
+  color: white;
+  text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+}
+
+.panel.fill, .panel .fill {
+  background-color: #f9f9f9;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+  border-radius: 3px;
+  flex: 1;
+  padding: 15px;
+  display: block;
+}
+
+.panel.fill h3, .panel .fill h3 {
+  color: #393938;
+}
+
+.panel > .table {
+  background-color: #f9f9f9;
+  padding: 15px;
+}
+
+.panel .panel-header {
+  font-size: 24px;
+  padding: 10px;
+  width: 100%;
+}
+
+.panel .panel-body {
+  padding: 10px;
+  flex-grow: 1;
+  width: 100%;
+}
+
+.panel .panel-footer {
+  padding: 10px;
+  width: 100%;
+}
+
+.col .panel {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.f-grow {
+  flex-grow: 1;
+}
+
+.facts th {
+  font-weight: 500;
+  text-align: right;
+  min-width: 150px;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown .content {
+  display: none;
+  position: absolute;
+  z-index: 2;
+  background-color: #fff;
+  padding: 10px;
+  border: 1px solid #333;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.dropdown .content.show {
+  display: block;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.menu {
+  visibility: hidden;
+  position: fixed;
+  background-color: teal;
+  word-wrap: unset;
+  margin: 0;
+  transition: 0.5s;
+  opacity: 0;
+  padding: 10px;
+  border: red 1px dashed;
+}
+
+.menu.shown {
+  opacity: 1;
+  visibility: visible;
+}
+
+h2.active {
+  border-bottom: orange 3px solid;
+  color: white;
+}
+
+/** Guide CSS */
+
+.dimScreen {
+  display: none;
+  position: fixed;
+  padding: 0;
+  margin: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 10;
+}
+
+#note {
+  display: none;
+  /*background-color: #FDFF47;*/
+  background: #d8eef4;
+  color: #000;
+  position: absolute;
+  z-index: 11;
+  padding: 10px;
+  min-width: 250px;
+  box-shadow: rgba(255, 255, 255, 0.4) 0px 8px 24px;
+  border-radius: 5px;
+  border: 10px solid;
+  border-image-slice: 1;
+  border-width: 5px;
+  border-image-source: linear-gradient(to left, #59c1d5, #abdbe7);
+}
+
+#note > div {
+  margin-bottom: 20px;
+}
+
+#note button {
+  cursor: pointer;
+  font-size: 0.8em;
+  float: right;
+  background: #59c1d5;
+  border-radius: 2px;
+  border: 5px solid;
+  border-image-slice: 1;
+  border-width: 2px;
+  border-image-source: linear-gradient(to left, #59c1d5, #abdbe7);
+}
+
+#note h3 {
+  margin-top: 5px;
+}
+
+.guide-highlight {
+  position: relative;
+  background-color: #fff !important;
+  z-index: 11;
+  box-shadow: rgba(255, 255, 255, 0.4) 0px 8px 24px;
+  border-radius: 2px;
+  padding: 4px;
+  color: #59c1d5 !important;
+}
+
+.guide-highlight i {
+  background-color: #fff !important;
+  color: #59c1d5 !important;
+}
+/*!****************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].rules[0].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].rules[0].oneOf[1].use[2]!./node_modules/ngx-toastr/toastr.css ***!
+  \****************************************************************************************************************************************************************************************************************************/
+/* based on angular-toastr css https://github.com/Foxandxss/angular-toastr/blob/cb508fe6801d6b288d3afc525bb40fee1b101650/dist/angular-toastr.css */
+
+/* position */
+
+.toast-center-center {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.toast-top-center {
+  top: 0;
+  right: 0;
+  width: 100%;
+}
+
+.toast-bottom-center {
+  bottom: 0;
+  right: 0;
+  width: 100%;
+}
+
+.toast-top-full-width {
+  top: 0;
+  right: 0;
+  width: 100%;
+}
+
+.toast-bottom-full-width {
+  bottom: 0;
+  right: 0;
+  width: 100%;
+}
+
+.toast-top-left {
+  top: 12px;
+  left: 12px;
+}
+
+.toast-top-right {
+  top: 12px;
+  right: 12px;
+}
+
+.toast-bottom-right {
+  right: 12px;
+  bottom: 12px;
+}
+
+.toast-bottom-left {
+  bottom: 12px;
+  left: 12px;
+}
+
+/* toast styles */
+
+.toast-title {
+  font-weight: bold;
+}
+
+.toast-message {
+  word-wrap: break-word;
+}
+
+.toast-message a,
+.toast-message label {
+  color: #FFFFFF;
+}
+
+.toast-message a:hover {
+  color: #CCCCCC;
+  text-decoration: none;
+}
+
+.toast-close-button {
+  position: relative;
+  right: -0.3em;
+  top: -0.3em;
+  float: right;
+  font-size: 20px;
+  font-weight: bold;
+  color: #FFFFFF;
+  text-shadow: 0 1px 0 #ffffff;
+  /* opacity: 0.8; */
+}
+
+.toast-close-button:hover,
+.toast-close-button:focus {
+  color: #000000;
+  text-decoration: none;
+  cursor: pointer;
+  opacity: 0.4;
+}
+
+/*Additional properties for button version
+ iOS requires the button element instead of an anchor tag.
+ If you want the anchor version, it requires `href="#"`.*/
+
+button.toast-close-button {
+  padding: 0;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+}
+
+.toast-container {
+  pointer-events: none;
+  position: fixed;
+  z-index: 999999;
+}
+
+.toast-container * {
+  box-sizing: border-box;
+}
+
+.toast-container .ngx-toastr {
+  position: relative;
+  overflow: hidden;
+  margin: 0 0 6px;
+  padding: 15px 15px 15px 50px;
+  width: 300px;
+  border-radius: 3px 3px 3px 3px;
+  background-position: 15px center;
+  background-repeat: no-repeat;
+  background-size: 24px;
+  box-shadow: 0 0 12px #999999;
+  color: #FFFFFF;
+}
+
+.toast-container .ngx-toastr:hover {
+  box-shadow: 0 0 12px #000000;
+  opacity: 1;
+  cursor: pointer;
+}
+
+/* https://github.com/FortAwesome/Font-Awesome-Pro/blob/master/advanced-options/raw-svg/regular/info-circle.svg */
+
+.toast-info {
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA1MTIgNTEyJyB3aWR0aD0nNTEyJyBoZWlnaHQ9JzUxMic+PHBhdGggZmlsbD0ncmdiKDI1NSwyNTUsMjU1KScgZD0nTTI1NiA4QzExOS4wNDMgOCA4IDExOS4wODMgOCAyNTZjMCAxMzYuOTk3IDExMS4wNDMgMjQ4IDI0OCAyNDhzMjQ4LTExMS4wMDMgMjQ4LTI0OEM1MDQgMTE5LjA4MyAzOTIuOTU3IDggMjU2IDh6bTAgMTEwYzIzLjE5NiAwIDQyIDE4LjgwNCA0MiA0MnMtMTguODA0IDQyLTQyIDQyLTQyLTE4LjgwNC00Mi00MiAxOC44MDQtNDIgNDItNDJ6bTU2IDI1NGMwIDYuNjI3LTUuMzczIDEyLTEyIDEyaC04OGMtNi42MjcgMC0xMi01LjM3My0xMi0xMnYtMjRjMC02LjYyNyA1LjM3My0xMiAxMi0xMmgxMnYtNjRoLTEyYy02LjYyNyAwLTEyLTUuMzczLTEyLTEydi0yNGMwLTYuNjI3IDUuMzczLTEyIDEyLTEyaDY0YzYuNjI3IDAgMTIgNS4zNzMgMTIgMTJ2MTAwaDEyYzYuNjI3IDAgMTIgNS4zNzMgMTIgMTJ2MjR6Jy8+PC9zdmc+");
+}
+
+/* https://github.com/FortAwesome/Font-Awesome-Pro/blob/master/advanced-options/raw-svg/regular/times-circle.svg */
+
+.toast-error {
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA1MTIgNTEyJyB3aWR0aD0nNTEyJyBoZWlnaHQ9JzUxMic+PHBhdGggZmlsbD0ncmdiKDI1NSwyNTUsMjU1KScgZD0nTTI1NiA4QzExOSA4IDggMTE5IDggMjU2czExMSAyNDggMjQ4IDI0OCAyNDgtMTExIDI0OC0yNDhTMzkzIDggMjU2IDh6bTEyMS42IDMxMy4xYzQuNyA0LjcgNC43IDEyLjMgMCAxN0wzMzggMzc3LjZjLTQuNyA0LjctMTIuMyA0LjctMTcgMEwyNTYgMzEybC02NS4xIDY1LjZjLTQuNyA0LjctMTIuMyA0LjctMTcgMEwxMzQuNCAzMzhjLTQuNy00LjctNC43LTEyLjMgMC0xN2w2NS42LTY1LTY1LjYtNjUuMWMtNC43LTQuNy00LjctMTIuMyAwLTE3bDM5LjYtMzkuNmM0LjctNC43IDEyLjMtNC43IDE3IDBsNjUgNjUuNyA2NS4xLTY1LjZjNC43LTQuNyAxMi4zLTQuNyAxNyAwbDM5LjYgMzkuNmM0LjcgNC43IDQuNyAxMi4zIDAgMTdMMzEyIDI1Nmw2NS42IDY1LjF6Jy8+PC9zdmc+");
+}
+
+/* https://github.com/FortAwesome/Font-Awesome-Pro/blob/master/advanced-options/raw-svg/regular/check.svg */
+
+.toast-success {
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA1MTIgNTEyJyB3aWR0aD0nNTEyJyBoZWlnaHQ9JzUxMic+PHBhdGggZmlsbD0ncmdiKDI1NSwyNTUsMjU1KScgZD0nTTE3My44OTggNDM5LjQwNGwtMTY2LjQtMTY2LjRjLTkuOTk3LTkuOTk3LTkuOTk3LTI2LjIwNiAwLTM2LjIwNGwzNi4yMDMtMzYuMjA0YzkuOTk3LTkuOTk4IDI2LjIwNy05Ljk5OCAzNi4yMDQgMEwxOTIgMzEyLjY5IDQzMi4wOTUgNzIuNTk2YzkuOTk3LTkuOTk3IDI2LjIwNy05Ljk5NyAzNi4yMDQgMGwzNi4yMDMgMzYuMjA0YzkuOTk3IDkuOTk3IDkuOTk3IDI2LjIwNiAwIDM2LjIwNGwtMjk0LjQgMjk0LjQwMWMtOS45OTggOS45OTctMjYuMjA3IDkuOTk3LTM2LjIwNC0uMDAxeicvPjwvc3ZnPg==");
+}
+
+/* https://github.com/FortAwesome/Font-Awesome-Pro/blob/master/advanced-options/raw-svg/regular/exclamation-triangle.svg */
+
+.toast-warning {
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA1NzYgNTEyJyB3aWR0aD0nNTc2JyBoZWlnaHQ9JzUxMic+PHBhdGggZmlsbD0ncmdiKDI1NSwyNTUsMjU1KScgZD0nTTU2OS41MTcgNDQwLjAxM0M1ODcuOTc1IDQ3Mi4wMDcgNTY0LjgwNiA1MTIgNTI3Ljk0IDUxMkg0OC4wNTRjLTM2LjkzNyAwLTU5Ljk5OS00MC4wNTUtNDEuNTc3LTcxLjk4N0wyNDYuNDIzIDIzLjk4NWMxOC40NjctMzIuMDA5IDY0LjcyLTMxLjk1MSA4My4xNTQgMGwyMzkuOTQgNDE2LjAyOHpNMjg4IDM1NGMtMjUuNDA1IDAtNDYgMjAuNTk1LTQ2IDQ2czIwLjU5NSA0NiA0NiA0NiA0Ni0yMC41OTUgNDYtNDYtMjAuNTk1LTQ2LTQ2LTQ2em0tNDMuNjczLTE2NS4zNDZsNy40MTggMTM2Yy4zNDcgNi4zNjQgNS42MDkgMTEuMzQ2IDExLjk4MiAxMS4zNDZoNDguNTQ2YzYuMzczIDAgMTEuNjM1LTQuOTgyIDExLjk4Mi0xMS4zNDZsNy40MTgtMTM2Yy4zNzUtNi44NzQtNS4wOTgtMTIuNjU0LTExLjk4Mi0xMi42NTRoLTYzLjM4M2MtNi44ODQgMC0xMi4zNTYgNS43OC0xMS45ODEgMTIuNjU0eicvPjwvc3ZnPg==");
+}
+
+.toast-container.toast-top-center .ngx-toastr,
+.toast-container.toast-bottom-center .ngx-toastr {
+  width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.toast-container.toast-top-full-width .ngx-toastr,
+.toast-container.toast-bottom-full-width .ngx-toastr {
+  width: 96%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ngx-toastr {
+  background-color: #030303;
+  pointer-events: auto;
+}
+
+.toast-success {
+  background-color: #51A351;
+}
+
+.toast-error {
+  background-color: #BD362F;
+}
+
+.toast-info {
+  background-color: #2F96B4;
+}
+
+.toast-warning {
+  background-color: #F89406;
+}
+
+.toast-progress {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 4px;
+  background-color: #000000;
+  opacity: 0.4;
+}
+
+/* Responsive Design */
+
+@media all and (max-width: 240px) {
+  .toast-container .ngx-toastr.div {
+    padding: 8px 8px 8px 50px;
+    width: 11em;
+  }
+  .toast-container .toast-close-button {
+    right: -0.2em;
+    top: -0.2em;
+  }
+}
+
+@media all and (min-width: 241px) and (max-width: 480px) {
+  .toast-container .ngx-toastr.div {
+    padding: 8px 8px 8px 50px;
+    width: 18em;
+  }
+  .toast-container .toast-close-button {
+    right: -0.2em;
+    top: -0.2em;
+  }
+}
+
+@media all and (min-width: 481px) and (max-width: 768px) {
+  .toast-container .ngx-toastr.div {
+    padding: 15px 15px 15px 50px;
+    width: 25em;
+  }
+}
+
