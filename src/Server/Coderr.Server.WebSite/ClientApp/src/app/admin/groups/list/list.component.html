@@ -20,6 +20,16 @@
     </tbody>
   </table>
   <div>
-    <a [routerLink]="['new']" class="btn">Create</a>
+    <a (click)="createGroup()" class="btn">Create</a>
   </div>
 </div>
+
+<modal id="createNewGroupModal">
+  <div class="panel">
+    <h3>Create group</h3>
+    <div class="fill">
+      <p>Application groups are used to logically group applications into smaller lists.</p>
+      <app-group-add (closed)="onGroupCreated($event)"></app-group-add>
+    </div>
+  </div>
+</modal>

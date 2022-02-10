@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Coderr.Server.Api.Modules.Whitelists.Commands;
@@ -55,8 +56,13 @@ namespace Coderr.Server.SqlServer.Modules.Whitelists
         private async Task LookupIps(AddEntry message, Whitelist entry)
         {
             var lookup = new LookupClient();
-            var result = await lookup.QueryAsync(message.DomainName, QueryType.ANY);
-            foreach (var record in result.AllRecords)
+            var result = await lookup.QueryAsync(message.DomainName, QueryType.A);
+            var result2 = await lookup.QueryAsync(message.DomainName, QueryType.AAAA);
+
+            var results = result.AllRecords.ToList();
+            results.AddRange(result2.AllRecords);
+
+            foreach (var record in results)
             {
                 switch (record)
                 {

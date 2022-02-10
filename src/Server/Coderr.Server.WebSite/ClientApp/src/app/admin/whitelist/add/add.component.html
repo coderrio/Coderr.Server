@@ -4,12 +4,12 @@
     <h2>New whitelist</h2>
 
     <div class="fill">
-      <div class="form-control">
+      <div class="form-group">
         <label class="label">Host name</label>
         <input required type="text" name="domainName" [(ngModel)]="domainName" placeholder="myapp.yourdomain.com" />
         <em class="small">Domain name, including the subdomain/host.</em>
       </div>
-      <div class="form-control">
+      <div class="form-group">
         <label>Applications</label>
         <p>
           <em class="small">Application(s) that the domain may report errors for. None marked = all are allowed.</em>
@@ -21,7 +21,7 @@
           </label>
         </div>
       </div>
-      <div class="form-control">
+      <div class="form-group">
         <label class="label">IP Addresses</label>
         <p>
           <em class="small">
@@ -41,7 +41,7 @@
         </table>
         <button type="button" (click)="showAddIp()">Add new IP</button>
       </div>
-      <div class="form-control">
+      <div class="form-group">
         <span class="error" style="white-space: pre-line">{{errorMessage}}</span>
       </div>
     </div>

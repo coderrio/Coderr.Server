@@ -4,6 +4,17 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ApplicationService } from "../../../applications/application.service";
 import { ApplicationGroupService } from "../application-groups.service";
 import { NavMenuService } from "../../../nav-menu/nav-menu.service";
+import { IGroupListItem } from "../group.model";
+import { ToastrService } from "ngx-toastr";
+
+export interface IGroupCreated {
+  success: boolean;
+  group?: IGroupListItem;
+  error?: Error;
+
+  /** Can be "Canceled" if aborted (success = false) */
+  message?: string;
+}
 
 @Component({
   selector: 'app-group-add',
@@ -17,10 +28,11 @@ export class GroupAddComponent implements OnInit, OnDestroy {
   errorMessage = '';
   returnUrl = '';
   disabled = false;
-  @Output() closed = new EventEmitter();
+  @Output() closed = new EventEmitter<IGroupCreated>();
 
   constructor(
     private formBuilder: FormBuilder,
+    private toastrService: ToastrService,
     private router: Router,
     private service: ApplicationGroupService,
     navMenuService: NavMenuService) {
@@ -50,6 +62,7 @@ export class GroupAddComponent implements OnInit, OnDestroy {
     this.disabled = true;
     this.service.create(this.createForm.value.name)
       .then(x => {
+        this.toastrService.success('Entry is being created..');
         this.createForm.reset();
         this.closed.emit({ success: true, group: x });
       }).catch(e => {

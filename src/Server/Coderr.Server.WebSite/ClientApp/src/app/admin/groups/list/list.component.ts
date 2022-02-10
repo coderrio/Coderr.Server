@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { IGroupListItem } from "../group.model";
 import { ApplicationGroupService } from "../application-groups.service";
 import { NavMenuService } from "../../../nav-menu/nav-menu.service";
+import { ModalService } from "../../../_controls/modal/modal.service";
+import { IGroupCreated } from "../add/add.component";
 
 @Component({
   selector: 'app-groups',
@@ -14,6 +16,7 @@ export class GroupListComponent implements OnInit, OnDestroy {
 
   constructor(
     private groupService: ApplicationGroupService,
+    private modalService: ModalService,
     navMenuService: NavMenuService) {
 
     navMenuService.updateNav([
@@ -31,5 +34,19 @@ export class GroupListComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.sub.unsubscribe();
   }
+
+  createGroup() {
+    this.modalService.open('createNewGroupModal');
+  }
+
+  onGroupCreated(e: IGroupCreated) {
+    console.log(e);
+    if (e.success) {
+      this.groups.push(e.group);
+    }
+    
+    this.modalService.close('createNewGroupModal');
+  }
+
 
 }

@@ -1,21 +1,21 @@
 <form id="app-create" class="form p-2" [formGroup]="createForm" (ngSubmit)="onSubmit()" [attr.disabled]="disabled">
 
-  <div class="form-control">
+  <div class="form-group">
     <label>
       Name
     </label>
     <input type="text" placeholder="Application name" formControlName="name" />
   </div>
-  <div class="form-control" *ngIf="showGroups">
+  <div class="form-group" *ngIf="showGroups">
     <label>Group</label>
     <select formControlName="groupId">
       <option *ngFor="let group of groups" [value]="group.id">{{group.name}}</option>
     </select>
   </div>
-  <div class="form-control">
+  <div class="form-group">
     <input type="checkbox" id="check1" class="inline" formControlName="trackStats" /><label class="inline" for="check1"><span></span>I want to compare our statistics with other companies</label>
   </div>
-  <div class="form-control">
+  <div class="form-group">
     <span class="error" style="white-space: pre-line">{{errorMessage}}</span>
     <button type="submit">Create application</button>
     <button type="reset" (click)="cancel()" class="btn dark">Cancel</button>
