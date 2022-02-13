@@ -18,7 +18,6 @@ using Coderr.Server.ReportAnalyzer.Boot.Adapters;
 using Coderr.Server.SqlServer;
 using Coderr.Server.SqlServer.Migrations;
 using Coderr.Server.SqlServer.Schema;
-using Coderr.Server.Web;
 using Coderr.Server.WebSite.Controllers;
 using Coderr.Server.WebSite.Infrastructure.Adapters;
 using log4net;

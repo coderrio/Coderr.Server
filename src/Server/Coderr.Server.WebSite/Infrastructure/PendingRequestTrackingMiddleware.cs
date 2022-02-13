@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace Coderr.Server.Web
+namespace Coderr.Server.WebSite.Infrastructure
 {
     public class PendingRequestTrackingMiddleware
     {

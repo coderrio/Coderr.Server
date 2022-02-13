@@ -7,7 +7,7 @@ using Coderr.Server.Abstractions.Config;
 using Coderr.Server.Infrastructure.Configuration;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Coderr.Server.Web.Controllers
+namespace Coderr.Server.WebSite.Controllers
 {
     [Route("api/[controller]")]
     public class OnboardingController : Controller

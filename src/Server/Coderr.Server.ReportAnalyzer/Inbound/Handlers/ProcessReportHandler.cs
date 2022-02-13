@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Coderr.Server.Api.Modules.Logs.Commands;
 using Coderr.Server.Domain.Core.ErrorReports;
 using DotNetCqs;
 using Coderr.Server.ReportAnalyzer.Abstractions.Inbound.Commands;
@@ -43,7 +44,7 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers
                 // 0 = we ignored the report.
                 if (entity.Id > 0)
                 {
-                    await ProcessLogEntries(message, entity);
+                    await ProcessLogEntries(context, message, entity);
                 }
             }
             catch (Exception ex)
@@ -82,14 +83,24 @@ namespace Coderr.Server.ReportAnalyzer.Inbound.Handlers
             }
         }
 
-        private async Task ProcessLogEntries(ProcessReport message, ErrorReportEntity entity)
+        private async Task ProcessLogEntries(IMessageContext context, ProcessReport message, ErrorReportEntity entity)
         {
             if (message.LogEntries == null || message.LogEntries.Length == 0)
             {
                 return;
             }
 
-            // Only in commercial editions.
+            var logEntries = message.LogEntries
+                .Select(x => new StoreLogEntriesEntry
+                {
+                    Message = x.Message,
+                    Level = (StoreLogEntriesLogLevel)x.LogLevel,
+                    Exception = x.Exception,
+                    TimeStampUtc = x.TimestampUtc
+                })
+                .ToArray();
+            var cmd = new StoreLogEntries(entity.IncidentId, entity.Id, logEntries);
+            await context.SendAsync(cmd);
         }
 
 

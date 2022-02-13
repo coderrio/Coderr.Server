@@ -63,6 +63,11 @@ export class PartitionService {
     try {
       var result = await this.apiClient.query<api.GetPartitionsResult>(query);
 
+      // Not supported in community edition.
+      if (!result) {
+        return null;
+      }
+
       var partitions: IPartitionListItem[] = result.items;
       accept(partitions);
       return partitions;
@@ -89,7 +94,7 @@ export class PartitionService {
     query.id = id;
     try {
       var result = await this.apiClient.query<api.GetPartitionResult>(query);
-      console.log('loaded part', result);
+
       var partitions: Partition = result;
       accept(partitions);
       return partitions;
@@ -118,12 +123,10 @@ export class PartitionService {
       throw new Error("Partition must be specified.");
     }
 
-    console.log('partu', partition);
     var errors = validate(partition);
     if (errors.length > 0) {
       throw new Error(errors.join(','));
     }
-    console.log('partu2', partition);
 
     var cmd = new api.UpdatePartition();
     copy(partition, cmd, {skipExistenceCheck: true});

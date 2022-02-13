@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Coderr.Server.Abstractions;
 using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Domain.Core.Applications;
 using DnsClient;
@@ -73,6 +74,11 @@ namespace Coderr.Server.App.Modules.Whitelists
 
         private async Task<bool> Lookup(Whitelist domain, IPAddress remoteAddress)
         {
+            if (remoteAddress.IsInternal())
+            {
+                return true;
+            }
+
             var found = false;
             var lookup = new LookupClient();
             var result = await lookup.QueryAsync(domain.DomainName, QueryType.ANY);

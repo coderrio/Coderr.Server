@@ -2,7 +2,6 @@ using System;
 using Coderr.Server.Abstractions;
 using Coderr.Server.Infrastructure;
 using Coderr.Server.SqlServer;
-using Coderr.Server.Web;
 using Coderr.Server.WebSite.Areas.Installation;
 using Coderr.Server.WebSite.Infrastructure;
 using Coderr.Server.WebSite.Infrastructure.Adapters;

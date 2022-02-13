@@ -54,7 +54,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     const app = await this.applicationService.get(this.incident.applicationId);
     this.menuService.updateNav([
       { title: app.name, route: ['application', app.id] },
-      { title: 'Errors', route: ['application', app.id, 'incidents'] }
+      { title: 'Errors', route: ['application', app.id, 'errors'] }
     ]
     );
 

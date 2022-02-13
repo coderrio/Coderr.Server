@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using Coderr.Client;
+using Coderr.Server.Abstractions;
 using Coderr.Server.Abstractions.Boot;
 using Coderr.Server.Abstractions.Config;
 using Coderr.Server.Domain.Modules.ErrorOrigins;
@@ -55,6 +56,14 @@ namespace Coderr.Server.ReportAnalyzer.ErrorOrigins
         {
             if (string.IsNullOrEmpty(_originConfiguration.Value.ApiKey))
                 return;
+
+            if (!IPAddress.TryParse(origin.IpAddress, out var address))
+                return;
+
+            if (address.IsInternal())
+            {
+                return;
+            }
 
             var url = $"http://api.ipstack.com/{origin.IpAddress}?access_key={_originConfiguration.Value.ApiKey}";
             var request = WebRequest.CreateHttp(url);
@@ -331,6 +340,14 @@ namespace Coderr.Server.ReportAnalyzer.ErrorOrigins
             //fe80::1855:17f1:43ab:cc48%5 TODO: What do the %5 mean?
             var pos = origin.IpAddress.IndexOf('%');
             var ip = pos == -1 ? origin.IpAddress : origin.IpAddress.Substring(0, pos);
+
+            if (!IPAddress.TryParse(ip, out var address))
+                return;
+
+            if (address.IsInternal())
+            {
+                return;
+            }
 
             var request = WebRequest.CreateHttp("https://timezoneapi.io/api/ip/?token=aAakJWmQjzgKudYTMmiV&ip=" + ip);
             var json = "";

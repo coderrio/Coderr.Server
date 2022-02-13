@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ApiClient, HttpClient } from "../../../utils/HttpClient";
 import { FindIncidents, FindIncidentsResult } from "../../../../server-api/Core/Incidents";
 import { ApplicationService } from "../../application.service";
+declare var window: any;
 
 interface ILibrarySummary {
   clientFolderName: string;
@@ -11,7 +12,7 @@ interface ILibrarySummary {
   selected: boolean;
 
 
-  /** ".net" or "nodejs" */
+  /** ".net" or "js" */
   frameworkType: string;
 
   categories: string[];
@@ -85,8 +86,8 @@ export class ConfigureComponent implements OnInit {
       this.noConnection = true;
     }
 
-    var pos = window.location.toString().indexOf('/discover/');
-    this.reportUrl = window.location.toString().substr(0, pos + 1);
+    var pos = window.location.href.toString().indexOf('/discover/');
+    this.reportUrl = window.location.href.toString().substr(0, pos + 1);
   }
 
   async selectFramework(name: string): Promise<void> {
@@ -100,9 +101,9 @@ export class ConfigureComponent implements OnInit {
 
   async selectLibrary(lib: ILibrarySummary): Promise<void> {
     this.lastLib = lib;
-    var url = '/api/onboarding/library/' + lib.id + "/?appKey=" + this.appKey;
+    var url = '/api/onboarding/library/' + lib.id + "/?appKey=" + this.appKey + "&type=" + lib.frameworkType;
     var response = await this.httpClient.get(url);
-    console.log(response);
+
     this.instruction = response.body
       .replace('yourAppKey', this.appKey)
       .replace('yourSharedSecret', this.sharedSecret);
