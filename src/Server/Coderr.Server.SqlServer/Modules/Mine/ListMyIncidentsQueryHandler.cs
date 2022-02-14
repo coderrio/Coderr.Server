@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Coderr.Server.Abstractions.Security;
 using Coderr.Server.Api.Modules.Mine.Queries;
+using Coderr.Server.App.Modules.Mine;
 using Coderr.Server.Domain.Core.Applications;
 using Coderr.Server.Domain.Core.Incidents;
 using DotNetCqs;
@@ -15,12 +16,16 @@ namespace Coderr.Server.SqlServer.Modules.Mine
     public class ListMyIncidentsQueryHandler : IQueryHandler<ListMyIncidents, ListMyIncidentsResult>
     {
         private readonly IIncidentRepository _repository;
+        private readonly IRecommendationService _recommendationService;
         private readonly IAdoNetUnitOfWork _uow;
         private IApplicationRepository _applicationRepository;
 
-        public ListMyIncidentsQueryHandler(IAdoNetUnitOfWork uow, IIncidentRepository repository, IApplicationRepository applicationRepository)
+        public ListMyIncidentsQueryHandler(IAdoNetUnitOfWork uow, IRecommendationService recommendationService,
+            IIncidentRepository repository, IApplicationRepository applicationRepository)
         {
             _uow = uow;
+            _recommendationService = recommendationService ??
+                                       throw new ArgumentNullException(nameof(recommendationService));
             _repository = repository;
             _applicationRepository = applicationRepository;
         }
@@ -30,14 +35,14 @@ namespace Coderr.Server.SqlServer.Modules.Mine
             var totalCount = await GetTotalCount(context);
             var incidents = await GetMyItems(context);
             var suggestions = new List<ListMySuggestedItem>();
-            var items = await GetMostlyReported(context.Principal.GetAccountId(), query.ApplicationId);
+            var items = await _recommendationService.GetRecommendations(context.Principal.GetAccountId(), query.ApplicationId);
             if (items.Any())
             {
                 var enriched = await EnrichSuggestions(items);
                 suggestions.AddRange(enriched);
             }
 
-            var comment = "";
+            string comment = "";
             if (incidents.Count == 0)
             {
                 if (suggestions.Count > 0)
@@ -62,7 +67,7 @@ namespace Coderr.Server.SqlServer.Modules.Mine
                     var random = new Random();
                     comment = random.Next(0, 2) == 0
                         ? "Did you know that Coderr ignores reports for closed incidents as long as they are for older application versions? Solve some.."
-                        : "We recommend that you correct existing incidents before taking new.";
+                        : "We recommend that you correct existing incidents before taking new. Click 'Analyze' in the top menu.";
                 }
             }
 
@@ -76,33 +81,15 @@ namespace Coderr.Server.SqlServer.Modules.Mine
             return result;
         }
 
-        private async Task<List<ListMyIncidentsResultItem>> GetMostlyReported(int accountId, int? applicationId)
+        private async Task<IEnumerable<ListMySuggestedItem>> EnrichSuggestions(List<RecommendedIncident> items)
         {
-            var sqlQuery =
-                $@"SELECT Incidents.*, Incidents.Description as Name, Applications.Id as ApplicationId, Applications.Name as ApplicationName
-                                FROM Incidents 
-                                JOIN Applications ON (Applications.Id = Incidents.ApplicationId)
-                                WHERE State = {(int)IncidentState.New}";
-            if (applicationId == null)
-            {
-                return await _uow.ToListAsync(new ListMyIncidentsResultItemMapper(), sqlQuery);
-                
-            }
-
-            sqlQuery += " AND Applications.Id = @appId";
-            return await _uow.ToListAsync(new ListMyIncidentsResultItemMapper(), sqlQuery,
-                    new { appId = applicationId.Value });
-        }
-
-        private async Task<IEnumerable<ListMySuggestedItem>> EnrichSuggestions(List<ListMyIncidentsResultItem> items)
-        {
-            var incidentIds = items.Select(x => x.Id).Distinct();
+            var incidentIds = items.Select(x => x.IncidentId).Distinct();
             var incidents = await _repository.GetManyAsync(incidentIds);
             var apps = new Dictionary<int, Application>();
             var result = new List<ListMySuggestedItem>();
             foreach (var item in items)
             {
-                var incident = incidents.First(x => x.Id == item.Id);
+                var incident = incidents.First(x => x.Id == item.IncidentId);
                 var suggestion = new ListMySuggestedItem(incident.Id, incident.Description)
                 {
                     ApplicationId = incident.ApplicationId,
@@ -110,7 +97,7 @@ namespace Coderr.Server.SqlServer.Modules.Mine
                     CreatedAtUtc = incident.CreatedAtUtc,
                     ExceptionTypeName = incident.FullName,
                     LastReportAtUtc = incident.LastReportAtUtc,
-                    Motivation = "Frequently reported",
+                    Motivation = item.Motivation,
                     StackTrace = incident.StackTrace,
                     ReportCount = incident.ReportCount
                 };

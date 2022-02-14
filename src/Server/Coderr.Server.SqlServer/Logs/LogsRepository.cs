@@ -6,7 +6,7 @@ using Coderr.Server.Domain.Modules.Logs;
 using Griffin.Data;
 using Newtonsoft.Json;
 
-namespace Coderr.Server.Common.Data.SqlServer.Logs
+namespace Coderr.Server.SqlServer.Logs
 {
     [ContainerService]
     public class LogsRepository : ILogsRepository
