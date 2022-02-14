@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Coderr.Server.Api.Modules.Logs.Commands;
 using Coderr.Server.Domain.Core.ErrorReports;
+using Coderr.Server.ReportAnalyzer.Abstractions.Commands;
 using DotNetCqs;
 using Coderr.Server.ReportAnalyzer.Abstractions.Inbound.Commands;
 using log4net;

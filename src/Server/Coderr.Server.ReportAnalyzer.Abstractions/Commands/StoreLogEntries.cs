@@ -1,6 +1,7 @@
 ﻿using System;
+using Coderr.Server.Api;
 
-namespace Coderr.Server.Api.Modules.Logs.Commands
+namespace Coderr.Server.ReportAnalyzer.Abstractions.Commands
 {
     [Command]
     public class StoreLogEntries

@@ -9,7 +9,7 @@ namespace Coderr.Server.WebSite.Infrastructure
         public override void WriteJson(JsonWriter writer, object value,
             JsonSerializer serializer)
         {
-            var list = value as List<KeyValuePair<string, string>>;
+            var list = (List<KeyValuePair<string, string>>)value;
             writer.WriteStartArray();
             foreach (var item in list)
             {
@@ -21,7 +21,7 @@ namespace Coderr.Server.WebSite.Infrastructure
             writer.WriteEndArray();
         }
 
-        public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             throw new NotSupportedException();
         }

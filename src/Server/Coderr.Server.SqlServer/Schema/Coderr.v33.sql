@@ -6,7 +6,7 @@
     Description varchar(2500) not null
 );
 
-create table InsightsConfigurations
+create table dbo.InsightsConfigurations
 (
     Id int not null identity primary key,
     DefinitionId int not null constraint FK_InsightsConfigurations_InsightDefinitions foreign key references InsightDefinitions(Id),

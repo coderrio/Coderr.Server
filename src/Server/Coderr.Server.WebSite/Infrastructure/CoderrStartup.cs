@@ -211,7 +211,7 @@ namespace Coderr.Server.WebSite.Infrastructure
             {
                 connection.Open();
             }
-            catch (SqlException ex)
+            catch (SqlException)
             {
                 Thread.Sleep(500);
                 connection.Open();

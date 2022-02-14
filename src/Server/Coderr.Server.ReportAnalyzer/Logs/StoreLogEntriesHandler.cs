@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using Coderr.Server.Api.Modules.Logs.Commands;
 using Coderr.Server.Domain.Modules.Logs;
+using Coderr.Server.ReportAnalyzer.Abstractions.Commands;
 using DotNetCqs;
 
 namespace Coderr.Server.ReportAnalyzer.Logs

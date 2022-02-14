@@ -1,4 +1,4 @@
-﻿namespace Coderr.Server.Api.Modules.Logs.Commands
+﻿namespace Coderr.Server.ReportAnalyzer.Abstractions.Commands
 {
     public enum StoreLogEntriesLogLevel
     {

@@ -34,5 +34,6 @@
     <None Remove="Schema\Coderr.v33.sql" />
     <None Remove="Schema\Coderr.v34.sql" />
     <None Remove="Schema\Coderr.v35.sql" />
+    <None Remove="Schema\Coderr.v36.sql" />
   </ItemGroup>
 </Project>
