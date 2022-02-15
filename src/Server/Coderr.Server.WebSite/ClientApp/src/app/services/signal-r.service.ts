@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import * as signalR from "@aspnet/signalr";
+import * as signalR from "@microsoft/signalr";
 import { Subject, Observable } from 'rxjs';
 declare type CallbackFilter = (evt: IHubEvent) => boolean;
 declare type Action = () => void;

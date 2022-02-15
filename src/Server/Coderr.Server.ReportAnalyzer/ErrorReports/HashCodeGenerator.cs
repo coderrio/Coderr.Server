@@ -173,7 +173,7 @@ namespace Coderr.Server.ReportAnalyzer.ErrorReports
                 else
                     _cleanRegExes.Add(new Regex(rex));
             }
-
+            
             var linesToReplace = new[]
             {
                 @"(\w+):\d+\)\r?$",//@"\.\w+(:\d+)\)$", // java line numbers

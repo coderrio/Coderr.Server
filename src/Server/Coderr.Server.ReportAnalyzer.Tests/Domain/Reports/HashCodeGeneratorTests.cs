@@ -72,9 +72,9 @@ at System.Web.Compilation.BuildManager.CompileWebFile(VirtualPath virtualPath)"
             var sut = new HashCodeGenerator(new IHashCodeSubGenerator[0]);
             var data = HashCodeGenerator.CleanStackTrace(stacktrace);
 
-            data.Should().Be(@"   at System.Text.Encoding.GetBytes(String s)
-   at Coderr.Server.Web.Controllers.OnboardingController.CalculateMd5Hash(String input) in C:\src\1tcompany\coderr\oss\codeRR.Server\src\Server\Coderr.Server.Web\Controllers\OnboardingController.cs
-   at Coderr.Server.Web.Controllers.OnboardingController.Library(String id, String appKey)");
+            data.Should().Be(@"System.Text.Encoding.GetBytes(String s)
+Coderr.Server.Web.Controllers.OnboardingController.CalculateMd5Hash(String input) in C:\src\1tcompany\coderr\oss\codeRR.Server\src\Server\Coderr.Server.Web\Controllers\OnboardingController.cs
+Coderr.Server.Web.Controllers.OnboardingController.Library(String id, String appKey)");
         }
         [Fact]
         public void Should_clean_async()
