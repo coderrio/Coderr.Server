@@ -55,12 +55,13 @@ namespace Coderr.Server.WebSite.Infrastructure
             var configWrapper = new ConfigurationWrapper(_configuration);
 
             LoadHostConfiguration(_configuration);
-            ConfigureMigrations();
+
             _appModuleStarter = new AppModuleStarter(_configuration);
             _queueManager.Configure(configWrapper, OpenConnection);
             _queueManager.ShutdownRequested += OnShutdownRequested;
 
             ValidateConfiguration(configuration);
+            ConfigureMigrations();
         }
 
         private void ValidateConfiguration(IConfiguration configuration)
