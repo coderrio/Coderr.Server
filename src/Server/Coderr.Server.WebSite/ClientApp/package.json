@@ -20,7 +20,8 @@
     "@angular/platform-browser-dynamic": "^13.2.2",
     "@angular/platform-server": "^13.2.2",
     "@angular/router": "^13.2.2",
-    "@aspnet/signalr": "^1.0.27",
+    "@microsoft/signalr": "^6.0.2",
+    "@popperjs/core": "^2.11.2",
     "apexcharts": "^3.29.0",
     "aspnet-prerendering": "^3.0.1",
     "bootstrap": "^4.6.1",
@@ -29,7 +30,6 @@
     "jwt-decode": "^3.1.2",
     "ngx-toastr": "^14.1.4",
     "oidc-client": "^1.11.5",
-    "popper.js": "^1.16.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^6.6.7",
     "service": "^0.1.4",
@@ -37,8 +37,8 @@
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^13.2.2",
-    "@angular/cli": "^13.2.2",
+    "@angular-devkit/build-angular": "^13.2.3",
+    "@angular/cli": "^13.2.3",
     "@angular/compiler": "^13.2.2",
     "@angular/compiler-cli": "^13.2.2",
     "@angular/language-service": "^13.2.2",
@@ -57,7 +57,7 @@
     "typescript": "^4.5.5"
   },
   "optionalDependencies": {
-    "protractor": "~5.4.2",
+    "protractor": "^7.0.0",
     "ts-node": "~8.4.1",
     "tslint": "~5.20.0"
   }
