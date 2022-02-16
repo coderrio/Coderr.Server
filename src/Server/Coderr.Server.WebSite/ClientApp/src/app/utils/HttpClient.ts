@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+declare var window: any;
 
 export interface IRequestOptions {
   method?: "GET" | "POST" | "PUT" | "DELETE",
@@ -68,6 +69,14 @@ export class ApiClient {
     var json = JSON.stringify(query);
     var response = await this.http.post(`${this.cqsUrl}?type=${query.constructor.TYPE_NAME}`, json, { headers: headers });
     if (response.statusCode === 401) {
+
+      // to support Cloud logins.
+      let url = localStorage.getItem('loginUrl');
+      if (url && url != '/account/login') {
+        window.location.href = url;
+        return null;
+      }
+
       this.router.navigate(['account/login'], { queryParams: { returnUrl: window.location.pathname + window.location.search } });
       throw new HttpError(response);
     }

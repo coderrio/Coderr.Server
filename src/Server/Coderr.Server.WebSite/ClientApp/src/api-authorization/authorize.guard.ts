@@ -21,7 +21,7 @@ export class AuthorizeGuard implements CanActivate {
 
     var loginUrl = localStorage.getItem('loginUrl');
     if (loginUrl) {
-      window.location = loginUrl;
+      window.location.href = loginUrl;
       return false;
     }
 
