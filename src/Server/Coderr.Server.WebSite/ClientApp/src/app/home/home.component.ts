@@ -31,16 +31,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     navMenuService: NavMenuService) {
     navMenuService.updateNav([]);
 
-    if (localStorage.getItem('showOnboarding') !== false.toString()) {
-      this.activePane = 'onboarding';
-    } else {
-      this.activePane = localStorage.getItem('homeActivePane') || 'applications';
-    }
-  }
-
-  hideOnboarding() {
-    localStorage.setItem('showOnboarding', false.toString());
-    this.setPane('applications');
+    this.activePane = localStorage.getItem('homeActivePane') || 'applications';
   }
 
   filter(event) {
@@ -52,7 +43,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.activePane = name;
     localStorage.setItem('homeActivePane', name);
   }
-  
+
 
   ngOnInit(): void {
     this.appSub = this.appService.applications.subscribe(apps => {

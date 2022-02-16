@@ -12,15 +12,17 @@ import { AuthorizeGuard } from "../../api-authorization/authorize.guard";
 import { AdminModule } from "../admin/admin.module";
 import { GroupModule } from "../admin/groups/group.module";
 import { DemoErrorsComponent } from './demo-errors/demo-errors.component';
+import { TipsComponent } from './tips/tips.component';
 
 const incidentsRoutes: Routes = [
   { path: '', pathMatch: 'full', component: HomeComponent, canActivate: [AuthorizeGuard] },
-  { path: 'demo-errors', component: DemoErrorsComponent }
+  { path: 'demo-errors', component: DemoErrorsComponent },
+  { path: 'tips', component: TipsComponent }
 ];
 
 
 @NgModule({
-  declarations: [LatestErrorsComponent, HomeComponent, DemoErrorsComponent],
+  declarations: [LatestErrorsComponent, HomeComponent, DemoErrorsComponent, TipsComponent],
   imports: [
     ControlsModule,
     AdminModule,

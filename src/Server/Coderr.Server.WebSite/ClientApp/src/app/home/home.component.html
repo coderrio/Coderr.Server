@@ -1,100 +1,4 @@
 <div class="p-10 starter">
-  <div *ngIf="activePane === 'onboarding'">
-    <div class="row">
-      <div class="col">
-        <div class="mt-3">
-          <h1 class="text-shadow-1 text-white">Welcome to Coderr!</h1>
-        </div>
-        <div class="pb-0 mb-0">
-          &nbsp;&nbsp;
-          <label>
-            <input type="checkbox" (change)="hideOnboarding()" /> Hide introduction
-          </label>
-
-        </div>
-      </div>
-    </div>
-    <div class="panels">
-      <div class="panel" *ngIf="firstApplicationId">
-        <h3>Report errors</h3>
-        <div class="fill">
-          <div class="f-grow">
-            <p>
-              The best way to get started is to read our <a href="https://coderr.io/try#configuring-your-application">getting started guide</a>.
-            </p>
-            <p>
-              Our nuget packages are used detect and report errors in your application. To get started you need to install and configure our of our packages.
-            </p>
-            <p>
-              You can also read our <a href="https://coderr.io/documentation/pages/">wiki</a> or visit our <a href="https://coderr.io/guides-and-support">Guides and support</a> section at our homepage.
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="panel">
-        <h3>Before going to production</h3>
-        <div class="fill">
-          <p>
-            Coderr will by default throw exceptions and try to report errors directly to be able to tell if something is configured incorrectly. That's great
-            when you get started, but can have implications in production. To disable those features, do the following:
-          </p>
-
-          <p>Turn off Coderr's internal exceptions before going to production.</p>
-          <pre><code class="language-csharp">Err.Configuration.ThrowExceptions = false;</code></pre>
-
-          <p>Let Coderr report errors in the background (to not slow down your application while it tries to report errors).</p>
-          <pre><code>Err.Configuration.QueueReports = true;</code></pre>
-        </div>
-      </div>
-      <div class="panel">
-        <h3>Disable Coderr in Development environments</h3>
-        <div class="fill">
-          <div class="f-grow">
-            <p>You typically have full control over errors happening in development environments.</p>
-            <p>Learn how to conditionally enable Coderr in different environments to reduce noise.</p>
-          </div>
-          <a class="" href="https://coderr.io/documentation/features/incidents/environments/">Learn more</a>
-        </div>
-      </div>
-
-      <div class="panel">
-        <h3>Demo errors</h3>
-        <div class="fill">
-          <div class="f-grow">
-            <p>
-              Coderr can generate some demo errors so that you can quickly can see what Coderr provides for information.
-            </p>
-          </div>
-          <a [routerLink]="['/demo-errors']">Generate demo errors</a>
-        </div>
-      </div>
-
-      <div class="panel">
-        <h3>Application configuration (admin only)</h3>
-        <div class="fill">
-          <p>
-            You can monitor multiple applications in Coderr. To make it easier for you, we created an application named "DemoApp".
-          </p>
-          <p>
-            You can change its name and create more applications by clicking on the Cog wheel (<i class="fa fa-cog text-primary"></i>) at top right.
-          </p>
-        </div>
-      </div>
-
-      <div class="panel">
-        <h3>Invite co-workers (admin only)</h3>
-        <div class="fill">
-          <p>To invite co-workers, use the Cog wheel (<i class="fa fa-cog text-primary"></i>) found in top right menu, select one of your applications and then use the "Security" tab.</p>
-        </div>
-      </div>
-      <script>
-        document.querySelectorAll('pre code').forEach((block) => {
-          hljs.highlightBlock(block);
-        });
-      </script>
-
-    </div>
-  </div>
 
   <div *ngIf="noApps">
     <div class="col mb-2 mt-5">
@@ -105,12 +9,13 @@
     </div>
   </div>
 
-  <div class="row" *ngIf="activePane !== 'onboarding'">
+  <div class="row">
     <div class="col fill f-grow">
       <h2 class="text-shadow-1 text-muted pointer" style="display: inline;" (click)="setPane('applications')" [ngClass]="{'active': activePane === 'applications'}">Applications</h2>
       &nbsp;
       <h2 id="myErrors" class="text-shadow-1 text-muted pointer" style="display: inline;" (click)="setPane('my-errors')" [ngClass]="{'active': activePane === 'my-errors'}">My errors</h2>
     </div>
+
     <div class="col form" style="text-align: right" *ngIf="activePane === 'applications'">
       <a class="btn white" (click)="createApplication()"><i class="fa fa-plus"></i> New application</a> <br />
       <div class="mt-3">

@@ -28,6 +28,7 @@
       <div class="right-menu">
         <ul>
           <li *ngIf="showConfigure">
+            <a [routerLink]="['/tips']">Introduction</a> |
             <a [routerLink]="['/application', configureAppId, 'configure']">Do you need help reporting errors?</a>
           </li>
           <li>
