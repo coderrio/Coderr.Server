@@ -30,10 +30,7 @@ namespace Coderr.Server.WebSite.Infrastructure.Modules
             _backgroundJobManager.StartInterval = TimeSpan.FromSeconds(Debugger.IsAttached ? 0 : 10);
             _backgroundJobManager.ExecuteInterval = TimeSpan.FromSeconds(Debugger.IsAttached ? 10 : 30);
             _backgroundJobManager.ScopeClosing += OnBackgroundJobScopeClosing;
-            HostConfig.Instance.Configured += (sender, args) =>
-            {
-                _backgroundJobManager.Start();
-            };
+            _backgroundJobManager.Start();
         }
 
 

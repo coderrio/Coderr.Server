@@ -109,8 +109,6 @@ namespace Coderr.Server.WebSite.Infrastructure
                 _appModuleStarter.Start(context);
                 _logger.Info("Coderr started successfully.");
             };
-
-
         }
 
         public void BeginConfigureServices(IServiceCollection services)
