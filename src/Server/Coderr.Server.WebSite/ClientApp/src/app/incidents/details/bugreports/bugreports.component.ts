@@ -80,7 +80,7 @@ export class BugReportsComponent implements OnInit {
     var item: IBugReport = {
       email: dto.emailAddress,
       message: dto.message,
-      writtenAtUtc: new Date(dto.writtenAtUtc)
+      writtenAtUtc: new Date(dto.writtenAtUtc + "Z")
     };
 
     return item;
