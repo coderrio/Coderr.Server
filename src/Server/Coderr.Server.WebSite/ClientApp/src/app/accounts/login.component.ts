@@ -28,9 +28,13 @@ export class LoginComponent {
     this.authService.login(this.loginForm.value.userName, this.loginForm.value.password)
       .then(x => {
         this.loginForm.reset();
-        this.router.navigate([this.returnUrl]);
+        var loginUrl = localStorage.getItem('loginUrl');
+        if (loginUrl && this.returnUrl.replace(/\/$/, '') === loginUrl.replace(/\/$/, '')) {
+          this.router.navigate(['/']);
+        } else {
+          this.router.navigate([this.returnUrl]);
+        }
       }).catch(e => {
-        console.log('got error ', e, e.description)
         this.errorMessage = e.message.replace(/\n/g, "<br>\n");
       });
 

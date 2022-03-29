@@ -8,7 +8,6 @@
   <base href="/" />
   <title>Coderr</title>
   <script>
-    //window['IsPremise'] = @(ServerConfig.Instance.IsLive?"false":"true");
     //facebook login fix.
     if (window.location.hash === "_=_") {
       window.location.hash = '';
@@ -22,7 +21,7 @@
           new Date().getTime(), event: 'gtm.js'
       }); var f = d.getElementsByTagName(s)[0],
         j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-        'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
     })(window, document, 'script', 'dataLayer', 'GTM-5CJB2GW');
   </script>
   <!-- End Google Tag Manager -->
@@ -38,42 +37,37 @@
 </head>
 <body style="height: 100%; background: #59c1d5">
 
-<script>
-  fetch('/wazzaa').then(function(response) {
-    if (response.status === 204) {
-      console.log('instlalation rquired')
-      window.location = "/installation";
-    } else {
-      response.text().then(function(text) {
-        localStorage.setItem('loginUrl', text);
-      });
-    }
-  })
-</script>
+  <script>
+    fetch('/wazzaa').then(function (response) {
+      if (response.status === 204) {
+        window.location = "/installation";
+      } else {
+        response.text().then(function (text) {
+          localStorage.setItem('loginUrl', text);
+        });
+      }
+    })
+  </script>
 
-<app-root>
-  <div class="centered">
-    <img src="images/Spinner-1s-200px.svg" alt="Loading gif"/>
+  <app-root>
+    <div class="centered">
+      <img src="images/Spinner-1s-200px.svg" alt="Loading gif" />
+    </div>
+  </app-root>
+  <link rel="stylesheet"
+        href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/styles/railscasts.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/highlight.min.js"></script>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5CJB2GW"
+            height="0" width="0" style="display: none; visibility: hidden"></iframe>
+  </noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <div id="note">
+    <h3></h3>
+    <div></div>
+    <button style="float: right; display: none" id="guideNextBtn">Next</button>
+    <button style="float: right" id="guideCloseBtn">Hide</button>
   </div>
-</app-root>
-<!--@if (ServerConfig.Instance.IsLive)
-{
-<script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/7740744.js"></script>
-}-->
-<link rel="stylesheet"
-      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/styles/railscasts.min.css">
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/highlight.min.js"></script>
-<!-- Google Tag Manager (noscript) -->
-<noscript>
-  <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5CJB2GW"
-          height="0" width="0" style="display: none; visibility: hidden"></iframe>
-</noscript>
-<!-- End Google Tag Manager (noscript) -->
-<div id="note">
-  <h3></h3>
-  <div></div>
-  <button style="float: right; display: none" id="guideNextBtn">Next</button>
-  <button style="float: right" id="guideCloseBtn">Hide</button>
-</div>
 </body>
 </html>

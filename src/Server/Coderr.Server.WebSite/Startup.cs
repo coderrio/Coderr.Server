@@ -28,10 +28,9 @@ namespace Coderr.Server.WebSite
 
         public Startup(IConfiguration configuration)
         {
-            ServerConfig.Instance.Queues.Configure(new ConfigurationWrapper(configuration));
-
             Configuration = configuration;
             _coderrStartup = new CoderrStartup(configuration);
+            ServerConfig.Instance.Queues.Configure(new ConfigurationWrapper(configuration));
         }
 
         public IConfiguration Configuration { get; }
@@ -44,13 +43,13 @@ namespace Coderr.Server.WebSite
 
             EnableCors(services);
 
-            services.AddAuthentication(x =>
+            var authBuilder = services.AddAuthentication(x =>
                 {
                     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                     x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 })
                 .AddJwtBearer(JwtHelper.Configure);
-
+            _coderrStartup.AddAuthentication(authBuilder);
 
             services.AddControllersWithViews(options =>
             {

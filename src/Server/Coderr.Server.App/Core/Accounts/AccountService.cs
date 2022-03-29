@@ -70,22 +70,25 @@ namespace Coderr.Server.App.Core.Accounts
             await _repository.UpdateAsync(account);
             return true;
         }
-        
+
 
         /// <summary>
         ///     Execute the request and generate a reply.
         /// </summary>
-        /// <param name="request">Request to execute</param>
+        /// <param name="messagingPrincipal"></param>
+        /// <param name="activationKey"></param>
         /// <returns>
         ///     Task which will contain the reply once completed.
         /// </returns>
         public async Task<ClaimsIdentity> ActivateAccount(ClaimsPrincipal messagingPrincipal, string activationKey)
         {
+            if (messagingPrincipal == null) throw new ArgumentNullException(nameof(messagingPrincipal));
+            if (activationKey == null) throw new ArgumentNullException(nameof(activationKey));
+
             var account = await _repository.FindByActivationKeyAsync(activationKey);
             if (account == null)
-                throw new ArgumentOutOfRangeException("ActivationKey", activationKey,
+                throw new ArgumentOutOfRangeException(nameof(activationKey), activationKey,
                     "Key was not found.");
-
 
             account.Activate();
             await _repository.UpdateAsync(account);

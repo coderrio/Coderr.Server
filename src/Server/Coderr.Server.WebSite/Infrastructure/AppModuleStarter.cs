@@ -67,9 +67,6 @@ namespace Coderr.Server.WebSite.Infrastructure
 
         public void Configure(ConfigurationContext context)
         {
-            _logger.Debug("Base services: " +
-                          string.Join(", ", context.Services.Select(x => x.ImplementationType?.Name ?? x.ServiceType?.Name)));
-
             foreach (var module in _modules)
             {
 
@@ -77,16 +74,12 @@ namespace Coderr.Server.WebSite.Infrastructure
                 var moduleContext = context.Clone(childServices);
 
                 module.Configure(moduleContext);
-                _logger.Debug(module.GetType().Name + " services: " +
-                              string.Join(", ", moduleContext.Services.Select(x => x.ImplementationType?.Name ?? x.ServiceType?.Name)));
 
 
                 foreach (var service in moduleContext.Services)
                 {
                     if (service.ImplementationType?.Name == "DeleteAbandonedSimilarities")
                         Debugger.Break();
-
-                    _logger.Debug(module.GetType().Name + " registers " + service.ImplementationType);
 
                     //if (context.Services.Any(x => x.ImplementationType == service.ImplementationType))
                     //{

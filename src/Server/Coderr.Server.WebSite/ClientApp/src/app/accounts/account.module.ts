@@ -9,10 +9,14 @@ import { NotificationsComponent } from './settings/notifications/notifications.c
 import { ProfileComponent } from './settings/profile/profile.component';
 import { NavbarComponent } from './settings/navbar/navbar.component';
 import { ControlsModule } from "../_controls/controls.module";
+import { RegisterComponent } from "./register.component";
+import { ActivateComponent } from "./activate.component";
 
 const routes: Routes = [
   { path: 'account/login', component: LoginComponent },
   { path: 'account/logout', component: LogoutComponent },
+  { path: 'account/register', component: RegisterComponent },
+  { path: 'account/activate/:activationCode', component: ActivateComponent },
   {
     path: 'account/settings',
     component: SettingsComponent,
@@ -34,7 +38,16 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [LoginComponent, LogoutComponent, SettingsComponent, NotificationsComponent, ProfileComponent, NavbarComponent],
+  declarations: [
+    LoginComponent,
+    LogoutComponent,
+    SettingsComponent,
+    NotificationsComponent,
+    ProfileComponent,
+    NavbarComponent,
+    RegisterComponent,
+    ActivateComponent
+  ],
   imports: [
     ControlsModule,
     CommonModule,

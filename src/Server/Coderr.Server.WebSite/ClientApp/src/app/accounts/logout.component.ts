@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthorizeService } from "../../api-authorization/authorize.service";
+declare var window: any;
 
 @Component({
   selector: 'logout',
@@ -12,6 +13,11 @@ export class LogoutComponent {
     private router: Router
   ) {
     this.authService.logout();
-    this.router.navigate(['account', 'login']);
+    var loginUrl = localStorage.getItem('loginUrl');
+    if (loginUrl) {
+      window.location.href = loginUrl;
+    } else {
+      this.router.navigate(['account', 'login']);
+    }
   }
 }

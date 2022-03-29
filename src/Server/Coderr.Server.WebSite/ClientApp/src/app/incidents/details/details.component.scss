@@ -18,7 +18,12 @@
     @include box-shadow-1;
 
     th {
+      text-align: left;
+    }
+
+    &.facts th {
       text-align: right;
+      font-weight: bold;
     }
   }
 

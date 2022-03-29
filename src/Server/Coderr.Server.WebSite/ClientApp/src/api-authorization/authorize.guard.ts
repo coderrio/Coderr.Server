@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthorizeService } from './authorize.service';
-import { tap } from 'rxjs/operators';
 declare var window: any;
 
 @Injectable({
@@ -16,6 +15,9 @@ export class AuthorizeGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 
     if (this.authorize.isAuthenticated()) {
+      return true;
+    }
+    if (AuthorizeGuard.isOpenAccountPage(state.url)) {
       return true;
     }
 
@@ -34,13 +36,8 @@ export class AuthorizeGuard implements CanActivate {
     return false;
   }
 
-  private handleAuthorization(isAuthenticated: boolean, state: RouterStateSnapshot) {
-    if (!isAuthenticated) {
-      this.router.navigate(['account', 'login'], {
-        queryParams: {
-          'returnUrl': state.url
-        }
-      });
-    }
+  static isOpenAccountPage(url: string): boolean {
+    console.log('checking url', url);
+    return url.indexOf('/account/') >= 0 && url.indexOf('account/settings') !== -1;
   }
 }

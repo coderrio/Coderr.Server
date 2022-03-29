@@ -33,6 +33,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coderr.Server.WebSite", "Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coderr.Server.WebPush", "Coderr.Server.WebPush\Coderr.Server.WebPush.csproj", "{EB78BA49-5596-4B1C-89C6-E2375FDF9BC5}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coderr.Server.Infrastructure.Tests", "Coderr.Server.Infrastructure.Tests\Coderr.Server.Infrastructure.Tests.csproj", "{ACC6BA6C-FA0B-4C5B-A7D2-B00D37EF2BC7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -161,6 +163,14 @@ Global
 		{EB78BA49-5596-4B1C-89C6-E2375FDF9BC5}.PremiseDebug|Any CPU.Build.0 = Debug|Any CPU
 		{EB78BA49-5596-4B1C-89C6-E2375FDF9BC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB78BA49-5596-4B1C-89C6-E2375FDF9BC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACC6BA6C-FA0B-4C5B-A7D2-B00D37EF2BC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACC6BA6C-FA0B-4C5B-A7D2-B00D37EF2BC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACC6BA6C-FA0B-4C5B-A7D2-B00D37EF2BC7}.Premise|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACC6BA6C-FA0B-4C5B-A7D2-B00D37EF2BC7}.Premise|Any CPU.Build.0 = Debug|Any CPU
+		{ACC6BA6C-FA0B-4C5B-A7D2-B00D37EF2BC7}.PremiseDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACC6BA6C-FA0B-4C5B-A7D2-B00D37EF2BC7}.PremiseDebug|Any CPU.Build.0 = Debug|Any CPU
+		{ACC6BA6C-FA0B-4C5B-A7D2-B00D37EF2BC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACC6BA6C-FA0B-4C5B-A7D2-B00D37EF2BC7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

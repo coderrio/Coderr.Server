@@ -34,7 +34,6 @@ export class AdminHomeComponent implements OnInit, OnDestroy {
       this.service.get(this.applicationId).then(x => {
         this.sharedSecret = x.sharedSecret;
         this.appKey = x.appKey;
-        console.log('loaded');
         this.menuService.updateNav([
           { title: x.name, route: ['application', x.id] },
           { title: "Administration", route: ['application', x.id, 'admin'] }

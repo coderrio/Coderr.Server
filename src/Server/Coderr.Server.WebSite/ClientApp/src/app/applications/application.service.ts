@@ -25,6 +25,7 @@ export class ApplicationService implements ISubscriber, OnDestroy {
   private loadPromise: PromiseWrapper<void> = new PromiseWrapper<void>();
   private userSub: any;
   private isLoadingApps = false;
+  private isLoggedIn = false;
 
   constructor(
     private client: ApiClient,
@@ -86,8 +87,8 @@ export class ApplicationService implements ISubscriber, OnDestroy {
     ];
 
     var groups = cmd.groupId ? [cmd.groupId] : [];
-    var app = new Application(event.body.id, cmd.name, groups, true, members);
-    console.log('appService add', app);
+    var app = new Application(event.body.applicationId, cmd.name, groups, true, members);
+
     this.apps.add(app);
     return app;
   }
@@ -110,6 +111,9 @@ export class ApplicationService implements ISubscriber, OnDestroy {
   async get(applicationId: number): Promise<model.IApplication> {
     if (!applicationId) {
       throw new Error("ApplicationId must be specified.");
+    }
+    if (!this.isLoggedIn) {
+      return null;
     }
 
     // guard against strings :/
@@ -139,7 +143,6 @@ export class ApplicationService implements ISubscriber, OnDestroy {
 
     loadedApp.totalIncidentCount = result.totalIncidentCount;
     loadedApp.latestIncidentDate = result.lastIncidentAtUtc;
-
     loadedApp.versions = result.versions;
 
     if (existingApp == null) {
@@ -148,7 +151,6 @@ export class ApplicationService implements ISubscriber, OnDestroy {
         return existingApp;
       }
 
-      console.log('appService get', loadedApp);
       this.apps.add(loadedApp);
     }
 
@@ -222,7 +224,7 @@ export class ApplicationService implements ISubscriber, OnDestroy {
     }
 
     if (!accountId) {
-      throw new Error("ApplicationId must be specified.");
+      throw new Error("accountId must be specified.");
     }
 
     var cmd = new api.AddTeamMember();
@@ -231,7 +233,28 @@ export class ApplicationService implements ISubscriber, OnDestroy {
     await this.client.command(cmd);
   }
 
+
+  async removeMember(applicationId: number, accountId: number): Promise<void> {
+    if (!applicationId) {
+      throw new Error("ApplicationId must be specified.");
+    }
+
+    if (!accountId) {
+      throw new Error("accountId must be specified.");
+    }
+
+    var cmd = new api.RemoveTeamMember();
+    cmd.applicationId = applicationId;
+    cmd.userToRemove = accountId;
+    await this.client.command(cmd);
+  }
+
+
   async list(): Promise<model.IApplication[]> {
+    if (!this.isLoggedIn) {
+      return [];
+    }
+
     await this.loadPromise.promise;
     return this.apps.current;
   }
@@ -280,8 +303,11 @@ export class ApplicationService implements ISubscriber, OnDestroy {
   // Should only be invoked when the user is published.
   private async loadApplicationsOnAuth(): Promise<any> {
     try {
+
       const query = new api.GetApplicationList();
       const result = await this.client.query<api.ApplicationListItem[]>(query);
+
+      this.apps.clear();
 
       var apps: Application[] = [];
 
@@ -292,16 +318,22 @@ export class ApplicationService implements ISubscriber, OnDestroy {
         const app = new Application(dto.id, dto.name, appGroups, dto.isAdmin);
         apps.push(app);
       });
-      console.log('appService addAll', apps);
       this.apps.addAll(apps);
 
-      this.selectApplication(result[0].id);
+      // Have access to one or more applications.
+      // Have zero applications when registering manually (instead of invites).
+      if (result.length > 0) {
+        this.selectApplication(result[0].id);
+      }
+
 
       this.loadPromise.accept(null);
+      this.isLoadingApps = false;
       return this.apps;
 
     } catch (error) {
       this.loadPromise.reject(error);
+      this.isLoadingApps = false;
       return null;
     }
   }
@@ -309,10 +341,15 @@ export class ApplicationService implements ISubscriber, OnDestroy {
 
   private onAuthenticated(user: IUser) {
     if (!user || this.isLoadingApps) {
+      if (!user) {
+        this.isLoggedIn = false;
+        this.loadPromise = new PromiseWrapper<void>();
+      }
       return;
     }
-    this.isLoadingApps = true;
 
+    this.isLoggedIn = true;
+    this.isLoadingApps = true;
     this.loadApplicationsOnAuth();
   };
 }

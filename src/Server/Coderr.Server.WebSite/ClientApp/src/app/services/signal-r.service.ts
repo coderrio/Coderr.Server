@@ -70,7 +70,6 @@ export class SignalRService {
       resolve: null,
       completed: false
     };
-    console.log('got new filter', cb);
     this.waitFilters.push(cb);
 
     return new Promise((accept, reject) => {
@@ -80,7 +79,6 @@ export class SignalRService {
       };
 
       cb.resolve = evt => {
-        console.log('triggering new filter', evt);
         cb.completed = true;
         accept(evt);
       };

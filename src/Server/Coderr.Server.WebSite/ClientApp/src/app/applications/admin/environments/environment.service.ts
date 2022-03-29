@@ -49,7 +49,6 @@ export class EnvironmentService {
 
   async get(applicationId: number, id: number) {
     var envs = await this.list(applicationId);
-    console.log('found', envs);
 
     var entry = envs.find(x => x.id === id);
     if (!entry) {

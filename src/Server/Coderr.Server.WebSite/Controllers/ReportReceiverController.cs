@@ -4,7 +4,6 @@ using System.Net;
 using System.Security.Authentication;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Coderr.Server.Abstractions;
 using Coderr.Server.Abstractions.Config;
 using Coderr.Server.Abstractions.Reports;
 using Coderr.Server.Abstractions.Security;
@@ -16,7 +15,6 @@ using DotNetCqs.Queues;
 using Griffin.Data;
 using Griffin.Net.Protocols.Http;
 using log4net;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Coderr.Server.WebSite.Controllers
@@ -29,7 +27,7 @@ namespace Coderr.Server.WebSite.Controllers
         private readonly IMessageQueue _messageQueue;
         private readonly IAdoNetUnitOfWork _unitOfWork;
         private readonly IConfiguration<ReportConfig> _reportConfig;
-        private IWhitelistService _whitelistService;
+        private readonly IWhitelistService _whitelistService;
 
         public ReportReceiverController(IMessageQueueProvider queueProvider, IAdoNetUnitOfWork unitOfWork,
             IConfiguration<ReportConfig> reportConfig, IWhitelistService whitelistService)
@@ -106,7 +104,7 @@ namespace Coderr.Server.WebSite.Controllers
                 return new ContentResult
                 {
                     Content = exception.Message,
-                    StatusCode = (int) HttpStatusCode.InternalServerError,
+                    StatusCode = (int)HttpStatusCode.InternalServerError,
                     ContentType = "text/plain"
                 };
             }

@@ -62,7 +62,6 @@ export class CreateApplicationComponent implements OnInit, OnDestroy {
         this.router.navigate(['/']);
       }).catch(e => {
         this.closed.emit({ success: false, error: e });
-        console.log('got error ', e, e.description);
         this.errorMessage = e.message.replace(/\n/g, "<br>\n");
       });
 

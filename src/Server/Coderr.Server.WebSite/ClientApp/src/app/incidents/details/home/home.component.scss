@@ -1,1 +1,15 @@
 @import "../details.component.scss";
+
+.striped {
+  td {
+    padding: 5px;
+  }
+
+  th {
+    padding: 5px;
+  }
+
+  tr:nth-child(even) {
+    background-color: lighten($blue, 35%);
+  }
+}

@@ -22,7 +22,6 @@ export class ServerClientService {
         "X-Cqs-Name": cmd.constructor.TYPE_NAME
       })
     };
-    console.log('sending post');
     await this.httpClient.post(`${environment.apiUrl}cqs/`, cmd, httpOptions);
   }
 
@@ -35,9 +34,7 @@ export class ServerClientService {
       })
     };
 
-    console.log('sending query ' + `${environment.apiUrl}cqs/`, httpOptions);
     var result = await this.httpClient.post<TResult>(`${environment.apiUrl}cqs/`, query, httpOptions).toPromise();
-    console.log('got result', result);
     return result;
   }
 

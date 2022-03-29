@@ -5,10 +5,10 @@
       <h3>Application configuration</h3>
       <div class="fill">
         <div class="mb-5">
-          <strong>AppKey</strong> {{appKey}}<br />
-          <strong>Shared secret</strong> {{sharedSecret}}<br />
+          <strong>AppKey</strong>&nbsp;<span id="app-key-value">{{appKey}}</span><br />
+          <strong>Shared secret</strong>&nbsp;<span id="shared-secret-value">{{sharedSecret}}</span><br />
         </div>
-        <p>To configure the client libs in your application, click on the button below.</p>
+        <p>To get help configuring the Coderr libraries, click on the button below.</p>
         <a [routerLink]="['/application', applicationId, 'configure']" class="btn default">Configure</a>
       </div>
     </div>

@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Coderr.Client;
 using Coderr.Server.Domain.Modules.ApplicationVersions;
 using Coderr.Server.ReportAnalyzer.Abstractions.Incidents;
 using DotNetCqs;
-using log4net;
 
 namespace Coderr.Server.ReportAnalyzer.ApplicationVersions.Handlers
 {
@@ -33,10 +33,11 @@ namespace Coderr.Server.ReportAnalyzer.ApplicationVersions.Handlers
             }
 
             version = CleanVersionFromUnwantedCharacters(version);
+            version = SimplifyVersion(version);
 
             if (version.Length > 20)
             {
-                Err.ReportLogicError("Application version is too large.", new {version, e.Incident.ApplicationName},
+                Err.ReportLogicError("Application version is too large.", new { version, e.Incident.ApplicationName },
                     "AppVersionLength");
                 return;
             }
@@ -65,6 +66,32 @@ namespace Coderr.Server.ReportAnalyzer.ApplicationVersions.Handlers
             _repository.SaveIncidentVersion(e.Incident.Id, versionEntity.Id);
 
             await IncreaseReportCounter(versionEntity.Id, isNewIncident, e.Report.CreatedAtUtc);
+        }
+
+        /// <summary>
+        /// Remove .0 in the end.
+        /// </summary>
+        /// <param name="version"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public static string SimplifyVersion(string version)
+        {
+            var parts = version.Split('.');
+            var index = 0;
+            for (; index < parts.Length; index++)
+            {
+                if (parts[index] == "0")
+                {
+                    break;
+                }
+            }
+
+            if (index == 1)
+            {
+                return $"{parts[0]}.0";
+            }
+
+            return string.Join(".", parts.Take(index));
         }
 
         private static string CleanVersionFromUnwantedCharacters(string version)

@@ -72,11 +72,9 @@ export class NavMenuComponent implements OnDestroy {
 
   toggleAppMenu() {
     this.showAppMenu = !this.showAppMenu;
-    console.log('toggled to ', this.showAppMenu);
   }
 
   selectApplication(applicationId: number) {
-    console.log('toggle false' + applicationId);
     this.showAppMenu = false;
     this.appService.selectApplication(applicationId);
 
@@ -89,7 +87,6 @@ export class NavMenuComponent implements OnDestroy {
     }
 
     var app = this.allApplications.find(x => x.id === this.configureAppId);
-    console.log('incident count', app ? app.hasIncidents : 0);
     this.showConfigure = app && !app.hasIncidents;
   }
 
@@ -128,7 +125,6 @@ export class NavMenuComponent implements OnDestroy {
   }
 
   private onApplicationChanged(application: IApplication) {
-    console.log('Nav menu app application', application);
     if (application == null) {
       this.selected = this.emptyApp;
       return;
@@ -151,7 +147,6 @@ export class NavMenuComponent implements OnDestroy {
     }
 
     var app = this.allApplications.find(x => x.id === this.configureAppId);
-    console.log('app errors', app ? app.hasIncidents : 0);
     this.showConfigure = app && !app.hasIncidents;
 
     if (this.selectedGroupId > 0) {
@@ -174,7 +169,6 @@ export class NavMenuComponent implements OnDestroy {
   }
 
   private toMenuItem(app: IApplication): IApplicationMenuItem {
-    console.log('converting', app.totalIncidentCount > 0, app.totalIncidentCount);
     return { id: app.id, title: app.name, groupIds: app.groupIds, hasIncidents: app.totalIncidentCount > 0 };
   }
 

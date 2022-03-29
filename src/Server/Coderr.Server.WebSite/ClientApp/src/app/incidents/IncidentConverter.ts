@@ -158,7 +158,6 @@ export class IncidentLoader {
     incident.suggestedSolutions = this.convertSolutions(result.suggestedSolutions);
     incident.tags = result.tags;
     incident.updatedAtUtc = result.updatedAtUtc;
-    console.log('refreshed incident.', result);
 
     var stats = new model.IncidentMonthStats();
     stats.days = [];

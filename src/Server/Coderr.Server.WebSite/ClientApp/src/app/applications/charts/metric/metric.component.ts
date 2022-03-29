@@ -28,7 +28,6 @@ export class MetricComponent implements OnInit, OnDestroy {
   }
 
   set applicationId(applicationId: number) {
-    console.log('loading insight chart for ', applicationId);
     this._applicationId = applicationId;
     this.loadStats();
     this.resetTimer();
@@ -45,12 +44,10 @@ export class MetricComponent implements OnInit, OnDestroy {
 
   private resetTimer() {
     clearInterval(this._timer);
-    console.log('Refeshinfg in ', this.refreshSeconds)
     this._timer = setInterval(() => this.reloadStats(), this.refreshSeconds * 1000);
   }
 
   private async reloadStats(): Promise<object> {
-    console.log('reloading chartY ', this.chartId);
 
     const query = new api.GetPartitionInsights();
     query.applicationIds = [this.applicationId];

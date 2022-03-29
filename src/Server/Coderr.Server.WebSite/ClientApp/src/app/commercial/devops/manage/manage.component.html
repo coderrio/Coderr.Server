@@ -73,12 +73,12 @@
                   {{ name }}
                 </option>
               </select>
-              <em class="small">Which type of work item should be created for incidents?</em>
+              <em class="small">Which type of work item should be created for errors?</em>
             </div>
             <fieldset v-bind:disabled="!isWorkItemTypeSelected">
               <div class="form-group">
                 <label>
-                  Assigned an incident
+                  Assigned an error
                 </label>
                 <select class="form-control" [(ngModel)]="assignedStateName">
                   <option *ngFor="let name of stateTypes" [value]="name">
@@ -89,14 +89,14 @@
               </div>
               <div class="form-group">
                 <label>
-                  Solving an incident
+                  Working with an error
                 </label>
                 <select class="form-control" [(ngModel)]="closedStateName">
                   <option *ngFor="let name of stateTypes" [value]="name">
                     {{ name }}
                   </option>
                 </select>
-                <em class="small">Value used when solving a work item.</em>
+                <em class="small">Value used when working with an error.</em>
               </div>
               <div class="form-group">
                 <label>

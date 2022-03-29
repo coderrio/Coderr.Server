@@ -9,7 +9,7 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row" *ngIf="applications.length > 0">
     <div class="col fill f-grow">
       <h2 class="text-shadow-1 text-muted pointer" style="display: inline;" (click)="setPane('applications')" [ngClass]="{'active': activePane === 'applications'}">Applications</h2>
       &nbsp;
@@ -17,7 +17,7 @@
     </div>
 
     <div class="col form" style="text-align: right" *ngIf="activePane === 'applications'">
-      <a class="btn white" (click)="createApplication()"><i class="fa fa-plus"></i> New application</a> <br />
+      <a id="new-application" class="btn white" (click)="createApplication()"><i class="fa fa-plus"></i> New application</a> <br />
       <div class="mt-3">
         <input type="text" class="form-control" id="appFilter" placeholder="Filter applications.." (keyup)="filter($event)" style="margin-top: 10px; width: 200px;" />
         <a href="#" id="appGroups" class="btn white small m-1" title="Show application groups" (click)="showGroups();false"><i class="fa fa-object-group"></i></a>
@@ -31,8 +31,8 @@
       <div class="col" *ngIf="applications.length === 0 && !noApps">No applications match your filter.</div>
       <div class="col fb-300px" *ngFor="let app of applications">
         <div class="panel">
-          <h3><a [routerLink]="['/application', app.id]" style="color: #fff">{{app.name}}</a></h3>
-          <div class="fill">
+          <h3 [data-id]="app.id"><a [routerLink]="['/application', app.id]" style="color: #fff">{{app.name}}</a></h3>
+          <div [id]="toId(app.name)" class="fill">
             <div class="f-grow">
               <table class="facts">
                 <tr>
@@ -64,7 +64,7 @@
               </table>
             </div>
             <div style="display: flex; padding: 5px; margin-left: auto">
-              <a [routerLink]="['application', app.id]" href="" class="btn red small" title="Home"><i class="fa fa-home"></i></a>
+              <a [routerLink]="['application', app.id]" href="" class="home btn red small" title="Home"><i class="fa fa-home"></i></a>
               <a [routerLink]="['application', app.id, 'errors']" href="" class="btn red small" title="New errors"><i class="fa fa-bug"></i></a>
               <a [routerLink]="['application', app.id, 'mine']" href="" class="btn red small" title="My errors"><i class="fa fa-flask"></i></a>
               <a [routerLink]="['application', app.id, 'insights']" href="" class="btn red small" title="Insights"><i class="text-white fa fa-chart-line"></i></a>
@@ -103,7 +103,7 @@
 
 <modal id="newAppModal">
   <div class="panel">
-    <h3>Create component</h3>
+    <h3>Add application</h3>
     <div class="fill">
       <app-create (closed)="closeCreateAppModal()"></app-create>
     </div>

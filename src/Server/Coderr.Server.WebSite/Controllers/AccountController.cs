@@ -149,7 +149,7 @@ namespace Coderr.Server.WebSite.Controllers
         {
             return View();
         }
-        
+
         [HttpPost("api/account/login")]
         public async Task<LoginResult> Login([FromBody] LoginViewModel model)
         {
@@ -207,7 +207,7 @@ namespace Coderr.Server.WebSite.Controllers
 
 
         [HttpPost("api/account/register")]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public async Task<RegisterResult> Register([FromBody] RegisterViewModel model)
         {
             var config = _configStore.Load<BaseConfiguration>();
             if (config.AllowRegistrations == false)
@@ -216,7 +216,9 @@ namespace Coderr.Server.WebSite.Controllers
             }
 
             if (!ModelState.IsValid)
-                return View(model);
+            {
+                return new RegisterResult { Success = false, ErrorMessage = ModelState.ToSummary() };
+            }
 
 
             try
@@ -230,7 +232,7 @@ namespace Coderr.Server.WebSite.Controllers
                     ModelState.AddModelError("Email", "Email address is already in use.");
 
                 if (!ModelState.IsValid)
-                    return View(model);
+                    return new RegisterResult { Success = false, ErrorMessage = ModelState.ToSummary() };
 
                 // This is really a workaround, but the UnitOfWork that wraps 
                 // this action method deadlocks our transaction in the message bus,
@@ -246,11 +248,11 @@ namespace Coderr.Server.WebSite.Controllers
             catch (Exception exception)
             {
                 ModelState.AddModelError("UserName", exception.Message);
-                return View("Register", model);
+                return new RegisterResult { Success = false, ErrorMessage = ModelState.ToSummary() };
             }
 
 
-            return RedirectToAction("ActivationRequested");
+            return new RegisterResult { Success = true, VerificationIsRequested = true };
         }
 
         [HttpGet("password/request/reset")]
@@ -331,9 +333,9 @@ namespace Coderr.Server.WebSite.Controllers
             }
 
             var identity = new ClaimsIdentity(currentClaims, "Cookies");
-            var token  = JwtHelper.GenerateToken(identity);
+            var token = JwtHelper.GenerateToken(identity);
 
-            return new LoginResult {Success = true, JwtToken = token};
+            return new LoginResult { Success = true, JwtToken = token };
         }
 
     }

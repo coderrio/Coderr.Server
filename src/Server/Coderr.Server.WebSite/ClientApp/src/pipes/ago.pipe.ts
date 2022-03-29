@@ -37,7 +37,7 @@ export class AgoPipe implements PipeTransform {
     }
 
     const diffMinutes = diffSeconds / 60;
-    if (diffMinutes < 60) {
+    if (diffMinutes < 90) {
       if (diffMinutes === 1) {
         return "a minute ago";
       }
@@ -45,14 +45,13 @@ export class AgoPipe implements PipeTransform {
     }
 
     const diffHours = diffSeconds / 60 / 60;
-    if (diffHours < 60) {
+    if (diffHours < 20) {
       if (diffHours === 1) {
         return "an hour ago";
       }
 
       return Math.round(diffHours) + " hours ago";
     }
-
 
     const diffDays = diffSeconds / 60 / 60 / 24;
     if (diffDays < 6) {

@@ -1,0 +1,13 @@
+<div style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">
+  <div class="panel" style="max-width: 600px;">
+    <div>
+      <h1 class="text-shadow-1 text-white">Activate account</h1>
+    </div>
+    <div class="fill p-3">
+      <div *ngIf="failed" class="errorMessage">
+        {{errorMessage}}
+      </div>
+    </div>
+    <div class="panel-footer"></div>
+  </div>
+</div>

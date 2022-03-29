@@ -33,6 +33,14 @@ export class BehaviorSubjectList<TEntity>
     this._subject.next(this._items);
   }
 
+  clear() {
+    this._items.forEach(x => {
+      this._removed.next(x);
+    });
+    this._items = [];
+    this._subject.next(this._items);
+  }
+
   remove(item: TEntity): boolean {
     const index = this._items.indexOf(item, 0);
     if (index === -1) {

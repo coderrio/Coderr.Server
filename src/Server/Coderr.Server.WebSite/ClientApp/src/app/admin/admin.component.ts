@@ -42,7 +42,6 @@ export class AdminComponent {
         this.loginForm.reset();
         this.router.navigate([this.returnUrl]);
       }).catch(e => {
-        console.log('got error ', e, e.description)
         this.errorMessage = e.message.replace(/\n/g, "<br>\n");
       });
 

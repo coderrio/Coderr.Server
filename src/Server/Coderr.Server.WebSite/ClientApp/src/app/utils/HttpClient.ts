@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthorizeGuard } from "../../api-authorization/authorize.guard";
 declare var window: any;
 
 export interface IRequestOptions {
@@ -39,6 +40,7 @@ export class ApiClient {
   private http: HttpClient = new HttpClient();
   private cqsUrl;
   private rootUrl;
+  private static redirected = false;
 
   constructor(private router: Router) {
     var apiRootUrl = '/';
@@ -70,16 +72,29 @@ export class ApiClient {
     var response = await this.http.post(`${this.cqsUrl}?type=${query.constructor.TYPE_NAME}`, json, { headers: headers });
     if (response.statusCode === 401) {
 
-      // to support Cloud logins.
-      let url = localStorage.getItem('loginUrl');
-      if (url && url != '/account/login') {
-        window.location.href = url;
+      if (!ApiClient.redirected) {
+        ApiClient.redirected = true;
+      }
+
+
+      if (AuthorizeGuard.isOpenAccountPage(window.location.pathname)) {
         return null;
       }
 
-      this.router.navigate(['account/login'], { queryParams: { returnUrl: window.location.pathname + window.location.search } });
+      const loginUrl = localStorage.getItem('loginUrl');
+      if (loginUrl) {
+        if (window.location.pathname.indexOf('account') === -1) {
+          window.location.href =
+            loginUrl + "?returnUrl=" + encodeURIComponent(window.location.pathname + window.location.search);
+        }
+
+        return null;
+      }
+
+      //this.router.navigate(['account/login'], { queryParams: { returnUrl: window.location.pathname + window.location.search } });
       throw new HttpError(response);
     }
+    ApiClient.redirected = false;
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       return response.body;

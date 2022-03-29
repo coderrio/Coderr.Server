@@ -197,7 +197,6 @@ export class SearchComponent implements OnInit, OnDestroy {
       { title: 'Errors', route: ['application', app.id, 'errors'] }
     ]);
 
-    console.log('loaded envs', this.environments);
   }
 
   private async loadTags(): Promise<void> {
@@ -208,7 +207,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     response.forEach(x => {
       this.tags.push({ id: 0, name: x.name, selected: false });
     });
-    console.log('loaded tags', this.tags);
   }
 
   private async loadUsers(): Promise<void> {
@@ -219,7 +217,6 @@ export class SearchComponent implements OnInit, OnDestroy {
         name: x.userName,
       }
     });
-    console.log('loaded users', this.users, users);
   }
 
   private async searchInternal(byCode?: boolean): Promise<void> {

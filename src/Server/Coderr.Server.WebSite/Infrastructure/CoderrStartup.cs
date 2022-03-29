@@ -23,6 +23,7 @@ using Coderr.Server.WebSite.Infrastructure.Adapters;
 using log4net;
 using log4net.Appender;
 using log4net.Repository.Hierarchy;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
@@ -141,10 +142,6 @@ namespace Coderr.Server.WebSite.Infrastructure
             _logger.Debug("All services is now running.");
         }
 
-        public void RunMigrations()
-        {
-        }
-
         private void ConfigureMigrations()
         {
             var baseRunner = new MigrationRunner(
@@ -252,6 +249,10 @@ namespace Coderr.Server.WebSite.Infrastructure
             {
                 HostConfig.Instance.TriggeredConfigured();
             }
+        }
+
+        public void AddAuthentication(AuthenticationBuilder authenticationBuilder)
+        {
         }
     }
 }

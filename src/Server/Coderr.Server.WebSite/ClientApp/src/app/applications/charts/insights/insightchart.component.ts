@@ -28,7 +28,6 @@ export class InsightChartComponent implements OnInit, OnDestroy {
   }
 
   set applicationId(applicationId: number) {
-    console.log('loading insight chart for ', applicationId);
     this._applicationId = applicationId;
     this.loadStats();
     this.resetTimer();

@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
+using System.Runtime.CompilerServices;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Coderr.Server.Abstractions.Boot
@@ -10,7 +9,7 @@ namespace Coderr.Server.Abstractions.Boot
     public static class RegisterExtensions
     {
 
-        public static void RegisterContainerServices(this IServiceCollection serviceCollection, Assembly assembly)
+        public static void RegisterContainerServices(this IServiceCollection serviceCollection, Assembly assembly, [CallerMemberName] string callerName = "")
         {
             var gotWrongAttribute = (
                 from type in assembly.GetTypes()
@@ -28,8 +27,6 @@ namespace Coderr.Server.Abstractions.Boot
 
             foreach (var containerService in containerServices)
             {
-                Debug.WriteLine(Assembly.GetCallingAssembly().GetName().Name + " registers " + containerService.FullName);
-
                 var attr = containerService.GetCustomAttribute<ContainerServiceAttribute>();
                 var interfaces = containerService.GetInterfaces();
                 var lifetime = ConvertLifetime(attr);
@@ -39,9 +36,9 @@ namespace Coderr.Server.Abstractions.Boot
                 if (interfaces.Length > 1 || attr.RegisterAsSelf)
                 {
                     serviceCollection.Add(new ServiceDescriptor(containerService, containerService, lifetime));
-                    isRegisteredAsSelf=true;
+                    isRegisteredAsSelf = true;
                 }
-                    
+
 
                 foreach (var @interface in interfaces)
                 {
@@ -53,7 +50,7 @@ namespace Coderr.Server.Abstractions.Boot
             }
         }
 
-        public static void RegisterMessageHandlers(this IServiceCollection serviceCollection, Assembly assembly)
+        public static void RegisterMessageHandlers(this IServiceCollection serviceCollection, Assembly assembly, [CallerMemberName] string callerName = "")
         {
             var types = assembly.GetTypes()
                 .Where(y => y.GetInterfaces()
@@ -61,8 +58,6 @@ namespace Coderr.Server.Abstractions.Boot
                 .ToList();
             foreach (var type in types)
             {
-                Debug.WriteLine(Assembly.GetCallingAssembly().GetName().Name + " registers " + type.FullName);
-
                 serviceCollection.AddScoped(type, type);
 
                 var ifs = type.GetInterfaces()

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>Coderr.Server.Api.Client.Tests</RootNamespace>
     <AssemblyName>Coderr.Server.Api.Client.Tests</AssemblyName>
     <Configurations>Debug;Release;Premise</Configurations>

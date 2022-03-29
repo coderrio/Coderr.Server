@@ -1,0 +1,60 @@
+<div style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">
+  <style>
+    .error {
+      color: red;
+    }
+  </style>
+  <div class="panel" style="max-width: 600px;">
+    <div>
+      <h1 class="text-shadow-1 text-white">Register</h1>
+    </div>
+    <div class="fill p-3">
+      <form class="form" [formGroup]="regForm" (ngSubmit)="saveForm()" name="register-form">
+        <div>
+          <label for="userName">
+            Username
+          </label>
+          <input type="text" id="userName" formControlName="userName">
+        </div>
+
+        <div>
+          <label for="password">
+            Password
+          </label>
+          <input id="password" type="password" formControlName="password" (input)="checkPassword($event.target.value)">
+          <span id="password-awesomeness">{{strengthMessage}}</span>
+        </div>
+
+        <div>
+          <label for="password2">
+            Retype password
+          </label>
+          <input id="password2" type="password" formControlName="password2" required="">
+        </div>
+
+        <div>
+          <label for="emailAddress">
+            Email address
+          </label>
+          <input id="emailAddress" type="email" formControlName="emailAddress" required="">
+        </div>
+        <div class="pt-2 pb-2">
+          <span class="error" [innerHTML]="errorMessage"></span>
+        </div>
+        <div class="p-2" *ngIf="activationRequired">
+          <label id="reg-success">
+            Registration was successful. Click on the activation link in the sent email.
+          </label>
+
+        </div>
+        <p>
+          <button class="btn" type="submit" >Register</button>
+          <a [href]="loginUrl">Back to login</a>
+        </p>
+      </form>
+
+    </div>
+    <div class="panel-footer"></div>
+  </div>
+
+</div>

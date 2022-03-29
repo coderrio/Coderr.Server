@@ -77,19 +77,11 @@ export class IncidentsService implements ISubscriber, OnDestroy {
     var incident = await this.get(incidentId);
     this.incidentLoader.refreshIncident(incident);
 
-    console.log('assigned',
-      accountId,
-      this.authService.user.accountId,
-      typeof accountId,
-      typeof this.authService.user.accountId);
     if (accountId === this.authService.user.accountId) {
-      console.log('mine!!')
       this.incidentLoader.findForUser(accountId)
         .then(x => {
-          console.log('looking for ', incidentId);
           var newIncident = x.find(y => y.id === incidentId);
           if (newIncident) {
-            console.log('Adding my incident.');
             this.myIncidentsList.push(newIncident);
           }
         });
@@ -210,14 +202,12 @@ export class IncidentsService implements ISubscriber, OnDestroy {
         const incidentAssigned = <api.IncidentAssigned>event.body;
         const incident = await this.findIncident(incidentAssigned.incidentId);
         if (incident) {
-          console.log('Got assigned incident: ', incidentAssigned);
           incident.assignedAtUtc = new Date();
           incident.assignedToId = incidentAssigned.assignedToId;
           incident.isAssigned = true;
           incident.assignedTo = "apa"; //TODO: Lookup
 
         } else if (incidentAssigned.assignedToId === this.authService.user.accountId) {
-          console.log('loading assigned incident');
           this.get(incidentAssigned.incidentId);
         }
 
@@ -230,7 +220,7 @@ export class IncidentsService implements ISubscriber, OnDestroy {
         const incidentCreated = <api.IncidentCreated>event.body;
         this.get(incidentCreated.incidentId);
         const link = `/application/${incidentCreated.applicationId}/error/${incidentCreated.incidentId}`;
-        this.toastrService.info(`A new incident '<a href="${link}">${incidentCreated.incidentName}</a> was received.`, "New error", { enableHtml: true });
+        this.toastrService.info(`A new error '<a href="${link}">${incidentCreated.incidentName}</a> was received.`, "New error", { enableHtml: true });
 
       default:
         break;

@@ -40,7 +40,6 @@ export class GroupListComponent implements OnInit, OnDestroy {
   }
 
   onGroupCreated(e: IGroupCreated) {
-    console.log(e);
     if (e.success) {
       this.groups.push(e.group);
     }

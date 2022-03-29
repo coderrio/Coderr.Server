@@ -11,6 +11,7 @@ using Coderr.Server.Infrastructure.Messaging;
 using Coderr.Server.ReportAnalyzer.Abstractions;
 using Coderr.Server.ReportAnalyzer.Abstractions.Boot;
 using Coderr.Server.ReportAnalyzer.Boot.Adapters;
+using DotNetCqs;
 using DotNetCqs.Bus;
 using DotNetCqs.DependencyInjection;
 using DotNetCqs.Logging;
@@ -39,8 +40,23 @@ namespace Coderr.Server.ReportAnalyzer.Boot.Starters
             ConfigureListeners(context);
             ConfigureMessageHandlers(context);
 
-            if (!ServerConfig.Instance.IsLive)
-                CreateDomainQueue(context, "Messaging");
+            if (ServerConfig.Instance.IsLive)
+            {
+                return;
+            }
+
+            context.Services.AddSingleton<IMessageBus>(x =>
+            {
+                var queueName =
+                    ServerConfig.Instance.IsLive
+                        ? context.Configuration.GetSection("MessageQueue")["AppQueue"]
+                        : "Messaging";
+                var queue = QueueManager.Instance.QueueProvider.Open(queueName);
+                var bus = new SingleInstanceMessageBus(queue);
+                return bus;
+            });
+
+            CreateDomainQueue(context, "Messaging");
         }
 
         public void Start(StartContext context)

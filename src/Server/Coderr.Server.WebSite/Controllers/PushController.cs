@@ -25,7 +25,7 @@ namespace Coderr.Server.WebSite.Controllers
             _config = config;
         }
 
-      
+
         [HttpGet]
         [Route("vapidpublickey")]
         [Authorize]
@@ -38,7 +38,7 @@ namespace Coderr.Server.WebSite.Controllers
 
             var subject = ServerConfig.Instance.IsLive
                 ? VapidDetails.LiveSubject
-                : _baseConfig.Value.SupportEmail;
+                : $"mailto:{_baseConfig.Value.SupportEmail}";
             var pair = VapidHelper.GenerateVapidKeys(subject);
             _config.Value.PrivateKey = pair.PrivateKey;
             _config.Value.PublicKey = pair.PublicKey;

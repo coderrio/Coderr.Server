@@ -6,6 +6,7 @@ import { IApplicationMember } from "../../../application.model";
 import { ModalService } from "../../../../_controls/modal/modal.service";
 import { ToastrService } from "ngx-toastr";
 import { NavMenuService } from "../../../../nav-menu/nav-menu.service";
+import { AuthorizeService } from "../../../../../api-authorization/authorize.service";
 
 @Component({
   selector: 'app-team',
@@ -20,9 +21,11 @@ export class TeamListComponent implements OnInit {
   //invitations:
   selectedAccountId: number = -1;
   inviteEmail: string = "";
+  isAdmin: boolean;
 
   constructor(private service: ApplicationService,
     private accountService: AccountService,
+    private authService: AuthorizeService,
     route: ActivatedRoute,
     private modalService: ModalService,
     private noticeService: ToastrService,
@@ -52,6 +55,11 @@ export class TeamListComponent implements OnInit {
     this.service.removeAdmin(this.applicationId, user.accountId);
   }
 
+  remove(user: IApplicationMember) {
+    this.service.removeMember(this.applicationId, user.accountId);
+    this.members = this.members.filter(x => x.accountId !== user.accountId);
+  }
+
   async addUser(): Promise<void> {
     this.hideShowAdd();
 
@@ -61,6 +69,9 @@ export class TeamListComponent implements OnInit {
       this.inviteEmail = '';
 
     } else if (this.selectedAccountId > 0) {
+
+      this.selectedAccountId = +this.selectedAccountId;
+
       await this.service.addMember(this.applicationId, this.selectedAccountId, false);
       this.members.push({
         accountId: this.selectedAccountId,
@@ -74,6 +85,8 @@ export class TeamListComponent implements OnInit {
   private async load(): Promise<void> {
     this.users = await this.accountService.getAll();
     this.members = await this.service.getMembers(this.applicationId);
+    this.isAdmin = this.authService.user.isSysAdmin ||
+      this.members.find(x => x.accountId === this.authService.user.accountId && x.isAdmin) != null;
 
     var app = await this.service.get(this.applicationId);
     this.menuService.updateNav([

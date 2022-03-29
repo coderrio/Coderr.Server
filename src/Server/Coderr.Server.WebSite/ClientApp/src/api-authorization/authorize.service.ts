@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subscriber, Observable, Subject } from 'rxjs';
-import { HttpClient } from "../app/utils/HttpClient"
+import { HttpClient, IHttpResponse } from "../app/utils/HttpClient"
 import jwt_decode from "jwt-decode";
 
 //https://jasonwatmore.com/post/2019/05/17/angular-7-tutorial-part-4-login-form-authentication-service-route-guard
@@ -70,8 +70,9 @@ export class AuthorizeService {
     return new BehaviorSubject<string>(this._token);
   }
 
-  async logout(): Promise<object> {
+  async logout(): Promise<void> {
     localStorage.removeItem('jwt');
+    localStorage.removeItem('user');
     this._user = null;
     this.userSubject.next(null);
     return null;
@@ -79,6 +80,25 @@ export class AuthorizeService {
 
   async login(userName: string, password: string): Promise<IUser> {
     var reply = await this.service.post("/api/account/login", JSON.stringify({ UserName: userName, Password: password }));
+    return this.processLoginReply(reply);
+  }
+
+  async activate(activationCode: string): Promise<IUser> {
+    var reply = await this.service.post("/api/account/activate/" + activationCode, null);
+    return this.processLoginReply(reply);
+  }
+
+  getDecodedAccessToken(token: string): any {
+    try {
+      return jwt_decode(token);
+    }
+    catch (e) {
+      console.log(e);
+      return null;
+    }
+  }
+
+  private processLoginReply(reply: IHttpResponse): IUser {
     if (reply.statusCode !== 200) {
       throw new Error(reply.statusReason);
     }
@@ -129,21 +149,11 @@ export class AuthorizeService {
       role: tokenInfo.role,
       userName: tokenInfo.unique_name
     };
+
     localStorage.setItem('user', JSON.stringify(user));
     this._user = user;
     this.subscriber.next(this._token);
     this.userSubject.next(user);
     return user;
   }
-
-  getDecodedAccessToken(token: string): any {
-    try {
-      return jwt_decode(token);
-    }
-    catch (e) {
-      console.log(e);
-      return null;
-    }
-  }
-
 }

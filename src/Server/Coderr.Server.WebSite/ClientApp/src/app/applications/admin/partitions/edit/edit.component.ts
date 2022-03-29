@@ -36,7 +36,6 @@ export class PartitionEditComponent implements OnInit {
   }
 
   async save(): Promise<void> {
-    console.log('backendPart', this.backendPartition);
     copy(this.partition,
       this.backendPartition,
       {
@@ -44,7 +43,6 @@ export class PartitionEditComponent implements OnInit {
         numericFields: ['weight', 'numberOfItems', 'importantThreshold', 'criticalThreshold'],
         skipExistenceCheck: true
       });
-    console.log('backendPart2', this.backendPartition);
 
     await this.partitionService.update(this.backendPartition);
 

@@ -16,17 +16,19 @@
           <select name="contextCollection" (change)="selectCollection($event.target.value)">
             <option *ngFor="let col of currentReport.contextCollections" [value]="col.name" [selected]="col.name === currentCollection.name">{{col.name}}</option>
           </select>
-          <table *ngIf="currentCollection">
-            <tr *ngFor="let prop of currentCollection.properties">
-              <th class="th">
-                <div style="display: inline-block; white-space: nowrap">
-                  {{prop.key}}
-                </div>
-              </th>
-              <td>
-                {{prop.value}}
-              </td>
-            </tr>
+          <table *ngIf="currentCollection" class="pt-4 striped">
+            <tbody>
+              <tr *ngFor="let prop of currentCollection.properties">
+                <th>
+                  <div style="display: inline-block; white-space: nowrap">
+                    {{prop.key}}
+                  </div>
+                </th>
+                <td>
+                  {{prop.value}}
+                </td>
+              </tr>
+            </tbody>
           </table>
         </div>
         <div class="row" style="justify-content: space-between; width: 100%">
@@ -46,7 +48,7 @@
     <div class="col">
 
       <h3>Product impact</h3>
-      <div class="fill">
+      <div class="fill facts">
         <table>
           <tr *ngFor="let fact of incident.facts">
             <th>{{fact.title}}</th>

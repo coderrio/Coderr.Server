@@ -39,6 +39,11 @@ namespace Coderr.Server.App.Modules.Whitelists
         /// <returns></returns>h
         public async Task<bool> Validate(int applicationId, IPAddress remoteAddress)
         {
+            if (remoteAddress.IsIPv6LinkLocal || remoteAddress.IsIPv6SiteLocal || Equals(remoteAddress, IPAddress.Loopback) || Equals(remoteAddress, IPAddress.IPv6Loopback))
+            {
+                return true;
+            }
+
             var ipEntry = await _repository.FindIp(applicationId, remoteAddress);
             if (ipEntry != null)
             {

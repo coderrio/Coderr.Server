@@ -16,14 +16,12 @@ namespace Coderr.Server.ReportAnalyzer.Boot
                 .ToList();
             foreach (var containerService in containerServices)
             {
-                Debug.WriteLine(Assembly.GetCallingAssembly().GetName().Name + " registers " + containerService.FullName);
-
                 var attr = containerService.GetCustomAttribute<ContainerServiceAttribute>();
                 var interfaces = containerService.GetInterfaces();
                 var lifetime = ConvertLifetime(attr);
 
                 // Hack so that the same instance is resolved for each interface
-                bool isRegisteredAsSelf = false;
+                var isRegisteredAsSelf = false;
                 if (interfaces.Length > 1 || attr.RegisterAsSelf)
                 {
                     serviceCollection.Add(new ServiceDescriptor(containerService, containerService, lifetime));
@@ -48,8 +46,6 @@ namespace Coderr.Server.ReportAnalyzer.Boot
 
             foreach (var type in types)
             {
-                Debug.WriteLine(Assembly.GetCallingAssembly().GetName().Name + " registers " + type.FullName);
-
                 if (type.GetCustomAttributes().Any(x => x.GetType().Name.StartsWith("ContainerService")))
                 {
                     Debugger.Break();

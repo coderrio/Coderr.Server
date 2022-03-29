@@ -67,7 +67,6 @@ export class NavbarComponent implements OnInit {
   }
 
   close() {
-    console.log('choosing close', this.modalService);
     this.modalService.open("closeIncidentModal");
 
   }
@@ -79,9 +78,6 @@ export class NavbarComponent implements OnInit {
 
   private async loadEverything() {
     this.incident = await this.incidentService.get(this.myIncidentId);
-    console.log('incidetn state ', this.incident.state);
     this.users = await this.accountService.getAll();
-    console.log('loaded users ', this.users);
-
   }
 }

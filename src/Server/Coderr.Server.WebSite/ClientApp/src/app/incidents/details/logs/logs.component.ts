@@ -46,7 +46,6 @@ export class LogsComponent implements OnInit, OnDestroy {
               
             }
           });
-          console.log(this.allEntries)
           this.entries = this.allEntries;
         });
     });
@@ -56,7 +55,6 @@ export class LogsComponent implements OnInit, OnDestroy {
     this.sub.unsubscribe();
   }
   filterEntries($event: KeyboardEvent) {
-    console.log($event, this.filterText)
     var re = new RegExp(this.filterText, 'i');
     this.entries = this.allEntries.filter(x => re.test(x.message) || re.test(x.exception));
   }

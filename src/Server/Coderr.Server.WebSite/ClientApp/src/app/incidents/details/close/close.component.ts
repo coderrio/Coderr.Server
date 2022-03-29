@@ -46,11 +46,9 @@ export class CloseComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log('cloosing...');
     this.incidentService.close(this._incidentId, this.form.value.version, this.form.value.reason)
       .then(numberOfSubscribers => {
         this.numberOfUsers = numberOfSubscribers;
-        console.log('should ask feedback', numberOfSubscribers);
         if (numberOfSubscribers > 0) {
           this.modalService.open("askSubscriberModal");
         }
@@ -61,7 +59,6 @@ export class CloseComponent implements OnInit {
   }
 
   notifyUsers() {
-    console.log("Should notify users");
     this.closeNotifyDialog();
 
   }

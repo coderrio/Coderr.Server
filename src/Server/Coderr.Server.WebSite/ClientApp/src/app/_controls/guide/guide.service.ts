@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from "rxjs";
-import { Router, NavigationStart } from '@angular/router';
+import { Router } from '@angular/router';
 import { SettingsService } from "../../utils/settings.service";
 import { ExecuteOnce } from "../../PromiseWrapper";
 import { Guide } from "../../../Guide";

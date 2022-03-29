@@ -70,7 +70,6 @@ export class OriginsComponent implements OnInit, OnDestroy {
           //disabled in commercial
           //this.gotItems = response.Items.length > 0;
 
-          console.log('resp', response);
           if (response.items.length < 50) {
             response.items.forEach(item => {
               var point = new google.maps.LatLng(item.latitude, item.longitude);

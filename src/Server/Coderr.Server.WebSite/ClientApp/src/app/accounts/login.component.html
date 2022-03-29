@@ -1,28 +1,33 @@
-<div style="width:100%;height:100%;display:flex;justify-content:center;align-items:center;">
+<div style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">
+  <style>
+    .error {
+      color: red;
+    }
+  </style>
   <div class="panel" style="max-width: 600px;">
     <div>
       <h1 class="text-shadow-1 text-white">Login</h1>
     </div>
     <div class="fill p-3">
-      <form method="post" [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form">
+      <form method="post" [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form" name="login-form">
 
         <div>
           <label for="userName">
             Username
           </label>
-          <input id="userName" type="text" formControlName="userName">
+          <input id="userName" type="text" formControlName="userName" required="">
         </div>
 
         <div>
           <label for="password">
             Password
           </label>
-          <input id="password" type="password" formControlName="password">
+          <input id="password" type="password" formControlName="password" required="">
         </div>
 
-        <span class="error" style="white-space: pre-line">{{errorMessage}}</span>
+        <span class="error" [innerHTML]="errorMessage"></span>
         <button class="button" type="submit">Login</button>
-
+        <a [routerLink]="['../register']">Register</a>
       </form>
 
     </div>

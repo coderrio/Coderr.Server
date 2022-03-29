@@ -22,7 +22,6 @@ export class EnvironmentListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.sub = this.route.params.subscribe(params => {
       this.applicationId = +params['applicationId'];
-      console.log('params', params);
       this.load();
     });
   }

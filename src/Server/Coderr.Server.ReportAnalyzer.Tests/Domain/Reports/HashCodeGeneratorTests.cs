@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using Coderr.Server.Domain.Core.ErrorReports;
 using Coderr.Server.ReportAnalyzer.ErrorReports;
 using FluentAssertions;
-using NSubstitute;
 using Xunit;
 
 namespace Coderr.Server.ReportAnalyzer.Tests.Domain.Reports
@@ -14,9 +12,9 @@ namespace Coderr.Server.ReportAnalyzer.Tests.Domain.Reports
         [Fact]
         public void Should_strip_line_numbers_to_reduce_the_number_of_incidents()
         {
-            var ex1 = new ErrorReportException {StackTrace = @"   at System.Web.Compilation.AssemblyBuilder.Compile():line 64
+            var ex1 = new ErrorReportException { StackTrace = @"   at System.Web.Compilation.AssemblyBuilder.Compile():line 64
 at System.Web.Compilation.BuildProvidersCompiler.PerformBuild():line 65
-at System.Web.Compilation.BuildManager.CompileWebFile(VirtualPath virtualPath):line 67"};
+at System.Web.Compilation.BuildManager.CompileWebFile(VirtualPath virtualPath):line 67" };
             var ex2 = new ErrorReportException
             {
                 StackTrace = @"   at System.Web.Compilation.AssemblyBuilder.Compile():line 12
@@ -30,7 +28,7 @@ at System.Web.Compilation.BuildManager.CompileWebFile(VirtualPath virtualPath):l
             var actual1 = sut.GenerateHashCode(report1);
             var actual2 = sut.GenerateHashCode(report2);
 
-            actual1.Should().Be(actual2);
+            actual1.HashCode.Should().Be(actual2.HashCode);
         }
 
         [Fact]
@@ -52,7 +50,7 @@ at System.Web.Compilation.BuildManager.CompileWebFile(VirtualPath virtualPath)"
             var actual1 = sut.GenerateHashCode(report1);
             var actual2 = sut.GenerateHashCode(report2);
 
-            actual1.Should().Be(actual2);
+            actual1.HashCode.Should().Be(actual2.HashCode);
         }
 
 
@@ -133,17 +131,16 @@ Coderr.Server.Web.Controllers.OnboardingController.Library(String id, String app
             var data = HashCodeGenerator.CleanStackTrace(stacktrace);
 
             data.Should().Be(
-                @"   at System.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__108_0(Task`1 result)
-   at Coderr.Server.SqlServer.Core.Incidents.Queries.GetCollectionHandler.HandleAsync in D:\AgentWork\10\s\src\Server\Coderr.Server.SqlServer\Core\Incidents\Queries\GetCollectionHandler.cs()
-   at DotNetCqs.DependencyInjection.MessageInvoker.InvokeQueryHandler()
-   at DotNetCqs.DependencyInjection.MessageInvoker.InvokeQueryHandler()
-   at DotNetCqs.DependencyInjection.MessageInvoker.ProcessAsync()
-   at DotNetCqs.MessageProcessor.ExecuteQueriesInvocationContext.QueryAsync()
-   at DotNetCqs.Bus.ScopedQueryBus.QueryAsync()
-   at Coderr.Server.Common.App.HighlightedData.CustomContextDataProvider.CollectAsync() in D:\AgentWork\10\s\src\Server\Common\Coderr.Server.Common.App\HighlightedData\CustomContextDataProvider.cs()
-   at Coderr.Server.SqlServer.Core.Incidents.Queries.GetIncidentHandler.HandleAsync() in D:\AgentWork\10\s\src\Server\Coderr.Server.SqlServer\Core\Incidents\Queries\GetIncidentHandler.cs()
-   at DotNetCqs.DependencyInjection.MessageInvoker.InvokeQueryHandler()
-");
+                @"System.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__108_0(Task`1 result)
+Coderr.Server.SqlServer.Core.Incidents.Queries.GetCollectionHandler.HandleAsync() in D:\AgentWork\10\s\src\Server\Coderr.Server.SqlServer\Core\Incidents\Queries\GetCollectionHandler.cs
+DotNetCqs.DependencyInjection.MessageInvoker.InvokeQueryHandler()
+DotNetCqs.DependencyInjection.MessageInvoker.InvokeQueryHandler()
+DotNetCqs.DependencyInjection.MessageInvoker.ProcessAsync()
+DotNetCqs.MessageProcessor.ExecuteQueriesInvocationContext.QueryAsync()
+DotNetCqs.Bus.ScopedQueryBus.QueryAsync()
+Coderr.Server.Common.App.HighlightedData.CustomContextDataProvider.CollectAsync() in D:\AgentWork\10\s\src\Server\Common\Coderr.Server.Common.App\HighlightedData\CustomContextDataProvider.cs
+Coderr.Server.SqlServer.Core.Incidents.Queries.GetIncidentHandler.HandleAsync() in D:\AgentWork\10\s\src\Server\Coderr.Server.SqlServer\Core\Incidents\Queries\GetIncidentHandler.cs
+DotNetCqs.DependencyInjection.MessageInvoker.InvokeQueryHandler()");
         }
 
         [Fact]
@@ -162,17 +159,17 @@ at java.util.concurrent.ThreadPoolExecutor$Worker->run(null:-1)
 at java.lang.Thread->run(null:-1)" };
             var ex2 = new ErrorReportException
             {
-                StackTrace = @"at java.lang.NumberFormatException->forInputString(null:-1)
-at java.lang.Integer->parseInt(null:-1)
-at java.lang.Integer->parseInt(null:-1)
-at se.fleetech.gateway.app.services.alarms.EngineCoolantTemperatureAlarmStateChangeServiceImpl->handleET1Message(EngineCoolantTemperatureAlarmStateChangeServiceImpl.java:112)
-at se.fleetech.gateway.app.services.alarms.EngineCoolantTemperatureAlarmStateChangeServiceImpl->actorCallback(EngineCoolantTemperatureAlarmStateChangeServiceImpl.java:62)
-at se.fleetech.gateway.app.services.alarms.EngineCoolantTemperatureAlarmStateChangeServiceImpl$$Lambda$19/14039178->accept(null:-1)
-at se.fleetech.gateway.app.services.general.ActorService->lambda$start$0(ActorService.java:45)
-at se.fleetech.gateway.app.services.general.ActorService$$Lambda$36/12952319->run(null:-1)
-at java.util.concurrent.ThreadPoolExecutor->runWorker(null:-1)
-at java.util.concurrent.ThreadPoolExecutor$Worker->run(null:-1)
-at java.lang.Thread->run(null:-1)"
+                StackTrace = @"java.lang.NumberFormatException->forInputString(null:-1)
+java.lang.Integer->parseInt(null:-1)
+java.lang.Integer->parseInt(null:-1)
+se.fleetech.gateway.app.services.alarms.EngineCoolantTemperatureAlarmStateChangeServiceImpl->handleET1Message(EngineCoolantTemperatureAlarmStateChangeServiceImpl.java:112)
+se.fleetech.gateway.app.services.alarms.EngineCoolantTemperatureAlarmStateChangeServiceImpl->actorCallback(EngineCoolantTemperatureAlarmStateChangeServiceImpl.java:62)
+se.fleetech.gateway.app.services.alarms.EngineCoolantTemperatureAlarmStateChangeServiceImpl$$Lambda$19/14039178->accept(null:-1)
+se.fleetech.gateway.app.services.general.ActorService->lambda$start$0(ActorService.java:45)
+se.fleetech.gateway.app.services.general.ActorService$$Lambda$36/12952319->run(null:-1)
+java.util.concurrent.ThreadPoolExecutor->runWorker(null:-1)
+java.util.concurrent.ThreadPoolExecutor$Worker->run(null:-1)
+java.lang.Thread->run(null:-1)"
             };
 
             var report1 = new ErrorReportEntity(1, "fjkkfjjkf", DateTime.UtcNow, ex1, new List<ErrorReportContextCollection>());
@@ -182,7 +179,30 @@ at java.lang.Thread->run(null:-1)"
             var actual1 = sut.GenerateHashCode(report1);
             var actual2 = sut.GenerateHashCode(report2);
 
-            actual1.Should().Be(actual2);
+            actual1.HashCode.Should().Be(actual2.HashCode);
+        }
+
+        [Fact]
+        public void Should_remove_dotNet_lambdas()
+        {
+            var strackTrace =
+                @"at MvcDemo.Controllers.HomeController.Index(PostModel model) in E:\src\1tcompany\coderr\Demos\csharp\Web\ASP.NET Core Mvc\MvcDemo\MvcDemo\Controllers\HomeController.cs:line 31
+   at lambda_method26(Closure , Object , Object[] )
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.SyncActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeNextActionFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextExceptionFilterAsync>g__Awaited|26_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)";
+
+            var cleaned = HashCodeGenerator.CleanStackTrace(strackTrace);
+
+            var actual = @"MvcDemo.Controllers.HomeController.Index(PostModel model) in E:\src\1tcompany\coderr\Demos\csharp\Web\ASP.NET Core Mvc\MvcDemo\MvcDemo\Controllers\HomeController.cs";
+            cleaned.Should().Be(actual);
         }
     }
 }

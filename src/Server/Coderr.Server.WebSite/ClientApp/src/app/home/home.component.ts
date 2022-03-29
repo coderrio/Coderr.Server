@@ -44,6 +44,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     localStorage.setItem('homeActivePane', name);
   }
 
+  toId(value: string) {
+    return 'app-' + value.replace(/\s+/g, '-');
+  }
 
   ngOnInit(): void {
     this.appSub = this.appService.applications.subscribe(apps => {

@@ -46,7 +46,6 @@ export class EditComponent implements OnInit, OnDestroy {
   }
 
   async save(): Promise<void> {
-    console.log('storing ', this.environment);
     await this.service.update(this.environment);
     this.router.navigate(['/application', this.applicationId, 'admin']);
   }
