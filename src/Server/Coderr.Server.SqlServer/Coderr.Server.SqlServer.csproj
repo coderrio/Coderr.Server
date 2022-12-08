@@ -10,7 +10,7 @@
     <PackageReference Include="DotNetCqs" Version="2.1.1" />
     <PackageReference Include="Griffin.Framework" Version="2.1.1" />
     <PackageReference Include="log4net" Version="2.0.14" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
   </ItemGroup>
 
