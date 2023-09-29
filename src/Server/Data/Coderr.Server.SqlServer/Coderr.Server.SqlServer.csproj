@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Coderr.Server.SqlServer</RootNamespace>
+    <AssemblyName>Coderr.Server.SqlServer</AssemblyName>
+    <Configurations>Debug;Release;Premise</Configurations>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="DnsClient" Version="1.6.0" />
+    <PackageReference Include="DotNetCqs" Version="2.1.1" />
+    <PackageReference Include="Griffin.Framework" Version="2.1.1" />
+    <PackageReference Include="log4net" Version="2.0.14" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\App\Coderr.Server.Api\Coderr.Server.Api.csproj" />
+    <ProjectReference Include="..\..\App\Coderr.Server.App\Coderr.Server.App.csproj" />
+    <ProjectReference Include="..\..\App\Coderr.Server.Domain\Coderr.Server.Domain.csproj" />
+    <ProjectReference Include="..\..\Common\Coderr.Server.Infrastructure\Coderr.Server.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Reporting\Coderr.Server.ReportAnalyzer.Abstractions\Coderr.Server.ReportAnalyzer.Abstractions.csproj" />
+    <ProjectReference Include="..\..\Reporting\Coderr.Server.ReportAnalyzer\Coderr.Server.ReportAnalyzer.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Schema\*\*.sql" />
+  </ItemGroup>
+
+</Project>

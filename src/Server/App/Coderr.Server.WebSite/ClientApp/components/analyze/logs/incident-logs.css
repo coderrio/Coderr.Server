@@ -1,0 +1,33 @@
+.LogsView table td {
+    font-weight: normal
+}
+
+.LogsView .log-1 {
+    color: #999999;
+}
+
+.LogsView .log-2 {
+    color: green;
+}
+
+.LogsView .log-3 {
+    color: #9932cc;
+}
+
+.LogsView .log-4 {
+    color: #9932cc;
+}
+
+.LogsView .log-5 {
+    color: #9932cc;
+}
+
+.LogsView .log-6 {
+    color: #9932cc;
+}
+
+
+.LogsView .exception {
+    border-top: 1px solid #ccc;
+    color: #333;
+}

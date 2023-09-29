@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <DefaultItemExcludes>$(DefaultItemExcludes);**\*.DotSettings;</DefaultItemExcludes>
+    <Configurations>Debug;Release</Configurations>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Environments\**" />
+    <EmbeddedResource Remove="Environments\**" />
+    <None Remove="Environments\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Coderr.Client" Version="2.0.5" />
+    <PackageReference Include="DotNetCqs" Version="2.1.1" />
+    <PackageReference Include="DotNetCqs.DependencyInjection.Microsoft" Version="2.2.1" />
+    <PackageReference Include="DotNetCqs.Queues.AdoNet" Version="1.0.11" />
+    <PackageReference Include="Griffin.Framework" Version="2.1.1" />
+    <PackageReference Include="log4net" Version="2.0.14" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.22" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.22" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
+    <PackageReference Include="UAParser" Version="3.1.47" />
+  </ItemGroup>
+  <ItemGroup>
+    <!--<ProjectReference Include="..\Coderr.Server.Domain\Coderr.Server.Domain.csproj" />-->
+    <ProjectReference Include="..\..\App\Coderr.Server.Domain\Coderr.Server.Domain.csproj" />
+    <ProjectReference Include="..\..\Common\Coderr.Server.Abstractions\Coderr.Server.Abstractions.csproj" />
+    <ProjectReference Include="..\..\Common\Coderr.Server.Infrastructure\Coderr.Server.Infrastructure.csproj" />
+    <ProjectReference Include="..\Coderr.Server.ReportAnalyzer.Abstractions\Coderr.Server.ReportAnalyzer.Abstractions.csproj" />
+  </ItemGroup>
+  <!--<ItemGroup>
+    <Reference Include="System.Management">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.Management.dll</HintPath>
+    </Reference>
+  </ItemGroup>-->
+</Project>

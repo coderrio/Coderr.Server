@@ -1,0 +1,104 @@
+<template>
+    <div class="onboarding-view">
+        <div class="row m-5">
+            <div class="col text-center">
+                <h2>Next steps</h2>
+                <p>It's time to configure your application. </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div v-if="mainFramework == 'nodejs'">
+                    <h3>Node.js</h3>
+                    <p>For browsers:</p>
+
+                    <p>Using node</p>
+                    <pre><code>npm i -S coderr.client</code></pre>
+                    Then configure like this:
+
+                    <pre><code class="language-javascript">
+    import { CoderrClient, Configuration } from "coderr.client";
+
+    var config = new Configuration("https://report.coderr.io/", "{{appKey}}");
+    config.environmentName = 'production';
+    config.applicationVersion = '1.0';
+
+    var client = new CoderrClient(config);
+    client.catchDomErrors();
+</code></pre>
+
+                    <p>Examples in <a target="_blank" href="https://www.npmjs.com/package/coderr.client">npm</a>.</p>
+                </div>
+                <div v-else>
+                    <h3>.NET</h3>
+                    <p>All libraries are available in <a target="_blank" href="https://www.nuget.org/packages?q=coderr.client">nuget</a>.</p>
+                    <p>The base configuration is the same for all libraries.</p>
+                    <pre><code class="language-csharp">var url  = new Uri("https://report.coderr.io/");
+Err.Configuration.Credentials(url, "{{appKey}}", "{{sharedSecret}}");
+</code></pre>
+                    <p>Once done, you can try to report an exception:</p>
+                    <pre><code class="language-csharp">try
+{
+    throw new InvalidOperation("Some error");
+}
+catch (Exception ex)
+{
+    Err.Report(ex, new { ExampleId = 42 });
+}</code></pre>
+
+                    <div v-if="aspNetCore">
+                        <h3>ASP.NET Core MVC</h3>
+                        <p>To enable automated reporting, you need to add some additional lines in Startup.cs:</p>
+                        <pre><code class="language-csharp">
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddControllersWithViews(x =>
+    {
+        // add this line
+        x.CatchMvcExceptions();
+    });
+}
+
+// Add the loggerFactory as a parameter
+public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
+{
+    // add this line to allow Coderr to pickup ASP.NET Core logging
+    loggerFactory.AddCoderrProvider();
+
+    // finally add this somewhere 
+    app.CatchMiddlewareExceptions();
+
+    // everything else here.
+}
+</code></pre>
+                    </div>
+                </div>
+                <p v-if="showChat">If you need help, use the chat down/right to talk with our devs.</p>
+                <router-link :to="{ name: 'discover'}" class="btn btn-blue">Configuration is done</router-link>
+            </div>
+            <div class="col">
+                <h2>Customizing Coderr</h2>
+                <p>Our <a href="https://coderr.io/documentation/pages/">documentation</a> contains information of most of our features.</p>
+                <div class="alert">
+                    <h2>Prioritizing errors</h2>
+                    <p>Here is a small example how you let Coderr prioritize errors.</p>
+                    <img src="https://coderr.io/documentation/?image=/screens/features/recommendations/recommended_partition.png" />
+                    <p>To let Coderr prioritize errors, you need to add information to each error.</p>
+                    <pre><code class="language-csharp">// Example for ASP.NET Core
+Err.Configuration.AddPartition(x =>
+{
+    x.AddPartition("ServerId", Environment.MachineName);
+});
+</code></pre>
+                    <p>
+                        <a class="btn btn-blue" target="_blank" href="https://coderr.io/documentation/features/recommendations/">Read more</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+
+
+<script src="./next.ts"></script>

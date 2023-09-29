@@ -1,0 +1,64 @@
+﻿<div class="row">
+    <div class="col-lg-12">
+        <div class="card-box">
+            <h2>My errors</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Application</th>
+                        <th>Assigned</th>
+                        <th>Last report</th>
+                        <th>Report count</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody id="incidentTable">
+                    <tr data-collection="Items">
+                        <td>
+                            <a href="" data-name="Name"></a>
+                        </td>
+                        <td>
+                            <a data-name="ApplicationName"></a>
+                        </td>
+                        <td data-name="AssignedAtUtc"></td>
+                        <td data-name="LastUpdateAtUtc"></td>
+                        <td data-name="ReportCount"></td>
+                        <td>
+                            <a href="#/application/:applicationId/incident/:incidentId/close"><i class="fa fa-info"></i></a>
+                            <a href="#/application/:applicationId/incident/:incidentId/close"><i class="fa fa-close"></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div data-name="suggestion"></div>
+            <p data-if="vm.isEmpty" class="lead">Looks like your list is empty, awesome job! <i class="fa fa-2x fa-birthday-cake text-warning"></i></p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <h2>Suggested incidents</h2>
+        <p>Here is a few suggestions for new incidents that you can take care of.</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col" data-collection="Suggestions">
+        <div class="card-box">
+            <h3 data-name="Name"></h3>
+            <div class="lead text-primary">
+                <em><span data-name="Motivation"></span></em>
+                <hr />
+            </div>
+            <p>
+                Type: <span data-name="ExceptionTypeName"></span><br />
+                Application: <span data-name="ApplicationName"></span><br />
+            </p>
+            <pre data-name="StackTrace"></pre>
+            <a href="" data-name="Id" class="btn btn-outline-primary">View</a>
+        </div>
+    </div>
+
+</div>
+

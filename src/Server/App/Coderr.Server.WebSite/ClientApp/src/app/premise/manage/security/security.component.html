@@ -1,0 +1,126 @@
+<template>
+    <div class="mt-4">
+        <div class="row">
+            <div class="col-lg-8 members">
+                <div class="card">
+                    <div class="card-header">
+                        Application security [{{applicationName}}]
+                    </div>
+                    <div class="card-body">
+                        <h3>Admins</h3>
+                        <table class="">
+                            <tr *ngFor="let admin of admins">
+                                <td>
+                                    <span class="fa fa-users text-blue" *ngIf="admin.Type == 'adgroup'"></span>
+                                    <span class="fa fa-user text-blue" *ngIf="admin.Type !== 'adgroup'"></span>
+                                    {{admin.name}}
+                                </td>
+                                <td>
+                                    <a href="#" (click)="removeAdmin(admin.id);false" *ngIf="admins.length > 1" title="Downgrade to regular member"><i class="fa fa-hand-point-down text-warning"></i></a>
+                                </td>
+                            </tr>
+                        </table>
+                        <h3>Members</h3>
+                        <table class="">
+                            <tr ngFor="let member of members">
+                                <td>
+                                    <span class="fa fa-users text-blue" *ngIf="member.Type == 'adgroup'"></span>
+                                    <span class="fa fa-user text-blue" *ngIf="member.Type !== 'adgroup'"></span>
+                                    {{member.name}}
+                                </td>
+                                <td>
+                                    <a href="#" (click)="addAdmin(member.id);false" title="Make admin"><i class="fa fa-hand-point-up text-success"></i></a>
+                                    <a href="#" (click)="removeMember(member.id);false"><i class="fa fa-trash text-danger"></i></a>
+                                </td>
+                            </tr>
+                        </table>
+                        <div *ngIf="members.length == 0">
+                            <em>No members have been added.</em>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">Add team members</div>
+                    <div class="card-body">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="byad-tab" data-toggle="tab" href="#inviteByAd" role="tab" aria-controls="home" aria-selected="true">By Active Directory</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="byemail-tab" data-toggle="tab" href="#inviteByEmail" role="tab" aria-controls="profile" aria-selected="false">By email</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content p-2" id="myTabContent">
+                            <div class="tab-pane fade show active" id="inviteByAd" role="tabpanel" aria-labelledby="byad">
+                                <form (submit)="findAd();false">
+                                    <div class="form-group">
+                                        <label class="label">Search</label>
+                                        <input type="text" *ngModel="adSearch.text" class="form-control" placeholder="Account name (search)" /><br />
+                                        <div *ngIf="premisePlus">
+                                            <label><input type="checkbox" *ngModel="adSearch.findUsers" value="1" /> Users</label>
+                                            <label>
+                                                <input type="checkbox" *ngModel="adSearch.findGroups" value="1" /> Groups
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <button class="btn btn-primary">Search</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div data-name="ad-result" *ngIf="adSearchResult.length > 0">
+                                            <label>Result</label>
+                                            <table class="w-100">
+                                                <tr *ngFor="let item of adSearchResult">
+                                                    <td>
+                                                        <span class="fa fa-user" *ngIf="item.Type == 'User'"></span>
+                                                        <span class="fa fa-users" *ngIf="item.Type !== 'User'"></span>
+                                                        {{item.Name}}
+                                                    </td>
+                                                    <td>{{item.FullName}}</td>
+                                                    <td>
+                                                        <a title="Add user/group to team" [href]="'#' + item.Sid" (click)="addAdItem(item);false"><i class="fa fa-plus text-success"></i></a>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="tab-pane fade" id="inviteByEmail" role="tabpanel" aria-labelledby="byemail">
+                                <form (submit)="inviteUser($event)">
+                                    <input type="email" class="form-control" *ngModel="inviteEmail" placeholder="Email address" style="display: inline; width: auto;" required="" />
+                                    <input type="submit" value="Invite member" class="btn btn-primary" />
+                                </form>
+
+                                <hr />
+                                <table class="table table-borderless" *ngIf="invites.length > 0">
+                                    <tr *ngFor="let member of invites">
+                                        <td>
+                                            {{member.EmailAddress}}
+                                        </td>
+                                        <td>
+                                            <a href="#" (click)="removeInvitation(member.EmailAddress);false"><i class="fa fa-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div *ngIf="invites.length == 0">
+                                    <em>(No pending invites)</em>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</template>
+
+
+<style src="./security.css"></style>
+<script src="./security.ts"></script>

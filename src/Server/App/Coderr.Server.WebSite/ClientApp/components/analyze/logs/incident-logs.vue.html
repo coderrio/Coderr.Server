@@ -1,0 +1,47 @@
+<template>
+    <div class="LogsView">
+        <div class="card" v-show="allEntries.length == 0" style="display: none">
+            <div class="card-header">
+                Log entries
+            </div>
+            <div class="card-body">
+                <h6>No entries has been attached.</h6>
+                <p>Coderr will automatically attached the 100 most recent log entries (before the exception occurred) if you are using one of our log library integrations.</p>
+            </div>
+        </div>
+        <div class="card" v-show="allEntries.length > 0">
+            <div class="card-header">
+                <div class="float-right">
+                    <input type="text" placeholder="search.." @keyup="filterEntries" v-model="filterText" />
+                </div>
+                Log entries
+            </div>
+            <div class="card-body">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="min-width: 200px">When</th>
+                            <th>Entry</th>
+                        </tr>
+                    </thead>
+                    <tbody v-for="entry in entries">
+                        <tr :class="'log-' + entry.logLevel">
+                            <td style="vertical-align: top">{{entry.timeStampUtc|isoDate}}</td>
+                            <td>
+                                <div v-html="entry.message"></div>
+                                <div v-if="entry.exception" v-html="entry.exception" class="exception">
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer">
+            </div>
+        </div>
+    </div>
+</template>
+
+
+<style src="./incident-logs.css"></style>
+<script src="./incident-logs.ts"></script>

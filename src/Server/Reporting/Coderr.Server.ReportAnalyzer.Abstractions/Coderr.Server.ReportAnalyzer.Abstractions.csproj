@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Version>2.3.3</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <AssemblyName>Coderr.Server.ReportAnalyzer.Abstractions</AssemblyName>
+    <Configurations>Debug;Release;Premise</Configurations>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>Coderr.Server.ReportAnalyzer.Abstractions</PackageId>
+    <Authors>Coderr AB</Authors>
+    <Description>API client for Coderr Server.</Description>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageReleaseNotes>Converted to vstudio 2017 csproj format</PackageReleaseNotes>
+    <Copyright>Copyright 2023 © Coderr AB. All rights reserved.</Copyright>
+    <PackageTags>logger exceptions analysis .net-core netstandard</PackageTags>
+    <PackageIconUrl>https://coderr.io/images/nuget_icon.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/coderrio/coderr.server</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/coderrio/Coderr.Server/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://coderr.io</PackageProjectUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.22" />
+  </ItemGroup>
+  <!--<ItemGroup>
+    <_PackageFiles Include="$(OutputPath)\Coderr.Server.Abstractions.*">
+      <BuildAction>None</BuildAction>
+      <PackagePath>lib\netstandard2.0\</PackagePath>
+    </_PackageFiles>
+  </ItemGroup>-->
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Coderr.Server.Abstractions\Coderr.Server.Abstractions.csproj" PrivateAssets="All" />
+    <!--<ProjectReference Include="..\Coderr.Server.Domain\Coderr.Server.Domain.csproj" />-->
+  </ItemGroup>
+</Project>
